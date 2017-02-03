@@ -13,9 +13,9 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
         <h5>Oppiaineiden arvosanat</h5>
         <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
         {
-          grouped.map(([name, suoritukset], i) => (<section>
+          grouped.map(([name, suoritukset], i) => (<section key={i}>
               { grouped.length > 1 && <h5>{name}</h5> }
-              <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset}/>
+              <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} />
               {
                 käyttäytymisenArvio && (i == grouped.length - 1) && (<div>
                   <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
