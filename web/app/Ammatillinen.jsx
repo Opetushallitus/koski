@@ -74,6 +74,7 @@ export const NäytönArvioitsijaEditor = React.createClass({
     return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? ' (näyttötutkintomestari)' : ''}</span>
   }
 })
+NäytönArvioitsijaEditor.canShowInline = () => true
 
 let suorituksenTilaSymbol = (tila) => {
   switch (tila) {

@@ -123,7 +123,6 @@ export const PropertyEditor = React.createClass({
     </span>)
   }
 })
-
 PropertiesEditor.canShowInline = () => false
 
 export const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
@@ -186,7 +185,7 @@ ArrayEditor.canShowInline = (component) => {
   var items = modelItems(model)
   // consider inlineability of first item here. make a stateless "fake component" because the actual React component isn't available to us here.
   let fakeComponent = {props: { model: items[0], context: childContext({}, context, 0) }}
-  return items.length <= 1 && canShowInline(fakeComponent)
+  return canShowInline(fakeComponent)
 }
 
 export const OptionalEditor = React.createClass({

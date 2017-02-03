@@ -316,6 +316,7 @@ const PäivämääräväliEditor = React.createClass({
         </span>
   }
 })
+PäivämääräväliEditor.canShowInline = () => true
 
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,

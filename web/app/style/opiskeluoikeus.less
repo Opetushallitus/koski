@@ -242,16 +242,6 @@
                 padding-top: 2px; // override for more compact layout
               }
             }
-
-            .arvioitsijat {
-              li {
-                display: inline-block;
-              }
-              li:not(:last-child):after {
-                content: ", ";
-                margin-right: 5px;
-              }
-            }
           }
         }
       }
@@ -339,11 +329,16 @@
       &:not(.inline):not(.inline-when-collapsed) > li {
         position: relative;
       }
+
       &.inline {
         display: inline-block;
         padding-left: 0;
         > li {
           display: inline-block;
+        }
+        > li:not(:last-child):after {
+          content: ", ";
+          margin-right: 5px;
         }
       }
     }
