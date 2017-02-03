@@ -263,6 +263,7 @@ case class NäytönSuoritusaika(
 
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
+  @Title("Arviointipäivä")
   päivä: LocalDate,
   @Description("Näytön arvioineet henkilöt")
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
