@@ -9,7 +9,7 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
     let {model, context} = this.props
     let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
     let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset') || []))
-    return grouped.length && (<div className="oppiaineet">
+    return grouped.length > 0 && (<div className="oppiaineet">
         <h5>Oppiaineiden arvosanat</h5>
         <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
         {
