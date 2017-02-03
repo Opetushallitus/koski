@@ -80,10 +80,14 @@ export const TyössäoppimisjaksoEditor = React.createClass({
   render() {
     let {model, context} = this.props
     if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
-    return <div className="tyossaoppimisjakso">
-      <PäivämääräväliEditor context={context} model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
-      <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key))} context={context} />
-    </div>
+    return (
+      <div className="tyossaoppimisjakso">
+        <PäivämääräväliEditor context={context} model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
+        <GenericEditor.PropertiesEditor
+          properties={model.value.properties.filter(p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key))}
+          context={context}/>
+      </div>
+    )
   }
 })
 
