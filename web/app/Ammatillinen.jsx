@@ -1,7 +1,7 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { LaajuusEditor } from './OppijaEditor.jsx'
+import { LaajuusEditor, PäivämääräväliEditor } from './OppijaEditor.jsx'
 
 export const TutkinnonOsatEditor = React.createClass({
   render() {
@@ -75,6 +75,17 @@ export const NäytönArvioitsijaEditor = React.createClass({
   }
 })
 NäytönArvioitsijaEditor.canShowInline = () => true
+
+export const TyössäoppimisjaksoEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    return <div className="tyossaoppimisjakso">
+      <PäivämääräväliEditor context={context} model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
+      <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key))} context={context} />
+    </div>
+  }
+})
 
 let suorituksenTilaSymbol = (tila) => {
   switch (tila) {

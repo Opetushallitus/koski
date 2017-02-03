@@ -7,7 +7,7 @@ import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
 import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
-import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor } from './Ammatillinen.jsx'
+import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor, TyössäoppimisjaksoEditor } from './Ammatillinen.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -306,7 +306,7 @@ const KoulutusmoduuliEditor = React.createClass({
   }
 })
 
-const PäivämääräväliEditor = React.createClass({
+export const PäivämääräväliEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
@@ -336,5 +336,6 @@ export const editorMapping = {
   'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
   'naytonarvioitsija': NäytönArvioitsijaEditor,
-  'naytonsuoritusaika': PäivämääräväliEditor
+  'naytonsuoritusaika': PäivämääräväliEditor,
+  'tyossaoppimisjakso': TyössäoppimisjaksoEditor
 }

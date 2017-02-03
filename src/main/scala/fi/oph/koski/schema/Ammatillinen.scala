@@ -163,7 +163,6 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   @ComplexObject
   näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
@@ -344,7 +343,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -398,7 +396,6 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   @ComplexObject
   näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -456,7 +453,6 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   @ComplexObject
   näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
