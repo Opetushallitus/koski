@@ -45,6 +45,7 @@ function OpinnotPage() {
     },
     expandAll: function() {
       var checkAndExpand = function() {
+        console.log("check expand")
         if (expanders().is(':visible')) {
           triggerEvent(expanders(), 'click')
           return wait.forMilliseconds(10)().then(checkAndExpand)
@@ -52,7 +53,7 @@ function OpinnotPage() {
       }
       return checkAndExpand()
       function expanders() {
-        return S('.foldable.collapsed>.toggle-expand, tbody:not(.expanded) .toggle-expand')
+        return S('.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) .toggle-expand:not(.disabled)')
       }
     }
   }
