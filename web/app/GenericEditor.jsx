@@ -88,8 +88,8 @@ export const PropertiesEditor = React.createClass({
                   <div className="label">{property.title}</div>
                   <div className="value">{ valueEditor }</div>
                 </td>)
-              : [<td className="label">{property.title}</td>,
-                  <td className="value">{ valueEditor }</td>
+              : [<td className="label" key="label">{property.title}</td>,
+                  <td className="value" key="value">{ valueEditor }</td>
                 ]
           }
         </tr>)]
