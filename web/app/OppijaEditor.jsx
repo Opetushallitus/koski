@@ -306,6 +306,17 @@ const KoulutusmoduuliEditor = React.createClass({
   }
 })
 
+const PäivämääräväliEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    return context.edit
+      ? <GenericEditor.ObjectEditor {...this.props}/>
+      : <span>
+          <GenericEditor.Editor context={context} model={modelLookup(model, 'alku')}/> — <GenericEditor.Editor context={context} model={modelLookup(model, 'loppu')}/>
+        </span>
+  }
+})
+
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,
   'lukionkurssinsuoritus': LukionKurssiEditor,
@@ -323,5 +334,6 @@ export const editorMapping = {
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
   'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
-  'naytonarvioitsija': NäytönArvioitsijaEditor
+  'naytonarvioitsija': NäytönArvioitsijaEditor,
+  'naytonsuoritusaika': PäivämääräväliEditor
 }
