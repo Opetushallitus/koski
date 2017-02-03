@@ -30,7 +30,21 @@ export function parseLocation(location) {
   return {
     path: location.pathname.replace(/(^\/?)/,'/'),
     params: parseQuery(location.search),
-    queryString: location.search || ''
+    queryString: location.search || '',
+    addQueryParams(newParams) {
+      return this.replaceQueryParams(R.merge(this.params, newParams))
+    },
+    filterQueryParams(f) {
+      let newParams = R.fromPairs(R.toPairs(this.params).filter(([key, value]) => f(key, value)))
+      return this.replaceQueryParams(newParams)
+    },
+    replaceQueryParams(newParams) {
+      let parameterPairs = R.filter(([, value]) => !!value, R.toPairs(newParams))
+      let query = R.join('&', R.map(R.join('='), parameterPairs))
+      let search = query ? '?' + query : ''
+      return parseLocation({pathname: location.pathname, search: search})
+    },
+    toString() { return `${this.path}${this.queryString}` }
   }
 }
 
@@ -39,6 +53,7 @@ export function currentLocation() {
 }
 
 function parseQuery(qstr) {
+  if (qstr == '') return {}
   var query = {}
   var a = qstr.substr(1).split('&')
   for (var i = 0; i < a.length; i++) {
@@ -52,8 +67,6 @@ export const appendQueryParam = (path, key, value) => path + (parsePath(path).qu
 
 export const appendQueryParams = (path, params) => R.toPairs(params).reduce((l, [key, value]) => appendQueryParam(l, key, value), path)
 
-export const addQueryParams = (param) => {
-  let toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(currentLocation().params, params)))
-  let query = R.join('&', R.map(R.join('='), toParameterPairs(param)))
-  navigateTo(`${currentLocation().path}?${query}`)
+export const navigateWithQueryParams = (newParams) => {
+  navigateTo(currentLocation().addQueryParams(newParams).toString())
 }

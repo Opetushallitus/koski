@@ -7,12 +7,16 @@ import { Editor } from './GenericEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
+import {currentLocation} from './location.js'
+import { oppijaHakuElementP } from './OppijaHaku.jsx'
+import Link from './Link.jsx'
 
 export const saveBus = Bacon.Bus()
 
-export const oppijaContentP = (oppijaOid, queryString) => {
+export const oppijaContentP = (oppijaOid) => {
   const changeBus = Bacon.Bus()
 
+  let queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
   const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaOid}${queryString}`).toEventStream()
 
   const updateResultE = Bacon.Bus()
@@ -34,7 +38,7 @@ export const oppijaContentP = (oppijaOid, queryString) => {
   updateResultE.plug(oppijaP
     .sampledBy(changeBus, (oppija, [context]) => ({oppija, context}))
     .flatMapLatest(({oppija, context: {path}}) => {
-      let opiskeluoikeusPath = path.split('.').slice(0, 4)
+      let opiskeluoikeusPath = path.split('.').slice(0, 6)
       var oppijaData = oppija.value.data
       let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
       let oppijaUpdate = {
@@ -47,15 +51,12 @@ export const oppijaContentP = (oppijaOid, queryString) => {
 
   saveBus.plug(updateResultE.map(true))
 
-  return oppijaP.map((oppija) => {
+  return Bacon.combineWith(oppijaP, oppijaHakuElementP, (oppija, haku) => {
     return {
-      content: (<div className='content-area'>
-        {
-          oppija.loading
-            ? <div className='main-content oppija loading'></div>
-            : <ExistingOppija oppija={oppija} changeBus={changeBus}/>
-        }
-      </div>),
+      content: (<div className='content-area'><div className="main-content oppija">
+          { haku }
+          <ExistingOppija oppija={oppija} changeBus={changeBus}/>
+        </div></div>),
       title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
   })
@@ -65,19 +66,21 @@ export const ExistingOppija = React.createClass({
   render() {
     let {oppija, changeBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
-    return (
-      <div className='main-content oppija'>
-        <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>{modelTitle(henkilö, 'hetu')}</span>
-          <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
-        </h2>
-        <hr></hr>
-        <h4>Opiskeluoikeudet</h4>
-        {
-          oppija
-            ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus} />
-            : null
-        }
-      </div>
+    return oppija.loading
+      ? <div className="loading"/>
+      : (
+        <div>
+          <Link className="back-link" href="/koski/">Opiskelijat</Link>
+          <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
+            className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
+            <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
+          </h2>
+          {
+            oppija
+              ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus}/>
+              : null
+          }
+        </div>
     )
   }
 })

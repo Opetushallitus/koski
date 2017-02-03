@@ -2,7 +2,7 @@ describe('Koski', function() {
   var page = KoskiPage()
   var login = LoginPage()
 
-  var eerola = 'Eerola, Jouni 081165-793C'
+  var eerola = 'Eerola, Jouni (081165-793C)'
 
   describe('Tietoturva', function() {
     before(login.openPage)

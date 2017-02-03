@@ -1,17 +1,90 @@
 .oppija {
-  &.loading {
+
+  ul.opiskeluoikeustyypit {
+    padding: 0;
+    margin-bottom: 30px;
+    .opiskeluoikeustyyppi {
+      font-size: 20px;
+    }
+    > li {
+      display: inline-block;
+      list-style: none;
+      padding: 16px 20px;
+      border-radius: 2px;
+      margin-right: 10px;
+      position: relative;
+      &:not(.selected) {
+        background: white;
+        border: 1px solid #D5D5D5;
+        cursor: pointer;
+        .opiskeluoikeustyyppi {
+          color: @color-link-blue;
+        }
+      }
+      &.selected {
+        color: white;
+        background: @color-dark-blue;
+        border: 1px solid @color-dark-blue;
+        &:after {
+          content: "";
+          .Triangle(10px, @color-dark-blue, top);
+          position: absolute;
+          bottom: -20px;
+          left: ~"calc(50% - 10px)";
+        }
+      }
+    }
+    ul.oppilaitokset {
+      font-size: 14px;
+      margin-top: 5px;
+      padding: 0;
+      > li {
+        list-style: none;
+      }
+      .oppilaitos {
+        font-weight: 600;
+      }
+    }
+    ul.opiskeluoikeudet {
+      padding: 0;
+      .CompactList;
+      .opiskeluoikeus {
+        .tila {
+          text-transform: lowercase;
+        }
+      }
+    }
+  }
+
+  > .loading {
     .ajax-indicator-bg;
   }
 
-  h2 {
-    font-weight: normal;
-    font-size: 20px;
-    .hetu {
-      color: @color-darkgray-text;
+  .inline-text {
+    margin-right: 4px;
+  }
+
+  ul.opiskeluoikeuksientiedot {
+    list-style: none;
+    padding: 0;
+    > li {
+      background: #FFFFFF;
+      border: 1px solid #D5D5D5;
+      border-radius: 2px;
+      padding: 0;
     }
+  }
+
+  h2 {
+    font-weight: 600;
+    font-size: 24px;
+    color: #2A2A2A;
+    letter-spacing: 0;
+    margin-bottom: 32px;
+    margin-top: 12px;
     a.json {
       margin-left: 10px;
-      background: #159ECB;
+      background: @color-link-blue;
       color: white;
       border-radius: 2px;
       padding: 1px 8px;
@@ -24,29 +97,10 @@
     margin: 29px 64px 40px 0;
   }
 
-  .hetu {
-    font-size: 16px;
-  }
-
   h4 {
     font-size: 16px;
     text-transform: uppercase;
     font-weight: normal;
-  }
-
-  .versiohistoria {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 0.9em;
-    vertical-align: top;
-    table {
-      display: inline-block;
-      margin-left: 10px;
-      tr.selected, tr.selected a {
-        background: #159ECB;
-        color: white;
-      }
-    }
   }
 }
 

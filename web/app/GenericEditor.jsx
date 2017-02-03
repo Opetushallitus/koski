@@ -17,39 +17,7 @@ export const Editor = React.createClass({
         root: true,
         path: '',
         prototypes: model.prototypes,
-        editorMapping: R.merge(defaultEditorMapping, editorMapping),
-        expandMyPath (c, expanded) {
-          // expand/collapse this node
-          c.setState({expanded})
-          if (this.parentComponent && this.parentContext) {
-            let delta = expanded ? 1 : -1
-            this.parentContext.expandChild(this.parentComponent, delta)
-          }
-        },
-        expandChild (c, delta) {
-          // notification of a child component expanded/collapsed
-          let previousCount = ((c.state && c.state.expandCount) || 0)
-          let expandCount = previousCount + delta
-          c.setState({expandCount})
-          if (this.parentComponent && this.parentContext) {
-            // if there's a parent, we'll bubble up the change
-            let selfCount = (c.state && c.state.expanded ? 1 : 0)
-            // this component + children together count as 1 expanded child for the parent component.
-            let countForParent = (expandCount + selfCount > 0 ? 1 : 0)
-            let previousCountForParent = (previousCount + selfCount > 0 ? 1 : 0)
-            let deltaForParent = countForParent - previousCountForParent
-            if (deltaForParent !== 0) {
-              // only notify parent if there's an actual change.
-              this.parentContext.expandChild(this.parentComponent, deltaForParent)
-            }
-          }
-        },
-        isExpanded(c) {
-          return !this.forceInline && c.state && c.state.expanded
-        },
-        isChildExpanded(c) {
-          return !this.forceInline && c.state && c.state.expandCount
-        }
+        editorMapping: R.merge(defaultEditorMapping, editorMapping)
       }
     }
     return getModelEditor(model, context)
@@ -60,7 +28,7 @@ export const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = model.value
-      ? 'object ' + model.value.class
+      ? 'object ' + model.value.classes.join(' ')
       : 'object empty'
     let representative = findRepresentative(model)
     let representativeEditor = (props) => getModelEditor(representative.model, R.merge(childContext(this, context, representative.key), props || {}))
@@ -74,77 +42,129 @@ export const ObjectEditor = React.createClass({
     return !representative
       ? objectEditor()
       : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
-        ? representativeEditor() // just show the representative property, no need for ExpandableEditor
-        : isArrayItem(context) // for array item, show representative property in expanded view too
+        ? representativeEditor() // just show the representative property, as it is the only one
+        : isArrayItem(context) // for array item always show representative property
           ? (<span className={objectWrapperClass}>
               <span className="representative">{representativeEditor({ forceInline: true })}</span>
-              <ExpandableEditor editor = {this} expandedView={objectEditor} defaultExpanded={context.edit} context={context}/>
+              {objectEditor()}
             </span>)
           : (<span className={objectWrapperClass}>
-              <ExpandableEditor editor = {this} expandedView={objectEditor} collapsedView={() => representativeEditor({ forceInline: true })} defaultExpandeded={context.edit} context={context}/>
+              {objectEditor()}
             </span>)
   }
 })
 ObjectEditor.canShowInline = (component) => {
-  var canInline = !!findRepresentative(component.props.model) && !component.props.context.edit && !isArrayItem(component.props.context) && !component.props.context.isChildExpanded(component) && !component.props.context.isExpanded(component)
+  var canInline = !!findRepresentative(component.props.model) && !component.props.context.edit && !isArrayItem(component.props.context)
   //console.log("Object inline", component.props.context.path, canInline)
   return canInline
 }
 
-export const ExpandableEditor = React.createClass({
-  render() {
-    let {editor, collapsedView, expandedView, context} = this.props
-    var expanded = context.isExpanded(editor)
-    let toggleExpanded = () => {
-      expanded = !expanded
-      context.expandMyPath(editor, expanded)
-    }
-    let className = expanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<span ref="foldable" className={className}>
-      <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
-      { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
-    </span>)
-  }
-})
-ExpandableEditor.canShowInline = () => true
-
 export const PropertiesEditor = React.createClass({
   render() {
-    let {properties, context} = this.props
+    let defaultValueEditor = (prop, ctx, getDefault) => getDefault()
+    let {properties, context, children, getValueEditor = defaultValueEditor} = this.props
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
-    return (<ul className="properties">
+    let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
+
+    let munch = (prefix) => (property, i) => {
+      if (property.flatten) {
+        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.'))
+      } else {
+        let propertyClassName = 'property ' + property.key
+        let propertyContext = childContext(this, R.merge(context, {
+          edit: edit,
+          hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
+        }), property.key)
+        let valueEditor = property.tabular
+          ? <TabularArrayEditor model={property.model} context={propertyContext} />
+          : getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext))
+
+        return [(<tr className={propertyClassName} key={prefix + i}>
+          {
+            property.complexObject
+              ? (<td className="complex" colSpan="2">
+                  <div className="label">{property.title}</div>
+                  <div className="value">{ valueEditor }</div>
+                </td>)
+              : [<td className="label" key="label">{property.title}</td>,
+                  <td className="value" key="value">{ valueEditor }</td>
+                ]
+          }
+        </tr>)]
+      }
+    }
+
+    return (<div className="properties">
       {
-        context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+        children
       }
       {
-        properties.filter(shouldShow).map(property => {
-          let propertyClassName = 'property ' + property.key
-          return (<li className={propertyClassName} key={property.key}>
-            <label>{property.title}</label>
-            <span className="value">{ getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }</span>
-          </li>)
-        })
+        showToggleEdit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
-    </ul>)
+      <table><tbody>
+      {
+        properties.filter(shouldShow).flatMap(munch(''))
+      }
+      </tbody></table>
+    </div>)
   }
 })
+
+export const PropertyEditor = React.createClass({
+  render() {
+    let {propertyName, model, context} = this.props
+    let property = model.value.properties.find(p => p.key == propertyName)
+    let edit = context.edit || (this.state && this.state.edit)
+    if (!property) return null
+    return (<span className="single-property">
+      {property.title}: { getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }
+    </span>)
+  }
+})
+
 PropertiesEditor.canShowInline = () => false
 
-const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
+export const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
 
+export const TabularArrayEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    let items = modelItems(model)
+    if (!items.length) return null
+    if (context.edit) return <ArrayEditor {...this.props}/>
+    let properties = items[0].value.properties
+    return (<table className="tabular-array">
+      <thead>
+        <tr>{ properties.map((p, i) => <th key={i}>{p.title}</th>) }</tr>
+      </thead>
+      <tbody>
+        {
+          items.map((item, i) => {
+            return (<tr key={i}>
+              {
+                item.value.properties.map((p, j) => {
+                  return (<td key={j}>
+                    {getModelEditor(p.model, childContext(this, context, p.key))}
+                  </td>)
+                })
+              }
+            </tr>)
+          })
+        }
+      </tbody>
+    </table>)
+  }
+})
 export const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let items = modelItems(model)
     let inline = ArrayEditor.canShowInline(this)
-    let wasInline = this.state && this.state.wasInline
     let className = inline
       ? 'array inline'
-      : wasInline
-        ? 'array inline-when-collapsed'
-        : 'array'
+      : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
@@ -159,12 +179,6 @@ export const ArrayEditor = React.createClass({
         }
       </ul>
     )
-  },
-  componentWillMount() {
-    let inline = ArrayEditor.canShowInline(this)
-    if (inline) {
-      this.setState({ wasInline: true})
-    }
   }
 })
 ArrayEditor.canShowInline = (component) => {
@@ -172,7 +186,7 @@ ArrayEditor.canShowInline = (component) => {
   var items = modelItems(model)
   // consider inlineability of first item here. make a stateless "fake component" because the actual React component isn't available to us here.
   let fakeComponent = {props: { model: items[0], context: childContext({}, context, 0) }}
-  return items.length <= 1 && canShowInline(fakeComponent) && !context.isChildExpanded(component)
+  return items.length <= 1 && canShowInline(fakeComponent)
 }
 
 export const OptionalEditor = React.createClass({
@@ -182,7 +196,9 @@ export const OptionalEditor = React.createClass({
     let add = () => this.setState({adding: true})
     return adding
       ? getModelEditor(model.prototype, context, true)
-      : <a className="add-value" onClick={add}>lisää</a>
+      : context.edit
+        ? <a className="add-value" onClick={add}>lisää</a>
+        : null
   }
 })
 OptionalEditor.canShowInline = () => true
@@ -326,12 +342,17 @@ const resolveModel = (model, context) => {
 }
 
 const getEditorFunction = (model, context) => {
+  let editorByClass = (classes) => {
+    for (var i in classes) {
+      if (context.editorMapping[classes[i]]) { return context.editorMapping[classes[i]] }
+    }
+  }
   model = resolveModel(model, context)
   if (!model) return NullEditor
   if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
     return OptionalEditor
   }
-  let editor = (model.value && context.editorMapping[model.value.class]) || context.editorMapping[model.type]
+  let editor = (model.value && editorByClass(model.value.classes)) || context.editorMapping[model.type]
   if (!editor) {
     if (!model.type) {
       console.log('Typeless model', model)

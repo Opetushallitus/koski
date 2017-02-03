@@ -14,8 +14,8 @@ export const omatTiedotContentP = () => innerContentP().map(inner =>
   })
 )
 
-const omatTiedotP = () => Http.get('/koski/api/editor/omattiedot').toProperty().flatMapError((e) => e.httpStatus === 404 ? null : new Bacon.Error)
+const omatTiedotP = () => Http.cachedGet('/koski/api/editor/omattiedot').toProperty().flatMapError((e) => e.httpStatus === 404 ? null : new Bacon.Error)
 
 const innerContentP = () => omatTiedotP().map(oppija =>
-  oppija ? <ExistingOppija oppija={oppija}/> : <div className="main-content ei-opiskeluoikeuksia">Tiedoillasi ei löydy opiskeluoikeuksia</div>
+  oppija ? <div className="main-content oppija"><ExistingOppija oppija={oppija}/></div> : <div className="main-content ei-opiskeluoikeuksia">Tiedoillasi ei löydy opiskeluoikeuksia</div>
 ).startWith(<div className="main-content ajax-indicator-bg">Ladataan...</div>)

@@ -129,6 +129,18 @@ object AmmatillinenExampleData {
     tutkinnonOsanSuoritus(koodi, nimi, arvosana, Some(laajuus))
   }
 
+  def tutkinnonOsanSuoritusTilassa(koodi: String, nimi: String, tila: Koodistokoodiviite, laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
+    val osa: ValtakunnallinenTutkinnonOsa = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    AmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = osa,
+      näyttö = None,
+      suorituskieli = None,
+      tila = tila,
+      alkamispäivä = None,
+      toimipiste = Some(stadinToimipiste)
+    )
+  }
+
   def tutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Option[Float] = None): AmmatillisenTutkinnonOsanSuoritus = {
     val osa: ValtakunnallinenTutkinnonOsa = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     tutkonnonOsanSuoritus(arvosana, osa)
@@ -152,7 +164,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def perustutkintoOpiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+  def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
@@ -162,6 +174,18 @@ object AmmatillinenExampleData {
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
         AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      )
+    )
+  )
+
+  def perustutkintoOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+    alkamispäivä = Some(date(2012, 9, 1)),
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    oppilaitos = oppilaitos,
+    suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste)),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
       )
     )
   )
@@ -185,11 +209,16 @@ object AmmatillinenExampleData {
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
           Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
         ))),
-        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
+        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35).copy(näyttö = Some(
+          näyttö("Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi)))
+        ),
         tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
         tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", k3, 15),
-        tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", k3, 15),
+        tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", k3, 15).copy(näyttö = Some(
+          näyttö("Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön\nkasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus", "Sastamalan kunta", Some(näytönArviointi)))
+        ),
         tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", hyväksytty, 15).copy(
+          näyttö = Some(näyttö("Uimarin järven tilan arviointi ja kunnostus", "Vesipojat Oy", Some(näytönArviointi))),
           lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
             "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")))
         ),
@@ -203,6 +232,33 @@ object AmmatillinenExampleData {
 
         paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", k3, 5),
         paikallisenTutkinnonOsanSuoritus("soskultos1", "Sosiaalinen ja kulttuurinen osaaminen", k3, 5)
+      ).map(_.copy(toimipiste = Some(toimipiste))))
+    )
+  }
+
+  def ympäristöalanPerustutkintoKesken(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
+    AmmatillisenTutkinnonSuoritus(
+      koulutusmoduuli = AmmatillinenTutkintoKoulutus(
+        Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
+        Some("62/011/2014")
+      ),
+      tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
+      osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
+      suoritustapa = Some(suoritustapaOps),
+      järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
+      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+      tila = tilaKesken,
+      alkamispäivä = None,
+      toimipiste = toimipiste,
+      osasuoritukset = Some(List(
+        tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
+          Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))
+        ))),
+        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
+        tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
+        tutkinnonOsanSuoritusTilassa("100442", "Ulkoilureittien rakentaminen ja hoitaminen", tilaKesken, None),
+        tutkinnonOsanSuoritusTilassa("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", tilaKeskeytynyt, None),
+        paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", k3, 5)
       ).map(_.copy(toimipiste = Some(toimipiste))))
     )
   }

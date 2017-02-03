@@ -6,3 +6,16 @@
   border: @size solid transparent;
   border-@{direction}: @size solid @color;
 }
+
+.CompactList {
+  list-style: none;
+  li:before {
+    content: '• ';
+  }
+}
+
+.NeutralNotification {
+  background: @color-neutral-notification-background;
+  border: 1px @color-neutral-notification-border solid;
+  border-radius: 2px;
+}

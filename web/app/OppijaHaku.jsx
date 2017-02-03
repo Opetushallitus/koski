@@ -27,7 +27,7 @@ const OppijaHakutulokset = React.createClass({
     const oppijatElems = oppijat.results.map((o, i) => {
         return (
           <li key={i}>
-            <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
+            <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a>
           </li>
         )}
     )

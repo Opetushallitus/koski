@@ -1,21 +1,26 @@
 function OpinnotPage() {
 
-  function oppija() { return S('.oppija') }
-  function opiskeluoikeus() { return S('.opiskeluoikeus')}
+  function oppija() { return findSingle('.oppija') }
+  function opiskeluoikeus() { return findSingle('.opiskeluoikeus')}
 
   var api = {
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus > .suoritus > .kuvaus')[index]
+      var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]
       return S(nth).text()
     },
     getOppilaitos: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      return S(S('.oppilaitos .oppilaitos')[index]).text()
+      return S(S('.opiskeluoikeus > h3 > .oppilaitos')[index]).text().slice(0, -1)
+    },
+    valitseSuoritus: function(nimi) {
+      return function() {
+        triggerEvent(findSingle('.suoritus-tabs li:contains(' + nimi + ') a'), 'click')
+      }
     },
     avaaOpintosuoritusote: function (index) {
       return function() {
-        triggerEvent(S('li.oppilaitos:nth-child('+index+') a.opintosuoritusote'), 'click')
+        triggerEvent(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote'), 'click')
         return wait.until(OpintosuoritusotePage().isVisible)()
       }
     },
@@ -26,8 +31,17 @@ function OpinnotPage() {
         return wait.until(TodistusPage().isVisible)()
       }
     },
-    suoritus: function(name) {
-      return Editor(function() { return S('.suoritus:contains("' + name + '")') })
+    valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
+      return function() {
+        triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
+        return wait.forAjax()
+      }
+    },
+    suoritusEditor: function() {
+      return Editor(function() { return findSingle('.suoritus') })
+    },
+    anythingEditable: function() {
+      return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
     expandAll: function() {
       var checkAndExpand = function() {
@@ -38,7 +52,7 @@ function OpinnotPage() {
       }
       return checkAndExpand()
       function expanders() {
-        return S('.foldable.collapsed>.toggle-expand')
+        return S('.foldable.collapsed>.toggle-expand, tbody:not(.expanded) .toggle-expand')
       }
     }
   }
@@ -48,17 +62,14 @@ function OpinnotPage() {
 
 function Editor(elem) {
   return {
-    expand: function() {
-      triggerEvent(elem().find('>.foldable.collapsed>.toggle-expand'), 'click')
-    },
     edit: function() {
-      triggerEvent(elem().find('.toggle-edit'), 'click')
+      triggerEvent(findSingle('.toggle-edit', elem()), 'click')
     },
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')
     },
     property: function(key) {
-      return Property(function() {return elem().find('.property.'+key)})
+      return Property(function() {return findSingle('.property.'+key, elem())})
     }
   }
 }
@@ -66,7 +77,7 @@ function Editor(elem) {
 function Property(elem) {
   return {
     addValue: function() {
-      triggerEvent(elem().find('.add-value'), 'click')
+      triggerEvent(findSingle('.add-value', elem()), 'click')
     },
     waitUntilLoaded: function() {
       return wait.until(function(){
@@ -79,7 +90,7 @@ function Property(elem) {
       }
     },
     getValue: function() {
-      return elem().find('.value').text()
+      return findSingle('.value', elem()).text()
     }
   }
 }

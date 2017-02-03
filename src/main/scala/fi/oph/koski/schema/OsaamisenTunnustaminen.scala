@@ -7,6 +7,7 @@ import fi.oph.scalaschema.annotation.Description
 @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
 case class OsaamisenTunnustaminen(
   @Description("Aiemman, korvaavan suorituksen tiedot")
+  @Flatten
   osaaminen: Option[Suoritus],
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")

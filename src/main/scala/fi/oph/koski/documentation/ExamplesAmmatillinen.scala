@@ -86,7 +86,7 @@ object AmmatillinenPerustutkintoExample {
 
   import AmmatillinenExampleData._
 
-  val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeus())
+  val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeusValmis())
 
   lazy val osittainenPerustutkinto = Oppija(
     exampleHenkilö,

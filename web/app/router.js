@@ -11,7 +11,7 @@ import { validointiContentP } from './Validointi.jsx'
 export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
   let oppijaIdMatch = path.match(new RegExp('/koski/oppija/(.*)'))
   if (oppijaIdMatch) {
-    return oppijaContentP(oppijaIdMatch[1], queryString)
+    return oppijaContentP(oppijaIdMatch[1])
   } else if (path === '/koski/uusioppija') {
     return createOppijaContentP()
   } else if (path === '/koski/') {

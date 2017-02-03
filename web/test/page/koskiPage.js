@@ -65,7 +65,7 @@ function KoskiPage() {
       return Oppijataulukko.data().map(function(row) { return row[0]})
     },
     isReady: function() {
-      return Oppijataulukko.isVisible() && !isElementVisible(S('.loading'))
+      return Oppijataulukko.isVisible() && !isLoading()
     },
     filterBy: function(className, value) {
       return function() {
@@ -111,7 +111,7 @@ function KoskiPage() {
       return openPage('/koski/', api.isVisible)()
     },
     isVisible: function() {
-      return isElementVisible(S('#content .oppija-haku'))
+      return isElementVisible(S('#content .oppija-haku')) || isElementVisible(S('#content .oppija'))
     },
     isLoading: function() {
       return S('.loading').length > 0

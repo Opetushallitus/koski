@@ -15,7 +15,7 @@ describe('Esiopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.esiopetuksensuoritus:eq(0) .koulutusmoduuli .inline').text()).to.equal('Peruskoulun esiopetus')
+        expect(S('.esiopetuksensuoritus .koulutusmoduuli .tunniste').text()).to.equal('Peruskoulun esiopetus')
       })
     })
   })

@@ -7,19 +7,17 @@ hr {
 
 
 a {
-  color: @color-blue;
+  color: @color-link-blue;
   text-decoration: none;
   cursor: pointer;
 }
 
-
-
 .button {
-  background: #159ECB;
+  background: @color-link-blue;
   border-radius: 2px;
   width: 132px;
   height: 40px;
-  font-family: "OpenSans-Semibold", "Open Sans", "sans-serif";
+  font-weight: 600;
   font-size: 15px;
   color: #FFFFFF;
   letter-spacing: 0;
@@ -31,11 +29,11 @@ a {
   padding: 0;
 
   &:hover {
-    background: #00B5F0;
+    background: @color-link-hover-blue;
   }
 
   &:disabled {
-    background: #CCCCCC;
+    background: @color-disabled;
   }
 
   &.large {
@@ -45,11 +43,17 @@ a {
   }
 
   &.confirm-delete {
-    background: #E44E4E;
+    background: @color-delete;
   }
 }
 
 th, td {
   text-align: left;
   vertical-align: top;
+}
+
+.back-link:before {
+  content: ' ';
+  font-family: FontAwesome;
+  font-size: 11px;
 }

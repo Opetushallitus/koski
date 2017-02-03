@@ -8,35 +8,40 @@ describe('Perusopetus', function() {
 
   describe('Perusopetuksen lukuvuositodistukset ja päättötodistus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
-        expect(opinnot.getTutkinto(1)).to.equal("8. vuosiluokka")
-        expect(opinnot.getTutkinto(2)).to.equal("9. vuosiluokka")
-        expect(opinnot.getTutkinto(3)).to.equal("Peruskoulu")
-      })
-    })
-    describe('Kaikki tiedot näkyvissä', function() {
-      before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
-      })
-    })
 
-    describe('Päättötodistus', function() {
-      before(opinnot.avaaTodistus(3))
-      describe('Klikattaessa linkkiä', function() {
-        it('näytetään', function() {
-          // See more detailed content specification in PerusopetusSpec.scala
-          expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-          expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+    describe('Perusopetuksen oppimäärä', function() {
+      before(opinnot.valitseSuoritus('Peruskoulu'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        })
+      })
+
+      describe('Päättötodistus', function() {
+        before(opinnot.avaaTodistus())
+        describe('Klikattaessa linkkiä', function() {
+          it('näytetään', function() {
+            // See more detailed content specification in PerusopetusSpec.scala
+            expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+            expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+          })
         })
       })
     })
 
-    describe('Lukuvuositodistus', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.avaaTodistus(1))
-      it('näytetään', function() {})
+    describe('Lukuvuosisuoritus', function() {
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus('8. vuosiluokka'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.perusopetuksenvuosiluokansuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        })
+      })
+      describe('Lukuvuositodistus', function() {
+        before(opinnot.avaaTodistus())
+        it('näytetään', function() {})
+      })
     })
 
     describe('Virhetilanteet', function() {
@@ -62,7 +67,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .perusopetuksentoiminta_alueensuoritus:eq(1) .koulutusmoduuli .value').text()).to.equal('kieli ja kommunikaatio')
+        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('kieli ja kommunikaatio')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -74,7 +79,7 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
+  describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
@@ -95,7 +100,7 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Perusopetuksen lisäopetuksen todistus', function() {
+  describe('Perusopetuksen lisäopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
@@ -103,7 +108,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetuksenlisaopetuksensuoritus .osasuoritukset .oppiaineensuoritus:eq(0) .oppiaine').text()).to.equal('Äidinkieli ja kirjallisuus')
+        expect(S('.perusopetuksenlisaopetuksensuoritus .osasuoritukset td.oppiaine:eq(0)').text()).to.equal('Äidinkieli ja kirjallisuus')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -116,14 +121,14 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetukseen valmistavan opetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetukseenvalmistavanopetuksensuoritus .osasuoritukset .oppiaine').text()).to.equal('Äidinkieli')
+        expect(S('.perusopetukseenvalmistavanopetuksensuoritus .osasuoritukset td.oppiaine').text()).to.equal('Äidinkieli')
       })
     })
     describe('Tulostettava todistus', function() {

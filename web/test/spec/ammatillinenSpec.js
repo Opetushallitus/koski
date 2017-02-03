@@ -5,7 +5,7 @@ describe('Ammatillinen koulutus', function() {
   var page = KoskiPage()
   var login = LoginPage()
   var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero 010101-123N'
+  var eero = 'Esimerkki, Eero (010101-123N)'
 
 
   function prepareForNewOppija(username, searchString) {
@@ -33,7 +33,7 @@ describe('Ammatillinen koulutus', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '280608-6619', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 280608-6619')
+          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf (280608-6619)')
         })
       })
 
@@ -70,7 +70,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 151161-075P', 'Autoalan perustutkinto'))
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi (151161-075P)', 'Autoalan perustutkinto'))
 
           it('lisätty oppija näytetään', function() {})
 
@@ -212,9 +212,9 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Kun valitaan suoritustapa', function() {
-      var suoritus = opinnot.suoritus('Autoalan perustutkinto')
+      var suoritus = opinnot.suoritusEditor()
       var suoritustapa = suoritus.property('suoritustapa')
-      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
+      before(suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
 
       describe('Muutosten näyttäminen', function() {
         before(wait.until(page.isSavedLabelShown))
@@ -227,12 +227,11 @@ describe('Ammatillinen koulutus', function() {
         before(
           page.openPage,
           page.oppijaHaku.search('Tunkkila-Fagerlund', 1),
-          page.oppijaHaku.selectOppija('Tunkkila-Fagerlund'),
-          suoritus.expand
+          page.oppijaHaku.selectOppija('Tunkkila-Fagerlund')
         )
 
         it('Muuttuneet tiedot on tallennettu', function() {
-          expect(suoritustapa.getValue()).to.equal('ops')
+          expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
         })
       })
     })
@@ -241,17 +240,14 @@ describe('Ammatillinen koulutus', function() {
       describe('Ulkoisen järjestelmän data', function() {
         before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
         it('estetty', function() {
-          var suoritus = opinnot.suoritus('Lääketieteen lisensiaatti')
-          suoritus.expand()
-          expect(suoritus.isEditable()).to.equal(false)
+          expect(opinnot.anythingEditable()).to.equal(false)
         })
       })
 
       describe('Ilman kirjoitusoikeuksia', function() {
         before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
         it('estetty', function() {
-          var suoritus = opinnot.suoritus('Autoalan perustutkinto')
-          suoritus.expand()
+          var suoritus = opinnot.suoritusEditor()
           expect(suoritus.isEditable()).to.equal(false)
         })
       })
@@ -296,7 +292,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('toimii', function() {
-          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli .nimi .value').text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
+          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset td.tutkinnonosa .nimi').eq(0).text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
         })
       })
 
@@ -309,23 +305,23 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Erikoisammattitutkinto', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus('Autoalan työnjohdon erikoisammattitutkinto'))
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-          expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+          expect(OpinnotPage().getTutkinto()).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
         })
       })
 
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('toimii', function() {
-          expect(S('.tutkinnonosa .koulutusmoduuli .tunniste .value').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
+          expect(S('.osasuoritukset td.tutkinnonosa .nimi').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
         })
       })
 
       describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus(1))
+        before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
           expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
         })
@@ -345,7 +341,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus:eq(0) .koulutusmoduuli .nimi .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+        expect(S('.osasuoritukset td.tutkinnonosa .nimi').eq(0).text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
       })
     })
 
