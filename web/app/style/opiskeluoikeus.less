@@ -5,7 +5,7 @@
   h3 {
     margin: 0;
     padding: 17px 27px 17px 17px;
-    background: #0A789C 100%;
+    background: @color-dark-blue 100%;
     font-size: 18px;
     color: #FFFFFF;
     letter-spacing: 0;
@@ -53,11 +53,9 @@
           width: 4.5em;
         }
         label.tila {
-          background: #DEF2ff;
+          .NeutralNotification;
           padding: 3px 9px;
           margin-left: 10px;
-          border: 1px solid #A6DCEE;
-          border-radius: 2px;
         }
       }
     }
@@ -111,7 +109,7 @@
       }
 
       .tila-vahvistus {
-        background: #F5F5F5;
+        background: @color-neutral-gray;
         padding: 12px;
         display: inline-block;
         margin: 15px 0;
@@ -132,7 +130,7 @@
           font-weight: 600;
         }
         .single-property {
-          color: #666666
+          color: @color-label;
         }
       }
 
@@ -149,7 +147,7 @@
             > table {
               margin-top: 13px;
               thead {
-                border-bottom: 1px solid #CCCCCC;
+                border-bottom: 1px solid @color-disabled;
               }
               td, th {
                 padding-bottom: 7px;
@@ -172,14 +170,14 @@
                   padding-right: 20px;
                 }
                 .oppiaine {
-                  color: #666666;
+                  color: @color-label;
                 }
               }
             }
 
             .kayttaytyminen {
               padding-bottom: 7px;
-              border-bottom: 1px solid #CCCCCC;
+              border-bottom: 1px solid @color-disabled;
               margin-bottom: 16px;
             }
           }
@@ -192,7 +190,7 @@
                 padding: 5px 13px 7px 0;
               }
               > td.tutkinnonosa {
-                color: #159ECB;
+                color: @color-link-blue;
                 padding-left: 13px;
                 .toggle-expand, .tila {
                   position: relative;
@@ -204,9 +202,9 @@
                   text-align: center;
                 }
                 .toggle-expand {
-                  color: #159ECB;
+                  color: @color-link-blue;
                   &.disabled {
-                    color: #AAAAAA;
+                    color: @color-disabled;
                   }
                 }
                 .tila {
@@ -241,7 +239,7 @@
 
       .koulutusmoduuli .diaarinumero {
         margin-left: 1em;
-        color: #666666;
+        color: @color-label;
       }
     }
     .OverlayLink {
@@ -274,7 +272,7 @@
         }
         td.complex {
           > .label {
-            color: #666666;
+            color: @color-label;
             margin-bottom: 6px;
           }
           > .value {
@@ -285,7 +283,7 @@
         .property > .label {
           min-width: 100px;
           padding-right: 20px;
-          color: #666666;
+          color: @color-label;
           white-space: nowrap;
 
           a:after {
@@ -308,20 +306,20 @@
         }
 
         table.tabular-array {
-          border: 1px solid #F5F5F5;
+          border: 1px solid @color-neutral-gray;
           border-collapse: collapse;
           margin: 12px 0;
 
           > thead > tr > th {
-            color: #666666;
+            color: @color-label;
           }
           > thead > tr > th, > tbody > tr > td {
             padding: 2px 10px;
-            border-right: 1px solid #F5F5F5;
+            border-right: 1px solid @color-neutral-gray;
           }
 
           > thead {
-            background: #F5F5F5
+            background: @color-neutral-gray
           }
         }
       }
