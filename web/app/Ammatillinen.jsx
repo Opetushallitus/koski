@@ -67,6 +67,14 @@ export const NäytönSuorituspaikkaEditor = React.createClass({
   }
 })
 
+export const NäytönArvioitsijaEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? ' (näyttötutkintomestari)' : ''}</span>
+  }
+})
+
 let suorituksenTilaSymbol = (tila) => {
   switch (tila) {
     case 'VALMIS': return ''
