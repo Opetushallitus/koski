@@ -44,15 +44,13 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
 const Oppiainetaulukko = React.createClass({
   render() {
     let {suoritukset, context} = this.props
-    let showLaajuus = suoritukset.flatMap(s => modelData(s, 'koulutusmoduuli.laajuus') ? [s] : []).length > 0
+    let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
+    let showExpand = !!suoritukset.find(s => modelData(s, 'arviointi.-1.kuvaus'))
     return (<table>
         <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th>{showLaajuus && <th className="laajuus">Laajuus</th>}</tr></thead>
-        <tbody>
         {
-          suoritukset
-            .map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} context={GenericEditor.childContext(this, context, i)}/>))
+          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand} context={GenericEditor.childContext(this, context, i)}/> ))
         }
-        </tbody>
       </table>
     )
   }
@@ -60,25 +58,39 @@ const Oppiainetaulukko = React.createClass({
 
 const OppiaineEditor = React.createClass({
   render() {
-    let {model, context, showLaajuus = false} = this.props
+    let {model, context, showLaajuus, showExpand} = this.props
+    let {expanded} = this.state
     var oppiaine = modelTitle(model, 'koulutusmoduuli')
     let arvosana = modelData(model, 'arviointi.-1.arvosana').koodiarvo
+    let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
     if (pakollinen === false) {
       oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
     }
-    return (<tr>
-      <td className="oppiaine">{oppiaine}</td>
-      <td className="arvosana">
-        {arvosana}
-        {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
-        {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
-      </td>
+    let toggleExpand = () => { if (sanallinenArviointi) this.setState({expanded : !expanded}) }
+    return (<tbody>
+      <tr>
+        <td className="oppiaine">
+          { showExpand && <a className={ sanallinenArviointi ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
+          {oppiaine}
+        </td>
+        <td className="arvosana">
+          {arvosana}
+          {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
+          {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
+        </td>
+        {
+          showLaajuus && (<td className="laajuus">
+            <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} />
+          </td>)
+        }
+      </tr>
       {
-        showLaajuus && (<td className="laajuus">
-          <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} />
-        </td>)
+        !!sanallinenArviointi && expanded && <tr><td className="details" colSpan="2"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
       }
-    </tr>)
+    </tbody>)
+  },
+  getInitialState() {
+    return { expanded: false }
   }
 })

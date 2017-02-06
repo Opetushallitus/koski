@@ -20,9 +20,11 @@
         }
         .oppiaine {
           width: 500px;
+          color: @color-label;
         }
         .arvosana {
           text-align: right;
+          padding-right: 20px;
           .yksilollistetty, .korotus {
             cursor: pointer;
             color: @color-link-blue;
@@ -32,16 +34,11 @@
           width: 165px;
           padding-left: 10px;
         }
-        tbody {
-          tr:first-child td {
-            padding-top: 20px;
-          }
-          .arvosana {
-            padding-right: 20px;
-          }
-          .oppiaine {
-            color: @color-label;
-          }
+        tbody:nth-child(2) > tr:first-child > td {
+          padding-top: 20px;
+        }
+        td.details {
+          padding-left: 32px;
         }
       }
 
