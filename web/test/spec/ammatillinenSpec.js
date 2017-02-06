@@ -280,7 +280,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Näyttötutkinnot', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus('Näyttötutkintoon valmistava koulutus'))
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {

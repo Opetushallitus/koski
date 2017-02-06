@@ -10,7 +10,6 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
     describe('Perusopetuksen oppimäärä', function() {
-      before(opinnot.valitseSuoritus('Peruskoulu'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('toimii', function() {
