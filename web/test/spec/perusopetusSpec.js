@@ -67,7 +67,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('kieli ja kommunikaatio')
+        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1) .nimi').text()).to.equal('kieli ja kommunikaatio')
       })
     })
     describe('Tulostettava todistus', function() {
