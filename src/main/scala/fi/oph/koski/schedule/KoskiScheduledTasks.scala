@@ -24,7 +24,6 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
       val oldContext = context.get.extract[HenkilöUpdateContext]
       val startMillis = currentTimeMillis
       val changedOids = application.authenticationServiceClient.findChangedOppijaOids(oldContext.lastRun)
-      val initial: Either[HenkilöUpdateContext, HenkilöUpdateContext] = Right(oldContext)
       val newContext = runUpdate(changedOids, startMillis, oldContext)
       Some(Json.toJValue(newContext))
     } catch {
@@ -38,7 +37,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
     val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(oids).sortBy(_.modified)
     val oppijatByOid: Map[Oid, OppijaHenkilö] = oppijat.groupBy(_.oidHenkilo).mapValues(_.head)
     val foundFromKoski: List[Oid] = oppijat.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).map(_.oid)
-    val lastModified = oppijat.lastOption.map(_.modified).getOrElse(startMillis)
+    val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)
 
     if (foundFromKoski.isEmpty) {
       HenkilöUpdateContext(lastModified)
