@@ -120,7 +120,13 @@ const OpiskeluoikeusEditor = React.createClass({
           <div className="alku-loppu">
             <GenericEditor.PropertyEditor context={editableContext} model={model} propertyName="alkamispäivä" /> — <GenericEditor.PropertyEditor context={editableContext} model={model} propertyName={päättymispäiväProperty} />
           </div>
-          <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) } context={editableContext}/>
+          <GenericEditor.PropertiesEditor
+            properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) }
+            context={editableContext}
+            getValueEditor={ (prop, ctx, getDefault) => prop.key == 'tila'
+              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} context={GenericEditor.childContext(this, ctx, 'opiskeluoikeusjaksot')}/>
+              : getDefault() }
+           />
           <ExpandablePropertiesEditor context={editableContext} model={model} propertyName="lisätiedot" />
         </div>
 

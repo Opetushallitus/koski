@@ -161,8 +161,9 @@ export const TabularArrayEditor = React.createClass({
 })
 export const ArrayEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    let items = modelItems(model)
+    let {model, context, reverse} = this.props
+    var items = modelItems(model)
+    if (reverse && !context.edit) items = items.reverse()
     let inline = ArrayEditor.canShowInline(this)
     let className = inline
       ? 'array inline'
