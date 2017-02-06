@@ -54,7 +54,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false
-)
+) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")

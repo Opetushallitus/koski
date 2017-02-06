@@ -24,6 +24,7 @@ case class KorkeakoulunOpiskeluoikeus(
 ) extends Opiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def versionumero = None
+  override def lisätiedot = None
 }
 
 @Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän.")

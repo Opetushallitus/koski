@@ -48,7 +48,10 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
     val vuosiluokkasuoritukset = suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
     vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
+  def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
 }
+
+trait OpiskeluoikeudenLisätiedot
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def suoritukset: List[PäätasonSuoritus]

@@ -36,7 +36,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-)
+) extends OpiskeluoikeudenLisätiedot
 
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)

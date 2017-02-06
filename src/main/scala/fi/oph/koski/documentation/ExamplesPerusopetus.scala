@@ -115,12 +115,23 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätös = Some(ErityisenTuenPäätös(
-        alku = Some(date(2008, 8, 15)),
-        loppu = Some(date(2016, 6, 4)),
-        opiskeleeToimintaAlueittain = true,
-        erityisryhmässä = true
-      ))))
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        erityisenTuenPäätös = Some(ErityisenTuenPäätös(
+          alku = Some(date(2008, 8, 15)),
+          loppu = Some(date(2016, 6, 4)),
+          opiskeleeToimintaAlueittain = true,
+          erityisryhmässä = true
+        )),
+        perusopetuksenAloittamistaLykätty = true,
+        aloittanutEnnenOppivelvollisuutta = false,
+        pidennettyOppivelvollisuus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        tukimuodot = Some(List(Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto"))),
+        tehostetunTuenPäätös = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        joustavaPerusopetus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        kotiopetus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        ulkomailla = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        vuosiluokkiinSitoutumatonOpetus = true
+      ))
     ))
   )
 

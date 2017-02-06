@@ -22,7 +22,7 @@ case class IBOpiskeluoikeus(
   suoritukset: List[IBPäätasonSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi"),
-  lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
+  override val lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

@@ -77,4 +77,4 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false)")
   ulkomainenVaihtoopiskelija: Boolean = false
-)
+) extends OpiskeluoikeudenLisätiedot

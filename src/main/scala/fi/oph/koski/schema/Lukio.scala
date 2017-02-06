@@ -41,7 +41,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-)
+) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenKoulutustehtävänJakso(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
