@@ -198,7 +198,7 @@ export const OptionalEditor = React.createClass({
     let adding = this.state && this.state.adding
     let add = () => this.setState({adding: true})
     return adding
-      ? getModelEditor(model.prototype, context, true)
+      ? getModelEditor(model.prototype, context)
       : context.edit
         ? <a className="add-value" onClick={add}>lisää</a>
         : null
@@ -380,7 +380,7 @@ const getEditorFunction = (model, context) => {
 const getModelEditor = (model, context, parentComponent, path) => {
   model = resolveModel(model, context)
   if (parentComponent) {
-    model = modelLookup(model, path)
+    model = resolveModel(modelLookup(model, path))
     context = childContext(parentComponent, context, path)
   }
   var ModelEditor = getEditorFunction(model, context)
