@@ -128,7 +128,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetukseenvalmistavanopetuksensuoritus .osasuoritukset td.oppiaine').text()).to.equal('Äidinkieli')
+        expect(S('.perusopetukseenvalmistavanopetuksensuoritus .osasuoritukset td.oppiaine .nimi').text()).to.equal('Äidinkieli')
       })
     })
     describe('Tulostettava todistus', function() {

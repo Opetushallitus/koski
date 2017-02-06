@@ -68,11 +68,11 @@ const OppiaineEditor = React.createClass({
       oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
     }
     let toggleExpand = () => { if (sanallinenArviointi) this.setState({expanded : !expanded}) }
-    return (<tbody>
+    return (<tbody className={expanded && 'expanded'}>
       <tr>
         <td className="oppiaine">
           { showExpand && <a className={ sanallinenArviointi ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
-          {oppiaine}
+          <span className="nimi">{oppiaine}</span>
         </td>
         <td className="arvosana">
           {arvosana}
