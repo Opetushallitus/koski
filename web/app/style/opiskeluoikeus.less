@@ -39,6 +39,10 @@
     padding: 27px;
     font-size: 15px;
 
+    .opiskeluoikeuden-tiedot {
+      position: relative;
+    }
+
     .expandable-container {
       a.expandable {
         min-width: 100px;
@@ -162,22 +166,10 @@
         color: @color-label;
       }
     }
-    .OverlayLink {
-      position: absolute;
-      right: 0;
-      font-size: 0.8em;
-      text-decoration: underline;
-      z-index: 1;
-      top: 0;
-    }
 
     a.todistus, a.opintosuoritusote {
       .OverlayLink;
       margin-right: 66px;
-    }
-
-    .toggle-edit {
-      .OverlayLink;
     }
 
     .properties {
@@ -353,5 +345,18 @@
     input[type=checkbox] {
       height: 1.5em;
     }
+  }
+
+  .toggle-edit {
+    .OverlayLink;
+  }
+
+  .OverlayLink {
+    position: absolute;
+    right: 0;
+    font-size: 0.8em;
+    text-decoration: underline;
+    z-index: 1;
+    top: 0;
   }
 }

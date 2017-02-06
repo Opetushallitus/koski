@@ -59,24 +59,35 @@ ObjectEditor.canShowInline = (component) => {
   return canInline
 }
 
+export const TogglableEditor = React.createClass({
+  render() {
+    let { context, renderChild } = this.props
+    let edit = context.edit || (this.state && this.state.edit)
+    let toggleEdit = () => this.setState({edit: !edit})
+    let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
+    let childContext = R.merge(context, {
+      edit: edit,
+      hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
+    })
+    let editLink = showToggleEdit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+
+    return (renderChild(childContext, editLink))
+  }
+})
+
 export const PropertiesEditor = React.createClass({
   render() {
     let defaultValueEditor = (prop, ctx, getDefault) => getDefault()
-    let {properties, context, children, getValueEditor = defaultValueEditor} = this.props
-    let edit = context.edit || (this.state && this.state.edit)
-    let toggleEdit = () => this.setState({edit: !edit})
+    let {properties, context, getValueEditor = defaultValueEditor} = this.props
+    let edit = context.edit
     let shouldShow = shouldShowProperty(edit)
-    let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
 
     let munch = (prefix) => (property, i) => {
       if (property.flatten) {
         return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.'))
       } else {
         let propertyClassName = 'property ' + property.key
-        let propertyContext = childContext(this, R.merge(context, {
-          edit: edit,
-          hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
-        }), property.key)
+        let propertyContext = childContext(this, context, property.key)
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} context={propertyContext} />
           : getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext))
@@ -97,20 +108,13 @@ export const PropertiesEditor = React.createClass({
     }
 
     return (<div className="properties">
-      {
-        children
-      }
-      {
-        showToggleEdit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
-      }
       <table><tbody>
-      {
-        properties.filter(shouldShow).flatMap(munch(''))
-      }
+      { properties.filter(shouldShow).flatMap(munch('')) }
       </tbody></table>
     </div>)
   }
 })
+PropertiesEditor.canShowInline = () => false
 
 export const PropertyEditor = React.createClass({
   render() {
@@ -123,7 +127,6 @@ export const PropertyEditor = React.createClass({
     </span>)
   }
 })
-PropertiesEditor.canShowInline = () => false
 
 export const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
 
