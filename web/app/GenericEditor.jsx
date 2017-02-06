@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import { modelData, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
+import { modelData, modelTitle, modelEmpty, modelItems, modelLookup } from './EditorModel.js'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 import Bacon from 'baconjs'
@@ -8,7 +8,7 @@ import { showInternalError } from './location.js'
 
 export const Editor = React.createClass({
   render() {
-    let { model, context, editorMapping, changeBus } = this.props
+    let { model, context, editorMapping, changeBus, path, parent } = this.props
 
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
@@ -20,7 +20,7 @@ export const Editor = React.createClass({
         editorMapping: R.merge(defaultEditorMapping, editorMapping)
       }
     }
-    return getModelEditor(model, context)
+    return getModelEditor(model, context, parent, path)
   }
 })
 
@@ -230,6 +230,17 @@ export const StringEditor = React.createClass({
 })
 StringEditor.canShowInline = () => true
 
+export const NumberEditor = React.createClass({
+  render() {
+    let { model } = this.props
+    let data = modelData(model)
+    let value = data
+      ? Math.round(data * 100) / 100
+      : data
+    return <span className="inline number">{value}</span>
+  }
+})
+
 export const BooleanEditor = React.createClass({
   render() {
     let {model, context} = this.props
@@ -366,8 +377,12 @@ const getEditorFunction = (model, context) => {
   return editor
 }
 
-const getModelEditor = (model, context) => {
+const getModelEditor = (model, context, parentComponent, path) => {
   model = resolveModel(model, context)
+  if (parentComponent) {
+    model = modelLookup(model, path)
+    context = childContext(parentComponent, context, path)
+  }
   var ModelEditor = getEditorFunction(model, context)
   return <ModelEditor model={model} context={context} />
 }
@@ -376,7 +391,7 @@ const defaultEditorMapping = {
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,
-  'number': StringEditor,
+  'number': NumberEditor,
   'date': DateEditor,
   'boolean': BooleanEditor,
   'enum': EnumEditor

@@ -273,7 +273,7 @@ export const LaajuusEditor = React.createClass({
     return context.edit
       ? <GenericEditor.ObjectEditor model={model} context={context}/>
       : (modelData(model, 'arvo'))
-        ? <span>{modelTitle(model, 'arvo')} {yksikkö}</span>
+        ? <span><GenericEditor.Editor model={model} context={context} path="arvo" parent={this}/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
         : <span>-</span>
   }
 })
