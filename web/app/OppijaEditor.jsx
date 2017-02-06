@@ -19,7 +19,7 @@ const OppijaEditor = React.createClass({
 
     var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
 
-    let näytettäväPäätasonSuoritus = s => ['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].findIndex( t => t == s.value.data.tyyppi.koodiarvo) == -1
+
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
       : 0
@@ -102,7 +102,7 @@ const OpiskeluoikeusEditor = React.createClass({
     return (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
-        <span className="koulutus inline-text">{modelTitle(model, 'suoritukset.0.koulutusmoduuli')}</span>
+        <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
          { modelData(model, 'alkamispäivä')
             ? <span className="inline-text">(
                   <span className="alku pvm">{yearFromFinnishDateString(modelTitle(model, 'alkamispäivä'))}</span>-
@@ -317,6 +317,8 @@ export const PäivämääräväliEditor = React.createClass({
   }
 })
 PäivämääräväliEditor.canShowInline = () => true
+
+const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
 
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,
