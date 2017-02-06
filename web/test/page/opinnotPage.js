@@ -45,7 +45,6 @@ function OpinnotPage() {
     },
     expandAll: function() {
       var checkAndExpand = function() {
-        console.log("check expand")
         if (expanders().is(':visible')) {
           triggerEvent(expanders(), 'click')
           return wait.forMilliseconds(10)().then(checkAndExpand)
