@@ -41,6 +41,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  @ComplexObject
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")

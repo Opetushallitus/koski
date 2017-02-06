@@ -39,17 +39,22 @@
     padding: 27px;
     font-size: 15px;
 
-    a.expandable {
-      min-width: 100px;
-      display: inline-block;
-      &:after {
-        font-family: FontAwesome;
-        content: '';
-        margin-left: 6px;
-        font-size: 11px;
+    .expandable-container {
+      a.expandable {
+        min-width: 100px;
+        display: inline-block;
+        &:after {
+          font-family: FontAwesome;
+          content: '';
+          margin-left: 6px;
+          font-size: 11px;
+        }
+        &.open:after {
+          content: '';
+        }
       }
-      &.open:after {
-        content: '';
+      >.value {
+        padding: 5px 0 0 5px;
       }
     }
 

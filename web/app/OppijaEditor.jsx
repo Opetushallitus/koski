@@ -156,7 +156,7 @@ const ExpandablePropertiesEditor = React.createClass({
     let {model, context, propertyName} = this.props
     let {open} = this.state
     return modelData(model, propertyName) ?
-      <div className={propertyName}>
+      <div className={'expandable-container ' + propertyName}>
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
         { open ?
           <div className="value">
@@ -334,5 +334,6 @@ export const editorMapping = {
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,
+  'paatosjakso': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor
 }
