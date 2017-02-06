@@ -6,7 +6,7 @@ import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
-import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
+import { PerusopetuksenOppiaineetEditor, ErityisenTuenPäätösEditor } from './Perusopetus.jsx'
 import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor, TyössäoppimisjaksoEditor } from './Ammatillinen.jsx'
 
 const OppijaEditor = React.createClass({
@@ -348,5 +348,6 @@ export const editorMapping = {
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,
   'paatosjakso': PäivämääräväliEditor,
-  'tyossaoppimisjakso': TyössäoppimisjaksoEditor
+  'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
+  'erityisentuenpaatos': ErityisenTuenPäätösEditor
 }
