@@ -43,7 +43,7 @@ const TutkinnonOsaEditor = React.createClass({
           {
             hasProperties
               ? <a className="nimi" onClick={toggleExpand}>{nimi}</a>
-              : <span>{nimi}</span>
+              : <span className="nimi">{nimi}</span>
           }
 
         </td>
