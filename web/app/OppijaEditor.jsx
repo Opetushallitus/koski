@@ -156,19 +156,14 @@ const ExpandablePropertiesEditor = React.createClass({
     let {model, context, propertyName} = this.props
     let {open} = this.state
     return modelData(model, propertyName) ?
-      <table className={propertyName}>
-          <tbody>
-          <tr className="property">
-            <td className="label"><a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
-            {open ?
-              <td className="value"><GenericEditor.PropertiesEditor
-                properties={modelLookup(model, propertyName).value.properties}
-                context={GenericEditor.childContext(this, context, propertyName)}/>
-              </td> : null
-            }
-          </tr>
-          </tbody>
-      </table> : null
+      <div className={propertyName}>
+        <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
+        { open ?
+          <div className="value">
+            <GenericEditor.PropertiesEditor properties={modelLookup(model, propertyName).value.properties} context={GenericEditor.childContext(this, context, propertyName)}/>
+          </div> : null
+        }
+      </div> : null
   },
   toggleOpen() {
     this.setState({open: !this.state.open})
