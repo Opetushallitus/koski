@@ -370,8 +370,9 @@ const getEditorFunction = (model, context) => {
   if (!editor) {
     if (!model.type) {
       console.log('Typeless model', model)
+    } else {
+      console.log('Missing editor ' + model.type)
     }
-    console.log('Missing editor ' + model.type)
     return NullEditor
   }
   return editor
@@ -380,8 +381,8 @@ const getEditorFunction = (model, context) => {
 const getModelEditor = (model, context, parentComponent, path) => {
   model = resolveModel(model, context)
   if (parentComponent) {
-    model = resolveModel(modelLookup(model, path))
     context = childContext(parentComponent, context, path)
+    model = resolveModel(modelLookup(model, path), context)
   }
   var ModelEditor = getEditorFunction(model, context)
   return <ModelEditor model={model} context={context} />
