@@ -67,9 +67,11 @@ case class ErityisenTuenPäätös(
                  | Tuolloin oppilaalla on aina erityisen tuen päätös.
                  | Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.
                  | huomautuksena: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
+  @Title("Opiskelee toiminta-alueittain")
   opiskeleeToimintaAlueittain: Boolean = false,
   @Description("""Suorittaako erityisoppilas koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana""")
   @OksaUri("tmpOKSAID444", "opetusryhmä")
+  @Title("Opiskelee erityisryhmässä")
   erityisryhmässä: Boolean
 )
 
