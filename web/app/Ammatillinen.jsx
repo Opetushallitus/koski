@@ -34,12 +34,18 @@ const TutkinnonOsaEditor = React.createClass({
       .filter(GenericEditor.shouldShowProperty(context.edit))
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
+    let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
       <tr>
         <td className="tutkinnonosa">
           <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
           <span className="tila" title={modelTitle(model, 'tila')}>{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
-          <a className="nimi" onClick={toggleExpand}>{modelTitle(model, 'koulutusmoduuli.tunniste')}</a>
+          {
+            hasProperties
+              ? <a className="nimi" onClick={toggleExpand}>{nimi}</a>
+              : <span>{nimi}</span>
+          }
+
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
         <td className="laajuus"><LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} /></td>

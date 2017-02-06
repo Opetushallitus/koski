@@ -6,7 +6,6 @@
           padding: 5px 13px 7px 0;
         }
         > td.tutkinnonosa {
-          color: @color-link-blue;
           padding-left: 13px;
           .toggle-expand, .tila {
             position: relative;
@@ -20,7 +19,7 @@
           .toggle-expand {
             color: @color-link-blue;
             &.disabled {
-              color: @color-disabled;
+              visibility: hidden;
             }
           }
           .tila {
@@ -30,13 +29,22 @@
         }
       }
 
-      tr.details > td {
-        padding-left: 45px;
-        padding-right: 35px;
-        padding-bottom: 24px;
+      tr.details {
+        background: white;
+        > td {
+          padding-left: 45px;
+          padding-right: 35px;
+          padding-bottom: 24px;
 
-        .properties > table tr td {
-          padding-top: 2px; // override for more compact layout
+          .properties > table tr td {
+            padding-top: 2px; // override for more compact layout
+          }
+        }
+      }
+
+      .tyossaoppimisjakso {
+        > .properties {
+          padding-left: 12px;
         }
       }
     }
