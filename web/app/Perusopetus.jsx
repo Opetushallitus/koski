@@ -9,6 +9,12 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
     let {model, context} = this.props
     let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
     let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset') || []))
+
+    let osasuoritukset = modelItems(model, 'osasuoritukset') || []
+    let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
+    let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
+    let selitteet = korotus.concat(yksilöllistetty).join(', ')
+
     return grouped.length > 0 && (<div className="oppiaineet">
         <h5>Oppiaineiden arvosanat</h5>
         <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
@@ -30,13 +36,15 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
             </section>
           ))
         }
+        {selitteet && <p className="selitteet">{selitteet}</p>}
       </div>)
   }
 })
 
 const Oppiainetaulukko = React.createClass({
   render() {
-    let {suoritukset, context, showLaajuus = false} = this.props
+    let {suoritukset, context} = this.props
+    let showLaajuus = suoritukset.flatMap(s => modelData(s, 'koulutusmoduuli.laajuus') ? [s] : []).length > 0
     return (<table>
         <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th>{showLaajuus && <th className="laajuus">Laajuus</th>}</tr></thead>
         <tbody>
@@ -63,8 +71,8 @@ const OppiaineEditor = React.createClass({
       <td className="oppiaine">{oppiaine}</td>
       <td className="arvosana">
         {arvosana}
-        {modelData(model, 'yksilöllistettyOppimäärä') ? <span className="yksilollistetty"> *</span> : null}
-        {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
+        {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
+        {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
       </td>
       {
         showLaajuus && (<td className="laajuus">

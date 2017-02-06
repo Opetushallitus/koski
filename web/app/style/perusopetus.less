@@ -23,6 +23,10 @@
         }
         .arvosana {
           text-align: right;
+          .yksilollistetty, .korotus {
+            cursor: pointer;
+            color: @color-link-blue;
+          }
         }
         .laajuus {
           width: 165px;
@@ -47,6 +51,11 @@
         margin-bottom: 16px;
         margin-top: 27px;
       }
+    }
+
+    .selitteet {
+      margin-top: 10px;
+      font-size: 0.9em;
     }
   }
 }
