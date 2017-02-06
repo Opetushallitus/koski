@@ -23,6 +23,14 @@ object ExamplesLukio {
         )
       ),
       oppilaitos = oppilaitos,
+      lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(
+        pidennettyPäättymispäivä = false,
+        ulkomainenVaihtoopiskelija = false,
+        alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some("Pikkuvanha yksilö"),
+        yksityisopiskelija = false,
+        erityisenKoulutustehtävänJaksot = Some(List(ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2012, 9, 1)), Koodistokoodiviite("taide", Some("Erityisenä koulutustehtävänä taide"), "erityinenkoulutustehtava")))),
+        ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")))
+      )),
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,

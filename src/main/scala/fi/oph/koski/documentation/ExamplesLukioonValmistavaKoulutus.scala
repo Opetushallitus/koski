@@ -33,6 +33,10 @@ object ExamplesLukioonValmistavaKoulutus {
             luvaKurssinSuoritus("STK", "Opinto-ohjaus", 1.0f),
             kurssisuoritus(valtakunnallinenKurssi("KU1")).copy(arviointi = kurssinArviointi(7))
           ))
+        )),
+        lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
+          pidennettyPäättymispäivä = true,
+          ulkomainenVaihtoopiskelija = false
         ))
       )
     )

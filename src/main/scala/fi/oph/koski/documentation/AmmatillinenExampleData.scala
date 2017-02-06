@@ -170,6 +170,7 @@ object AmmatillinenExampleData {
     päättymispäivä = Some(date(2016, 5, 31)),
     oppilaitos = oppilaitos,
     suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste)),
+    lisätiedot = None,
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
@@ -187,7 +188,14 @@ object AmmatillinenExampleData {
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
       )
-    )
+    ),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      hojks = Some(Hojks(
+        opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
+      )),
+      oikeusMaksuttomaanAsuntolapaikkaan = true,
+      ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")))
+    ))
   )
 
   def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
