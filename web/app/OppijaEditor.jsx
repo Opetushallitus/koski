@@ -2,6 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
+import { childContext, Editor } from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
@@ -77,7 +78,7 @@ const OppijaEditor = React.createClass({
                 <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                   <OpiskeluoikeusEditor
                     model={ opiskeluoikeus }
-                    context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)}
+                    context={childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)}
                   />
                 </li>
               )
@@ -124,7 +125,7 @@ const OpiskeluoikeusEditor = React.createClass({
             properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) }
             context={editableContext}
             getValueEditor={ (prop, ctx, getDefault) => prop.key == 'tila'
-              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} context={GenericEditor.childContext(this, ctx, 'opiskeluoikeusjaksot')}/>
+              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} context={childContext(this, ctx, 'opiskeluoikeusjaksot')}/>
               : getDefault() }
            />
           <ExpandablePropertiesEditor context={editableContext} model={model} propertyName="lisätiedot" />
@@ -153,7 +154,7 @@ const OpiskeluoikeusEditor = React.createClass({
           {
             suoritukset.map((suoritusModel, i) =>
               i == suoritusIndex
-                ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
+                ? <PäätasonSuoritusEditor model={suoritusModel} context={childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
             )
           }
         </div>
@@ -173,7 +174,7 @@ const ExpandablePropertiesEditor = React.createClass({
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
         { open ?
           <div className="value">
-            <GenericEditor.PropertiesEditor properties={modelLookup(model, propertyName).value.properties} context={GenericEditor.childContext(this, context, propertyName)}/>
+            <GenericEditor.PropertiesEditor properties={modelLookup(model, propertyName).value.properties} context={childContext(this, context, propertyName)}/>
           </div> : null
         }
       </div> : null
@@ -251,7 +252,7 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
 
 const LukionKurssiEditor = React.createClass({
   render() {
-    let {model} = this.props
+    let { model } = this.props
     var tunniste = modelData(model, 'koulutusmoduuli.tunniste')
     let koodiarvo = tunniste && tunniste.koodiarvo
     let nimi = modelTitle(model, 'koulutusmoduuli')
@@ -267,70 +268,65 @@ LukionKurssiEditor.canShowInline = () => false
 
 export const LaajuusEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let { model, context } = this.props
     var yksikköData = modelData(model, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
-    return context.edit
-      ? <GenericEditor.ObjectEditor model={model} context={context}/>
-      : (modelData(model, 'arvo'))
-        ? <span><GenericEditor.Editor model={model} context={context} path="arvo" parent={this}/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
-        : <span>-</span>
+    return (modelData(model, 'arvo'))
+      ? <span><GenericEditor.Editor model={model} context={context} path="arvo" parent={this}/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
+      : <span>-</span>
   }
 })
+LaajuusEditor.readOnly = true
 
 const VahvistusEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    return context.edit
-      ? <GenericEditor.ObjectEditor model={model} context={context} />
-      : (<span className="vahvistus inline">
-          <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
-          <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
-          {
-            (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
-              <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
-            )
-          }
-        </span>)
+    let { model } = this.props
+    return (<span className="vahvistus inline">
+      <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
+      <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
+      {
+        (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
+          <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
+        )
+      }
+    </span>)
   }
 })
+VahvistusEditor.readOnly = true
 
 const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    return context.edit
-      ? <GenericEditor.ObjectEditor {...this.props}/>
-      : (<div className="opiskeluoikeusjakso">
-        <label className="date">{modelTitle(model, 'alku')}</label>
-        <label className="tila">{modelTitle(model, 'tila')}</label>
-      </div>)
+    let { model } = this.props
+    return (<div className="opiskeluoikeusjakso">
+      <label className="date">{modelTitle(model, 'alku')}</label>
+      <label className="tila">{modelTitle(model, 'tila')}</label>
+    </div>)
   }
 })
+OpiskeluoikeusjaksoEditor.readOnly = true
 
 const KoulutusmoduuliEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    return context.edit
-      ? <GenericEditor.ObjectEditor {...this.props}/>
-      : <span className="koulutusmoduuli">
-          <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
-          <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key))} context={context}/>
-        </span>
+    let { model, context } = this.props
+    return (<span className="koulutusmoduuli">
+      <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
+      <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
+      <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key))} context={context}/>
+    </span>)
   }
 })
+KoulutusmoduuliEditor.readOnly = true
 
 export const PäivämääräväliEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    return context.edit
-      ? <GenericEditor.ObjectEditor {...this.props}/>
-      : <span>
-          <GenericEditor.Editor context={context} model={modelLookup(model, 'alku')}/> — <GenericEditor.Editor context={context} model={modelLookup(model, 'loppu')}/>
-        </span>
+    let { model, context } = this.props
+    return (<span>
+      <GenericEditor.Editor context={context} model={model} parent={this} path="alku"/> — <GenericEditor.Editor context={context} model={modelLookup(model, 'loppu')}/>
+    </span>)
   }
 })
 PäivämääräväliEditor.canShowInline = () => true
+PäivämääräväliEditor.readOnly = true
 
 const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
 

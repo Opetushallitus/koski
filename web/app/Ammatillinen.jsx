@@ -1,7 +1,8 @@
 import React from 'react'
-import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import { modelData, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { LaajuusEditor, PäivämääräväliEditor } from './OppijaEditor.jsx'
+import { childContext, Editor } from './GenericEditor.jsx'
+import { PäivämääräväliEditor } from './OppijaEditor.jsx'
 
 export const TutkinnonOsatEditor = React.createClass({
   render() {
@@ -17,7 +18,7 @@ export const TutkinnonOsatEditor = React.createClass({
         </tr></thead>
         {
           suoritukset.map((suoritus, i) =>
-            <TutkinnonOsaEditor model={suoritus} context={GenericEditor.childContext(this, context, 'osasuoritukset', i)} key={i}/>
+            <TutkinnonOsaEditor model={suoritus} context={childContext(this, context, 'osasuoritukset', i)} key={i}/>
           )
         }
       </table>
@@ -48,7 +49,7 @@ const TutkinnonOsaEditor = React.createClass({
 
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
-        <td className="laajuus"><LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} /></td>
+        <td className="laajuus"><Editor model={model} context={context} parent={this} path="koulutusmoduuli.laajuus" /></td>
         <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
       </tr>
       {
