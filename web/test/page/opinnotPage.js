@@ -40,6 +40,9 @@ function OpinnotPage() {
     suoritusEditor: function() {
       return Editor(function() { return findSingle('.suoritus') })
     },
+    opiskeluoikeusEditor: function() {
+      return Editor(function() { return findSingle('.opiskeluoikeuden-tiedot') })
+    },
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -73,7 +76,7 @@ function Editor(elem) {
       return elem().find('.toggle-edit').is(':visible')
     },
     property: function(key) {
-      return Property(function() {return findSingle('.property.'+key, elem())})
+      return Property(function() {return findSingle('.property.'+key+':eq(0)', elem())})
     }
   }
 }
@@ -85,6 +88,11 @@ function Property(elem) {
     },
     removeValue: function() {
       triggerEvent(findSingle('.remove-value', elem()), 'click')
+    },
+    removeItem: function(index) {
+      return function() {
+        triggerEvent(findSingle('li:eq(' + index + ') .remove-item', elem()), 'click')
+      }
     },
     waitUntilLoaded: function() {
       return wait.until(function(){
@@ -101,7 +109,7 @@ function Property(elem) {
     },
     isVisible: function() {
       try{
-        return elem().is(":visible")
+        return findSingle('.value', elem()).is(":visible")
       } catch (e) {
         if (e.message.indexOf('not found') > 0) return false
         throw e

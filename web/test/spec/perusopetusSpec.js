@@ -58,6 +58,49 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Tutkinnon tietojen muuttaminen', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+
+    describe('Kun poistetaan päättymispäivä', function() {
+      var editor = opinnot.opiskeluoikeusEditor()
+      before(editor.edit, editor.property('tila').removeItem(1), editor.property('päättymispäivä').removeValue, wait.until(page.isSavedLabelShown))
+
+      it('Alkutila', function() {
+        expect(editor.property('päättymispäivä').isVisible()).to.equal(true)
+      })
+
+      describe('Muutosten näyttäminen', function() {
+        it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
+          expect(page.isSavedLabelShown()).to.equal(true)
+        })
+      })
+
+      describe('Palattaessa tietojen katseluun', function() {
+        before(editor.doneEditing)
+        it('Näytetään muuttuneet tiedot', function() {
+          expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+        })
+      })
+    })
+
+    describe('Muokkaus', function() {
+      describe('Ulkoisen järjestelmän data', function() {
+        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
+        it('estetty', function() {
+          expect(opinnot.anythingEditable()).to.equal(false)
+        })
+      })
+
+      describe('Ilman kirjoitusoikeuksia', function() {
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+        it('estetty', function() {
+          var suoritus = opinnot.suoritusEditor()
+          expect(suoritus.isEditable()).to.equal(false)
+        })
+      })
+    })
+  })
+
   describe('Päättötodistus toiminta-alueittain', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
     describe('Oppijan suorituksissa', function() {

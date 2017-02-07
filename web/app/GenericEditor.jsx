@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import Bacon from 'baconjs'
+import * as L from 'partial.lenses'
 import BaconComponent from './BaconComponent'
 import Http from './http'
 import { modelData, modelTitle, modelEmpty, modelItems, modelLookup } from './EditorModel.js'
@@ -128,8 +129,8 @@ export const PropertyEditor = React.createClass({
     let property = model.value.properties.find(p => p.key == propertyName)
     let edit = context.edit || (this.state && this.state.edit)
     if (!property) return null
-    return (<span className="single-property">
-      {property.title}: { getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }
+    return (<span className={'single-property property ' + property.key}>
+      <span className="label">{property.title}</span>: <span className="value">{ getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }</span>
     </span>)
   }
 })
@@ -168,23 +169,35 @@ export const TabularArrayEditor = React.createClass({
 export const ArrayEditor = React.createClass({
   render() {
     let {model, context, reverse} = this.props
-    var items = modelItems(model)
+    var items = (this.state && this.state.items) || modelItems(model)
     if (reverse && !context.edit) items = items.slice(0).reverse()
     let inline = ArrayEditor.canShowInline(this)
     let className = inline
       ? 'array inline'
       : 'array'
     let adding = this.state && this.state.adding || []
-    let add = () => this.setState({adding: adding.concat(model.prototype)})
+    let addItem = () => this.setState({adding: adding.concat(model.prototype)})
     return (
       <ul ref="ul" className={className}>
         {
-          items.concat(adding).map((item, i) =>
-            <li key={i}>{getModelEditor(item, R.merge(childContext(this, context, i), { arrayItems: items }) )}</li>
+          items.concat(adding).map((item, i) => {
+            let itemContext = R.merge(childContext(this, context, i), { arrayItems: items })
+
+            let removeItem = () => {
+              let newItems = L.set(L.index(i), undefined, items)
+              context.changeBus.push([itemContext, {data: undefined}])
+              this.setState({ adding: false, items: newItems })
+            }
+
+            return (<li key={i}>
+              {getModelEditor(item, itemContext )}
+              {context.edit && <a className="remove-item" onClick={removeItem}></a>}
+            </li>)
+          }
           )
         }
         {
-          context.edit && model.prototype !== undefined ? <li className="add-item"><a onClick={add}>lisää uusi</a></li> : null
+          context.edit && model.prototype !== undefined ? <li className="add-item"><a onClick={addItem}>lisää uusi</a></li> : null
         }
       </ul>
     )
@@ -212,14 +225,14 @@ const OptionalEditor = React.createClass({
     let canRemove = context.edit && !empty
     return (<span className="optional-wrapper">
       {
-        canRemove && <a className="remove-value" onClick={removeValue}></a>
-      }
-      {
         empty
           ? context.edit && model.prototype !== undefined
             ? <a className="add-value" onClick={addValue}>lisää</a>
             : null
           : getModelEditor(R.merge(model, { optional: false }), context)
+      }
+      {
+        canRemove && <a className="remove-value" onClick={removeValue}></a>
       }
     </span>)
   }
