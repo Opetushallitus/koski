@@ -7,7 +7,7 @@ import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
-import { PerusopetuksenOppiaineetEditor, ErityisenTuenPäätösEditor } from './Perusopetus.jsx'
+import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
 import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor, TyössäoppimisjaksoEditor } from './Ammatillinen.jsx'
 
 const OppijaEditor = React.createClass({
@@ -328,6 +328,18 @@ export const PäivämääräväliEditor = React.createClass({
 PäivämääräväliEditor.canShowInline = () => true
 PäivämääräväliEditor.readOnly = true
 
+export const JaksollinenEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    return (
+      <div className="jaksollinen">
+        <PäivämääräväliEditor context={context} model={model}/>
+        <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu'].includes(p.key))} context={context}/>
+      </div>
+    )
+  }
+})
+
 const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
 
 export const editorMapping = {
@@ -351,5 +363,6 @@ export const editorMapping = {
   'naytonsuoritusaika': PäivämääräväliEditor,
   'paatosjakso': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
-  'erityisentuenpaatos': ErityisenTuenPäätösEditor
+  'erityisentuenpaatos': JaksollinenEditor,
+  'jakso': JaksollinenEditor
 }

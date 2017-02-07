@@ -1,7 +1,7 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { LaajuusEditor, PäivämääräväliEditor } from './OppijaEditor.jsx'
+import { LaajuusEditor } from './OppijaEditor.jsx'
 import R from 'ramda'
 
 export const PerusopetuksenOppiaineetEditor = React.createClass({
@@ -92,17 +92,5 @@ const OppiaineEditor = React.createClass({
   },
   getInitialState() {
     return { expanded: false }
-  }
-})
-
-export const ErityisenTuenPäätösEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    return (
-      <div>
-        <PäivämääräväliEditor context={context} model={model}/>
-        <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu'].includes(p.key))} context={context}/>
-      </div>
-    )
   }
 })
