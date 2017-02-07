@@ -214,12 +214,18 @@ describe('Ammatillinen koulutus', function() {
     describe('Kun valitaan suoritustapa', function() {
       var suoritus = opinnot.suoritusEditor()
       var suoritustapa = suoritus.property('suoritustapa')
-      before(suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
+      before(suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'), wait.until(page.isSavedLabelShown))
 
       describe('Muutosten näyttäminen', function() {
-        before(wait.until(page.isSavedLabelShown))
         it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
           expect(page.isSavedLabelShown()).to.equal(true)
+        })
+      })
+
+      describe('Palattaessa tietojen katseluun', function() {
+        before(suoritus.doneEditing)
+        it('Näytetään muuttuneet tiedot', function() {
+          expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
         })
       })
 

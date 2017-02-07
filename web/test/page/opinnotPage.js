@@ -63,7 +63,11 @@ function OpinnotPage() {
 function Editor(elem) {
   return {
     edit: function() {
-      triggerEvent(findSingle('.toggle-edit', elem()), 'click')
+      triggerEvent(findSingle('.toggle-edit:not(.editing)', elem()), 'click')
+    },
+    doneEditing: function() {
+      triggerEvent(findSingle('.toggle-edit.editing', elem()), 'click')
+      return wait.forAjax()
     },
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')

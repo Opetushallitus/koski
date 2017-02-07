@@ -184,7 +184,6 @@ object ExamplesLukio {
       )
     )
 
-
   val aineopiskelija =
     LukionOpiskeluoikeus(
       id = None,

@@ -15,9 +15,13 @@ export const saveBus = Bacon.Bus()
 
 export const oppijaContentP = (oppijaOid) => {
   const changeBus = Bacon.Bus()
+  const doneEditingBus = Bacon.Bus()
 
-  let queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
-  const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaOid}${queryString}`).toEventStream()
+  const queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
+
+  const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
+
+  const loadOppijaE = Http.cachedGet(oppijaEditorUri).toEventStream().concat(doneEditingBus.flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true })))
 
   const updateResultE = Bacon.Bus()
 
@@ -59,7 +63,7 @@ export const oppijaContentP = (oppijaOid) => {
       content: (<div className='content-area'><div className="main-content oppija">
         { haku }
         <Link className="back-link" href="/koski/">Opiskelijat</Link>
-        <ExistingOppija oppija={oppija} changeBus={changeBus}/>
+        <ExistingOppija {...{oppija, changeBus, doneEditingBus}}/>
         </div></div>),
       title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
@@ -68,7 +72,7 @@ export const oppijaContentP = (oppijaOid) => {
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija, changeBus} = this.props
+    let {oppija, changeBus, doneEditingBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
     return oppija.loading
       ? <div className="loading"/>
@@ -80,7 +84,7 @@ export const ExistingOppija = React.createClass({
           </h2>
           {
             oppija
-              ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus}/>
+              ? <Editor model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
               : null
           }
         </div>

@@ -8,12 +8,12 @@ import { showInternalError } from './location.js'
 
 export const Editor = React.createClass({
   render() {
-    let { model, context, editorMapping, changeBus, path, parent } = this.props
+    let { model, context, editorMapping, changeBus, doneEditingBus, path, parent } = this.props
 
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       context = {
-        changeBus: changeBus,
+        changeBus, doneEditingBus,
         root: true,
         path: '',
         prototypes: model.prototypes,
@@ -63,13 +63,18 @@ export const TogglableEditor = React.createClass({
   render() {
     let { context, renderChild } = this.props
     let edit = context.edit || (this.state && this.state.edit)
-    let toggleEdit = () => this.setState({edit: !edit})
+    let toggleEdit = () => {
+      if (edit) {
+        context.doneEditingBus.push()
+      }
+      this.setState({edit: !edit})
+    }
     let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
     let childContext = R.merge(context, {
       edit: edit,
       hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
     })
-    let editLink = showToggleEdit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+    let editLink = showToggleEdit ? <a className={edit ? 'toggle-edit editing' : 'toggle-edit'} onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
 
     return (renderChild(childContext, editLink))
   }
