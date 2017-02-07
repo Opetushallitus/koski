@@ -25,9 +25,12 @@ export const oppijaContentP = (oppijaOid) => {
     loadOppijaE, (previous, oppija) => oppija,
     updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
       let correctId = R.whereEq({id})
-      let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
-      let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
-      return L.set(lens, versionumero, currentOppija)
+      let containsOpiskeluoikeus = (oppilaitoksenOpiskeluoikeudet) => oppilaitoksenOpiskeluoikeudet.opiskeluoikeudet.find(correctId)
+      let containsOppilaitos = (tyypinOpiskeluoikeudet) => tyypinOpiskeluoikeudet.opiskeluoikeudet.find(containsOpiskeluoikeus)
+
+      let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOppilaitos), 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
+      var modified = L.set(lens, versionumero, currentOppija)
+      return modified
     },
     changeBus, (currentOppija, [context, value]) => {
       var modifiedModel = modelSet(currentOppija, context.path, value)
