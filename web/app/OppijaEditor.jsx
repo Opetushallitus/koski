@@ -212,13 +212,58 @@ const PäätasonSuoritusEditor = React.createClass({
                 ? <PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
                 : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
                   ? <TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
-                  : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+                  : (model.value.classes.includes('lukionoppimaaransuoritus'))
+                    ? <LukionOppiaineetEditor context={ctx} model={model} />
+                    : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
             }
           </div>
         </div>)
         }
       }
     />)
+  }
+})
+
+const LukionOppiaineetEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    return (
+      <table className="suoritukset">
+        <thead>
+          <tr>
+            <th className="oppiaine">Oppiaine</th>
+            <th className="maara">Kurssien määrä</th>
+            <th className="arvosana">Arvosana (keskiarvo)</th>
+          </tr>
+          <tr>
+            <th colSpan="3"><hr/></th>
+          </tr>
+        </thead>
+        <tbody>
+        {
+          modelLookup(model, 'osasuoritukset').value.map((oppiaine, oppiaineIndex) =>
+            <tr key={oppiaineIndex}>
+              <td className="oppiaine">
+                <div className="nimi">{modelTitle(oppiaine, 'koulutusmoduuli')}</div>
+                <ul className="kurssit">
+                  {
+                    modelLookup(oppiaine, 'osasuoritukset').value.map((kurssi, kurssiIndex) =>
+                      <li className="kurssi" key={kurssiIndex}>
+                        <div className="tunniste">{modelData(kurssi, 'koulutusmoduuli.tunniste.koodiarvo')}</div>
+                        <div className="arvosana">{modelData(kurssi, 'arviointi') && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
+                      </li>
+                    )
+                  }
+                </ul>
+              </td>
+              <td className="maara">{modelData(oppiaine, 'osasuoritukset').filter(k => k.arviointi).length}</td>
+              <td className="arvosana">{modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo}</td>
+            </tr>
+          )
+        }
+        </tbody>
+      </table>
+    )
   }
 })
 
@@ -346,7 +391,7 @@ const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'kor
 
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,
-  'lukionkurssinsuoritus': LukionKurssiEditor,
+  //'lukionkurssinsuoritus': LukionKurssiEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,

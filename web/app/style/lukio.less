@@ -1,0 +1,62 @@
+
+.oppija .opiskeluoikeus .suoritukset {
+  .lukionoppimaaransuoritus {
+
+    .kurssit {
+      list-style: none;
+      padding: 0;
+      .kurssi {
+        display: table-cell;
+        width: 62px;
+        .tunniste {
+          font-weight: 600;
+        }
+      }
+    }
+
+    .oppiaine {
+      .nimi {
+        color: @color-label;
+      }
+    }
+
+    table.suoritukset {
+      width: 100%;
+
+      tbody tr {
+        background: @color-neutral-gray;
+      }
+
+      thead tr:last-child {
+        th {
+          padding: 0 12px;
+          hr {
+            margin: 0 0 20px 0
+          }
+        }
+      }
+
+      th {
+        &.arvosana, &.maara {
+          width: 100px;
+          text-align: right;
+        }
+        &.oppiaine {
+          vertical-align: bottom;
+        }
+      }
+
+      td, th {
+        padding: 12px;
+      }
+
+      td {
+        border-bottom: 5px solid white;
+        &.maara, &.arvosana {
+          text-align: right;
+        }
+      }
+    }
+
+  }
+}
