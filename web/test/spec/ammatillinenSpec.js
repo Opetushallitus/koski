@@ -243,7 +243,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Kun poistetaan suoritustapa', function() {
-        before(suoritus.edit, suoritustapa.removeValue, suoritus.doneEditing)
+        before(suoritus.edit, suoritustapa.removeValue, wait.until(page.isSavedLabelShown), suoritus.doneEditing)
         it('Näytetään muuttuneet tiedot', function() {
           expect(suoritustapa.isVisible()).to.equal(false)
         })
