@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
+import BaconComponent from './BaconComponent'
 import {navigateToOppija, showError} from './location'
 import {isValidHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
@@ -12,7 +13,7 @@ export const createOppijaContentP = () => Bacon.constant({
   </div>)
 })
 
-export const CreateOppija = React.createClass({
+export const CreateOppija = BaconComponent({
   render() {
     const opiskeluoikeus = this.state.opiskeluoikeus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
@@ -70,7 +71,7 @@ export const CreateOppija = React.createClass({
   },
 
   componentDidMount() {
-    this.state.opiskeluoikeusBus.onValue(o => {this.setState({opiskeluoikeus: o})})
+    this.state.opiskeluoikeusBus.takeUntil(this.unmountE).onValue(o => {this.setState({opiskeluoikeus: o})})
     this.refs.etunimet.focus()
   },
 

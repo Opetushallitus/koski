@@ -1,10 +1,11 @@
 import React from 'react'
 import Bacon from 'baconjs'
+import BaconComponent from './BaconComponent'
 import Http from './http'
 import Highlight from 'react-highlighter'
 import { showInternalError } from './location.js'
 
-export default React.createClass({
+export default BaconComponent({
   render() {
     let { organisaatiot = [], open, loading, searchString } = this.state
     let { onSelectionChanged, selectedOrg } = this.props
@@ -54,6 +55,7 @@ export default React.createClass({
       Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString))
         .doError(showInternalError)
         .map((organisaatiot) => ({ organisaatiot, loading: false }))
+        .takeUntil(this.unmountE)
         .onValue((result) => this.setState(result))
   },
   getInitialState() {

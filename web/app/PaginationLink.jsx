@@ -1,8 +1,9 @@
 import React from 'react'
 import Bacon from 'baconjs'
+import BaconComponent from './BaconComponent'
 import { addClass } from './classnames'
 
-export default React.createClass({
+export default BaconComponent({
   render() {
     const { pager } = this.props
     return pager.mayHaveMore()
@@ -11,19 +12,14 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    this.unmountBus = Bacon.Bus()
     Bacon.fromEvent(window, 'scroll')
-      .takeUntil(this.unmountBus)
       .throttle(100)
       .filter(() => this.paginationMarker && isElementInViewport(this.paginationMarker))
+      .takeUntil(this.unmountE)
       .onValue(() => {
         this.props.pager.next()
         addClass(this.paginationMarker, 'loading')
       })
-  },
-
-  componentWillUnmount() {
-    if (this.unmountBus) this.unmountBus.push()
   }
 })
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import R from 'ramda'
+import Bacon from 'baconjs'
+import BaconComponent from './BaconComponent'
+import Http from './http'
 import { modelData, modelTitle, modelEmpty, modelItems, modelLookup } from './EditorModel.js'
 import { formatISODate, parseFinnishDate } from './date.js'
-import Http from './http'
-import Bacon from 'baconjs'
 import { showInternalError } from './location.js'
 
 export const Editor = React.createClass({
@@ -288,7 +289,7 @@ export const DateEditor = React.createClass({
 })
 DateEditor.canShowInline = () => true
 
-export const EnumEditor = React.createClass({
+export const EnumEditor = BaconComponent({
   render() {
     let {model, context} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
@@ -316,7 +317,7 @@ export const EnumEditor = React.createClass({
         this.state.alternativesP = Http.cachedGet(model.alternativesPath).doError(showInternalError)
         EnumEditor.AlternativesCache[model.alternativesPath] = this.state.alternativesP
       }
-      this.state.alternativesP.onValue(alternatives => this.setState({alternatives}))
+      this.state.alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
     }
   },
 

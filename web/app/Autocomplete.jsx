@@ -1,8 +1,8 @@
 import React from 'react'
 import Bacon from 'baconjs'
+import BaconComponent from './BaconComponent'
 
-export default React.createClass({
-
+export default BaconComponent({
   render() {
     let {disabled, selected} = this.props
     let {items, query, selectionIndex} = this.state
@@ -46,6 +46,7 @@ export default React.createClass({
     this.state.inputBus
       .throttle(200)
       .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
+      .takeUntil(this.unmountE)
       .onValue((items) => this.setState({ items: items, selectionIndex: 0 }))
   },
 

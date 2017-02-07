@@ -1,10 +1,12 @@
 import React from 'react'
-import {showInternalError, currentLocation} from './location.js'
+import BaconComponent from './BaconComponent'
 import Http from './http'
-import { ISO2FinnishDateTime } from './date.js'
 import Link from './Link.jsx'
 
-export default React.createClass({
+import {showInternalError, currentLocation} from './location.js'
+import { ISO2FinnishDateTime } from './date.js'
+
+export default BaconComponent({
   render() {
     let { opiskeluOikeusId, oppijaOid } = this.props
     let { showHistory, history } = this.state
@@ -37,7 +39,7 @@ export default React.createClass({
   fetchHistory() {
     if (!this.historyP) {
       this.historyP = Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${this.props.opiskeluOikeusId}`).doError(showInternalError)
-      this.historyP.onValue(h => this.setState({history: h}))
+      this.historyP.takeUntil(this.unmountE).onValue(h => this.setState({history: h}))
     }
   },
   versionumero() {

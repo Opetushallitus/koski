@@ -2,9 +2,11 @@ import React from 'react'
 import Autocomplete from './Autocomplete.jsx'
 import Bacon from 'baconjs'
 import Http from './http'
+import BaconComponent from './BaconComponent'
+
 import { showInternalError } from './location.js'
 
-const Oppilaitos = React.createClass({
+const Oppilaitos = BaconComponent({
   render() {
     return (
         <label className='oppilaitos'>Oppilaitos
@@ -25,11 +27,11 @@ const Oppilaitos = React.createClass({
   },
 
   componentDidMount() {
-    this.props.oppilaitosP.onValue(o => {this.setState({selected:o})})
+    this.props.oppilaitosP.takeUntil(this.unmountE).onValue(o => {this.setState({selected:o})})
   }
 })
 
-const Tutkinto = React.createClass({
+const Tutkinto = BaconComponent({
   render() {
     return (
         <label className='tutkinto'>Tutkinto
@@ -54,6 +56,7 @@ const Tutkinto = React.createClass({
     oppilaitosP
       .map(o => ({oppilaitos: o, selected:undefined})).toEventStream()
       .merge(tutkintoP.map(t => ({selected:t})).toEventStream())
+      .takeUntil(this.unmountE)
       .onValue(state => this.setState(state))
   }
 })

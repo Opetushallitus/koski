@@ -1,6 +1,7 @@
 import React from 'react'
+import BaconComponent from './BaconComponent'
 
-export default React.createClass({
+export default BaconComponent({
   render() {
     const { options, open, selected, selectionIndex } = this.state
     return (
@@ -28,7 +29,7 @@ export default React.createClass({
     this.setState({open: !this.state.open})
   },
   componentDidMount() {
-    this.props.optionsP.onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
+    this.props.optionsP.takeUntil(this.unmountE).onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
     window.addEventListener('click', this.handleClickOutside, false)
   },
   componentWillUnmount() {
