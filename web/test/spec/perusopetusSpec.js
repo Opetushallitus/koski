@@ -58,7 +58,7 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Tutkinnon tietojen muuttaminen', function() {
+  describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
     describe('Kun poistetaan päättymispäivä', function() {

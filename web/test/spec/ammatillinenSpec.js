@@ -205,7 +205,7 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Tutkinnon tietojen muuttaminen', function() {
+  describe('Tietojen muuttaminen', function() {
     before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '280608-6619'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
