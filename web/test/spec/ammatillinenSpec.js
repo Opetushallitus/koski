@@ -218,6 +218,7 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Muutosten näyttäminen', function() {
         it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
+          expect(suoritustapa.isVisible()).to.equal(true)
           expect(page.isSavedLabelShown()).to.equal(true)
         })
       })
@@ -238,6 +239,13 @@ describe('Ammatillinen koulutus', function() {
 
         it('Muuttuneet tiedot on tallennettu', function() {
           expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
+        })
+      })
+
+      describe('Kun poistetaan suoritustapa', function() {
+        before(suoritus.edit, suoritustapa.removeValue, suoritus.doneEditing)
+        it('Näytetään muuttuneet tiedot', function() {
+          expect(suoritustapa.isVisible()).to.equal(false)
         })
       })
     })

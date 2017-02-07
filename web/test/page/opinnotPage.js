@@ -83,6 +83,9 @@ function Property(elem) {
     addValue: function() {
       triggerEvent(findSingle('.add-value', elem()), 'click')
     },
+    removeValue: function() {
+      triggerEvent(findSingle('.remove-value', elem()), 'click')
+    },
     waitUntilLoaded: function() {
       return wait.until(function(){
         return elem().is(':visible') && !elem().find('.loading').is(':visible')
@@ -95,6 +98,14 @@ function Property(elem) {
     },
     getValue: function() {
       return findSingle('.value', elem()).text()
+    },
+    isVisible: function() {
+      try{
+        return elem().is(":visible")
+      } catch (e) {
+        if (e.message.indexOf('not found') > 0) return false
+        throw e
+      }
     }
   }
 }

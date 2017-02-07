@@ -198,17 +198,19 @@ ArrayEditor.canShowInline = (component) => {
   return canShowInline(fakeComponent)
 }
 
-const OptionalWrapperEditor = React.createClass({
+const OptionalEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let adding = this.state && this.state.adding
     let removed = this.state && this.state.removed
-    let wrapped = () => getModelEditor(R.merge(model, { optional: false }), context)
     let addValue = () => this.setState({adding: true})
-    let removeValue = () => this.setState({ removed: true, adding: false })
+    let removeValue = () => {
+      this.props.context.changeBus.push([context, {data: undefined}])
+      this.setState({ removed: true, adding: false })
+    }
     let empty = (modelEmpty(model) || removed) && !adding
     let canRemove = context.edit && !empty
-    return <span className="optional-wrapper">
+    return (<span className="optional-wrapper">
       {
         canRemove && <a className="remove-value" onClick={removeValue}></a>
       }
@@ -217,12 +219,12 @@ const OptionalWrapperEditor = React.createClass({
           ? context.edit && model.prototype !== undefined
             ? <a className="add-value" onClick={addValue}>lisää</a>
             : null
-          : wrapped()
+          : getModelEditor(R.merge(model, { optional: false }), context)
       }
-    </span>
+    </span>)
   }
 })
-OptionalWrapperEditor.canShowInline = () => true
+OptionalEditor.canShowInline = () => true
 
 export const StringEditor = React.createClass({
   render() {
@@ -383,7 +385,7 @@ const getEditorFunction = (model, context) => {
   model = resolveModel(model, context)
   if (!model) return NullEditor
   if (model.optional) {
-    return OptionalWrapperEditor
+    return OptionalEditor
   }
   let editor = (model.value && editorByClass(model.value.classes)) || context.editorMapping[model.type]
   if (!editor) {
