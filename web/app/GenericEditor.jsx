@@ -163,7 +163,7 @@ export const ArrayEditor = React.createClass({
   render() {
     let {model, context, reverse} = this.props
     var items = modelItems(model)
-    if (reverse && !context.edit) items = items.reverse()
+    if (reverse && !context.edit) items = items.slice(0).reverse()
     let inline = ArrayEditor.canShowInline(this)
     let className = inline
       ? 'array inline'
