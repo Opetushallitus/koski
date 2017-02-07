@@ -358,7 +358,8 @@ const resolveModel = (model, context) => {
 const getEditorFunction = (model, context) => {
   let editorByClass = (classes) => {
     for (var i in classes) {
-      if (context.editorMapping[classes[i]]) { return context.editorMapping[classes[i]] }
+      var editor = context.editorMapping[classes[i]]
+      if (editor && (!context.edit || !editor.readOnly)) { return editor }
     }
   }
   model = resolveModel(model, context)
