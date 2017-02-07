@@ -8,6 +8,7 @@ import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
 import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
+import { LukionOppiaineetEditor } from './Lukio.jsx'
 import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor, TyössäoppimisjaksoEditor } from './Ammatillinen.jsx'
 
 const OppijaEditor = React.createClass({
@@ -20,11 +21,9 @@ const OppijaEditor = React.createClass({
 
     var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
 
-
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
       : 0
-
 
     return (
       <div>
@@ -221,49 +220,6 @@ const PäätasonSuoritusEditor = React.createClass({
         }
       }
     />)
-  }
-})
-
-const LukionOppiaineetEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    return (
-      <table className="suoritukset">
-        <thead>
-          <tr>
-            <th className="oppiaine">Oppiaine</th>
-            <th className="maara">Kurssien määrä</th>
-            <th className="arvosana">Arvosana (keskiarvo)</th>
-          </tr>
-          <tr>
-            <th colSpan="3"><hr/></th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          modelLookup(model, 'osasuoritukset').value.map((oppiaine, oppiaineIndex) =>
-            <tr key={oppiaineIndex}>
-              <td className="oppiaine">
-                <div className="nimi">{modelTitle(oppiaine, 'koulutusmoduuli')}</div>
-                <ul className="kurssit">
-                  {
-                    modelLookup(oppiaine, 'osasuoritukset').value.map((kurssi, kurssiIndex) =>
-                      <li className="kurssi" key={kurssiIndex}>
-                        <div className="tunniste">{modelData(kurssi, 'koulutusmoduuli.tunniste.koodiarvo')}</div>
-                        <div className="arvosana">{modelData(kurssi, 'arviointi') && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
-                      </li>
-                    )
-                  }
-                </ul>
-              </td>
-              <td className="maara">{modelData(oppiaine, 'osasuoritukset').filter(k => k.arviointi).length}</td>
-              <td className="arvosana">{modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo}</td>
-            </tr>
-          )
-        }
-        </tbody>
-      </table>
-    )
   }
 })
 
