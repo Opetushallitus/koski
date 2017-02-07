@@ -100,7 +100,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
 
-    return (<GenericEditor.TogglableEditor context={opiskeluoikeusContext} renderChild={ (editableContext, editLink) => (<div className="opiskeluoikeus">
+    return (<GenericEditor.TogglableEditor context={opiskeluoikeusContext} renderChild={ (editableContext, editLink) => (<div className={editableContext.edit ? 'opiskeluoikeus editing' : 'opiskeluoikeus'}>
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
         <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
@@ -190,31 +190,33 @@ const ExpandablePropertiesEditor = React.createClass({
 const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let className = 'suoritus ' + model.value.classes.join(' ')
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus']
 
     return (<GenericEditor.TogglableEditor
       context={context}
-      renderChild={ (ctx, editLink) => <div className={className}>
-        {editLink}
-        <TodistusLink suoritus={model} context={ctx}/>
-        <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(ctx, {editable: model.editable})}/>
-        <div className="tila-vahvistus">
-          <span className="tila">
-            Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span>
-          </span>
-          <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="vahvistus" />
-        </div>
-        <div className="osasuoritukset">
-          {
-            ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
-              ? <PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
-              : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
-                ? <TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
-                : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
-          }
-        </div>
-      </div>
+      renderChild={ (ctx, editLink) => {
+        let className = 'suoritus ' + (ctx.edit ? 'editing ' : '') + model.value.classes.join(' ')
+        return (<div className={className}>
+          {editLink}
+          <TodistusLink suoritus={model} context={ctx}/>
+          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(ctx, {editable: model.editable})}/>
+          <div className="tila-vahvistus">
+            <span className="tila">
+              Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span>
+            </span>
+            <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="vahvistus" />
+          </div>
+          <div className="osasuoritukset">
+            {
+              ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
+                ? <PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
+                : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
+                  ? <TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+                  : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+            }
+          </div>
+        </div>)
+        }
       }
     />)
   }
