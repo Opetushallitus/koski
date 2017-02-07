@@ -41,6 +41,26 @@
 
     .opiskeluoikeuden-tiedot {
       position: relative;
+      .property.tila .array {
+        .opiskeluoikeusjakso {
+          margin-bottom: 8px;
+          display: inline-block;
+          label.date {
+            display: inline-block;
+            width: 4.5em;
+          }
+          label.tila {
+            .NeutralNotification;
+            padding: 3px 9px;
+            margin-left: 10px;
+          }
+        }
+      }
+      &:not(.editing) {
+        .property.tila .array {
+          .CompactList;
+        }
+      }
     }
 
     .expandable-container {
@@ -68,23 +88,6 @@
     .jaksollinen {
       & > .properties {
         padding-left: 8px;
-      }
-    }
-
-    .property.tila .array {
-      .CompactList;
-      .opiskeluoikeusjakso {
-        margin-bottom: 8px;
-        display: inline-block;
-        label.date {
-          display: inline-block;
-          width: 4.5em;
-        }
-        label.tila {
-          .NeutralNotification;
-          padding: 3px 9px;
-          margin-left: 10px;
-        }
       }
     }
 
@@ -270,7 +273,6 @@
       line-height: 23px;
 
       &.add-item {
-        text-align: right;
         a {
           font-size: 12px;
         }

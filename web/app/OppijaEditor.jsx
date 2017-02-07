@@ -100,7 +100,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
 
-    return (<GenericEditor.TogglableEditor context={opiskeluoikeusContext} renderChild={ (editableContext, editLink) => (<div className={editableContext.edit ? 'opiskeluoikeus editing' : 'opiskeluoikeus'}>
+    return (<GenericEditor.TogglableEditor context={opiskeluoikeusContext} renderChild={ (editableContext, editLink) => (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
         <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
@@ -115,7 +115,7 @@ const OpiskeluoikeusEditor = React.createClass({
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <div className="opiskeluoikeus-content">
-        <div className="opiskeluoikeuden-tiedot">
+        <div className={editableContext.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
           {editLink}
           <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
           <div className="alku-loppu">
