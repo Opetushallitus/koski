@@ -1,5 +1,5 @@
 import React from 'react'
-import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import { modelData, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
@@ -32,12 +32,15 @@ export const LukionOppiaineetEditor = React.createClass({
 
 const LukionOppiaineEditor = React.createClass({
   render() {
+
     let {oppiaine} = this.props
     let arviointi = modelData(oppiaine, 'arviointi')
     let kurssit = modelItems(oppiaine, 'osasuoritukset') || []
-    let suoritetutKurssit = modelData(oppiaine, 'osasuoritukset').filter(k => k.arviointi)
-    let kurssiLkm = suoritetutKurssit ? suoritetutKurssit.length : 0
-    //let keskiarvo = kurssiLkm > 0 && Math.round((suoritetutKurssit.map(k => parseInt(k.arviointi.last().arvosana.koodiarvo)).reduce((a,b) => a + b) / kurssiLkm) * 10) / 10
+    let suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+    let numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
+    let kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
+    let keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a,b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+
     return (
       <tr>
         <td className="oppiaine">
@@ -50,10 +53,10 @@ const LukionOppiaineEditor = React.createClass({
             }
           </ul>
         </td>
-        <td className="maara">{kurssiLkm}</td>
+        <td className="maara">{suoritetutKurssit.length}</td>
         <td className="arvosana">
           <div className="annettuArvosana">{arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}</div>
-          <div className="keskiarvo"></div>
+          <div className="keskiarvo">{keskiarvo ? '(' + keskiarvo.toFixed(1) + ')' : ''}</div>
         </td>
       </tr>
     )
