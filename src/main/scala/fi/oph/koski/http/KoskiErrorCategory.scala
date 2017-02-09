@@ -37,6 +37,7 @@ object KoskiErrorCategory {
         val tuntematon = subcategory("tuntematon", "Tuntematon organisaatio: oid-tunnisteella ei löytynyt organisaatiota.")
         val vääränTyyppinen = subcategory("vääränTyyppinen", "Organisaatio on väärän tyyppinen. Esimerkiksi oppilaitoksena käytetty organisaatio ei ole oppilaitostyyppinen.")
         val vääräKoulutustoimija = subcategory("vääräKoulutustoimija", "Koulutustoimija ei vastaa organisaatiopalvelun mukaista tietoa")
+        val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
       }
       val organisaatio = new Organisaatio
 

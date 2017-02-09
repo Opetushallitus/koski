@@ -10,7 +10,7 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmällinen {
+trait Opiskeluoikeus extends Lähdejärjestelmällinen {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
@@ -42,8 +42,6 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   def suoritukset: List[PäätasonSuoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: OpiskeluoikeudenTila
-  def withKoulutustoimija(koulutustoimija: Koulutustoimija): Opiskeluoikeus
-  def omistajaOrganisaatio = oppilaitos.get
   def luokka = {
     val vuosiluokkasuoritukset = suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
     vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
@@ -55,10 +53,13 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
 trait OpiskeluoikeudenLisätiedot
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+  @MinItems(1)
   def suoritukset: List[PäätasonSuoritus]
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
   def withVersion(version: Int) = this.withIdAndVersion(this.id, Some(version))
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
+  def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
+  def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
 
 trait OpiskeluoikeudenTila {

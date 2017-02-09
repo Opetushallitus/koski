@@ -12,7 +12,6 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", "opiskeluoikeudentyyppi")
 ) extends Opiskeluoikeus {
-  override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
   override def alkamispäivä = None
   override def päättymispäivä = None

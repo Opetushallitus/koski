@@ -4,21 +4,18 @@ import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
-import fi.oph.koski.henkilo.AuthenticationServiceClient.OppijaHenkilö
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeusQueries}
-import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
-import org.joda.time.DateTime
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 

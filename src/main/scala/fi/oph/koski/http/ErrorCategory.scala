@@ -26,7 +26,10 @@ case class ErrorCategory(val key: String, val statusCode: Int, val message: Stri
 
   def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
 
-  def apply(): HttpStatus = apply(message)
+  def apply(): HttpStatus = statusCode match {
+    case 200 => HttpStatus.ok
+    case _ => apply(message)
+  }
 
   def children: List[(String, ErrorCategory)] = children_
   def flatten: List[ErrorCategory] = children match {

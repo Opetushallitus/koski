@@ -40,6 +40,21 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu"))))))
           opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
         }
+
+        "Oppilaitos puuttuu" - {
+          "Suoritukselta löytyy toimipiste -> Täytetään oppilaitos" in {
+            val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = None))
+            opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+          }
+          "Suorituksilta löytyy toimipisteet, joilla eri oppilaitos -> FAIL" in {
+            putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+              oppilaitos = None,
+              suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
+            )) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
+            }
+          }
+        }
       }
       "Koodistojen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {

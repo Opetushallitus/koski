@@ -3,6 +3,7 @@ package fi.oph.koski.http
 import fi.oph.koski.json.Json
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
+  if (statusCode == 200 && errors.nonEmpty) throw new RuntimeException("HttpStatus 200 with error message " + errors.mkString(","))
   def isOk = statusCode < 300
   def isError = !isOk
 

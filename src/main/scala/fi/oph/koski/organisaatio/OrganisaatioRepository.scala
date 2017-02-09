@@ -26,14 +26,19 @@ trait OrganisaatioRepository {
     flatten(List(hierarkia)).map(_.oid).toSet
   }
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
-  def findKoulutustoimija(oppilaitos: Oppilaitos): Option[Koulutustoimija] = {
-    def findKoulutustoimijaFromHierarchy(root: OrganisaatioHierarkia): Option[Koulutustoimija] = if (root.toKoulutustoimija.isDefined && root.children.exists(_.oid == oppilaitos.oid)) {
-      root.toKoulutustoimija
+  def findKoulutustoimijaForOppilaitos(oppilaitos: Oppilaitos): Option[Koulutustoimija] = findParentWith(oppilaitos, _.toKoulutustoimija)
+  def findOppilaitosForToimipiste(toimipiste: OrganisaatioWithOid): Option[Oppilaitos] = findParentWith(toimipiste, _.toOppilaitos)
+
+  private def findParentWith[T <: OrganisaatioWithOid](org: OrganisaatioWithOid, findr: OrganisaatioHierarkia => Option[T]) = {
+    def containsOid(root: OrganisaatioHierarkia) = (root.oid == org.oid || root.children.exists(_.oid == org.oid))
+    def findKoulutustoimijaFromHierarchy(root: OrganisaatioHierarkia): Option[T] = if (findr(root).isDefined && containsOid(root)) {
+      findr(root)
     } else {
       root.children.flatMap(findKoulutustoimijaFromHierarchy).headOption
     }
-    getOrganisaatioHierarkiaIncludingParents(oppilaitos.oid).flatMap(findKoulutustoimijaFromHierarchy)
+    getOrganisaatioHierarkiaIncludingParents(org.oid).flatMap(findKoulutustoimijaFromHierarchy)
   }
+
   def findHierarkia(query: String): List[OrganisaatioHierarkia]
 }
 
