@@ -198,10 +198,11 @@ class PerfTestPrometheusPusher(testname: String) {
   }
 
   def push(stats: Map[String, Stats]) = {
+    import collection.JavaConverters._
     stats.foreach { case (operation, stats) =>
       record(operation, stats)
     }
     val pg = new PushGateway("127.0.0.1:9091");
-    pg.pushAdd(registry, "my_batch_job")
+    pg.pushAdd(registry, "my_batch_job", Map("testname" -> testname).asJava)
   }
 }
