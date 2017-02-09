@@ -30,39 +30,39 @@ class TodistusServlet(val application: KoskiApplication) extends HtmlServlet wit
           case ((opiskeluoikeus, suoritus) :: Nil) =>
             suoritus match {
               case t: PerusopetukseenValmistavanOpetuksenSuoritus =>
-                Right((new PerusopetukseenValmistavanOpetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
+                Right((new PerusopetukseenValmistavanOpetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenOppimääränSuoritus =>
-                Right((new PerusopetuksenPaattotodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
+                Right((new PerusopetuksenPaattotodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenOppiaineenOppimääränSuoritus =>
-                Right((new PerusopetuksenOppiaineenOppimaaranTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
+                Right((new PerusopetuksenOppiaineenOppimaaranTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenVuosiluokanSuoritus =>
-                Right((new PerusopetuksenLukuvuositodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
+                Right((new PerusopetuksenLukuvuositodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenLisäopetuksenSuoritus =>
-                Right((new PerusopetuksenLisaopetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
+                Right((new PerusopetuksenLisaopetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: AmmatillisenTutkinnonSuoritus =>
                 t.koulutusmoduuli.perusteenDiaarinumero.flatMap(application.tutkintoRepository.findPerusteRakenne(_)) match {
                   case Some(rakenne: TutkintoRakenne) =>
                     val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa)
                     maybeSuoritustapaJaRakenne match {
-                      case Some(suoritustapaJaRakenne) => Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t, suoritustapaJaRakenne))
+                      case Some(suoritustapaJaRakenne) => Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t, suoritustapaJaRakenne))
                       case _ => Left(KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu())
                     }
                   case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy"))
                 }
               case t: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-                Right(new NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
+                Right(new NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
               case t: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus =>
-                Right(new ValmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
+                Right(new ValmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
               case t: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus =>
-                Right(new TelmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
+                Right(new TelmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
               case t: LukionOppimääränSuoritus =>
-                Right((new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
+                Right((new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case t: IBTutkinnonSuoritus =>
-                Right((new IBPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
+                Right((new IBPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case t: YlioppilastutkinnonSuoritus =>
-                Right((new YlioppilastutkintotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
+                Right((new YlioppilastutkintotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case t: LukioonValmistavanKoulutuksenSuoritus =>
-                Right((new LuvaTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
+                Right((new LuvaTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case _ =>
                 Left(KoskiErrorCategory.notFound.todistustaEiLöydy())
           }

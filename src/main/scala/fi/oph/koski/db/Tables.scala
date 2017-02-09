@@ -25,7 +25,7 @@ object Tables {
 
   object OpiskeluoikeusTable {
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
-      OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
+      OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
     }
     def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))

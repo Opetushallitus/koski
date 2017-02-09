@@ -39,7 +39,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-        oppilaitos = oppilaitos(opiskeluoikeusNode),
+        oppilaitos = Some(oppilaitos(opiskeluoikeusNode)),
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
         tila = opiskeluoikeudenTila,
@@ -59,7 +59,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         alkamispäivä = None,
         arvioituPäättymispäivä = None,
         päättymispäivä = None,
-        oppilaitos = organisaatio,
+        oppilaitos = Some(organisaatio),
         koulutustoimija = None,
         suoritukset = suoritukset,
         tila = KorkeakoulunOpiskeluoikeudenTila(Nil)

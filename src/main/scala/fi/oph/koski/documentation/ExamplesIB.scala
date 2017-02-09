@@ -210,7 +210,7 @@ object ExamplesIB {
     )))
 
   val opiskeluoikeus = IBOpiskeluoikeus(
-    oppilaitos = ressunLukio,
+    oppilaitos = Some(ressunLukio),
     alkamispäivä = Some(date(2012, 9, 1)),
     päättymispäivä = Some(date(2016, 1, 10)),
     tila = LukionOpiskeluoikeudenTila(

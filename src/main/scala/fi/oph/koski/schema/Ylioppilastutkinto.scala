@@ -4,7 +4,7 @@ import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
-  oppilaitos: Oppilaitos,
+  oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
   @MinItems(1) @MaxItems(1)

@@ -5,7 +5,7 @@ object OpiskeluoikeusIdentifier {
   def apply(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus): OpiskeluoikeusIdentifier = (opiskeluoikeus.id, opiskeluoikeus.lähdejärjestelmänId) match {
     case (Some(id), _) => PrimaryKey(id)
     case (_, Some(lähdejärjestelmäId)) => OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId)
-    case _ => OppijaOidOrganisaatioJaTyyppi(oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.tyyppi.koodiarvo, None)
+    case _ => OppijaOidOrganisaatioJaTyyppi(oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.tyyppi.koodiarvo, None)
   }
 }
 

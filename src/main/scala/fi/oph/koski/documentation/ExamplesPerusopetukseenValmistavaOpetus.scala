@@ -16,7 +16,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
       PerusopetuksenOpiskeluoikeusjakso(date(2007, 8, 15), opiskeluoikeusLäsnä),
       PerusopetuksenOpiskeluoikeusjakso(date(2008, 6, 1), opiskeluoikeusValmistunut)
     )),
-    oppilaitos = jyväskylänNormaalikoulu,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetukseenValmistavanOpetuksenSuoritus(
         tila = tilaValmis,

@@ -87,7 +87,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
     case i:OppijaOidOrganisaatioJaTyyppi => {
       findUnique(i.oppijaOid, { row =>
-        OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.oppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
+        OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
       })
     }
   }

@@ -33,7 +33,7 @@ object AmmattitutkintoExample {
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
       AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
     )),
-    oppilaitos = stadinAmmattiopisto,
+    oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
       NäyttötutkintoonValmistavanKoulutuksenSuoritus(
         tutkinto = tutkinto,
@@ -95,7 +95,7 @@ object AmmatillinenPerustutkintoExample {
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 5, 31)),
-        oppilaitos = stadinAmmattiopisto,
+        oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonOsittainenSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(
             Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
@@ -199,7 +199,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
-        oppilaitos = stadinAmmattiopisto,
+        oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
@@ -257,7 +257,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
-        oppilaitos = stadinAmmattiopisto,
+        oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(
             Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),

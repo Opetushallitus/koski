@@ -33,7 +33,7 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
-  def oppilaitos: Oppilaitos
+  def oppilaitos: Option[Oppilaitos]
   @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
   @ReadOnly("Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
   @Hidden
@@ -43,12 +43,13 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: OpiskeluoikeudenTila
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): Opiskeluoikeus
-  def omistajaOrganisaatio = oppilaitos
+  def omistajaOrganisaatio = oppilaitos.get
   def luokka = {
     val vuosiluokkasuoritukset = suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
     vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
 }
 
 trait OpiskeluoikeudenLisätiedot

@@ -10,7 +10,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  oppilaitos: Oppilaitos,
+  oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate] = None,

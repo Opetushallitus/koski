@@ -19,7 +19,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](Cache.cacheAllNoRefresh(getClass.getSimpleName + ".opiskeluoikeudet", 3600, 100), doFindByHenkilö)
 
   def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
-    cache(hetu).map(_.oppilaitos.oid)
+    cache(hetu).map(_.getOppilaitos.oid)
   }
 
   def doFindByHenkilö(hetu: Henkilö.Hetu): List[OO] = {
@@ -53,7 +53,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   }
   private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
   private def accessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
+  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.getOppilaitos.oid)))
 
   // Public methods
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty).toList)

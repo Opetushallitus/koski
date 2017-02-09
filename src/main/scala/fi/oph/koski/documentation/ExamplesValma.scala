@@ -21,7 +21,7 @@ object ExamplesValma {
           AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),
           AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
         )),
-        oppilaitos = stadinAmmattiopisto,
+        oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),

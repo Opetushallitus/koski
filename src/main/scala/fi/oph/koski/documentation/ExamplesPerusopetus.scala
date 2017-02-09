@@ -17,7 +17,7 @@ object ExamplesPerusopetus {
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
         kahdeksannenLuokanSuoritus,
@@ -38,7 +38,7 @@ object ExamplesPerusopetus {
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppiaineenOppimääränSuoritus(
@@ -63,7 +63,7 @@ object ExamplesPerusopetus {
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppimääränSuoritus(
@@ -90,7 +90,7 @@ object ExamplesPerusopetus {
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppimääränSuoritus(

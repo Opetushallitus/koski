@@ -74,7 +74,7 @@ object PerusopetusExampleData {
     PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(alkamispäivä),
       päättymispäivä = päättymispäivä,
-      oppilaitos = oppilaitos,
+      oppilaitos = Some(oppilaitos),
       koulutustoimija = None,
       suoritukset = suoritukset,
       tila = PerusopetuksenOpiskeluoikeudenTila(

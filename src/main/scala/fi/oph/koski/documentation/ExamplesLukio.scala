@@ -22,7 +22,7 @@ object ExamplesLukio {
           LukionOpiskeluoikeusjakso(alku = date(2016, 6, 1), tila = opiskeluoikeusPäättynyt)
         )
       ),
-      oppilaitos = oppilaitos,
+      oppilaitos = Some(oppilaitos),
       lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(
         pidennettyPäättymispäivä = false,
         ulkomainenVaihtoopiskelija = false,
@@ -191,7 +191,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2015, 9, 1)),
       päättymispäivä = Some(date(2016, 1, 10)),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
         LukionOppiaineenOppimääränSuoritus(
           koulutusmoduuli = lukionOppiaine("HI"),
@@ -292,7 +292,7 @@ object LukioExampleData {
     lähdejärjestelmänId = None,
     alkamispäivä = Some(date(2012, 9, 1)),
     päättymispäivä = None,
-    oppilaitos = oppilaitos,
+    oppilaitos = Some(oppilaitos),
     suoritukset = List(
       LukionOppimääränSuoritus(
         koulutusmoduuli = lukionOppimäärä,

@@ -29,7 +29,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
             }
             Some(YlioppilastutkinnonOpiskeluoikeus(
                 lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),
-                oppilaitos = oppilaitos,
+                oppilaitos = Some(oppilaitos),
                 koulutustoimija = None,
                 tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil),
                 tyyppi = requiredKoodi("opiskeluoikeudentyyppi", "ylioppilastutkinto"),

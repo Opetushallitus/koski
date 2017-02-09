@@ -87,7 +87,7 @@ object OpiskeluoikeusTestData {
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 
     AmmatillinenOpiskeluoikeus(
-      oppilaitos = oppilaitos,
+      oppilaitos = Some(oppilaitos),
       suoritukset = List(AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"),

@@ -16,7 +16,7 @@ object ExamplesEsiopetus {
     List(EsiopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2006, 8, 13)),
       päättymispäivä = Some(date(2007, 6, 3)),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
           EsiopetuksenSuoritus(

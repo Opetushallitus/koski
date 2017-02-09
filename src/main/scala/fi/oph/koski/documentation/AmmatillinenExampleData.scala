@@ -113,7 +113,7 @@ object AmmatillinenExampleData {
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, None))),
-      oppilaitos = oppilaitos,
+      oppilaitos = Some(oppilaitos),
       suoritukset = List(tutkinto.copy(osasuoritukset = osat))
     )
   }
@@ -168,7 +168,7 @@ object AmmatillinenExampleData {
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
-    oppilaitos = oppilaitos,
+    oppilaitos = Some(oppilaitos),
     suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste)),
     lisätiedot = None,
     tila = AmmatillinenOpiskeluoikeudenTila(
@@ -182,7 +182,7 @@ object AmmatillinenExampleData {
   def perustutkintoOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    oppilaitos = oppilaitos,
+    oppilaitos = Some(oppilaitos),
     suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste)),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(

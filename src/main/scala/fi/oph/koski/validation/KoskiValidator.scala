@@ -64,7 +64,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def addKoulutustoimija(oo: Opiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
-    organisaatioRepository.findKoulutustoimija(oo.oppilaitos) match {
+    organisaatioRepository.findKoulutustoimija(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
           case Some(oid) if oid != löydettyKoulutustoimija.oid =>

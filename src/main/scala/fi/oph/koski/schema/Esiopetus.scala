@@ -9,7 +9,7 @@ case class EsiopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int]  = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  oppilaitos: Oppilaitos,
+  oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,

@@ -75,7 +75,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       }
       logger(user).info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid +
         " tutkintoon " + opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",") +
-        " oppilaitoksessa " + opiskeluoikeus.oppilaitos.oid)
+        " oppilaitoksessa " + opiskeluoikeus.getOppilaitos.oid)
     }
 
     def auditLog(oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult): Unit = {
