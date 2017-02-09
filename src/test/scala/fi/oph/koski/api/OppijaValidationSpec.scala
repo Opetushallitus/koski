@@ -184,6 +184,13 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + MockOrganisaatiot.helsinginKaupunki)))
         }
       }
+
+      "Kun toimipiste ei ole oppilaitoksen aliorganisaatio" - {
+        "Palautetaan HTTP 200" in {
+          putOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.omnia)) (
+            verifyResponseStatus(200))
+        }
+      }
     }
 
     "Opiskeluoikeuden tila ja päivämäärät" - {

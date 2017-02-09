@@ -1,9 +1,8 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.json.Json
-import fi.oph.koski.koodisto.{MockKoodistoViitePalvelu, KoodistoViitePalvelu}
-import fi.oph.koski.organisaatio.MockOrganisaatioRepository._
-import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos, OrganisaatioWithOid}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.koski.schema.Oppilaitos
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
