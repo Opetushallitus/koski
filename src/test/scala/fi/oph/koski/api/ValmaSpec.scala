@@ -1,11 +1,11 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
-  describe("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)") {
-    it("Päättötodistus") {
+class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
+  "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)" - {
+    "Päättötodistus" in {
       todistus(MockOppijat.valma.oid, "valma") should equal(
         """Ammatilliseen peruskoulutukseen valmentava koulutus
           |HELSINGIN KAUPUNKI

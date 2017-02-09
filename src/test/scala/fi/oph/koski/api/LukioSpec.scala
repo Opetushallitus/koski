@@ -2,11 +2,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
-  describe("Lukio") {
-    it("Opintosuoritusote") {
+class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
+  "Lukio" - {
+    "Opintosuoritusote" in {
       opintosuoritusote(MockOppijat.lukiolainen) should equal(
         """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
@@ -118,7 +118,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
           |ÄI9 Lukutaitojen syventäminen 1 9 4.6.2016""".stripMargin)
     }
 
-    it("Päättötodistus") {
+    "Päättötodistus" in {
       todistus(MockOppijat.lukiolainen.oid, "lukionoppimaara") should equal("""Lukion päättötodistus
                                                             |Jyväskylän yliopisto
                                                             |Jyväskylän normaalikoulu

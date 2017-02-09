@@ -33,12 +33,12 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Oppilaitoksen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
-          opiskeluoikeus.oppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
-          opiskeluoikeus.oppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
+          opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
+          opiskeluoikeus.getOppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu")))))
-          opiskeluoikeus.oppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
+          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu"))))))
+          opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
         }
       }
       "Koodistojen tiedot" - {
@@ -76,7 +76,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää oppilaitoksen vaihtamisen" in {
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
@@ -103,7 +103,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää oppilaitoksen vaihtamisen" in {
-        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
@@ -150,10 +150,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeus(oppija.oid)
-          result.oppilaitos.oid should equal(MockOrganisaatiot.omnia)
+          result.getOppilaitos.oid should equal(MockOrganisaatiot.omnia)
           result.versionumero should equal(Some(1))
         }
       }

@@ -9,35 +9,35 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
+class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import DateOrdering._
   val teija = MockOppijat.teija.vainHenkilötiedot
   val eero = MockOppijat.eero.vainHenkilötiedot
 
-  describe("Kyselyrajapinta") {
-    describe("kun haku osuu") {
-      describe("nimihaku") {
-        it("sukunimellä tai etunimellä") {
+  "Kyselyrajapinta" - {
+    "kun haku osuu" - {
+      "nimihaku" - {
+        "sukunimellä tai etunimellä" in {
           queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
           queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
         }
-        it("sukunimen tai etunimen osalla") {
+        "sukunimen tai etunimen osalla" in {
           queryOppijat("?nimihaku=eerol").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
           queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
         }
-        it("etunimi-sukunimiyhdistelmällä") {
+        "etunimi-sukunimiyhdistelmällä" in {
           queryOppijat("?nimihaku=jouni%20eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
         }
-        it("osittaisten nimien yhdistelmällä") {
+        "osittaisten nimien yhdistelmällä" in {
           queryOppijat("?nimihaku=jou%20eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
         }
-        it("aksentit & moniosaiset nimet") {
+        "aksentit & moniosaiset nimet" in {
           queryOppijat("?nimihaku=eero%20fager").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
         }
       }
-      it("päättymispäivämäärä") {
+      "päättymispäivämäärä" in {
         resetFixtures
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), teija)
@@ -52,7 +52,7 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_HAKU", "hakuEhto" -> queryString))
 
       }
-      it("alkamispäivämäärä") {
+      "alkamispäivämäärä" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
@@ -60,7 +60,7 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
             .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
-      it("tutkinnon tila") {
+      "tutkinnon tila" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)).copy(suoritukset = List(AmmatillinenExampleData.ympäristöalanPerustutkintoValmis())), eero)
         insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
@@ -68,38 +68,38 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
           .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
-      it("opiskeluoikeuden tyyppi") {
+      "opiskeluoikeuden tyyppi" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").length should equal(0)
       }
-      it("suorituksen tyyppi") {
+      "suorituksen tyyppi" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=ammatillinentutkinto").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=lukionoppimaara").length should equal(0)
       }
-      it("opiskeluoikeuden tila") {
+      "opiskeluoikeuden tila" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=lasna").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=eronnut").length should equal(0)
       }
-      describe("toimipistehaku") {
-        it("toimipisteen OID:lla") {
+      "toimipistehaku" - {
+        "toimipisteen OID:lla" in {
           resetFixtures
           insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
           queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.42456023292").length should equal(1)
         }
 
-        it("oppilaitoksen OID:lla") {
+        "oppilaitoksen OID:lla" in {
           resetFixtures
           insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
           queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.52251087186").length should equal(1)
         }
 
-        it("jos organisatiota ei löydy") {
+        "jos organisatiota ei löydy" in {
           authGet("api/oppija?toimipiste=1.2.246.562.10.42456023000") {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: 1.2.246.562.10.42456023000"))
           }
@@ -107,8 +107,8 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
       }
     }
 
-    describe("luokkahaku") {
-      it("luokan osittaisella tai koko nimellä") {
+    "luokkahaku" - {
+      "luokan osittaisella tai koko nimellä" in {
         resetFixtures
         insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8C"))), eero)
         insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8D"))), teija)
@@ -117,24 +117,24 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
       }
     }
 
-    describe("Kun haku ei osu") {
-      it("palautetaan tyhjä lista") {
+    "Kun haku ei osu" - {
+      "palautetaan tyhjä lista" in {
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
         val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
         oppijat.length should equal(0)
       }
     }
 
-    describe("Kun haetaan ei tuetulla parametrilla") {
-      it("palautetaan HTTP 400") {
+    "Kun haetaan ei tuetulla parametrilla" - {
+      "palautetaan HTTP 400" in {
         authGet("api/oppija?eiTuettu=kyllä") {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: eiTuettu"))
         }
       }
     }
 
-    describe("Kun haetaan ilman parametreja") {
-      it("palautetaan kaikki oppijat") {
+    "Kun haetaan ilman parametreja" - {
+      "palautetaan kaikki oppijat" in {
         val oppijat = queryOppijat()
         oppijat.length should be >= 2
       }

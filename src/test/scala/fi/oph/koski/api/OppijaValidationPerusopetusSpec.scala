@@ -11,14 +11,14 @@ import fi.oph.koski.schema._
 class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
-  describe("Suoritusten tila") {
-    it("Todistus VALMIS ilman vahvistusta -> HTTP 400") {
+  "Suoritusten tila" - {
+    "Todistus VALMIS ilman vahvistusta -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
       }
     }
 
-    it("Valmis oppiainesuoritus vaatii arvioinnin") {
+    "Valmis oppiainesuoritus vaatii arvioinnin" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE"))))
       )))) {
@@ -26,7 +26,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
-    it("Valmis oppiainesuoritus ei vaadi vahvistusta.") {
+    "Valmis oppiainesuoritus ei vaadi vahvistusta." in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE")).copy(arviointi = PerusopetusExampleData.arviointi(9))))
       )))) {

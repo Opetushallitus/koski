@@ -12,7 +12,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluoikeusTestMethods[
   val vahvistus = Some(HenkilövahvistusPaikkakunnalla(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
-    oppilaitos = jyväskylänNormaalikoulu,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(päättötodistusSuoritus),
     alkamispäivä = Some(longTimeAgo),
     tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))

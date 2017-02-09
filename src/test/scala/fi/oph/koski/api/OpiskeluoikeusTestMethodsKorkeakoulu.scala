@@ -9,7 +9,7 @@ trait OpiskeluoikeusTestMethodsKorkeakoulu extends PutOpiskeluoikeusTestMethods[
   override def defaultOpiskeluoikeus = KorkeakoulunOpiskeluoikeus(
     alkamispäivä = Some(date(2016, 9, 1)),
     arvioituPäättymispäivä = Some(date(2020, 5, 1)),
-    oppilaitos = KorkeakouluTestdata.helsinginYliopisto,
+    oppilaitos = Some(KorkeakouluTestdata.helsinginYliopisto),
     suoritukset = Nil,
     tila = KorkeakoulunOpiskeluoikeudenTila(
       List(

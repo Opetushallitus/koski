@@ -1,11 +1,11 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
-  describe("Perusopetuksen todistukset") {
-    it("Perusopetuksen päättötodistus") {
+class PerusopetusSpec extends FreeSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
+  "Perusopetuksen todistukset" - {
+    "Perusopetuksen päättötodistus" in {
       resetFixtures
       todistus(MockOppijat.koululainen.oid, "perusopetuksenoppimaara", Some("koulutus/201101")) should equal(
         """|Jyväskylän yliopisto
@@ -38,7 +38,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Tietokoneen hyötykäyttö Kiitettävä 9
           |Oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.""".stripMargin)
     }
-    it("Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla") {
+    "Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla" in {
       todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetuksenoppimaara") should equal(
         """Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
@@ -52,7 +52,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |kognitiiviset taidot Hyväksytty""".stripMargin)
     }
 
-    it("Perusopetuksen oppiaineen oppimäärän todistus") {
+    "Perusopetuksen oppiaineen oppimäärän todistus" in {
       todistus(MockOppijat.oppiaineenKorottaja.oid, "perusopetuksenoppiaineenoppimaara") should equal(
         """Jyväskylän yliopisto
           |Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta
@@ -62,7 +62,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Äidinkieli ja kirjallisuus Kiitettävä 9""".stripMargin)
     }
 
-    it("Perusopetuksen lukuvuositodistus") {
+    "Perusopetuksen lukuvuositodistus" in {
       todistus(MockOppijat.koululainen.oid, "perusopetuksenvuosiluokka", Some("perusopetuksenluokkaaste/8")) should equal(
         """Jyväskylän yliopisto
           |Lukuvuositodistus - 8. vuosiluokka
@@ -96,8 +96,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     }
 
   }
-  describe("Perusopetuksen lisäopetus") {
-    it("todistus") {
+  "Perusopetuksen lisäopetus" - {
+    "todistus" in {
       todistus(MockOppijat.kymppiluokkalainen.oid, "perusopetuksenlisaopetus") should equal(
         """|Jyväskylän yliopisto
           |Todistus lisäopetuksen suorittamisesta
@@ -121,8 +121,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     }
   }
 
-  describe("Perusopetukseen valmistava opetus") {
-    it("todistus") {
+  "Perusopetukseen valmistava opetus" - {
+    "todistus" in {
       todistus(MockOppijat.koululainen.oid, "perusopetukseenvalmistavaopetus") should equal (
         """Todistus perusopetukseen valmistavaan opetukseen osallistumisesta
           |Jyväskylän yliopisto

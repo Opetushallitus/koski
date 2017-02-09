@@ -3,31 +3,31 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods with TodistusTestMethods with LocalJettyHttpSpecification {
-  describe("Ylioppilastutkinnot") {
-    describe("Lisättäessä/päivitettäessä") {
-      it("palautetaan HTTP 501") {
+class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods with TodistusTestMethods with LocalJettyHttpSpecification {
+  "Ylioppilastutkinnot" - {
+    "Lisättäessä/päivitettäessä" - {
+      "palautetaan HTTP 501" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
         }
       }
     }
 
-    describe("Haettaessa henkilötunnuksella") {
-      describe("Jos henkilöä ei löydy henkilöpalvelusta") {
-        it("Haetaan YTR:stä ja luodaan henkilö") {
+    "Haettaessa henkilötunnuksella" - {
+      "Jos henkilöä ei löydy henkilöpalvelusta" - {
+        "Haetaan YTR:stä ja luodaan henkilö" - {
           searchForHenkilötiedot("250493-602S").map(_.kokonimi) should equal(List("Christian Aalto"))
         }
-        it("Seuraavalla haulla käytetään aiemmin luotua henkilöä") {
+        "Seuraavalla haulla käytetään aiemmin luotua henkilöä" in {
           searchForHenkilötiedot("250493-602S").map(_.oid) should equal(searchForHenkilötiedot("250493-602S").map(_.oid))
         }
       }
     }
 
-    describe("Haettaessa opintotietoja") {
-      it("Konvertoidaan YTR-järjestelmän tiedot Koski-järjestelmän opiskeluoikeudeksi") {
+    "Haettaessa opintotietoja" - {
+      "Konvertoidaan YTR-järjestelmän tiedot Koski-järjestelmän opiskeluoikeudeksi" in {
         val oikeudet = getOpiskeluoikeudet(MockOppijat.ylioppilas.oid)
         oikeudet.length should equal(1)
 
@@ -42,8 +42,8 @@ class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTe
       }
     }
 
-    describe("Todistus") {
-      it("Näytetään") {
+    "Todistus" - {
+      "Näytetään" in {
         todistus(MockOppijat.ylioppilas.oid, "ylioppilastutkinto") should equal("""Ylioppilastutkintotodistus
                                                                                   |
                                                                                   |Helsingin medialukio

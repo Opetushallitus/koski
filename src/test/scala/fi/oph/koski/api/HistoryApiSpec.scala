@@ -10,50 +10,50 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
-import org.scalatest.FunSpec
+import org.scalatest.FreeSpec
 
-class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class HistoryApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
 
-  describe("Muutoshistoria") {
-    describe("Luotaessa uusi opiskeluoikeus") {
-      it("Luodaan historiarivi") {
+  "Muutoshistoria" - {
+    "Luotaessa uusi opiskeluoikeus" - {
+      "Luodaan historiarivi" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
         verifyHistory(oppija, opiskeluoikeus, List(1))
       }
 
-      it("osasuorituksilla") {
+      "osasuorituksilla" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0))
         verifyHistory(oppija, opiskeluoikeus, List(1))
       }
     }
-    describe("Päivitettäessä") {
-      it("Luodaan uusi versiorivi") {
+    "Päivitettäessä" - {
+      "Luodaan uusi versiorivi" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
         val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
         verifyHistory(oppija, modified, List(1, 2))
       }
 
-      describe("Jos mikään ei ole muuttunut") {
-        it("Ei luoda uutta versioriviä") {
+      "Jos mikään ei ole muuttunut" - {
+        "Ei luoda uutta versioriviä" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
           val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus)
           verifyHistory(oppija, modified, List(1))
         }
       }
 
-      describe("Kun syötteessä annetaan versionumero") {
-        describe("Versionumero sama kuin viimeisin") {
-          it("Päivitys hyväksytään") {
+      "Kun syötteessä annetaan versionumero" - {
+        "Versionumero sama kuin viimeisin" - {
+          "Päivitys hyväksytään" in {
             val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
             verifyHistory(oppija, modified, List(1, 2))
           }
         }
 
-        describe("Versionumero ei täsmää") {
-          it("Päivitys hylätään") {
+        "Versionumero ei täsmää" - {
+          "Päivitys hylätään" in {
             val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
@@ -64,9 +64,9 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
       }
     }
 
-    describe("Käyttöoikeudet") {
-      describe("Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia") {
-        it("Palautetaan 404") {
+    "Käyttöoikeudet" - {
+      "Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia" - {
+        "Palautetaan 404" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get, MockUsers.omniaPalvelukäyttäjä) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
@@ -75,24 +75,24 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
       }
     }
 
-    describe("Virheellinen id") {
-      it("Palautetaan HTTP 400") {
+    "Virheellinen id" - {
+      "Palautetaan HTTP 400" in {
         authGet("api/opiskeluoikeus/historia/asdf") {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.number("Invalid id : asdf"))
         }
       }
     }
 
-    describe("Tuntematon id") {
-      it("Palautetaan HTTP 400") {
+    "Tuntematon id" - {
+      "Palautetaan HTTP 400" in {
         authGet("api/opiskeluoikeus/historia/123456789") {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia"))
         }
       }
     }
 
-    describe("Versiohistorian hakeminen") {
-      it("Onnistuu ja tuottaa auditlog-merkinnän") {
+    "Versiohistorian hakeminen" - {
+      "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get) {
           getHistory(opiskeluoikeus.id.get)
@@ -101,8 +101,8 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
       }
     }
 
-    describe("Yksittäisen version hakeminen") {
-      it("Onnistuu ja tuottaa auditlog-merkinnän") {
+    "Yksittäisen version hakeminen" - {
+      "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get + "/1") {
           verifyResponseStatus(200)
@@ -111,8 +111,8 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
-      describe("Tuntematon versionumero") {
-        it("Palautetaan 404") {
+      "Tuntematon versionumero" - {
+        "Palautetaan 404" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get + "/2") {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota 2 ei löydy opiskeluoikeuden \\d+ historiasta.".r))

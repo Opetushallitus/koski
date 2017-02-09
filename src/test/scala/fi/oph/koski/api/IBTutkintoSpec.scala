@@ -2,11 +2,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
-  describe("IB-tutkinto") {
-    it("Opintosuoritusote") {
+class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
+  "IB-tutkinto" - {
+    "Opintosuoritusote" in {
       opintosuoritusote(MockOppijat.ibPredicted) should equal(
         """Preliminary year courses
           |Kurssia Arvosana Suor.pvm
@@ -129,7 +129,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
       )
     }
 
-    it("Päättötodistus predicted grades") {
+    "Päättötodistus predicted grades" in {
       todistus(MockOppijat.ibPredicted.oid, "ibtutkinto") should equal(
         """International Baccalaureate
           |Predicted Grades
@@ -147,7 +147,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |Topic: How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave""".stripMargin)
     }
 
-    it("Päättötodistus final grades") {
+    "Päättötodistus final grades" in {
       todistus(MockOppijat.ibFinal.oid, "ibtutkinto") should equal(
         """International Baccalaureate
           |Final Grades

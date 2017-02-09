@@ -170,7 +170,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-    oppilaitos = Oppilaitos(MockOrganisaatiot.omnia),
+    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
     suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
   )
 

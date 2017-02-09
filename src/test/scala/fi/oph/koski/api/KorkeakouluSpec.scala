@@ -3,40 +3,40 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with OpintosuoritusoteTestMethods with SearchTestMethods with LocalJettyHttpSpecification {
-  describe("Korkeakoulun opiskeluoikeudet") {
-    describe("Lisättäessä/päivitettäessä") {
-      it("palautetaan HTTP 501") {
+class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with OpintosuoritusoteTestMethods with SearchTestMethods with LocalJettyHttpSpecification {
+  "Korkeakoulun opiskeluoikeudet" - {
+    "Lisättäessä/päivitettäessä" - {
+      "palautetaan HTTP 501" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
         }
       }
     }
 
-    describe("Haettaessa henkilötunnuksella") {
-      describe("Jos henkilöä ei löydy henkilöpalvelusta") {
-        it("Haetaan Virrasta ja luodaan henkilö") {
+    "Haettaessa henkilötunnuksella" - {
+      "Jos henkilöä ei löydy henkilöpalvelusta" - {
+        "Haetaan Virrasta ja luodaan henkilö" in {
           searchForHenkilötiedot("090888-929X").map(_.kokonimi) should equal(List("Harri Koskinen"))
         }
-        it("Seuraavalla haulla käytetään aiemmin luotua henkilöä") {
+        "Seuraavalla haulla käytetään aiemmin luotua henkilöä" in {
           searchForHenkilötiedot("090888-929X").map(_.oid) should equal(searchForHenkilötiedot("090888-929X").map(_.oid))
         }
       }
     }
 
-    describe("Suoritusten tilat") {
-      it("Keskeneräinen tutkinto") {
+    "Suoritusten tilat" - {
+      "Keskeneräinen tutkinto" in {
         getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("KESKEN"))
       }
-      it("Valmis tutkinto") {
+      "Valmis tutkinto" in {
         getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("VALMIS"))
       }
     }
 
-    describe("Haettaessa") {
-      it("Konvertoidaan Virta-järjestelmän opiskeluoikeus") {
+    "Haettaessa" - {
+      "Konvertoidaan Virta-järjestelmän opiskeluoikeus" in {
         val oikeudet = getOpiskeluoikeudet(MockOppijat.dippainssi.oid)
         oikeudet.length should equal(2)
 
@@ -52,8 +52,8 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
     }
 
-    describe("Opintosuoritusote") {
-      it("Valmistunut diplomi-insinööri") {
+    "Opintosuoritusote" - {
+      "Valmistunut diplomi-insinööri" in {
         opintosuoritusoteOppilaitokselle("290492-9455", "1.2.246.562.10.56753942459") should equal(
           """Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka 22.3.2016
@@ -101,7 +101,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
-      it("Opinto-oikeus, keskeneräinen tutkinto") {
+      "Opinto-oikeus, keskeneräinen tutkinto" in {
         opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.56753942459") should equal(
           """|Ensisijainen opinto-oikeus
             |Tavoitetutkinto Tekn. kand., kemian tekniikka
@@ -116,7 +116,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
-      it("AMK, keskeyttänyt") {
+      "AMK, keskeyttänyt" in {
         opintosuoritusoteOppilaitokselle("100193-948U", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
@@ -137,7 +137,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
-      it("AMK, valmistunut") {
+      "AMK, valmistunut" in {
         opintosuoritusoteOppilaitokselle("101291-954C", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |671112 Fysioterapeutti (AMK) 29.5.2015
@@ -181,7 +181,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
-      it("Tutkintoon johtamaton opiskeluoikeus") {
+      "Tutkintoon johtamaton opiskeluoikeus" in {
         opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.27756776996") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset

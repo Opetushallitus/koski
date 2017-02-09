@@ -14,8 +14,8 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
-  describe("Laajuudet") {
-    it("""Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""") {
+  "Laajuudet" - {
+    """Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"))).copy(
           arviointi = arviointi("9"),
@@ -26,7 +26,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*instance value .+ not found.*".r))
       }
     }
-    it("Kurssien laajuuksien summa ei täsmää -> HTTP 400") {
+    "Kurssien laajuuksien summa ei täsmää -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
           arviointi = arviointi("9"),
@@ -41,8 +41,8 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
   }
 
-  describe("Tilat ja vahvistukset") {
-    it("Valmis oppiainesuoritus ei vaadi vahvistusta.") {
+  "Tilat ja vahvistukset" - {
+    "Valmis oppiainesuoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         tila = tilaKesken,
         vahvistus = None,
@@ -52,7 +52,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatus(200)
       }
     }
-    it("Valmis oppiaineen kurssin suoritus ei vaadi vahvistusta.") {
+    "Valmis oppiaineen kurssin suoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         tila = tilaKesken,
         vahvistus = None,

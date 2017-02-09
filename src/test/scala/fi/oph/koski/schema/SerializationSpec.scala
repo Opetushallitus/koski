@@ -5,33 +5,33 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
 import org.json4s.MappingException
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
 private[schema] case class Application(user: Option[User])
 
 private[schema] case class User(firstName: String, lastName: String)
 
-class SerializationSpec extends FunSpec with Matchers with Logging {
-  describe("Serialization / deserialization") {
-    describe("Optional field") {
-      it("Success case") {
+class SerializationSpec extends FreeSpec with Matchers with Logging {
+  "Serialization / deserialization" - {
+    "Optional field" - {
+      "Success case" in {
         Json.read[Application]("""{"user": {"firstName": "John", "lastName": "Doe"}}""")
       }
-      it("When deserialization fails -> throw exception") {
+      "When deserialization fails -> throw exception" in {
         intercept[MappingException] {
           Json.read[Application]("""{"user": {"firstName": "John"}}""")
         }
       }
     }
-    it("Tunnustaminen") {
+    "Tunnustaminen" in {
       val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
       val tunnustettu = Json.read[OsaamisenTunnustaminen](jsonString)
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
-    describe("Examples") {
+    "Examples" - {
       Examples.examples.foreach { example =>
-        it(example.name) {
+        example.name in {
           val jsonString = Json.write(example.data)
           val oppija = Json.read[Oppija](jsonString)
           oppija should(equal(example.data))
@@ -39,8 +39,8 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
         }
       }
     }
-    describe("LocalizedString") {
-      it("Serialized/deserializes cleanly") {
+    "LocalizedString" - {
+      "Serialized/deserializes cleanly" in {
         val string: LocalizedString = LocalizedString.finnish("rölli")
         string.values.foreach { x: AnyRef => {} } // <- force lazy val to evaluate
         val jsonString = Json.write(string)
@@ -48,9 +48,9 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
       }
     }
 
-    describe("Suoritukset") {
+    "Suoritukset" - {
       Examples.examples.foreach { e =>
-        it(e.name + " serialisoituu") {
+        (e.name + " serialisoituu") in {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
 
           kaikkiSuoritukset.foreach { s =>

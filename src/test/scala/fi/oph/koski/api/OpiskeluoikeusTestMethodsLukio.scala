@@ -26,7 +26,7 @@ object OpiskeluoikeusTestMethodsLukio {
   )
 
   def lukionOpiskeluoikeus = LukionOpiskeluoikeus(
-    oppilaitos = jyväskylänNormaalikoulu,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(päättötodistusSuoritus),
     alkamispäivä = Some(longTimeAgo),
     tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))

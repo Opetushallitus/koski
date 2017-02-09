@@ -1,11 +1,11 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class LuvaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
-  describe("Lukioon valmistava koulutus (LUVA)") {
-    it("Päättötodistus") {
+class LuvaSpec extends FreeSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
+  "Lukioon valmistava koulutus (LUVA)" - {
+    "Päättötodistus" in {
       todistus(MockOppijat.luva.oid, "luva") should equal("""Lukioon valmistavan koulutuksen päättötodistus
                                                      |Jyväskylän yliopisto
                                                      |Jyväskylän normaalikoulu
