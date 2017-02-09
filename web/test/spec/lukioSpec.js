@@ -15,7 +15,7 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.lukionoppimaaransuoritus .lukionkurssinsuoritus:eq(0) .oppiaine .nimi').text()).to.equal('Tekstit ja vuorovaikutus')
+        expect(S('.lukionoppimaaransuoritus td.oppiaine:eq(0) li.kurssi:eq(0) .tunniste').text()).to.equal('ÄI1')
       })
     })
     describe('Tulostettava todistus', function() {
