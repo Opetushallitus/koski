@@ -10,7 +10,7 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-trait Opiskeluoikeus extends Lähdejärjestelmällinen {
+trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiittyvä {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
@@ -48,6 +48,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen {
   }
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
+  def omistajaOrganisaatio = getOppilaitos
 }
 
 trait OpiskeluoikeudenLisätiedot

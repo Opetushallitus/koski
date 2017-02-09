@@ -3,7 +3,6 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import fi.oph.scalaschema.Metadata
 import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
