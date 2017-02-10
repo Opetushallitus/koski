@@ -16,8 +16,8 @@ export const Tiedonsiirtotaulukko = React.createClass({
           <th className="hetu">Henkilötunnus</th>
           <th className="nimi">Nimi</th>
           <th className="oppilaitos">Oppilaitos</th>
-          <th className="virhe">{showError ? 'Virhe' : 'Tiedot'}</th>
-          <th className="tiedot"></th>
+          <th className="virhe">Virhe</th>
+          <th className="tiedot">Tiedot</th>
         </tr>
         </thead>
         {
