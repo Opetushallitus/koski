@@ -90,13 +90,19 @@ object PerfTestRunner extends Logging {
                 val contentTypeHeaders = if (o.body != null) scenario.jsonContent else Nil
                 val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders ++ cookieHeaders ++ contentTypeHeaders ++ scenario.authHeaders()
                 val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
-                val success = scenario.submit(o.method, o.uri, o.queryParams, headers, body) {
-                  if (!o.responseCodes.contains(scenario.response.status)) {
-                    scenario.logger.error(HttpStatusException(scenario.response.status, scenario.response.body, o.method, o.uri).getMessage)
-                    false
-                  } else {
-                    true
+                val success = try {
+                  scenario.submit(o.method, o.uri, o.queryParams, headers, body) {
+                    if (!o.responseCodes.contains(scenario.response.status)) {
+                      scenario.logger.error(HttpStatusException(scenario.response.status, scenario.response.body, o.method, o.uri).getMessage)
+                      false
+                    } else {
+                      true
+                    }
                   }
+                } catch {
+                  case e: Exception =>
+                    scenario.logger.error(e.getMessage)
+                    false
                 }
                 stats.record(o.method + " " + o.uriPattern.getOrElse(o.uri), success, currentTimeMillis - started)(scenario.logger)
               }
