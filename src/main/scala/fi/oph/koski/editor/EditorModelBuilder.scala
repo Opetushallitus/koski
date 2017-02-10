@@ -122,20 +122,6 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
   }
 
   private case class EnumModelBuilder[A](alternativesPath: String, toEnumValue: A => EnumValue) extends ModelBuilder {
-    /*
-    private def getEnumeratedModel[A](o: Any, fetchAlternatives: => List[A], toEnumValue: A => EnumValue): EnumeratedModel = {
-      val alternatives = if (editable) {
-        Some(fetchAlternatives.map(toEnumValue(_)))
-      } else {
-        None
-      }
-      o match {
-        case None => EnumeratedModel(None, alternatives, None)
-        case k: A => EnumeratedModel(Some(toEnumValue(k)), alternatives, None)
-      }
-    }
-    */
-
     def prototypeKey = sanitizeName(alternativesPath)
 
     def buildObjectModel(o: AnyRef) = {
