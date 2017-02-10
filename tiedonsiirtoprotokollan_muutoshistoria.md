@@ -1,3 +1,11 @@
+## 10.2.2017
+
+Validointimuutoksia:
+
+- Oppilaitos ei pakollinen, jos se on pääteltävissä päätason suoritusten toimipisteiden perusteella
+- Osasuoritusten laajuuksien summa validoidaan pääsuorituksen laajuutta vasten vain, mikäli pääsuoritus on VALMIS
+  (vaikuttaa esimerkiksi ammatillisten opintojen tutkinnon osiin ja lukion kursseihin)
+  
 ## 27.1.2017
 
 Muutoksia ammatillisen näytön tietoihin.
