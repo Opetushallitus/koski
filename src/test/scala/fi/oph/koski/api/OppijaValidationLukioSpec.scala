@@ -26,7 +26,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*instance value .+ not found.*".r))
       }
     }
-    "Kurssien laajuuksien summa ei täsmää -> HTTP 400" in {
+    "Suoritus valmis, kurssien laajuuksien summa ei täsmää -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
           arviointi = arviointi("9"),
@@ -37,6 +37,22 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       )))
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
+      }
+    }
+
+    "Suoritus kesken, kurssien laajuuksien summa ei täsmää -> HTTP 200" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        tila = tilaKesken,
+        vahvistus = None,
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
+          tila = tilaKesken,
+          osasuoritukset = Some(List(
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = kurssinArviointi("9"))
+          ))
+        )))
+      )))
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(200)
       }
     }
   }
