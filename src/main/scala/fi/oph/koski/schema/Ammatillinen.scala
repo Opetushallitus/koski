@@ -406,7 +406,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = None,
-  laajuus: Option[Laajuus] = None
+  laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends DiaarinumerollinenKoulutus
 
 trait AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa extends Koulutusmoduuli

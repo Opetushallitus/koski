@@ -5,7 +5,6 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -26,7 +25,7 @@ object ExamplesValma {
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(),
+          koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(60))),
           osasuoritukset = Some(List(
             valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = true),
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
