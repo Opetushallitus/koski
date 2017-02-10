@@ -200,7 +200,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
     }
     if (hakusana == "#error#") {
-      throw new TestingException("Testing error handling") // TODO: how to inject error properly
+      throw new TestingException("Testing error handling")
     }
 
     val doc = Json.toJValue(Map(

@@ -1,9 +1,10 @@
 package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
-import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
@@ -11,11 +12,6 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.db.GlobalExecutionContext
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
-import org.json4s._
-
-import scala.util.{Failure, Success}
 
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")

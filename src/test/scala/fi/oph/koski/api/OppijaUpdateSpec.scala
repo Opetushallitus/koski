@@ -46,6 +46,13 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
             val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = None))
             opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
           }
+          "Suorituksilta löytyy toimipisteitä, joilla sama oppilaitos -> Täytetään oppilaitos" in {
+            val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(
+              oppilaitos = None,
+              suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(stadinAmmattiopisto))
+            ))
+            opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+          }
           "Suorituksilta löytyy toimipisteet, joilla eri oppilaitos -> FAIL" in {
             putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
               oppilaitos = None,

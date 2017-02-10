@@ -51,18 +51,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val results: Seq[Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus]] = oppija.opiskeluoikeudet.map(validateOpiskeluoikeus)
-    results.collect { case Left(e) => e} match {
-      case Nil =>
-        results.collect { case Right(oo) => oo } match {
-          case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
-          case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
-        }
-      case errors => Left(HttpStatus.fold(errors))
+    HttpStatus.foldEithers(results).right.flatMap {
+      case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
+      case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
     }
   }
-
-  // TODO: mocha fail!!!
-
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
@@ -91,13 +84,19 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def addOppilaitos(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse(oo.suoritukset.map(_.toimipiste) match {
-      case List(toimipiste) => organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
-        case Some(oppilaitos) => Right(oppilaitos) // TODO: riittää yksiselitteinin oppilaitos, vaikka olisi useampi toimipiste
-        case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
+    val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse {
+      val toimipisteet: List[OrganisaatioWithOid] = oo.suoritukset.map(_.toimipiste)
+      val oppilaitokset: Either[HttpStatus, List[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
+        organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
+          case Some(oppilaitos) => Right(oppilaitos)
+          case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
+        }
+      })
+      oppilaitokset.right.map(_.distinct).flatMap {
+        case List(oppilaitos) => Right(oppilaitos)
+        case _ => Left(KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
       }
-      case _ => Left(KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
-    })
+    }
     oppilaitos.right.map(oo.withOppilaitos(_))
   }
 
