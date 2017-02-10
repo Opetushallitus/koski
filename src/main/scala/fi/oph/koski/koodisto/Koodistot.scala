@@ -63,7 +63,7 @@ object Koodistot {
     "virtaopiskeluoikeudentila"
   )
 
-  val koodistot = koskiKoodistot ++ muutKoodistot
+  val koodistot = (koskiKoodistot ++ muutKoodistot).sorted
 
   /*
     Uuden koodiston lisäys:
