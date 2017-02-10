@@ -17,7 +17,8 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       val arviointiasteikkoViittaus: Option[KoodistoViite] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
       val laajuusYksikkö: Option[Koodistokoodiviite] = suoritustapa.laajuusYksikko.flatMap(_ match {
-        case "OSAAMISPISTE" => koodistoPalvelu.validate(Koodistokoodiviite("6", None, "opintojenlaajuusyksikko", None))
+        case "OSAAMISPISTE" => koodistoPalvelu.validate(Koodistokoodiviite("6", "opintojenlaajuusyksikko"))
+        case "KURSSI" => koodistoPalvelu.validate(Koodistokoodiviite("4", "opintojenlaajuusyksikko"))
         case x: String => {
           logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + x)
           None
