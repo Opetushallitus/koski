@@ -58,13 +58,14 @@ const Lokirivi = React.createClass({
     const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
     const dataToBeShown = this.state && this.state.dataToBeShown
     const showData = (data) => this.setState({dataToBeShown: data})
-    const errorDetails = (virheet) => { return showError ?
-      <div>
-        <ul className="tiedonsiirto-errors">{
-          virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
-        }</ul>
-        <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
-      </div> : <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>}
+    const errorDetails = (virheet) => showError
+      ? (<div>
+          <ul className="tiedonsiirto-errors">{
+            virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
+          }</ul>
+          <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
+        </div>)
+      : <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
 
     const dataLink = () => <a className="viestin-tiedot" onClick={() => showData(row.inputData)}>tiedot</a>
 
