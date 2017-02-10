@@ -189,7 +189,7 @@ const ExpandablePropertiesEditor = React.createClass({
 const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus']
+    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle']
 
     return (<GenericEditor.TogglableEditor
       context={context}
@@ -201,9 +201,19 @@ const PäätasonSuoritusEditor = React.createClass({
           <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(ctx, {editable: model.editable})}/>
           <div className="tila-vahvistus">
             <span className="tila">
-              Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span>
+              Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
             </span>
             <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="vahvistus" />
+            {(() => {
+              let jääLuokalle = modelData(model, 'jääLuokalle')
+              let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+              if (jääLuokalle === true) {
+                return <div>Ei siirretä seuraavalle luokalle</div>
+              } else if (jääLuokalle === false && luokka !== '9') {
+                return <div>Siirretään seuraavalle luokalle</div>
+              }
+            })()}
+
           </div>
           <div className="osasuoritukset">
             {
