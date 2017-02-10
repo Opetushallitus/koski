@@ -53,8 +53,12 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       }
 
 
-      val suoritustapaKoodistoViite: Option[Koodistokoodiviite] = koodistoPalvelu.validate(Koodistokoodiviite(suoritustapa.suoritustapakoodi, None, "ammatillisentutkinnonsuoritustapa", None))
-      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, suoritustapa.rakenne.map(convertRakenneOsa(_, suoritustapa)), laajuusYksikkö))
+      if (Koulutustyyppi.ammatillisetKoulutustyypit.contains(koulutustyyppi)) {
+        koodistoPalvelu.validate(Koodistokoodiviite(suoritustapa.suoritustapakoodi, None, "ammatillisentutkinnonsuoritustapa", None))
+          .map(SuoritustapaJaRakenne(_, suoritustapa.rakenne.map(convertRakenneOsa(_, suoritustapa)), laajuusYksikkö))
+      } else {
+        None
+      }
     }
 
     val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, LocalizedString.sanitize(o.nimi), None, "osaamisala", None))
