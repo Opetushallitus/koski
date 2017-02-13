@@ -156,6 +156,8 @@ sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
 case class ValtakunnallinenLukionKurssi(
   @Description("Lukion kurssi")
   @KoodistoUri("lukionkurssit")
+  @KoodistoUri("lukionkurssitops2004aikuiset")
+  @KoodistoUri("lukionkurssitops2003nuoret")
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],

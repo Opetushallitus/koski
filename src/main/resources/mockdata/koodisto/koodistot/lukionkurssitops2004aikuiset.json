@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "lukionkurssitops2004aikuiset",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Lukion kurssit, OPS 2004 aikuiset",
+    "kuvaus" : "Lukion kurssit, OPS 2004 aikuiset. Sisältää perusteiden kurssikoodit"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2015-09-22",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

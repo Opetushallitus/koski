@@ -302,6 +302,8 @@ object LukionKurssiDeserializer extends Deserializer[LukionKurssi] {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssit") => kurssi.extract[ValtakunnallinenLukionKurssi]
+        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2004aikuiset") => kurssi.extract[ValtakunnallinenLukionKurssi]
+        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2003nuoret") => kurssi.extract[ValtakunnallinenLukionKurssi]
         case kurssi: JObject => kurssi.extract[PaikallinenLukionKurssi]
       }
   }

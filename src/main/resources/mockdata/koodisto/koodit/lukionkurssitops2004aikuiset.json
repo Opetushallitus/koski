@@ -1,0 +1,6888 @@
+[
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_bi1",
+    "koodiArvo": "BI1",
+    "metadata": [
+      {
+        "nimi": "Eliömaailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_bi2",
+    "koodiArvo": "BI2",
+    "metadata": [
+      {
+        "nimi": "Solu ja perinnöllisyys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_bi3",
+    "koodiArvo": "BI3",
+    "metadata": [
+      {
+        "nimi": "Ympäristöekologia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_bi4",
+    "koodiArvo": "BI4",
+    "metadata": [
+      {
+        "nimi": "Ihmisen biologia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_bi5",
+    "koodiArvo": "BI5",
+    "metadata": [
+      {
+        "nimi": "Bioteknologia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa1",
+    "koodiArvo": "EAA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa2",
+    "koodiArvo": "EAA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa3",
+    "koodiArvo": "EAA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa4",
+    "koodiArvo": "EAA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa5",
+    "koodiArvo": "EAA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa6",
+    "koodiArvo": "EAA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa7",
+    "koodiArvo": "EAA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eaa8",
+    "koodiArvo": "EAA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab11",
+    "koodiArvo": "EAB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab12",
+    "koodiArvo": "EAB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab13",
+    "koodiArvo": "EAB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab14",
+    "koodiArvo": "EAB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab15",
+    "koodiArvo": "EAB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab16",
+    "koodiArvo": "EAB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab17",
+    "koodiArvo": "EAB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab21",
+    "koodiArvo": "EAB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab22",
+    "koodiArvo": "EAB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab23",
+    "koodiArvo": "EAB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab24",
+    "koodiArvo": "EAB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab25",
+    "koodiArvo": "EAB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab26",
+    "koodiArvo": "EAB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab27",
+    "koodiArvo": "EAB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab28",
+    "koodiArvo": "EAB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab29",
+    "koodiArvo": "EAB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab291",
+    "koodiArvo": "EAB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab31",
+    "koodiArvo": "EAB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab32",
+    "koodiArvo": "EAB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab33",
+    "koodiArvo": "EAB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab34",
+    "koodiArvo": "EAB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab35",
+    "koodiArvo": "EAB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab36",
+    "koodiArvo": "EAB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab37",
+    "koodiArvo": "EAB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab38",
+    "koodiArvo": "EAB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab39",
+    "koodiArvo": "EAB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_eab391",
+    "koodiArvo": "EAB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena1",
+    "koodiArvo": "ENA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena2",
+    "koodiArvo": "ENA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena3",
+    "koodiArvo": "ENA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena4",
+    "koodiArvo": "ENA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena5",
+    "koodiArvo": "ENA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena6",
+    "koodiArvo": "ENA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena7",
+    "koodiArvo": "ENA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ena8",
+    "koodiArvo": "ENA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb11",
+    "koodiArvo": "ENB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb12",
+    "koodiArvo": "ENB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb13",
+    "koodiArvo": "ENB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb14",
+    "koodiArvo": "ENB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb15",
+    "koodiArvo": "ENB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb16",
+    "koodiArvo": "ENB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb17",
+    "koodiArvo": "ENB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb21",
+    "koodiArvo": "ENB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb22",
+    "koodiArvo": "ENB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb23",
+    "koodiArvo": "ENB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb24",
+    "koodiArvo": "ENB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb25",
+    "koodiArvo": "ENB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb26",
+    "koodiArvo": "ENB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb27",
+    "koodiArvo": "ENB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb28",
+    "koodiArvo": "ENB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb29",
+    "koodiArvo": "ENB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb291",
+    "koodiArvo": "ENB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb31",
+    "koodiArvo": "ENB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb32",
+    "koodiArvo": "ENB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb33",
+    "koodiArvo": "ENB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb34",
+    "koodiArvo": "ENB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb35",
+    "koodiArvo": "ENB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb36",
+    "koodiArvo": "ENB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb37",
+    "koodiArvo": "ENB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb38",
+    "koodiArvo": "ENB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb39",
+    "koodiArvo": "ENB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_enb391",
+    "koodiArvo": "ENB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_et1",
+    "koodiArvo": "ET1",
+    "metadata": [
+      {
+        "nimi": "Hyvä elämä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_et2",
+    "koodiArvo": "ET2",
+    "metadata": [
+      {
+        "nimi": "Maailmankuva",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_et3",
+    "koodiArvo": "ET3",
+    "metadata": [
+      {
+        "nimi": "Yksilö ja yhteisö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_et4",
+    "koodiArvo": "ET4",
+    "metadata": [
+      {
+        "nimi": "Kulttuuriperintö ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_et5",
+    "koodiArvo": "ET5",
+    "metadata": [
+      {
+        "nimi": "Maailman selittäminen katsomusperinteissä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fi1",
+    "koodiArvo": "FI1",
+    "metadata": [
+      {
+        "nimi": "Johdatus filosofiseen ajatteluun",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fi2",
+    "koodiArvo": "FI2",
+    "metadata": [
+      {
+        "nimi": "Filosofinen etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fi3",
+    "koodiArvo": "FI3",
+    "metadata": [
+      {
+        "nimi": "Tiedon ja todellisuuden filosofia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fi4",
+    "koodiArvo": "FI4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntafilosofia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina1",
+    "koodiArvo": "FINA1",
+    "metadata": [
+      {
+        "nimi": "Arkielämä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina2",
+    "koodiArvo": "FINA2",
+    "metadata": [
+      {
+        "nimi": "Luonto ja ympäristö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina3",
+    "koodiArvo": "FINA3",
+    "metadata": [
+      {
+        "nimi": "Kaupankäynti, tekniikka ja viestintä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina4",
+    "koodiArvo": "FINA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja tiedotusvälineet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina5",
+    "koodiArvo": "FINA5",
+    "metadata": [
+      {
+        "nimi": "Koulutus, työ- ja talouselämä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina6",
+    "koodiArvo": "FINA6",
+    "metadata": [
+      {
+        "nimi": "Suomalainen kulttuuri ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina7",
+    "koodiArvo": "FINA7",
+    "metadata": [
+      {
+        "nimi": "Esitä ja keskustele!",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fina8",
+    "koodiArvo": "FINA8",
+    "metadata": [
+      {
+        "nimi": "Maailma ja me",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb1",
+    "koodiArvo": "FINB1",
+    "metadata": [
+      {
+        "nimi": "Arkipäivän suomi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb2",
+    "koodiArvo": "FINB2",
+    "metadata": [
+      {
+        "nimi": "Suomen ihmiset, luonto ja nähtävyydet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb3",
+    "koodiArvo": "FINB3",
+    "metadata": [
+      {
+        "nimi": "Koulutus, harrastukset ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb4",
+    "koodiArvo": "FINB4",
+    "metadata": [
+      {
+        "nimi": "Liike- ja työelämä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb5",
+    "koodiArvo": "FINB5",
+    "metadata": [
+      {
+        "nimi": "Liikenne, tekniikka ja ympäristö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb6",
+    "koodiArvo": "FINB6",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_finb7",
+    "koodiArvo": "FINB7",
+    "metadata": [
+      {
+        "nimi": "Suomi tänään",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim1",
+    "koodiArvo": "FIM1",
+    "metadata": [
+      {
+        "nimi": "Arkielämä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim2",
+    "koodiArvo": "FIM2",
+    "metadata": [
+      {
+        "nimi": "Luonto ja ympäristö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim3",
+    "koodiArvo": "FIM3",
+    "metadata": [
+      {
+        "nimi": "Kaupankäynti, tekniikka ja viestintä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim4",
+    "koodiArvo": "FIM4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja tiedotusvälineet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim5",
+    "koodiArvo": "FIM5",
+    "metadata": [
+      {
+        "nimi": "Koulutus, työ- ja elinkeinoelämä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim6",
+    "koodiArvo": "FIM6",
+    "metadata": [
+      {
+        "nimi": "Suomalainen kulttuuri ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim7",
+    "koodiArvo": "FIM7",
+    "metadata": [
+      {
+        "nimi": "Esitä ja keskustele!",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fim8",
+    "koodiArvo": "FIM8",
+    "metadata": [
+      {
+        "nimi": "Kirjoittamisen taito",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy1",
+    "koodiArvo": "FY1",
+    "metadata": [
+      {
+        "nimi": "Fysiikka luonnontieteenä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy2",
+    "koodiArvo": "FY2",
+    "metadata": [
+      {
+        "nimi": "Lämpö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy3",
+    "koodiArvo": "FY3",
+    "metadata": [
+      {
+        "nimi": "Aallot ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy4",
+    "koodiArvo": "FY4",
+    "metadata": [
+      {
+        "nimi": "Liikkeen lait",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy5",
+    "koodiArvo": "FY5",
+    "metadata": [
+      {
+        "nimi": "Pyöriminen ja gravitaatio",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy6",
+    "koodiArvo": "FY6",
+    "metadata": [
+      {
+        "nimi": "Sähkö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy7",
+    "koodiArvo": "FY7",
+    "metadata": [
+      {
+        "nimi": "Sähkömagnetismi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_fy8",
+    "koodiArvo": "FY8",
+    "metadata": [
+      {
+        "nimi": "Aine ja säteily",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ge1",
+    "koodiArvo": "GE1",
+    "metadata": [
+      {
+        "nimi": "Sininen planeetta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ge2",
+    "koodiArvo": "GE2",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ge3",
+    "koodiArvo": "GE3",
+    "metadata": [
+      {
+        "nimi": "Riskien maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ge4",
+    "koodiArvo": "GE4",
+    "metadata": [
+      {
+        "nimi": "Aluetutkimus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi1",
+    "koodiArvo": "HI1",
+    "metadata": [
+      {
+        "nimi": "Eurooppalainen ihminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi2",
+    "koodiArvo": "HI2",
+    "metadata": [
+      {
+        "nimi": "Kansainväliset suhteet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi3",
+    "koodiArvo": "HI3",
+    "metadata": [
+      {
+        "nimi": "Suomen historian käännekohtia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi4",
+    "koodiArvo": "HI4",
+    "metadata": [
+      {
+        "nimi": "Ihminen, ympäristö ja kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi5",
+    "koodiArvo": "HI5",
+    "metadata": [
+      {
+        "nimi": "Suomen vaiheet esihistoriasta autonomian aikaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_hi6",
+    "koodiArvo": "HI6",
+    "metadata": [
+      {
+        "nimi": "Kulttuurien kohtaaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa1",
+    "koodiArvo": "IAA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa2",
+    "koodiArvo": "IAA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa3",
+    "koodiArvo": "IAA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa4",
+    "koodiArvo": "IAA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa5",
+    "koodiArvo": "IAA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa6",
+    "koodiArvo": "IAA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa7",
+    "koodiArvo": "IAA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iaa8",
+    "koodiArvo": "IAA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab11",
+    "koodiArvo": "IAB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab12",
+    "koodiArvo": "IAB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab13",
+    "koodiArvo": "IAB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab14",
+    "koodiArvo": "IAB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab15",
+    "koodiArvo": "IAB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab16",
+    "koodiArvo": "IAB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab17",
+    "koodiArvo": "IAB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab21",
+    "koodiArvo": "IAB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab22",
+    "koodiArvo": "IAB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab23",
+    "koodiArvo": "IAB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab24",
+    "koodiArvo": "IAB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab25",
+    "koodiArvo": "IAB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab26",
+    "koodiArvo": "IAB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab27",
+    "koodiArvo": "IAB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab28",
+    "koodiArvo": "IAB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab29",
+    "koodiArvo": "IAB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab291",
+    "koodiArvo": "IAB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab31",
+    "koodiArvo": "IAB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab32",
+    "koodiArvo": "IAB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab33",
+    "koodiArvo": "IAB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab34",
+    "koodiArvo": "IAB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab35",
+    "koodiArvo": "IAB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab36",
+    "koodiArvo": "IAB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab37",
+    "koodiArvo": "IAB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab38",
+    "koodiArvo": "IAB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab39",
+    "koodiArvo": "IAB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_iab391",
+    "koodiArvo": "IAB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ke1",
+    "koodiArvo": "KE1",
+    "metadata": [
+      {
+        "nimi": "Ihmisen ja elinympäristön kemia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ke2",
+    "koodiArvo": "KE2",
+    "metadata": [
+      {
+        "nimi": "Kemian mikromaailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ke3",
+    "koodiArvo": "KE3",
+    "metadata": [
+      {
+        "nimi": "Reaktiot ja energia",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ke4",
+    "koodiArvo": "KE4",
+    "metadata": [
+      {
+        "nimi": "Metallit ja materiaalit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ke5",
+    "koodiArvo": "KE5",
+    "metadata": [
+      {
+        "nimi": "Reaktiot ja tasapaino",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ku1",
+    "koodiArvo": "KU1",
+    "metadata": [
+      {
+        "nimi": "Minä, kuva ja kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ku2",
+    "koodiArvo": "KU2",
+    "metadata": [
+      {
+        "nimi": "Ympäristö, paikka ja tila",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa1",
+    "koodiArvo": "KXA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa2",
+    "koodiArvo": "KXA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa3",
+    "koodiArvo": "KXA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa4",
+    "koodiArvo": "KXA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa5",
+    "koodiArvo": "KXA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa6",
+    "koodiArvo": "KXA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa7",
+    "koodiArvo": "KXA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxa8",
+    "koodiArvo": "KXA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb11",
+    "koodiArvo": "KXB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb12",
+    "koodiArvo": "KXB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb13",
+    "koodiArvo": "KXB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb14",
+    "koodiArvo": "KXB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb15",
+    "koodiArvo": "KXB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb16",
+    "koodiArvo": "KXB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb17",
+    "koodiArvo": "KXB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb21",
+    "koodiArvo": "KXB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb22",
+    "koodiArvo": "KXB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb23",
+    "koodiArvo": "KXB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb24",
+    "koodiArvo": "KXB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb25",
+    "koodiArvo": "KXB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb26",
+    "koodiArvo": "KXB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb27",
+    "koodiArvo": "KXB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb28",
+    "koodiArvo": "KXB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb29",
+    "koodiArvo": "KXB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb291",
+    "koodiArvo": "KXB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb31",
+    "koodiArvo": "KXB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb32",
+    "koodiArvo": "KXB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb33",
+    "koodiArvo": "KXB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb34",
+    "koodiArvo": "KXB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb35",
+    "koodiArvo": "KXB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb36",
+    "koodiArvo": "KXB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb37",
+    "koodiArvo": "KXB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb38",
+    "koodiArvo": "KXB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb39",
+    "koodiArvo": "KXB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_kxb391",
+    "koodiArvo": "KXB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa1",
+    "koodiArvo": "LAA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa2",
+    "koodiArvo": "LAA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa3",
+    "koodiArvo": "LAA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa4",
+    "koodiArvo": "LAA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa5",
+    "koodiArvo": "LAA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa6",
+    "koodiArvo": "LAA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa7",
+    "koodiArvo": "LAA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_laa8",
+    "koodiArvo": "LAA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab11",
+    "koodiArvo": "LAB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab12",
+    "koodiArvo": "LAB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab13",
+    "koodiArvo": "LAB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab14",
+    "koodiArvo": "LAB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab15",
+    "koodiArvo": "LAB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab16",
+    "koodiArvo": "LAB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab17",
+    "koodiArvo": "LAB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab21",
+    "koodiArvo": "LAB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab22",
+    "koodiArvo": "LAB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab23",
+    "koodiArvo": "LAB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab24",
+    "koodiArvo": "LAB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab25",
+    "koodiArvo": "LAB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab26",
+    "koodiArvo": "LAB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab27",
+    "koodiArvo": "LAB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab28",
+    "koodiArvo": "LAB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab29",
+    "koodiArvo": "LAB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab291",
+    "koodiArvo": "LAB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab31",
+    "koodiArvo": "LAB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab32",
+    "koodiArvo": "LAB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab33",
+    "koodiArvo": "LAB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab34",
+    "koodiArvo": "LAB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab35",
+    "koodiArvo": "LAB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab36",
+    "koodiArvo": "LAB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab37",
+    "koodiArvo": "LAB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab38",
+    "koodiArvo": "LAB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab39",
+    "koodiArvo": "LAB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_lab391",
+    "koodiArvo": "LAB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_li1",
+    "koodiArvo": "LI1",
+    "metadata": [
+      {
+        "nimi": "Kuntokurssi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa1",
+    "koodiArvo": "MAA1",
+    "metadata": [
+      {
+        "nimi": "Funktiot ja yhtälöt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa2",
+    "koodiArvo": "MAA2",
+    "metadata": [
+      {
+        "nimi": "Polynomifunktiot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa3",
+    "koodiArvo": "MAA3",
+    "metadata": [
+      {
+        "nimi": "Geometria",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa4",
+    "koodiArvo": "MAA4",
+    "metadata": [
+      {
+        "nimi": "Analyyttinen geometria",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa5",
+    "koodiArvo": "MAA5",
+    "metadata": [
+      {
+        "nimi": "Vektorit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa6",
+    "koodiArvo": "MAA6",
+    "metadata": [
+      {
+        "nimi": "Todennäköisyys ja tilastot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa7",
+    "koodiArvo": "MAA7",
+    "metadata": [
+      {
+        "nimi": "Derivaatta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa8",
+    "koodiArvo": "MAA8",
+    "metadata": [
+      {
+        "nimi": "Juuri- ja logaritmifunktiot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa9",
+    "koodiArvo": "MAA9",
+    "metadata": [
+      {
+        "nimi": "Trigonometriset funktiot ja lukujonot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa10",
+    "koodiArvo": "MAA10",
+    "metadata": [
+      {
+        "nimi": "Integraalilaskenta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa11",
+    "koodiArvo": "MAA11",
+    "metadata": [
+      {
+        "nimi": "Lukuteoria ja logiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa12",
+    "koodiArvo": "MAA12",
+    "metadata": [
+      {
+        "nimi": "Numeerisia ja algebrallisia menetelmiä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_maa13",
+    "koodiArvo": "MAA13",
+    "metadata": [
+      {
+        "nimi": "Differentiaali- ja integraalilaskennan jatkokurssi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab1",
+    "koodiArvo": "MAB1",
+    "metadata": [
+      {
+        "nimi": "Lausekkeet ja yhtälöt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab2",
+    "koodiArvo": "MAB2",
+    "metadata": [
+      {
+        "nimi": "Geometria",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab3",
+    "koodiArvo": "MAB3",
+    "metadata": [
+      {
+        "nimi": "Matemaattisia malleja I",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab4",
+    "koodiArvo": "MAB4",
+    "metadata": [
+      {
+        "nimi": "Matemaattinen analyysi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab5",
+    "koodiArvo": "MAB5",
+    "metadata": [
+      {
+        "nimi": "Tilastot ja todennäköisyys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab6",
+    "koodiArvo": "MAB6",
+    "metadata": [
+      {
+        "nimi": "Matemaattisia malleja II",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab7",
+    "koodiArvo": "MAB7",
+    "metadata": [
+      {
+        "nimi": "Talousmatematiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mab8",
+    "koodiArvo": "MAB8",
+    "metadata": [
+      {
+        "nimi": "Matemaattisia malleja III ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo1",
+    "koodiArvo": "MO1",
+    "metadata": [
+      {
+        "nimi": "Tekstien maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo2",
+    "koodiArvo": "MO2",
+    "metadata": [
+      {
+        "nimi": "Kertomakirjallisuus ja mediatekstit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo3",
+    "koodiArvo": "MO3",
+    "metadata": [
+      {
+        "nimi": "Tekstit, kulttuuri ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo4",
+    "koodiArvo": "MO4",
+    "metadata": [
+      {
+        "nimi": "Moderneja tekstejä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo5",
+    "koodiArvo": "MO5",
+    "metadata": [
+      {
+        "nimi": "Tekstin valta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo6",
+    "koodiArvo": "MO6",
+    "metadata": [
+      {
+        "nimi": "Pohjoismaisia tekstejä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo7",
+    "koodiArvo": "MO7",
+    "metadata": [
+      {
+        "nimi": "Suullinen viestintä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo8",
+    "koodiArvo": "MO8",
+    "metadata": [
+      {
+        "nimi": "Kirjoitus- ja tekstitaitojen syventäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mo9",
+    "koodiArvo": "MO9",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuus ilon ja tiedon lähteenä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mu1",
+    "koodiArvo": "MU1",
+    "metadata": [
+      {
+        "nimi": "Musiikki ja minä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_mu2",
+    "koodiArvo": "MU2",
+    "metadata": [
+      {
+        "nimi": "Moniääninen Suomi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_op1",
+    "koodiArvo": "OP1",
+    "metadata": [
+      {
+        "nimi": "Koulutus, työ ja tulevaisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_op2",
+    "koodiArvo": "OP2",
+    "metadata": [
+      {
+        "nimi": "Opiskelu, työelämä ja ammatinvalinta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa1",
+    "koodiArvo": "POA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa2",
+    "koodiArvo": "POA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa3",
+    "koodiArvo": "POA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa4",
+    "koodiArvo": "POA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa5",
+    "koodiArvo": "POA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa6",
+    "koodiArvo": "POA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa7",
+    "koodiArvo": "POA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_poa8",
+    "koodiArvo": "POA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob11",
+    "koodiArvo": "POB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob12",
+    "koodiArvo": "POB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob13",
+    "koodiArvo": "POB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob14",
+    "koodiArvo": "POB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob15",
+    "koodiArvo": "POB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob16",
+    "koodiArvo": "POB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob17",
+    "koodiArvo": "POB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob21",
+    "koodiArvo": "POB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob22",
+    "koodiArvo": "POB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob23",
+    "koodiArvo": "POB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob24",
+    "koodiArvo": "POB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob25",
+    "koodiArvo": "POB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob26",
+    "koodiArvo": "POB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob27",
+    "koodiArvo": "POB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob28",
+    "koodiArvo": "POB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob29",
+    "koodiArvo": "POB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob291",
+    "koodiArvo": "POB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob31",
+    "koodiArvo": "POB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob32",
+    "koodiArvo": "POB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob33",
+    "koodiArvo": "POB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob34",
+    "koodiArvo": "POB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob35",
+    "koodiArvo": "POB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob36",
+    "koodiArvo": "POB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob37",
+    "koodiArvo": "POB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob38",
+    "koodiArvo": "POB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob39",
+    "koodiArvo": "POB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_pob391",
+    "koodiArvo": "POB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ps1",
+    "koodiArvo": "PS1",
+    "metadata": [
+      {
+        "nimi": "Psyykkinen toiminta, oppiminen ja vuorovaikutus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ps2",
+    "koodiArvo": "PS2",
+    "metadata": [
+      {
+        "nimi": "Ihmisen psyykkinen kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ps3",
+    "koodiArvo": "PS3",
+    "metadata": [
+      {
+        "nimi": "Ihmisen tiedonkäsittelyn perusteet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ps4",
+    "koodiArvo": "PS4",
+    "metadata": [
+      {
+        "nimi": "Motivaatio, tunteet ja älykäs toiminta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ps5",
+    "koodiArvo": "PS5",
+    "metadata": [
+      {
+        "nimi": "Persoonallisuus ja mielenterveys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r21",
+    "koodiArvo": "R21",
+    "metadata": [
+      {
+        "nimi": "Perusteet hallintaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r22",
+    "koodiArvo": "R22",
+    "metadata": [
+      {
+        "nimi": "Teksti ja dialogi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r23",
+    "koodiArvo": "R23",
+    "metadata": [
+      {
+        "nimi": "Kieli ympärillämme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r24",
+    "koodiArvo": "R24",
+    "metadata": [
+      {
+        "nimi": "Suomenruotsalainen, suomalainen ja pohjoismainen kulttuuri ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r25",
+    "koodiArvo": "R25",
+    "metadata": [
+      {
+        "nimi": "Kieli ja vaikuttaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r26",
+    "koodiArvo": "R26",
+    "metadata": [
+      {
+        "nimi": "Tekstien tulkinta ja tuottaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r27",
+    "koodiArvo": "R27",
+    "metadata": [
+      {
+        "nimi": "Syvempi tekstinhallinta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r28",
+    "koodiArvo": "R28",
+    "metadata": [
+      {
+        "nimi": "Suullinen viestintä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_r29",
+    "koodiArvo": "R29",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuus tiedon ja ilon lähteenä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa1",
+    "koodiArvo": "RAA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa2",
+    "koodiArvo": "RAA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa3",
+    "koodiArvo": "RAA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa4",
+    "koodiArvo": "RAA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa5",
+    "koodiArvo": "RAA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa6",
+    "koodiArvo": "RAA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa7",
+    "koodiArvo": "RAA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_raa8",
+    "koodiArvo": "RAA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab11",
+    "koodiArvo": "RAB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab12",
+    "koodiArvo": "RAB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab13",
+    "koodiArvo": "RAB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab14",
+    "koodiArvo": "RAB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab15",
+    "koodiArvo": "RAB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab16",
+    "koodiArvo": "RAB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab17",
+    "koodiArvo": "RAB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab21",
+    "koodiArvo": "RAB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab22",
+    "koodiArvo": "RAB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab23",
+    "koodiArvo": "RAB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab24",
+    "koodiArvo": "RAB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab25",
+    "koodiArvo": "RAB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab26",
+    "koodiArvo": "RAB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab27",
+    "koodiArvo": "RAB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab28",
+    "koodiArvo": "RAB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab29",
+    "koodiArvo": "RAB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab291",
+    "koodiArvo": "RAB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab31",
+    "koodiArvo": "RAB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab32",
+    "koodiArvo": "RAB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab33",
+    "koodiArvo": "RAB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab34",
+    "koodiArvo": "RAB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab35",
+    "koodiArvo": "RAB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab36",
+    "koodiArvo": "RAB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab37",
+    "koodiArvo": "RAB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab38",
+    "koodiArvo": "RAB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab39",
+    "koodiArvo": "RAB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rab391",
+    "koodiArvo": "RAB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua1",
+    "koodiArvo": "RUA1",
+    "metadata": [
+      {
+        "nimi": "Arkielämää Pohjoismaissa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua2",
+    "koodiArvo": "RUA2",
+    "metadata": [
+      {
+        "nimi": "Ihmiset ympärillämme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua3",
+    "koodiArvo": "RUA3",
+    "metadata": [
+      {
+        "nimi": "Suomi – osa Pohjolaa ja Eurooppaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua4",
+    "koodiArvo": "RUA4",
+    "metadata": [
+      {
+        "nimi": "Elinympäristömme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua5",
+    "koodiArvo": "RUA5",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua6",
+    "koodiArvo": "RUA6",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri ja sen tekijöitä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua7",
+    "koodiArvo": "RUA7",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rua8",
+    "koodiArvo": "RUA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub1",
+    "koodiArvo": "RUB1",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub2",
+    "koodiArvo": "RUB2",
+    "metadata": [
+      {
+        "nimi": "Arkielämää Pohjoismaissa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub3",
+    "koodiArvo": "RUB3",
+    "metadata": [
+      {
+        "nimi": "Suomi, Pohjoismaat ja Eurooppa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub4",
+    "koodiArvo": "RUB4",
+    "metadata": [
+      {
+        "nimi": "Elämää yhdessä ja erikseen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub5",
+    "koodiArvo": "RUB5",
+    "metadata": [
+      {
+        "nimi": "Elinympäristömme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub6",
+    "koodiArvo": "RUB6",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub7",
+    "koodiArvo": "RUB7",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub21",
+    "koodiArvo": "RUB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub22",
+    "koodiArvo": "RUB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub23",
+    "koodiArvo": "RUB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub24",
+    "koodiArvo": "RUB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub25",
+    "koodiArvo": "RUB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub26",
+    "koodiArvo": "RUB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub27",
+    "koodiArvo": "RUB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub28",
+    "koodiArvo": "RUB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub29",
+    "koodiArvo": "RUB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub291",
+    "koodiArvo": "RUB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub31",
+    "koodiArvo": "RUB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub32",
+    "koodiArvo": "RUB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub33",
+    "koodiArvo": "RUB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub34",
+    "koodiArvo": "RUB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub35",
+    "koodiArvo": "RUB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub36",
+    "koodiArvo": "RUB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub37",
+    "koodiArvo": "RUB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub38",
+    "koodiArvo": "RUB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub39",
+    "koodiArvo": "RUB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_rub391",
+    "koodiArvo": "RUB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao1",
+    "koodiArvo": "RUÄO1",
+    "metadata": [
+      {
+        "nimi": "Arkielämää Pohjoismaissa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao2",
+    "koodiArvo": "RUÄO2",
+    "metadata": [
+      {
+        "nimi": "Ihmiset ympärillämme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao3",
+    "koodiArvo": "RUÄO3",
+    "metadata": [
+      {
+        "nimi": "Suomi – osa Pohjolaa ja Eurooppaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao4",
+    "koodiArvo": "RUÄO4",
+    "metadata": [
+      {
+        "nimi": "Elinympäristömme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao5",
+    "koodiArvo": "RUÄO5",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao6",
+    "koodiArvo": "RUÄO6",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri ja sen tekijöitä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao7",
+    "koodiArvo": "RUÄO7",
+    "metadata": [
+      {
+        "nimi": "Esitä ja keskustele",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ruao8",
+    "koodiArvo": "RUÄO8",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s21",
+    "koodiArvo": "S21",
+    "metadata": [
+      {
+        "nimi": "Perusteet hallintaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s22",
+    "koodiArvo": "S22",
+    "metadata": [
+      {
+        "nimi": "Kieli käyttöön",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s23",
+    "koodiArvo": "S23",
+    "metadata": [
+      {
+        "nimi": "Kielellä vaikutetaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s24",
+    "koodiArvo": "S24",
+    "metadata": [
+      {
+        "nimi": "Tekstitaidot kuntoon",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s25",
+    "koodiArvo": "S25",
+    "metadata": [
+      {
+        "nimi": "Suomalainen kulttuuri tutuksi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s26",
+    "koodiArvo": "S26",
+    "metadata": [
+      {
+        "nimi": "Syvempi tekstin ymmärtäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s27",
+    "koodiArvo": "S27",
+    "metadata": [
+      {
+        "nimi": "Puhekieli tarkasteluun",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s28",
+    "koodiArvo": "S28",
+    "metadata": [
+      {
+        "nimi": "Erilaisten tekstien kirjoittamista",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_s29",
+    "koodiArvo": "S29",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuus tiedon ja ilon lähteenä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa1",
+    "koodiArvo": "SAA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa2",
+    "koodiArvo": "SAA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa3",
+    "koodiArvo": "SAA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa4",
+    "koodiArvo": "SAA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa5",
+    "koodiArvo": "SAA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa6",
+    "koodiArvo": "SAA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa7",
+    "koodiArvo": "SAA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_saa8",
+    "koodiArvo": "SAA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab11",
+    "koodiArvo": "SAB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab12",
+    "koodiArvo": "SAB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab13",
+    "koodiArvo": "SAB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab14",
+    "koodiArvo": "SAB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab15",
+    "koodiArvo": "SAB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab16",
+    "koodiArvo": "SAB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab17",
+    "koodiArvo": "SAB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab21",
+    "koodiArvo": "SAB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab22",
+    "koodiArvo": "SAB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab23",
+    "koodiArvo": "SAB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab24",
+    "koodiArvo": "SAB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab25",
+    "koodiArvo": "SAB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab26",
+    "koodiArvo": "SAB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab27",
+    "koodiArvo": "SAB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab28",
+    "koodiArvo": "SAB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab29",
+    "koodiArvo": "SAB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab291",
+    "koodiArvo": "SAB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab31",
+    "koodiArvo": "SAB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab32",
+    "koodiArvo": "SAB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab33",
+    "koodiArvo": "SAB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab34",
+    "koodiArvo": "SAB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab35",
+    "koodiArvo": "SAB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab36",
+    "koodiArvo": "SAB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab37",
+    "koodiArvo": "SAB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab38",
+    "koodiArvo": "SAB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab39",
+    "koodiArvo": "SAB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sab391",
+    "koodiArvo": "SAB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma1",
+    "koodiArvo": "SMA1",
+    "metadata": [
+      {
+        "nimi": "Nuori ja hänen maailmansa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma2",
+    "koodiArvo": "SMA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma3",
+    "koodiArvo": "SMA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu, työ ja tulevaisuudensuunnitelmat ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma4",
+    "koodiArvo": "SMA4",
+    "metadata": [
+      {
+        "nimi": "Sápmi – Saamenmaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma5",
+    "koodiArvo": "SMA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri ja taide",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma6",
+    "koodiArvo": "SMA6",
+    "metadata": [
+      {
+        "nimi": "Saamelainen luontotieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma7",
+    "koodiArvo": "SMA7",
+    "metadata": [
+      {
+        "nimi": "Laajeneva maailmankuva",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sma8",
+    "koodiArvo": "SMA8",
+    "metadata": [
+      {
+        "nimi": "Saamelainen kansanperinne",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb11",
+    "koodiArvo": "SMB11",
+    "metadata": [
+      {
+        "nimi": "nuori ja hänen maailmansa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb12",
+    "koodiArvo": "SMB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb13",
+    "koodiArvo": "SMB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb14",
+    "koodiArvo": "SMB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb15",
+    "koodiArvo": "SMB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb16",
+    "koodiArvo": "SMB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb17",
+    "koodiArvo": "SMB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb21",
+    "koodiArvo": "SMB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb22",
+    "koodiArvo": "SMB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb23",
+    "koodiArvo": "SMB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb24",
+    "koodiArvo": "SMB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb25",
+    "koodiArvo": "SMB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb26",
+    "koodiArvo": "SMB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb27",
+    "koodiArvo": "SMB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb28",
+    "koodiArvo": "SMB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb29",
+    "koodiArvo": "SMB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb291",
+    "koodiArvo": "SMB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb31",
+    "koodiArvo": "SMB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb32",
+    "koodiArvo": "SMB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb33",
+    "koodiArvo": "SMB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb34",
+    "koodiArvo": "SMB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb35",
+    "koodiArvo": "SMB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb36",
+    "koodiArvo": "SMB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb37",
+    "koodiArvo": "SMB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb38",
+    "koodiArvo": "SMB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb39",
+    "koodiArvo": "SMB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_smb391",
+    "koodiArvo": "SMB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus1",
+    "koodiArvo": "SUS1",
+    "metadata": [
+      {
+        "nimi": "Perustaitojen varmentaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus2",
+    "koodiArvo": "SUS2",
+    "metadata": [
+      {
+        "nimi": "Kieli käyttöön",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus3",
+    "koodiArvo": "SUS3",
+    "metadata": [
+      {
+        "nimi": "Tekstitaitoa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus4",
+    "koodiArvo": "SUS4",
+    "metadata": [
+      {
+        "nimi": "Tekstitaitoa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus5",
+    "koodiArvo": "SUS5",
+    "metadata": [
+      {
+        "nimi": "Suomen kieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus6",
+    "koodiArvo": "SUS6",
+    "metadata": [
+      {
+        "nimi": "Kieli, kulttuuri ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus7",
+    "koodiArvo": "SUS7",
+    "metadata": [
+      {
+        "nimi": "Puheviestintää",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus8",
+    "koodiArvo": "SUS8",
+    "metadata": [
+      {
+        "nimi": "Kirjoittamisen taitoa ja taidetta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_sus9",
+    "koodiArvo": "SUS9",
+    "metadata": [
+      {
+        "nimi": "Moninaisessa ja monikulttuurisessa maailmassa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_tald7",
+    "koodiArvo": "TALD7",
+    "metadata": [
+      {
+        "nimi": "Tanssin lukiodiplomi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_te1",
+    "koodiArvo": "TE1",
+    "metadata": [
+      {
+        "nimi": "Terveyden perusteet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_te2",
+    "koodiArvo": "TE2",
+    "metadata": [
+      {
+        "nimi": "Terveys ja arkielämä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_te3",
+    "koodiArvo": "TE3",
+    "metadata": [
+      {
+        "nimi": "Terveys ja tutkimus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ue1",
+    "koodiArvo": "UE1",
+    "metadata": [
+      {
+        "nimi": "Uskonnon luonne ja merkitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ue2",
+    "koodiArvo": "UE2",
+    "metadata": [
+      {
+        "nimi": "Kirkko, kulttuuri ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ue3",
+    "koodiArvo": "UE3",
+    "metadata": [
+      {
+        "nimi": "Ihmisen elämä ja etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ue4",
+    "koodiArvo": "UE4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ue5",
+    "koodiArvo": "UE5",
+    "metadata": [
+      {
+        "nimi": "Mihin suomalainen uskoo?",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uo1",
+    "koodiArvo": "UO1",
+    "metadata": [
+      {
+        "nimi": "Ortodoksinen maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uo2",
+    "koodiArvo": "UO2",
+    "metadata": [
+      {
+        "nimi": "Uskonoppi ja etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uo3",
+    "koodiArvo": "UO3",
+    "metadata": [
+      {
+        "nimi": "Raamattutieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uo4",
+    "koodiArvo": "UO4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uo5",
+    "koodiArvo": "UO5",
+    "metadata": [
+      {
+        "nimi": "Ortodoksinen Suomi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ub1",
+    "koodiArvo": "UB1",
+    "metadata": [
+      {
+        "nimi": "Henkiset lainalaisuudet ja sivistyksen evoluutio",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ub2",
+    "koodiArvo": "UB2",
+    "metadata": [
+      {
+        "nimi": "Historian käännekohdat ja käynnissä oleva murros",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ub3",
+    "koodiArvo": "UB3",
+    "metadata": [
+      {
+        "nimi": "Bahá´u´lláhin esittämä yhteiskunnan uudistumisprosessi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ub4",
+    "koodiArvo": "UB4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ub5",
+    "koodiArvo": "UB5",
+    "metadata": [
+      {
+        "nimi": "Kuka kirjoittaa tulevaisuutta?",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ud1",
+    "koodiArvo": "UD1",
+    "metadata": [
+      {
+        "nimi": "Mitä buddhalaisuus on",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ud2",
+    "koodiArvo": "UD2",
+    "metadata": [
+      {
+        "nimi": "Buddhalainen maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ud3",
+    "koodiArvo": "UD3",
+    "metadata": [
+      {
+        "nimi": "Buddhalainen polku",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ud4",
+    "koodiArvo": "UD4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ud5",
+    "koodiArvo": "UD5",
+    "metadata": [
+      {
+        "nimi": "Buddhalaisuus tämän päivän maailmassa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ui1",
+    "koodiArvo": "UI1",
+    "metadata": [
+      {
+        "nimi": "Islam, yhteiskunta ja kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ui2",
+    "koodiArvo": "UI2",
+    "metadata": [
+      {
+        "nimi": "Islamin oppi ja etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ui3",
+    "koodiArvo": "UI3",
+    "metadata": [
+      {
+        "nimi": "Koraanitieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ui4",
+    "koodiArvo": "UI4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ui5",
+    "koodiArvo": "UI5",
+    "metadata": [
+      {
+        "nimi": "Islam meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uj1",
+    "koodiArvo": "UJ1",
+    "metadata": [
+      {
+        "nimi": "Valittu kansa – uskontohistorian kurssi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uj2",
+    "koodiArvo": "UJ2",
+    "metadata": [
+      {
+        "nimi": "Kirjan kansa – juutalaisuuden uskonnolliset kirjat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uj3",
+    "koodiArvo": "UJ3",
+    "metadata": [
+      {
+        "nimi": "Mitzvot – juutalaisen arkielämää",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uj4",
+    "koodiArvo": "UJ4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uj5",
+    "koodiArvo": "UJ5",
+    "metadata": [
+      {
+        "nimi": "Juutalainen Suomi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uk1",
+    "koodiArvo": "UK1",
+    "metadata": [
+      {
+        "nimi": "Katolinen maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uk2",
+    "koodiArvo": "UK2",
+    "metadata": [
+      {
+        "nimi": "Raamattu, traditio ja opetusvirka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uk3",
+    "koodiArvo": "UK3",
+    "metadata": [
+      {
+        "nimi": "Etiikka ja moraali",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uk4",
+    "koodiArvo": "UK4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uk5",
+    "koodiArvo": "UK5",
+    "metadata": [
+      {
+        "nimi": "Katolinen elämäntapa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uh1",
+    "koodiArvo": "UH1",
+    "metadata": [
+      {
+        "nimi": "Krishna-tietoinen maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uh2",
+    "koodiArvo": "UH2",
+    "metadata": [
+      {
+        "nimi": "Uskonoppi ja etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uh3",
+    "koodiArvo": "UH3",
+    "metadata": [
+      {
+        "nimi": "Pyhät kirjoitukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uh4",
+    "koodiArvo": "UH4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_uh5",
+    "koodiArvo": "UH5",
+    "metadata": [
+      {
+        "nimi": "Krishna-liike Suomessa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ur1",
+    "koodiArvo": "UR1",
+    "metadata": [
+      {
+        "nimi": "Uskonnon luonne ja merkitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ur2",
+    "koodiArvo": "UR2",
+    "metadata": [
+      {
+        "nimi": "Uskonto, kirkko kulttuuri ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ur3",
+    "koodiArvo": "UR3",
+    "metadata": [
+      {
+        "nimi": "Ihmisen elämä ja etiikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ur4",
+    "koodiArvo": "UR4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ur5",
+    "koodiArvo": "UR5",
+    "metadata": [
+      {
+        "nimi": "Kristiyhteisö Suomessa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_um1",
+    "koodiArvo": "UM1",
+    "metadata": [
+      {
+        "nimi": "Vanha testamentti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_um2",
+    "koodiArvo": "UM2",
+    "metadata": [
+      {
+        "nimi": "Uusi testamentti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_um3",
+    "koodiArvo": "UM3",
+    "metadata": [
+      {
+        "nimi": "Mormonin kirja",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_um4",
+    "koodiArvo": "UM4",
+    "metadata": [
+      {
+        "nimi": "Uskontojen maailmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_um5",
+    "koodiArvo": "UM5",
+    "metadata": [
+      {
+        "nimi": "Kallisarvoinen Helmi, temppeli- ja sukututkimustyö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea1",
+    "koodiArvo": "VEA1",
+    "metadata": [
+      {
+        "nimi": "Minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea2",
+    "koodiArvo": "VEA2",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea3",
+    "koodiArvo": "VEA3",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja työ",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea4",
+    "koodiArvo": "VEA4",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta ja ympäröivä maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea5",
+    "koodiArvo": "VEA5",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea6",
+    "koodiArvo": "VEA6",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea7",
+    "koodiArvo": "VEA7",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_vea8",
+    "koodiArvo": "VEA8",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb11",
+    "koodiArvo": "VEB11",
+    "metadata": [
+      {
+        "nimi": "minä ja muut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb12",
+    "koodiArvo": "VEB12",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vapaa-aika",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb13",
+    "koodiArvo": "VEB13",
+    "metadata": [
+      {
+        "nimi": "opiskelu, työ ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb14",
+    "koodiArvo": "VEB14",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb15",
+    "koodiArvo": "VEB15",
+    "metadata": [
+      {
+        "nimi": "Tiede, talous ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb16",
+    "koodiArvo": "VEB16",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb17",
+    "koodiArvo": "VEB17",
+    "metadata": [
+      {
+        "nimi": "Puhu ja ymmärrä paremmin",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb21",
+    "koodiArvo": "VEB21",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb22",
+    "koodiArvo": "VEB22",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb23",
+    "koodiArvo": "VEB23",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb24",
+    "koodiArvo": "VEB24",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb25",
+    "koodiArvo": "VEB25",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb26",
+    "koodiArvo": "VEB26",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb27",
+    "koodiArvo": "VEB27",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb28",
+    "koodiArvo": "VEB28",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb29",
+    "koodiArvo": "VEB29",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb291",
+    "koodiArvo": "VEB291",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb31",
+    "koodiArvo": "VEB31",
+    "metadata": [
+      {
+        "nimi": "Hyvää päivää, hauska tutustua",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb32",
+    "koodiArvo": "VEB32",
+    "metadata": [
+      {
+        "nimi": "Näin asiat hoituvat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb33",
+    "koodiArvo": "VEB33",
+    "metadata": [
+      {
+        "nimi": "Vapaa-aika ja harrastukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb34",
+    "koodiArvo": "VEB34",
+    "metadata": [
+      {
+        "nimi": "Meillä ja muualla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb35",
+    "koodiArvo": "VEB35",
+    "metadata": [
+      {
+        "nimi": "Ennen ja nyt",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb36",
+    "koodiArvo": "VEB36",
+    "metadata": [
+      {
+        "nimi": "Opiskelu ja tulevaisuudensuunnitelmat",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb37",
+    "koodiArvo": "VEB37",
+    "metadata": [
+      {
+        "nimi": "Kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb38",
+    "koodiArvo": "VEB38",
+    "metadata": [
+      {
+        "nimi": "Yhteinen maapallomme",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb39",
+    "koodiArvo": "VEB39",
+    "metadata": [
+      {
+        "nimi": "Tiede ja tekniikka",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_veb391",
+    "koodiArvo": "VEB391",
+    "metadata": [
+      {
+        "nimi": "Luonto ja kestävä kehitys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh1",
+    "koodiArvo": "YH1",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh2",
+    "koodiArvo": "YH2",
+    "metadata": [
+      {
+        "nimi": "Taloustieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh3",
+    "koodiArvo": "YH3",
+    "metadata": [
+      {
+        "nimi": "Kansalaisen lakitieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh4",
+    "koodiArvo": "YH4",
+    "metadata": [
+      {
+        "nimi": "Eurooppalaisuus ja Euroopan unioni",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai1",
+    "koodiArvo": "ÄI1",
+    "metadata": [
+      {
+        "nimi": "Tekstien rakenteita ja merkityksiä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai2",
+    "koodiArvo": "ÄI2",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuuden keinoja ja tulkintaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai3",
+    "koodiArvo": "ÄI3",
+    "metadata": [
+      {
+        "nimi": "Tekstit ja vaikuttaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai4",
+    "koodiArvo": "ÄI4",
+    "metadata": [
+      {
+        "nimi": "Teksti, tyyli ja konteksti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai5",
+    "koodiArvo": "ÄI5",
+    "metadata": [
+      {
+        "nimi": "Kieli, kirjallisuus ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai6",
+    "koodiArvo": "ÄI6",
+    "metadata": [
+      {
+        "nimi": "Tekstitaitojen syventäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai7",
+    "koodiArvo": "ÄI7",
+    "metadata": [
+      {
+        "nimi": "Puheviestinnän taitojen syventäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai8",
+    "koodiArvo": "ÄI8",
+    "metadata": [
+      {
+        "nimi": "Kieli, tekstit ja vuorovaikutus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ai9",
+    "koodiArvo": "ÄI9",
+    "metadata": [
+      {
+        "nimi": "Kirjoittaminen ja nykykulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air1",
+    "koodiArvo": "ÄIR1",
+    "metadata": [
+      {
+        "nimi": "Kielipohjan vahvistaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air2",
+    "koodiArvo": "ÄIR2",
+    "metadata": [
+      {
+        "nimi": "Kielitaidon laajeneminen lähipiirin ulkopuolelle",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air3",
+    "koodiArvo": "ÄIR3",
+    "metadata": [
+      {
+        "nimi": "Romanien suullinen ja kirjallinen perinne",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air4",
+    "koodiArvo": "ÄIR4",
+    "metadata": [
+      {
+        "nimi": "Romanikielen ja -kulttuurin historia ja levinneisyys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air5",
+    "koodiArvo": "ÄIR5",
+    "metadata": [
+      {
+        "nimi": "Romanien kirjallisuus ja muu taide",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air6",
+    "koodiArvo": "ÄIR6",
+    "metadata": [
+      {
+        "nimi": "Romanikieli ja -kulttuuri nyky-yhteiskunnassa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air7",
+    "koodiArvo": "ÄIR7",
+    "metadata": [
+      {
+        "nimi": "Romanikielen puhetaito ja puhekulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air8",
+    "koodiArvo": "ÄIR8",
+    "metadata": [
+      {
+        "nimi": "Kirjoittamisen ja tekstitaitojen kurssi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_air9",
+    "koodiArvo": "ÄIR9",
+    "metadata": [
+      {
+        "nimi": "Ajankohtaista romanikielessä ja -kulttuurissa (",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais1",
+    "koodiArvo": "ÄIS1",
+    "metadata": [
+      {
+        "nimi": "Kieli, tekstit ja vuorovaikutus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais2",
+    "koodiArvo": "ÄIS2",
+    "metadata": [
+      {
+        "nimi": "Tekstien rakenteita ja merkityksiä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais3",
+    "koodiArvo": "ÄIS3",
+    "metadata": [
+      {
+        "nimi": "Kaunokirjalliset tekstit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais4",
+    "koodiArvo": "ÄIS4",
+    "metadata": [
+      {
+        "nimi": "Vaikuttamisen keinoja",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais5",
+    "koodiArvo": "ÄIS5",
+    "metadata": [
+      {
+        "nimi": "Teksti, tyyli ja konteksti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais6",
+    "koodiArvo": "ÄIS6",
+    "metadata": [
+      {
+        "nimi": "Kieli, kirjallisuus ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais7",
+    "koodiArvo": "ÄIS7",
+    "metadata": [
+      {
+        "nimi": "Puheviestintä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais8",
+    "koodiArvo": "ÄIS8",
+    "metadata": [
+      {
+        "nimi": "Tekstitaidot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_ais9",
+    "koodiArvo": "ÄIS9",
+    "metadata": [
+      {
+        "nimi": "Ajankohtaiset tekstit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv1",
+    "koodiArvo": "ÄIV1",
+    "metadata": [
+      {
+        "nimi": "Tekstit ja vuorovaikutus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv2",
+    "koodiArvo": "ÄIV2",
+    "metadata": [
+      {
+        "nimi": "Kieli, kulttuuri ja identiteetti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv3",
+    "koodiArvo": "ÄIV3",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuuden keinoja ja tulkintaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv4",
+    "koodiArvo": "ÄIV4",
+    "metadata": [
+      {
+        "nimi": "Tekstit ja vaikuttaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv5",
+    "koodiArvo": "ÄIV5",
+    "metadata": [
+      {
+        "nimi": "Teksti ja konteksti",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv6",
+    "koodiArvo": "ÄIV6",
+    "metadata": [
+      {
+        "nimi": "Nykykulttuuri ja kertomukset",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv7",
+    "koodiArvo": "ÄIV7",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutustaitojen syventäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv8",
+    "koodiArvo": "ÄIV8",
+    "metadata": [
+      {
+        "nimi": "Tekstin tuottamistaitojen syventäminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aiv9",
+    "koodiArvo": "ÄIV9",
+    "metadata": [
+      {
+        "nimi": "Lukutaitojen syventäminen viitotussa kielessä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim1",
+    "koodiArvo": "ÄIM1",
+    "metadata": [
+      {
+        "nimi": "Oma äidinkieli ja sen käyttö",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim2",
+    "koodiArvo": "ÄIM2",
+    "metadata": [
+      {
+        "nimi": "Kielitieto ja oikeakielisyys",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim3",
+    "koodiArvo": "ÄIM3",
+    "metadata": [
+      {
+        "nimi": "Kielialueen kulttuuri",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim4",
+    "koodiArvo": "ÄIM4",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja yhteiskunta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim5",
+    "koodiArvo": "ÄIM5",
+    "metadata": [
+      {
+        "nimi": "Kaunokirjallisuus ja muut taidelajit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_aim6",
+    "koodiArvo": "ÄIM6",
+    "metadata": [
+      {
+        "nimi": "Tiedon maailma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh1",
+    "koodiArvo": "YH1",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh2",
+    "koodiArvo": "YH2",
+    "metadata": [
+      {
+        "nimi": "Taloustieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh3",
+    "koodiArvo": "YH3",
+    "metadata": [
+      {
+        "nimi": "Kansalaisen lakitieto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionkurssitops2004aikuiset_yh4",
+    "koodiArvo": "YH4",
+    "metadata": [
+      {
+        "nimi": "Eurooppalaisuus ja Euroopan unioni",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

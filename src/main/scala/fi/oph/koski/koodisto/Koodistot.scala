@@ -24,6 +24,8 @@ object Koodistot {
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssintyyppi",
+    "lukionkurssitops2003nuoret",
+    "lukionkurssitops2004aikuiset",
     "lukionoppimaara",
     "opetusryhma",
     "opintojenrahoitus",
