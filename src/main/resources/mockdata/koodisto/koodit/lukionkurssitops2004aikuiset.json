@@ -6840,49 +6840,5 @@
       }
     ],
     "versio": 1
-  },
-  {
-    "koodiUri": "lukionkurssitops2004aikuiset_yh1",
-    "koodiArvo": "YH1",
-    "metadata": [
-      {
-        "nimi": "Yhteiskuntatieto",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "lukionkurssitops2004aikuiset_yh2",
-    "koodiArvo": "YH2",
-    "metadata": [
-      {
-        "nimi": "Taloustieto",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "lukionkurssitops2004aikuiset_yh3",
-    "koodiArvo": "YH3",
-    "metadata": [
-      {
-        "nimi": "Kansalaisen lakitieto",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "lukionkurssitops2004aikuiset_yh4",
-    "koodiArvo": "YH4",
-    "metadata": [
-      {
-        "nimi": "Eurooppalaisuus ja Euroopan unioni",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
   }
 ]
