@@ -56,21 +56,21 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      toEditorModel(application.oppijaFacade.findOppija(oid)(user))
+      toEditorModel(application.oppijaFacade.findOppija(oid)(user), editable = true) // <- note: editability will be checked based on organizational access
     }
   }
 
   private def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      toEditorModel(application.oppijaFacade.findVersion(oid, opiskeluoikeusId, versionumero)(user))
+      toEditorModel(application.oppijaFacade.findVersion(oid, opiskeluoikeusId, versionumero)(user), editable = false)
     }
   }
 
   private def findByUserOppija(user: KoskiSession): Either[HttpStatus, EditorModel] = {
-    toEditorModel(application.oppijaFacade.findUserOppija(user))
+    toEditorModel(application.oppijaFacade.findUserOppija(user), editable = false)
   }
 
-  private def toEditorModel(oppija: Either[HttpStatus, Oppija]): Either[HttpStatus, EditorModel] = {
+  private def toEditorModel(oppija: Either[HttpStatus, Oppija], editable: Boolean): Either[HttpStatus, EditorModel] = {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
       override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
         case (None, Some(_)) => 1
@@ -94,7 +94,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
       }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-      modelBuilder.buildModel(EditorSchema.schema, editorView)
+      modelBuilder.copy(editable = editable)(koskiSession).buildModel(EditorSchema.schema, editorView)
     }
   }
 }
