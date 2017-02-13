@@ -17,7 +17,7 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
 
     "Haettaessa henkilötunnuksella" - {
       "Jos henkilöä ei löydy henkilöpalvelusta" - {
-        "Haetaan YTR:stä ja luodaan henkilö" - {
+        "Haetaan YTR:stä ja luodaan henkilö" in {
           searchForHenkilötiedot("250493-602S").map(_.kokonimi) should equal(List("Christian Aalto"))
         }
         "Seuraavalla haulla käytetään aiemmin luotua henkilöä" in {
