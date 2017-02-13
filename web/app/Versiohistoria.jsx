@@ -3,7 +3,7 @@ import BaconComponent from './BaconComponent'
 import Http from './http'
 import Link from './Link.jsx'
 
-import {showInternalError, currentLocation} from './location.js'
+import {showInternalError, currentLocation, navigateTo} from './location.js'
 import { ISO2FinnishDateTime } from './date.js'
 
 export default BaconComponent({
@@ -14,6 +14,9 @@ export default BaconComponent({
       let newShowHistory = !showHistory
       this.setState({showHistory: newShowHistory})
       if (newShowHistory) this.fetchHistory()
+      if (!newShowHistory) {
+        navigateTo(`/koski/oppija/${oppijaOid}`)
+      }
     }
     let selectedVersion = this.versionumero() || history.length
     return (<div className="versiohistoria">
