@@ -22,7 +22,7 @@ export default BaconComponent({
         showHistory && (<table><tbody>{
           history.map((version, i) =>
             <tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
-              <td className="versionumero">{version.versionumero}</td>
+              <td className="versionumero">v{version.versionumero}</td>
               <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluOikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
             </tr>
           )

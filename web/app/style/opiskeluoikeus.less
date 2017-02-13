@@ -16,9 +16,10 @@
     .versiohistoria {
       display: inline-block;
       float: right;
-      font-size: 0.9em;
-      > a {
+      > * {
         font-size: 0.8em;
+      }
+      > a {
         text-decoration: underline;
         color: white;
         vertical-align: top;
@@ -26,10 +27,15 @@
       table {
         vertical-align: middle;
         display: inline-block;
-        margin-left: 10px;
+        margin-left: 14px;
+        tr, tr a {
+          color: white;
+        }
         tr.selected, tr.selected a {
           background: @color-link-blue;
-          color: white;
+        }
+        td.versionumero {
+          padding-right: 0.3em;
         }
       }
     }
