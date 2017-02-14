@@ -1,6 +1,6 @@
 package fi.oph.koski.log
 
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession, UserWithOid}
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
@@ -20,7 +20,7 @@ class AuditLog(logger: Logger) {
 
   private class KoskiLogMessageBuilder(msg: AuditLogMessage) extends SimpleLogMessageBuilder[KoskiLogMessageBuilder] {
     def build = new AbstractLogMessage(mapping) {
-      safePut(KoskiMessageField.clientIp.toString, msg.user.clientIp)
+      safePut(KoskiMessageField.clientIp.toString, msg.clientIp)
       safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
       safePut(KoskiMessageField.kayttajaHenkiloOid.toString, msg.user.oid)
 

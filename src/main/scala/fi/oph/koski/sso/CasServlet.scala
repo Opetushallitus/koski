@@ -3,7 +3,8 @@ package fi.oph.koski.sso
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, ServiceTicketValidator}
-import fi.oph.koski.servlet.{ApiServlet, HtmlServlet, NoCache}
+import fi.oph.koski.log.LogUserContext
+import fi.oph.koski.servlet.{HtmlServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
 
 /**
@@ -11,7 +12,7 @@ import fi.vm.sade.utils.cas.CasLogout
   */
 class CasServlet(val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
   private def validator = new ServiceTicketValidator(application.config)
-  private val ticketSessions = application.serviceTicketRepository
+  private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
   get("/") {
@@ -23,7 +24,7 @@ class CasServlet(val application: KoskiApplication) extends HtmlServlet with Aut
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
               logger.info(s"Started session ${session.id} for ticket $ticket")
-              ticketSessions.store(ticket, user)
+              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request))
               redirectAfterLogin
             case None =>
               haltWithStatus(KoskiErrorCategory.internalError(s"CAS-käyttäjää $username ei löytynyt LDAPista"))
@@ -46,7 +47,7 @@ class CasServlet(val application: KoskiApplication) extends HtmlServlet with Aut
         CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
           case Some(parsedTicket) =>
             logger.info("Got CAS logout for ticket " + parsedTicket)
-            ticketSessions.removeSessionByTicket(parsedTicket)
+            koskiSessions.removeSessionByTicket(parsedTicket)
           case None =>
             logger.warn("Unable to parse CAS ticket from logout: " + logoutRequest)
         }

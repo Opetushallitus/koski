@@ -3,16 +3,17 @@ package fi.oph.koski.sso
 import java.sql.Timestamp
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{SSOSessionRow, GlobalExecutionContext, KoskiDatabaseMethods, Tables}
-import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
-import fi.oph.koski.log.Logging
-import fi.oph.koski.util.Timing
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
+import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.util.Timing
 
-class SSOTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
+class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
   private def now = new Timestamp(System.currentTimeMillis())
 
-  def store(ticket: String, user: AuthenticationUser) = {
+  def store(ticket: String, user: AuthenticationUser, clientIp: String) = {
+    AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, user, clientIp, Map()))
     runDbSync((Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, now, now)))
   }
 

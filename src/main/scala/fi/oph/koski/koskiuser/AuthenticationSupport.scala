@@ -7,7 +7,6 @@ import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.vm.sade.security.ldap.DirectoryClient
-import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
@@ -31,7 +30,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
       case _ =>
         def userFromCookie = getUserCookie.flatMap { authUser =>
           authUser.serviceTicket.flatMap { ticket =>
-            application.serviceTicketRepository.getUserByTicket(ticket) match {
+            application.koskiSessionRepository.getUserByTicket(ticket) match {
               case Some(user) =>
                 Some(user)
               case None =>
