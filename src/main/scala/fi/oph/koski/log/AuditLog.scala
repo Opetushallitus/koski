@@ -23,6 +23,7 @@ class AuditLog(logger: Logger) {
       safePut(KoskiMessageField.clientIp.toString, msg.clientIp)
       safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
       safePut(KoskiMessageField.kayttajaHenkiloOid.toString, msg.user.oid)
+      safePut(KoskiMessageField.kayttajaHenkiloNimi.toString, msg.user.name)
 
       msg.extraFields.toList.foreach { case (k: KoskiMessageField,v: String) =>
         safePut(k.toString, v)
@@ -31,11 +32,16 @@ class AuditLog(logger: Logger) {
   }
 }
 
-case class AuditLogMessage(operation: KoskiOperation, user: KoskiSession, extraFields: Map[KoskiMessageField, String])
+case class AuditLogMessage(operation: KoskiOperation, user: AuthenticationUser, clientIp: String, extraFields: Map[KoskiMessageField, String])
+
+object AuditLogMessage {
+  def apply(operation: KoskiOperation, session: KoskiSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage =
+    AuditLogMessage(operation, session.user, session.clientIp, extraFields)
+}
 
 object KoskiMessageField extends Enumeration {
   type KoskiMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio = Value
 }
 
 object KoskiOperation extends Enumeration {

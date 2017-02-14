@@ -27,6 +27,7 @@ Kaikista tapahtumista kirjataan
 
 - Aikaleima
 - Käyttäjän OID
+- Käyttäjän nimi
 - Käyttäjän IP-osoite
 - Operaation tunniste (esimerkiksi OPISKELUOIKEUS_LISAYS)
 
