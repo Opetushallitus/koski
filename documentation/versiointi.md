@@ -40,7 +40,7 @@ tulevaisuuden versioilla Koski-applikaatiosta. Tämä tarkoittaa käytännössä
 poistaa kenttiä ja rakenteita, jotka on sinne lisätty, ja joita on tallennettu Kosken tuotantotietokantaan. Taaksepäin
 yhteensopivuuden säilyvyys on varmistettu automaattisella testillä 
 [BackwardCompatibilitySpec](https://github.com/Opetushallitus/koski/blob/master/src/test/scala/fi/oph/koski/versioning/BackwardCompatibilitySpec.scala),
-joka varmistaa, että aiemmin tallennetut JSON-dokumentit ovat virheettömästi luettavissa uusimmall versiolla Koski-ohjelmakoodista.
+joka varmistaa, että aiemmin tallennetut JSON-dokumentit ovat virheettömästi luettavissa uusimmalla versiolla Koski-ohjelmakoodista.
 
 Joitain muutoksia tietomalliin voidaan tehdä rikkomatta taaksepäin yhteensopivuutta. Esimerkiksi
 
