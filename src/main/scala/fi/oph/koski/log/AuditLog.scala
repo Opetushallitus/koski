@@ -1,6 +1,6 @@
 package fi.oph.koski.log
 
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession, UserWithOid}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
