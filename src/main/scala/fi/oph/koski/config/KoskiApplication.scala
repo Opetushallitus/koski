@@ -2,14 +2,12 @@ package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
-import fi.oph.koski.cache.Cache.cacheAllRefresh
-import fi.oph.koski.cache.{CacheManager, CachingProxy}
-import fi.oph.koski.sso.SSOTicketSessionRepository
+import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
-import fi.oph.koski.henkilo.{AuthenticationServiceClient, HenkilöRepository, KoskiHenkilöCache, KoskiHenkilöCacheUpdater}
+import fi.oph.koski.henkilo.{AuthenticationServiceClient, HenkilöRepository, KoskiHenkilöCacheUpdater}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
@@ -19,7 +17,8 @@ import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schedule.KoskiScheduledTasks
-import fi.oph.koski.tiedonsiirto.{TiedonsiirtoFailureMailer, TiedonsiirtoService}
+import fi.oph.koski.sso.SSOTicketSessionRepository
+import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
@@ -66,4 +65,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
   val scheduledTasks = new KoskiScheduledTasks(this)
+  lazy val ipService = new IPService(database.db)
 }

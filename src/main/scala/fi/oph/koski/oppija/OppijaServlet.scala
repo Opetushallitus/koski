@@ -23,7 +23,7 @@ class OppijaServlet(val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
   put("/") {
-    storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
+    withTracking { withJsonBody { (oppijaJson: JValue) =>
       val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
       val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson)
       renderEither(result)
@@ -31,7 +31,7 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   put("/batch") {
-    storeTiedonsiirtoResultInCaseOfException { withJsonBody { parsedJson =>
+    withTracking { withJsonBody { parsedJson =>
       val putter = UpdateContext(koskiSession, application, request)
 
       val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
@@ -75,7 +75,10 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
 
-  private def storeTiedonsiirtoResultInCaseOfException[T](f: => T) = {
+  private def withTracking[T](f: => T) = {
+    if (koskiSession.isPalvelukäyttäjä) {
+      trackIPAddress()
+    }
     try {
       f
     } catch {
@@ -85,6 +88,15 @@ class OppijaServlet(val application: KoskiApplication)
     }
   }
 
+  private def trackIPAddress() {
+    val ip = application.ipService.getIP(koskiSession.username)
+    if (ip != koskiSession.clientIp) {
+      if (ip.nonEmpty) {
+        logger(koskiSession).error(s"IP-osoite on muuttunut, vanha: $ip, uusi: ${koskiSession.clientIp}")
+      }
+      application.ipService.setIP(koskiSession.username, koskiSession.clientIp)
+    }
+  }
 }
 
 /**
