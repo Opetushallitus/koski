@@ -83,6 +83,19 @@ object KoskiApiOperations {
      )
    ),
    ApiOperation(
+     "GET", "/koski/api/opiskeluoikeus/{id}",
+     "Palauttaa opiskeluoikeuden tiedot",
+     <p>Palauttaa opiskeluoikeuden tiedot</p>,
+     Nil,
+     List(PathParameter("id", "Opiskeluoikeuden id", List("8942345"))),
+     List(
+       KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi.opiskeluoikeudet(0)),
+       KoskiErrorCategory.unauthorized,
+       KoskiErrorCategory.badRequest.format.number,
+       KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
+     )
+   ),
+   ApiOperation(
      "GET", "/koski/api/opiskeluoikeus/validate",
      "Etsii opiskeluoikeudet annetuilla parametreilla ja validoi hakutulokset.",
      <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
