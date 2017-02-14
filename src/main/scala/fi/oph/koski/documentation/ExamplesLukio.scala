@@ -201,7 +201,7 @@ object ExamplesLukio {
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenKurssi("HI1")).copy(arviointi = kurssinArviointi(7)),
+            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = kurssinArviointi(7)),
             kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = kurssinArviointi(8)),
             kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = kurssinArviointi(7)),
             kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = kurssinArviointi(6))
@@ -265,6 +265,9 @@ object LukioExampleData {
 
   def valtakunnallinenKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
     ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), kurssinTyyppi = kurssinTyyppi)
+
+  def valtakunnallinenVanhanOpsinKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
+    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssitops2003nuoret", koodiarvo = kurssi), laajuus(1.0f), kurssinTyyppi = kurssinTyyppi)
 
   def syventäväKurssi(koodi: String, nimi: String, kuvaus: String) =
     PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, kurssinTyyppi = syventävä)
