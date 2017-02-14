@@ -11,6 +11,9 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.ClassSchema
 
+/**
+  *  Endpoints for the Koski UI
+  */
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/:oid") {
     renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {

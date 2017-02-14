@@ -369,6 +369,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
 private object OpiskeluoikeudenPerustiedotRepository
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
+  // TODO: Pitäisikö näistäkin katseluista tehdä auditlog-merkintä?
   get("/") {
     renderEither({
       val sort = SortOrder.parseSortOrder(params.get("sort"), Ascending("nimi"))

@@ -21,4 +21,5 @@ trait LogTester {
 
   def getLogMessages: List[LoggingEvent] = this.synchronized(messages.toList)
   def getLogger: Logger = Logger.getRootLogger
+  def clearMessages = messages.clear
 }

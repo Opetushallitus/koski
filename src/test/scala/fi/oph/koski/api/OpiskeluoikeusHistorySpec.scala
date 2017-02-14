@@ -12,7 +12,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import org.scalatest.FreeSpec
 
-class HistoryApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
 
