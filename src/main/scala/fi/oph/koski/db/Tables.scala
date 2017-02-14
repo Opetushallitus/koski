@@ -101,6 +101,13 @@ object Tables {
     def * = (name, nextFireTime, context, status) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
+  class OppilaitosIPOsoiteTable(tag: Tag) extends Table[OppilaitosIPOsoiteRow](tag, "oppilaitos_ip_osoite") {
+    val username = column[String]("username", O.PrimaryKey)
+    val ip = column[String]("ip")
+
+    def * = (username, ip) <> (OppilaitosIPOsoiteRow.tupled, OppilaitosIPOsoiteRow.unapply)
+  }
+
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
 
   val TiedonsiirtoYhteenveto = TableQuery[TiedonsiirtoYhteenvetoTable]
@@ -112,6 +119,7 @@ object Tables {
 
   val Henkilöt = TableQuery[HenkilöTable]
   val Scheduler = TableQuery[SchedulerTable]
+  val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
@@ -179,3 +187,5 @@ case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos:
 case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
   def running: Boolean = status == 1
 }
+
+case class OppilaitosIPOsoiteRow(username: String, ip: String)
