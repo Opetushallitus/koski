@@ -188,10 +188,10 @@ protected case class HttpResponseLog(request: Request, uriTemplate: String) {
     HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
   private def log(status: String, ok: Boolean) {
-    val requestBody = if (ok) { None } else { request.body match {
+    val requestBody = (if (ok) { None } else { request.body match {
       case Emit(seq) => seq.reduce(_ ++ _).decodeUtf8.right.toOption
       case _ => None
-    }}.map("request body " + _).getOrElse("")
+    }}).map("request body " + _).getOrElse("")
 
     HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}")
 
