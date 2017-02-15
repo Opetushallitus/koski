@@ -2,8 +2,7 @@
 
 - name: Koski upload
   hosts: koski_backends
-  user: "{{ ssh_user }}"
-  sudo: true
+  become: true
   gather_facts: False
   tasks:
   - name: Copy koski application package
@@ -11,8 +10,7 @@
 
 - name: Koski deployment
   hosts: koski_backends
-  user: "{{ ssh_user }}"
-  sudo: true
+  become: true
   gather_facts: False
   vars:
     koski_home: /srv/tomcat/koski

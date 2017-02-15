@@ -43,7 +43,7 @@ function download_version {
   echo "# Application downloaded to: ${TMP_APPLICATION}"
 }
 
-INVENTORY=${INVENTORY:-"tf-hosts.js"}
+INVENTORY=${INVENTORY:-"scripts/inventory.sh"}
 ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
 
 if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
@@ -71,7 +71,7 @@ if [ ! -z "$OS_TENANT_NAME" ]; then
 else
     if [ "$ENV" == "vagrant" ]; then
         ANSIBLE_ARGS="${ANSIBLE_ARGS} --user=vagrant"
-        INVENTORY="vagrant/inventory"
+        INVENTORY="$CLOUD_ENV_DIR/vagrant/inventory"
     else
         echo Missing OS_TENANT_NAME environment variable and env is not vagrant
         exit 1
@@ -79,8 +79,8 @@ else
 fi
 set -u
 
-echo "Using inventory $INVENTORY in directory $CLOUD_ENV_DIR"
+echo "Using inventory $INVENTORY"
 
 download_version
 
-ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $CLOUD_ENV_DIR/$INVENTORY "$DIR"/deploy.yml
+ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
