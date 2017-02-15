@@ -51,11 +51,6 @@ if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
   usage
 fi
 
-if [ -z "$OS_USERNAME" ]; then
-  echo "Missing OS_USERNAME"
-  usage
-fi
-
 if [ -z "$VERSION" ]; then
   echo "Missing VERSION"
   usage
@@ -79,15 +74,13 @@ else
         INVENTORY="vagrant/inventory"
     else
         echo Missing OS_TENANT_NAME environment variable and env is not vagrant
-        return 1
+        exit 1
     fi
 fi
 set -u
 
 echo "Using inventory $INVENTORY in directory $CLOUD_ENV_DIR"
 
-cd "$CLOUD_ENV_DIR"
-
 download_version
 
-ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
+ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $CLOUD_ENV_DIR/$INVENTORY "$DIR"/deploy.yml
