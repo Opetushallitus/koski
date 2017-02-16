@@ -142,6 +142,7 @@ case class PerusopetuksenVuosiluokanSuorituksenLiitteet(
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaine")
+  @Flatten
   koulutusmoduuli: PerusopetuksenOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
@@ -263,6 +264,8 @@ object PerusopetuksenLuokkaAste {
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
 trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {
+  @Title("Oppiaine")
+  def tunniste: KoodiViite
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
 

@@ -36,7 +36,7 @@ export const KoulutusmoduuliEditor = React.createClass({
     return (<span className="koulutusmoduuli">
       <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
       <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-      <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key))} context={context}/>
+      <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} context={context}/>
     </span>)
   }
 })
@@ -59,7 +59,7 @@ export const JaksoEditor = React.createClass({
     return (
       <div className="jaksollinen">
         <PäivämääräväliEditor context={context} model={model}/>
-        <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu'].includes(p.key))} context={context}/>
+        <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} context={context}/>
       </div>
     )
   }

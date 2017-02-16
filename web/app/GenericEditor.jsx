@@ -85,9 +85,9 @@ export const TogglableEditor = React.createClass({
 export const PropertiesEditor = React.createClass({
   render() {
     let defaultValueEditor = (prop, ctx, getDefault) => getDefault()
-    let {properties, context, getValueEditor = defaultValueEditor} = this.props
+    let {properties, context, getValueEditor = defaultValueEditor, propertyFilter = () => true} = this.props
     let edit = context.edit
-    let shouldShow = shouldShowProperty(edit)
+    let shouldShow = (property) => shouldShowProperty(edit)(property) && propertyFilter(property)
 
     let munch = (prefix) => (property, i) => {
       if (property.flatten) {

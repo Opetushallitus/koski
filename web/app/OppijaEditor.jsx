@@ -190,7 +190,7 @@ const ExpandablePropertiesEditor = React.createClass({
 const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle']
+    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
     return (<GenericEditor.TogglableEditor
       context={context}
@@ -199,7 +199,7 @@ const PäätasonSuoritusEditor = React.createClass({
         return (<div className={className}>
           {editLink}
           <TodistusLink suoritus={model} context={ctx}/>
-          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(ctx, {editable: model.editable})}/>
+          <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !excludedProperties.includes(p.key)} context={R.merge(ctx, {editable: model.editable})}/>
           <div className="tila-vahvistus">
             <span className="tila">
               Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
@@ -282,5 +282,3 @@ export const editorMapping = R.mergeAll([{
   'oppijaeditorview': OppijaEditor,
   'opiskeluoikeusjakso': OpiskeluoikeusjaksoEditor
 }, CommonEditors.editorMapping, Ammatillinen.editorMapping, Perusopetus.editorMapping])
-
-console.log(editorMapping)
