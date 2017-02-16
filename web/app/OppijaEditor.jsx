@@ -2,14 +2,15 @@ import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { childContext, Editor } from './GenericEditor.jsx'
+import { childContext } from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
-import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
-import { LukionOppiaineetEditor } from './Lukio.jsx'
-import { TutkinnonOsatEditor, NäytönSuorituspaikkaEditor, NäytönArvioitsijaEditor, TyössäoppimisjaksoEditor } from './Ammatillinen.jsx'
+import * as Perusopetus from './Perusopetus.jsx'
+import * as Lukio from './Lukio.jsx'
+import * as Ammatillinen from './Ammatillinen.jsx'
+import * as CommonEditors from './CommonEditors.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -218,11 +219,11 @@ const PäätasonSuoritusEditor = React.createClass({
           <div className="osasuoritukset">
             {
               ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
-                ? <PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
+                ? <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
                 : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
-                  ? <TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+                  ? <Ammatillinen.TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
                   : (model.value.classes.includes('lukionoppimaaransuoritus'))
-                    ? <LukionOppiaineetEditor context={ctx} model={model} />
+                    ? <Lukio.LukionOppiaineetEditor context={ctx} model={model} />
                     : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
             }
           </div>
@@ -263,50 +264,6 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   }
 })
 
-const LukionKurssiEditor = React.createClass({
-  render() {
-    let { model } = this.props
-    var tunniste = modelData(model, 'koulutusmoduuli.tunniste')
-    let koodiarvo = tunniste && tunniste.koodiarvo
-    let nimi = modelTitle(model, 'koulutusmoduuli')
-    let arvosana = modelTitle(model, 'arviointi.-1.arvosana')
-    return (<div className="lukionkurssinsuoritus">
-      <label className="oppiaine"><span className="koodiarvo">{koodiarvo}</span> <span className="nimi">{nimi}</span></label>
-      <span className="arvosana">{arvosana}</span>
-    </div>)
-  }
-})
-LukionKurssiEditor.canShowInline = () => false
-
-
-export const LaajuusEditor = React.createClass({
-  render() {
-    let { model, context } = this.props
-    var yksikköData = modelData(model, 'yksikkö')
-    let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
-    return (modelData(model, 'arvo'))
-      ? <span><GenericEditor.Editor model={model} context={context} path="arvo" parent={this}/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
-      : <span>-</span>
-  }
-})
-LaajuusEditor.readOnly = true
-
-const VahvistusEditor = React.createClass({
-  render() {
-    let { model } = this.props
-    return (<span className="vahvistus inline">
-      <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
-      <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
-      {
-        (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
-          <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
-        )
-      }
-    </span>)
-  }
-})
-VahvistusEditor.readOnly = true
-
 const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let { model } = this.props
@@ -318,64 +275,12 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
 })
 OpiskeluoikeusjaksoEditor.readOnly = true
 
-const KoulutusmoduuliEditor = React.createClass({
-  render() {
-    let { model, context } = this.props
-    return (<span className="koulutusmoduuli">
-      <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
-      <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-      <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key))} context={context}/>
-    </span>)
-  }
-})
-KoulutusmoduuliEditor.readOnly = true
-
-export const PäivämääräväliEditor = React.createClass({
-  render() {
-    let { model, context } = this.props
-    return (<span>
-      <GenericEditor.Editor context={context} model={model} parent={this} path="alku"/> — <GenericEditor.Editor context={context} model={modelLookup(model, 'loppu')}/>
-    </span>)
-  }
-})
-PäivämääräväliEditor.canShowInline = () => true
-PäivämääräväliEditor.readOnly = true
-
-export const JaksollinenEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    return (
-      <div className="jaksollinen">
-        <PäivämääräväliEditor context={context} model={model}/>
-        <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['alku', 'loppu'].includes(p.key))} context={context}/>
-      </div>
-    )
-  }
-})
 
 const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
 
-export const editorMapping = {
+export const editorMapping = R.mergeAll([{
   'oppijaeditorview': OppijaEditor,
-  //'lukionkurssinsuoritus': LukionKurssiEditor,
-  'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
-  'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
-  'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
-  'henkilovahvistuspaikkakunnalla': VahvistusEditor,
-  'henkilovahvistusilmanpaikkakuntaa': VahvistusEditor,
-  'organisaatiovahvistus': VahvistusEditor,
-  'laajuusosaamispisteissa' : LaajuusEditor,
-  'laajuuskursseissa' : LaajuusEditor,
-  'laajuusopintopisteissa' : LaajuusEditor,
-  'laajuusvuosiviikkotunneissa' : LaajuusEditor,
-  'koulutus' : KoulutusmoduuliEditor,
-  'preibkoulutusmoduuli': KoulutusmoduuliEditor,
-  'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
-  'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
-  'naytonarvioitsija': NäytönArvioitsijaEditor,
-  'naytonsuoritusaika': PäivämääräväliEditor,
-  'paatosjakso': PäivämääräväliEditor,
-  'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
-  'erityisentuenpaatos': JaksollinenEditor,
-  'jakso': JaksollinenEditor
-}
+  'opiskeluoikeusjakso': OpiskeluoikeusjaksoEditor
+}, CommonEditors.editorMapping, Ammatillinen.editorMapping, Perusopetus.editorMapping])
+
+console.log(editorMapping)

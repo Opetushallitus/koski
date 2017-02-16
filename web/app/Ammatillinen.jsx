@@ -2,7 +2,7 @@ import React from 'react'
 import { modelData, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 import { childContext, Editor } from './GenericEditor.jsx'
-import { PäivämääräväliEditor } from './OppijaEditor.jsx'
+import { PäivämääräväliEditor, KoulutusmoduuliEditor } from './CommonEditors.jsx'
 
 export const TutkinnonOsatEditor = React.createClass({
   render() {
@@ -105,4 +105,12 @@ let suorituksenTilaSymbol = (tila) => {
     case 'KESKEN': return ''
     default: return ''
   }
+}
+
+export const editorMapping = {
+  'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
+  'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
+  'naytonarvioitsija': NäytönArvioitsijaEditor,
+  'naytonsuoritusaika': PäivämääräväliEditor,
+  'tyossaoppimisjakso': TyössäoppimisjaksoEditor
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { LaajuusEditor } from './OppijaEditor.jsx'
+import { LaajuusEditor, JaksoEditor } from './CommonEditors.jsx'
 import R from 'ramda'
 
 export const PerusopetuksenOppiaineetEditor = React.createClass({
@@ -96,3 +96,7 @@ const OppiaineEditor = React.createClass({
     return { expanded: false }
   }
 })
+
+export const editorMapping = {
+  'erityisentuenpaatos': JaksoEditor
+}
