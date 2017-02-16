@@ -200,22 +200,7 @@ const PäätasonSuoritusEditor = React.createClass({
           {editLink}
           <TodistusLink suoritus={model} context={ctx}/>
           <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !excludedProperties.includes(p.key)} context={R.merge(ctx, {editable: model.editable})}/>
-          <div className="tila-vahvistus">
-            <span className="tila">
-              Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
-            </span>
-            <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="vahvistus" />
-            {(() => {
-              let jääLuokalle = modelData(model, 'jääLuokalle')
-              let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
-              if (jääLuokalle === true) {
-                return <div>Ei siirretä seuraavalle luokalle</div>
-              } else if (jääLuokalle === false && luokka !== '9') {
-                return <div>Siirretään seuraavalle luokalle</div>
-              }
-            })()}
-
-          </div>
+          <TilaJaVahvistus model={model} context={ctx}/>
           <div className="osasuoritukset">
             {
               ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
@@ -231,6 +216,28 @@ const PäätasonSuoritusEditor = React.createClass({
         }
       }
     />)
+  }
+})
+
+const TilaJaVahvistus = React.createClass({
+  render() {
+    let { context, model } = this.props
+    return (<div className="tila-vahvistus">
+        <span className="tila">
+          Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
+        </span>
+        <GenericEditor.PropertyEditor context={context} model={model} propertyName="vahvistus" />
+        {(() => {
+          let jääLuokalle = modelData(model, 'jääLuokalle')
+          let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+          if (jääLuokalle === true) {
+            return <div>Ei siirretä seuraavalle luokalle</div>
+          } else if (jääLuokalle === false && luokka !== '9') {
+            return <div>Siirretään seuraavalle luokalle</div>
+          }
+        })()}
+      </div>
+    )
   }
 })
 
