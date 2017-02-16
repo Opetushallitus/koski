@@ -6,14 +6,88 @@ describe('Perusopetus', function() {
 
   before(Authentication().login(), resetFixtures)
 
+  function extractAsText(el, subElement) {
+    if (isJQuery(el) && el.length > 1) {
+      return extractMultiple(el)
+    }
+    if (el.nodeType === 3) return el.textContent.trim()
+    if (el.nodeType && el.nodeType != 1) return ""
+
+    el = $(el)
+    var element = el[0]
+
+    if (el.hasClass("toggle-edit")) return ""
+    var isBlockElement =
+      element.tagName == "SECTION" ||
+      ["block", "table", "table-row", "table-row-group", "list-item"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
+
+    var separator = (isBlockElement ? "\n" : "")
+    var text = sanitizeText(separator + extractMultiple(element.childNodes) + separator)
+    return subElement && isBlockElement ? text : text.trim()
+
+    function nonEmpty(x) {
+      return x.trim().length > 0
+    }
+    function extractMultiple(elements) {
+      return sanitizeText(toArray(elements).map(extractSubElement).filter(nonEmpty).join(" ")).trim()
+    }
+    function sanitizeText(text) {
+      return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/|/g, "")
+    }
+    function extractSubElement(el) {
+      return extractAsText(el, true)
+    }
+  }
+
   describe('Perusopetuksen lukuvuositodistukset ja päättötodistus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+
+    it('näyttää opiskeluoikeuden tiedot', function() {
+      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+        'Tila 4.6.2016 Valmistunut\n' +
+        '15.8.2008 Läsnä')
+    })
 
     describe('Perusopetuksen oppimäärä', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
-        it('toimii', function() {
-          expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Peruskoulu 104/011/2014\n' +
+            'Oppimäärä Perusopetus\n' +
+            'Toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Koulutus\n' +
+            'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
+        })
+        it('näyttää oppiaineiden arvosanat', function() {
+          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Pakolliset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus 9\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9\n' +
+            'Valinnaiset oppiaineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9 -\n' +
+            '* = yksilöllistetty oppimäärä')
         })
       })
 
@@ -29,17 +103,149 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Lukuvuosisuoritus', function() {
+    describe('Lukuvuosisuoritus 8. luokka', function() {
       before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus('8. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
-        it('toimii', function() {
-          expect(S('.perusopetuksenvuosiluokansuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Luokka-aste 8. vuosiluokka\n' +
+            'Luokka 8C\n' +
+            'Toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 15.8.2014\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus: VALMIS Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi\n' +
+            'Siirretään seuraavalle luokalle')
+        })
+        it('näyttää oppiaineiden arvosanat', function() {
+          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Pakolliset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus 9\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9\n' +
+            'Valinnaiset oppiaineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9 -\n' +
+            'Käyttäytymisen arviointi\n' +
+            'Arvosana S\n' +
+            'Kuvaus Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
+            '* = yksilöllistetty oppimäärä')
         })
       })
       describe('Lukuvuositodistus', function() {
         before(opinnot.avaaTodistus())
         it('näytetään', function() {})
+      })
+    })
+
+    describe('Lukuvuosisuoritus 9. luokka', function() {
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus('9. vuosiluokka'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Luokka-aste 9. vuosiluokka\n' +
+            'Luokka 9C\n' +
+            'Toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 15.8.2015\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus: VALMIS Vahvistus : 30.5.2016 Jyväskylä Reijo Reksi')
+        })
+      })
+      describe('Lukuvuositodistus', function() {
+        it('ei näytetä', function() {
+          expect(S('a.todistus').is(':visible')).to.equal(false)
+        })
+      })
+    })
+
+    describe('Luokalle jäänyt 7-luokkalainen', function() {
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus('7. vuosiluokka'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Luokka-aste 7. vuosiluokka\n' +
+            'Luokka 7C\n' +
+            'Toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 15.8.2013\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus: VALMIS Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi\n' +
+            'Ei siirretä seuraavalle luokalle')
+        })
+      })
+    })
+
+    describe('Päättötodistus toiminta-alueittain', function() {
+      before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+
+        it('näyttää opiskeluoikeuden tiedot', function() {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+            'Tila 4.6.2016 Valmistunut\n' +
+            '15.8.2008 Läsnä\n' +
+            'Lisätiedot\n' +
+            'Perusopetuksen aloittamista lykätty kyllä\n' +
+            'Aloittanut ennen oppivelvollisuutta ei\n' +
+            'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+            'Tukimuodot Osa-aikainen erityisopetus\n' +
+            'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
+            'Opiskelee toiminta-alueittain kyllä\n' +
+            'Opiskelee erityisryhmässä kyllä\n' +
+            'Tehostetun tuen päätös 15.8.2008 — 4.6.2016\n' +
+            'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
+            'Kotiopetus 15.8.2008 — 4.6.2016\n' +
+            'Ulkomailla 15.8.2008 — 4.6.2016\n' +
+            'Vuosiluokkiin sitoutumaton opetus kyllä')
+        })
+
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Koulutus Peruskoulu 104/011/2014\n' +
+            'Oppimäärä Aikuisten perusopetus\n' +
+            'Toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
+        })
+        it('näyttää oppiaineiden arvosanat', function() {
+          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Oppiaine Arvosana\n' +
+            'motoriset taidot S\n' +
+            'Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
+            'kieli ja kommunikaatio S\n' +
+            'sosiaaliset taidot S\n' +
+            'päivittäisten toimintojen taidot S\n' +
+            'kognitiiviset taidot S')
+        })
+      })
+      describe('Tulostettava todistus', function() {
+        before(opinnot.avaaTodistus(0))
+        it('näytetään', function() {
+          // See more detailed content specification in PerusopetusSpec.scala
+          expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        })
       })
     })
 
@@ -101,35 +307,27 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Päättötodistus toiminta-alueittain', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {})
-    })
-    describe('Kaikki tiedot näkyvissä', function() {
-      before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset td.oppiaine:eq(1) .nimi').text()).to.equal('kieli ja kommunikaatio')
-      })
-    })
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
-      it('näytetään', function() {
-        // See more detailed content specification in PerusopetusSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-      })
-    })
-  })
-
   describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {})
-    })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.vahvistus .nimi').text()).to.equal('Reijo Reksi')
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Oppiaine Äidinkieli ja kirjallisuus\n' +
+          'Kieli Suomen kieli ja kirjallisuus\n' +
+          'Yksilöllistetty oppimäärä ei\n' +
+          'Painotettu opetus ei\n' +
+          'Toimipiste Jyväskylän normaalikoulu\n' +
+          'Arviointi kiitettävä\n' + // TODO: numeroarvosana!
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -144,13 +342,45 @@ describe('Perusopetus', function() {
 
   describe('Perusopetuksen lisäopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {})
-    })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.perusopetuksenlisaopetuksensuoritus .osasuoritukset td.oppiaine:eq(0)').text()).to.equal('Äidinkieli ja kirjallisuus')
+
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä\n' +
+          'Lisätiedot\n' +
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Perusopetuksen lisäopetus\n' +
+          'Toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
+      })
+      it('näyttää oppiaineiden arvosanat', function() {
+        expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+          'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+          'Pakolliset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus 7 †\n' +
+          'A1-kieli, englanti 10 †\n' +
+          'B1-kieli, ruotsi 6 †\n' +
+          'Matematiikka 6 †\n' +
+          'Biologia 10 †\n' +
+          'Maantieto 9 †\n' +
+          'Fysiikka 8 †\n' +
+          'Kemia 9 †\n' +
+          'Terveystieto 8 †\n' +
+          'Historia 7\n' +
+          'Yhteiskuntaoppi 8 †\n' +
+          'Kuvataide 8\n' +
+          'Liikunta 7 * †\n' +
+          'Valinnaiset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Monialainen oppimiskokonaisuus S\n' +
+          '† = perusopetuksen päättötodistuksen arvosanan korotus, * = yksilöllistetty oppimäärä')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -162,15 +392,29 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Perusopetukseen valmistavan opetuksen todistus', function() {
+  describe('Perusopetukseen valmistava opetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {})
-    })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.perusopetukseenvalmistavanopetuksensuoritus .osasuoritukset td.oppiaine .nimi').text()).to.equal('Äidinkieli')
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 15.8.2007 — Päättymispäivä : 1.6.2008\n' +
+          'Tila 1.6.2008 Valmistunut\n' +
+          '15.8.2007 Läsnä')
+      })
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Perusopetukseen valmistava opetus\n' +
+          'Toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
+      })
+      it('näyttää oppiaineiden arvosanat', function() {
+        expect(extractAsText(S('.oppiaineet'))).to.equal(
+          'Oppiaineiden arvosanat\n' +
+          'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+          'Oppiaine Arvosana Laajuus\n' +
+          'Äidinkieli S 10 vuosiviikkotuntia\n' +
+          'Keskustelee sujuvasti suomeksi')
       })
     })
     describe('Tulostettava todistus', function() {

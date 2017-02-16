@@ -86,7 +86,7 @@ object PerusopetusExampleData {
   def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
     oppilaitos = oppilaitos,
     suoritukset = List(
-      seitsemännenLuokanTuplaus.copy(toimipiste = toimipiste, luokka = "8" + luokka),
+      seitsemännenLuokanTuplaus.copy(toimipiste = toimipiste, luokka = "7" + luokka),
       kahdeksannenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "8" + luokka),
       yhdeksännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "9" + luokka),
       perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
@@ -103,13 +103,13 @@ object PerusopetusExampleData {
   )
 
   val seitsemännenLuokanTuplaus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(7), luokka = "7C", alkamispäivä = Some(date(2014, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
     tila = tilaValmis,
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet.map(_.map(_.copy(arviointi = arviointi(4), yksilöllistettyOppimäärä = false)).filter(_.koulutusmoduuli.pakollinen)),
-    vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
+    vahvistus = vahvistusPaikkakunnalla(date(2014, 5, 30))
   )
 
   val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(

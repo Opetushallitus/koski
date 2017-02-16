@@ -168,7 +168,16 @@ function takeScreenshot(name) {
 }
 
 function textsOf(elements) {
-  return Array.prototype.slice.apply(elements.get()).map(function(el) { return $(el).text() })
+  return toArray(elements).map(function(el) { return $(el).text() })
+}
+
+function isJQuery(el) {
+  return typeof(el.children) == "function"
+}
+
+function toArray(elements) {
+  if (isJQuery(elements)) elements = elements.get() // <- a jQuery object
+  return Array.prototype.slice.apply(elements)
 }
 
 function isElementVisible(el) {
