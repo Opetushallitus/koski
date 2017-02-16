@@ -325,7 +325,7 @@ describe('Perusopetus', function() {
           'Yksilöllistetty oppimäärä ei\n' +
           'Painotettu opetus ei\n' +
           'Toimipiste Jyväskylän normaalikoulu\n' +
-          'Arviointi kiitettävä\n' + // TODO: numeroarvosana!
+          'Arvosana 9\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
       })

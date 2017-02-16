@@ -149,6 +149,7 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   painotettuOpetus: Boolean = false,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
+  @Title("Arvosana")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @KoodistoUri("perusopetuksensuoritustapa")
