@@ -199,7 +199,11 @@ const PäätasonSuoritusEditor = React.createClass({
         return (<div className={className}>
           {editLink}
           <TodistusLink suoritus={model} context={ctx}/>
-          <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !excludedProperties.includes(p.key)} context={R.merge(ctx, {editable: model.editable})}/>
+          <GenericEditor.PropertiesEditor
+            properties={model.value.properties}
+            propertyFilter={p => !excludedProperties.includes(p.key)}
+            context={R.merge(ctx, {editable: model.editable})}
+          />
           <TilaJaVahvistus model={model} context={ctx}/>
           <div className="osasuoritukset">
             {
