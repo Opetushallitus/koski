@@ -3,6 +3,7 @@ package fi.oph.koski.koodisto
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException, VirkailijaHttpClient}
+import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 
 /** Koodistojen ja koodien lisäyspalvelu **/
@@ -33,11 +34,26 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     runTask(secureHttp.post(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
   }
 
-  def updateKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
+  def updateKoodi(koodistoUri: String, koodi: KoodistoKoodi) =
+    try {
+      runUpdateKoodi(koodi)
+    }
+    catch {
+      case HttpStatusException(500, "error.codeelement.locking", _, _) =>
+        getKoodistoKoodi(koodi).map(koodiWithVersion => koodi.copy(version = koodiWithVersion.version)).foreach(runUpdateKoodi)
+    }
+
+  private def runUpdateKoodi(koodi: KoodistoKoodi) =
     runTask(secureHttp.put(uri"/koodisto-service/rest/codeelement", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
-  }
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
     runTask(secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder))
   }
+
+  def getKoodistoKoodi(koodi: KoodistoKoodi): Option[KoodistoKoodi] =
+    runTask(secureHttp.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}") {
+      case (404, _, _)  => None
+      case (500, "error.codes.not.found", _) => None
+      case (200, text, _) => Some(Json.read[KoodistoKoodi](text))
+    })
 }
