@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.{Pools, PortChecker}
+import fi.oph.koski.util.Pools
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
