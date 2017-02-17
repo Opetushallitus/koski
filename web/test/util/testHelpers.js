@@ -171,6 +171,41 @@ function textsOf(elements) {
   return toArray(elements).map(function(el) { return $(el).text() })
 }
 
+
+function extractAsText(el, subElement) {
+  if (isJQuery(el) && el.length > 1) {
+    return extractMultiple(el)
+  }
+  if (el.nodeType === 3) return el.textContent.trim()
+  if (el.nodeType && el.nodeType != 1) return ""
+
+  el = $(el)
+  var element = el[0]
+
+  if (el.hasClass("toggle-edit") || el.hasClass("opintosuoritusote")) return ""
+  
+  var isBlockElement =
+    element.tagName == "SECTION" ||
+    ["block", "table", "table-row", "table-row-group", "list-item"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
+
+  var separator = (isBlockElement ? "\n" : "")
+  var text = sanitizeText(separator + extractMultiple(element.childNodes) + separator)
+  return subElement && isBlockElement ? text : text.trim()
+
+  function nonEmpty(x) {
+    return x.trim().length > 0
+  }
+  function extractMultiple(elements) {
+    return sanitizeText(toArray(elements).map(extractSubElement).filter(nonEmpty).join(" ")).trim()
+  }
+  function sanitizeText(text) {
+    return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/|/g, "")
+  }
+  function extractSubElement(el) {
+    return extractAsText(el, true)
+  }
+}
+
 function isJQuery(el) {
   return typeof(el.children) == "function"
 }
