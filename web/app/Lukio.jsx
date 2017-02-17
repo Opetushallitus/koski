@@ -70,7 +70,7 @@ const LukionKurssiEditor = React.createClass({
     let tyyppi = modelData(kurssi, 'koulutusmoduuli.kurssinTyyppi.koodiarvo')
     return (
       <li className="kurssi">
-        <div className={'tunniste ' + tyyppi}>{modelData(kurssi, 'koulutusmoduuli.tunniste.koodiarvo')}</div>
+        <div className={'tunniste ' + tyyppi} title={modelTitle(kurssi, 'koulutusmoduuli')}>{modelData(kurssi, 'koulutusmoduuli.tunniste.koodiarvo')}</div>
         <div
           className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
       </li>
