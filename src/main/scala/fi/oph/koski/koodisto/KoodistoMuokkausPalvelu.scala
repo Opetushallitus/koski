@@ -40,7 +40,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     }
     catch {
       case HttpStatusException(500, "error.codeelement.locking", _, _) =>
-        getKoodistoKoodi(koodi).map(koodiWithVersion => koodi.copy(version = koodiWithVersion.version)).foreach(runUpdateKoodi)
+        runUpdateKoodi(koodi.copy(version = getKoodistoKoodi(koodi).version))
     }
 
   private def runUpdateKoodi(koodi: KoodistoKoodi) =
@@ -50,10 +50,6 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     runTask(secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder))
   }
 
-  def getKoodistoKoodi(koodi: KoodistoKoodi): Option[KoodistoKoodi] =
-    runTask(secureHttp.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}") {
-      case (404, _, _)  => None
-      case (500, "error.codes.not.found", _) => None
-      case (200, text, _) => Some(Json.read[KoodistoKoodi](text))
-    })
+  def getKoodistoKoodi(koodi: KoodistoKoodi): KoodistoKoodi =
+    runTask(secureHttp.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}")(Http.parseJson[KoodistoKoodi]))
 }
