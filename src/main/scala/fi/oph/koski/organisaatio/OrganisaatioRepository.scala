@@ -48,12 +48,11 @@ object OrganisaatioRepository {
   }
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): OrganisaatioRepository = {
-    config.getString("opintopolku.virkailija.url") match {
+    config.getString("organisaatio.virkailija.url") match {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
-        val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), url, "/organisaatio-service")
-        new RemoteOrganisaatioRepository(http, koodisto)
+        new RemoteOrganisaatioRepository(Http(url), koodisto)
     }
   }
 }
