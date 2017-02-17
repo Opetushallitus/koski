@@ -39,6 +39,7 @@ object ExamplesLukio {
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = toimipiste,
+          todistuksellaNäkyvätLisätiedot = Some("Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"),
           osasuoritukset = Some(List(
             suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = kurssinArviointi(8)),

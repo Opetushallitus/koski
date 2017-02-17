@@ -36,6 +36,7 @@ describe('Lukiokoulutus', function( ){
           'Oppimäärä Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
+          'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
           'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
       })
 
