@@ -126,6 +126,30 @@ from (
 
 *Harjoitus*: Laske oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien arvosanojen keskiarvo oppijoittain
 
+### Tietojen haku `@>` -operaattorilla
+
+Opiskeluoikeudet, joihin sisältyy lukion oppimäärän suoritus:
+
+```sql
+select *
+from opiskeluoikeus
+where data -> 'suoritukset' @> '[{"koulutusmoduuli": {"tunniste": {"koodiarvo": "309902"}}}]'
+```
+
+Osasuoritusten määrät lukion oppimäärän suorituksissa:
+
+```sql
+with suoritus as
+
+(select id, oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus
+from opiskeluoikeus
+where data -> 'suoritukset' @> '[{"koulutusmoduuli": {"tunniste": {"koodiarvo": "309902"}}}]')
+
+select id, oppija_oid, jsonb_array_length(suoritus -> 'osasuoritukset') osasuorituksia
+from suoritus
+order by osasuorituksia desc;
+```
+
 ### Tietojen päivittäminen
 
 SQL-harjoituksissa ei tehdä kantaan muutoksia eikä poistoja; nämä operaatiot on tehtävä Koski-järjestelmän rajapintojen kautta, jotta kannan (ja erityisesti tietojen muutoshistorian) eheys säilyisi. 
