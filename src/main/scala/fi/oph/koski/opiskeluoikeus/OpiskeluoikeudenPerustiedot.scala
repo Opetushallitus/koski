@@ -115,6 +115,18 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   private val elasticSearchHttp = Http(url)
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+    if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
+      // JSON queries go to PostgreSQL
+      opiskeluoikeusQueryService.streamingQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
+        case (opiskeluoikeusRow, henkilöRow) =>  OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
+      }
+    } else {
+      // Other queries got to ElasticSearch
+      findFromElastic(filters, sorting, pagination)
+    }
+  }
+
+  def findFromElastic(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     def nimi(order: String) = List(
       Map("henkilö.sukunimi.keyword" -> order),
       Map("henkilö.etunimet.keyword" -> order)
