@@ -199,7 +199,7 @@ function extractAsText(el, subElement) {
     return sanitizeText(toArray(elements).map(extractSubElement).filter(nonEmpty).join(" ")).trim()
   }
   function sanitizeText(text) {
-    return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/|/g, "")
+    return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/||/g, "")
   }
   function extractSubElement(el) {
     return extractAsText(el, true)

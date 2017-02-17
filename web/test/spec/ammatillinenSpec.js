@@ -278,8 +278,118 @@ describe('Ammatillinen koulutus', function() {
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.työtehtävät .value').text()).to.equal('Toimi harjoittelijana Sortti-asemalla')
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+          'Tila 31.5.2016 Valmistunut\n' +
+          '1.9.2012 Läsnä')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritustapa Opetussuunnitelman mukainen\n' +
+          'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+          'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi')
+      })
+
+      it('näyttää tutkinnon osat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Kestävällä tavalla toimiminen kyllä 40 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
+          'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
+          'Laajuus 5 osp\n' +
+          'Ympäristön hoitaminen kyllä 35 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Näyttö\n' +
+          'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\n' +
+          'tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
+          'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
+          'Suoritusaika 1.2.2016 — 1.2.2016\n' +
+          'Arvosana kiitettävä\n' +
+          'Arviointipäivä 20.10.2014\n' +
+          'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+          'Arviointikohteet Arviointikohde Arvosana\n' +
+          'Työprosessin hallinta kiitettävä\n' +
+          'Työmenetelmien, -välineiden ja materiaalin hallinta hyvä\n' +
+          'Työn perustana olevan tiedon hallinta hyvä\n' +
+          'Elinikäisen oppimisen avaintaidot kiitettävä\n' +
+          'Arvioinnista päättäneet Opettaja\n' +
+          'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
+          'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Ulkoilureittien rakentaminen ja hoitaminen kyllä 15 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Kulttuuriympäristöjen kunnostaminen ja hoitaminen kyllä 15 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Näyttö\n' +
+          'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön\n' +
+          'kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
+          'Suorituspaikka Sastamalan kunta\n' +
+          'Suoritusaika 1.3.2016 — 1.3.2016\n' +
+          'Arvosana kiitettävä\n' +
+          'Arviointipäivä 20.10.2014\n' +
+          'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+          'Arviointikohteet Arviointikohde Arvosana\n' +
+          'Työprosessin hallinta kiitettävä\n' +
+          'Työmenetelmien, -välineiden ja materiaalin hallinta hyvä\n' +
+          'Työn perustana olevan tiedon hallinta hyvä\n' +
+          'Elinikäisen oppimisen avaintaidot kiitettävä\n' +
+          'Arvioinnista päättäneet Opettaja\n' +
+          'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
+          'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 osp Hyväksytty\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Lisätiedot Tunniste Kuvaus\n' +
+          'Muutos arviointiasteikossa Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
+          'Näyttö\n' +
+          'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
+          'Suorituspaikka Vesipojat Oy\n' +
+          'Suoritusaika 1.4.2016 — 1.4.2016\n' +
+          'Arvosana kiitettävä\n' +
+          'Arviointipäivä 20.10.2014\n' +
+          'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+          'Arviointikohteet Arviointikohde Arvosana\n' +
+          'Työprosessin hallinta kiitettävä\n' +
+          'Työmenetelmien, -välineiden ja materiaalin hallinta hyvä\n' +
+          'Työn perustana olevan tiedon hallinta hyvä\n' +
+          'Elinikäisen oppimisen avaintaidot kiitettävä\n' +
+          'Arvioinnista päättäneet Opettaja\n' +
+          'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
+          'Viestintä- ja vuorovaikutusosaaminen kyllä 11 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Matemaattis-luonnontieteellinen osaaminen kyllä 9 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Lisätiedot Tunniste Kuvaus\n' +
+          'Arvioinnin mukauttaminen Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+          'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Matkailuenglanti ei 5 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi\n' +
+          'Sosiaalinen ja kulttuurinen osaaminen ei 5 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi'
+        )
       })
     })
     describe('Tulostettava todistus', function() {
