@@ -136,6 +136,15 @@ from opiskeluoikeus
 where data -> 'suoritukset' @> '[{"koulutusmoduuli": {"tunniste": {"koodiarvo": "309902"}}}]'
 ```
 
+Oppijat, joilla on lukion oppimäärän suorituksen osasuorituksia (ainesuorituksia):
+
+```sql
+select oppija_oid
+from opiskeluoikeus
+where data -> 'suoritukset' @> '[{"koulutusmoduuli": {"tunniste": {"koodiarvo": "309902"}}}]'
+and data -> 'suoritukset' @> '[{"osasuoritukset": [{}]}]';
+```
+
 Osasuoritusten määrät lukion oppimäärän suorituksissa:
 
 ```sql
