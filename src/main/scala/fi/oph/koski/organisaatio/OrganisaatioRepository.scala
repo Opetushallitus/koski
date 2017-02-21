@@ -48,7 +48,7 @@ object OrganisaatioRepository {
   }
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): OrganisaatioRepository = {
-    config.getString("organisaatio.virkailija.url") match {
+    config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
