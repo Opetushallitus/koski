@@ -406,17 +406,32 @@ describe('Ammatillinen koulutus', function() {
   describe('Näyttötutkinnot', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus('Näyttötutkintoon valmistava koulutus'))
     describe('Näyttötutkintoon valmistava koulutus', function() {
-      describe('Oppijan suorituksissa', function() {
-        it('näytetään', function() {
-          expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-          expect(OpinnotPage().getTutkinto(0)).to.equal("Näyttötutkintoon valmistava koulutus")
-        })
-      })
-
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
-        it('toimii', function() {
-          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset td.tutkinnonosa .nimi').eq(0).text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
+        it('näyttää opiskeluoikeuden tiedot', function() {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+            'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+            'Tila 31.5.2016 Valmistunut\n' +
+            '1.9.2012 Läsnä'
+          )
+        })
+
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Koulutus Näyttötutkintoon valmistava koulutus\n' +
+            'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Alkamispäivä 1.9.2012\n' +
+            'Suoritus: VALMIS Vahvistus : 31.5.2015 Helsinki Reijo Reksi'
+          )
+        })
+
+        it('näyttää tutkinnon osat', function() {
+          expect(extractAsText(S('.osasuoritukset'))).to.equal(
+            'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+            'Johtaminen ja henkilöstön kehittäminen ei\n' +
+            'Auton lisävarustetyöt ei 15 osp'
+          )
         })
       })
 
@@ -430,17 +445,46 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Erikoisammattitutkinto', function() {
       before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus('Autoalan työnjohdon erikoisammattitutkinto'))
-      describe('Oppijan suorituksissa', function() {
-        it('näytetään', function() {
-          expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-          expect(OpinnotPage().getTutkinto()).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
-        })
-      })
-
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
-        it('toimii', function() {
-          expect(S('.osasuoritukset td.tutkinnonosa .nimi').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
+        it('näyttää opiskeluoikeuden tiedot', function() {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+            'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+            'Tila 31.5.2016 Valmistunut\n' +
+            '1.9.2012 Läsnä'
+          )
+        })
+
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Koulutus Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritustapa Näyttö\n' +
+            'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi'
+          )
+        })
+
+        it('näyttää tutkinnon osat', function() {
+          expect(extractAsText(S('.osasuoritukset'))).to.equal(
+            'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+            'Johtaminen ja henkilöstön kehittäminen kyllä Hyväksytty\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi\n' +
+            'Asiakaspalvelu ja korjaamopalvelujen markkinointi kyllä Hyväksytty\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi\n' +
+            'Työnsuunnittelu ja organisointi kyllä Hyväksytty\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi\n' +
+            'Taloudellinen toiminta kyllä Hyväksytty\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi\n' +
+            'Yrittäjyys kyllä Hyväksytty\n' +
+            'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi'
+          )
         })
       })
 
