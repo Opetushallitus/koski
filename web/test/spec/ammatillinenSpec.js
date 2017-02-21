@@ -499,17 +499,41 @@ describe('Ammatillinen koulutus', function() {
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-        expect(OpinnotPage().getTutkinto()).to.equal("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
-      })
-    })
-
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.osasuoritukset td.tutkinnonosa .nimi').eq(0).text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 14.9.2009 — Päättymispäivä : 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '14.9.2009 Läsnä'
+        )
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)\n' +
+          'Laajuus 60 osp\n' +
+          'Toimipiste Stadin ammattiopisto\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi'
+        )
+      })
+
+      it('näyttää tutkinnon osat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 osp Hyväksytty\n' +
+          'Opiskeluvalmiuksien vahvistaminen ei 10 osp Hyväksytty\n' +
+          'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 osp Hyväksytty\n' +
+          'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 osp Hyväksytty\n' +
+          'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
+          'Tunnustettu\n' +
+          'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
+          'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Tila Suoritus valmis\n' +
+          'Vahvistus 3.10.2015 Helsinki Reijo Reksi\n' +
+          'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta'
+        )
       })
     })
 
