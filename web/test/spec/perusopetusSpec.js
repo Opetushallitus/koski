@@ -81,6 +81,7 @@ describe('Perusopetus', function() {
             'Toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2014\n' +
             'Suorituskieli suomi\n' +
+            'Kielikylpykieli ruotsi\n' +
             'Suoritus: VALMIS Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi\n' +
             'Siirretään seuraavalle luokalle')
         })

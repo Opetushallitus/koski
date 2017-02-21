@@ -7,9 +7,8 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema._
 
 object PerusopetusExampleData {
   def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
@@ -97,6 +96,7 @@ object PerusopetusExampleData {
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
+    kielikylpykieli = ruotsinKieli,
     osasuoritukset = kaikkiAineet,
     käyttäytymisenArvio = Some(PerusopetuksenOppiaineenArviointi("S", Some("Esimerkillistä käyttäytymistä koko vuoden ajan"))),
     vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
