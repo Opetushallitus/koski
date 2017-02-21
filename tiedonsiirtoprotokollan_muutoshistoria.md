@@ -1,3 +1,8 @@
+## 21.2.2017
+
+- Ammatillisen tutkinnon suorituksen paikkakunta on valinnainen
+- Ammatillisen tutkinnon osan suorituksen näytön kuvaus ja paikkakunta ovat valinnaisia
+
 ## 10.2.2017
 
 Validointimuutoksia:
