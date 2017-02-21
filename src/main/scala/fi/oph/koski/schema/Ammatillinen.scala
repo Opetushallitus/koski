@@ -105,7 +105,7 @@ case class AmmatillisenTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
