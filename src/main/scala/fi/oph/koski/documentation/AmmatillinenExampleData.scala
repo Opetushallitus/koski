@@ -49,8 +49,8 @@ object AmmatillinenExampleData {
   )
 
   def näyttö(päivä: LocalDate, kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
-    kuvaus,
-    NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka),
+    Some(kuvaus),
+    Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
     Some(NäytönSuoritusaika(päivä, päivä)),
     arviointi,
     työssäoppimisenYhteydessä = false
