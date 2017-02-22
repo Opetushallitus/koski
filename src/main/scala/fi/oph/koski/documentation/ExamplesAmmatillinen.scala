@@ -132,19 +132,17 @@ object AmmatillinenPerustutkintoExample {
             koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100031", Some("Moottorin ja voimansiirron huolto ja korjaus"), "tutkinnonosat", None), false, Some(LaajuusOsaamispisteissä(15))),
             tunnustettu = Some(OsaamisenTunnustaminen(
               Some(AmmatillisenTutkinnonOsanSuoritus(
-                koulutusmoduuli = PaikallinenTutkinnonOsa(PaikallinenKoodi("478123", "Moottorin korjaus"),
-                  """
-                    |Opiskelijan on
-                    |- tunnettava jakopyörästön merkitys moottorin toiminnalle
-                    |- osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta
-                    |valmistajan antamiin ohjearvoihin
-                    |- osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja
-                    |- osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden
-                    |mukaisesti
-                    |- tunnettava venttiilikoneiston merkitys moottorin toiminnan osana
-                    |osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään
-                    |- noudatettava sovittuja työaikoja.
-                  """.stripMargin, false, None),
+                koulutusmoduuli = PaikallinenTutkinnonOsa(PaikallinenKoodi("11-22-33", "Moottorin korjaus"),
+                  """|Opiskelijan on
+                     |- tunnettava jakopyörästön merkitys moottorin toiminnalle
+                     |- osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta
+                     |valmistajan antamiin ohjearvoihin
+                     |- osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja
+                     |- osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden
+                     |mukaisesti
+                     |- tunnettava venttiilikoneiston merkitys moottorin toiminnan osana
+                     |osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään
+                     |- noudatettava sovittuja työaikoja""".stripMargin, false, None),
                 tila = tilaValmis,
                 toimipiste = None,
                 näyttö = Some(näyttö(date(2002, 4, 20), "Moottorin korjaus", "Autokorjaamo Oy, Riihimäki")),
