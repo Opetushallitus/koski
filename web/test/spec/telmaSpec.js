@@ -6,18 +6,41 @@ describe('Telma', function() {
 
   describe('Työhön ja itsenäiseen elämään valmentava koulutus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('021080-725C'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-      })
-    })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.tyohonjaitsenaiseenelamaanvalmentavankoulutuksensuoritus .osasuoritukset .tunnustettu:eq(0) .value').text()).to.equal('Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti')
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 14.9.2009 — Päättymispäivä : 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '14.9.2009 Läsnä'
+        )
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)\n' +
+          'Toimipiste Stadin ammattiopisto\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi'
+        )
+      })
+
+      it('näyttää tutkinnon osat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Toimintakyvyn vahvistaminen kyllä 18 osp Hyväksytty\n' +
+          'Opiskeluvalmiuksien vahvistaminen kyllä 15 osp Hyväksytty\n' +
+          'Työelämään valmentautuminen kyllä 20 osp Hyväksytty\n' +
+          'Tieto- ja viestintätekniikka sekä sen hyödyntäminen ei 2 osp Hyväksytty\n' +
+          'Tunnustettu\n' +
+          'Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti\n' +
+          'Uimaliikunta ja vesiturvallisuus ei 5 osp hyvä\n' +
+          'Tunnustettu\n' +
+          'Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
+          'Auton lisävarustetyöt ei 15 osp Hyväksytty'
+        )
       })
     })
+
     describe('Tulostettava todistus', function() {
       before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
