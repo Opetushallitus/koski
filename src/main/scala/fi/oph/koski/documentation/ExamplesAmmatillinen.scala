@@ -152,7 +152,7 @@ object AmmatillinenPerustutkintoExample {
               )),
               "Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)"
             )),
-            tila = tilaKesken,
+            tila = tilaValmis,
             toimipiste = Some(stadinToimipiste),
             arviointi = Some(List(arviointiHyväksytty)),
             vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
