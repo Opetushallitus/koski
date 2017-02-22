@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{AmmatillisenTutkinnonOsanSuoritus, _}
 
 object ExamplesAmmatillinen {
   lazy val examples = List(
@@ -19,7 +19,8 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", AmmatillinenOldExamples.ops),
     Example("ammatillinen - perustutkinto", "Ympäristönhoitajaksi valmistunut opiskelija", AmmatillinenPerustutkintoExample.perustutkinto),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto),
-    Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto)
+    Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
+    Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa)
   )
 }
 
@@ -118,6 +119,46 @@ object AmmatillinenPerustutkintoExample {
         )
       )
 
+    )
+  )
+
+  lazy val tunnustettuPaikallinenTutkinnonOsa = Oppija(
+    exampleHenkilö,
+    List(
+      opiskeluoikeus(
+        tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
+        osat = Some(List(
+          AmmatillisenTutkinnonOsanSuoritus(
+            koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100031", Some("Moottorin ja voimansiirron huolto ja korjaus"), "tutkinnonosat", None), false, Some(LaajuusOsaamispisteissä(15))),
+            tunnustettu = Some(OsaamisenTunnustaminen(
+              Some(AmmatillisenTutkinnonOsanSuoritus(
+                koulutusmoduuli = PaikallinenTutkinnonOsa(PaikallinenKoodi("478123", "Moottorin korjaus"),
+                  """
+                    |Opiskelijan on
+                    |- tunnettava jakopyörästön merkitys moottorin toiminnalle
+                    |- osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta
+                    |valmistajan antamiin ohjearvoihin
+                    |- osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja
+                    |- osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden
+                    |mukaisesti
+                    |- tunnettava venttiilikoneiston merkitys moottorin toiminnan osana
+                    |osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään
+                    |- noudatettava sovittuja työaikoja.
+                  """.stripMargin, false, None),
+                tila = tilaValmis,
+                toimipiste = None,
+                näyttö = Some(näyttö(date(2002, 4, 20), "Moottorin korjaus", "Autokorjaamo Oy, Riihimäki")),
+                vahvistus = vahvistus(date(2002, 5, 28), stadinAmmattiopisto)
+              )),
+              "Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)"
+            )),
+            tila = tilaKesken,
+            toimipiste = Some(stadinToimipiste),
+            arviointi = Some(List(arviointiHyväksytty)),
+            vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
+          )
+        ))
+      )
     )
   )
 }
