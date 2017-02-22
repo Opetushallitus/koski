@@ -213,7 +213,7 @@ case class ValtakunnallinenTutkinnonOsa(
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Tutkinnonosan kuvaus-tietoon viedään tutkinnon osan ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
@@ -353,7 +353,7 @@ trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Tutkinnonosan kuvaus-tietoon viedään tutkinnon osan ammattitaitovaatimukset")
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli with AmmatillisenTutkinnonOsa with NäyttötutkintoonValmistavanKoulutuksenOsa{
   def laajuus = None
@@ -414,7 +414,7 @@ trait AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa extends Koulutusmo
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class PaikallinenAmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Tutkinnonosan kuvaus-tietoon viedään tutkinnon osan ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
@@ -471,7 +471,7 @@ trait TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa extends Koulutus
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
 case class PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Tutkinnonosan kuvaus-tietoon viedään tutkinnon osan ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
