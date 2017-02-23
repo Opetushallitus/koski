@@ -268,9 +268,9 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Ammatillisen perustutkinnon päättötodistus', function() {
+  describe('Ammatillinen perustutkinto', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'))
-    describe('Kaikki tiedot näkyvissä', function() {
+    describe('Suoritus valmis, kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
@@ -383,17 +383,58 @@ describe('Ammatillinen koulutus', function() {
           'Vahvistus 31.5.2016 Reijo Reksi'
         )
       })
-    })
 
-    describe('Tulostettava todistus', function() {
-      before(OpinnotPage().avaaTodistus(0))
-      it('näytetään', function() {
-        expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
-        expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
-        expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
-        expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
+      describe('Tulostettava todistus', function() {
+        before(OpinnotPage().avaaTodistus(0))
+        it('näytetään', function() {
+          expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
+          expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
+          expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
+          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
+        })
       })
     })
+
+    describe('Suoritus kesken, vanhan perusteen suoritus tunnustettu', function () {
+      before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('140176-449X'), opinnot.expandAll)
+      it('näyttää opiskeluoikeuden tiedot', function () {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 1.9.2016 — Arvioitu päättymispäivä : 1.5.2020\n' +
+          'Tila 1.9.2016 Läsnä'
+        )
+      })
+
+      it('näyttää suorituksen tiedot', function () {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Autoalan perustutkinto 39/011/2014\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Alkamispäivä 1.9.2016\n' +
+          'Suoritustapa Näyttö\n' +
+          'Suoritus: KESKEN'
+        )
+      })
+
+      it('näyttää tutkinnon osat', function () {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Moottorin ja voimansiirron huolto ja korjaus ei 15 osp Hyväksytty\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2013 Reijo Reksi\n' +
+          'Tunnustettu\n' +
+          'Tutkinnon osa Moottorin korjaus\n' +
+          'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
+          'Tila Suoritus valmis\n' +
+          'Vahvistus 28.5.2002 Reijo Reksi\n' +
+          'Näyttö\n' +
+          'Kuvaus Moottorin korjaus\n' +
+          'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
+          'Suoritusaika 20.4.2002 — 20.4.2002\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
+          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)'
+        )
+      })
+    })
+
   })
 
   describe('Osittainen ammatillinen tutkinto', function() {
