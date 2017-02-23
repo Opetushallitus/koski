@@ -250,7 +250,7 @@ export const StringEditor = React.createClass({
 
     return context.edit
       ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
-      : <span className="inline string">{modelData(model)}</span>
+      : <span className="inline string">{modelData(model).split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
   },
 
   getInitialState() {

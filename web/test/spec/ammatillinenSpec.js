@@ -303,8 +303,7 @@ describe('Ammatillinen koulutus', function() {
           'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi\n' +
           'Näyttö\n' +
-          'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\n' +
-          'tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
+          'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
           'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
           'Suoritusaika 1.2.2016 — 1.2.2016\n' +
           'Arvosana kiitettävä\n' +
@@ -328,8 +327,7 @@ describe('Ammatillinen koulutus', function() {
           'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi\n' +
           'Näyttö\n' +
-          'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön\n' +
-          'kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
+          'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
           'Suorituspaikka Sastamalan kunta\n' +
           'Suoritusaika 1.3.2016 — 1.3.2016\n' +
           'Arvosana kiitettävä\n' +
