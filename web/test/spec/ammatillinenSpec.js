@@ -386,6 +386,7 @@ describe('Ammatillinen koulutus', function() {
         )
       })
     })
+
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
@@ -393,6 +394,39 @@ describe('Ammatillinen koulutus', function() {
         expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
         expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
         expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
+      })
+    })
+  })
+
+  describe('Osittainen ammatillinen tutkinto', function() {
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('230297-6448'))
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+          'Tila 31.5.2016 Valmistunut\n' +
+          '1.9.2012 Läsnä'
+        )
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Suorituskieli suomi\n' +
+          'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+          'Suoritus: VALMIS'
+        )
+      })
+
+      it('näyttää tutkinnon osat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+         'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Ympäristön hoitaminen kyllä 35 osp kiitettävä\n' +
+          'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Vahvistus 31.5.2016 Reijo Reksi'
+        )
       })
     })
   })
