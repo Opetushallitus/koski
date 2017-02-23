@@ -270,12 +270,6 @@ describe('Ammatillinen koulutus', function() {
 
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-      })
-    })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
