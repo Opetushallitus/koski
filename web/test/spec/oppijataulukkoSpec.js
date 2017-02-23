@@ -70,9 +70,10 @@ describe('Oppijataulukko', function() {
     describe('tilalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila', 'Valmistunut'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['Amikseenvalmistautuja, Anneli', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Telmanen, Tuula'])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Osittainen, Outi', 'Telmanen, Tuula' ])
       })
     })
+
     describe('toimipisteellä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
       it('toimii', function() {
