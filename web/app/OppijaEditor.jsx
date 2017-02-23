@@ -230,7 +230,9 @@ const TilaJaVahvistus = React.createClass({
         <span className="tila">
           Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
         </span>
-        <GenericEditor.PropertyEditor context={context} model={model} propertyName="vahvistus" />
+        {
+          model.value.data.vahvistus && <GenericEditor.PropertyEditor context={context} model={model} propertyName="vahvistus"/>
+        }
         {(() => {
           let jääLuokalle = modelData(model, 'jääLuokalle')
           let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
