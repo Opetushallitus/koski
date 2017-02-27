@@ -8,6 +8,9 @@ describe('Lukiokoulutus', function( ){
       detailsText: function() {
         return detailsElem().is(":visible") ? extractAsText(detailsElem()) : ""
       },
+      arvosana: function() {
+        return elem().find(".arvosana").text()
+      },
       toggleDetails: function() {
         triggerEvent(elem(), "click")
       },
@@ -120,9 +123,9 @@ describe('Lukiokoulutus', function( ){
         before(suoritusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
           var kurssi = Kurssi('MAA16')
-          before(kurssi.toggleDetails, kurssi.editor().property('arvosana').setValue('6'), wait.until(page.isSavedLabelShown), kurssi.toggleDetails, suoritusEditor.doneEditing)
+          before(kurssi.toggleDetails, kurssi.editor().property('arvosana').setValue('6'), kurssi.toggleDetails, suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
-
+            expect(kurssi.arvosana()).to.equal('6')
           })
         })
       })

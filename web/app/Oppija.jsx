@@ -21,9 +21,12 @@ export const oppijaContentP = (oppijaOid) => {
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
-  const loadOppijaE = Http.cachedGet(oppijaEditorUri).toEventStream().concat(doneEditingBus.flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true })))
-
   const updateResultE = Bacon.Bus()
+
+  const saveE = changeBus // might consider saving only when done editing
+  const savingP = saveE.awaiting(updateResultE)
+
+  const loadOppijaE = Http.cachedGet(oppijaEditorUri).toEventStream().concat(doneEditingBus.holdWhen(savingP).flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true })))
 
   const oppijaP = Bacon.update({ loading: true },
     loadOppijaE, (previous, oppija) => oppija,
@@ -42,8 +45,9 @@ export const oppijaContentP = (oppijaOid) => {
     }
   )
 
+
   updateResultE.plug(oppijaP
-    .sampledBy(changeBus, (oppija, [context]) => ({oppija, context}))
+    .sampledBy(saveE, (oppija, [context]) => ({oppija, context}))
     .flatMapLatest(({oppija, context: {path}}) => {
       let opiskeluoikeusPath = path.split('.').slice(0, 6)
       var oppijaData = oppija.value.data
