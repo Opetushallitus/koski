@@ -66,14 +66,66 @@ const LukionOppiaineEditor = React.createClass({
 const LukionKurssiEditor = React.createClass({
   render() {
     let {kurssi} = this.props
+    let {open, tooltipPosition} = this.state
     let arviointi = modelData(kurssi, 'arviointi')
-    let tyyppi = modelData(kurssi, 'koulutusmoduuli.kurssinTyyppi.koodiarvo')
+    let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
+    let toggleDetails = () => {
+      this.setState({
+        open: !open,
+        tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
+      })
+    }
+    //open = R.contains(koulutusmoduuli.tunniste.koodiarvo, ['FI1', 'FY7', 'MAA16'])
     return (
-      <li className="kurssi">
-        <div className={'tunniste ' + tyyppi} title={modelTitle(kurssi, 'koulutusmoduuli')}>{modelData(kurssi, 'koulutusmoduuli.tunniste.koodiarvo')}</div>
-        <div
-          className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
+      <li className="kurssi" ref={e => this.kurssiElement = e} onClick={toggleDetails}>
+        <div className={'tunniste ' + koulutusmoduuli.kurssinTyyppi.koodiarvo} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
+        <div className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
+        {
+          open && (<div className={'details details-' + tooltipPosition}>
+            <table>
+              <tbody>
+              <tr><td>tunniste:</td><td>{koulutusmoduuli.tunniste.koodiarvo}</td></tr>
+              <tr><td>nimi:</td><td>{koulutusmoduuli.tunniste.nimi.fi}</td></tr>
+              <tr><td>laajuus:</td><td>{koulutusmoduuli.laajuus.arvo} kurssia</td></tr>
+              {koulutusmoduuli.kuvaus && <tr><td>kuvaus:</td><td>{koulutusmoduuli.kuvaus.fi}</td></tr>}
+              <tr><td>kurssin tyyppi:</td><td>{koulutusmoduuli.kurssinTyyppi.nimi.fi}</td></tr>
+              <tr><td>tila:</td><td>{modelData(kurssi, 'tila.nimi.fi')}</td></tr>
+              <tr><td>arvosana:</td><td>{modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo} / {modelData(kurssi, 'arviointi.-1.arvosana').nimi.fi}</td></tr>
+              </tbody>
+            </table>
+          </div>)
+        }
       </li>
     )
+  },
+  getInitialState() {
+    return { open: false, tooltipPosition: 'bottom' }
+  },
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside, false)
+    document.addEventListener('keyup', this.handleEsc)
+    this.setState({open: false, tooltipPosition: getTooltipPosition(this.kurssiElement)})
+  },
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, false)
+    document.removeEventListener('keyup', this.handleEsc)
+  },
+  handleClickOutside(e) {
+    !this.kurssiElement.contains(e.target) && this.setState({open: false})
+  },
+  handleEsc(e) {
+    e.keyCode == 27 && this.setState({open: false})
   }
 })
+
+let getTooltipPosition = (kurssiElement) => {
+  let tooltipwidth = 275
+  let rect = kurssiElement.getBoundingClientRect()
+  if (rect.left - tooltipwidth < 0) {
+    return 'right'
+  } else if (rect.right + tooltipwidth >= (window.innerWidth || document.documentElement.clientWidth)) {
+    return 'left'
+  } else {
+    return 'bottom'
+  }
+}
