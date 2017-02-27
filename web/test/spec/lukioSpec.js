@@ -1,4 +1,25 @@
 describe('Lukiokoulutus', function( ){
+  function Kurssi(identifierOrElem) {
+    function elem() {
+      return typeof identifierOrElem == "string" ? S(".kurssi:contains(" + identifierOrElem +")") : S(identifierOrElem)
+    }
+    function detailsElem() { return elem().find(".details")}
+    return {
+      detailsText: function() {
+        return detailsElem().is(":visible") ? extractAsText(detailsElem()) : ""
+      },
+      toggleDetails: function() {
+        triggerEvent(elem(), "click")
+      },
+      editor: function() {
+        return Editor(detailsElem)
+      }
+    }
+  }
+  Kurssi.findAll = function() {
+    return toArray(S(".kurssi")).map(Kurssi)
+  }
+
   var page = KoskiPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
@@ -62,14 +83,13 @@ describe('Lukiokoulutus', function( ){
           'Terveystieto\nTE1\n8 1 9\n(8.0)')
       })
     })
-    describe('Kurssin tiedot', function() {
-      function kurssi(koodi) { return S(".kurssi:contains(" + koodi +")") }
-      function details(kurssi) { return S(kurssi).find(".details") }
 
+    describe('Kurssin tiedot', function() {
+      var kurssi = Kurssi('MAA16')
       describe('Kun klikataan', function() {
-        before(function() { triggerEvent(kurssi('MAA16'), 'click') })
+        before(kurssi.toggleDetails)
         it('näyttää kurssin tiedot', function() {
-          expect(extractAsText(details(kurssi('MAA16')))).to.equal(
+          expect(kurssi.detailsText()).to.equal(
             'Tunniste MAA16\n' +
             'Nimi Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2\n' +
             'Laajuus 1 kurssia\n' +
@@ -81,18 +101,28 @@ describe('Lukiokoulutus', function( ){
         })
       })
       describe('Kun klikataan uudestaan', function() {
-        before(function() { triggerEvent(kurssi('MAA16'), 'click') })
+        before(kurssi.toggleDetails)
         it('piilottaa kurssin tiedot', function() {
-          expect(details(kurssi('MAA16')).is(':visible')).to.equal(false)
+          expect(kurssi.detailsText()).to.equal('')
         })
       })
       describe('Kaikkien kurssien tiedot', function() {
         it('voidaan avata yksitellen virheettömästi', function() {
-          toArray(S(".kurssi")).forEach(function(kurssi) {
-            expect(details(kurssi).is(':visible')).to.equal(false)
-            triggerEvent(kurssi, 'click')
-            expect(details(kurssi).is(':visible')).to.equal(true)
-            expect(extractAsText(details(kurssi)).length > 10).to.equal(true)
+          Kurssi.findAll().forEach(function(kurssi) {
+            expect(kurssi.detailsText()).to.equal('')
+            kurssi.toggleDetails()
+            expect(kurssi.detailsText().length > 10).to.equal(true)
+          })
+        })
+      })
+      describe('Tietojen muokkaaminen', function() {
+        var suoritusEditor = opinnot.suoritusEditor()
+        before(suoritusEditor.edit)
+        describe('Arvosanan muuttaminen', function() {
+          var kurssi = Kurssi('MAA16')
+          before(kurssi.toggleDetails, kurssi.editor().property('arvosana').setValue('6'), wait.until(page.isSavedLabelShown), kurssi.toggleDetails, suoritusEditor.doneEditing)
+          it('Toimii', function() {
+
           })
         })
       })
