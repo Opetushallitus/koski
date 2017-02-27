@@ -40,7 +40,7 @@ describe('Lukiokoulutus', function( ){
           'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
       })
 
-      it('näyttää oppiaineiden arvosanat', function() {
+      it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
           'Äidinkieli ja kirjallisuus\n' +
@@ -116,6 +116,23 @@ describe('Lukiokoulutus', function( ){
     })
   })
 
+  describe('Lukion oppiaineen oppimäärän suoritus', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('210163-2367'))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(S('.opiskeluoikeus .suoritus .property.tunniste .value').text()).to.equal("Historia")
+        expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+      })
+
+      it('näyttää oppiaineiden ja kurssien arvosanat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
+          'Historia\n' +
+          'HI1\n7 HI2\n8 HI3\n7 HI4\n6 4 9\n(7.0)')
+      })
+    })
+  })
+
   describe('Lukioon valmistava koulutus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
     describe('Oppijan suorituksissa', function() {
@@ -144,7 +161,4 @@ describe('Lukiokoulutus', function( ){
       })
     })
   })
-
-  // TODO: lukion oppiaineen oppimäärän suoritus
-  // TODO: luva
 })
