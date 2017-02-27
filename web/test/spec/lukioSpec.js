@@ -63,13 +63,13 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Kurssin tiedot', function() {
-      function kurssi(koodi) {
-        return S(".kurssi:contains(" + koodi +")")
-      }
+      function kurssi(koodi) { return S(".kurssi:contains(" + koodi +")") }
+      function details(kurssi) { return S(kurssi).find(".details") }
+
       describe('Kun klikataan', function() {
         before(function() { triggerEvent(kurssi('MAA16'), 'click') })
         it('näyttää kurssin tiedot', function() {
-          expect(extractAsText(kurssi('MAA16').find(".details"))).to.equal(
+          expect(extractAsText(details(kurssi('MAA16')))).to.equal(
             'Tunniste MAA16\n' +
             'Nimi Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2\n' +
             'Laajuus 1 kurssia\n' +
@@ -83,7 +83,17 @@ describe('Lukiokoulutus', function( ){
       describe('Kun klikataan uudestaan', function() {
         before(function() { triggerEvent(kurssi('MAA16'), 'click') })
         it('piilottaa kurssin tiedot', function() {
-          expect(kurssi('MAA16').find(".details").is(':visible')).to.equal(false)
+          expect(details(kurssi('MAA16')).is(':visible')).to.equal(false)
+        })
+      })
+      describe('Kaikkien kurssien tiedot', function() {
+        it('voidaan avata yksitellen virheettömästi', function() {
+          toArray(S(".kurssi")).forEach(function(kurssi) {
+            expect(details(kurssi).is(':visible')).to.equal(false)
+            triggerEvent(kurssi, 'click')
+            expect(details(kurssi).is(':visible')).to.equal(true)
+            expect(extractAsText(details(kurssi)).length > 10).to.equal(true)
+          })
         })
       })
     })
