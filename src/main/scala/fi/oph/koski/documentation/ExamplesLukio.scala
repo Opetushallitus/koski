@@ -171,7 +171,7 @@ object ExamplesLukio {
                 .copy(arviointi = kurssinArviointi("S"))
             ))),
             suoritus(lukionOppiaine("MU")).copy(arviointi = arviointi(8)).copy(osasuoritukset = Some(List(
-              kurssisuoritus(valtakunnallinenKurssi("MU1")).copy(arviointi = kurssinArviointi(8))
+              kurssisuoritus(valtakunnallinenKurssi("MU1")).copy(arviointi = kurssinArviointi(8), tunnustettu = Some(AmmatillinenExampleData.tunnustettu))
             ))),
             suoritus(lukionOppiaine("KU")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("KU1")).copy(arviointi = kurssinArviointi(8)),
