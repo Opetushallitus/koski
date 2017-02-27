@@ -157,11 +157,11 @@ function openPage(path, predicate) {
 
 function takeScreenshot(name) {
   return function() {
+    var date = new Date()
+    var path = "target/screenshots/"
+    var filename = path + (name || date.getTime())
+    console.log("Taking screenshot web/" + filename + ".png")
     if (window.callPhantom) {
-      var date = new Date()
-      var path = "target/screenshots/"
-      var filename = path + (name || date.getTime())
-      console.log("Taking screenshot web/" + filename + ".png")
       callPhantom({'screenshot': filename})
     }
   }
