@@ -90,8 +90,13 @@ export const PropertiesEditor = React.createClass({
     let shouldShow = (property) => shouldShowProperty(edit)(property) && propertyFilter(property)
 
     let munch = (prefix) => (property, i) => {
-      if (property.flatten) {
-        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.'))
+      if (!edit && property.flatten && property.model.value && property.model.value.properties) {
+        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.')) // TODO pass context
+      } else if (!edit && property.flatten && (property.model.type == "array")) {
+        let propertyContext = childContext(this, context, property.key)
+        return modelItems(property.model).flatMap((item, j) => {
+          return item.value.properties.filter(shouldShow).flatMap(munch(prefix + i + "." + j + '.')) // TODO pass array index context
+        })
       } else {
         let propertyClassName = 'property ' + property.key
         let propertyContext = childContext(this, context, property.key)

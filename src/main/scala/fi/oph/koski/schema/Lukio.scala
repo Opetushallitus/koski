@@ -118,8 +118,10 @@ case class LukionOppiaineenSuoritus(
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
   @Title("Kurssi")
+  @Flatten
   koulutusmoduuli: LukionKurssi,
   tila: Koodistokoodiviite,
+  @Flatten
   arviointi: Option[List[LukionKurssinArviointi]] = None,
   @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -145,6 +147,7 @@ object LukionOppiaineenArviointi {
 case class LukionKurssinArviointi(
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  @Title("Arviointipäivä")
   päivä: LocalDate
 ) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 
@@ -161,6 +164,7 @@ case class ValtakunnallinenLukionKurssi(
   @KoodistoUri("lukionkurssitops2004aikuiset")
   @KoodistoUri("lukionkurssitops2003nuoret")
   @OksaUri("tmpOKSAID873", "kurssi")
+  @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],
   @KoodistoKoodiarvo("pakollinen")
@@ -170,6 +174,7 @@ case class ValtakunnallinenLukionKurssi(
 
 @Description("Paikallisen lukion kurssin tunnistetiedot")
 case class PaikallinenLukionKurssi(
+  @Flatten
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,

@@ -1,6 +1,7 @@
 import React from 'react'
 import { modelData, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
+import { PropertiesEditor, childContext } from './GenericEditor.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
   render() {
@@ -21,7 +22,7 @@ export const LukionOppiaineetEditor = React.createClass({
         <tbody>
         {
           oppiaineet.map((oppiaine, oppiaineIndex) =>
-            <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} context={GenericEditor.childContext(this, context, 'osasuoritukset')}/>
+            <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} context={GenericEditor.childContext(this, context, 'osasuoritukset', oppiaineIndex)}/>
           )
         }
         </tbody>
@@ -33,7 +34,7 @@ export const LukionOppiaineetEditor = React.createClass({
 const LukionOppiaineEditor = React.createClass({
   render() {
 
-    let {oppiaine} = this.props
+    let {oppiaine, context} = this.props
     let arviointi = modelData(oppiaine, 'arviointi')
     let kurssit = modelItems(oppiaine, 'osasuoritukset') || []
     let suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
@@ -48,7 +49,7 @@ const LukionOppiaineEditor = React.createClass({
           <ul className="kurssit">
             {
               kurssit.map((kurssi, kurssiIndex) =>
-                <LukionKurssiEditor key={kurssiIndex} kurssi={kurssi}/>
+                <LukionKurssiEditor key={kurssiIndex} kurssi={kurssi} context={childContext(this, context, 'osasuoritukset', kurssiIndex)}/>
               )
             }
           </ul>
@@ -65,7 +66,7 @@ const LukionOppiaineEditor = React.createClass({
 
 const LukionKurssiEditor = React.createClass({
   render() {
-    let {kurssi} = this.props
+    let {kurssi, context} = this.props
     let {open, tooltipPosition} = this.state
     let arviointi = modelData(kurssi, 'arviointi')
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
@@ -81,17 +82,7 @@ const LukionKurssiEditor = React.createClass({
         <div className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
         {
           open && (<div className={'details details-' + tooltipPosition}>
-            <table>
-              <tbody>
-              <tr><td>tunniste:</td><td>{koulutusmoduuli.tunniste.koodiarvo}</td></tr>
-              <tr><td>nimi:</td><td>{koulutusmoduuli.tunniste.nimi.fi}</td></tr>
-              <tr><td>laajuus:</td><td>{koulutusmoduuli.laajuus.arvo} kurssia</td></tr>
-              {koulutusmoduuli.kuvaus && <tr><td>kuvaus:</td><td>{koulutusmoduuli.kuvaus.fi}</td></tr>}
-              <tr><td>kurssin tyyppi:</td><td>{koulutusmoduuli.kurssinTyyppi.nimi.fi}</td></tr>
-              <tr><td>tila:</td><td>{modelData(kurssi, 'tila.nimi.fi')}</td></tr>
-              <tr><td>arvosana:</td><td>{modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo} / {modelData(kurssi, 'arviointi.-1.arvosana').nimi.fi}</td></tr>
-              </tbody>
-            </table>
+            <PropertiesEditor context={context} properties={kurssi.value.properties}/>
           </div>)
         }
       </li>

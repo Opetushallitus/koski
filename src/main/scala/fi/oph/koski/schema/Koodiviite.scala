@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait KoodiViite extends Localizable {
   def koodiarvo: String
@@ -39,6 +39,7 @@ case class Koodistokoodiviite(
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
 case class PaikallinenKoodi(
   @Description("Koodin yksilöivä tunniste käytetyssä koodistossa")
+  @Title("Tunniste")
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
   @Representative
