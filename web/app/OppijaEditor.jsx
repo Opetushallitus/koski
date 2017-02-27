@@ -9,6 +9,7 @@ import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
 import * as Perusopetus from './Perusopetus.jsx'
 import * as Lukio from './Lukio.jsx'
+import * as Suoritustaulukko from './Suoritustaulukko.jsx'
 import * as Ammatillinen from './Ammatillinen.jsx'
 import * as CommonEditors from './CommonEditors.jsx'
 
@@ -197,13 +198,16 @@ const PäätasonSuoritusEditor = React.createClass({
         return <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
       }
       if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-        return <Ammatillinen.TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+        return <Suoritustaulukko.SuorituksetEditor context={ctx} model={model} propertyName="osasuoritukset"/>
       }
       if (model.value.classes.includes('lukionoppimaaransuoritus')) {
         return <Lukio.LukionOppiaineetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} oppiaineet={modelItems(model, 'osasuoritukset') || []} />
       }
       if (model.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
         return <Lukio.LukionOppiaineetEditor context={ctx} oppiaineet={[model]} />
+      }
+      if (model.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
+        return <Suoritustaulukko.SuorituksetEditor context={ctx} model={model} propertyName="osasuoritukset"/>
       }
       return <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
     }

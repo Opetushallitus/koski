@@ -495,7 +495,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equal(
-            'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+            'Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
             'Johtaminen ja henkilöstön kehittäminen ei\n' +
             'Auton lisävarustetyöt ei 15 osp'
           )
@@ -587,7 +587,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää tutkinnon osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
+          'Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
           'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 osp Hyväksytty\n' +
           'Opiskeluvalmiuksien vahvistaminen ei 10 osp Hyväksytty\n' +
           'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 osp Hyväksytty\n' +

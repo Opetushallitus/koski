@@ -126,8 +126,14 @@ describe('Lukiokoulutus', function( ){
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.lukioonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .nimi .value').text()).to.equal('Suomi toisena kielenä ja kirjallisuus')
+      it('näyttää koulutuksen osat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Kurssi Laajuus Arvosana\n' +
+          'Suomi toisena kielenä ja kirjallisuus 2 kurssia S\n' +
+          'Yhteiskuntatietous ja kulttuurintuntemus 1 kurssia S\n' +
+          'Opinto-ohjaus 1 kurssia S\n' +
+          'Kuvat ja kulttuurit 1 kurssia 7'
+        )
       })
     })
     describe('Tulostettava todistus', function() {
