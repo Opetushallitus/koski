@@ -5,8 +5,7 @@ import { PropertiesEditor, childContext } from './GenericEditor.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    let oppiaineet = modelItems(model, 'osasuoritukset') || []
+    let {oppiaineet, context} = this.props
     return (
       <table className="suoritukset">
         <thead>
@@ -22,7 +21,7 @@ export const LukionOppiaineetEditor = React.createClass({
         <tbody>
         {
           oppiaineet.map((oppiaine, oppiaineIndex) =>
-            <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} context={GenericEditor.childContext(this, context, 'osasuoritukset', oppiaineIndex)}/>
+            <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} context={GenericEditor.childContext(this, context, oppiaineIndex)}/>
           )
         }
         </tbody>

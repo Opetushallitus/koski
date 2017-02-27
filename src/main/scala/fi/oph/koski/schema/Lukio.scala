@@ -77,6 +77,7 @@ case class LukionOppimääränSuoritus(
 
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
+  @Flatten
   koulutusmoduuli: LukionOppiaine,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -186,6 +187,8 @@ case class PaikallinenLukionKurssi(
 @Description("Lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends YleissivistavaOppiaine with PreIBOppiaine {
   def laajuus: Option[LaajuusKursseissa]
+  @Title("Oppiaine")
+  def tunniste: Koodistokoodiviite
 }
 
 case class MuuOppiaine(

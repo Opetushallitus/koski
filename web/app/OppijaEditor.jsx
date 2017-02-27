@@ -192,6 +192,22 @@ const PäätasonSuoritusEditor = React.createClass({
     let {model, context} = this.props
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
+    let resolveEditor = (ctx) => {
+      if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])) {
+        return <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
+      }
+      if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
+        return <Ammatillinen.TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+      }
+      if (model.value.classes.includes('lukionoppimaaransuoritus')) {
+        return <Lukio.LukionOppiaineetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} oppiaineet={modelItems(model, 'osasuoritukset') || []} />
+      }
+      if (model.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
+        return <Lukio.LukionOppiaineetEditor context={ctx} oppiaineet={[model]} />
+      }
+      return <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+    }
+
     return (<GenericEditor.TogglableEditor
       context={context}
       renderChild={ (ctx, editLink) => {
@@ -205,17 +221,7 @@ const PäätasonSuoritusEditor = React.createClass({
             context={R.merge(ctx, {editable: model.editable})}
           />
           <TilaJaVahvistus model={model} context={ctx}/>
-          <div className="osasuoritukset">
-            {
-              ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
-                ? <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
-                : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
-                  ? <Ammatillinen.TutkinnonOsatEditor context={ctx} model={model} propertyName="osasuoritukset"/>
-                  : (model.value.classes.includes('lukionoppimaaransuoritus'))
-                    ? <Lukio.LukionOppiaineetEditor context={ctx} model={model} />
-                    : <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
-            }
-          </div>
+          <div className="osasuoritukset">{resolveEditor(ctx)}</div>
         </div>)
         }
       }
