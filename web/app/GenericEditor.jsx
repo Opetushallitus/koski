@@ -89,22 +89,21 @@ export const PropertiesEditor = React.createClass({
     let edit = context.edit
     let shouldShow = (property) => shouldShowProperty(edit)(property) && propertyFilter(property)
 
-    let munch = (prefix) => (property, i) => {
+    let munch = (parentContext) => (property, i) => {
       if (!edit && property.flatten && property.model.value && property.model.value.properties) {
-        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.')) // TODO pass context
-      } else if (!edit && property.flatten && (property.model.type == "array")) {
-        let propertyContext = childContext(this, context, property.key)
+        return property.model.value.properties.filter(shouldShow).flatMap(munch(childContext(this, parentContext, property.key)))
+      } else if (!edit && property.flatten && (property.model.type == 'array')) {
         return modelItems(property.model).flatMap((item, j) => {
-          return item.value.properties.filter(shouldShow).flatMap(munch(prefix + i + "." + j + '.')) // TODO pass array index context
+          return item.value.properties.filter(shouldShow).flatMap(munch(childContext(this, parentContext, j)))
         })
       } else {
         let propertyClassName = 'property ' + property.key
-        let propertyContext = childContext(this, context, property.key)
+        let propertyContext = childContext(this, parentContext, property.key)
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} context={propertyContext} />
           : getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext))
 
-        return [(<tr className={propertyClassName} key={prefix + i}>
+        return [(<tr className={propertyClassName} key={parentContext.path + '.' + i}>
           {
             property.complexObject
               ? (<td className="complex" colSpan="2">
@@ -121,7 +120,7 @@ export const PropertiesEditor = React.createClass({
 
     return (<div className="properties">
       <table><tbody>
-      { properties.filter(shouldShow).flatMap(munch('')) }
+      { properties.filter(shouldShow).flatMap(munch(context)) }
       </tbody></table>
     </div>)
   }
