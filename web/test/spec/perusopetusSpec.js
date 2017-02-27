@@ -26,7 +26,8 @@ describe('Perusopetus', function() {
             'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
         })
         it('näyttää oppiaineiden arvosanat', function() {
-          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+          expect(extractAsText(S('.oppiaineet'))).to.equal(
+            'Oppiaineiden arvosanat\n' +
             'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
@@ -46,7 +47,7 @@ describe('Perusopetus', function() {
             'Kotitalous 8\n' +
             'Terveystieto 8\n' +
             'Käsityö 9\n' +
-            'Liikunta 9\n' +
+            'Liikunta 9 **\n' +
             'Valinnaiset oppiaineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
             'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
@@ -54,7 +55,8 @@ describe('Perusopetus', function() {
             'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9 -\n' +
-            '* = yksilöllistetty oppimäärä')
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+          )
         })
       })
 
@@ -86,7 +88,8 @@ describe('Perusopetus', function() {
             'Siirretään seuraavalle luokalle')
         })
         it('näyttää oppiaineiden arvosanat', function() {
-          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+          expect(extractAsText(S('.oppiaineet'))).to.equal(
+            'Oppiaineiden arvosanat\n' +
             'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
@@ -106,7 +109,7 @@ describe('Perusopetus', function() {
             'Kotitalous 8\n' +
             'Terveystieto 8\n' +
             'Käsityö 9\n' +
-            'Liikunta 9\n' +
+            'Liikunta 9 **\n' +
             'Valinnaiset oppiaineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
             'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
@@ -117,7 +120,8 @@ describe('Perusopetus', function() {
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
             'Kuvaus Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
-            '* = yksilöllistetty oppimäärä')
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+          )
         })
       })
       describe('Lukuvuositodistus', function() {

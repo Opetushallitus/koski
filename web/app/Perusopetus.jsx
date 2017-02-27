@@ -13,7 +13,8 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
     let osasuoritukset = modelItems(model, 'osasuoritukset') || []
     let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
     let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
-    let selitteet = korotus.concat(yksilöllistetty).join(', ')
+    let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
+    let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
 
     return grouped.length > 0 && (<div className="oppiaineet">
         <h5>Oppiaineiden arvosanat</h5>
@@ -79,6 +80,7 @@ const OppiaineEditor = React.createClass({
         <td className="arvosana">
           {arvosana}
           {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
+          {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
           {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
         </td>
         {
