@@ -75,7 +75,6 @@ const LukionKurssiEditor = React.createClass({
         tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
       })
     }
-    //open = R.contains(koulutusmoduuli.tunniste.koodiarvo, ['FI1', 'FY7', 'MAA16'])
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e} onClick={toggleDetails}>
         <div className={'tunniste ' + koulutusmoduuli.kurssinTyyppi.koodiarvo} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
