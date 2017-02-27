@@ -86,6 +86,9 @@ export const modelEmpty = (model) => {
 
 export const modelSet = (mainModel, path, value) => {
   let dataLens = L.compose('value', 'data', objectLens(path))
+  if (value == undefined) {
+    throw new Error('Trying to set ' + path + ' to undefined')
+  }
   return L.set(dataLens, value.data, mainModel)
 }
 
