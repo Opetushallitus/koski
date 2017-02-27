@@ -4,7 +4,7 @@ describe('Lukiokoulutus', function( ){
       return typeof identifierOrElem == "string" ? S(".kurssi:contains(" + identifierOrElem +")") : S(identifierOrElem)
     }
     function detailsElem() { return elem().find(".details")}
-    return {
+    var api = {
       detailsText: function() {
         return detailsElem().is(":visible") ? extractAsText(detailsElem()) : ""
       },
@@ -14,10 +14,16 @@ describe('Lukiokoulutus', function( ){
       toggleDetails: function() {
         triggerEvent(elem(), "click")
       },
+      showDetails: function() {
+        if (api.detailsText() == '')
+          triggerEvent(elem(), "click")
+        return wait.forAjax()
+      },
       editor: function() {
         return Editor(detailsElem)
       }
     }
+    return api
   }
   Kurssi.findAll = function() {
     return toArray(S(".kurssi")).map(Kurssi)
@@ -123,7 +129,7 @@ describe('Lukiokoulutus', function( ){
         before(suoritusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
           var kurssi = Kurssi('MAA16')
-          before(kurssi.toggleDetails, kurssi.editor().property('arvosana').setValue('6'), kurssi.toggleDetails, suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(kurssi.showDetails, kurssi.editor().property('arvosana').setValue('6'), kurssi.toggleDetails, suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
             expect(kurssi.arvosana()).to.equal('6')
           })
