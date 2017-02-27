@@ -141,5 +141,4 @@ describe('Lukiokoulutus', function( ){
 
   // TODO: lukion oppiaineen oppimäärän suoritus
   // TODO: luva
-  // TODO: kurssien detskut
 })
