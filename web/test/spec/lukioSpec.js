@@ -61,7 +61,31 @@ describe('Lukiokoulutus', function( ){
           'Kuvataide\nKU1\n8 KU2\n9 2 9\n(8.5)\n' +
           'Terveystieto\nTE1\n8 1 9\n(8.0)')
       })
-
+    })
+    describe('Kurssin tiedot', function() {
+      function kurssi(koodi) {
+        return S(".kurssi:contains(" + koodi +")")
+      }
+      describe('Kun klikataan', function() {
+        before(function() { triggerEvent(kurssi('MAA16'), 'click') })
+        it('näyttää kurssin tiedot', function() {
+          expect(extractAsText(kurssi('MAA16').find(".details"))).to.equal(
+            'Tunniste MAA16\n' +
+            'Nimi Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2\n' +
+            'Laajuus 1 kurssia\n' +
+            'Kuvaus Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä.\n' +
+            'Kurssin tyyppi Syventävä\n' +
+            'Tila Suoritus valmis\n' +
+            'Arvosana 9\n' +
+            'Arviointipäivä 4.6.2016')
+        })
+      })
+      describe('Kun klikataan uudestaan', function() {
+        before(function() { triggerEvent(kurssi('MAA16'), 'click') })
+        it('piilottaa kurssin tiedot', function() {
+          expect(kurssi('MAA16').find(".details").is(':visible')).to.equal(false)
+        })
+      })
     })
     describe('Tulostettava todistus', function() {
       before(opinnot.avaaTodistus(0))
@@ -106,4 +130,6 @@ describe('Lukiokoulutus', function( ){
   })
 
   // TODO: lukion oppiaineen oppimäärän suoritus
+  // TODO: luva
+  // TODO: kurssien detskut
 })
