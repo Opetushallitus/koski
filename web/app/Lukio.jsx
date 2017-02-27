@@ -70,14 +70,18 @@ const LukionKurssiEditor = React.createClass({
     let {open, tooltipPosition} = this.state
     let arviointi = modelData(kurssi, 'arviointi')
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
-    let toggleDetails = () => {
-      this.setState({
-        open: !open,
-        tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
-      })
+    let showDetails = () => {
+      if (!open) {
+        document.addEventListener('click', this.handleClickOutside, false)
+        document.addEventListener('keyup', this.handleEsc)
+        this.setState({
+          open: true,
+          tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
+        })
+      }
     }
     return (
-      <li className="kurssi" ref={e => this.kurssiElement = e} onClick={toggleDetails}>
+      <li onClick={showDetails} className="kurssi" ref={e => this.kurssiElement = e}>
         <div className={'tunniste ' + koulutusmoduuli.kurssinTyyppi.koodiarvo} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
         <div className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
         {
@@ -92,16 +96,20 @@ const LukionKurssiEditor = React.createClass({
     return { open: false, tooltipPosition: 'bottom' }
   },
   componentDidMount() {
-    document.addEventListener('click', this.handleClickOutside, false)
-    document.addEventListener('keyup', this.handleEsc)
     this.setState({open: false, tooltipPosition: getTooltipPosition(this.kurssiElement)})
   },
   componentWillUnmount() {
+    this.removeListeners()
+  },
+  removeListeners() {
     document.removeEventListener('click', this.handleClickOutside, false)
     document.removeEventListener('keyup', this.handleEsc)
   },
   handleClickOutside(e) {
-    !this.kurssiElement.contains(e.target) && this.setState({open: false})
+    if (!this.kurssiElement.querySelector('.details').contains(e.target)) {
+      this.removeListeners()
+      this.setState({open: false})
+    }
   },
   handleEsc(e) {
     e.keyCode == 27 && this.setState({open: false})
