@@ -44,7 +44,7 @@ function download_version {
 }
 
 INVENTORY=${INVENTORY:-"scripts/inventory.sh"}
-ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
+ANSIBLE_ARGS=${ANSIBLE_ARGS:-"--ssh-common-args=-F $CLOUD_ENV_DIR/ssh.config"}
 
 if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
   echo "Missing ENV or invalid ENV"
@@ -83,4 +83,4 @@ echo "Using inventory $INVENTORY"
 
 download_version
 
-ansible-playbook $ANSIBLE_ARGS --ssh-common-args="-F $CLOUD_ENV_DIR/ssh.config" --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
+ansible-playbook "$ANSIBLE_ARGS" --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
