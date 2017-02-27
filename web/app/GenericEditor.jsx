@@ -422,6 +422,7 @@ const getModelEditor = (model, context, parentComponent, path) => {
     context = childContext(parentComponent, context, path)
     model = resolveModel(modelLookup(model, path), context)
   }
+
   var ModelEditor = getEditorFunction(model, context)
   return <ModelEditor model={model} context={context} />
 }
