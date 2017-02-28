@@ -18,6 +18,7 @@ let lastL = L.lens(
 
 let indexL = (index) => index == -1 ? lastL : L.index(index)
 
+// Find submodel with given path
 export const modelLookup = (mainModel, path) => {
   if (!path) return mainModel
   if (!mainModel) return
@@ -39,7 +40,7 @@ const prepareModel = (mainModel, subModel, path) => {
   return subModel
 }
 
-export const modelLens = (path) => {
+const modelLens = (path) => {
   let pathLenses = toPath(path).map(key => {
     let index = parseInt(key)
     return L.compose('value', Number.isNaN(index)
@@ -105,14 +106,9 @@ const itemsEmpty = (items) => {
   return !items || !items.find(item => !valueEmpty(item))
 }
 
-export const childContext = (context, ...pathElems) => {
-  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
-  return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
-}
-
+// Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
+// so that modifications can be targeted to the correct position in the data that's to be sent to the server.
 export const contextualizeModel = (model, context) => {
-  // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
-  // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
   let stuff = { context }
   if (model.value && model.value.properties) {
     stuff.value = R.merge(model.value, { properties : model.value.properties.map( p => R.merge(p, { model: contextualizeModel(p.model, childContext(context, p.key))})) })
@@ -121,6 +117,11 @@ export const contextualizeModel = (model, context) => {
     stuff.value = model.value.map( (item, index) => contextualizeModel(item, childContext(context, index)))
   }
   return resolveModel(R.merge(model, stuff))
+}
+
+const childContext = (context, ...pathElems) => {
+  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
+  return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
 }
 
 const resolveModel = (model) => {
@@ -137,4 +138,5 @@ const resolveModel = (model) => {
   return model
 }
 
+// Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, additionalContext))
