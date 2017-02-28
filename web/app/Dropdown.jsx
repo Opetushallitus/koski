@@ -28,12 +28,14 @@ export default BaconComponent({
   toggleOpen() {
     this.setState({open: !this.state.open})
   },
-  componentDidMount() {
-    this.props.optionsP.takeUntil(this.unmountE).onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
-    window.addEventListener('click', this.handleClickOutside, false)
-  },
-  componentWillUnmount() {
-    window.removeEventListener('click', this.handleClickOutside, false)
+  componentWillMount() {
+    this.propsE.onValue(() => {
+      this.props.optionsP.takeUntil(this.unmountE).onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
+      window.addEventListener('click', this.handleClickOutside, false)
+    })
+    this.unmountE.onValue(() => {
+      window.removeEventListener('click', this.handleClickOutside, false)
+    })
   },
   handleClickOutside(e) {
     const dropdown = e.target.closest('.dropdown')

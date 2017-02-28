@@ -2,7 +2,6 @@ import React from 'react'
 import BaconComponent from './BaconComponent'
 import Http from './http'
 import Link from './Link.jsx'
-
 import {showInternalError, currentLocation, navigateTo} from './location.js'
 import { ISO2FinnishDateTime } from './date.js'
 
@@ -14,7 +13,7 @@ export default BaconComponent({
       let newShowHistory = !showHistory
       this.setState({showHistory: newShowHistory})
       if (newShowHistory) this.fetchHistory()
-      if (!newShowHistory) {
+      if (!newShowHistory && this.versionumero()) {
         navigateTo(`/koski/oppija/${oppijaOid}`)
       }
     }
@@ -37,13 +36,15 @@ export default BaconComponent({
     return { showHistory: !!this.versionumero(), history: [] }
   },
   componentWillMount() {
-    if (this.state.showHistory) this.fetchHistory()
+    this.propsE.onValue(() => {
+      this.setState(this.getInitialState())
+      if (this.getInitialState().showHistory) this.fetchHistory()
+    })
   },
   fetchHistory() {
-    if (!this.historyP) {
-      this.historyP = Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${this.props.opiskeluOikeusId}`).doError(showInternalError)
-      this.historyP.takeUntil(this.unmountE).onValue(h => this.setState({history: h}))
-    }
+    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${this.props.opiskeluOikeusId}`).doError(showInternalError)
+      .takeUntil(this.unmountE)
+      .onValue(h => this.setState({history: h}))
   },
   versionumero() {
     return currentLocation().params.versionumero

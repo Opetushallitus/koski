@@ -349,28 +349,23 @@ export const EnumEditor = BaconComponent({
       : <span className="inline enum">{modelTitle(model)}</span>
   },
 
-  update(props) {
-    let {model} = props
-    if (model.context.edit && model.alternativesPath && !this.state.alternativesP) {
-      this.state.alternativesP = EnumEditor.AlternativesCache[model.alternativesPath]
-      if (!this.state.alternativesP) {
-        this.state.alternativesP = Http.cachedGet(model.alternativesPath).doError(showInternalError)
-        EnumEditor.AlternativesCache[model.alternativesPath] = this.state.alternativesP
-      }
-      this.state.alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
-    }
-  },
-
   componentWillMount() {
-    this.update(this.props)
-  },
-
-  componentWillReceiveProps(props) {
-    this.update(props)
+    this.propsE.onValue((props) => {
+      this.setState(this.getInitialState())
+      let {model} = props
+      if (model.context.edit && model.alternativesPath) {
+        let alternativesP = EnumEditor.AlternativesCache[model.alternativesPath]
+        if (!alternativesP) {
+          alternativesP = Http.cachedGet(model.alternativesPath).doError(showInternalError)
+          EnumEditor.AlternativesCache[model.alternativesPath] = alternativesP
+        }
+        alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
+      }
+    })
   },
 
   getInitialState() {
-    return {}
+    return { alternatives: [] }
   }
 })
 EnumEditor.canShowInline = () => true
