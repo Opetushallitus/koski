@@ -74,7 +74,6 @@ function KoskiPage() {
         } else if (className == "oppilaitos") {
           triggerEvent('.organisaatio-selection', 'click')
           if(!window.callPhantom) { // workaround for focus glitch, when running in browser
-            console.log("ASDFASDFASDFASDFASDFASDFASDF")
             triggerEvent('.organisaatio-selection', 'click')
           }
          if (value) {
