@@ -1,8 +1,7 @@
 import React from 'react'
 import R from 'ramda'
-import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import { modelData, modelLookup, modelTitle, modelItems, addContext } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
-import { childContext } from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
@@ -16,9 +15,8 @@ import { LuvaEditor } from './LuvaEditor.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let {model} = this.props
     let oppijaOid = modelData(model, 'henkilö.oid')
-    let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
 
     let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
 
@@ -79,8 +77,7 @@ const OppijaEditor = React.createClass({
               return modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
                 <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                   <OpiskeluoikeusEditor
-                    model={ opiskeluoikeus }
-                    context={childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)}
+                    model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid }) }
                   />
                 </li>
               )
@@ -93,44 +90,44 @@ const OppijaEditor = React.createClass({
 
 const OpiskeluoikeusEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let {model} = this.props
+    let context = model.context
     let id = modelData(model, 'id')
-    let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
     let suoritusQueryParam = context.path + '.suoritus'
     let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
     let suoritukset = modelItems(model, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
 
-    return (<GenericEditor.TogglableEditor context={opiskeluoikeusContext} renderChild={ (editableContext, editLink) => (<div className="opiskeluoikeus">
+    return (<GenericEditor.TogglableEditor model={model} renderChild={ (mdl, editLink) => (<div className="opiskeluoikeus">
       <h3>
-        <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
-        <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
-         { modelData(model, 'alkamispäivä')
+        <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
+        <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
+         { modelData(mdl, 'alkamispäivä')
             ? <span className="inline-text">(
-                  <span className="alku pvm">{yearFromFinnishDateString(modelTitle(model, 'alkamispäivä'))}</span>-
-                  <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(model, 'päättymispäivä'))},</span>
+                  <span className="alku pvm">{yearFromFinnishDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
+                  <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
               </span>
             : null
           }
-        <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
+        <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <div className="opiskeluoikeus-content">
-        <div className={editableContext.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
+        <div className={mdl.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
           {editLink}
-          <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
+          <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
           <div className="alku-loppu">
-            <GenericEditor.PropertyEditor context={editableContext} model={model} propertyName="alkamispäivä" /> — <GenericEditor.PropertyEditor context={editableContext} model={model} propertyName={päättymispäiväProperty} />
+            <GenericEditor.PropertyEditor model={mdl} propertyName="alkamispäivä" /> — <GenericEditor.PropertyEditor model={mdl} propertyName={päättymispäiväProperty} />
           </div>
           <GenericEditor.PropertiesEditor
-            properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) }
-            context={editableContext}
-            getValueEditor={ (prop, ctx, getDefault) => prop.key == 'tila'
-              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} context={childContext(this, ctx, 'opiskeluoikeusjaksot')}/>
+            model={mdl}
+            propertyFilter={ p => !excludedProperties.includes(p.key) }
+            getValueEditor={ (prop, getDefault) => prop.key == 'tila'
+              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')}/>
               : getDefault() }
            />
-          <ExpandablePropertiesEditor context={editableContext} model={model} propertyName="lisätiedot" />
+          <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
         </div>
 
 
@@ -156,7 +153,7 @@ const OpiskeluoikeusEditor = React.createClass({
           {
             suoritukset.map((suoritusModel, i) =>
               i == suoritusIndex
-                ? <PäätasonSuoritusEditor model={suoritusModel} context={childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
+                ? <PäätasonSuoritusEditor model={addContext(suoritusModel, {opiskeluoikeusId: id})} key={i}/> : null
             )
           }
         </div>
@@ -169,14 +166,14 @@ const OpiskeluoikeusEditor = React.createClass({
 
 const ExpandablePropertiesEditor = React.createClass({
   render() {
-    let {model, context, propertyName} = this.props
+    let {model, propertyName} = this.props
     let {open} = this.state
     return modelData(model, propertyName) ?
       <div className={'expandable-container ' + propertyName}>
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
         { open ?
           <div className="value">
-            <GenericEditor.PropertiesEditor properties={modelLookup(model, propertyName).value.properties} context={childContext(this, context, propertyName)}/>
+            <GenericEditor.PropertiesEditor model={modelLookup(model, propertyName)} />
           </div> : null
         }
       </div> : null
@@ -191,42 +188,41 @@ const ExpandablePropertiesEditor = React.createClass({
 
 const PäätasonSuoritusEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let {model} = this.props
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
-    let resolveEditor = (ctx) => {
-      if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])) {
-        return <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
+    let resolveEditor = (mdl) => {
+      if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
+        return <Perusopetus.PerusopetuksenOppiaineetEditor model={mdl}/>
       }
       if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-        return <Suoritustaulukko.SuorituksetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} suoritukset={modelItems(model, 'osasuoritukset') || []}/>
+        return <Suoritustaulukko.SuorituksetEditor suoritukset={modelItems(model, 'osasuoritukset') || []}/>
       }
-      if (model.value.classes.includes('lukionoppimaaransuoritus')) {
-        return <Lukio.LukionOppiaineetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} oppiaineet={modelItems(model, 'osasuoritukset') || []} />
+      if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
+        return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
       }
-      if (model.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
-        return <Lukio.LukionOppiaineetEditor context={ctx} oppiaineet={[model]} />
+      if (mdl.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
+        return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
       }
       if (model.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
-        return <LuvaEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} suoritukset={modelItems(model, 'osasuoritukset') || []}/>
+        return <LuvaEditor suoritukset={modelItems(model, 'osasuoritukset') || []}/>
       }
-      return <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+      return <GenericEditor.PropertyEditor model={mdl} propertyName="osasuoritukset"/>
     }
 
     return (<GenericEditor.TogglableEditor
-      context={context}
-      renderChild={ (ctx, editLink) => {
-        let className = 'suoritus ' + (ctx.edit ? 'editing ' : '') + model.value.classes.join(' ')
+      model={model}
+      renderChild={ (mdl, editLink) => {
+        let className = 'suoritus ' + (mdl.context.edit ? 'editing ' : '') + mdl.value.classes.join(' ')
         return (<div className={className}>
           {editLink}
-          <TodistusLink suoritus={model} context={ctx}/>
+          <TodistusLink suoritus={mdl} />
           <GenericEditor.PropertiesEditor
-            properties={model.value.properties}
+            model={mdl}
             propertyFilter={p => !excludedProperties.includes(p.key)}
-            context={R.merge(ctx, {editable: model.editable})}
           />
-          <TilaJaVahvistus model={model} context={ctx}/>
-          <div className="osasuoritukset">{resolveEditor(ctx)}</div>
+          <TilaJaVahvistus model={mdl} />
+          <div className="osasuoritukset">{resolveEditor(mdl)}</div>
         </div>)
         }
       }
@@ -236,13 +232,13 @@ const PäätasonSuoritusEditor = React.createClass({
 
 const TilaJaVahvistus = React.createClass({
   render() {
-    let { context, model } = this.props
+    let { model } = this.props
     return (<div className="tila-vahvistus">
         <span className="tila">
           Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
         </span>
         {
-          model.value.data.vahvistus && <GenericEditor.PropertyEditor context={context} model={model} propertyName="vahvistus"/>
+          model.value.data.vahvistus && <GenericEditor.PropertyEditor model={model} propertyName="vahvistus"/>
         }
         {(() => {
           let jääLuokalle = modelData(model, 'jääLuokalle')
@@ -260,7 +256,8 @@ const TilaJaVahvistus = React.createClass({
 
 const TodistusLink = React.createClass({
   render() {
-    let {suoritus, context: { oppijaOid }} = this.props
+    let {suoritus} = this.props
+    let oppijaOid = suoritus.context.oppijaOid
     let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
     let koulutusmoduuliKoodistoUri = modelData(suoritus, 'koulutusmoduuli').tunniste.koodistoUri
     let koulutusmoduuliKoodiarvo = modelData(suoritus, 'koulutusmoduuli').tunniste.koodiarvo
@@ -274,7 +271,8 @@ const TodistusLink = React.createClass({
 
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {
-    let {opiskeluoikeus, context: { oppijaOid }} = this.props
+    let {opiskeluoikeus} = this.props
+    let oppijaOid = opiskeluoikeus.context.oppijaOid
     var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
     if (opiskeluoikeusTyyppi == 'lukiokoulutus' || opiskeluoikeusTyyppi == 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')

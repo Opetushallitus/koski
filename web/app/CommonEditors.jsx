@@ -1,14 +1,14 @@
 import React from 'react'
-import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import { modelData, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
-    let { model, context } = this.props
+    let { model } = this.props
     var yksikköData = modelData(model, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
     return (modelData(model, 'arvo'))
-      ? <span><GenericEditor.Editor model={model} context={context} path="arvo" parent={this}/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
+      ? <span><GenericEditor.Editor model={model} path="arvo"/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
       : <span>-</span>
   }
 })
@@ -32,11 +32,11 @@ VahvistusEditor.readOnly = true
 
 export const KoulutusmoduuliEditor = React.createClass({
   render() {
-    let { model, context } = this.props
+    let { model } = this.props
     return (<span className="koulutusmoduuli">
       <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
       <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-      <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} context={context}/>
+      <GenericEditor.PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
     </span>)
   }
 })
@@ -44,9 +44,9 @@ KoulutusmoduuliEditor.readOnly = true
 
 export const PäivämääräväliEditor = React.createClass({
   render() {
-    let { model, context } = this.props
+    let { model } = this.props
     return (<span>
-      <GenericEditor.Editor context={context} model={model} parent={this} path="alku"/> — <GenericEditor.Editor context={context} model={modelLookup(model, 'loppu')}/>
+      <GenericEditor.Editor model={model} path="alku"/> — <GenericEditor.Editor model={model} path="loppu"/>
     </span>)
   }
 })
@@ -55,11 +55,11 @@ PäivämääräväliEditor.readOnly = true
 
 export const JaksoEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let {model} = this.props
     return (
       <div className="jaksollinen">
-        <PäivämääräväliEditor context={context} model={model}/>
-        <GenericEditor.PropertiesEditor properties={model.value.properties} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} context={context}/>
+        <PäivämääräväliEditor model={model}/>
+        <GenericEditor.PropertiesEditor model={model} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
       </div>
     )
   }

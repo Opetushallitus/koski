@@ -104,3 +104,37 @@ const valueEmpty = (value) => {
 const itemsEmpty = (items) => {
   return !items || !items.find(item => !valueEmpty(item))
 }
+
+export const childContext = (context, ...pathElems) => {
+  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
+  return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
+}
+
+export const contextualizeModel = (model, context) => {
+  // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
+  // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
+  let stuff = { context }
+  if (model.value && model.value.properties) {
+    stuff.value = R.merge(model.value, { properties : model.value.properties.map( p => R.merge(p, { model: contextualizeModel(p.model, childContext(context, p.key))})) })
+  }
+  if (model.type == 'array' && model.value) {
+    stuff.value = model.value.map( (item, index) => contextualizeModel(item, childContext(context, index)))
+  }
+  return resolveModel(R.merge(model, stuff))
+}
+
+const resolveModel = (model) => {
+  if (model && model.type == 'prototype' && model.optional && model.context.edit) {
+    // For optional properties, the model is a "prototype model" and gets replaced with a copy of the prototypal model
+    // found in the shared context.prototypes array.
+    let prototypeModel = model.context.prototypes[model.key]
+    if (!prototypeModel) {
+      console.error('Prototype not found: ' + model.key)
+    }
+    // Finally, remove value from prototypal value of optional model, to show it as empty.
+    return R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype, context: model.context})
+  }
+  return model
+}
+
+export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, additionalContext))

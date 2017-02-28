@@ -6,7 +6,7 @@ import R from 'ramda'
 
 export const PerusopetuksenOppiaineetEditor = React.createClass({
   render() {
-    let {model, context} = this.props
+    let {model} = this.props
     let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
     let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset') || []))
 
@@ -22,14 +22,13 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
         {
           grouped.map(([name, suoritukset], i) => (<section key={i}>
               { grouped.length > 1 && <h5>{name}</h5> }
-              <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} />
+              <Oppiainetaulukko model={model} suoritukset={suoritukset} />
               {
                 käyttäytymisenArvio && (i == grouped.length - 1) && (<div>
                   <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
                   {
-                    <GenericEditor.PropertiesEditor properties={modelLookup(model, 'käyttäytymisenArvio').value.properties}
-                                                    context={GenericEditor.childContext(this, context, 'käyttäytymisenArvio')}
-                                                    getValueEditor={ (prop, ctx, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
+                    <GenericEditor.PropertiesEditor model={modelLookup(model, 'käyttäytymisenArvio')}
+                                                    getValueEditor={ (prop, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
                     />
                   }
                 </div>)
@@ -44,13 +43,13 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
 
 const Oppiainetaulukko = React.createClass({
   render() {
-    let {suoritukset, context} = this.props
+    let {suoritukset} = this.props
     let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
     let showExpand = !!suoritukset.find(s => modelData(s, 'arviointi.-1.kuvaus'))
     return (<table>
         <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th>{showLaajuus && <th className="laajuus">Laajuus</th>}</tr></thead>
         {
-          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand} context={GenericEditor.childContext(this, context, i)}/> ))
+          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand}/> ))
         }
       </table>
     )
@@ -59,7 +58,7 @@ const Oppiainetaulukko = React.createClass({
 
 const OppiaineEditor = React.createClass({
   render() {
-    let {model, context, showLaajuus, showExpand} = this.props
+    let {model, showLaajuus, showExpand} = this.props
     let {expanded} = this.state
     var oppiaine = modelTitle(model, 'koulutusmoduuli')
     let arvosana = modelData(model, 'arviointi.-1.arvosana').koodiarvo
@@ -85,7 +84,7 @@ const OppiaineEditor = React.createClass({
         </td>
         {
           showLaajuus && (<td className="laajuus">
-            <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} />
+            <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} />
           </td>)
         }
       </tr>

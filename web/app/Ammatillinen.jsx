@@ -5,16 +5,16 @@ import { PäivämääräväliEditor, KoulutusmoduuliEditor } from './CommonEdit
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    let {model} = this.props
+    if (model.context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
     return <span>{modelTitle(model, 'kuvaus')}</span>
   }
 })
 
 export const NäytönArvioitsijaEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    let {model} = this.props
+    if (model.context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
     return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? ' (näyttötutkintomestari)' : ''}</span>
   }
 })
@@ -22,14 +22,15 @@ NäytönArvioitsijaEditor.canShowInline = () => true
 
 export const TyössäoppimisjaksoEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    let {model} = this.props
+    if (model.context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
     return (
       <div className="tyossaoppimisjakso">
-        <PäivämääräväliEditor context={context} model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
+        <PäivämääräväliEditor model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
         <GenericEditor.PropertiesEditor
-          properties={model.value.properties.filter(p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key))}
-          context={context}/>
+          model = {model}
+          propertyFilter={p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key)}
+        />
       </div>
     )
   }
