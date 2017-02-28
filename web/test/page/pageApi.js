@@ -6,7 +6,7 @@ function Page(mainElement) {
   var api = {
     getInput: function(selector) {
       return Input(function () {
-        return mainElement().find(selector)
+        return findSingle(selector, mainElement())
       })
     },
     getRadioLabel: function(selector) {
