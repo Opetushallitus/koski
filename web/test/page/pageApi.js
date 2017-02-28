@@ -84,8 +84,8 @@ function Page(mainElement) {
             triggerEvent(input, "change")
             break;
           case "DROPDOWN": // Dropdown.jsx
-            triggerEvent(findSingle(S(input), '.select'), 'click')
-            triggerEvent(findSingle(S(input), '.options li:contains(' + value + ')'), 'click')
+            triggerEvent(findSingle('.select', S(input)), 'click')
+            triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'click')
             break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
