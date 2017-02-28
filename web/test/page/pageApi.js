@@ -79,7 +79,7 @@ function Page(mainElement) {
             break;
           case "SELECT":
             var option = _(input.children()).find(function(item) { return $(item).prop("value") == value })
-            if (!option) throw new Error("Option " + value + " not found")
+            if (!option) throw new Error("Option " + value + " not found in " + htmlOf(input))
             input.val($(option).attr("value"))
             triggerEvent(input, "change")
             break;

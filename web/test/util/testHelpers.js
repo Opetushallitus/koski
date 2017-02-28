@@ -206,6 +206,10 @@ function extractAsText(el, subElement) {
   }
 }
 
+function htmlOf(el) {
+  return S(el).wrap('<div>').parent().html()
+}
+
 function isJQuery(el) {
   return typeof(el.children) == "function"
 }
