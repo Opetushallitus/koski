@@ -72,13 +72,20 @@ function KoskiPage() {
         if (className == "nimi" || className == "tutkinto" || className == "luokka") {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className + " input", value || "")().then(wait.forMilliseconds(500)).then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
         } else if (className == "oppilaitos") {
-          triggerEvent(S('.organisaatio-selection'), 'click')
-          if (value) {
+          triggerEvent('.organisaatio-selection', 'click')
+          if(!window.callPhantom) { // workaround for focus glitch, when running in browser
+            console.log("ASDFASDFASDFASDFASDFASDFASDF")
+            triggerEvent('.organisaatio-selection', 'click')
+          }
+         if (value) {
             return Page(Oppijataulukko.tableElem).setInputValue(".organisaatio-popup input", value || "")()
               .then(wait.forAjax)
               .then(function() { triggerEvent(S('.organisaatio-popup a:contains(' + value + ')').get(0), 'click') })
               .then(wait.forAjax)
           } else {
+            if(!window.callPhantom) { // workaround for focus glitch, when running in browser
+              triggerEvent('.organisaatio-selection', 'click')
+            }
             triggerEvent(S('.organisaatio-popup .kaikki'), 'click')
             return wait.forAjax()
           }
