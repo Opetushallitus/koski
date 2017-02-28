@@ -67,6 +67,7 @@ function Editor(elem) {
   return {
     edit: function() {
       triggerEvent(findSingle('.toggle-edit:not(.editing)', elem()), 'click')
+      return wait.forAjax()
     },
     doneEditing: function() {
       triggerEvent(findSingle('.toggle-edit.editing', elem()), 'click')
