@@ -68,7 +68,7 @@ wait = {
 }
 
 function isLoading() {
-  return isElementVisible(S('.loading'))
+  return S('.loading').length > 0
 }
 
 function getJson(url) {
