@@ -73,17 +73,19 @@ function Page(mainElement) {
             break;
           case "RADIO":
             var radioOption = _(input).find(function(item) { return $(item).prop("value") == value })
+            if (!option) throw new Error("Option " + value + " not found")
             S(radioOption).click()
             triggerEvent(S(radioOption), "click")
             break;
           case "SELECT":
             var option = _(input.children()).find(function(item) { return $(item).prop("value") == value })
+            if (!option) throw new Error("Option " + value + " not found")
             input.val($(option).attr("value"))
             triggerEvent(input, "change")
             break;
           case "DROPDOWN": // Dropdown.jsx
-            triggerEvent(S(input).find('.select'), 'click')
-            triggerEvent(S(input).find('.options li:contains(' + value + ')'), 'click')
+            triggerEvent(findSingle(S(input), '.select'), 'click')
+            triggerEvent(findSingle(S(input), '.options li:contains(' + value + ')'), 'click')
             break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
