@@ -135,12 +135,15 @@ function openPage(path, predicate) {
   if (!predicate) {
     predicate = function() { return testFrame().jQuery }
   }
+  function addScriptToDocument(w, src) {
+    var jquery = document.createElement("script")
+    jquery.type = "text/javascript"
+    jquery.src = src
+    $(w).contents().find("head")[0].appendChild(jquery)
+  }
   return function() {
     var newTestFrame = $('<iframe>').attr({src: path, width: 1280, height: 800, id: "testframe"}).load(function() {
-      var jquery = document.createElement("script")
-      jquery.type = "text/javascript"
-      jquery.src = "//code.jquery.com/jquery-1.11.1.min.js"
-      $(this).contents().find("head")[0].appendChild(jquery)
+      addScriptToDocument(this, "//code.jquery.com/jquery-1.11.1.min.js")
     })
     $("#testframe").replaceWith(newTestFrame)
     return wait.until(
@@ -163,6 +166,10 @@ function takeScreenshot(name) {
     console.log("Taking screenshot web/" + filename + ".png")
     if (window.callPhantom) {
       callPhantom({'screenshot': filename})
+    } else {
+      return Q(html2canvas(testFrame().document.body).then(function(canvas) {
+        $(document.body).append($("<div>").append($("<h4>").text("Screenshot: " + filename)).append($(canvas)))
+      }))
     }
   }
 }
