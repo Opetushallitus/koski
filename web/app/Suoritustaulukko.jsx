@@ -1,11 +1,10 @@
 import React from 'react'
-import { modelData, modelTitle, modelItems } from './EditorModel.js'
+import { modelData, modelTitle } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 
 export const SuorituksetEditor = React.createClass({
   render() {
-    let {model, context} = this.props
-    let suoritukset = modelItems(model, 'osasuoritukset') || []
+    let {suoritukset, context} = this.props
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') != undefined) != undefined
     return suoritukset.length > 0 && (<div className="suoritus-taulukko">
         <table>
@@ -17,7 +16,7 @@ export const SuorituksetEditor = React.createClass({
           </tr></thead>
           {
             suoritukset.map((suoritus, i) =>
-              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} context={GenericEditor.childContext(this, context, 'osasuoritukset', i)} key={i}/>
+              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} context={GenericEditor.childContext(this, context, i)} key={i}/>
             )
           }
         </table>

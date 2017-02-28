@@ -12,6 +12,7 @@ import * as Lukio from './Lukio.jsx'
 import * as Suoritustaulukko from './Suoritustaulukko.jsx'
 import * as Ammatillinen from './Ammatillinen.jsx'
 import * as CommonEditors from './CommonEditors.jsx'
+import { LuvaEditor } from './LuvaEditor.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -198,7 +199,7 @@ const PäätasonSuoritusEditor = React.createClass({
         return <Perusopetus.PerusopetuksenOppiaineetEditor context={ctx} model={model}/>
       }
       if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-        return <Suoritustaulukko.SuorituksetEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+        return <Suoritustaulukko.SuorituksetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} suoritukset={modelItems(model, 'osasuoritukset') || []}/>
       }
       if (model.value.classes.includes('lukionoppimaaransuoritus')) {
         return <Lukio.LukionOppiaineetEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} oppiaineet={modelItems(model, 'osasuoritukset') || []} />
@@ -207,7 +208,7 @@ const PäätasonSuoritusEditor = React.createClass({
         return <Lukio.LukionOppiaineetEditor context={ctx} oppiaineet={[model]} />
       }
       if (model.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
-        return <Suoritustaulukko.SuorituksetEditor context={ctx} model={model} propertyName="osasuoritukset"/>
+        return <LuvaEditor context={GenericEditor.childContext(this, ctx, 'osasuoritukset')} suoritukset={modelItems(model, 'osasuoritukset') || []}/>
       }
       return <GenericEditor.PropertyEditor context={ctx} model={model} propertyName="osasuoritukset"/>
     }

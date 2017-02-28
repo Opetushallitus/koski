@@ -184,11 +184,15 @@ describe('Lukiokoulutus', function( ){
       before(opinnot.expandAll)
       it('näyttää koulutuksen osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Lukioon valmistavat opinnot\n' +
           'Kurssi Laajuus Arvosana\n' +
           'Suomi toisena kielenä ja kirjallisuus 2 kurssia S\n' +
           'Yhteiskuntatietous ja kulttuurintuntemus 1 kurssia S\n' +
           'Opinto-ohjaus 1 kurssia S\n' +
-          'Kuvat ja kulttuurit 1 kurssia 7'
+          'Valinnaisena suoritetut lukiokurssit\n' +
+          'Kurssi Laajuus Arvosana\n' +
+          'Kuvat ja kulttuurit 1 kurssia 7\n' +
+          'Suoritettu lukiodiplomina kyllä'
         )
       })
     })
