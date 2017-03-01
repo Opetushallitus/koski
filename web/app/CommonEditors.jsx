@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelTitle, modelItems } from './EditorModel.js'
-import * as GenericEditor from './GenericEditor.jsx'
+import { Editor, PropertiesEditor } from './GenericEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
@@ -8,7 +8,7 @@ export const LaajuusEditor = React.createClass({
     var yksikköData = modelData(model, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
     return (modelData(model, 'arvo'))
-      ? <span><GenericEditor.Editor model={model} path="arvo"/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
+      ? <span><Editor model={model} path="arvo"/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
       : <span>-</span>
   }
 })
@@ -36,7 +36,7 @@ export const KoulutusmoduuliEditor = React.createClass({
     return (<span className="koulutusmoduuli">
       <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
       <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-      <GenericEditor.PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
+      <PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
     </span>)
   }
 })
@@ -46,7 +46,7 @@ export const PäivämääräväliEditor = React.createClass({
   render() {
     let { model } = this.props
     return (<span>
-      <GenericEditor.Editor model={model} path="alku"/> — <GenericEditor.Editor model={model} path="loppu"/>
+      <Editor model={model} path="alku"/> — <Editor model={model} path="loppu"/>
     </span>)
   }
 })
@@ -59,7 +59,7 @@ export const JaksoEditor = React.createClass({
     return (
       <div className="jaksollinen">
         <PäivämääräväliEditor model={model}/>
-        <GenericEditor.PropertiesEditor model={model} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
+        <PropertiesEditor model={model} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
       </div>
     )
   }

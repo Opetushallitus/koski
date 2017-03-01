@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
-import * as GenericEditor from './GenericEditor.jsx'
+import { PropertiesEditor } from './GenericEditor.jsx'
 import { LaajuusEditor, JaksoEditor } from './CommonEditors.jsx'
 import R from 'ramda'
 
@@ -27,7 +27,7 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
                 käyttäytymisenArvio && (i == grouped.length - 1) && (<div>
                   <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
                   {
-                    <GenericEditor.PropertiesEditor model={modelLookup(model, 'käyttäytymisenArvio')}
+                    <PropertiesEditor model={modelLookup(model, 'käyttäytymisenArvio')}
                                                     getValueEditor={ (prop, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
                     />
                   }

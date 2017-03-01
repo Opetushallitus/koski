@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelTitle } from './EditorModel.js'
-import * as GenericEditor from './GenericEditor.jsx'
+import { shouldShowProperty, Editor, PropertiesEditor } from './GenericEditor.jsx'
 
 export const SuorituksetEditor = React.createClass({
   render() {
@@ -29,7 +29,7 @@ const SuoritusEditor = React.createClass({
     let {model, showPakollisuus} = this.props
     let context = model.context
     let {expanded} = this.state
-    let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && GenericEditor.shouldShowProperty(context.edit)(p)
+    let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && shouldShowProperty(context.edit)(p)
     let properties = model.value.properties.filter(propertyFilter)
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
@@ -47,13 +47,13 @@ const SuoritusEditor = React.createClass({
 
       </td>
       {showPakollisuus && <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>}
-      <td className="laajuus"><GenericEditor.Editor model={model} path="koulutusmoduuli.laajuus" /></td>
+      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" /></td>
       <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
     </tr>
     {
       expanded && (<tr className="details">
         <td colSpan="4">
-          <GenericEditor.PropertiesEditor model={model} propertyFilter={propertyFilter} />
+          <PropertiesEditor model={model} propertyFilter={propertyFilter} />
         </td>
       </tr>)
     }

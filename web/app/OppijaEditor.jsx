@@ -1,7 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems, addContext } from './EditorModel.js'
-import * as GenericEditor from './GenericEditor.jsx'
+import { TogglableEditor, PropertyEditor, PropertiesEditor, ArrayEditor } from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
@@ -99,7 +99,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
 
-    return (<GenericEditor.TogglableEditor model={model} renderChild={ (mdl, editLink) => (<div className="opiskeluoikeus">
+    return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
         <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
@@ -118,13 +118,13 @@ const OpiskeluoikeusEditor = React.createClass({
           {editLink}
           <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
           <div className="alku-loppu">
-            <GenericEditor.PropertyEditor model={mdl} propertyName="alkamispäivä" /> — <GenericEditor.PropertyEditor model={mdl} propertyName={päättymispäiväProperty} />
+            <PropertyEditor model={mdl} propertyName="alkamispäivä" /> — <PropertyEditor model={mdl} propertyName={päättymispäiväProperty} />
           </div>
-          <GenericEditor.PropertiesEditor
+          <PropertiesEditor
             model={mdl}
             propertyFilter={ p => !excludedProperties.includes(p.key) }
             getValueEditor={ (prop, getDefault) => prop.key == 'tila'
-              ? <GenericEditor.ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')}/>
+              ? <ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')}/>
               : getDefault() }
            />
           <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
@@ -173,7 +173,7 @@ const ExpandablePropertiesEditor = React.createClass({
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
         { open ?
           <div className="value">
-            <GenericEditor.PropertiesEditor model={modelLookup(model, propertyName)} />
+            <PropertiesEditor model={modelLookup(model, propertyName)} />
           </div> : null
         }
       </div> : null
@@ -207,17 +207,17 @@ const PäätasonSuoritusEditor = React.createClass({
       if (model.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
         return <LuvaEditor suoritukset={modelItems(model, 'osasuoritukset') || []}/>
       }
-      return <GenericEditor.PropertyEditor model={mdl} propertyName="osasuoritukset"/>
+      return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
     }
 
-    return (<GenericEditor.TogglableEditor
+    return (<TogglableEditor
       model={model}
       renderChild={ (mdl, editLink) => {
         let className = 'suoritus ' + (mdl.context.edit ? 'editing ' : '') + mdl.value.classes.join(' ')
         return (<div className={className}>
           {editLink}
           <TodistusLink suoritus={mdl} />
-          <GenericEditor.PropertiesEditor
+          <PropertiesEditor
             model={mdl}
             propertyFilter={p => !excludedProperties.includes(p.key)}
           />
@@ -238,7 +238,7 @@ const TilaJaVahvistus = React.createClass({
           Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
         </span>
         {
-          model.value.data.vahvistus && <GenericEditor.PropertyEditor model={model} propertyName="vahvistus"/>
+          model.value.data.vahvistus && <PropertyEditor model={model} propertyName="vahvistus"/>
         }
         {(() => {
           let jääLuokalle = modelData(model, 'jääLuokalle')
