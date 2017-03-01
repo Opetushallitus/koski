@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
-import { PropertiesEditor } from './GenericEditor.jsx'
+import { Editor, PropertiesEditor } from './GenericEditor.jsx'
 import { LaajuusEditor, JaksoEditor } from './CommonEditors.jsx'
 import R from 'ramda'
 
@@ -61,7 +61,6 @@ const OppiaineEditor = React.createClass({
     let {model, showLaajuus, showExpand} = this.props
     let {expanded} = this.state
     var oppiaine = modelTitle(model, 'koulutusmoduuli')
-    let arvosana = modelData(model, 'arviointi.-1.arvosana').koodiarvo
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
     if (pakollinen === false) {
@@ -77,7 +76,7 @@ const OppiaineEditor = React.createClass({
           }
         </td>
         <td className="arvosana">
-          {arvosana}
+          <Editor model={ modelLookup(model, 'arviointi.-1.arvosana')}/>
           {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
           {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
           {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
