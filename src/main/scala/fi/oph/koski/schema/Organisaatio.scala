@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression}
+import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression, Title}
 
 sealed trait Organisaatio extends Localizable
 
@@ -64,7 +64,9 @@ case class Toimipiste(
 
 @Description("Yritys, jolla on y-tunnus")
 case class Yritys(
+  @Title("Yritys")
   nimi: LocalizedString,
+  @Title("Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   yTunnus: String
 ) extends Organisaatio {

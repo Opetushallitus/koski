@@ -301,6 +301,7 @@ case class NäytönArvioitsija(
 
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
+  @Flatten
   työnantaja: Yritys
 )
 
@@ -320,6 +321,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
+  @Flatten
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
