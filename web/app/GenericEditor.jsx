@@ -4,7 +4,7 @@ import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 import BaconComponent from './BaconComponent'
 import Http from './http'
-import { modelData, modelTitle, modelEmpty, modelItems, modelLookup, contextualizeModel } from './EditorModel.js'
+import { modelData, modelTitle, modelEmpty, modelItems, modelLookup, contextualizeModel, addContext } from './EditorModel.js'
 import { formatISODate, parseFinnishDate } from './date.js'
 import { showInternalError } from './location.js'
 
@@ -109,7 +109,8 @@ export const PropertiesEditor = React.createClass({
         let propertyClassName = 'property ' + property.key
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
-          : getValueEditor(property, () => getModelEditor(property.model))
+          : getValueEditor(property, () => getModelEditor(property.editable ? property.model : addContext(property.model, { edit: false })))
+
 
         return [(<tr className={propertyClassName} key={prefix + i}>
           {

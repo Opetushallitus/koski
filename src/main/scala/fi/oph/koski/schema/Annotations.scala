@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.scalaschema.Metadata
+import org.json4s.JsonAST
 import org.json4s.JsonAST.JObject
 
 trait RepresentationalMetadata extends Metadata {
@@ -18,3 +19,7 @@ case class Flatten() extends RepresentationalMetadata
 
 /* This property contains a list of items that should be represented in a table */
 case class Tabular() extends RepresentationalMetadata
+
+case class ReadOnly(why: String) extends Metadata {
+  override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = appendToDescription(obj, why)
+}

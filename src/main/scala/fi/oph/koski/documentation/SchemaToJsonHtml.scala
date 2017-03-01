@@ -66,8 +66,6 @@ object SchemaToJsonHtml {
     List(tr(<span><span class="collapsible"></span>{keyHtml(property.key)}[</span>, property.metadata, context)) ++ propertyElems ++ List(tr(<span>{"]"}</span>, Nil, context))
   }
 
-
-
   private def metadataHtml(metadatas: List[Metadata]) = {
     {
       metadatas.flatMap {

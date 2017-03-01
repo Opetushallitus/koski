@@ -16,7 +16,3 @@ object KoskiSchema {
     case s: ClassSchema => s.moveDefinitionsToTopLevel
   }
 }
-
-case class ReadOnly(why: String) extends Metadata {
-  override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = appendToDescription(obj, why)
-}
