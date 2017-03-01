@@ -25,9 +25,7 @@ const BaconComponent = (props) => {
       },
 
       componentWillReceiveProps(newProps) {
-        if (!R.equals(newProps, this.props)) {
-          this.propsE.push(newProps)
-        }
+        this.propsE.push(newProps)
         givenWillReceiveProps.call(this, newProps)
       }
     }

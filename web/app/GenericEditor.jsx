@@ -351,14 +351,12 @@ export const EnumEditor = BaconComponent({
   },
 
   componentWillMount() {
-    this.propsE.onValue((props) => {
-      this.setState(this.getInitialState())
-      let {model} = props
-      if (model.context.edit && model.alternativesPath) {
-        let alternativesP = EnumEditor.AlternativesCache[model.alternativesPath]
+    this.propsE.map((props) => [props.model.alternativesPath, props.model.context.edit]).skipDuplicates(R.equals).onValues((alternativesPath, edit) => {
+      if (edit && alternativesPath) {
+        let alternativesP = EnumEditor.AlternativesCache[alternativesPath]
         if (!alternativesP) {
-          alternativesP = Http.cachedGet(model.alternativesPath).doError(showInternalError)
-          EnumEditor.AlternativesCache[model.alternativesPath] = alternativesP
+          alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError)
+          EnumEditor.AlternativesCache[alternativesPath] = alternativesP
         }
         alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
       }

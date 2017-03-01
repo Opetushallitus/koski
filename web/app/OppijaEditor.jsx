@@ -111,7 +111,7 @@ const OpiskeluoikeusEditor = React.createClass({
             : null
           }
         <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
-        <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
+        <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <div className="opiskeluoikeus-content">
         <div className={mdl.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
