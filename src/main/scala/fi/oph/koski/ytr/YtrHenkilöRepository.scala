@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.UusiHenkilö
 
-case class YtrHenkilöRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: AccessChecker) extends FindByHetu with Logging {
+case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: AccessChecker) extends FindByHetu with Logging {
   override def findByHetu(hetu: String)(implicit user: KoskiSession) = if (!accessChecker.hasAccess(user)) {
     None
   } else {

@@ -10,11 +10,16 @@ import scala.xml.{Elem, Node}
 
 object VirtaClient extends Logging {
   def apply(config: Config) = config.getString("virta.serviceUrl") match {
-    case "mock" => MockVirtaClient
+    case "mock" =>
+      logger.info("Using mock Virta integration")
+      MockVirtaClient
     case "" =>
       logger.info("Virta integration disabled")
       EmptyVirtaClient
-    case _ => TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config)))
+    case _ =>
+      val virtaConfig = VirtaConfig.fromConfig(config)
+      logger.info("Using Virta integration endpoint " + virtaConfig.serviceUrl)
+      TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig))
   }
 }
 

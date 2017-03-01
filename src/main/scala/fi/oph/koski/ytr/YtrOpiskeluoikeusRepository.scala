@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.HetuBasedOpiskeluoikeusRepository
 
-case class YtrOpiskeluoikeusRepository(ytr: YlioppilasTutkintoRekisteri, henkilöRepository: HenkilöRepository, organisaatioRepository: OrganisaatioRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager)
+case class YtrOpiskeluoikeusRepository(ytr: YtrClient, henkilöRepository: HenkilöRepository, organisaatioRepository: OrganisaatioRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager)
     extends HetuBasedOpiskeluoikeusRepository[YlioppilastutkinnonOpiskeluoikeus](henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, accessChecker, validator)
 {
   private val converter = YtrOppijaConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository)

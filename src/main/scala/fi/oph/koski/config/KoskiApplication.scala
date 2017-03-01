@@ -22,7 +22,7 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, Tiedonsi
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YtrClient, YtrAccessChecker, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   lazy val defaultConfig = ConfigFactory.load
@@ -45,7 +45,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
-  lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
+  lazy val ytrClient = YtrClient(config)
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
