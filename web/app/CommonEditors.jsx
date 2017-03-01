@@ -28,7 +28,6 @@ export const VahvistusEditor = React.createClass({
     </span>)
   }
 })
-VahvistusEditor.readOnly = true
 
 export const KoulutusmoduuliEditor = React.createClass({
   render() {
@@ -66,9 +65,7 @@ export const JaksoEditor = React.createClass({
 })
 
 export const editorMapping = {
-  'henkilovahvistuspaikkakunnalla': VahvistusEditor,
-  'henkilovahvistusilmanpaikkakuntaa': VahvistusEditor,
-  'organisaatiovahvistus': VahvistusEditor,
+  'vahvistus': VahvistusEditor,
   'laajuus' : LaajuusEditor,
   'koulutus' : KoulutusmoduuliEditor,
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
