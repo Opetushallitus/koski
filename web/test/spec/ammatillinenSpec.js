@@ -528,7 +528,7 @@ describe('Ammatillinen koulutus', function() {
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Suoritustapa Näyttö\n' +
-            'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Järjestämismuoto Koulutuksen järjestäminen oppisopimuskoulutuksena\nYritys Autokorjaamo Oy\nY-tunnus 1234567-8\n' +
             'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi'
           )
         })
