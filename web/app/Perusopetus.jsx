@@ -24,12 +24,10 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
               { grouped.length > 1 && <h5>{name}</h5> }
               <Oppiainetaulukko model={model} suoritukset={suoritukset} />
               {
-                käyttäytymisenArvio && (i == grouped.length - 1) && (<div>
+                (model.context.edit || käyttäytymisenArvio) && (i == grouped.length - 1) && (<div>
                   <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
                   {
-                    <PropertiesEditor model={modelLookup(model, 'käyttäytymisenArvio')}
-                                                    getValueEditor={ (prop, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
-                    />
+                    <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
                   }
                 </div>)
               }
