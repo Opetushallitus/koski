@@ -25,6 +25,9 @@ export const Editor = React.createClass({
     return getModelEditor(model, path)
   }
 })
+Editor.propTypes = {
+  model: React.PropTypes.object.isRequired
+}
 
 export const ObjectEditor = React.createClass({
   render() {

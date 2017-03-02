@@ -7,7 +7,7 @@ import R from 'ramda'
 export const PerusopetuksenOppiaineetEditor = React.createClass({
   render() {
     let {model} = this.props
-    let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
+    let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
     let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset') || []))
 
     let osasuoritukset = modelItems(model, 'osasuoritukset') || []
@@ -24,7 +24,7 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
               { grouped.length > 1 && <h5>{name}</h5> }
               <Oppiainetaulukko model={model} suoritukset={suoritukset} />
               {
-                (model.context.edit || käyttäytymisenArvio) && (i == grouped.length - 1) && (<div>
+                käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div>
                   <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
                   {
                     <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
