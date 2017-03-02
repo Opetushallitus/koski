@@ -90,9 +90,9 @@ Avaa selaimessa
 
     http://localhost:7021/koski
 
-Suoritus-testidatat näkyy
+Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
-    http://localhost:7021/koski/suoritus/
+Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-indeksiä, jotka se myös itse käynnistää. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
 ### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
 
