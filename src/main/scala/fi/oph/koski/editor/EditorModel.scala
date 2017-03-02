@@ -40,7 +40,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
         case (PrototypeModel(key)) => json("prototype", "key" -> key)
         case (OptionalModel(model, prototype)) =>
           val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)
-          val typeAndValue = valueOrPrototypeWithoutData(model, prototype)
+          val typeAndValue = modelOrEmptyObject(model)
           typeAndValue.merge(optionalInfo)
 
         case (ListModel(items, prototype)) =>
@@ -49,7 +49,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
           json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>
           val oneOfInfo: JValue = json("oneOfClass" -> c, "oneOfPrototypes" -> prototypes)
-          valueOrPrototypeWithoutData(model, prototypes.headOption).merge(oneOfInfo)
+          modelOrEmptyObject(model).merge(oneOfInfo)
 
         case (NumberModel(data)) => json("number", "simple" -> true, "value" -> Map("data" -> data))
         case (BooleanModel(data)) => json("boolean", "simple" -> true, "value" -> Map("data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" }))) // TODO: localization
@@ -60,19 +60,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
     }
   }
 
-  private def valueOrPrototypeWithoutData(model: Option[EditorModel], prototype: Option[EditorModel])(implicit format: Formats) = (model, prototype) match {
-    case (Some(innerModel), _) =>
-      // Has value
-      Extraction.decompose(innerModel)
-    case (None, Some(p)) =>
-      // No value -> include prototype
-      val fields = Extraction.decompose(p).filterField{case (key, value) => key != "value"} // get structure from prototype, but remove value
-      JObject(fields: _*)
-    case (None, None) => {
-      logger.warn("Value and prototype missing")
-      emptyObject
-    }
-  }
+  private def modelOrEmptyObject(model: Option[EditorModel])(implicit format: Formats) = model.map(Extraction.decompose).getOrElse(emptyObject)
 
   private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
     val elems: List[(String, Any)] = ("type" -> tyep) :: props.toList

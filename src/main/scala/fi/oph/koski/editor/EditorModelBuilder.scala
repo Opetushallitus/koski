@@ -48,7 +48,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
           val classRefSchema = resolveSchema(s)
           prototypesRequested += classRefSchema
           Some(ModelBuilder(s).buildPrototypePlaceholder)
-        case s: ListSchema => getPrototypePlaceholder(s.itemSchema)
+        case s: ListSchema => getPrototypePlaceholder(s.itemSchema).map(prototypeModel => ListModel(List(prototypeModel), Some(prototypeModel)))
         case s: OptionalSchema => getPrototypePlaceholder(s.itemSchema)
         case _ => Some(buildModel(Prototypes.getPrototypeData(schema), schema))
       }
@@ -108,8 +108,10 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
 
   private case class AnyOfModelBuilder(t: AnyOfSchema) extends ModelBuilder {
     def buildObjectModel(obj: AnyRef) = obj match {
-      case None => OneOfModel(sanitizeName(t.simpleName), None, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
-      case x: AnyRef => OneOfModel(sanitizeName(t.simpleName), Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+      case None =>
+        OneOfModel(sanitizeName(t.simpleName), None, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+      case x: AnyRef =>
+        OneOfModel(sanitizeName(t.simpleName), Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
     }
 
     def prototypeKey = sanitizeName(t.simpleName)

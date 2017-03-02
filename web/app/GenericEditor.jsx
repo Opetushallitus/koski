@@ -238,14 +238,16 @@ const OptionalEditor = React.createClass({
       this.props.model.context.changeBus.push([model.context, {data: undefined}])
       this.setState({ removed: true, adding: false })
     }
-    let empty = (modelEmpty(model) || removed) && !adding
-    let canRemove = model.context.edit && !empty
+    let empty = (modelEmpty(model) || removed)
+    let canRemove = model.context.edit && !empty && !adding
     return (<span className="optional-wrapper">
       {
         empty
-          ? model.context.edit && model.prototype !== undefined
-            ? <a className="add-value" onClick={addValue}>lisää</a>
-            : null
+          ? adding
+            ? getModelEditor(R.merge(contextualizeModel(model.prototype, model.context), { optional: false })) // get value from prototype when adding item
+            : model.context.edit && model.prototype !== undefined
+              ? <a className="add-value" onClick={addValue}>lisää</a>
+              : null
           : getModelEditor(R.merge(model, { optional: false }))
       }
       {

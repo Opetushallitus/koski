@@ -125,7 +125,7 @@ const childContext = (context, ...pathElems) => {
 }
 
 const resolveModel = (model) => {
-  if (model && model.type == 'prototype' && model.optional && model.context.edit) {
+  if (model && model.type == 'prototype' && model.context.edit) {
     // For optional properties, the model is a "prototype model" and gets replaced with a copy of the prototypal model
     // found in the shared context.prototypes array.
     let prototypeModel = model.context.prototypes[model.key]
