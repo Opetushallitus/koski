@@ -2,6 +2,7 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
+import fi.oph.koski.log.Logging
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
@@ -28,7 +29,7 @@ case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorMod
 
 case class OneOfModel(`class`: String, model: Option[EditorModel], prototypes: List[EditorModel]) extends EditorModel
 
-object EditorModelSerializer extends Serializer[EditorModel] {
+object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
@@ -60,11 +61,17 @@ object EditorModelSerializer extends Serializer[EditorModel] {
   }
 
   private def valueOrPrototypeWithoutData(model: Option[EditorModel], prototype: Option[EditorModel])(implicit format: Formats) = (model, prototype) match {
-    case (Some(innerModel), _) => Extraction.decompose(innerModel)
-    case (None, Some(p:PrototypeModel)) =>
+    case (Some(innerModel), _) =>
+      // Has value
+      Extraction.decompose(innerModel)
+    case (None, Some(p)) =>
+      // No value -> include prototype
       val fields = Extraction.decompose(p).filterField{case (key, value) => key != "value"} // get structure from prototype, but remove value
       JObject(fields: _*)
-    case _ => emptyObject
+    case (None, None) => {
+      logger.warn("Value and prototype missing")
+      emptyObject
+    }
   }
 
   private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
