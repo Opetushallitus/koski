@@ -37,7 +37,6 @@ export default BaconComponent({
   },
   componentWillMount() {
     this.propsE.map('.opiskeluoikeusId').skipDuplicates().onValue((opiskeluoikeusId) => {
-      console.log("history props")
       this.setState(this.getInitialState())
       if (this.getInitialState().showHistory) this.fetchHistory(opiskeluoikeusId)
     })

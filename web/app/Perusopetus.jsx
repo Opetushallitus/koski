@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
-import { Editor, PropertiesEditor } from './GenericEditor.jsx'
+import { Editor } from './GenericEditor.jsx'
 import { LaajuusEditor, JaksoEditor } from './CommonEditors.jsx'
 import R from 'ramda'
 
