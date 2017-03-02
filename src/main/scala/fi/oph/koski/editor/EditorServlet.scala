@@ -89,7 +89,10 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           val oppilaitokset = opiskeluoikeudet.groupBy(_.getOppilaitos).map {
             case (oppilaitos, opiskeluoikeudet) =>
               OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).map {
-                case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
+                case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy({
+                  case s: PerusopetuksenOppimääränSuoritus => -100 // ensin oppimäärän suoritus
+                  case s: PerusopetuksenVuosiluokanSuoritus => - s.koulutusmoduuli.tunniste.koodiarvo.toInt // sitten luokka-asteet
+                }))
                 case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
                 case oo: Any => oo
               })
