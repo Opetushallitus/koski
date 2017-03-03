@@ -296,6 +296,13 @@ export const StringEditor = React.createClass({
 })
 StringEditor.canShowInline = () => true
 
+export const LocalizedStringEditor = React.createClass({
+  render() {
+    return <StringEditor model={ modelLookup(this.props.model, 'fi') } />
+  }
+})
+LocalizedStringEditor.canShowInline = () => true
+
 export const NumberEditor = React.createClass({
   render() {
     let {model} = this.props
@@ -442,6 +449,7 @@ const defaultEditorMapping = {
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,
+  'localizedstring': LocalizedStringEditor,
   'number': NumberEditor,
   'date': DateEditor,
   'boolean': BooleanEditor,
