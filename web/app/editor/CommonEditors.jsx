@@ -133,7 +133,11 @@ StringEditor.canShowInline = () => true
 
 export const LocalizedStringEditor = React.createClass({
   render() {
-    return <StringEditor model={ modelLookup(this.props.model, 'fi') } />
+    let {model} = this.props
+    if (!model.edit) {
+      return <ObjectEditor model={model}/>
+    }
+    return <StringEditor model={ modelLookup(model, 'fi') } />
   }
 })
 LocalizedStringEditor.canShowInline = () => true
