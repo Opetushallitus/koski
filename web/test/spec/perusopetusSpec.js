@@ -238,6 +238,13 @@ describe('Perusopetus', function() {
 
   describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+    describe('Oppiaineen laajuuden muutos', function() {
+      var editor = opinnot.suoritusEditor()
+      before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+      it('Toimii', function() {
+        expect(editor.property('laajuus').getValue()).to.equal('2')
+      })
+    })
 
     describe('Kun poistetaan päättymispäivä', function() {
       var editor = opinnot.opiskeluoikeusEditor()

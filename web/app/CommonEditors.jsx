@@ -8,7 +8,7 @@ export const LaajuusEditor = React.createClass({
     var yksikköData = modelData(model, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
     return (modelData(model, 'arvo'))
-      ? <span><Editor model={model} path="arvo"/> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
+      ? <span className="property laajuus"><span className="value"><Editor model={model} path="arvo"/></span> <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span></span>
       : <span>-</span>
   }
 })

@@ -102,7 +102,7 @@ function Property(elem) {
     },
     setValue: function(value) {
       return function() {
-        return Page(elem).setInputValue("select", value)()
+        return Page(elem).setInputValue('select, input', value)()
       }
     },
     getValue: function() {
