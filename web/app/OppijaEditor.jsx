@@ -1,7 +1,9 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems, addContext } from './EditorModel.js'
-import { TogglableEditor, PropertyEditor, PropertiesEditor, ArrayEditor } from './GenericEditor.jsx'
+import { TogglableEditor, PropertyEditor } from './editor/CommonEditors.jsx'
+import { PropertiesEditor } from './editor/PropertiesEditor.jsx'
+import { ArrayEditor } from './editor/ArrayEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
@@ -10,7 +12,7 @@ import * as Perusopetus from './Perusopetus.jsx'
 import * as Lukio from './Lukio.jsx'
 import * as Suoritustaulukko from './Suoritustaulukko.jsx'
 import * as Ammatillinen from './Ammatillinen.jsx'
-import * as CommonEditors from './CommonEditors.jsx'
+import * as CommonEditors from './editor/CommonEditors.jsx'
 import { LuvaEditor } from './LuvaEditor.jsx'
 
 const OppijaEditor = React.createClass({
@@ -71,6 +73,8 @@ const OppijaEditor = React.createClass({
                 </li>)
             })}
         </ul>
+
+
         <ul className="opiskeluoikeuksientiedot">
           {
             modelLookup(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
@@ -129,8 +133,6 @@ const OpiskeluoikeusEditor = React.createClass({
            />
           <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
         </div>
-
-
         <div className="suoritukset">
           {
             suoritukset.length >= 2 ? (
