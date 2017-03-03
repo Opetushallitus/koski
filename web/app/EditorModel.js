@@ -126,14 +126,12 @@ const childContext = (context, ...pathElems) => {
 
 const resolveModel = (model) => {
   if (model && model.type == 'prototype' && model.context.edit) {
-    // For optional properties, the model is a "prototype model" and gets replaced with a copy of the prototypal model
-    // found in the shared context.prototypes array.
+    // Some models are delivered as prototype references and are replaced with the actual prototype found in the context
     let prototypeModel = model.context.prototypes[model.key]
     if (!prototypeModel) {
       console.error('Prototype not found: ' + model.key)
     }
-    // Finally, remove value from prototypal value of optional model, to show it as empty.
-    return R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype, context: model.context})
+    return contextualizeModel(prototypeModel, model.context)
   }
   return model
 }

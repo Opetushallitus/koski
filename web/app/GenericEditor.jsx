@@ -238,13 +238,22 @@ const OptionalEditor = React.createClass({
       this.props.model.context.changeBus.push([model.context, {data: undefined}])
       this.setState({ removed: true, adding: false })
     }
+    let addingContent = () => {
+      // get value from prototype when adding item
+      let prototype = contextualizeModel(model.prototype, model.context)
+      if (prototype.oneOfPrototypes) {
+        // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
+        prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
+      }
+      return getModelEditor(R.merge(prototype, { optional: false }))
+    }
     let empty = (modelEmpty(model) || removed)
     let canRemove = model.context.edit && !empty && !adding
     return (<span className="optional-wrapper">
       {
         empty
           ? adding
-            ? getModelEditor(R.merge(contextualizeModel(model.prototype, model.context), { optional: false })) // get value from prototype when adding item
+            ? addingContent()
             : model.context.edit && model.prototype !== undefined
               ? <a className="add-value" onClick={addValue}>lisää</a>
               : null
@@ -254,6 +263,11 @@ const OptionalEditor = React.createClass({
         canRemove && <a className="remove-value" onClick={removeValue}></a>
       }
     </span>)
+  },
+  componentWillReceiveProps(props) {
+    if (!props.model.context.edit) {
+      this.setState({ adding: false, removed: false })
+    }
   }
 })
 OptionalEditor.canShowInline = () => true
