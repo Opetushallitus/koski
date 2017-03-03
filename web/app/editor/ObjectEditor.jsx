@@ -1,5 +1,5 @@
 import React from 'react'
-import { Editor } from '../GenericEditor.jsx'
+import { Editor } from './GenericEditor.jsx'
 import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor.jsx'
 
 export const ObjectEditor = React.createClass({

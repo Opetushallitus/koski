@@ -1,7 +1,7 @@
 import React from 'react'
 import { modelData, modelTitle } from './EditorModel.js'
 import { Editor } from './GenericEditor.jsx'
-import { shouldShowProperty, PropertiesEditor } from './editor/PropertiesEditor.jsx'
+import { shouldShowProperty, PropertiesEditor } from './PropertiesEditor.jsx'
 
 export const SuorituksetEditor = React.createClass({
   render() {

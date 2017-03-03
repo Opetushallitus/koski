@@ -1,6 +1,6 @@
 import React from 'react'
 import {modelData, modelTitle, modelItems} from './EditorModel.js'
-import {PropertiesEditor} from './editor/PropertiesEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
   render() {

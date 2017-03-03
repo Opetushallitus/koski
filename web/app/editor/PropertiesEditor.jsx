@@ -1,6 +1,6 @@
 import React from 'react'
-import { modelEmpty, modelItems, addContext } from '../EditorModel.js'
-import { Editor } from '../GenericEditor.jsx'
+import { modelEmpty, modelItems, addContext } from './EditorModel.js'
+import { Editor } from './GenericEditor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
 
 export const PropertiesEditor = React.createClass({

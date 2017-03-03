@@ -1,7 +1,7 @@
 import React from 'react'
 import * as L from 'partial.lenses'
-import {modelItems } from '../EditorModel.js'
-import { Editor } from '../GenericEditor.jsx'
+import {modelItems } from './EditorModel.js'
+import { Editor } from './GenericEditor.jsx'
 
 export const ArrayEditor = React.createClass({
   render() {
