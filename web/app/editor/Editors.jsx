@@ -10,6 +10,20 @@ import { ObjectEditor } from './ObjectEditor.jsx'
 import { PropertiesEditor } from './PropertiesEditor.jsx'
 import { Editor } from './GenericEditor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
+import { OppijaEditor } from './OppijaEditor.jsx'
+import * as Ammatillinen from './Ammatillinen.jsx'
+import * as Perusopetus from './Perusopetus.jsx'
+
+const OpiskeluoikeusjaksoEditor = React.createClass({
+  render() {
+    let { model } = this.props
+    return (<div className="opiskeluoikeusjakso">
+      <label className="date">{modelTitle(model, 'alku')}</label>
+      <label className="tila">{modelTitle(model, 'tila')}</label>
+    </div>)
+  }
+})
+OpiskeluoikeusjaksoEditor.readOnly = true
 
 export const LaajuusEditor = React.createClass({
   render() {
@@ -240,8 +254,7 @@ export const EnumEditor = BaconComponent({
 EnumEditor.canShowInline = () => true
 EnumEditor.AlternativesCache = {}
 
-
-export const editorMapping = {
+export const editorMapping = R.mergeAll([{
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,
@@ -255,5 +268,7 @@ export const editorMapping = {
   'koulutus' : KoulutusmoduuliEditor,
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
   'paatosjakso': PäivämääräväliEditor,
-  'jakso': JaksoEditor
-}
+  'jakso': JaksoEditor,
+  'oppijaeditorview': OppijaEditor,
+  'opiskeluoikeusjakso': OpiskeluoikeusjaksoEditor
+}, Ammatillinen.editorMapping, Perusopetus.editorMapping])
