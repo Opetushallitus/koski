@@ -1,7 +1,5 @@
 import React from 'react'
-import Bacon from 'baconjs'
 import {modelData, modelTitle, modelItems} from './EditorModel.js'
-import {formatISODate, parseFinnishDate} from '../date.js'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {Editor} from './GenericEditor.jsx'
@@ -10,6 +8,7 @@ import {EnumEditor} from './EnumEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
 import {NumberEditor} from './NumberEditor.jsx'
 import {LocalizedStringEditor} from './LocalizedStringEditor.jsx'
+import {DateEditor} from './DateEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
@@ -86,35 +85,6 @@ export const BooleanEditor = React.createClass({
   }
 })
 BooleanEditor.canShowInline = () => true
-
-export const DateEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    let {invalidDate, valueBus} = this.state
-
-    let onChange = (event) => {
-      var date = parseFinnishDate(event.target.value)
-      if (date) {
-        valueBus.push([model.context, {data: formatISODate(date)}])
-      }
-      this.setState({invalidDate: date ? false : true})
-    }
-
-    return model.context.edit
-      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'error' : ''}></input>
-      : <span className="inline date">{modelTitle(model)}</span>
-  },
-
-  getInitialState() {
-    return {valueBus: Bacon.Bus()}
-  },
-
-  componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {this.props.model.context.changeBus.push(v)})
-  }
-})
-DateEditor.canShowInline = () => true
-
 
 export const editorMapping = {
   'object': ObjectEditor,
