@@ -39,12 +39,10 @@ export const oppijaContentP = (oppijaOid) => {
       var modified = L.set(lens, versionumero, currentOppija)
       return modified
     },
-    changeBus, (currentOppija, [context, value]) => {
-      let modifiedModel = modelSet(currentOppija, context.path, value)
-      return modifiedModel
+    changeBus.log('changebus'), (currentOppija, contextValuePairs) => {
+      return R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), currentOppija)
     }
   )
-
 
   updateResultE.plug(oppijaP
     .sampledBy(saveE, (oppija, [context]) => ({oppija, context}))

@@ -3,7 +3,7 @@ import {modelData, modelLookup, modelTitle, modelItems, addContext} from './Edit
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {ArrayEditor} from './ArrayEditor.jsx'
+import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
 import Versiohistoria from '../Versiohistoria.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
@@ -45,7 +45,7 @@ export const OpiskeluoikeusEditor = React.createClass({
             model={mdl}
             propertyFilter={ p => !excludedProperties.includes(p.key) }
             getValueEditor={ (prop, getDefault) => prop.key == 'tila'
-              ? <ArrayEditor reverse={true} model={modelLookup(prop.model, 'opiskeluoikeusjaksot')}/>
+              ? <OpiskeluoikeudenTilaEditor model={modelLookup(prop.model, 'opiskeluoikeusjaksot')}/>
               : getDefault() }
            />
           <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
