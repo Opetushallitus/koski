@@ -1,7 +1,7 @@
 import React from 'react'
 import * as L from 'partial.lenses'
-import {modelItems } from './EditorModel.js'
-import { Editor } from './GenericEditor.jsx'
+import {childContext, contextualizeModel, modelItems } from './EditorModel.js'
+import { Editor } from './GenericEditor.jsx'
 
 export const ArrayEditor = React.createClass({
   render() {
@@ -14,7 +14,7 @@ export const ArrayEditor = React.createClass({
       : 'array'
     let adding = this.state && this.state.adding || []
     let addItem = () => {
-      this.setState({adding: adding.concat(model.prototype)})
+      this.setState({adding: adding.concat(contextualizeModel(model.prototype, childContext(model.context, items.length + adding.length)))})
     }
     return (
       <ul ref="ul" className={className}>

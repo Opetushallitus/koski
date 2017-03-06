@@ -119,7 +119,7 @@ export const contextualizeModel = (model, context) => {
   return resolveModel(R.merge(model, stuff))
 }
 
-const childContext = (context, ...pathElems) => {
+export const childContext = (context, ...pathElems) => {
   let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
   return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
 }
