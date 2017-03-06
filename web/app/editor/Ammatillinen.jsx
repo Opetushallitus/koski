@@ -1,7 +1,8 @@
 import React from 'react'
 import { modelData, modelTitle } from './EditorModel.js'
 import { PropertiesEditor } from './PropertiesEditor.jsx'
-import { PäivämääräväliEditor, KoulutusmoduuliEditor } from './CommonEditors.jsx'
+import { KoulutusmoduuliEditor } from './KoulutusmoduuliEditor.jsx'
+import { PäivämääräväliEditor } from './CommonEditors.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {

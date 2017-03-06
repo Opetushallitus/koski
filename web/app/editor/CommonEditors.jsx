@@ -11,18 +11,7 @@ import {LocalizedStringEditor} from './LocalizedStringEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
 import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {VahvistusEditor} from './VahvistusEditor.jsx'
-
-export const KoulutusmoduuliEditor = React.createClass({
-  render() {
-    let { model } = this.props
-    return (<span className="koulutusmoduuli">
-      <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
-      <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-      <PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
-    </span>)
-  }
-})
-KoulutusmoduuliEditor.readOnly = true
+import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 
 export const PäivämääräväliEditor = React.createClass({
   render() {
