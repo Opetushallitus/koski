@@ -71,6 +71,15 @@ function Page(mainElement) {
             input.val(value)
             triggerEvent(input, "input")
             break;
+          case "CHECKBOX":
+            if (value != input.is(":checked")) {
+              console.log("Checking checkbox")
+              if(window.callPhantom) {
+                input.prop("checked", true)
+              }
+              triggerEvent(input, "click")
+            }
+            break;
           case "RADIO":
             var radioOption = _(input).find(function(item) { return $(item).prop("value") == value })
             if (!option) throw new Error("Option " + value + " not found")
