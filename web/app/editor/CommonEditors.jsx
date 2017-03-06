@@ -1,7 +1,6 @@
 import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {ObjectEditor} from './ObjectEditor.jsx'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
@@ -12,18 +11,7 @@ import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {VahvistusEditor} from './VahvistusEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
-
-export const JaksoEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    return (
-      <div className="jaksollinen">
-        <PäivämääräväliEditor model={model}/>
-        <PropertiesEditor model={model} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
-      </div>
-    )
-  }
-})
+import {JaksoEditor} from './JaksoEditor.jsx'
 
 export const BooleanEditor = React.createClass({
   render() {

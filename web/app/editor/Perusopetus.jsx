@@ -2,7 +2,7 @@ import React from 'react'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import { Editor } from './GenericEditor.jsx'
 import { LaajuusEditor } from './LaajuusEditor.jsx'
-import { JaksoEditor } from './CommonEditors.jsx'
+import { JaksoEditor } from './JaksoEditor.jsx'
 import R from 'ramda'
 
 export const PerusopetuksenOppiaineetEditor = React.createClass({
