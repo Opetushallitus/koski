@@ -1,6 +1,6 @@
 import React from 'react'
 import Bacon from 'baconjs'
-import {modelData, modelTitle, modelItems, modelLookup} from './EditorModel.js'
+import {modelData, modelTitle, modelItems} from './EditorModel.js'
 import {formatISODate, parseFinnishDate} from '../date.js'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
@@ -8,6 +8,7 @@ import {Editor} from './GenericEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
+import {LocalizedStringEditor} from './LocalizedStringEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
@@ -70,17 +71,6 @@ export const JaksoEditor = React.createClass({
     )
   }
 })
-
-export const LocalizedStringEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    if (!model.edit) {
-      return <ObjectEditor model={model}/>
-    }
-    return <StringEditor model={ modelLookup(model, 'fi') } />
-  }
-})
-LocalizedStringEditor.canShowInline = () => true
 
 export const NumberEditor = React.createClass({
   render() {
