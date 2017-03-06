@@ -1,7 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems, addContext } from './EditorModel.js'
-import { PropertyEditor } from './CommonEditors.jsx'
+import { PropertyEditor } from './PropertyEditor.jsx'
 import { TogglableEditor } from './TogglableEditor.jsx'
 import { PropertiesEditor } from './PropertiesEditor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
