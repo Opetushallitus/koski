@@ -1,4 +1,5 @@
 import R from 'ramda'
+import {OptionalEditor} from './OptionalEditor.jsx'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
@@ -18,6 +19,7 @@ import * as Ammatillinen from './Ammatillinen.jsx'
 import * as Perusopetus from './Perusopetus.jsx'
 
 export const editorMapping = R.mergeAll([{
+  'optional': OptionalEditor,
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,

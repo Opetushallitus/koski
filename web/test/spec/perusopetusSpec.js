@@ -242,7 +242,7 @@ describe('Perusopetus', function() {
       var editor = opinnot.suoritusEditor()
       before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
       it('Toimii', function() {
-        expect(editor.property('laajuus').getValue()).to.equal('2')
+        expect(editor.property('laajuus').getValue()).to.equal('2') // TODO: random fail here "expected 1 to equal 2"
       })
     })
 
@@ -264,6 +264,28 @@ describe('Perusopetus', function() {
         before(editor.doneEditing)
         it('Näytetään muuttuneet tiedot', function() {
           expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+        })
+      })
+    })
+
+    describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
+      var editor = opinnot.opiskeluoikeusEditor()
+      before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), wait.until(page.isSavedLabelShown), editor.doneEditing)
+      it('Toimii', function() {
+        expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+      })
+
+      describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
+        before(opinnot.collapseAll, opinnot.expandAll)
+        it('Toimii', function() {
+          expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+        })
+      })
+
+      describe("Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta", function() {
+        before(opinnot.collapseAll, editor.edit, opinnot.expandAll, editor.doneEditing)
+        it('Toimii', function() {
+          expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
         })
       })
     })

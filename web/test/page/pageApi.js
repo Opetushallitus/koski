@@ -73,7 +73,6 @@ function Page(mainElement) {
             break;
           case "CHECKBOX":
             if (value != input.is(":checked")) {
-              console.log("Checking checkbox")
               if(window.callPhantom) {
                 input.prop("checked", true)
               }

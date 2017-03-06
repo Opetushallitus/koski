@@ -50,12 +50,24 @@ function OpinnotPage() {
       var checkAndExpand = function() {
         if (expanders().is(':visible')) {
           triggerEvent(expanders(), 'click')
-          return wait.forMilliseconds(10)().then(checkAndExpand)
+          return wait.forMilliseconds(10)().then(wait.forAjax).then(checkAndExpand)
         }
       }
       return checkAndExpand()
       function expanders() {
         return S('.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) .toggle-expand:not(.disabled), a.expandable:not(.open)')
+      }
+    },
+    collapseAll: function() {
+      var checkAndCollapse = function() {
+        if (collapsers().is(':visible')) {
+          triggerEvent(collapsers(), 'click')
+          return wait.forMilliseconds(10)().then(wait.forAjax).then(checkAndCollapse)
+        }
+      }
+      return checkAndCollapse()
+      function collapsers() {
+        return S('.foldable:not(.collapsed)>.toggle-expand:not(.disabled), tbody.expanded .toggle-expand:not(.disabled), a.expandable.open')
       }
     }
   }

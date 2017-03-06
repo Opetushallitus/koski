@@ -12,7 +12,7 @@ export const ArrayEditor = React.createClass({
     let className = inline
       ? 'array inline'
       : 'array'
-    let adding = this.state && this.state.adding || []
+    let adding = this.state.adding
     let addItem = () => {
       this.setState({adding: adding.concat(contextualizeModel(model.prototype, childContext(model.context, items.length + adding.length)))})
     }
@@ -23,7 +23,7 @@ export const ArrayEditor = React.createClass({
               let removeItem = () => {
                 let newItems = L.set(L.index(i), undefined, items)
                 item.context.changeBus.push([item.context, {data: undefined}])
-                this.setState({ adding: false, items: newItems })
+                this.setState({ adding: [], items: newItems })
               }
 
               return (<li key={i}>
@@ -38,6 +38,14 @@ export const ArrayEditor = React.createClass({
         }
       </ul>
     )
+  },
+  componentWillReceiveProps(newProps) {
+    if (!newProps.model.context.edit && this.props.model.context.edit) { // TODO: this is a bit dirty and seems that it's needed in many editors
+      this.setState(this.getInitialState())
+    }
+  },
+  getInitialState() {
+    return { adding: [], items: undefined}
   }
 })
 ArrayEditor.canShowInline = (component) => {
