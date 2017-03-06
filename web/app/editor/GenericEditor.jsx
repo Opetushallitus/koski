@@ -58,10 +58,10 @@ const OptionalEditor = React.createClass({
       {
         empty
           ? adding
-          ? addingContent()
-          : model.context.edit && model.prototype !== undefined
-          ? <a className="add-value" onClick={addValue}>lisää</a>
-          : null
+            ? addingContent()
+            : model.context.edit
+              ? <a className="add-value" onClick={addValue}>lisää</a>
+              : null
           : getModelEditor(R.merge(model, { optional: false }))
       }
       {
