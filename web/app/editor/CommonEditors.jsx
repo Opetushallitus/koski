@@ -1,12 +1,13 @@
 import React from 'react'
 import Bacon from 'baconjs'
-import { modelData, modelTitle, modelItems, modelLookup } from './EditorModel.js'
-import { formatISODate, parseFinnishDate } from '../date.js'
-import { ObjectEditor } from './ObjectEditor.jsx'
-import { PropertiesEditor } from './PropertiesEditor.jsx'
-import { Editor } from './GenericEditor.jsx'
-import { ArrayEditor } from './ArrayEditor.jsx'
-import { EnumEditor } from './EnumEditor.jsx'
+import {modelData, modelTitle, modelItems, modelLookup} from './EditorModel.js'
+import {formatISODate, parseFinnishDate} from '../date.js'
+import {ObjectEditor} from './ObjectEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {Editor} from './GenericEditor.jsx'
+import {ArrayEditor} from './ArrayEditor.jsx'
+import {EnumEditor} from './EnumEditor.jsx'
+import {StringEditor} from './StringEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
@@ -69,30 +70,6 @@ export const JaksoEditor = React.createClass({
     )
   }
 })
-
-export const StringEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    let {valueBus} = this.state
-
-    let onChange = (event) => {
-      valueBus.push([model.context, {data: event.target.value}])
-    }
-
-    return model.context.edit
-      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
-      : <span className="inline string">{modelData(model).split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
-  },
-
-  getInitialState() {
-    return {valueBus: Bacon.Bus()}
-  },
-
-  componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {this.props.model.context.changeBus.push(v)})
-  }
-})
-StringEditor.canShowInline = () => true
 
 export const LocalizedStringEditor = React.createClass({
   render() {
