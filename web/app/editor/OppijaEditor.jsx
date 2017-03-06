@@ -1,5 +1,4 @@
 import React from 'react'
-import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems, addContext } from './EditorModel.js'
 import { PropertyEditor } from './PropertyEditor.jsx'
 import { TogglableEditor } from './TogglableEditor.jsx'
@@ -9,14 +8,12 @@ import Versiohistoria from '../Versiohistoria.jsx'
 import Link from '../Link.jsx'
 import { currentLocation } from '../location.js'
 import { yearFromFinnishDateString } from '../date'
-import * as Perusopetus from './Perusopetus.jsx'
 import * as Lukio from './Lukio.jsx'
 import * as Suoritustaulukko from './Suoritustaulukko.jsx'
-import * as Ammatillinen from './Ammatillinen.jsx'
-import * as CommonEditors from './CommonEditors.jsx'
 import { LuvaEditor } from './LuvaEditor.jsx'
+import * as Perusopetus from './Perusopetus.jsx'
 
-const OppijaEditor = React.createClass({
+export const OppijaEditor = React.createClass({
   render() {
     let {model} = this.props
     let oppijaOid = modelData(model, 'henkilö.oid')
@@ -289,21 +286,4 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   }
 })
 
-const OpiskeluoikeusjaksoEditor = React.createClass({
-  render() {
-    let { model } = this.props
-    return (<div className="opiskeluoikeusjakso">
-      <label className="date">{modelTitle(model, 'alku')}</label>
-      <label className="tila">{modelTitle(model, 'tila')}</label>
-    </div>)
-  }
-})
-OpiskeluoikeusjaksoEditor.readOnly = true
-
-
 const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
-
-export const editorMapping = R.mergeAll([{
-  'oppijaeditorview': OppijaEditor,
-  'opiskeluoikeusjakso': OpiskeluoikeusjaksoEditor
-}, CommonEditors.editorMapping, Ammatillinen.editorMapping, Perusopetus.editorMapping])

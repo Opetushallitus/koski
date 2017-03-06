@@ -30,7 +30,6 @@ export const NullEditor = React.createClass({
   }
 })
 
-
 const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
