@@ -40,7 +40,7 @@ export const oppijaContentP = (oppijaOid) => {
       return modified
     },
     changeBus, (currentOppija, [context, value]) => {
-      var modifiedModel = modelSet(currentOppija, context.path, value)
+      let modifiedModel = modelSet(currentOppija, context.path, value)
       return modifiedModel
     }
   )
