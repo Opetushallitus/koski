@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelTitle} from './EditorModel.js'
 
-const OpiskeluoikeusjaksoEditor = React.createClass({
+export const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let { model } = this.props
     return (<div className="opiskeluoikeusjakso">
