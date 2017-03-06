@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.ModelBuilder._
+import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
@@ -23,8 +24,8 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
 
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
-  private def buildModel(obj: Any, schema: Schema): EditorModel = (obj, schema) match {
-    case (o: AnyRef, t: SchemaWithClassName) => ModelBuilder(t).buildObjectModel(o)
+  private def buildModel(obj: Any, schema: Schema, includeData: Boolean = false): EditorModel = (obj, schema) match {
+    case (o: AnyRef, t: SchemaWithClassName) => ModelBuilder.getModelBuilder(t, includeData).buildObjectModel(o)
     case (xs: Iterable[_], t: ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
     case (x: Option[_], t: OptionalSchema) => OptionalModel(x.map(value => buildModel(value, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
     case (x: AnyRef, t: OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
@@ -47,7 +48,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
         case s: SchemaWithClassName =>
           val classRefSchema = resolveSchema(s)
           prototypesRequested += classRefSchema
-          Some(ModelBuilder(s).buildPrototypePlaceholder)
+          Some(ModelBuilder.getModelBuilder(s).buildPrototypePlaceholder)
         case s: ListSchema => getPrototypePlaceholder(s.itemSchema).map(prototypeModel => ListModel(List(prototypeModel), Some(prototypeModel)))
         case s: OptionalSchema => getPrototypePlaceholder(s.itemSchema)
         case _ => Some(buildModel(Prototypes.getPrototypeData(schema), schema))
@@ -80,7 +81,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
   }
 
   private object ModelBuilder {
-    def apply(t: SchemaWithClassName): ModelBuilder = t match {
+    def getModelBuilder(t: SchemaWithClassName, includeData: Boolean = false): ModelBuilder = t match {
       case t: ClassSchema =>
         Class.forName(t.fullClassName) match {
           case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
@@ -99,9 +100,9 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
             EnumModelBuilder[OrganisaatioWithOid]("/koski/api/editor/organisaatiot", organisaatioEnumValue)
 
           case c =>
-            ObjectModelBuilder(t)
+            ObjectModelBuilder(t, includeData)
         }
-      case t: ClassRefSchema => ModelBuilder(mainSchema.getSchema(t.fullClassName).get)
+      case t: ClassRefSchema => ModelBuilder.getModelBuilder(mainSchema.getSchema(t.fullClassName).get)
       case t: AnyOfSchema => AnyOfModelBuilder(t)
     }
   }
@@ -154,7 +155,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
             val tabular: Boolean = property.metadata.contains(Tabular())
             val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
             val value = obj match {
-              case None => Prototypes.getPrototypeData(property.schema)
+              case None => Prototypes.getPrototypeData(property.schema) // Object has no value (means optional property with missing value) -> get prototypal value for the property
               case _ => schema.getPropertyValue(property, obj)
             }
             val propertyTitle = property.metadata.flatMap {
@@ -184,14 +185,19 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
             newRequests = Set.empty
             requestsFromPreviousRound.foreach { schema =>
               val helperContext = EditorModelBuilder.this.copy(root = false, prototypesBeingCreated = Set(schema))
-              val model: EditorModel = helperContext.buildModel(None, schema)
+              val prototypeKey: String = ModelBuilder.getModelBuilder(schema).prototypeKey
+              var prototypeData: Any = None
+              if (prototypeKey == "perusopetuksenopiskeluoikeudenlisatiedot") {
+                prototypeData = PerusopetuksenOpiskeluoikeudenLisätiedot() // TODO: how to do this properly?
+              }
+              val model: EditorModel = helperContext.buildModel(prototypeData, schema, includeData = true)
               if (model.isInstanceOf[PrototypeModel]) {
                 throw new IllegalStateException()
               }
               val newRequestsForThisCreation = helperContext.prototypesRequested -- prototypesRequested
               newRequests ++= newRequestsForThisCreation
               prototypesRequested ++= newRequestsForThisCreation
-              prototypesCreated += (ModelBuilder(schema).prototypeKey -> model)
+              prototypesCreated += (prototypeKey -> model)
             }
           } while (newRequests.nonEmpty)
           prototypesCreated
