@@ -2,7 +2,6 @@ import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {Editor} from './GenericEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
@@ -12,17 +11,7 @@ import {DateEditor} from './DateEditor.jsx'
 import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {VahvistusEditor} from './VahvistusEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
-
-export const PäivämääräväliEditor = React.createClass({
-  render() {
-    let { model } = this.props
-    return (<span>
-      <Editor model={model} path="alku"/> — <Editor model={model} path="loppu"/>
-    </span>)
-  }
-})
-PäivämääräväliEditor.canShowInline = () => true
-PäivämääräväliEditor.readOnly = true
+import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 
 export const JaksoEditor = React.createClass({
   render() {
