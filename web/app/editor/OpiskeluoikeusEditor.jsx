@@ -15,8 +15,6 @@ export const OpiskeluoikeusEditor = React.createClass({
     let {model} = this.props
     let context = model.context
     let id = modelData(model, 'id')
-    let suoritusQueryParam = context.path + '.suoritus'
-    let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
     let suoritukset = modelItems(model, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
@@ -56,33 +54,37 @@ export const OpiskeluoikeusEditor = React.createClass({
             suoritukset.length >= 2 ? (
               <div>
                 <h4>Suoritukset</h4>
-                <ul className="suoritus-tabs">
-                  {
-                    suoritukset.map((suoritusModel, i) => {
-                      let selected = i == suoritusIndex
-                      let title = modelTitle(suoritusModel, 'koulutusmoduuli')
-                      return (<li className={selected ? 'selected': null} key={i}>
-                        { selected ? title : <Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}> {title} </Link>}
-                      </li>)
-                    })
-                  }
-                </ul>
+                <SuoritusTabs {...{ context, suoritukset}}/>
               </div>
             ) : <hr/>
           }
           {
             suoritukset.map((suoritusModel, i) =>
-              i == suoritusIndex
+              i == SuoritusTabs.suoritusIndex(context)
                 ? <SuoritusEditor model={addContext(suoritusModel, {opiskeluoikeusId: id})} key={i}/> : null
             )
           }
         </div>
       </div>
     </div>)
-
     } />)
   }
 })
+
+const SuoritusTabs = ({ suoritukset, context }) => (<ul className="suoritus-tabs">
+    {
+      suoritukset.map((suoritusModel, i) => {
+        let selected = i == SuoritusTabs.suoritusIndex(context)
+        let title = modelTitle(suoritusModel, 'koulutusmoduuli')
+        return (<li className={selected ? 'selected': null} key={i}>
+          { selected ? title : <Link href={currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(context)]: i}).toString()}> {title} </Link>}
+        </li>)
+      })
+    }
+  </ul>
+)
+SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'
+SuoritusTabs.suoritusIndex = (context) => currentLocation().params[SuoritusTabs.suoritusQueryParam(context)] || 0
 
 const ExpandablePropertiesEditor = React.createClass({
   render() {
