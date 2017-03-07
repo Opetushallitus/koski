@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
+import * as L from 'partial.lenses'
 import {childContext, contextualizeModel, modelData, modelItems} from './EditorModel.js'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
@@ -30,7 +31,16 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
           <ul ref="ul" className="array">
           {
             items.map((item, i) => {
-              return <li key={i}><OpiskeluoikeusjaksoEditor model={item}/></li>
+              // TODO: nasty copy paste from ArrayEditor
+              let removeItem = () => {
+                let newItems = L.set(L.index(i), undefined, items)
+                item.context.changeBus.push([item.context, {data: undefined}])
+                this.setState({adding: null, items: newItems})
+              }
+              return (<li key={i}>
+                <OpiskeluoikeusjaksoEditor model={item}/>
+                <a className="remove-item" onClick={removeItem}></a>
+              </li>)
             })
           }
           {
