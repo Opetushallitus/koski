@@ -79,11 +79,11 @@ function Editor(elem) {
   return {
     edit: function() {
       triggerEvent(findSingle('.toggle-edit:not(.editing)', elem()), 'click')
-      return wait.forAjax()
+      return KoskiPage().verifyNoError()
     },
     doneEditing: function() {
       triggerEvent(findSingle('.toggle-edit.editing', elem()), 'click')
-      return wait.forAjax()
+      return KoskiPage().verifyNoError()
     },
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')
@@ -106,16 +106,16 @@ function Property(elem) {
   return {
     addValue: function() {
       triggerEvent(findSingle('.add-value', elem()), 'click')
-      return wait.forAjax()
+      return KoskiPage().verifyNoError()
     },
     removeValue: function() {
       triggerEvent(findSingle('.remove-value', elem()), 'click')
-      return wait.forAjax()
+      return KoskiPage().verifyNoError()
     },
     removeItem: function(index) {
       return function() {
         triggerEvent(findSingle('li:eq(' + index + ') .remove-item', elem()), 'click')
-        return wait.forAjax()
+        return KoskiPage().verifyNoError()
       }
     },
     waitUntilLoaded: function() {

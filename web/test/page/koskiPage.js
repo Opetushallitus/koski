@@ -157,6 +157,15 @@ function KoskiPage() {
     getErrorMessage: function() {
       return S("#error.error .error-text").text()
     },
+    verifyNoError: function() { 
+      function checkError() {
+        if (api.isErrorShown()) {
+          throw new Error("Error shown on page: " + api.getErrorMessage())
+        }
+      }
+      checkError()
+      return wait.forAjax().then(checkError)
+    },
     is404: function() {
       return isElementVisible(S(".http-status:contains(404)"))
     },
