@@ -68,12 +68,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/cas", new CasServlet(application))
     mount("/cache", new CacheServlet(application))
 
+    parallels.foreach(f => Futures.await(f))
+
     if (Fixtures.shouldUseFixtures(application.config)) {
       context.mount(new FixtureServlet(application), "/fixtures")
       application.fixtureCreator.resetFixtures
     }
-
-    parallels.foreach(f => Futures.await(f))
   }
 
   override def destroy(context: ServletContext) = {
