@@ -98,7 +98,7 @@ object PerusopetusExampleData {
     suorituskieli = suomenKieli,
     kielikylpykieli = ruotsinKieli,
     osasuoritukset = kaikkiAineet,
-    käyttäytymisenArvio = Some(PerusopetuksenOppiaineenArviointi("S", Some("Esimerkillistä käyttäytymistä koko vuoden ajan"))),
+    käyttäytymisenArvio = Some(PerusopetuksenKäyttäytymisenArviointi(kuvaus = Some("Esimerkillistä käyttäytymistä koko vuoden ajan"))),
     vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
   )
 

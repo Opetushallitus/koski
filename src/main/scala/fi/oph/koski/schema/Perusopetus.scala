@@ -95,7 +95,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
   jääLuokalle: Boolean = false,
-  käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
+  käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
@@ -213,6 +213,16 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
   @KoodistoKoodiarvo("H")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString],
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  päivä: Option[LocalDate] = None
+) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
+  def arviointipäivä = päivä
+}
+
+@Description("Käyttäytymisen arviointi. Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään.")
+case class PerusopetuksenKäyttäytymisenArviointi(
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  kuvaus: Option[LocalizedString] = None,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
 ) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
