@@ -33,7 +33,6 @@ trait ArviointiPäivämäärällä extends Arviointi {
 
 trait KoodistostaLöytyväArviointi extends Arviointi {
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
-  @Representative
   def arvosana: Koodistokoodiviite
   def arvosanaKirjaimin = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
   @ReadOnly("Tiedon syötössä hyväksytty-tietoa ei tarvita; tieto lasketaan arvosanan perusteella")
