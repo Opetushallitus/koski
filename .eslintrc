@@ -22,7 +22,7 @@
     "comma-dangle": 1,
     "curly": [2, "multi-line"],
     "quotes": [1, "single", "avoid-escape"],
-    "semi": [2, "never"],
+    "semi": [1, "never"],
     "no-undef": 2,
     "no-unreachable": 2,
     "no-unused-vars": 1,
