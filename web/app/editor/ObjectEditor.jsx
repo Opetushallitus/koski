@@ -20,15 +20,15 @@ export const ObjectEditor = React.createClass({
     return !representative
       ? objectEditor()
       : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
-      ? representativeEditor() // just show the representative property, as it is the only one
-      : isArrayItem(context) // for array item always show representative property
-      ? (<span className={objectWrapperClass}>
+        ? representativeEditor() // just show the representative property, as it is the only one
+        : isArrayItem(context) // for array item always show representative property
+          ? (<span className={objectWrapperClass}>
               <span className="representative">{representativeEditor({ forceInline: true })}</span>
-      {objectEditor()}
-            </span>)
-      : (<span className={objectWrapperClass}>
               {objectEditor()}
-            </span>)
+             </span>)
+          : (<span className={objectWrapperClass}>
+              {objectEditor()}
+             </span>)
   }
 })
 ObjectEditor.canShowInline = (component) => {
