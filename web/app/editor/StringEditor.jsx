@@ -21,7 +21,7 @@ export const StringEditor = React.createClass({
   },
 
   componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {this.props.model.context.changeBus.push(v)})
+    this.state.valueBus.onValue((v) => {this.props.model.context.changeBus.push(v)})
   }
 })
 StringEditor.canShowInline = () => true
