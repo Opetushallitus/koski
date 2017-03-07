@@ -24,11 +24,11 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
 
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
-  private def buildModel(obj: Any, schema: Schema, includeData: Boolean = false): EditorModel = (obj, schema) match {
+  private def buildModel(obj: Any, schema: Schema, includeData: Boolean): EditorModel = (obj, schema) match {
     case (o: AnyRef, t: SchemaWithClassName) => ModelBuilder.getModelBuilder(t, includeData).buildObjectModel(o)
-    case (xs: Iterable[_], t: ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
-    case (x: Option[_], t: OptionalSchema) => OptionalModel(x.map(value => buildModel(value, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
-    case (x: AnyRef, t: OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema)), Prototypes.getPrototypePlaceholder(t.itemSchema))
+    case (xs: Iterable[_], t: ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema, false)), Prototypes.getPrototypePlaceholder(t.itemSchema))
+    case (x: Option[_], t: OptionalSchema) => OptionalModel(x.map(value => buildModel(value, t.itemSchema, includeData)), Prototypes.getPrototypePlaceholder(t.itemSchema))
+    case (x: AnyRef, t: OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema, includeData)), Prototypes.getPrototypePlaceholder(t.itemSchema))
     case (x: Number, t: NumberSchema) => NumberModel(x)
     case (x: Boolean, t: BooleanSchema) => BooleanModel(x)
     case (x: LocalDate, t: DateSchema) => DateModel(x)
@@ -48,10 +48,10 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
         case s: SchemaWithClassName =>
           val classRefSchema = resolveSchema(s)
           prototypesRequested += classRefSchema
-          Some(ModelBuilder.getModelBuilder(s).buildPrototypePlaceholder)
+          Some(ModelBuilder.getModelBuilder(s, true).buildPrototypePlaceholder)
         case s: ListSchema => getPrototypePlaceholder(s.itemSchema).map(prototypeModel => ListModel(List(prototypeModel), Some(prototypeModel)))
         case s: OptionalSchema => getPrototypePlaceholder(s.itemSchema)
-        case _ => Some(buildModel(Prototypes.getPrototypeData(schema), schema))
+        case _ => Some(buildModel(Prototypes.getPrototypeData(schema), schema, true))
       }
     } else {
       None
@@ -81,7 +81,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
   }
 
   private object ModelBuilder {
-    def getModelBuilder(t: SchemaWithClassName, includeData: Boolean = false): ModelBuilder = t match {
+    def getModelBuilder(t: SchemaWithClassName, includeData: Boolean): ModelBuilder = t match {
       case t: ClassSchema =>
         Class.forName(t.fullClassName) match {
           case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
@@ -102,17 +102,17 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
           case c =>
             ObjectModelBuilder(t, includeData)
         }
-      case t: ClassRefSchema => ModelBuilder.getModelBuilder(mainSchema.getSchema(t.fullClassName).get)
-      case t: AnyOfSchema => AnyOfModelBuilder(t)
+      case t: ClassRefSchema => ModelBuilder.getModelBuilder(mainSchema.getSchema(t.fullClassName).get, includeData)
+      case t: AnyOfSchema => AnyOfModelBuilder(t, includeData)
     }
   }
 
-  private case class AnyOfModelBuilder(t: AnyOfSchema) extends ModelBuilder {
+  private case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean) extends ModelBuilder {
     def buildObjectModel(obj: AnyRef) = obj match {
       case None =>
         OneOfModel(sanitizeName(t.simpleName), None, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
       case x: AnyRef =>
-        OneOfModel(sanitizeName(t.simpleName), Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+        OneOfModel(sanitizeName(t.simpleName), Some(buildModel(x, findOneOfSchema(t, x), includeData)), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
     }
 
     def prototypeKey = sanitizeName(t.simpleName)
@@ -135,7 +135,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
     }
   }
 
-  private case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean = false) extends ModelBuilder {
+  private case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean) extends ModelBuilder {
     def buildObjectModel(obj: AnyRef) = {
       if (obj == None && !prototypesBeingCreated.contains(schema) && (prototypesRequested.contains(schema))) {
         buildPrototypePlaceholder // creating a prototype which already exists or has been requested
@@ -162,7 +162,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
               case Title(t) => Some(t)
               case _ => None
             }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-            Some(EditorProperty(property.key, propertyTitle, objectContext.buildModel(value, property.schema), hidden, representative, flatten, complexObject, tabular, !readOnly))
+            Some(EditorProperty(property.key, propertyTitle, objectContext.buildModel(value, property.schema, false), hidden, representative, flatten, complexObject, tabular, !readOnly))
           } else {
             None // missing values are skipped when not editable
           }
