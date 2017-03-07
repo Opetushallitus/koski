@@ -185,10 +185,14 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
             newRequests = Set.empty
             requestsFromPreviousRound.foreach { schema =>
               val helperContext = EditorModelBuilder.this.copy(root = false, prototypesBeingCreated = Set(schema))
-              val prototypeKey: String = ModelBuilder.getModelBuilder(schema).prototypeKey
+              val prototypeKey: String = ModelBuilder.getModelBuilder(schema, true).prototypeKey
               var prototypeData: Any = None
               if (prototypeKey == "perusopetuksenopiskeluoikeudenlisatiedot") {
                 prototypeData = PerusopetuksenOpiskeluoikeudenLisätiedot() // TODO: how to do this properly?
+              } else if (prototypeKey == "perusopetuksenkayttaytymisenarviointi") {
+                prototypeData = PerusopetuksenKäyttäytymisenArviointi()
+              } else if (prototypeKey == "localizedstring" || prototypeKey == "finnish") {
+                prototypeData = LocalizedString.finnish("")
               }
               val model: EditorModel = helperContext.buildModel(prototypeData, schema, includeData = true)
               if (model.isInstanceOf[PrototypeModel]) {

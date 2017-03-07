@@ -293,9 +293,24 @@ describe('Perusopetus', function() {
     describe('Kun lisätään käyttäytymisen arviointi', function() {
       var editor = opinnot.suoritusEditor()
       var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
-      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, arvosana.setValue('8'), editor.doneEditing)
-      it('Toimii', function() {
-        expect(arvosana.getValue()).to.equal('8')
+      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.doneEditing)
+      describe('Muuttamatta arviointia', function() {
+        it('Näyttää oletusarvon S', function() {
+          expect(arvosana.getValue()).to.equal('S')
+        })
+      })
+      describe('Kun muutetaan arvosanaa', function() {
+        before(editor.edit, arvosana.setValue('10'), editor.doneEditing)
+        it('Näyttää muutetun arvon', function() {
+          expect(arvosana.getValue()).to.equal('10')
+        })
+      })
+      describe('Kun lisätään sanallinen kuvaus', function() {
+        var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
+        before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing, wait.forMilliseconds(2000)) // TODO: why do I need this wait?
+        it('Näyttää muutetun arvon', function() {
+          expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
+        })
       })
     })
 

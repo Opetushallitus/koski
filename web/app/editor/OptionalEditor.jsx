@@ -6,34 +6,38 @@ import {Editor} from './GenericEditor.jsx'
 export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
-    let {adding, removed} = this.state
+    let {addingModel, removed} = this.state
     let addValue = () => {
-      this.setState({adding: true})
-    }
-    let removeValue = () => {
-      this.props.model.context.changeBus.push([model.context, {data: undefined}])
-      this.setState({ removed: true, adding: false })
-    }
-    let addingContent = () => {
-      // get value from prototype when adding item
       let prototype = contextualizeModel(model.prototype, model.context)
-      if (prototype.oneOfPrototypes) {
+
+      if (!prototype.value.data && prototype.oneOfPrototypes) {
         // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
         prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
       }
-      return <Editor model={R.merge(prototype, { optional: false })}/>
+
+      if (!prototype.value.data) {
+        throw new Error('Prototype value data missing')
+      }
+      model.context.changeBus.push([prototype.context, prototype.value])
+      this.setState({addingModel: prototype, removed: false})
+
     }
-    let empty = (modelEmpty(model) || removed)
-    let canRemove = model.context.edit && !empty && !adding
+    let removeValue = () => {
+      this.props.model.context.changeBus.push([model.context, {data: undefined}])
+      this.setState({ removed: true, addingModel: undefined })
+    }
+
+    let modelToBeShown = addingModel || model
+    let empty = (modelEmpty(modelToBeShown) || removed)
+    let canRemove = model.context.edit && !empty
+
     return (<span className="optional-wrapper">
       {
         empty
-          ? adding
-            ? addingContent()
-            : model.context.edit && model.prototype !== undefined
+          ? model.context.edit && model.prototype !== undefined
               ? <a className="add-value" onClick={addValue}>lisää</a>
               : null
-          : <Editor model={R.merge(model, { optional: false })}/>
+          : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
       }
       {
         canRemove && <a className="remove-value" onClick={removeValue}></a>
@@ -46,7 +50,7 @@ export const OptionalEditor = React.createClass({
     }
   },
   getInitialState() {
-    return { adding: false, removed: false }
+    return { addingModel: undefined, removed: false }
   }
 })
 OptionalEditor.canShowInline = () => true

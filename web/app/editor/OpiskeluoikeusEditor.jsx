@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelLookup, modelTitle, modelItems, addContext, contextualizeModel, modelEmpty} from './EditorModel.js'
+import {modelData, modelLookup, modelTitle, modelItems, addContext} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
