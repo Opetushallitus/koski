@@ -263,7 +263,7 @@ describe('Perusopetus', function() {
       describe('Palattaessa tietojen katseluun', function() {
         before(editor.doneEditing)
         it('Näytetään muuttuneet tiedot', function() {
-          expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+          expect(editor.property('päättymispäivä').isVisible()).to.equal(false) // TODO: random fails here
         })
       })
     })
@@ -272,7 +272,7 @@ describe('Perusopetus', function() {
       var editor = opinnot.opiskeluoikeusEditor()
       before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), wait.until(page.isSavedLabelShown), editor.doneEditing)
       it('Toimii', function() {
-        expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+        expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä') // TODO: random fails here
       })
 
       describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
