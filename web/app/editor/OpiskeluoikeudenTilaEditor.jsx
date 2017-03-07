@@ -29,28 +29,30 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       model.context.edit ?
         <div>
           <ul ref="ul" className="array">
-          {
-            items.map((item, i) => {
-              // TODO: nasty copy paste from ArrayEditor
-              let removeItem = () => {
-                let newItems = L.set(L.index(i), undefined, items)
-                item.context.changeBus.push([item.context, {data: undefined}])
-                this.setState({adding: null, items: newItems})
-              }
-              return (<li key={i}>
-                <OpiskeluoikeusjaksoEditor model={item}/>
-                <a className="remove-item" onClick={removeItem}></a>
-              </li>)
-            })
-          }
-          {
-            <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
-          }
+            {
+              items.map((item, i) => {
+                // TODO: nasty copy paste from ArrayEditor
+                let removeItem = () => {
+                  let newItems = L.set(L.index(i), undefined, items)
+                  item.context.changeBus.push([item.context, {data: undefined}])
+                  this.setState({adding: null, items: newItems})
+                }
+                return (<li key={i}>
+                  <OpiskeluoikeusjaksoEditor model={item}/>
+                  <a className="remove-item" onClick={removeItem}></a>
+                </li>)
+              })
+            }
+            {
+              <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
+            }
           </ul>
           {
             adding && (<div className="lisaa-opiskeluoikeusjakso">
-              <Editor model={adding} />
+              <h2>Opiskeluoikeuden tilan lisäys</h2>
+              <Editor model={adding}/>
               <a className="button" onClick={add}>Lisää</a>
+              <a>Peruuta</a>
             </div>)
           }
         </div> :
