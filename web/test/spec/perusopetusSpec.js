@@ -307,7 +307,7 @@ describe('Perusopetus', function() {
       })
       describe('Kun lisätään sanallinen kuvaus', function() {
         var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
-        before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing, wait.forMilliseconds(2000)) // TODO: why do I need this wait?
+        before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing) // TODO: why do I need this wait?
         it('Näyttää muutetun arvon', function() {
           expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
         })
