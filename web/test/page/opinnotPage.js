@@ -98,13 +98,16 @@ function Property(elem) {
   return {
     addValue: function() {
       triggerEvent(findSingle('.add-value', elem()), 'click')
+      return wait.forAjax()
     },
     removeValue: function() {
       triggerEvent(findSingle('.remove-value', elem()), 'click')
+      return wait.forAjax()
     },
     removeItem: function(index) {
       return function() {
         triggerEvent(findSingle('li:eq(' + index + ') .remove-item', elem()), 'click')
+        return wait.forAjax()
       }
     },
     waitUntilLoaded: function() {

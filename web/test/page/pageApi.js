@@ -21,6 +21,7 @@ function Page(mainElement) {
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
           .then(function() {input.setValue(value)})
+          .then(wait.forAjax)
       }
     },
     button: function(el) {
