@@ -10,9 +10,7 @@ import {Editor} from './GenericEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model} = this.props
-    let changeBus = this.state.changeBus
-    let adding = this.state && this.state.adding || null
-    let items = (this.state && this.state.items) || modelItems(model)
+    let {changeBus, adding, items = modelItems(model)} = this.state
 
     let showAddDialog = () => {
       let tilaModel = contextualizeModel(model.prototype, R.merge(childContext(model.context, items.length), {changeBus}))
