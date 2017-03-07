@@ -90,7 +90,15 @@ function Editor(elem) {
     },
     property: function(key) {
       return Property(function() {return findSingle('.property.'+key+':eq(0)', elem())})
+    },
+    propertyBySelector: function(selector) {
+      return Property(function() {return findSingle(selector, elem())})
+    },
+
+    subEditor: function(selector) {
+      return Editor(function() { return findSingle(selector, elem()) })
     }
+
   }
 }
 

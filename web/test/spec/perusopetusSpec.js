@@ -290,20 +290,27 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Muokkaus', function() {
-      describe('Ulkoisen järjestelmän data', function() {
-        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
-        it('estetty', function() {
-          expect(opinnot.anythingEditable()).to.equal(false)
-        })
+    describe('Kun lisätään käyttäytymisen arviointi', function() {
+      var editor = opinnot.suoritusEditor()
+      var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
+      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, arvosana.setValue('8'), editor.doneEditing)
+      it('Toimii', function() {
+        expect(arvosana.getValue()).to.equal('8')
       })
+    })
 
-      describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-        it('estetty', function() {
-          var suoritus = opinnot.suoritusEditor()
-          expect(suoritus.isEditable()).to.equal(false)
-        })
+    describe('Ulkoisen järjestelmän data', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
+      it('estetty', function() {
+        expect(opinnot.anythingEditable()).to.equal(false)
+      })
+    })
+
+    describe('Ilman kirjoitusoikeuksia', function() {
+      before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+      it('estetty', function() {
+        var suoritus = opinnot.suoritusEditor()
+        expect(suoritus.isEditable()).to.equal(false)
       })
     })
   })

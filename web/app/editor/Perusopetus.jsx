@@ -25,8 +25,8 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
               { grouped.length > 1 && <h5>{name}</h5> }
               <Oppiainetaulukko model={model} suoritukset={suoritukset} />
               {
-                käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div>
-                  <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
+                käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div className="kayttaytyminen">
+                  <h5>Käyttäytymisen arviointi</h5>
                   {
                     <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
                   }
