@@ -314,16 +314,16 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Ulkoisen järjestelmän data', function() {
+    describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
-      it('estetty', function() {
+      it('Muutokset estetty', function() {
         expect(opinnot.anythingEditable()).to.equal(false)
       })
     })
 
-    describe('Ilman kirjoitusoikeuksia', function() {
+    describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
       before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-      it('estetty', function() {
+      it('Muutokset estetty', function() {
         var suoritus = opinnot.suoritusEditor()
         expect(suoritus.isEditable()).to.equal(false)
       })

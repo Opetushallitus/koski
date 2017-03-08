@@ -249,23 +249,6 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
-
-    describe('Muokkaus', function() {
-      describe('Ulkoisen järjestelmän data', function() {
-        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
-        it('estetty', function() {
-          expect(opinnot.anythingEditable()).to.equal(false)
-        })
-      })
-
-      describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-        it('estetty', function() {
-          var suoritus = opinnot.suoritusEditor()
-          expect(suoritus.isEditable()).to.equal(false)
-        })
-      })
-    })
   })
 
   describe('Ammatillinen perustutkinto', function() {
