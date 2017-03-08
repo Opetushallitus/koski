@@ -35,7 +35,7 @@ export const oppijaContentP = (oppijaOid) => {
   const savedOppijaE = changeBus.map((contextValuePairs) => ((oppijaBeforeChange) => {
     let locallyModifiedOppija = R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), oppijaBeforeChange)
 
-    let firstPath = contextValuePairs[0]
+    let firstPath = contextValuePairs[0].path
     let opiskeluoikeusPath = firstPath.split('.').slice(0, 6)
     var oppijaData = locallyModifiedOppija.value.data
     let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
