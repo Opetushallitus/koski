@@ -43,14 +43,17 @@ export const oppijaContentP = (oppijaOid) => {
       henkilö: {oid: oppijaData.henkilö.oid},
       opiskeluoikeudet: [opiskeluoikeus]
     }
-    return Http.put('/koski/api/oppija', oppijaUpdate).map('.opiskeluoikeudet').flatMap(Bacon.fromArray).map(({id, versionumero}) => {
+
+    let updateVersionNumber = (oppija, {id, versionumero}) => {
       // This is done to update versionumero based on server response
       let correctId = R.whereEq({id})
       let containsOpiskeluoikeus = (oppilaitoksenOpiskeluoikeudet) => oppilaitoksenOpiskeluoikeudet.opiskeluoikeudet.find(correctId)
       let containsOppilaitos = (tyypinOpiskeluoikeudet) => tyypinOpiskeluoikeudet.opiskeluoikeudet.find(containsOpiskeluoikeus)
       let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOppilaitos), 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
-      return L.set(lens, versionumero, locallyModifiedOppija)
-    })
+      return L.set(lens, versionumero, oppija)
+    }
+
+    return Http.put('/koski/api/oppija', oppijaUpdate).map('.opiskeluoikeudet').map(opiskeluoikeusVersiot => opiskeluoikeusVersiot.reduce(updateVersionNumber, locallyModifiedOppija))
   }))
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE, refreshFromServerE) // :: EventStream [Model -> EventStream[Model]]
