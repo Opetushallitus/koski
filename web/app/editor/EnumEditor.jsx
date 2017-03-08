@@ -7,21 +7,40 @@ import Http from '../http'
 
 export const EnumEditor = BaconComponent({
   render() {
-    let {model} = this.props
+    let {model, asRadiogroup} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
+
     let onChange = (event) => {
       let selected = alternatives.find(alternative => alternative.value == event.target.value)
       model.context.changeBus.push([model.context, selected])
     }
+
     return model.context.edit
-      ? (<select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>
-      {
-        alternatives.map( alternative =>
-          <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
-        )
-      }
-    </select>)
+      ? asRadiogroup
+        ? (
+            <ul className={className} onChange={ onChange }>
+              {
+                alternatives.map(alternative =>
+                  <li key={ alternative.value }>
+                    <label>
+                      <input type="radio" name="alternative" value={ alternative.value } onChange={onChange}></input>
+                      {alternative.title}
+                    </label>
+                  </li>
+                )
+              }
+            </ul>
+          )
+        : (
+            <select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>
+              {
+                alternatives.map(alternative =>
+                  <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
+                )
+              }
+            </select>
+          )
       : <span className="inline enum">{modelTitle(model)}</span>
   },
 

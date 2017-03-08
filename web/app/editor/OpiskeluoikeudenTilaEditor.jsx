@@ -2,10 +2,11 @@ import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {childContext, contextualizeModel, modelData, modelItems} from './EditorModel.js'
+import {childContext, contextualizeModel, modelData, modelItems, modelLookup} from './EditorModel.js'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
-import {Editor} from './GenericEditor.jsx'
+import {EnumEditor} from './EnumEditor.jsx'
+import {DateEditor} from './DateEditor.jsx'
 
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
@@ -54,7 +55,18 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
             adding && (<div className="lisaa-opiskeluoikeusjakso">
               <a className="close-modal" onClick={cancel}></a>
               <h2>Opiskeluoikeuden tilan lisäys</h2>
-              <Editor model={adding}/>
+              <table>
+                <tbody>
+                <tr className="property alku">
+                  <td className="label">{adding.value.properties.find(p => p.key == 'alku').title}</td>
+                  <td className="value"><DateEditor model={modelLookup(adding, 'alku')}/></td>
+                </tr>
+                <tr className="property tila">
+                  <td className="label">{adding.value.properties.find(p => p.key == 'tila').title}</td>
+                  <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(adding, 'tila')}/></td>
+                </tr>
+                </tbody>
+              </table>
               <a className="button" onClick={add}>Lisää</a>
               <a onClick={cancel}>Peruuta</a>
             </div>)
