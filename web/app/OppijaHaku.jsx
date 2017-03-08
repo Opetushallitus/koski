@@ -48,7 +48,7 @@ export const OppijaHaku = React.createClass({
       <div className={className}>
         <div>
           <h3>Hae tai lisää opiskelija</h3>
-          <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+          <input type="text" id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
           <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
         </div>
         <div className='hakutulokset'>
