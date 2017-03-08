@@ -1,10 +1,5 @@
 import Bacon from 'baconjs'
-
-var reqCount = 0
-const modifyReqCount = delta => {
-  reqCount += delta
-  document.body.className = (reqCount > 0) ? 'loading' : ''
-}
+import { increaseLoading, decreaseLoading } from './loadingFlag'
 
 const parseResponse = (result) => {
   if (result.status < 300) {
@@ -17,7 +12,7 @@ const parseResponse = (result) => {
 }
 
 const reqComplete = () => {
-  modifyReqCount(-1)
+  decreaseLoading()
 }
 
 const mocks = {}
@@ -28,7 +23,7 @@ const serveMock = url => {
 }
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {
-  modifyReqCount(1)
+  increaseLoading()
   const promise = doHttp(url, options)
   promise.then(reqComplete, reqComplete)
   return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse).toProperty()

@@ -9,6 +9,7 @@ import {modelData} from './editor/EditorModel.js'
 import {currentLocation} from './location.js'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import Link from './Link.jsx'
+import { increaseLoading, decreaseLoading } from './loadingFlag'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -34,8 +35,9 @@ export const oppijaContentP = (oppijaOid) => {
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
   const savedOppijaE = changeSetE.map(contextValuePairs => oppijaBeforeChange => {
+    increaseLoading()
     if (contextValuePairs.length == 0) {
-      return Bacon.once(oppijaBeforeChange)
+      return Bacon.once(oppijaBeforeChange).doAction(decreaseLoading)
     }
     let locallyModifiedOppija = R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), oppijaBeforeChange)
     let firstPath = contextValuePairs[0].path
@@ -49,6 +51,7 @@ export const oppijaContentP = (oppijaOid) => {
 
     return Http.put('/koski/api/oppija', oppijaUpdate)
       .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
+      .doAction(decreaseLoading)
   })
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
