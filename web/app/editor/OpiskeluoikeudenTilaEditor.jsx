@@ -52,6 +52,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
           </ul>
           {
             adding && (<div className="lisaa-opiskeluoikeusjakso">
+              <a className="close-modal" onClick={cancel}></a>
               <h2>Opiskeluoikeuden tilan lisäys</h2>
               <Editor model={adding}/>
               <a className="button" onClick={add}>Lisää</a>

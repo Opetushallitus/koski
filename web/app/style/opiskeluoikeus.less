@@ -90,6 +90,31 @@
       h2 {
         margin-top: 0;
       }
+
+      .close-modal {
+
+        &:before, &:after {
+          content: '';
+          display: block;
+          width: 8px;
+          height: 8px;
+          transform: rotate(45deg);
+          position: absolute;
+          right: 18px;
+        }
+
+        &:before {
+          border-bottom: 2px solid #5E5E5E;
+          border-right: 2px solid #5E5E5E;
+          top: 14px;
+        }
+
+        &:after {
+          border-top: 2px solid #5E5E5E;
+          border-left: 2px solid #5E5E5E;
+          top: 25px;
+        }
+      }
     }
 
     .expandable-container {
