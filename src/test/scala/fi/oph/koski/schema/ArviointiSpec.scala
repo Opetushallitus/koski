@@ -69,11 +69,12 @@ class ArviointiSpec extends FreeSpec with Matchers {
       Json.write(PerusopetuksenOppiaineenArviointi(8)) should equal("""{"arvosana":{"koodiarvo":"8","koodistoUri":"arviointiasteikkoyleissivistava"},"hyväksytty":true}""")
       Json.write(KorkeakoulunKoodistostaLöytyväArviointi(Koodistokoodiviite("5", "virtaarvosana"), LocalDate.parse("2000-01-01"))) should equal("""{"arvosana":{"koodiarvo":"5","koodistoUri":"virtaarvosana"},"päivä":"2000-01-01","hyväksytty":true}""")
     }
-    "Arvon validointi" in {
-      val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"H"},"hyväksytty": false}""")
-      arviointi.hyväksytty should equal(false)
-      intercept[RuntimeException] {
+    "Arvon validointi" - {
+      "Annettua arvoa ei käytetä, vaan arvo lasketaan arvosanasta" in {
+        read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"H"},"hyväksytty": false}""")
+          .hyväksytty should equal(false)
         read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"H"},"hyväksytty": true}""")
+          .hyväksytty should equal(false)
       }
     }
   }
