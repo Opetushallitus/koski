@@ -135,13 +135,7 @@ object ArviointiSerializer extends Serializer[Arviointi] {
 
   override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Arviointi] = {
     case (TypeInfo(c, _), json: JObject) if classOf[Arviointi].isAssignableFrom(c) =>
-      val arviointi = Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer + KorkeakoulunArviointiDeserializer + PerusopetuksenOppiaineenArviointiDeserializer).asInstanceOf[Arviointi]
-      (json \\ "hyväksytty") match {
-        case JBool(jsonHyväksytty) if (jsonHyväksytty != arviointi.hyväksytty) =>
-          ContextualExtractor.extractionError(KoskiErrorCategory.badRequest.validation.arviointi.vääräHyväksyttyArvo())
-        case _ =>
-          arviointi
-      }
+      Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer + KorkeakoulunArviointiDeserializer + PerusopetuksenOppiaineenArviointiDeserializer).asInstanceOf[Arviointi]
   }
 
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {

@@ -21,6 +21,7 @@ trait Arviointi {
   @SyntheticProperty
   @Hidden
   @Description("Onko arviointi hyväksytty")
+  @ReadOnly("Tiedon syötössä arvoa ei tarvita, eikä syötettyä arvoa käsitellä; arvo päätellään arvosanasta.")
   def hyväksytty: Boolean
   def description = arvosanaNumeroin.getOrElse(arvosanaKirjaimin)
 }
