@@ -15,12 +15,17 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     let showAddDialog = () => {
       let tilaModel = contextualizeModel(model.prototype, R.merge(childContext(model.context, items.length), {changeBus}))
       changeBus.push([childContext(tilaModel.context, 'alku'), {data: modelData(tilaModel, 'alku')}])
-      // TODO: push tila once we get the default value from server
       this.setState({adding: tilaModel})
     }
     let add = () => {
       //TODO: clean state
       model.context.changeBus.push(this.state.changes)
+    }
+
+    let cancel = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      this.setState({adding: undefined})
     }
 
     return (
@@ -50,7 +55,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
               <h2>Opiskeluoikeuden tilan lisäys</h2>
               <Editor model={adding}/>
               <a className="button" onClick={add}>Lisää</a>
-              <a>Peruuta</a>
+              <a onClick={cancel}>Peruuta</a>
             </div>)
           }
         </div> :
