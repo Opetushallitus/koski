@@ -35,9 +35,8 @@ export const oppijaContentP = (oppijaOid) => {
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
   const savedOppijaE = changeSetE.map(contextValuePairs => oppijaBeforeChange => {
-    increaseLoading()
     if (contextValuePairs.length == 0) {
-      return Bacon.once(oppijaBeforeChange).doAction(decreaseLoading)
+      return Bacon.once(oppijaBeforeChange)
     }
     let locallyModifiedOppija = R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), oppijaBeforeChange)
     let firstPath = contextValuePairs[0].path
@@ -51,12 +50,14 @@ export const oppijaContentP = (oppijaOid) => {
 
     return Http.put('/koski/api/oppija', oppijaUpdate)
       .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
-      .doAction(decreaseLoading)
   })
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
 
-  let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => updateF(currentOppija))
+  let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
+    increaseLoading()
+    return updateF(currentOppija).doAction(decreaseLoading)
+  })
   oppijaP.onValue()
 
   saveBus.plug(savedOppijaE.map(true))
