@@ -246,8 +246,18 @@ describe('Perusopetus', function() {
     describe('Oppiaineen laajuuden muutos', function() {
       var editor = opinnot.suoritusEditor()
       before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
-      it('Toimii', function() {
-        expect(editor.property('laajuus').getValue()).to.equal('2') // TODO: random fail here "expected 1 to equal 2"
+      it('muutettu laajuus näytetään', function() {
+        expect(editor.property('laajuus').getValue()).to.equal('2')
+      })
+    })
+
+    describe('Oppiaineen arvosanan muutos', function() {
+      var editor = opinnot.suoritusEditor()
+      var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
+      var arvosana = äidinkieli.propertyBySelector('.arvosana')
+      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.setValue('5'), editor.doneEditing)
+      it('muutettu arvosana näytetään', function() {
+        expect(arvosana.getValue()).to.equal('5')
       })
     })
 

@@ -75,7 +75,7 @@ const OppiaineEditor = React.createClass({
           }
         </td>
         <td className="arvosana">
-          <Editor model={ modelLookup(model, 'arviointi.-1.arvosana')}/>
+          <span className="value"><Editor model={ modelLookup(model, 'arviointi.-1.arvosana')}/></span>
           {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
           {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
           {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}

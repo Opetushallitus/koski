@@ -15,7 +15,10 @@ function OpinnotPage() {
     },
     valitseSuoritus: function(nimi) {
       return function() {
-        triggerEvent(findSingle('.suoritus-tabs li:contains(' + nimi + ') a'), 'click')
+        var tab = findSingle('.suoritus-tabs li:contains(' + nimi + ')')
+        if (!tab.hasClass('selected')) {
+          triggerEvent(findSingle('a', tab), 'click')
+        }
       }
     },
     avaaOpintosuoritusote: function (index) {
