@@ -4,7 +4,6 @@ import Http from './http'
 import { modelTitle, modelLookup, modelSet, objectLookup } from './editor/EditorModel'
 import { editorMapping } from './editor/Editors.jsx'
 import { Editor } from './editor/GenericEditor.jsx'
-import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './editor/EditorModel.js'
 import {currentLocation} from './location.js'
@@ -30,11 +29,15 @@ export const oppijaContentP = (oppijaOid) => {
 
   const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri))
 
-  const refreshFromServerE = doneEditingBus.map(() => () => Http.cachedGet(oppijaEditorUri, { force: true }))
+  const saveE = doneEditingBus
 
-  const savedOppijaE = changeBus.map((contextValuePairs) => ((oppijaBeforeChange) => {
+  const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
+
+  const savedOppijaE = changeSetE.map(contextValuePairs => oppijaBeforeChange => {
+    if (contextValuePairs.length == 0) {
+      return Bacon.once(oppijaBeforeChange)
+    }
     let locallyModifiedOppija = R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), oppijaBeforeChange)
-
     let firstPath = contextValuePairs[0].path
     let opiskeluoikeusPath = firstPath.split('.').slice(0, 6)
     var oppijaData = locallyModifiedOppija.value.data
@@ -44,19 +47,11 @@ export const oppijaContentP = (oppijaOid) => {
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
-    let updateVersionNumber = (oppija, {id, versionumero}) => {
-      // This is done to update versionumero based on server response
-      let correctId = R.whereEq({id})
-      let containsOpiskeluoikeus = (oppilaitoksenOpiskeluoikeudet) => oppilaitoksenOpiskeluoikeudet.opiskeluoikeudet.find(correctId)
-      let containsOppilaitos = (tyypinOpiskeluoikeudet) => tyypinOpiskeluoikeudet.opiskeluoikeudet.find(containsOpiskeluoikeus)
-      let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOppilaitos), 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
-      return L.set(lens, versionumero, oppija)
-    }
+    return Http.put('/koski/api/oppija', oppijaUpdate)
+      .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
+  })
 
-    return Http.put('/koski/api/oppija', oppijaUpdate).map('.opiskeluoikeudet').map(opiskeluoikeusVersiot => opiskeluoikeusVersiot.reduce(updateVersionNumber, locallyModifiedOppija))
-  }))
-
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE, refreshFromServerE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => updateF(currentOppija))
   oppijaP.onValue()

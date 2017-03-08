@@ -192,7 +192,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
               } else if (prototypeKey == "perusopetuksenkayttaytymisenarviointi") {
                 prototypeData = PerusopetuksenKäyttäytymisenArviointi()
               } else if (prototypeKey == "localizedstring" || prototypeKey == "finnish") {
-                prototypeData = LocalizedString.finnish("-")
+                prototypeData = LocalizedString.finnish("")
               } else if (prototypeKey == "-koski-api-editor-koodit-ammatillisentutkinnonsuoritustapa") {
                 prototypeData = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")
               }

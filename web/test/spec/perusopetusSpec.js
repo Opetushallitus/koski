@@ -238,6 +238,11 @@ describe('Perusopetus', function() {
 
   describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+
+    it('Alkutila', function() {
+      expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(true)
+    })
+
     describe('Oppiaineen laajuuden muutos', function() {
       var editor = opinnot.suoritusEditor()
       before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
@@ -248,20 +253,9 @@ describe('Perusopetus', function() {
 
     describe('Kun poistetaan päättymispäivä', function() {
       var editor = opinnot.opiskeluoikeusEditor()
-      before(editor.edit, editor.property('tila').removeItem(1), editor.property('päättymispäivä').removeValue, wait.until(page.isSavedLabelShown))
-
-      it('Alkutila', function() {
-        expect(editor.property('päättymispäivä').isVisible()).to.equal(true)
-      })
+      before(editor.edit, editor.property('tila').removeItem(1), editor.property('päättymispäivä').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
 
       describe('Muutosten näyttäminen', function() {
-        it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
-          expect(page.isSavedLabelShown()).to.equal(true)
-        })
-      })
-
-      describe('Palattaessa tietojen katseluun', function() {
-        before(editor.doneEditing)
         it('Näytetään muuttuneet tiedot', function() {
           expect(editor.property('päättymispäivä').isVisible()).to.equal(false) // TODO: random fails here
         })
@@ -270,7 +264,7 @@ describe('Perusopetus', function() {
 
     describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
       var editor = opinnot.opiskeluoikeusEditor()
-      before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), wait.until(page.isSavedLabelShown), editor.doneEditing)
+      before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
       it('Toimii', function() {
         expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä') // TODO: random fails here
       })
