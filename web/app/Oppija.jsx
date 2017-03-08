@@ -11,6 +11,13 @@ import {currentLocation} from './location.js'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 
+Bacon.Observable.prototype.flatScan = function(seed, f) {
+  let current = seed
+  return this.flatMapConcat(next =>
+    f(current, next).doAction(updated => current = updated)
+  ).toProperty(seed)
+}
+
 export const saveBus = Bacon.Bus()
 
 export const oppijaContentP = (oppijaOid) => {
@@ -48,11 +55,7 @@ export const oppijaContentP = (oppijaOid) => {
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE, refreshFromServerE) // :: EventStream [Model -> EventStream[Model]]
 
-  let current = { loading: true}
-  let oppijaP = allUpdatesE.flatMapConcat(updateFunc => {
-    let updateE = updateFunc(current)
-    return updateE.doAction(newValue => current = newValue)
-  }).toProperty(current)
+  let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => updateF(currentOppija))
   oppijaP.onValue()
 
   saveBus.plug(savedOppijaE.map(true))
