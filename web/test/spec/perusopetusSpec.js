@@ -243,77 +243,80 @@ describe('Perusopetus', function() {
       expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(true)
     })
 
-    describe('Oppiaineen laajuuden muutos', function() {
-      var editor = opinnot.suoritusEditor()
-      before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
-      it('muutettu laajuus näytetään', function() {
-        expect(editor.property('laajuus').getValue()).to.equal('2')
-      })
-    })
+    describe('Opiskeluoikeuden tiedot', function() {
+      describe('Kun poistetaan päättymispäivä', function() {
+        var editor = opinnot.opiskeluoikeusEditor()
+        before(editor.edit, editor.property('tila').removeItem(1), editor.property('päättymispäivä').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
 
-    describe('Oppiaineen arvosanan muutos', function() {
-      var editor = opinnot.suoritusEditor()
-      var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
-      var arvosana = äidinkieli.propertyBySelector('.arvosana')
-      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.setValue('5'), editor.doneEditing)
-      it('muutettu arvosana näytetään', function() {
-        expect(arvosana.getValue()).to.equal('5')
-      })
-    })
-
-    describe('Kun poistetaan päättymispäivä', function() {
-      var editor = opinnot.opiskeluoikeusEditor()
-      before(editor.edit, editor.property('tila').removeItem(1), editor.property('päättymispäivä').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
-
-      describe('Muutosten näyttäminen', function() {
-        it('Näytetään muuttuneet tiedot', function() {
-          expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+        describe('Muutosten näyttäminen', function() {
+          it('Näytetään muuttuneet tiedot', function() {
+            expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+          })
         })
       })
-    })
 
-    describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
-      var editor = opinnot.opiskeluoikeusEditor()
-      before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
-      it('Toimii', function() {
-        expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
-      })
-
-      describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
-        before(opinnot.collapseAll, opinnot.expandAll)
+      describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
+        var editor = opinnot.opiskeluoikeusEditor()
+        before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Toimii', function() {
           expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
         })
-      })
 
-      describe("Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta", function() {
-        before(opinnot.collapseAll, editor.edit, opinnot.expandAll, editor.doneEditing)
-        it('Toimii', function() {
-          expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+        describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
+          before(opinnot.collapseAll, opinnot.expandAll)
+          it('Toimii', function() {
+            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+          })
+        })
+
+        describe("Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta", function() {
+          before(opinnot.collapseAll, editor.edit, opinnot.expandAll, editor.doneEditing)
+          it('Toimii', function() {
+            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+          })
         })
       })
     })
 
-    describe('Kun lisätään käyttäytymisen arviointi', function() {
-      var editor = opinnot.suoritusEditor()
-      var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
-      before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.doneEditing)
-      describe('Muuttamatta arviointia', function() {
-        it('Näyttää oletusarvon S', function() {
-          expect(arvosana.getValue()).to.equal('S')
+    describe('Suoritusten tiedot', function() {
+      describe('Oppiaineen laajuuden muutos', function() {
+        var editor = opinnot.suoritusEditor()
+        before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('muutettu laajuus näytetään', function() {
+          expect(editor.property('laajuus').getValue()).to.equal('2')
         })
       })
-      describe('Kun muutetaan arvosanaa', function() {
-        before(editor.edit, arvosana.setValue('10'), editor.doneEditing)
-        it('Näyttää muutetun arvon', function() {
-          expect(arvosana.getValue()).to.equal('10')
+
+      describe('Oppiaineen arvosanan muutos', function() {
+        var editor = opinnot.suoritusEditor()
+        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
+        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.setValue('5'), editor.doneEditing)
+        it('muutettu arvosana näytetään', function() {
+          expect(arvosana.getValue()).to.equal('5')
         })
       })
-      describe('Kun lisätään sanallinen kuvaus', function() {
-        var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
-        before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing)
-        it('Näyttää muutetun arvon', function() {
-          expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
+      describe('Kun lisätään käyttäytymisen arviointi', function() {
+        var editor = opinnot.suoritusEditor()
+        var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
+        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.doneEditing)
+        describe('Muuttamatta arviointia', function() {
+          it('Näyttää oletusarvon S', function() {
+            expect(arvosana.getValue()).to.equal('S')
+          })
+        })
+        describe('Kun muutetaan arvosanaa', function() {
+          before(editor.edit, arvosana.setValue('10'), editor.doneEditing)
+          it('Näyttää muutetun arvon', function() {
+            expect(arvosana.getValue()).to.equal('10')
+          })
+        })
+        describe('Kun lisätään sanallinen kuvaus', function() {
+          var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
+          before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing)
+          it('Näyttää muutetun arvon', function() {
+            expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
+          })
         })
       })
     })
