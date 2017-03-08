@@ -50,10 +50,11 @@
     var runner = mocha.run()
     if (window.callPhantom) {
         console.log("PhantomJS mode")
-        runner.on("fail", function() {
-            takeScreenshot()()
-        })
     }
+    runner.on("fail", function(e) {
+        console.log("Test fail", e)
+        takeScreenshot(e.title)()
+    })
     $(document).keyup(function(e) { 
       if(e.keyCode==27) {
           runner._abort = true
