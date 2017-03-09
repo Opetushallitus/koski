@@ -18,7 +18,6 @@ function S(selector) {
 function findSingle(selector, base) {
   var result = base ? base.find(selector) : S(selector)
   if (result.length == 0) {
-    console.log(base)
     var context = base ? htmlOf(base) : "document"
     throw new Error("Element " + selector + " not found in " + context)
   }
