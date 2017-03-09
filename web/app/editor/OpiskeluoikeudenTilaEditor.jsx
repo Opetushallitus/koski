@@ -18,15 +18,13 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       changeBus.push([childContext(tilaModel.context, 'alku'), {data: modelData(tilaModel, 'alku')}])
       this.setState({newTilaModel: tilaModel})
     }
-    let add = () => {
-      saveChangesBus.push()
-      this.setState({newTilaModel: undefined})
+
+    let add = e => {
+      saveChangesBus.push(e)
     }
 
-    let cancel = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      cancelBus.push()
+    let cancel = e => {
+      cancelBus.push(e)
     }
 
     return (
@@ -86,9 +84,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus, () => []
     )
 
-    cancelBus.onValue(() => {
-      this.setState({newTilaModel: undefined})
-    })
+    saveChangesBus.merge(cancelBus).onValue(e => this.setState({newTilaModel: undefined}))
 
     changesP.sampledBy(saveChangesBus).onValue((changes) => {
       model.context.changeBus.push(changes)
