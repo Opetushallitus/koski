@@ -78,7 +78,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     )
   },
   getInitialState() {
-    let {model} = this.props
+    let {model, opiskeluoikeusModel} = this.props
     let changeBus = Bacon.Bus()
     let saveChangesBus = Bacon.Bus()
     let cancelBus = Bacon.Bus()
@@ -91,6 +91,12 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     saveChangesBus.merge(cancelBus).onValue(() => this.setState({newTilaModel: undefined}))
 
     changesP.sampledBy(saveChangesBus).onValue((changes) => {
+      let opiskeluoikeudenPaattymispaiva = this.opiskeluoikeudenPaattymispaiva(changes)
+      if (opiskeluoikeudenPaattymispaiva) {
+        let paattymispaivaModel = modelLookup(opiskeluoikeusModel, 'päättymispäivä')
+        model.context.changeBus.push([paattymispaivaModel.context, {data: opiskeluoikeudenPaattymispaiva}])
+      }
+
       model.context.changeBus.push(changes)
       model.context.doneEditingBus.push()
       cancelBus.push()
@@ -101,5 +107,16 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus: cancelBus,
       changeBus: changeBus
     }
+  },
+  opiskeluoikeudenPaattymispaiva(changes) {
+    let changePairs = R.splitEvery(2, changes)
+    let findLastValue = (path) => {
+      let lastPair = R.findLast((c) => c[0].path && c[0].path.endsWith(path), changePairs)
+      return lastPair ? lastPair[1] : undefined
+    }
+
+    let viimeinenTila = findLastValue('.tila')
+    let viimeinenTilaOnLopputila = viimeinenTila && (viimeinenTila.value === 'eronnut' || viimeinenTila.value === 'valmistunut')
+    return viimeinenTilaOnLopputila ? findLastValue('.alku').data : undefined
   }
 })
