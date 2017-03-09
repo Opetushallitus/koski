@@ -11,7 +11,7 @@ import {DateEditor} from './DateEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model} = this.props
-    let {saveChangesBus, cancelBus, changeBus, newTilaModel, items = modelItems(model)} = this.state
+    let {saveChangesBus, cancelBus, changeBus, newTilaModel, items = modelItems(model).slice(0).reverse()} = this.state
 
     let showAddDialog = () => {
       let tilaModel = contextualizeModel(model.prototype, R.merge(childContext(model.context, items.length), {changeBus}))
