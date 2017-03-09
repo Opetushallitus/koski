@@ -27,6 +27,9 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus.push()
     }
 
+    let lastOpiskeluoikeudenTila = modelData(modelLookup(items[0], 'tila'))
+    let showLisaaTila = !lastOpiskeluoikeudenTila || lastOpiskeluoikeudenTila.koodiarvo === 'lasna'
+
     return (
       model.context.edit ?
         <div>
@@ -46,7 +49,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
               })
             }
             {
-              <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
+              showLisaaTila && <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
             }
           </ul>
           {
