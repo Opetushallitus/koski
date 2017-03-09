@@ -286,6 +286,14 @@ describe('Perusopetus', function() {
           expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
         })
       })
+      describe('Todistuksella näkyvien lisätietojen lisäys', function() {
+        var editor = opinnot.suoritusEditor()
+        var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.addValue, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('Uudet lisätiedot näytetään', function() {
+          expect(lisätiedot.getValue()).to.equal('Testitesti')
+        })
+      })
       describe('Oppiaineen laajuuden muutos', function() {
         var editor = opinnot.suoritusEditor()
         before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
