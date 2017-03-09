@@ -279,6 +279,13 @@ describe('Perusopetus', function() {
     })
 
     describe('Suoritusten tiedot', function() {
+      describe('Suorituskielen lisäys', function() {
+        var editor = opinnot.suoritusEditor()
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, editor.property('suorituskieli').addValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('muutettu suorituskieli näytetään', function() {
+          expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
+        })
+      })
       describe('Oppiaineen laajuuden muutos', function() {
         var editor = opinnot.suoritusEditor()
         before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
@@ -286,7 +293,6 @@ describe('Perusopetus', function() {
           expect(editor.property('laajuus').getValue()).to.equal('2')
         })
       })
-
       describe('Oppiaineen arvosanan muutos', function() {
         var editor = opinnot.suoritusEditor()
         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')

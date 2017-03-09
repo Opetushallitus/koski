@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.json.Json
+import fi.oph.koski.koodisto.{MockKoodistoPalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
@@ -137,6 +138,13 @@ case class OrganisaatioEnumBuilder(t: ClassSchema)(implicit context: ModelBuilde
   override def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(throw new RuntimeException("No org for user "  + context.user.username)) // TODO: not the best default
 }
 
+object KoodistoEnumModelBuilder {
+  val defaults = Map(
+    "kieli" -> "FI",
+    "arviointiasteikkoyleissivistava" -> "S"
+  )
+}
+
 case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[Koodistokoodiviite] {
   val enumValues = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(throw new RuntimeException("@KoodistoUri -annotaatio puuttuu"))
   val koodistoUri = enumValues.head.asInstanceOf[String]
@@ -144,7 +152,7 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
   def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k)
-  def defaultValue = koodiarvot.headOption.getOrElse("S") // TODO: better resolving of default value, this is random
+  def defaultValue = koodiarvot.headOption.orElse(KoodistoEnumModelBuilder.defaults.get(koodistoUri)).getOrElse(MockKoodistoViitePalvelu.getKoodistoKoodiViitteet(MockKoodistoPalvelu().getLatestVersion(koodistoUri).get).get.head.koodiarvo)
   def getPrototypeData = Koodistokoodiviite(defaultValue, koodistoUri)
 }
 
@@ -188,63 +196,62 @@ case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean)(implicit cont
 }
 
 case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
+  import scala.reflect.runtime.{universe => ru}
+
   def buildModelForObject(obj: AnyRef) = {
     if (obj == None) {
       throw new RuntimeException("None value not allowed for ClassSchema")
     }
     val objectContext = newContext(obj)
-    val properties: List[EditorProperty] = schema.properties.flatMap { property =>
-      val hidden = property.metadata.contains(Hidden())
-      val representative: Boolean = property.metadata.contains(Representative())
-      val flatten: Boolean = property.metadata.contains(Flatten())
-      val complexObject: Boolean = property.metadata.contains(ComplexObject())
-      val tabular: Boolean = property.metadata.contains(Tabular())
-      val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
-      val value = schema.getPropertyValue(property, obj)
-      val propertyTitle = property.metadata.flatMap {
-        case Title(t) => Some(t)
-        case _ => None
-      }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-      Some(EditorProperty(property.key, propertyTitle, EditorModelBuilder.buildModel(value, property.schema, false)(objectContext), hidden, representative, flatten, complexObject, tabular, !readOnly))
-    }
+    val properties: List[EditorProperty] = schema.properties.map(property => createModelProperty(obj, objectContext, property))
     val objectTitle = obj match {
       case o: Localizable => Some(context.i(o.description))
       case _ => None
     }
-    val data: Option[AnyRef] = if (includeData) {
-      Some(obj)
-    } else {
-      None
-    }
+    val data: Option[AnyRef] = if (includeData) { Some(obj) } else { None }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested
-    var newRequests: Set[SchemaWithClassName] = context.prototypesRequested
-    val includedPrototypes: Map[String, EditorModel] = if (context.root) {
-      var prototypesCreated: Map[String, EditorModel] = Map.empty
-      do {
-        val requestsFromPreviousRound = newRequests
-        newRequests = Set.empty
-        requestsFromPreviousRound.foreach { schema =>
-          val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user)
-          val modelBuilderForProto = modelBuilderForClass(schema, true)(helperContext)
-          val (protoKey, model) = modelBuilderForProto.buildPrototype
-
-          if (model.isInstanceOf[PrototypeModel]) {
-            throw new IllegalStateException()
-          }
-          val newRequestsForThisCreation = helperContext.prototypesRequested -- context.prototypesRequested
-          newRequests ++= newRequestsForThisCreation
-          context.prototypesRequested ++= newRequestsForThisCreation
-          prototypesCreated += (protoKey -> model)
-        }
-      } while (newRequests.nonEmpty)
-      prototypesCreated
-    } else {
-      Map.empty
-    }
+    val includedPrototypes: Map[String, EditorModel] = if (context.root) { createRequestedPrototypes} else { Map.empty }
     ObjectModel(classes(schema.fullClassName), properties, data, objectTitle, objectContext.editable, includedPrototypes)
   }
 
-  import scala.reflect.runtime.{universe => ru}
+  private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
+    val hidden = property.metadata.contains(Hidden())
+    val representative: Boolean = property.metadata.contains(Representative())
+    val flatten: Boolean = property.metadata.contains(Flatten())
+    val complexObject: Boolean = property.metadata.contains(ComplexObject())
+    val tabular: Boolean = property.metadata.contains(Tabular())
+    val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
+    val value = schema.getPropertyValue(property, obj)
+    val propertyTitle = property.metadata.flatMap {
+      case Title(t) => Some(t)
+      case _ => None
+    }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
+    EditorProperty(property.key, propertyTitle, EditorModelBuilder.buildModel(value, property.schema, false)(objectContext), hidden, representative, flatten, complexObject, tabular, !readOnly)
+  }
+
+  private def createRequestedPrototypes: Map[String, EditorModel] = {
+    var newRequests: Set[SchemaWithClassName] = context.prototypesRequested
+    var prototypesCreated: Map[String, EditorModel] = Map.empty
+    do {
+      val requestsFromPreviousRound = newRequests
+      newRequests = Set.empty
+      requestsFromPreviousRound.foreach { schema =>
+        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user)
+        val modelBuilderForProto = modelBuilderForClass(schema, true)(helperContext)
+        val (protoKey, model) = modelBuilderForProto.buildPrototype
+
+        if (model.isInstanceOf[PrototypeModel]) {
+          throw new IllegalStateException()
+        }
+        val newRequestsForThisCreation = helperContext.prototypesRequested -- context.prototypesRequested
+        newRequests ++= newRequestsForThisCreation
+        context.prototypesRequested ++= newRequestsForThisCreation
+        prototypesCreated += (protoKey -> model)
+      }
+    } while (newRequests.nonEmpty)
+    prototypesCreated
+  }
+
 
   private def classes(className: String) = {
     val tpe = typeByName(className)
@@ -283,13 +290,11 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
     context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user)
   }
 
-  override def getPrototypeData = {
+  override def getPrototypeData: AnyRef = {
     val clazz: Class[_] = Class.forName(schema.fullClassName)
     val keysAndValues = schema.properties.map(property => (property.key, Prototypes.getPrototypeData(property))).toMap
     val asJValue = Json.toJValue(keysAndValues)
-    val deserialized: AnyRef = Json.fromJValue(asJValue)(Manifest.classType(clazz))
-    //println(deserialized)
-    deserialized
+    Json.fromJValue(asJValue)(Manifest.classType(clazz))
   }
 }
 
