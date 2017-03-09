@@ -11,22 +11,22 @@ import {DateEditor} from './DateEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model} = this.props
-    let {changeBus, adding, items = modelItems(model)} = this.state
+    let {saveChangesBus, cancelBus, changeBus, newTilaModel, items = modelItems(model)} = this.state
 
     let showAddDialog = () => {
       let tilaModel = contextualizeModel(model.prototype, R.merge(childContext(model.context, items.length), {changeBus}))
       changeBus.push([childContext(tilaModel.context, 'alku'), {data: modelData(tilaModel, 'alku')}])
-      this.setState({adding: tilaModel})
+      this.setState({newTilaModel: tilaModel})
     }
     let add = () => {
-      //TODO: clean state
-      model.context.changeBus.push(this.state.changes)
+      saveChangesBus.push()
+      this.setState({newTilaModel: undefined})
     }
 
     let cancel = (e) => {
       e.stopPropagation()
       e.preventDefault()
-      this.setState({adding: undefined})
+      cancelBus.push()
     }
 
     return (
@@ -39,7 +39,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                 let removeItem = () => {
                   let newItems = L.set(L.index(i), undefined, items)
                   item.context.changeBus.push([item.context, {data: undefined}])
-                  this.setState({adding: null, items: newItems})
+                  this.setState({newTilaModel: null, items: newItems})
                 }
                 return (<li key={i}>
                   <OpiskeluoikeusjaksoEditor model={item}/>
@@ -52,18 +52,18 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
             }
           </ul>
           {
-            adding && (<div className="lisaa-opiskeluoikeusjakso">
+            newTilaModel && (<div className="lisaa-opiskeluoikeusjakso">
               <a className="close-modal" onClick={cancel}></a>
               <h2>Opiskeluoikeuden tilan lisäys</h2>
               <table>
                 <tbody>
                 <tr className="property alku">
-                  <td className="label">{adding.value.properties.find(p => p.key == 'alku').title}</td>
-                  <td className="value"><DateEditor model={modelLookup(adding, 'alku')}/></td>
+                  <td className="label">{newTilaModel.value.properties.find(p => p.key == 'alku').title}</td>
+                  <td className="value"><DateEditor model={modelLookup(newTilaModel, 'alku')}/></td>
                 </tr>
                 <tr className="property tila">
-                  <td className="label">{adding.value.properties.find(p => p.key == 'tila').title}</td>
-                  <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(adding, 'tila')}/></td>
+                  <td className="label">{newTilaModel.value.properties.find(p => p.key == 'tila').title}</td>
+                  <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(newTilaModel, 'tila')}/></td>
                 </tr>
                 </tbody>
               </table>
@@ -76,10 +76,30 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     )
   },
   getInitialState() {
+    let {model} = this.props
     let changeBus = Bacon.Bus()
-    changeBus.onValue(c => {
-      this.setState({changes: this.state.changes.concat(c)})
+    let saveChangesBus = Bacon.Bus()
+    let cancelBus = Bacon.Bus()
+
+    let changesP = Bacon.update([],
+      changeBus, (xs, x) => xs.concat(x),
+      cancelBus, () => []
+    )
+
+    cancelBus.onValue(() => {
+      this.setState({newTilaModel: undefined})
     })
-    return {changeBus: changeBus, changes: []}
+
+    changesP.sampledBy(saveChangesBus).onValue((changes) => {
+      model.context.changeBus.push(changes)
+      model.context.doneEditingBus.push()
+      cancelBus.push()
+    })
+
+    return {
+      saveChangesBus: saveChangesBus,
+      cancelBus: cancelBus,
+      changeBus: changeBus
+    }
   }
 })

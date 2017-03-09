@@ -19,7 +19,7 @@ export const EnumEditor = BaconComponent({
     return model.context.edit
       ? asRadiogroup
         ? (
-            <ul className={className} onChange={ onChange }>
+            <ul className={className}>
               {
                 alternatives.map(alternative =>
                   <li key={ alternative.value }>
