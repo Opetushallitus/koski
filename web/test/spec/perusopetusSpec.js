@@ -246,7 +246,7 @@ describe('Perusopetus', function() {
     describe('Opiskeluoikeuden tiedot', function() {
       describe('Kun poistetaan päättymispäivä', function() {
         var editor = opinnot.opiskeluoikeusEditor()
-        before(editor.edit, editor.property('tila').removeItem(0), editor.property('päättymispäivä').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+        before(editor.edit, editor.property('tila').removeItem(0), editor.doneEditing, wait.until(page.isSavedLabelShown))
 
         describe('Muutosten näyttäminen', function() {
           it('Näytetään muuttuneet tiedot', function() {

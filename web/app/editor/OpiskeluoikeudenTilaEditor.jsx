@@ -10,7 +10,7 @@ import {DateEditor} from './DateEditor.jsx'
 
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
-    let {model} = this.props
+    let {model, opiskeluoikeusModel} = this.props
     let {saveChangesBus, cancelBus, changeBus, newTilaModel, items = modelItems(model).slice(0).reverse()} = this.state
 
     let showAddDialog = () => {
@@ -27,6 +27,17 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus.push()
     }
 
+    let removeItem = () => {
+      if (this.onLopputila(modelData(items[0], 'tila').koodiarvo)) {
+        let paattymispaivaModel = modelLookup(opiskeluoikeusModel, 'päättymispäivä')
+        model.context.changeBus.push([paattymispaivaModel.context, {data: undefined}])
+      }
+      model.context.changeBus.push([items[0].context, {data: undefined}])
+      model.context.doneEditingBus.push()
+      let newItems = L.set(L.index(0), undefined, items)
+      this.setState({newTilaModel: undefined, items: newItems})
+    }
+
     let lastOpiskeluoikeudenTila = modelData(modelLookup(items[0], 'tila'))
     let showLisaaTila = !lastOpiskeluoikeudenTila || lastOpiskeluoikeudenTila.koodiarvo === 'lasna'
 
@@ -36,15 +47,9 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
           <ul ref="ul" className="array">
             {
               items.map((item, i) => {
-                // TODO: nasty copy paste from ArrayEditor
-                let removeItem = () => {
-                  let newItems = L.set(L.index(i), undefined, items)
-                  item.context.changeBus.push([item.context, {data: undefined}])
-                  this.setState({newTilaModel: null, items: newItems})
-                }
                 return (<li key={i}>
                   <OpiskeluoikeusjaksoEditor model={item}/>
-                  <a className="remove-item" onClick={removeItem}></a>
+                  {i === 0 && <a className="remove-item" onClick={removeItem}></a>}
                 </li>)
               })
             }
@@ -115,7 +120,9 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     }
 
     let viimeinenTila = findLastValue('.tila')
-    let viimeinenTilaOnLopputila = viimeinenTila && (viimeinenTila.value === 'eronnut' || viimeinenTila.value === 'valmistunut')
-    return viimeinenTilaOnLopputila ? findLastValue('.alku').data : undefined
+    return viimeinenTila && this.onLopputila(viimeinenTila.value) ? findLastValue('.alku').data : undefined
+  },
+  onLopputila(tila) {
+    return tila === 'eronnut' || tila === 'valmistunut'
   }
 })
