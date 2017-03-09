@@ -293,13 +293,14 @@ object LukionKurssiDeserializer extends Deserializer[LukionKurssi] {
   private val TheClass = classOf[LukionKurssi]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukionKurssi] = {
-    case (TypeInfo(TheClass, _), json) =>
-      json match {
-        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssit") => kurssi.extract[ValtakunnallinenLukionKurssi]
-        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2004aikuiset") => kurssi.extract[ValtakunnallinenLukionKurssi]
-        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2003nuoret") => kurssi.extract[ValtakunnallinenLukionKurssi]
-        case kurssi: JObject => kurssi.extract[PaikallinenLukionKurssi]
-      }
+    case (TypeInfo(TheClass, _), json) => deserializeKurssi(format)(json)
+  }
+
+  def deserializeKurssi(implicit format: Formats): PartialFunction[JValue, LukionKurssi] = {
+    case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssit") => kurssi.extract[ValtakunnallinenLukionKurssi]
+    case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2004aikuiset") => kurssi.extract[ValtakunnallinenLukionKurssi]
+    case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssitops2003nuoret") => kurssi.extract[ValtakunnallinenLukionKurssi]
+    case kurssi: JObject if kurssi.values.contains("kurssinTyyppi") => kurssi.extract[PaikallinenLukionKurssi]
   }
 }
 
@@ -307,11 +308,8 @@ object PreIBKurssiDeserializer extends Deserializer[PreIBKurssi] {
   private val TheClass = classOf[PreIBKurssi]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PreIBKurssi] = {
-    case (TypeInfo(TheClass, _), json) =>
-      json match {
-        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("ibkurssit") => kurssi.extract[IBKurssi]
-        case kurssi: JObject => kurssi.extract[LukionKurssi]
-      }
+    case (ti@TypeInfo(TheClass, _), json) =>
+      LukionKurssiDeserializer.deserializeKurssi(format).applyOrElse(json, {v: JValue => v.extract[IBKurssi]})
   }
 }
 
