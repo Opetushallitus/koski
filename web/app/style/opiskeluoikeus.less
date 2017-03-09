@@ -111,6 +111,16 @@
       width: 420px;
       margin-top: 20px;
 
+      .property.alku {
+        label {
+          vertical-align: middle;
+        }
+        input {
+          width: 100px;
+        }
+        margin-bottom: 20px;
+      }
+
       .button {
         width: auto;
         padding: 0 20px;
@@ -118,14 +128,42 @@
         margin-right: 40px;
       }
 
+      label {
+        vertical-align: top;
+        margin-right: 15px;
+      }
+
       ul {
         list-style: none;
+        margin: 0;
         padding: 0;
+        display: inline-block;
+
+        li {
+          margin-bottom: 10px;
+        }
+
         input[type="radio"] {
           width: auto;
-          margin-right: 10px;
+          visibility: hidden;
+          position: relative;
           display: inline-block;
-          vertical-align: top;
+          height: 15px;
+          margin: 0 12px 0 0;
+
+          &:before {
+            content: '';
+            visibility: visible;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid @color-link-blue;
+            border-radius: 10px;
+            position: relative;
+          }
+          &:checked:before {
+            background-color: @color-link-blue;
+          }
         }
       }
 

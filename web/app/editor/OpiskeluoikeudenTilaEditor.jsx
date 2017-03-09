@@ -58,18 +58,14 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                 <div className="lisaa-opiskeluoikeusjakso">
                   <a className="close-modal" onClick={cancel}>&#10005;</a>
                   <h2>Opiskeluoikeuden tilan lisäys</h2>
-                  <table>
-                    <tbody>
-                    <tr className="property alku">
-                      <td className="label">{newTilaModel.value.properties.find(p => p.key == 'alku').title}</td>
-                      <td className="value"><DateEditor model={modelLookup(newTilaModel, 'alku')}/></td>
-                    </tr>
-                    <tr className="property tila">
-                      <td className="label">{newTilaModel.value.properties.find(p => p.key == 'tila').title}</td>
-                      <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(newTilaModel, 'tila')}/></td>
-                    </tr>
-                    </tbody>
-                  </table>
+                  <div className="property alku">
+                    <label>{newTilaModel.value.properties.find(p => p.key == 'alku').title}:</label>
+                    <DateEditor model={modelLookup(newTilaModel, 'alku')}/>
+                  </div>
+                  <div className="property tila">
+                    <label>{newTilaModel.value.properties.find(p => p.key == 'tila').title}:</label>
+                    <EnumEditor asRadiogroup="true" model={modelLookup(newTilaModel, 'tila')}/>
+                  </div>
                   <a className="button" onClick={add}>Lisää</a>
                   <a onClick={cancel}>Peruuta</a>
                 </div>
