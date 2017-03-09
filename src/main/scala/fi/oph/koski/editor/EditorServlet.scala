@@ -8,6 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.ClassSchema
 
@@ -15,6 +16,7 @@ import fi.oph.scalaschema.ClassSchema
   *  Endpoints for the Koski UI
   */
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+  private def localization = LocalizedHtml.get(koskiSession)
   get("/:oid") {
     renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
       case (Some(opiskeluoikeusId), Some(versionumero)) =>
@@ -39,23 +41,22 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   get("/organisaatiot") {
     def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
-    organisaatiot.map(modelBuilder.organisaatioEnumValue(_))
+    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
   get("/oppilaitokset") {
     def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
-    organisaatiot.flatMap(_.toOppilaitos).map(modelBuilder.organisaatioEnumValue(_))
+    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
   private def getKoodit() = {
     val koodistoUri = params("koodistoUri")
     val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
 
-    koodit.map(modelBuilder.koodistoEnumValue(_)).sortBy(_.title)
+    koodit.map(EditorModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
-  private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiSession)
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
@@ -100,7 +101,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
       }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-      modelBuilder.copy(editable = editable)(koskiSession).buildModel(EditorSchema.schema, editorView)
+      EditorModelBuilder.buildModel(EditorSchema.schema, editorView, editable)(koskiSession)
     }
   }
 }

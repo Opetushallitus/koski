@@ -12,3 +12,9 @@ trait LocalizedHtml {
   def i(s: Localizable): String = s.description.get(lang)
   def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
 }
+
+object LocalizedHtml {
+  def get(implicit session: KoskiSession) = new LocalizedHtml {
+    override implicit val user: KoskiSession = session
+  }
+}
