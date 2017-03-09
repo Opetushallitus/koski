@@ -47,8 +47,8 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
     vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  def omistajaOrganisaatio = oppilaitos
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
-  def omistajaOrganisaatio = getOppilaitos
 }
 
 trait OpiskeluoikeudenLisätiedot

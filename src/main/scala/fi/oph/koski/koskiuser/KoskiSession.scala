@@ -28,13 +28,15 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
 
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
-    val juuret = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }
+    val juuret = organisaatiot
     if (juuret.size > 1) {
       None
     } else {
       juuret.headOption
     }
   }
+
+  def organisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }

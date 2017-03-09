@@ -97,5 +97,5 @@ trait DefaultDescription extends OrganisaatioWithOid {
 }
 
 trait OrganisaatioonLiittyvä {
-  def omistajaOrganisaatio: OrganisaatioWithOid
+  def omistajaOrganisaatio: Option[OrganisaatioWithOid]
 }
