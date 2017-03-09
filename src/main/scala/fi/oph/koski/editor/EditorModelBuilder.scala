@@ -3,7 +3,6 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
-import fi.oph.koski.editor.ModelBuilderForClass._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
@@ -18,44 +17,7 @@ object EditorModelBuilder {
     ObjectModelBuilder(schema, true)(context).buildModelForObject(value)
   }
 
-  def buildModel(obj: Any, schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModel = (obj, schema) match {
-    case (o: AnyRef, t: SchemaWithClassName) => modelBuilderForClass(t, includeData).buildModelForObject(o)
-    case (xs: Iterable[_], t: ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema, false)), Prototypes.getPrototypePlaceholder(t.itemSchema))
-    case (x: Option[_], t: OptionalSchema) => OptionalModel(
-      x.map(value => buildModel(value, t.itemSchema, includeData)),
-      Prototypes.getPrototypePlaceholder(t.itemSchema)
-    )
-    case (x: AnyRef, t: OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema, includeData)), Prototypes.getPrototypePlaceholder(t.itemSchema))
-    case (x: Number, t: NumberSchema) => NumberModel(x)
-    case (x: Boolean, t: BooleanSchema) => BooleanModel(x)
-    case (x: LocalDate, t: DateSchema) => DateModel(x)
-    case (x: String, t: StringSchema) => StringModel(x)
-    case _ =>
-      throw new RuntimeException("Unexpected input: " + obj + ", " + schema)
-  }
-
-  def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
-
-  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o.description), o)
-  def koodistoEnumValue(localization: LocalizedHtml)(k: Koodistokoodiviite) = EnumValue(k.koodiarvo, localization.i(k.description), k)
-}
-
-case class ModelBuilderContext(
-  mainSchema: ClassSchema,
-  editable: Boolean, root: Boolean = true,
-  var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
-
-
-trait ModelBuilderForClass {
-  def buildModelForObject(obj: AnyRef): EditorModel
-  def prototypeKey: String
-  def buildPrototypePlaceholder = PrototypeModel(prototypeKey)
-  def getPrototypeData: Any
-}
-
-object ModelBuilderForClass {
-  def modelBuilderForClass(t: SchemaWithClassName, includeData: Boolean)(implicit context: ModelBuilderContext): ModelBuilderForClass = t match {
+  def builder(schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
     case t: ClassSchema =>
       Class.forName(t.fullClassName) match {
         case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
@@ -69,7 +31,98 @@ object ModelBuilderForClass {
       }
     case t: ClassRefSchema => modelBuilderForClass(context.mainSchema.getSchema(t.fullClassName).get, includeData)
     case t: AnyOfSchema => AnyOfModelBuilder(t, includeData)
+    case t: ListSchema => ListModelBuilder(t)
+    case t: OptionalSchema => OptionalModelBuilder(t, includeData)
+    case t: NumberSchema => NumberModelBuilder(t)
+    case t: BooleanSchema => BooleanModelBuilder(t)
+    case t: DateSchema => DateModelBuilder(t)
+    case t: StringSchema => StringModelBuilder(t)
+  }).asInstanceOf[EditorModelBuilder[Any]]
+
+  def modelBuilderForClass(t: SchemaWithClassName, includeData: Boolean)(implicit context: ModelBuilderContext): ModelBuilderForClass = t match {
+    case t: ClassSchema =>
+      Class.forName(t.fullClassName) match {
+        case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
+          KoodistoEnumModelBuilder(t)
+        case c if classOf[Oppilaitos].isAssignableFrom(c) =>
+          OppilaitosEnumBuilder(t)
+        case c if classOf[OrganisaatioWithOid].isAssignableFrom(c) =>
+          OrganisaatioEnumBuilder(t)
+        case c =>
+          ObjectModelBuilder(t, includeData)
+      }
+    case t: ClassRefSchema => modelBuilderForClass(resolveSchema(t), includeData)
+    case t: AnyOfSchema => AnyOfModelBuilder(t, includeData)
   }
+
+  def buildModel(obj: Any, schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModel = builder(schema, includeData).buildModelForObject(obj)
+  def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
+  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o.description), o)
+  def koodistoEnumValue(localization: LocalizedHtml)(k: Koodistokoodiviite) = EnumValue(k.koodiarvo, localization.i(k.description), k)
+  def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
+    case s: ClassRefSchema => context.mainSchema.getSchema(s.fullClassName).get
+    case _ => schema
+  }
+}
+
+
+trait EditorModelBuilder[T] {
+  def buildModelForObject(obj: T): EditorModel
+  def getPrototypeData: T
+}
+
+case class ModelBuilderContext(
+  mainSchema: ClassSchema,
+  editable: Boolean, root: Boolean = true,
+  var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
+  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
+
+case class NumberModelBuilder(t: NumberSchema) extends EditorModelBuilder[Number] {
+  override def buildModelForObject(x: Number) = NumberModel(x)
+  override def getPrototypeData = 0
+}
+
+case class BooleanModelBuilder(t: BooleanSchema) extends EditorModelBuilder[Boolean] {
+  override def buildModelForObject(x: Boolean) = BooleanModel(x)
+  override def getPrototypeData = false
+}
+
+case class StringModelBuilder(t: StringSchema) extends EditorModelBuilder[String] {
+  override def buildModelForObject(x: String) = StringModel(x)
+  override def getPrototypeData = ""
+}
+
+case class DateModelBuilder(t: DateSchema) extends EditorModelBuilder[LocalDate] {
+  override def buildModelForObject(x: LocalDate) = DateModel(x)
+  override def getPrototypeData = LocalDate.now
+}
+
+case class OptionalModelBuilder(t: OptionalSchema, includeData: Boolean)(implicit context: ModelBuilderContext) extends EditorModelBuilder[Any] {
+  override def buildModelForObject(x: Any) = {
+    val innerModel = x match {
+      case x: Option[_] => x.map(value => buildModel(value, t.itemSchema, includeData))
+      case x: AnyRef => Some(buildModel(x, t.itemSchema, includeData))
+    }
+    OptionalModel(
+      innerModel,
+      Prototypes.getPrototypePlaceholder(t.itemSchema)
+    )
+  }
+
+  override def getPrototypeData = Prototypes.getPrototypeData(t.itemSchema)
+}
+
+case class ListModelBuilder(t: ListSchema)(implicit context: ModelBuilderContext) extends EditorModelBuilder[Iterable[_]] {
+  def buildModelForObject(xs: Iterable[_]) = ListModel(xs.toList.map(item => buildModel(item, t.itemSchema, false)), Prototypes.getPrototypePlaceholder(t.itemSchema))
+  override def getPrototypeData = List(Prototypes.getPrototypeData(t.itemSchema))
+}
+
+trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
+  def buildModelForObject(obj: AnyRef): EditorModel
+  protected def prototypeKey: String
+  def buildPrototypePlaceholder = PrototypeModel(prototypeKey)
+  def getPrototypeData: AnyRef
+  def buildPrototype = (prototypeKey, buildModelForObject(getPrototypeData))
 }
 
 case class OppilaitosEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
@@ -129,7 +182,7 @@ case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean)(implicit cont
     if (clazz == classOf[LocalizedString]) {
       LocalizedString.finnish("")
     } else {
-      Prototypes.getPrototypeData(t.alternatives.head)
+      modelBuilderForClass(t.alternatives.head, true).getPrototypeData
     }
   }
 }
@@ -172,16 +225,16 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
         newRequests = Set.empty
         requestsFromPreviousRound.foreach { schema =>
           val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user)
-          val prototypeKey: String = modelBuilderForClass(schema, true)(helperContext).prototypeKey
-          val prototypeData = Prototypes.getPrototypeData(schema)
-          val model: EditorModel = EditorModelBuilder.buildModel(prototypeData, schema, includeData = true)(helperContext)
+          val modelBuilderForProto = modelBuilderForClass(schema, true)(helperContext)
+          val (protoKey, model) = modelBuilderForProto.buildPrototype
+
           if (model.isInstanceOf[PrototypeModel]) {
             throw new IllegalStateException()
           }
           val newRequestsForThisCreation = helperContext.prototypesRequested -- context.prototypesRequested
           newRequests ++= newRequestsForThisCreation
           context.prototypesRequested ++= newRequestsForThisCreation
-          prototypesCreated += (prototypeKey -> model)
+          prototypesCreated += (protoKey -> model)
         }
       } while (newRequests.nonEmpty)
       prototypesCreated
@@ -212,7 +265,6 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
     reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType
   }
 
-
   def prototypeKey = sanitizeName(schema.simpleName)
 
   private def newContext(obj: AnyRef): ModelBuilderContext = {
@@ -235,7 +287,7 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
     val clazz: Class[_] = Class.forName(schema.fullClassName)
     val keysAndValues = schema.properties.map(property => (property.key, Prototypes.getPrototypeData(property))).toMap
     val asJValue = Json.toJValue(keysAndValues)
-    val deserialized: Any = Json.fromJValue(asJValue)(Manifest.classType(clazz))
+    val deserialized: AnyRef = Json.fromJValue(asJValue)(Manifest.classType(clazz))
     //println(deserialized)
     deserialized
   }
@@ -243,14 +295,7 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
 
 
 object Prototypes {
-  private def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
-    case s: ClassRefSchema => context.mainSchema.getSchema(s.fullClassName).get
-    case _ => schema
-  }
-
-
   def getPrototypePlaceholder(schema: Schema)(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
-
     schema match {
       case s: SchemaWithClassName =>
         val classRefSchema = resolveSchema(s)
@@ -266,23 +311,12 @@ object Prototypes {
 
   def getPrototypeData(property: Property)(implicit context: ModelBuilderContext): Any = {
     property.schema match {
-      case t: ClassSchema => ModelBuilderForClass.modelBuilderForClass(t, true).getPrototypeData
+      case t: ClassSchema => modelBuilderForClass(t, true).getPrototypeData
       case s: OptionalSchema => None // For object properties, always default to empty values if possible.
       case s: ListSchema => Nil // For object properties, always default to empty values if possible.
       case s => getPrototypeData(property.schema)
     }
   }
 
-  def getPrototypeData(schema: Schema)(implicit context: ModelBuilderContext): Any = schema match {
-    case s: ClassRefSchema => getPrototypeData(resolveSchema(s))
-    case s: SchemaWithClassName => ModelBuilderForClass.modelBuilderForClass(s, true).getPrototypeData
-    case s: ListSchema => List(getPrototypeData(s.itemSchema))
-    case s: OptionalSchema => getPrototypeData(s.itemSchema)
-    case s: NumberSchema => 0
-    case s: StringSchema => ""
-    case s: BooleanSchema => false
-    case s: DateSchema => LocalDate.now
-    case _ =>
-      throw new RuntimeException("Cannot create prototype for: " + schema)
-  }
+  def getPrototypeData(schema: Schema)(implicit context: ModelBuilderContext): Any = builder(schema, true).getPrototypeData
 }
