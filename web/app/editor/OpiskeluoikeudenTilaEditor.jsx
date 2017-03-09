@@ -19,12 +19,12 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       this.setState({newTilaModel: tilaModel})
     }
 
-    let add = e => {
-      saveChangesBus.push(e)
+    let add = () => {
+      saveChangesBus.push()
     }
 
-    let cancel = e => {
-      cancelBus.push(e)
+    let cancel = () => {
+      cancelBus.push()
     }
 
     return (
@@ -88,7 +88,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus, () => []
     )
 
-    saveChangesBus.merge(cancelBus).onValue(e => this.setState({newTilaModel: undefined}))
+    saveChangesBus.merge(cancelBus).onValue(() => this.setState({newTilaModel: undefined}))
 
     changesP.sampledBy(saveChangesBus).onValue((changes) => {
       model.context.changeBus.push(changes)
