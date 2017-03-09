@@ -49,6 +49,9 @@
 
     .opiskeluoikeuden-tiedot {
       position: relative;
+      .property.tila > value {
+        position: relative;
+      }
       .property.tila .array {
         .opiskeluoikeusjakso {
           margin-bottom: 8px;
@@ -71,14 +74,42 @@
       }
     }
 
+    .lisaa-opiskeluoikeusjakso-modal {
+      position: absolute;
+      &:before {
+        content: "";
+        transform: rotate(-315deg);
+        background: #FFFFFF;
+        box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.5);
+        position: absolute;
+        height: 27px;
+        width: 27px;
+        top: 7px;
+        left: 68px;
+        z-index: 1;
+      }
+      &:after {
+        content: "";
+        transform: rotate(-315deg);
+        background: #FFFFFF;
+        position: absolute;
+        height: 27px;
+        width: 27px;
+        top: 7px;
+        left: 68px;
+        z-index: 3;
+      }
+    }
+
     .lisaa-opiskeluoikeusjakso {
       position: absolute;
       padding: 30px;
-      z-index: 1;
+      z-index: 2;
       background: #FFFFFF;
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.30);
+      box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
       border-radius: 2px;
       width: 420px;
+      margin-top: 20px;
 
       .button {
         width: auto;
@@ -103,28 +134,11 @@
       }
 
       .close-modal {
-
-        &:before, &:after {
-          content: '';
-          display: block;
-          width: 8px;
-          height: 8px;
-          transform: rotate(45deg);
-          position: absolute;
-          right: 18px;
-        }
-
-        &:before {
-          border-bottom: 2px solid #5E5E5E;
-          border-right: 2px solid #5E5E5E;
-          top: 14px;
-        }
-
-        &:after {
-          border-top: 2px solid #5E5E5E;
-          border-left: 2px solid #5E5E5E;
-          top: 25px;
-        }
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        color: #5E5E5E;
+        font-size: 18px;
       }
     }
 

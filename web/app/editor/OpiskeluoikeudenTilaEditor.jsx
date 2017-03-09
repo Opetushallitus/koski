@@ -50,24 +50,28 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
             }
           </ul>
           {
-            newTilaModel && (<div className="lisaa-opiskeluoikeusjakso">
-              <a className="close-modal" onClick={cancel}></a>
-              <h2>Opiskeluoikeuden tilan lisäys</h2>
-              <table>
-                <tbody>
-                <tr className="property alku">
-                  <td className="label">{newTilaModel.value.properties.find(p => p.key == 'alku').title}</td>
-                  <td className="value"><DateEditor model={modelLookup(newTilaModel, 'alku')}/></td>
-                </tr>
-                <tr className="property tila">
-                  <td className="label">{newTilaModel.value.properties.find(p => p.key == 'tila').title}</td>
-                  <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(newTilaModel, 'tila')}/></td>
-                </tr>
-                </tbody>
-              </table>
-              <a className="button" onClick={add}>Lisää</a>
-              <a onClick={cancel}>Peruuta</a>
-            </div>)
+            newTilaModel && (
+              <div className="lisaa-opiskeluoikeusjakso-modal">
+                <div className="lisaa-opiskeluoikeusjakso">
+                  <a className="close-modal" onClick={cancel}>&#10005;</a>
+                  <h2>Opiskeluoikeuden tilan lisäys</h2>
+                  <table>
+                    <tbody>
+                    <tr className="property alku">
+                      <td className="label">{newTilaModel.value.properties.find(p => p.key == 'alku').title}</td>
+                      <td className="value"><DateEditor model={modelLookup(newTilaModel, 'alku')}/></td>
+                    </tr>
+                    <tr className="property tila">
+                      <td className="label">{newTilaModel.value.properties.find(p => p.key == 'tila').title}</td>
+                      <td className="value"><EnumEditor asRadiogroup="true" model={modelLookup(newTilaModel, 'tila')}/></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <a className="button" onClick={add}>Lisää</a>
+                  <a onClick={cancel}>Peruuta</a>
+                </div>
+              </div>
+            )
           }
         </div> :
         <div><ArrayEditor reverse={true} model={model}/></div>
