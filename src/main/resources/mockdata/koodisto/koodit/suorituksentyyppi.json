@@ -204,6 +204,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_lukionmuuopinto",
+    "koodiArvo": "lukionmuuopinto",
+    "metadata": [
+      {
+        "nimi": "Lukion muu opinto",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_preiboppimäärä",
     "koodiArvo": "preiboppimaara",
     "metadata": [

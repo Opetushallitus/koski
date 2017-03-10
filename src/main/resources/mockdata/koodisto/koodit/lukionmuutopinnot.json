@@ -1,0 +1,38 @@
+[
+  {
+    "koodiUri" : "lukionmuutopinnot_taiteidenvalisetopinnot",
+    "koodiArvo" : "TVO",
+    "metadata" : [ {
+      "nimi" : "Taiteiden väliset opinnot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionmuutopinnot_teemaopinnot",
+    "koodiArvo" : "TO",
+    "metadata" : [ {
+      "nimi" : "Teemaopinnot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionmuutopinnot_lukiodiplomit",
+    "koodiArvo" : "LD",
+    "metadata" : [ {
+      "nimi" : "Lukiodiplomit",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionmuutopinnot_muutsuoritukset",
+    "koodiArvo" : "MS",
+    "metadata" : [ {
+      "nimi" : "Muut suoritukset",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

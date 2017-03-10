@@ -68,6 +68,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaine") => suoritus.extract[LukionOppiaineenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("lukionmuuopinto") => suoritus.extract[MuidenLukioOpintojenSuoritus]
 
         case suoritus: JObject if tyyppi(suoritus) == JString("ibtutkinto") => suoritus.extract[IBTutkinnonSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("preiboppimaara") => suoritus.extract[PreIBSuoritus]

@@ -98,6 +98,8 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |MU1 Musiikki ja minä 1 8 4.6.2016
           |PS Psykologia 1 9
           |PS1 Psyykkinen toiminta ja oppiminen 1 9 4.6.2016
+          |TO Teemaopinnot 1
+          |MTA Monitieteinen ajattelu 1 hyväksytty 8.6.2016
           |TE Terveystieto 1 9
           |TE1 Terveyden perusteet 1 8 4.6.2016
           |KT Uskonto tai elämänkatsomustieto 3 8
@@ -142,7 +144,9 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
                                                             |Musiikki 1 Hyvä 8
                                                             |Kuvataide 2 Kiitettävä 9
                                                             |Terveystieto 1 Kiitettävä 9
-                                                            |Opiskelijan suorittama kokonaiskurssimäärä 87,5""".stripMargin)
+                                                            |Teemaopinnot
+                                                            |Monitieteinen ajattelu 1 Hyväksytty
+                                                            |Opiskelijan suorittama kokonaiskurssimäärä 88,5""".stripMargin)
     }
   }
 

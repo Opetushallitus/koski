@@ -1,3 +1,7 @@
+## 10.3.2017
+
+- Lisätty lukion "muut opinnot" eli kurssit, jotka eivät liity yksittäiseen oppiaineeseen
+
 ## 21.2.2017
 
 - Ammatillisen tutkinnon suorituksen paikkakunta on valinnainen

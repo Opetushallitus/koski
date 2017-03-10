@@ -30,6 +30,10 @@ div {
     font-size: 12px;
 }
 
+td.kurssi {
+    padding-left: 1em;
+}
+
 .valiotsikko, .lisätiedot {
     font-weight: bold;
 }

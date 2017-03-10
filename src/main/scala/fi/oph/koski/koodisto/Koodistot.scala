@@ -27,6 +27,7 @@ object Koodistot {
     "lukionkurssitops2003nuoret",
     "lukionkurssitops2004aikuiset",
     "lukionoppimaara",
+    "lukionmuutopinnot",
     "opetusryhma",
     "opintojenrahoitus",
     "opiskeluoikeudentyyppi",

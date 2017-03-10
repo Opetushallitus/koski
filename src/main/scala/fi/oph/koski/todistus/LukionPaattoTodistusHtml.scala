@@ -35,15 +35,25 @@ class LukionPaattoTodistusHtml(implicit val user: KoskiSession) extends Todistus
               <th class="arvosana-numeroin">Arvosana numeroin</th>
             </tr>
             {
-              oppiaineet.map { oppiaine =>
-                val nimiTeksti = i(oppiaine.koulutusmoduuli)
-                val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
-                <tr class={rowClass}>
-                  <td class="oppiaine">{nimiTeksti}</td>
-                  <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
-                  <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
-                  <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
-                </tr>
+              oppiaineet.flatMap {
+                case oppiaine: LukionOppiaineenSuoritus =>
+                  List(<tr class={"oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo}>
+                         <td class="oppiaine"> {i(oppiaine.koulutusmoduuli)}</td>
+                         <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
+                         <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
+                         <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
+                       </tr>)
+                case aineryhmä: MuidenLukioOpintojenSuoritus =>
+                  <tr class={"oppiaine " + aineryhmä.koulutusmoduuli.tunniste.koodiarvo}>
+                    <td class="oppiaine">{i(aineryhmä.koulutusmoduuli)}</td>
+                  </tr> :: aineryhmä.osasuoritukset.toList.flatten.map( kurssi =>
+                    <tr class="kurssi">
+                      <td class="kurssi">{i(kurssi.koulutusmoduuli)}</td>
+                      <td class="laajuus">{decimalFormat.format(laajuus(kurssi))}</td>
+                      <td class="arvosana-kirjaimin">{i(kurssi.arvosanaKirjaimin).capitalize}</td>
+                      <td class="arvosana-numeroin">{i(kurssi.arvosanaNumeroin)}</td>
+                    </tr>
+                  )
               }
             }
             <tr class="kurssimaara">

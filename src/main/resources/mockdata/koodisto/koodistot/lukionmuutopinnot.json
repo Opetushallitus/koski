@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "lukionmuutopinnot",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Lukion muut opinnot",
+    "kuvaus" : "Lukio-opinnot, jotka eivät liity yksittäisiin oppiaineisiin"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2017-03-10",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
