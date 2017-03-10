@@ -120,6 +120,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       model.context.changeBus.push(changes)
       model.context.doneEditingBus.push()
       cancelBus.push()
+      this.setState({items: undefined})
     })
   },
   opiskeluoikeudenPaattymispaiva(changes) {
