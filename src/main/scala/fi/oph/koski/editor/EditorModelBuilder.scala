@@ -7,6 +7,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.{MockKoodistoPalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
@@ -129,13 +130,13 @@ trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
 case class OppilaitosEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
   override def alternativesPath = "/koski/api/editor/oppilaitokset"
   override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  override def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(throw new RuntimeException("No org for user "  + context.user.username)) // TODO: not the best default
+  override def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(OidOrganisaatio(Opetushallitus.organisaatioOid)) // TODO: not the best default. We should allow for things that don't have a prototype
 }
 
 case class OrganisaatioEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
   override def alternativesPath = "/koski/api/editor/organisaatiot"
   override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  override def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(throw new RuntimeException("No org for user "  + context.user.username)) // TODO: not the best default
+  override def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(OidOrganisaatio(Opetushallitus.organisaatioOid)) // TODO: not the best default
 }
 
 object KoodistoEnumModelBuilder {
