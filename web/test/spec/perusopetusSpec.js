@@ -3,6 +3,7 @@ describe('Perusopetus', function() {
   var login = LoginPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
+  var currentDate = new Date().getDate() + "." + (1 + new Date().getMonth()) + "." + new Date().getFullYear()
 
   before(Authentication().login(), resetFixtures)
 
@@ -239,20 +240,143 @@ describe('Perusopetus', function() {
   describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
-    it('Alkutila', function() {
-      expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(true)
-    })
-
     describe('Opiskeluoikeuden tiedot', function() {
-      describe('Kun poistetaan päättymispäivä', function() {
-        var editor = opinnot.opiskeluoikeusEditor()
-        before(editor.edit, editor.property('tila').removeItem(0), editor.doneEditing, wait.until(page.isSavedLabelShown))
+      it('Alkutila', function() {
+        expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(true)
+        expect(opinnot.opiskeluoikeusEditor().subEditor('.property.tila').propertyBySelector('label.tila:contains("Valmistunut")').isVisible()).to.equal(false)
+      })
 
-        describe('Muutosten näyttäminen', function() {
-          it('Näytetään muuttuneet tiedot', function() {
-            expect(editor.property('päättymispäivä').isVisible()).to.equal(false)
+      describe('Opiskeluoikeuden tila', function() {
+        var editor = opinnot.opiskeluoikeusEditor()
+        var opiskeluoikeus = OpiskeluoikeusDialog()
+        before(editor.edit, editor.property('tila').removeItem(0), wait.until(page.isSavedLabelShown))
+
+        describe('Eronnut', function() {
+          it('Alkutila', function() {
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+          })
+
+          describe('Kun lisätään', function() {
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.tallenna)
+            it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
+              expect(editor.property('päättymispäivä').getValue()).to.equal(currentDate)
+            })
+
+            it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(false)
+            })
+          })
+
+          describe('Kun poistetaan', function() {
+            before(editor.property('tila').removeItem(0))
+
+            it('Opiskeluoikeuden päättymispäivä poistetaan', function() {
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+            })
+
+            it('Opiskeluoikeuden tilan voi lisätä', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(true)
+            })
           })
         })
+
+        describe('Valmistunut', function() {
+          it('Alkutila', function() {
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+          })
+
+          describe('Kun lisätään', function() {
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna)
+
+            it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
+              expect(editor.property('päättymispäivä').getValue()).to.equal(currentDate)
+            })
+
+            it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(false)
+            })
+          })
+
+          describe('Kun poistetaan', function() {
+            before(editor.property('tila').removeItem(0))
+
+            it('Opiskeluoikeuden päättymispäivä poistetaan', function() {
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+            })
+
+            it('Opiskeluoikeuden tilan voi lisätä', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(true)
+            })
+          })
+
+          after(editor.doneEditing, wait.until(page.isSavedLabelShown))
+        })
+
+        describe('Katsotaan eronneeksi', function() {
+          before(editor.edit)
+          it('Alkutila', function() {
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+          })
+
+          describe('Kun lisätään', function() {
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="katsotaaneronneeksi"]'), opiskeluoikeus.tallenna, editor.doneEditing, wait.until(page.isSavedLabelShown))
+
+            it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
+              expect(editor.property('päättymispäivä').getValue()).to.equal(currentDate)
+            })
+
+            it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(false)
+            })
+          })
+
+          describe('Kun poistetaan', function() {
+            before(editor.edit, editor.property('tila').removeItem(0))
+
+            it('Opiskeluoikeuden päättymispäivä poistetaan', function() {
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+            })
+
+            it('Opiskeluoikeuden tilan voi lisätä', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(true)
+            })
+          })
+        })
+
+        describe('Läsnä', function() {
+          it('Alkutila', function() {
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+          })
+          describe('Kun lisätään', function() {
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="lasna"]'), opiskeluoikeus.tallenna)
+
+            it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+            })
+
+            it('Opiskeluoikeuden tilan voi lisätä', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(true)
+            })
+          })
+        })
+
+        describe('Väliaikaisesti keskeytynyt', function() {
+          it('Alkutila', function() {
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+          })
+          describe('Kun lisätään', function() {
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'), opiskeluoikeus.tallenna)
+
+            it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
+            })
+
+            it('Opiskeluoikeuden tilan voi lisätä', function() {
+              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(true)
+            })
+          })
+        })
+        after(editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
 
       describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {

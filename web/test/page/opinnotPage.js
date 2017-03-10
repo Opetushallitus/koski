@@ -34,6 +34,10 @@ function OpinnotPage() {
         return wait.until(TodistusPage().isVisible)()
       }
     },
+    avaaLisaysDialogi: function() {
+      triggerEvent(S('.opiskeluoikeuden-tiedot .add-item a'), 'click')
+      return wait.forAjax()
+    },
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
         triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
@@ -76,6 +80,18 @@ function OpinnotPage() {
   }
 
   return api
+}
+
+function OpiskeluoikeusDialog() {
+  return {
+    tila: function() {
+      return Property(function() {return S('.lisaa-opiskeluoikeusjakso')})
+    },
+    tallenna: function() {
+      triggerEvent(findSingle('button.opiskeluoikeuden-tila'), 'click')
+      return wait.forAjax()
+    }
+  }
 }
 
 function Editor(elem) {
@@ -127,6 +143,12 @@ function Property(elem) {
     setValue: function(value) {
       return function() {
         return Page(elem).setInputValue('select, input', value)()
+      }
+    },
+    click: function(selector) {
+      return function() {
+        triggerEvent(findSingle(selector, elem()), 'click')
+        return KoskiPage().verifyNoError()
       }
     },
     getValue: function() {
