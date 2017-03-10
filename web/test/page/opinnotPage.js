@@ -136,7 +136,7 @@ function Property(elem) {
       return extractAsText(elem())
     },
     getItems: function() {
-      return toArray(elem().find('.value .array li')).map(function(elem) { console.log("found", elem); return Property(function() { return S(elem) })})
+      return toArray(elem().find('.value .array li')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
       try{
