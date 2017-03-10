@@ -90,7 +90,7 @@ describe('Lukiokoulutus', function( ){
           'Musiikki\nMU1\n8 1 8\n(8.0)\n' +
           'Kuvataide\nKU1\n8 KU2\n9 2 9\n(8.5)\n' +
           'Terveystieto\nTE1\n8 1 9\n(8.0)\n' +
-          'Taiteiden väliset opinnot\nMTA\nS 1 -')
+          'Teemaopinnot\nMTA\nS 1 -')
       })
     })
 
