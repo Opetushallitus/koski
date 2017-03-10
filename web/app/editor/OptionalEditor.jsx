@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {modelEmpty, contextualizeModel} from './EditorModel.js'
+import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
 import {Editor} from './GenericEditor.jsx'
 
 export const OptionalEditor = React.createClass({
@@ -15,7 +15,7 @@ export const OptionalEditor = React.createClass({
         prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
       }
 
-      if (!prototype.value.data) {
+      if (!modelData(prototype)) {
         throw new Error('Prototype value data missing')
       }
       model.context.changeBus.push([prototype.context, prototype.value])

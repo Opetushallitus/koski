@@ -72,7 +72,7 @@ export const modelData = (mainModel, path) => {
     return objectLookup(mainModel.value.data, path)
   } else {
     let model = modelLookup(mainModel, path)
-    return model && ((model.value && model.value.data))
+    return model && valueData(model.value)
   }
 }
 
@@ -85,12 +85,19 @@ export const modelEmpty = (model) => {
   return !model.value || valueEmpty(model.value) && itemsEmpty(modelItems(model.items))
 }
 
+const valueData = (value) => {
+  if (!value) return
+  if (value.data !== undefined) return value.data
+  if (value instanceof Array) return value.map(modelData)
+}
+
 export const modelSet = (mainModel, path, value) => {
   let dataLens = L.compose('value', 'data', objectLens(path))
   if (value == undefined) {
     throw new Error('Trying to set ' + path + ' to undefined')
   }
-  return L.set(dataLens, value.data, mainModel)
+  var data = valueData(value)
+  return L.set(dataLens, data, mainModel)
 }
 
 export const modelItems = (mainModel, path) => {
