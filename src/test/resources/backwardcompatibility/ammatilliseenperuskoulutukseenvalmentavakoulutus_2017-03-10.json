@@ -1,0 +1,449 @@
+{
+  "henkilö" : {
+    "hetu" : "130404-054C",
+    "etunimet" : "Anneli",
+    "kutsumanimi" : "Anneli",
+    "sukunimi" : "Amikseenvalmistautuja"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "alkamispäivä" : "2009-09-14",
+    "päättymispäivä" : "2016-06-04",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2009-09-14",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999901",
+          "koodistoUri" : "koulutus"
+        },
+        "laajuus" : {
+          "arvo" : 60.0,
+          "yksikkö" : {
+            "koodiarvo" : "6",
+            "nimi" : {
+              "fi" : "Osaamispistettä"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.52251087186",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "10105",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AKO",
+            "nimi" : {
+              "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
+          },
+          "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OV",
+            "nimi" : {
+              "fi" : "Opiskeluvalmiuksien vahvistaminen"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Opiskeluvalmiuksien vahvistaminen"
+          },
+          "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TOV",
+            "nimi" : {
+              "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
+          },
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ATH",
+            "nimi" : {
+              "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
+          },
+          "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100037",
+            "nimi" : {
+              "fi" : "Auton lisävarustetyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100209",
+                "nimi" : {
+                  "fi" : "Asennuksen ja automaation perustyöt"
+                },
+                "koodistoUri" : "tutkinnonosat",
+                "koodistoVersio" : 1
+              },
+              "pakollinen" : true
+            },
+            "tutkinto" : {
+              "tunniste" : {
+                "koodiarvo" : "351101",
+                "nimi" : {
+                  "fi" : "Kone- ja metallialan perustutkinto"
+                },
+                "koodistoUri" : "koulutus"
+              },
+              "perusteenDiaarinumero" : "39/011/2014"
+            },
+            "toimipiste" : {
+              "oid" : "1.2.246.562.10.42456023292",
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+              }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
+            "vahvistus" : {
+              "päivä" : "2015-10-03",
+              "paikkakunta" : {
+                "koodiarvo" : "091",
+                "nimi" : {
+                  "fi" : "Helsinki"
+                },
+                "koodistoUri" : "kunta"
+              },
+              "myöntäjäOrganisaatio" : {
+                "oid" : "1.2.246.562.10.52251087186",
+                "oppilaitosnumero" : {
+                  "koodiarvo" : "10105",
+                  "koodistoUri" : "oppilaitosnumero"
+                },
+                "nimi" : {
+                  "fi" : "Stadin ammattiopisto"
+                }
+              },
+              "myöntäjäHenkilöt" : [ {
+                "nimi" : "Reijo Reksi",
+                "titteli" : {
+                  "fi" : "rehtori"
+                },
+                "organisaatio" : {
+                  "oid" : "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero" : {
+                    "koodiarvo" : "10105",
+                    "koodistoUri" : "oppilaitosnumero"
+                  },
+                  "nimi" : {
+                    "fi" : "Stadin ammattiopisto"
+                  }
+                }
+              } ]
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "valma",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
