@@ -52,7 +52,6 @@
         console.log("PhantomJS mode")
     }
     runner.on("fail", function(e) {
-        console.log("Test fail", e)
         takeScreenshot(e.title)()
     })
     $(document).keyup(function(e) { 
