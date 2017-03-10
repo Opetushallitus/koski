@@ -14,6 +14,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
 
     let showAddDialog = () => {
+      document.addEventListener('keyup', this.handleKeys)
       let opiskeluoikeusjaksoModel = contextualizeModel(model.prototype, childContext(model.context, items.length))
       let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus})
       let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus})
@@ -108,7 +109,10 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus.map(false)
     ).onValue(valid => this.setState({valid: valid}))
 
-    saveChangesBus.merge(cancelBus).onValue(() => this.setState({newStateModels: undefined}))
+    saveChangesBus.merge(cancelBus).onValue(() => {
+      this.setState({newStateModels: undefined})
+      document.removeEventListener('keyup', this.handleKeys)
+    })
 
     changesP.sampledBy(saveChangesBus).onValue((changes) => {
       let opiskeluoikeudenPaattymispaiva = this.opiskeluoikeudenPaattymispaiva(changes)
@@ -123,6 +127,9 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       this.setState({items: undefined})
     })
   },
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.handleKeys)
+  },
   opiskeluoikeudenPaattymispaiva(changes) {
     let changePairs = R.splitEvery(2, changes)
     let findLastValue = (path) => {
@@ -135,5 +142,12 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
   },
   onLopputila(tila) {
     return tila === 'eronnut' || tila === 'valmistunut' || tila === 'katsotaaneronneeksi'
+  },
+  handleKeys(e) {
+    if (e.keyCode == 27) { // esc
+      this.state.cancelBus.push()
+    } else if (e.keyCode == 13) { // enter
+      this.state.valid && this.state.saveChangesBus.push()
+    }
   }
 })
