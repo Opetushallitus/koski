@@ -41,7 +41,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     }
 
     let lastOpiskeluoikeudenTila = modelData(modelLookup(items[0], 'tila'))
-    let showLisaaTila = !lastOpiskeluoikeudenTila || lastOpiskeluoikeudenTila.koodiarvo === 'lasna'
+    let showLisaaTila = !lastOpiskeluoikeudenTila || lastOpiskeluoikeudenTila.koodiarvo === 'lasna' || lastOpiskeluoikeudenTila.koodiarvo === 'valiaikaisestikeskeytynyt'
 
     return (
       model.context.edit ?
@@ -73,7 +73,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                     <label>Tila:</label>
                     <EnumEditor asRadiogroup="true" model={newStateModels.tilaModel}/>
                   </div>
-                  <button disabled={!this.state.valid} className="button" onClick={add}>Lisää</button>
+                  <button disabled={!this.state.valid} className="opiskeluoikeuden-tila button" onClick={add}>Lisää</button>
                   <a onClick={cancel}>Peruuta</a>
                 </div>
               </div>
@@ -134,6 +134,6 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     return viimeinenTila && this.onLopputila(viimeinenTila.value) ? findLastValue('.alku').data : undefined
   },
   onLopputila(tila) {
-    return tila === 'eronnut' || tila === 'valmistunut'
+    return tila === 'eronnut' || tila === 'valmistunut' || tila === 'katsotaaneronneeksi'
   }
 })
