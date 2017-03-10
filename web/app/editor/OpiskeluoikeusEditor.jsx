@@ -39,7 +39,7 @@ export const OpiskeluoikeusEditor = React.createClass({
           {editLink}
           <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
           <div className="alku-loppu">
-            <PropertyEditor model={mdl} propertyName="alkamispäivä" /> — <PropertyEditor model={mdl} propertyName={päättymispäiväProperty} />
+            <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
           </div>
           <PropertiesEditor
             model={mdl}
