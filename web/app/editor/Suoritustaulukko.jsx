@@ -3,7 +3,7 @@ import { modelData, modelTitle } from './EditorModel.js'
 import { Editor } from './GenericEditor.jsx'
 import { shouldShowProperty, PropertiesEditor } from './PropertiesEditor.jsx'
 
-export const SuorituksetEditor = React.createClass({
+export const Suoritustaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') != undefined) != undefined
@@ -54,7 +54,10 @@ const SuoritusEditor = React.createClass({
     {
       expanded && (<tr className="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} propertyFilter={propertyFilter} />
+          <PropertiesEditor model={model} propertyFilter={propertyFilter} getValueEditor={ (prop, getDefault) => prop.key == 'osasuoritukset' && prop.model
+              ? <Suoritustaulukko suoritukset={ prop.model.value }/>
+              : getDefault() }
+          />
         </td>
       </tr>)
     }

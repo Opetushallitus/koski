@@ -271,7 +271,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
             'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
             'Kestävällä tavalla toimiminen kyllä 40 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -324,8 +324,8 @@ describe('Ammatillinen koulutus', function() {
             'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 osp Hyväksytty\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +
-            'Lisätiedot Tunniste Kuvaus\n' +
-            'Muutos arviointiasteikossa Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
+            'Lisätiedot Muutos arviointiasteikossa\n' +
+            'Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
             'Näyttö\n' +
             'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
             'Suorituspaikka Vesipojat Oy\n' +
@@ -347,8 +347,19 @@ describe('Ammatillinen koulutus', function() {
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +
-            'Lisätiedot Tunniste Kuvaus\n' +
-            'Arvioinnin mukauttaminen Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+            'Lisätiedot Arvioinnin mukauttaminen\n' +
+            'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+            'Osa-alueet Osa-alue Laajuus Arvosana\n' +
+            'Matematiikka 3 osp kiitettävä\n' +
+            'Fysiikka ja kemia 3 osp kiitettävä\n' +
+            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 3 osp kiitettävä\n' +
+            'Alkamispäivä 1.1.2014\n' +
+            'Tunnustettu\n' +
+            'Tutkinnon osa Asennushitsaus\n' +
+            'Tila Suoritus valmis\n' +
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Lisätiedot Arvioinnin mukauttaminen\n' +
+            'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +

@@ -58,7 +58,7 @@ function OpinnotPage() {
       }
       return checkAndExpand()
       function expanders() {
-        return S('.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) .toggle-expand:not(.disabled), a.expandable:not(.open)')
+        return S('.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) > tr > td > .toggle-expand:not(.disabled), a.expandable:not(.open)')
       }
     },
     collapseAll: function() {

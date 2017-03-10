@@ -1,8 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.editor.EditorModelSerializer
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{ContextualExtractor, Json}
+import fi.oph.koski.json.Json
 import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
 import org.json4s._
 import org.json4s.reflect.{Reflector, TypeInfo}
@@ -14,6 +13,7 @@ object Deserializers {
     LocalizedStringDeserializer,
     OpiskeluoikeusDeserializer,
     AmmatillisenTutkinnonOsaDeserializer,
+    AmmatillisenTutkinnonOsanOsaAlueDeserializer,
     HenkilöDeserialializer,
     JärjestämismuotoDeserializer,
     OrganisaatioDeserializer,
@@ -50,6 +50,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkintoosittainen") => suoritus.extract[AmmatillisenTutkinnonOsittainenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosanosaalue") => suoritus.extract[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]
 
@@ -287,6 +288,14 @@ object AmmatillisenTutkinnonOsaDeserializer extends Deserializer[AmmatillisenTut
         case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[ValtakunnallinenTutkinnonOsa]
         case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonOsa]
       }
+  }
+}
+
+object AmmatillisenTutkinnonOsanOsaAlueDeserializer extends Deserializer[AmmatillisenTutkinnonOsanOsaAlue] {
+  private val OsaAlueClass = classOf[AmmatillisenTutkinnonOsanOsaAlue]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillisenTutkinnonOsanOsaAlue] = {
+    case (TypeInfo(OsaAlueClass, _), json) => json.extract[PaikallinenAmmatillisenTutkinnonOsanOsaAlue]
   }
 }
 

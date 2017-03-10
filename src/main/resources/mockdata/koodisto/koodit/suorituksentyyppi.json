@@ -36,6 +36,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
+    "koodiArvo": "ammatillisentutkinnonosanosaalue",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen tutkinnon osan osa-alue",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavakoulutus",
     "koodiArvo": "nayttotutkintoonvalmistavakoulutus",
     "metadata": [

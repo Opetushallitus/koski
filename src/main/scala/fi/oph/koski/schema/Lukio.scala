@@ -113,6 +113,8 @@ case class MuidenLukioOpintojenSuoritus(
   tila: Koodistokoodiviite,
   koulutusmoduuli: MuuLukioOpinto,
   @MinItems(1)
+  @Description("Kurssien suoritukset")
+  @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends LukionOppimääränOsasuoritus with VahvistuksetonSuoritus with Arvioinniton {
   override def suorituskieli = None

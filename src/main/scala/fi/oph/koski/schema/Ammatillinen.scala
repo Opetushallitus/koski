@@ -156,7 +156,6 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
@@ -164,6 +163,8 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
+  @Title("Osa-alueet")
+  override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus
@@ -218,6 +219,37 @@ case class PaikallinenTutkinnonOsa(
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli with Valinnaisuus
+
+case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
+  @Title("Osa-alue")
+  koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[AmmatillinenArviointi]] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  @Description("Jos osa-alue on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
+) extends Suoritus with VahvistuksetonSuoritus
+
+trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli
+
+@Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
+case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusOsaamispisteissä] = None
+) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
+
+/*
+TODO: koodisto puuttuu
+case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
+*/
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
 case class AmmatillisenTutkinnonOsanLisätieto(
@@ -392,7 +424,6 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
@@ -449,7 +480,6 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject

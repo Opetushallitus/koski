@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{Koodistokoodiviite, _}
+import fi.oph.koski.schema.{AmmatillisenTutkinnonOsanOsaAlueenSuoritus, Koodistokoodiviite, _}
 
 object AmmatillinenExampleData {
   val exampleHenkilö = MockOppijat.ammattilainen.vainHenkilötiedot
@@ -164,6 +164,14 @@ object AmmatillinenExampleData {
     )
   }
 
+  val opiskeluoikeudenLisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(
+    hojks = Some(Hojks(
+      opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
+    )),
+    oikeusMaksuttomaanAsuntolapaikkaan = true,
+    ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")))
+  )
+
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
@@ -189,13 +197,14 @@ object AmmatillinenExampleData {
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
       )
     ),
-    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
-      hojks = Some(Hojks(
-        opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
-      )),
-      oikeusMaksuttomaanAsuntolapaikkaan = true,
-      ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")))
-    ))
+    lisätiedot = Some(opiskeluoikeudenLisätiedot)
+  )
+
+  val lisätietoMuutosArviointiasteikossa = AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
+    "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")
+
+  val lisätietoOsaamistavoitteet = AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+    "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella"
   )
 
   def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
@@ -227,13 +236,23 @@ object AmmatillinenExampleData {
         ),
         tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", hyväksytty, 15).copy(
           näyttö = Some(näyttö(date(2016, 4, 1), "Uimarin järven tilan arviointi ja kunnostus", "Vesipojat Oy", Some(näytönArviointi))),
-          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
-            "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")))
+          lisätiedot = Some(List(lisätietoMuutosArviointiasteikossa))
         ),
         tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11),
         tutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
-          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
-            "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella")))
+          lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
+          osasuoritukset = Some(List(
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("FYK", "Fysiikka ja kemia"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("TIVI", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen"), Some(LaajuusOsaamispisteissä(3))),
+              tila = tilaValmis,
+              arviointi = Some(List(arviointiKiitettävä)),
+              alkamispäivä = Some(date(2014, 1, 1)),
+              tunnustettu = Some(tunnustettu),
+              lisätiedot = Some(List(lisätietoOsaamistavoitteet))
+            )
+          ))
         ),
         tutkinnonOsanSuoritus("101055", "Yhteiskunnassa ja työelämässä tarvittava osaaminen", k3, 8),
         tutkinnonOsanSuoritus("101056", "Sosiaalinen ja kulttuurinen osaaminen", k3, 7),

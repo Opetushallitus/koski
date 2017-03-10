@@ -1,5 +1,6 @@
 import React from 'react'
-import { modelData, modelTitle } from './EditorModel.js'
+import { modelData, modelTitle, modelLookup } from './EditorModel.js'
+import { Editor } from './GenericEditor.jsx'
 import { PropertiesEditor } from './PropertiesEditor.jsx'
 import { KoulutusmoduuliEditor } from './KoulutusmoduuliEditor.jsx'
 import { PäivämääräväliEditor } from './PaivamaaravaliEditor.jsx'
@@ -34,6 +35,18 @@ const OppisopimusEditor = React.createClass({
   }
 })
 
+const TutkinnonOsanLisätietoEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return (<div className="ammatillisentutkinnonosanlisatieto">
+      <Editor model={ modelLookup(model, 'tunniste') }/>
+      <div className="kuvaus">
+        <Editor model={ modelLookup(model, 'kuvaus') }/>
+      </div>
+    </div>)
+  }
+})
+
 export const TyössäoppimisjaksoEditor = React.createClass({
   render() {
     let {model} = this.props
@@ -56,5 +69,6 @@ export const editorMapping = {
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
-  'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor
+  'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
+  'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor
 }

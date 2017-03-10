@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Suoritustaulukko from './Suoritustaulukko.jsx'
+import { Suoritustaulukko } from './Suoritustaulukko.jsx'
 
 export const LuvaEditor = React.createClass({
   render() {
@@ -12,14 +12,14 @@ export const LuvaEditor = React.createClass({
           lukioonvalmistavankurssinsuoritukset.length > 0 &&
           <div>
             <h5>Lukioon valmistavat opinnot</h5>
-            <Suoritustaulukko.SuorituksetEditor suoritukset={lukioonvalmistavankurssinsuoritukset}/>
+            <Suoritustaulukko suoritukset={lukioonvalmistavankurssinsuoritukset}/>
           </div>
         }
         {
           lukionkurssinsuoritukset.length > 0 &&
           <div>
             <h5>Valinnaisena suoritetut lukiokurssit</h5>
-            <Suoritustaulukko.SuorituksetEditor suoritukset={lukionkurssinsuoritukset}/>
+            <Suoritustaulukko suoritukset={lukionkurssinsuoritukset}/>
           </div>
         }
       </div>
