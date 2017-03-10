@@ -220,6 +220,7 @@ case class PaikallinenTutkinnonOsa(
   override val laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli with Valinnaisuus
 
+@Title("Ammatillisen tutkinnon osan osa-alueen suoritus")
 case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   @Title("Osa-alue")
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
@@ -235,6 +236,7 @@ case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
 ) extends Suoritus with VahvistuksetonSuoritus
 
+@Title("Ammatillisen tutkinnon osan osa-alue")
 trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
