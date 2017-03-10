@@ -97,16 +97,14 @@ function Editor(elem) {
     propertyBySelector: function(selector) {
       return Property(function() {return findSingle(selector, elem())})
     },
-
     subEditor: function(selector) {
       return Editor(function() { return findSingle(selector, elem()) })
     }
-
   }
 }
 
 function Property(elem) {
-  return {
+  return _.merge({
     addValue: function() {
       triggerEvent(findSingle('.add-value', elem()), 'click')
       return KoskiPage().verifyNoError()
@@ -134,6 +132,12 @@ function Property(elem) {
     getValue: function() {
       return findSingle('.value', elem()).text()
     },
+    getText: function() {
+      return extractAsText(elem())
+    },
+    getItems: function() {
+      return toArray(elem().find('.value .array li')).map(function(elem) { console.log("found", elem); return Property(function() { return S(elem) })})
+    },
     isVisible: function() {
       try{
         return findSingle('.value', elem()).is(":visible")
@@ -142,5 +146,5 @@ function Property(elem) {
         throw e
       }
     }
-  }
+  }, Editor(elem))
 }

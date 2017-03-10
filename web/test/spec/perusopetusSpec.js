@@ -310,7 +310,7 @@ describe('Perusopetus', function() {
           expect(arvosana.getValue()).to.equal('5')
         })
       })
-      describe('Kun lisätään käyttäytymisen arviointi', function() {
+      describe('Käyttäytymisen arvioinnin lisäys', function() {
         var editor = opinnot.suoritusEditor()
         var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
         before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.doneEditing)
@@ -331,6 +331,14 @@ describe('Perusopetus', function() {
           it('Näyttää muutetun arvon', function() {
             expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
           })
+        })
+      })
+      describe('Liitetietojen lisäys', function() {
+        var editor = opinnot.suoritusEditor()
+        var liitetiedot = editor.property('liitetiedot')
+        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'), editor.doneEditing)
+        it('Näyttää uudet liitetiedot', function() {
+          expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti')
         })
       })
     })
