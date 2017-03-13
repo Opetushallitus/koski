@@ -458,49 +458,72 @@ describe('Perusopetus', function() {
         })
       })
       describe('Liitetiedot', function() {
+        // Liitetiedot testataan isolla testisetillä, joilla varmistetaan ArrayEditorin toiminta
         var editor = opinnot.suoritusEditor()
         var liitetiedot = editor.property('liitetiedot')
-        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'), editor.doneEditing)
         describe('Liitetietojen lisäys', function() {
-          it('Näyttää uudet liitetiedot', function() {
-            expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti')
+          before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'))
+          it('Editoinnin aikana ei näytetä ylimääräistä poistonappia', function() {
+            expect(liitetiedot.isRemoveValueVisible()).to.equal(false)
           })
-        })
-        describe('Toisen liitetiedon lisäys', function() {
-          before(editor.edit, liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('Testi2'), editor.doneEditing)
-          it('Näyttää uudet liitetiedot', function() {
-            expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti\nTunniste Käyttäytyminen\nKuvaus Testi2')
-          })
-          describe('Ensimmäisen liitetiedon poisto', function() {
-            before(editor.edit, liitetiedot.removeItem(0), editor.doneEditing)
-            it('Näyttää vain toisen lisätiedon', function() {
-              expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus Testi2')
+          describe('Lisäyksen jälkeen', function() {
+            before(editor.doneEditing)
+            it('Näyttää uudet liitetiedot', function() {
+              expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti')
             })
-            describe('Lisäys ja poisto samalla kertaa', function() {
-              before(editor.edit, liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('Testi3'), liitetiedot.removeItem(0))
-              it('Välitulos: poisto toimii editoitaessa', function() {
-                expect(liitetiedot.itemEditor(0).property('kuvaus').getValue()).to.equal('Testi3')
+            describe('Toisen liitetiedon lisäys', function() {
+              before(editor.edit, liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('Testi2'), editor.doneEditing)
+              it('Näyttää uudet liitetiedot', function() {
+                expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti\nTunniste Käyttäytyminen\nKuvaus Testi2')
               })
-              describe('Editoinnin jälkeen', function() {
-                before(editor.doneEditing)
-                it('Näyttää oikeellisesti vain toisen lisätiedon', function() {
-                  expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus Testi3')
+              describe('Ensimmäisen liitetiedon poisto', function() {
+                before(editor.edit, liitetiedot.removeItem(0), editor.doneEditing)
+                it('Näyttää vain toisen lisätiedon', function() {
+                  expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus Testi2')
                 })
-
-                describe('Viimeisen alkion poisto', function() {
-                  before(editor.edit, liitetiedot.removeItem(0))
+                describe('Lisäys ja poisto samalla kertaa', function() {
+                  before(editor.edit, liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('Testi3'), liitetiedot.removeItem(0))
                   it('Välitulos: poisto toimii editoitaessa', function() {
-                    expect(liitetiedot.getItems().length).to.equal(0)
+                    expect(liitetiedot.itemEditor(0).property('kuvaus').getValue()).to.equal('Testi3')
                   })
-                  describe('poiston jälkeen', function() {
+                  describe('Editoinnin jälkeen', function() {
                     before(editor.doneEditing)
-                    it('Näytetään tyhjät liitetiedot', function() {
-                      expect(liitetiedot.isVisible()).to.equal(false)
+                    it('Näyttää oikeellisesti vain toisen lisätiedon', function() {
+                      expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus Testi3')
+                    })
+
+                    describe('Viimeisen alkion poisto', function() {
+                      before(editor.edit, liitetiedot.removeItem(0))
+                      it('Välitulos: poisto toimii editoitaessa', function() {
+                        expect(liitetiedot.getItems().length).to.equal(0)
+                      })
+                      describe('poiston jälkeen', function() {
+                        before(editor.doneEditing)
+                        it('Näytetään tyhjät liitetiedot', function() {
+                          expect(liitetiedot.isVisible()).to.equal(false)
+                        })
+                      })
                     })
                   })
                 })
               })
             })
+          })
+        })
+        describe('Useamman liitetiedon poisto kerralla', function() {
+          before(page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseSuoritus('7. vuosiluokka'),
+            editor.edit,
+            liitetiedot.addValue, liitetiedot.itemEditor(0).property('kuvaus').setValue('T1'),
+            liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('T2'),
+            editor.doneEditing,
+            editor.edit,
+            liitetiedot.removeItem(0),
+            liitetiedot.removeItem(0),
+            editor.doneEditing
+          )
+
+          it('Kaikki liitetiedot on poistettu', function() {
+            expect(liitetiedot.isVisible()).to.equal(false)
           })
         })
       })

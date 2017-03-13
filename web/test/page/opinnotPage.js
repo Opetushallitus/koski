@@ -125,6 +125,9 @@ function Property(elem) {
       triggerEvent(findSingle('.add-value', elem()), 'click')
       return KoskiPage().verifyNoError()
     },
+    isRemoveValueVisible: function() {
+      return elem().find('.remove-value').is(':visible')
+    },
     addItem: function() {
       var link = findSingle('.add-item a', elem())
       triggerEvent(link, 'click')

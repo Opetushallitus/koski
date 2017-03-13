@@ -7,8 +7,9 @@ export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
     let {addingModel, removed} = this.state
+    let prototype = contextualizeModel(model.optionalPrototype, model.context)
+
     let addValue = () => {
-      let prototype = contextualizeModel(model.optionalPrototype, model.context)
 
       if (!prototype.value.data && prototype.oneOfPrototypes) {
         // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
@@ -29,7 +30,7 @@ export const OptionalEditor = React.createClass({
 
     let modelToBeShown = addingModel || model
     let empty = (modelEmpty(modelToBeShown) || removed)
-    let canRemove = model.context.edit && !empty
+    let canRemove = model.context.edit && !empty && prototype.type != 'array'
 
     return (<span className="optional-wrapper">
       {

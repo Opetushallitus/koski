@@ -1,8 +1,6 @@
 import React from 'react'
-import Bacon from 'baconjs'
-import * as L from 'partial.lenses'
-import {childContext, contextualizeModel, modelItems, addContext } from './EditorModel.js'
-import { Editor } from './GenericEditor.jsx'
+import {childContext, contextualizeModel, modelItems} from './EditorModel.js'
+import {Editor} from './GenericEditor.jsx'
 
 export const ArrayEditor = React.createClass({
   render() {
@@ -34,7 +32,7 @@ export const ArrayEditor = React.createClass({
                 let newItems = items
                 newItems.splice(i, 1)
                 item.context.changeBus.push([item.context, {data: undefined}])
-                this.setState({ items: newItems })
+                this.setState({ items: newItems.map((arrayItem, index) => contextualizeModel(arrayItem, childContext(model.context, index))) }) // Re-contextualize to apply correct index!
               }
               return (<li key={item.arrayKey}>
                 <Editor model = {item}/>
