@@ -376,6 +376,13 @@ describe('Perusopetus', function() {
             })
           })
         })
+
+        describe('Virheellinen päivämäärä', function() {
+          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'))
+          it('Tallennus on estetty', function() {
+            expect(opiskeluoikeus.isEnabled()).to.equal(false)
+          })
+        })
         after(editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
 

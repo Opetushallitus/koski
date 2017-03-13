@@ -22,6 +22,7 @@ export const saveBus = Bacon.Bus()
 
 export const oppijaContentP = (oppijaOid) => {
   const changeBus = Bacon.Bus()
+  const errorBus = Bacon.Bus()
   const doneEditingBus = Bacon.Bus()
 
   const queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
@@ -67,7 +68,7 @@ export const oppijaContentP = (oppijaOid) => {
       content: (<div className='content-area'><div className="main-content oppija">
         { haku }
         <Link className="back-link" href="/koski/">Opiskelijat</Link>
-        <ExistingOppija {...{oppija, changeBus, doneEditingBus}}/>
+        <ExistingOppija {...{oppija, changeBus, errorBus, doneEditingBus}}/>
         </div></div>),
       title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
@@ -76,7 +77,7 @@ export const oppijaContentP = (oppijaOid) => {
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija, changeBus, doneEditingBus} = this.props
+    let {oppija, changeBus, errorBus, doneEditingBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
     return oppija.loading
       ? <div className="loading"/>
@@ -88,7 +89,7 @@ export const ExistingOppija = React.createClass({
           </h2>
           {
             oppija
-              ? <Editor model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
+              ? <Editor model={oppija} {... {doneEditingBus, changeBus, errorBus, editorMapping}}/>
               : null
           }
         </div>

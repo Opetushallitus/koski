@@ -13,7 +13,8 @@ export const DateEditor = React.createClass({
       if (date) {
         valueBus.push([model.context, {data: formatISODate(date)}])
       }
-      this.setState({invalidDate: date ? false : true})
+      model.context.errorBus.push([model.context, {error: !date}])
+      this.setState({invalidDate: !date})
     }
 
     return model.context.edit

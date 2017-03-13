@@ -4,12 +4,12 @@ import { modelLookup, contextualizeModel } from './EditorModel.js'
 
 export const Editor = React.createClass({
   render() {
-    let { model, editorMapping, changeBus, doneEditingBus, path } = this.props
+    let { model, editorMapping, changeBus, errorBus, doneEditingBus, path } = this.props
     if (!model.context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
       model = contextualizeModel(model, {
-        changeBus, doneEditingBus,
+        changeBus, errorBus, doneEditingBus,
         root: true,
         rootModel: model,
         path: '',

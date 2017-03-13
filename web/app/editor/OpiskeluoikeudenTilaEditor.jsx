@@ -11,13 +11,13 @@ import {DateEditor} from './DateEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model, opiskeluoikeusModel} = this.props
-    let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
+    let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
 
     let showAddDialog = () => {
       document.addEventListener('keyup', this.handleKeys)
       let opiskeluoikeusjaksoModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length))
-      let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus})
-      let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus})
+      let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus, errorBus: errorBus})
+      let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus, errorBus: errorBus})
       alkuPäiväBus.push([alkuPäiväModel.context, {data: modelData(alkuPäiväModel)}])
       this.setState({newStateModels: {alkuPäiväModel, tilaModel}})
     }
@@ -89,12 +89,13 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       saveChangesBus: Bacon.Bus(),
       cancelBus: Bacon.Bus(),
       alkuPäiväBus: Bacon.Bus(),
-      tilaBus: Bacon.Bus()
+      tilaBus: Bacon.Bus(),
+      errorBus: Bacon.Bus()
     }
   },
   componentDidMount() {
     let {model, opiskeluoikeusModel} = this.props
-    let {alkuPäiväBus, tilaBus, cancelBus, saveChangesBus} = this.state
+    let {alkuPäiväBus, tilaBus, cancelBus, saveChangesBus, errorBus} = this.state
 
     let muutoksetE = alkuPäiväBus.merge(tilaBus)
 
@@ -106,13 +107,16 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     Bacon.mergeAll(
       tilaBus.map(true),
       saveChangesBus.map(false),
-      cancelBus.map(false)
+      cancelBus.map(false),
+      errorBus.map(([, e]) => !e.error)
     ).onValue(valid => this.setState({valid: valid}))
 
     saveChangesBus.merge(cancelBus).onValue(() => {
       this.setState({newStateModels: undefined})
       document.removeEventListener('keyup', this.handleKeys)
     })
+
+    errorBus.onValue(e => model.context.errorBus.push(e))
 
     changesP.sampledBy(saveChangesBus).onValue((changes) => {
       let opiskeluoikeudenPaattymispaiva = this.opiskeluoikeudenPaattymispaiva(changes)

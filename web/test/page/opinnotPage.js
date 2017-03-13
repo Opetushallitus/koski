@@ -87,9 +87,15 @@ function OpiskeluoikeusDialog() {
     tila: function() {
       return Property(function() {return S('.lisaa-opiskeluoikeusjakso')})
     },
+    alkuPaiva: function() {
+      return Property(function() {return S('.property.alku')})
+    },
     tallenna: function() {
       triggerEvent(findSingle('button.opiskeluoikeuden-tila'), 'click')
       return wait.forAjax()
+    },
+    isEnabled: function() {
+      return !findSingle('button.opiskeluoikeuden-tila').is(':disabled')
     }
   }
 }
