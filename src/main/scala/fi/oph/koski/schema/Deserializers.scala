@@ -295,6 +295,7 @@ object AmmatillisenTutkinnonOsanOsaAlueDeserializer extends Deserializer[Ammatil
   private val OsaAlueClass = classOf[AmmatillisenTutkinnonOsanOsaAlue]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillisenTutkinnonOsanOsaAlue] = {
+    case (TypeInfo(OsaAlueClass, _), json) if json \ "tunniste" \ "koodistoUri" == JString("ammatillisenoppiaineet") => json.extract[ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue]
     case (TypeInfo(OsaAlueClass, _), json) => json.extract[PaikallinenAmmatillisenTutkinnonOsanOsaAlue]
   }
 }

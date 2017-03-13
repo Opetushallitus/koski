@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "ammatillisenoppiaineet",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Yhteisten tutkinnon osien osa-alueet",
+    "kuvaus" : "Yhteisten tutkinnon osien osa-alueet"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2015-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

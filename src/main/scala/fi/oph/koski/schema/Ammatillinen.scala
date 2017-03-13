@@ -245,13 +245,11 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
 
-/*
-TODO: koodisto puuttuu
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+  @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
-*/
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
 case class AmmatillisenTutkinnonOsanLisätieto(

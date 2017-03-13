@@ -243,9 +243,9 @@ object AmmatillinenExampleData {
           lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
           osasuoritukset = Some(List(
             AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("FYK", "Fysiikka ja kemia"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
             AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
-              koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("TIVI", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen"), Some(LaajuusOsaamispisteissä(3))),
+              koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), Some(LaajuusOsaamispisteissä(3))),
               tila = tilaValmis,
               arviointi = Some(List(arviointiKiitettävä)),
               alkamispäivä = Some(date(2014, 1, 1)),

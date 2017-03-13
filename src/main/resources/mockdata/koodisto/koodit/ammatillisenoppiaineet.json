@@ -1,0 +1,161 @@
+[ {
+  "koodiUri" : "ammatillisenoppiaineet_tk1",
+  "koodiArvo" : "TK1",
+  "metadata" : [ {
+    "nimi" : "Toinen kotimainen kieli, ruotsi",
+    "lyhytNimi" : "Toinen kotimainen kieli, ruotsi",
+    "kuvaus" : "Toinen kotimainen kieli, ruotsi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ps",
+  "koodiArvo" : "PS",
+  "metadata" : [ {
+    "nimi" : "Psykologia",
+    "lyhytNimi" : "Psykologia",
+    "kuvaus" : "Psykologia",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Psykologi",
+    "lyhytNimi" : "Psykologi",
+    "kuvaus" : "Psykologi",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ma",
+  "koodiArvo" : "MA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "lyhytNimi" : "Matematiikka",
+    "kuvaus" : "Matematiikka",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik",
+    "lyhytNimi" : "Matematik",
+    "kuvaus" : "Matematik",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ai",
+  "koodiArvo" : "AI",
+  "metadata" : [ {
+    "nimi" : "Äidinkieli ",
+    "lyhytNimi" : "Äidinkieli ",
+    "kuvaus" : "Äidinkieli ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_fk",
+  "koodiArvo" : "FK",
+  "metadata" : [ {
+    "nimi" : "Fysiikka ja kemia",
+    "lyhytNimi" : "Fysiikka ja kemia",
+    "kuvaus" : "Fysiikka ja kemia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ykt",
+  "koodiArvo" : "YKT",
+  "metadata" : [ {
+    "nimi" : "Yhteiskuntataidot",
+    "lyhytNimi" : "Yhteiskuntataidot",
+    "kuvaus" : "Yhteiskuntataidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_tvt",
+  "koodiArvo" : "TVT",
+  "metadata" : [ {
+    "nimi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+    "lyhytNimi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+    "kuvaus" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vk",
+  "koodiArvo" : "VK",
+  "metadata" : [ {
+    "nimi" : "Vieraat kielet",
+    "lyhytNimi" : "Vieraat kielet",
+    "kuvaus" : "Vieraat kielet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_yyt",
+  "koodiArvo" : "YYT",
+  "metadata" : [ {
+    "nimi" : "Yrittäjyys ja yritystoiminta",
+    "lyhytNimi" : "Yrittäjyys ja yritystoiminta",
+    "kuvaus" : "Yrittäjyys ja yritystoiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_tak",
+  "koodiArvo" : "TAK",
+  "metadata" : [ {
+    "nimi" : "Taide ja kulttuuri",
+    "lyhytNimi" : "Taide ja kulttuuri",
+    "kuvaus" : "Taide ja kulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ku",
+  "koodiArvo" : "KU",
+  "metadata" : [ {
+    "nimi" : "Kulttuurien tuntemus",
+    "lyhytNimi" : "Kulttuurien tuntemus",
+    "kuvaus" : "Kulttuurien tuntemus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_tet",
+  "koodiArvo" : "TET",
+  "metadata" : [ {
+    "nimi" : "Työelämätaidot",
+    "lyhytNimi" : "Työelämätaidot",
+    "kuvaus" : "Työelämätaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_ym",
+  "koodiArvo" : "YM",
+  "metadata" : [ {
+    "nimi" : "Ympäristöosaaminen",
+    "lyhytNimi" : "Ympäristöosaaminen",
+    "kuvaus" : "Ympäristöosaaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_etk",
+  "koodiArvo" : "ETK",
+  "metadata" : [ {
+    "nimi" : "Etiikka",
+    "lyhytNimi" : "Etiikka",
+    "kuvaus" : "Etiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_tyt",
+  "koodiArvo" : "TYT",
+  "metadata" : [ {
+    "nimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+    "lyhytNimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+    "kuvaus" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

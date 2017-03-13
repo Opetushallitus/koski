@@ -8,6 +8,7 @@ object Koodistot {
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
     "ammatillisennaytonarviointikohde",
     "ammatillisennaytonsuorituspaikka",
+    "ammatillisenoppiaineet",
     "ammatillisentutkinnonosanlisatieto",
     "ammatillisentutkinnonsuoritustapa",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
