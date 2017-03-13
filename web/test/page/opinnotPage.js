@@ -162,6 +162,9 @@ function Property(elem) {
     getText: function() {
       return extractAsText(elem())
     },
+    itemEditor: function(index) {
+      return this.propertyBySelector('.array li:nth-child(' + (index + 1) +')')
+    },
     getItems: function() {
       return toArray(elem().find('.value .array li')).map(function(elem) { return Property(function() { return S(elem) })})
     },

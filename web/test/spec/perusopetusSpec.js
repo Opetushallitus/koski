@@ -463,13 +463,13 @@ describe('Perusopetus', function() {
         before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'), editor.doneEditing)
         describe('Liitetietojen lisäys', function() {
           it('Näyttää uudet liitetiedot', function() {
-            expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti')
+            expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti')
           })
         })
         describe('Toisen liitetiedon lisäys', function() {
-          before(editor.edit, wait.forMilliseconds(1000), liitetiedot.addItem, liitetiedot.propertyBySelector('li:nth-child(2) .perusopetuksenvuosiluokansuorituksenliitteet .kuvaus').setValue('Testi2'), editor.doneEditing)
+          before(editor.edit, liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('Testi2'), editor.doneEditing)
           it('Näyttää uudet liitetiedot', function() {
-            expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti,Tunniste Käyttäytyminen\nKuvaus Testi2')
+            expect(liitetiedot.getText()).to.equal('Liitetiedot Tunniste Käyttäytyminen\nKuvaus TestiTesti\nTunniste Käyttäytyminen\nKuvaus Testi2')
           })
           describe('Ensimmäisen liitetiedon poisto', function() {
             before(editor.edit, liitetiedot.removeItem(0), editor.doneEditing)
@@ -478,7 +478,6 @@ describe('Perusopetus', function() {
             })
           })
         })
-
       })
     })
 
