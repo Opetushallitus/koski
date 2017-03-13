@@ -1,3 +1,7 @@
+## 13.3.2017
+
+- Lisätty mahdollisuus käyttää valtakunnallista koodistoa \"ammatillisenoppiaineet\" yhteisten tutkinnon osien osa-alueissa
+
 ## 10.3.2017
 
 - Lisätty lukion "muut opinnot" eli kurssit, jotka eivät liity yksittäiseen oppiaineeseen
