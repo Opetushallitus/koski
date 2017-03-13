@@ -19,6 +19,7 @@ export const OpiskeluoikeusEditor = React.createClass({
     let suoritukset = modelItems(model, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
+    let valittuSuoritus = suoritukset[SuoritusTabs.suoritusIndex(context)]
 
     return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => (<div className="opiskeluoikeus">
       <h3>
@@ -59,12 +60,7 @@ export const OpiskeluoikeusEditor = React.createClass({
               </div>
             ) : <hr/>
           }
-          {
-            suoritukset.map((suoritusModel, i) =>
-              i == SuoritusTabs.suoritusIndex(context)
-                ? <SuoritusEditor model={addContext(suoritusModel, {opiskeluoikeusId: id})} key={i}/> : null
-            )
-          }
+          <SuoritusEditor model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
         </div>
       </div>
     </div>)
