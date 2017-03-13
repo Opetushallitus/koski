@@ -27,7 +27,7 @@ export const ExpandablePropertiesEditor = React.createClass({
     let edit = model.context.edit
     let propertiesModel = modelLookup(model, propertyName)
     if (edit && modelEmpty(propertiesModel) && !this.state.addingModel) {
-      let addingModel = contextualizeModel(propertiesModel.prototype, propertiesModel.context)
+      let addingModel = contextualizeModel(propertiesModel.optionalPrototype, propertiesModel.context)
       if (!addingModel.value.data) {
         throw new Error('Prototype value data missing')
       }

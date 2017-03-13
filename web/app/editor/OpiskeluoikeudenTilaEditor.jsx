@@ -15,7 +15,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
 
     let showAddDialog = () => {
       document.addEventListener('keyup', this.handleKeys)
-      let opiskeluoikeusjaksoModel = contextualizeModel(model.prototype, childContext(model.context, items.length))
+      let opiskeluoikeusjaksoModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length))
       let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus})
       let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus})
       alkuPäiväBus.push([alkuPäiväModel.context, {data: modelData(alkuPäiväModel)}])

@@ -125,6 +125,11 @@ function Property(elem) {
       triggerEvent(findSingle('.add-value', elem()), 'click')
       return KoskiPage().verifyNoError()
     },
+    addItem: function() {
+      var link = findSingle('.add-item a', elem())
+      triggerEvent(link, 'click')
+      return KoskiPage().verifyNoError()
+    },
     removeValue: function() {
       triggerEvent(findSingle('.remove-value', elem()), 'click')
       return KoskiPage().verifyNoError()

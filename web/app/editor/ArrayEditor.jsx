@@ -14,7 +14,9 @@ export const ArrayEditor = React.createClass({
       : 'array'
     let adding = this.state.adding
     let addItem = () => {
-      this.setState({adding: adding.concat(contextualizeModel(model.prototype, childContext(model.context, items.length + adding.length)))})
+      var newItemModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length + adding.length))
+      model.context.changeBus.push([newItemModel.context, newItemModel.value])
+      this.setState({adding: adding.concat(newItemModel)})
     }
     return (
       <ul ref="ul" className={className}>
@@ -34,7 +36,7 @@ export const ArrayEditor = React.createClass({
           )
         }
         {
-          model.context.edit && model.prototype !== undefined ? <li className="add-item"><a onClick={addItem}>lisää uusi</a></li> : null
+          model.context.edit && model.arrayPrototype !== undefined ? <li className="add-item"><a onClick={addItem}>lisää uusi</a></li> : null
         }
       </ul>
     )

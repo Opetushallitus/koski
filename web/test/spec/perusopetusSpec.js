@@ -457,13 +457,22 @@ describe('Perusopetus', function() {
           })
         })
       })
-      describe('Liitetietojen lisäys', function() {
+      describe('Liitetiedot', function() {
         var editor = opinnot.suoritusEditor()
         var liitetiedot = editor.property('liitetiedot')
         before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'), editor.doneEditing)
-        it('Näyttää uudet liitetiedot', function() {
-          expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti')
+        describe('Liitetietojen lisäys', function() {
+          it('Näyttää uudet liitetiedot', function() {
+            expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti')
+          })
         })
+        describe('Toisen liitetiedon lisäys', function() {
+          before(editor.edit, wait.forMilliseconds(1000), liitetiedot.addItem, liitetiedot.propertyBySelector('li:nth-child(2) .perusopetuksenvuosiluokansuorituksenliitteet .kuvaus').setValue('Testi2'), editor.doneEditing)
+          it('Näyttää uudet liitetiedot', function() {
+            expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti,Tunniste Käyttäytyminen\nKuvaus Testi2')
+          })
+        })
+
       })
     })
 

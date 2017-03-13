@@ -39,12 +39,12 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
           json("object", "value" -> Map("classes" -> c, "data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
         case (PrototypeModel(key)) => json("prototype", "key" -> key)
         case (OptionalModel(model, prototype)) =>
-          val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)
+          val optionalInfo: JValue = json("optional" -> true, "optionalPrototype" -> prototype)
           val typeAndValue = modelOrEmptyObject(model)
           typeAndValue.merge(optionalInfo)
 
         case (ListModel(items, prototype)) =>
-          json("array", "value" -> items, "prototype" -> prototype)
+          json("array", "value" -> items, "arrayPrototype" -> prototype)
         case (EnumeratedModel(value, alternatives, path)) =>
           json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>

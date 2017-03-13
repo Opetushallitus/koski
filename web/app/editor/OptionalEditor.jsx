@@ -8,7 +8,7 @@ export const OptionalEditor = React.createClass({
     let {model} = this.props
     let {addingModel, removed} = this.state
     let addValue = () => {
-      let prototype = contextualizeModel(model.prototype, model.context)
+      let prototype = contextualizeModel(model.optionalPrototype, model.context)
 
       if (!prototype.value.data && prototype.oneOfPrototypes) {
         // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
@@ -34,7 +34,7 @@ export const OptionalEditor = React.createClass({
     return (<span className="optional-wrapper">
       {
         empty
-          ? model.context.edit && model.prototype !== undefined
+          ? model.context.edit && model.optionalPrototype !== undefined
               ? <a className="add-value" onClick={addValue}>lisää</a>
               : null
           : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
