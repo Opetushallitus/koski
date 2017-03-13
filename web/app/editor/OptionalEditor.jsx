@@ -7,10 +7,9 @@ export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
     let {addingModel, removed} = this.state
-    let prototype = contextualizeModel(model.optionalPrototype, model.context)
+    let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
 
     let addValue = () => {
-
       if (!prototype.value.data && prototype.oneOfPrototypes) {
         // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
         prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
