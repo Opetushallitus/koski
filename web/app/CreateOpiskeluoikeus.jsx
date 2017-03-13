@@ -1,65 +1,39 @@
-import React from 'react'
+import React from 'baret'
 import Autocomplete from './Autocomplete.jsx'
 import Bacon from 'baconjs'
 import Http from './http'
-import BaconComponent from './BaconComponent'
+import {showInternalError} from './location.js'
 
-import { showInternalError } from './location.js'
-
-const Oppilaitos = BaconComponent({
-  render() {
-    return (
-        <label className='oppilaitos'>Oppilaitos
-          <Autocomplete
-              resultBus={this.props.oppilaitosBus}
-              fetchItems={value => (value.length >= 1)
-                ? this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.fi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
+const Oppilaitos = ({oppilaitosBus, oppilaitosP}) => (<label className='oppilaitos'>Oppilaitos
+  {
+    oppilaitosP.map((selected) =>
+      <Autocomplete
+        resultBus={oppilaitosBus}
+        fetchItems={value => (value.length >= 1)
+                ?  Http.cachedGet('/koski/api/oppilaitos').map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.fi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
                 : Bacon.once([])
               }
-              selected={this.state.selected}
-              />
-        </label>
+        selected={ selected }
+      />
     )
-  },
-
-  getInitialState() {
-    return { oppilaitokset: Http.cachedGet('/koski/api/oppilaitos')}
-  },
-
-  componentDidMount() {
-    this.props.oppilaitosP.takeUntil(this.unmountE).onValue(o => {this.setState({selected:o})})
   }
-})
+</label>)
 
-const Tutkinto = BaconComponent({
-  render() {
-    return (
-        <label className='tutkinto'>Tutkinto
-          <Autocomplete
-              resultBus={this.props.tutkintoBus}
-              fetchItems={(value) => (value.length >= 3)
-                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value).doError(showInternalError)
-                : Bacon.constant([])}
-              disabled={!this.state.oppilaitos}
-              selected={this.state.selected}
-              />
-        </label>
-    )
-  },
-
-  getInitialState() {
-    return {oppilaitos: undefined}
-  },
-
-  componentDidMount() {
-    const {oppilaitosP, tutkintoP} = this.props
-    oppilaitosP
-      .map(o => ({oppilaitos: o, selected:undefined})).toEventStream()
-      .merge(tutkintoP.map(t => ({selected:t})).toEventStream())
-      .takeUntil(this.unmountE)
-      .onValue(state => this.setState(state))
-  }
-})
+const Tutkinto = ({tutkintoBus, oppilaitosP, tutkintoP}) =>{
+  return (<label className='tutkinto'>Tutkinto
+  {
+    Bacon.combineTemplate({ selected: tutkintoP, oppilaitos: oppilaitosP}).map(({oppilaitos, selected}) => (
+      <Autocomplete
+        resultBus={tutkintoBus}
+        fetchItems={(value) => (value.length >= 3)
+                        ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value).doError(showInternalError)
+                        : Bacon.constant([])}
+        disabled={!oppilaitos}
+        selected={selected}
+      />
+    ))
+  } </label> )
+}
 
 export const Opiskeluoikeus = React.createClass({
   render() {

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "baconjs": "~0.7.77",
+    "baret": "^1.0.0",
     "es6-promise": "^3",
     "fecha": "^2.2.0",
     "immutable": "^3.7.5",
