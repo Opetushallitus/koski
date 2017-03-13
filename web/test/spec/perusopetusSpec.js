@@ -471,6 +471,12 @@ describe('Perusopetus', function() {
           it('Näyttää uudet liitetiedot', function() {
             expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus TestiTesti,Tunniste Käyttäytyminen\nKuvaus Testi2')
           })
+          describe('Ensimmäisen liitetiedon poisto', function() {
+            before(editor.edit, liitetiedot.removeItem(0), editor.doneEditing)
+            it('Näyttää vain toisen lisätiedon', function() {
+              expect(liitetiedot.getItems().map(function(item) { return item.getText()}).join(',')).to.equal('Tunniste Käyttäytyminen\nKuvaus Testi2')
+            })
+          })
         })
 
       })
