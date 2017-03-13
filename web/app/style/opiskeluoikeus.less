@@ -328,10 +328,6 @@
           width: 100%;
         }
 
-        .property .value > .array {
-          padding-left: 0;
-        }
-
         table.tabular-array {
           border: 1px solid @color-neutral-gray;
           border-collapse: collapse;
@@ -370,13 +366,26 @@
           margin-right: 5px;
         }
       }
+
+      > li > .object {
+        display: inline-block;
+      }
+
+      > li:not(:last-child) > .object {
+        border-bottom: solid lightgray 1px;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+      }
+
+      > li > a.remove-item {
+        .FontAwesomeSymbol;
+        color: #dc6f6f;
+        margin-left: 6px;
+        vertical-align: top;
+        margin-top: 6px;
+      }
     }
 
-    .array > li:not(:last-child) > .object {
-      border-bottom: solid lightgray 1px;
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-    }
 
     input, select {
       width: 200px;
@@ -401,15 +410,9 @@
       font-size: 12px;
     }
 
-    a.remove-value, a.remove-item {
+    a.remove-value {
       .FontAwesomeSymbol;
       color: #dc6f6f;
-    }
-
-    a.remove-item {
-      position: absolute;
-      top: -2px;
-      margin-left: 6px;
     }
 
     .oppiaineensuoritus .korotus {

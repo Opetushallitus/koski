@@ -1,6 +1,7 @@
 import React from 'react'
+import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import {childContext, contextualizeModel, modelItems } from './EditorModel.js'
+import {childContext, contextualizeModel, modelItems, addContext } from './EditorModel.js'
 import { Editor } from './GenericEditor.jsx'
 
 export const ArrayEditor = React.createClass({
@@ -12,23 +13,30 @@ export const ArrayEditor = React.createClass({
     let className = inline
       ? 'array inline'
       : 'array'
-    let adding = this.state.adding
     let addItem = () => {
-      var newItemModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length + adding.length))
+      var newItemModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length ))
       model.context.changeBus.push([newItemModel.context, newItemModel.value])
-      this.setState({adding: adding.concat(newItemModel)})
+      this.setState({items: items.concat([newItemModel])})
     }
+
+    // Assign unique key values to item models to be able to track them in the face of additions and removals
+    items.forEach((itemModel) => {
+      if (!itemModel.arrayKey) {
+        itemModel.arrayKey = ++this.arrayKeyCounter || (this.arrayKeyCounter=1)
+      }
+    })
+
     return (
       <ul ref="ul" className={className}>
         {
-          items.concat(adding).map((item, i) => {
+          items.map((item, i) => {
               let removeItem = () => {
-                let newItems = L.set(L.index(i), undefined, items)
+                let newItems = items
+                newItems.splice(i, 1)
                 item.context.changeBus.push([item.context, {data: undefined}])
-                this.setState({ adding: [], items: newItems })
+                this.setState({ items: newItems })
               }
-
-              return (<li key={i}>
+              return (<li key={item.arrayKey}>
                 <Editor model = {item}/>
                 {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
               </li>)
@@ -42,12 +50,12 @@ export const ArrayEditor = React.createClass({
     )
   },
   componentWillReceiveProps(newProps) {
-    if (!newProps.model.context.edit && this.props.model.context.edit) { // TODO: this is a bit dirty and seems that it's needed in many editors
+    if (!newProps.model.context.edit && this.props.model.context.edit) {
       this.setState(this.getInitialState())
     }
   },
   getInitialState() {
-    return { adding: [], items: undefined}
+    return { items: undefined}
   }
 })
 ArrayEditor.canShowInline = (component) => {

@@ -157,7 +157,7 @@ function Property(elem) {
       }
     },
     getValue: function() {
-      return findSingle('.value', elem()).text()
+      return findSingle('.value', elem()).text() || elem().find('input').val()
     },
     getText: function() {
       return extractAsText(elem())
@@ -166,7 +166,7 @@ function Property(elem) {
       return this.propertyBySelector('.array li:nth-child(' + (index + 1) +')')
     },
     getItems: function() {
-      return toArray(elem().find('.value .array li')).map(function(elem) { return Property(function() { return S(elem) })})
+      return toArray(elem().find('.value .array li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
       try{
