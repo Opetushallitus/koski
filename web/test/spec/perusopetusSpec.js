@@ -573,6 +573,40 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Opinto-oikeuden lisääminen', function() {
+    var addOppija = AddOppijaPage()
+
+    describe('Uudelle henkilölle', function() {
+      before(prepareForNewOppija('kalle', 'kalle'))
+
+      describe('Aluksi', function() {
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
+
+      describe('Kun syötetään validit tiedot', function() {
+        before(addOppija.enterValidDataPerusopetus())
+
+        describe('Käyttöliittymän tila', function() {
+          it('Lisää-nappi on enabloitu', function() {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+
+        describe('Kun painetaan Lisää-nappia', function() {
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi (151161-075P)', 'Peruskoulu'))
+
+          it('lisätty oppija näytetään', function() {})
+
+          it('Lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
+            expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+          })
+        })
+      })
+    })
+  })
   describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
     describe('Kaikki tiedot näkyvissä', function() {

@@ -1,6 +1,8 @@
 package fi.oph.koski.organisaatio
 
 object Oppilaitostyyppi {
+  val peruskoulut = "11"
+  val peruskouluasteenErityiskoulut = "12"
   val lukio = "15"
   val perusJaLukioasteenKoulut = "19"
   val ammattikorkeakoulut = "41"

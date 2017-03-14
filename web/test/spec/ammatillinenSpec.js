@@ -6,22 +6,11 @@ describe('Ammatillinen koulutus', function() {
   var login = LoginPage()
   var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero (010101-123N)'
-
-
-  function prepareForNewOppija(username, searchString) {
-    return function() {
-      return Authentication().login(username)()
-        .then(resetFixtures)
-        .then(page.openPage)
-        .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
-        .then(page.oppijaHaku.addNewOppija)
-    }
-  }
-
+  
   function addNewOppija(username, searchString, oppijaData) {
     return function() {
       return prepareForNewOppija(username, searchString)()
-        .then(addOppija.enterValidData(oppijaData))
+        .then(addOppija.enterValidDataAmmatillinen(oppijaData))
         .then(addOppija.submitAndExpectSuccess(oppijaData.hetu, oppijaData.tutkinto))
     }
   }
@@ -61,7 +50,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Kun syötetään validit tiedot', function() {
-        before(addOppija.enterValidData())
+        before(addOppija.enterValidDataAmmatillinen())
 
         describe('Käyttöliittymän tila', function() {
           it('Lisää-nappi on enabloitu', function() {
@@ -83,7 +72,7 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Kun sessio on vanhentunut', function() {
         before( openPage('/koski/uusioppija', function() {return addOppija.isVisible()}),
-          addOppija.enterValidData(),
+          addOppija.enterValidDataAmmatillinen(),
           Authentication().logout,
           addOppija.submit)
 
@@ -95,7 +84,7 @@ describe('Ammatillinen koulutus', function() {
           Authentication().login(),
           openPage('/koski/uusioppija'),
           wait.until(function() {return addOppija.isVisible()}),
-          addOppija.enterValidData({hetu: '123456-1234'})
+          addOppija.enterValidDataAmmatillinen({hetu: '123456-1234'})
         )
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
@@ -103,7 +92,7 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Kun hetu sisältää väärän tarkistusmerkin', function() {
         before(
-          addOppija.enterValidData({hetu: '011095-953Z'})
+          addOppija.enterValidDataAmmatillinen({hetu: '011095-953Z'})
         )
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
@@ -111,7 +100,7 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Kun hetu sisältää väärän päivämäärän, mutta on muuten validi', function() {
         before(
-          addOppija.enterValidData({hetu: '300275-5557'})
+          addOppija.enterValidDataAmmatillinen({hetu: '300275-5557'})
         )
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
@@ -119,7 +108,7 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Kun kutsumanimi ei löydy etunimistä', function() {
         before(
-          addOppija.enterValidData({kutsumanimi: 'eiloydy'})
+          addOppija.enterValidDataAmmatillinen({kutsumanimi: 'eiloydy'})
         )
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
@@ -130,14 +119,20 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Kun kutsumanimi löytyy väliviivallisesta nimestä', function() {
         before(
-          addOppija.enterValidData({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'})
+          addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'})
         )
         it('Lisää-nappi on enabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(true)
         })
       })
+      describe('Kun oppilaitosta ei ole valittu', function() {
+        before(prepareForNewOppija('kalle', 'kalle'), addOppija.enterValidDataAmmatillinen({oppilaitos: null, tutkinto: null}))
+        it('Lisää-nappi on disabloitu', function(){
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
       describe('Kun oppilaitos on valittu', function() {
-        before(addOppija.enterValidData())
+        before(addOppija.enterValidDataAmmatillinen())
         it('voidaan valita tutkinto', function(){
           expect(addOppija.tutkintoIsEnabled()).to.equal(true)
           expect(addOppija.isEnabled()).to.equal(true)
@@ -175,7 +170,7 @@ describe('Ammatillinen koulutus', function() {
           })
         })
         describe('Kun oppilaitos on virheellinen', function() {
-          before(addOppija.enterValidData(), addOppija.enterOppilaitos('virheellinen'))
+          before(addOppija.enterValidDataAmmatillinen(), addOppija.enterOppilaitos('virheellinen'))
           it('Lisää-nappi on disabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
@@ -185,7 +180,7 @@ describe('Ammatillinen koulutus', function() {
         })
       })
       describe('Kun tutkinto on virheellinen', function() {
-        before(addOppija.enterValidData(), addOppija.enterTutkinto('virheellinen'))
+        before(addOppija.enterValidDataAmmatillinen(), addOppija.enterTutkinto('virheellinen'))
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })
@@ -197,7 +192,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           Authentication().login(),
           openPage('/koski/uusioppija', function() {return addOppija.isVisible()}),
-          addOppija.enterValidData({sukunimi: "error"}),
+          addOppija.enterValidDataAmmatillinen({sukunimi: "error"}),
           addOppija.submit)
 
         it('Näytetään virheilmoitus', wait.until(page.isErrorShown))

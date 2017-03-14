@@ -179,3 +179,14 @@ function KoskiPage() {
 
   return api
 }
+
+function prepareForNewOppija(username, searchString) {
+  var page = KoskiPage()
+  return function() {
+    return Authentication().login(username)()
+      .then(resetFixtures)
+      .then(page.openPage)
+      .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
+      .then(page.oppijaHaku.addNewOppija)
+  }
+}

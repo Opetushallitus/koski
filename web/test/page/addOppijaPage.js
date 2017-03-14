@@ -12,18 +12,28 @@ function AddOppijaPage() {
       return !button().is(':disabled')
     },
     tutkintoIsEnabled: function() {
-      return !S('.tutkinto input').is(':disabled')
+      return S('.tutkinto input').is(':visible') && !S('.tutkinto input').is(':disabled')
     },
-    enterValidData: function(params) {
-      var self = this
-      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '151161-075P', oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
+    enterValidDataPerusopetus: function(params) {
+      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+      }
+    },
+    enterValidDataAmmatillinen: function(params) {
+      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
+      return function() {
+        return api.enterData(params)().then(api.selectTutkinto(params.tutkinto))
+      }
+    },
+    enterData: function(params) {
+      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '151161-075P'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
           .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
           .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
           .then(pageApi.setInputValue('.hetu input', params.hetu))
-          .then(self.selectOppilaitos(params.oppilaitos))
-          .then(self.selectTutkinto(params.tutkinto))
+          .then(api.selectOppilaitos(params.oppilaitos))
       }
     },
     enterTutkinto: function(name) {
@@ -37,16 +47,19 @@ function AddOppijaPage() {
       }
     },
     selectOppilaitos: function(name) {
+      if (!name) { return wait.forAjax }
       return function() {
         return pageApi.setInputValue('.oppilaitos input', name)()
           .then(wait.until(function() { return isElementVisible(selectedOppilaitos()) }))
           .then(function() {triggerEvent(selectedOppilaitos(), 'click')})
+          .then(wait.forAjax)
       }
     },
     oppilaitokset: function() {
       return textsOf(form().find('.oppilaitos .results li'))
     },
     selectTutkinto: function(name) {
+      if (!name) { return wait.forAjax }
       return function() {
         return pageApi.setInputValue('.tutkinto input', name)()
           .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))

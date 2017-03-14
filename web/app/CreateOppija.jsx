@@ -5,7 +5,6 @@ import Http from './http'
 import {navigateToOppija, showError} from './location'
 import {isValidHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
-import {formatISODate} from './date.js'
 
 export const createOppijaContentP = () => Bacon.constant({
   content: (<CreateOppija/>)
@@ -16,59 +15,58 @@ export const CreateOppija = () => {
   const kutsumanimiAtom = Atom('')
   const sukunimiAtom = Atom('')
   const hetuAtom = Atom('')
-  const opiskeluoikeusAtom = Atom({})
-  const createOppijaP = Bacon.combineWith(etunimetAtom, sukunimiAtom, kutsumanimiAtom, hetuAtom.map(h=>h.toUpperCase()), opiskeluoikeusAtom, toCreateOppija)
+  const opiskeluoikeusAtom = Atom()
+  const hetuP = hetuAtom.map(h=>h.toUpperCase())
+  const createOppijaP = Bacon.combineWith(etunimetAtom, sukunimiAtom, kutsumanimiAtom, hetuP, opiskeluoikeusAtom, toCreateOppija)
   const submitBus = Bacon.Bus()
   const createOppijaE = submitBus.map(createOppijaP)
     .flatMapLatest((oppija) => Http.put('/koski/api/oppija', oppija))
     .map(oppija => ({oid: oppija.henkilö.oid}))
+  const opiskeluoikeusValidP = opiskeluoikeusAtom.map(oos => !!oos).skipDuplicates()
 
   createOppijaE.onValue(navigateToOppija)
   createOppijaE.onError(showError)
 
   const inProgressP = submitBus.awaiting(createOppijaE.mapError())
 
-  return (<div className='content-area'>
-      {
-        Bacon.combineWith(createOppijaP, inProgressP, ({ henkilö: {etunimet, sukunimi, kutsumanimi, hetu }, opiskeluoikeudet}, inProgress) => {
-          const validKutsumanimi = kutsumanimi && etunimet ? etunimet.split(' ').indexOf(kutsumanimi) > -1 || etunimet.split('-').indexOf(kutsumanimi) > -1: true
-          const opiskeluoikeusValid = !!opiskeluoikeudet
-          const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opiskeluoikeusValid
-          const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
-          const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
-          const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
-          const errors = []
+  const validKutsumanimiP = Bacon.combineWith(kutsumanimiAtom, etunimetAtom, (kutsumanimi, etunimet) => kutsumanimi && etunimet ? etunimet.split(' ').indexOf(kutsumanimi) > -1 || etunimet.split('-').indexOf(kutsumanimi) > -1: true)
 
-          if(!validKutsumanimi) {
-            errors.push(<li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
-          }
+  const kutsumanimiClassNameP = validKutsumanimiP.map(valid => valid ? 'kutsumanimi' : 'kutsumanimi error')
 
-          return (<form className='main-content oppija uusi-oppija'>
-            <label className='etunimet'>
-              Etunimet
-              <Input atom={etunimetAtom}/>
-            </label>
-            <label className={kutsumanimiClassName}>
-              Kutsumanimi
-              <Input atom={kutsumanimiAtom}/>
-            </label>
-            <label className='sukunimi'>
-              Sukunimi
-              <Input atom={sukunimiAtom}/>
-            </label>
-            <label className={hetuClassName}>
-              Henkilötunnus
-              <Input atom={hetuAtom}/>
-            </label>
-            <hr/>
-            <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
-            <button className='button' disabled={submitDisabled} onClick={() => submitBus.push()}>{buttonText}</button>
-            <ul className='error-messages'>
-              {errors}
-            </ul>
-          </form>)
-        })
-      }
+  const submitEnabledP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(hetuP.map(isValidHetu)).and(validKutsumanimiP).and(inProgressP.not()).and(opiskeluoikeusValidP)
+
+  const buttonTextP = inProgressP.map((inProgress) => !inProgress ? 'Lisää henkilö' : 'Lisätään...')
+
+  const hetuClassNameP = hetuP.map(hetu => !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error')
+
+  const errorsP = validKutsumanimiP.map(valid => valid ? [] : <li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
+
+  return (
+    <div className='content-area'>
+      <form className='main-content oppija uusi-oppija'>
+        <label className='etunimet'>
+          Etunimet
+          <Input atom={etunimetAtom}/>
+        </label>
+        <label className={kutsumanimiClassNameP}>
+          Kutsumanimi
+          <Input atom={kutsumanimiAtom}/>
+        </label>
+        <label className='sukunimi'>
+          Sukunimi
+          <Input atom={sukunimiAtom}/>
+        </label>
+        <label className={hetuClassNameP}>
+          Henkilötunnus
+          <Input atom={hetuAtom}/>
+        </label>
+        <hr/>
+        <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
+        <button className='button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>
+        <ul className='error-messages'>
+          {errorsP}
+        </ul>
+      </form>
     </div>
   )
 }
@@ -76,8 +74,6 @@ export const CreateOppija = () => {
 const Input = ({ atom }) => <input type="text" onChange={ (e) => atom.set(e.target.value) }></input>
 
 const toCreateOppija = (etunimet, sukunimi, kutsumanimi, hetu, opiskeluoikeus) => {
-  const {tutkinto, oppilaitos} = opiskeluoikeus || {}
-  const date = new Date()
   return {
     henkilö: {
       etunimet: etunimet,
@@ -85,25 +81,6 @@ const toCreateOppija = (etunimet, sukunimi, kutsumanimi, hetu, opiskeluoikeus) =
       kutsumanimi: kutsumanimi,
       hetu: hetu
     },
-    opiskeluoikeudet: tutkinto && oppilaitos && [{
-      tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
-      oppilaitos: oppilaitos,
-      alkamispäivä: formatISODate(date),
-      tila: {
-        opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila: { 'koodistoUri': 'koskiopiskeluoikeudentila', 'koodiarvo': 'lasna' } }]
-      },
-      suoritukset: [{
-        koulutusmoduuli: {
-          tunniste: {
-            koodiarvo: tutkinto.tutkintoKoodi,
-            koodistoUri: 'koulutus'
-          },
-          perusteenDiaarinumero: tutkinto.diaarinumero
-        },
-        toimipiste : oppilaitos,
-        tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
-        tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'}
-      }]
-    }]
+    opiskeluoikeudet: [opiskeluoikeus]
   }
 }
