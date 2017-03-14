@@ -97,19 +97,14 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     let {model, opiskeluoikeusModel} = this.props
     let {alkuPäiväBus, tilaBus, cancelBus, saveChangesBus, errorBus} = this.state
 
-    let muutoksetE = alkuPäiväBus.merge(tilaBus)
-
-    let changesP = Bacon.update([],
-      muutoksetE, (xs, x) => xs.concat(x),
-      cancelBus, () => []
-    )
-
-    Bacon.update({},
+    let stateP = Bacon.update({},
       alkuPäiväBus, (state, alkuPäivä) => R.merge(state, {alkuPäivä}),
       tilaBus, (state, tila) => R.merge(state, {tila}),
-      Bacon.mergeAll(cancelBus, saveChangesBus), () => ({}),
+      cancelBus, () => ({}),
       errorBus, (state, [,e]) => R.merge(state, {error: e.error})
-    ).onValue(state => {
+    )
+
+    stateP.onValue(state => {
       this.setState({valid: !state.error && state.alkuPäivä && state.tila})
     })
 
@@ -120,14 +115,12 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
 
     errorBus.onValue(e => model.context.errorBus.push(e))
 
-    changesP.sampledBy(saveChangesBus).onValue((changes) => {
-      let opiskeluoikeudenPaattymispaiva = this.opiskeluoikeudenPaattymispaiva(changes)
-
-      if (opiskeluoikeudenPaattymispaiva) {
+    stateP.sampledBy(saveChangesBus).onValue((state) => {
+      if (this.onLopputila(state.tila[1].value)) {
         let paattymispaivaModel = modelLookup(opiskeluoikeusModel, 'päättymispäivä')
-        model.context.changeBus.push([paattymispaivaModel.context, {data: opiskeluoikeudenPaattymispaiva}])
+        model.context.changeBus.push([paattymispaivaModel.context, {data: state.alkuPäivä[1].data}])
       }
-      model.context.changeBus.push(changes)
+      model.context.changeBus.push(state.alkuPäivä.concat(state.tila))
       model.context.doneEditingBus.push()
       cancelBus.push()
       this.setState({items: undefined})
@@ -135,16 +128,6 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
   },
   componentWillUnmount() {
     document.removeEventListener('keyup', this.handleKeys)
-  },
-  opiskeluoikeudenPaattymispaiva(changes) {
-    let changePairs = R.splitEvery(2, changes)
-    let findLastValue = (path) => {
-      let lastPair = R.findLast((c) => c[0].path && c[0].path.endsWith(path), changePairs)
-      return lastPair ? lastPair[1] : undefined
-    }
-
-    let viimeinenTila = findLastValue('.tila')
-    return viimeinenTila && this.onLopputila(viimeinenTila.value) ? findLastValue('.alku').data : undefined
   },
   onLopputila(tila) {
     return tila === 'eronnut' || tila === 'valmistunut' || tila === 'katsotaaneronneeksi'
