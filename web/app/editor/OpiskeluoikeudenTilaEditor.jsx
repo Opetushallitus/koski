@@ -104,12 +104,14 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       cancelBus, () => []
     )
 
-    Bacon.mergeAll(
-      tilaBus.map(true),
-      saveChangesBus.map(false),
-      cancelBus.map(false),
-      errorBus.map(([, e]) => !e.error)
-    ).onValue(valid => this.setState({valid: valid}))
+    Bacon.update({},
+      alkuPäiväBus, (state, alkuPäivä) => R.merge(state, {alkuPäivä}),
+      tilaBus, (state, tila) => R.merge(state, {tila}),
+      Bacon.mergeAll(cancelBus, saveChangesBus), () => ({}),
+      errorBus, (state, [,e]) => R.merge(state, {error: e.error})
+    ).onValue(state => {
+      this.setState({valid: !state.error && state.alkuPäivä && state.tila})
+    })
 
     saveChangesBus.merge(cancelBus).onValue(() => {
       this.setState({newStateModels: undefined})
