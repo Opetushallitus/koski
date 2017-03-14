@@ -163,7 +163,7 @@ function takeScreenshot(name) {
   return function() {
     var date = new Date()
     var path = "target/screenshots/"
-    var filename = path + (name.toLowerCase().replace(/ /g, '_').replace(/ä/g, 'a').replace(/ö/g, 'o') || date.getTime())
+    var filename = path + (name.toLowerCase().replace(/ /g, '_').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/"/g, '') || date.getTime())
     console.log("Taking screenshot web/" + filename + ".png")
     if (window.callPhantom) {
       callPhantom({'screenshot': filename})
