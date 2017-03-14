@@ -10,9 +10,9 @@ export const DateEditor = React.createClass({
 
     let onChange = (event) => {
       let date = parseFinnishDate(event.target.value)
-      let valid = date && isValid(date)
+      let valid = (model.optional && !event.target.value) || (date && isValid(date))
       if (valid) {
-        valueBus.push([model.context, {data: formatISODate(date)}])
+        valueBus.push([model.context, {data: date && formatISODate(date)}])
       }
       model.context.errorBus.push([model.context, {error: !valid}])
       this.setState({invalidDate: !valid})
@@ -26,10 +26,10 @@ export const DateEditor = React.createClass({
   getInitialState() {
     return {valueBus: Bacon.Bus()}
   },
-
   componentDidMount() {
     this.state.valueBus.onValue((v) => {this.props.model.context.changeBus.push(v)})
   }
 })
 DateEditor.canShowInline = () => true
+DateEditor.handlesOptional = true
 

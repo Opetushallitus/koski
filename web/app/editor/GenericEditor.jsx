@@ -32,15 +32,17 @@ export const NullEditor = React.createClass({
 })
 
 const getEditorFunction = (model) => {
-  let editorByClass = (classes) => {
+  let editorByClass = classes => {
     for (var i in classes) {
       var editor = model.context.editorMapping[classes[i]]
       if (editor && (!model.context.edit || !editor.readOnly)) { return editor }
     }
   }
+
   if (!model) return NullEditor
   if (model.optional) {
-    return model.context.editorMapping.optional
+    let prototypeEditor = model.optionalPrototype && model.context.editorMapping[model.optionalPrototype.type]
+    return prototypeEditor && prototypeEditor.handlesOptional && prototypeEditor || model.context.editorMapping.optional
   }
   let editor = (model.value && editorByClass(model.value.classes)) || model.context.editorMapping[model.type]
   if (!editor) {
