@@ -62,7 +62,10 @@ export const CreateOppija = () => {
         </label>
         <hr/>
         <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
-        <button className='button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>
+        {
+          // TODO: attribute lifting doesn't seem to work in phantom
+          submitEnabledP.map((enabled) => <button className='button' disabled={!enabled} onClick={() => submitBus.push()}>{buttonTextP}</button>)
+        }
         <ul className='error-messages'>
           {errorsP}
         </ul>

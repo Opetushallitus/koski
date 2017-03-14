@@ -23,7 +23,9 @@ function AddOppijaPage() {
     enterValidDataAmmatillinen: function(params) {
       params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
-        return api.enterData(params)().then(api.selectTutkinto(params.tutkinto))
+        return api.enterData(params)()
+          .then(wait.forMilliseconds(1000)) // TODO: this is needed in phantom, why?
+          .then(api.selectTutkinto(params.tutkinto))
       }
     },
     enterData: function(params) {
