@@ -12,6 +12,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model, opiskeluoikeusModel} = this.props
     let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
+    let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
 
     let showAddDialog = () => {
       document.addEventListener('keyup', this.handleKeys)
@@ -22,13 +23,8 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       this.setState({newStateModels: {alkuPäiväModel, tilaModel}})
     }
 
-    let add = () => {
-      saveChangesBus.push()
-    }
-
-    let cancel = () => {
-      cancelBus.push()
-    }
+    let add = () => saveChangesBus.push()
+    let cancel = () => cancelBus.push()
 
     let removeItem = () => {
       if (this.onLopputila(modelData(items[0], 'tila').koodiarvo)) {
@@ -68,7 +64,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                   <h2>Opiskeluoikeuden tilan lisäys</h2>
                   <div className="property alku">
                     <label>Päivämäärä:</label>
-                    <DateEditor model={newStateModels.alkuPäiväModel}/>
+                    <DateEditor model={newStateModels.alkuPäiväModel} isValid={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
                   </div>
                   <div className="property tila">
                     <label>Tila:</label>

@@ -397,6 +397,13 @@ describe('Perusopetus', function() {
             expect(opiskeluoikeus.isEnabled()).to.equal(false)
           })
         })
+
+        describe('Uusi alkupäivä on aikaisempi kuin viimeisen tilan alkupäivämäärä', function() {
+          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('14.8.2008'))
+          it('Tallennus on estetty', function() {
+            expect(opiskeluoikeus.isEnabled()).to.equal(false)
+          })
+        })
         after(editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
 

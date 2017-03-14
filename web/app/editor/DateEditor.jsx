@@ -5,16 +5,17 @@ import {formatISODate, parseFinnishDate} from '../date.js'
 
 export const DateEditor = React.createClass({
   render() {
-    let {model} = this.props
+    let {model, isValid = (d) => true } = this.props
     let {invalidDate, valueBus} = this.state
 
     let onChange = (event) => {
-      var date = parseFinnishDate(event.target.value)
-      if (date) {
+      let date = parseFinnishDate(event.target.value)
+      let valid = date && isValid(date)
+      if (valid) {
         valueBus.push([model.context, {data: formatISODate(date)}])
       }
-      model.context.errorBus.push([model.context, {error: !date}])
-      this.setState({invalidDate: !date})
+      model.context.errorBus.push([model.context, {error: !valid}])
+      this.setState({invalidDate: !valid})
     }
 
     return model.context.edit
