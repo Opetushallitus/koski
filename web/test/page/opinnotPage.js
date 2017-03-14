@@ -178,12 +178,7 @@ function Property(elem) {
       return toArray(elem().find('.value .array li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
-      try{
-        return findSingle('.value', elem()).is(":visible")
-      } catch (e) {
-        if (e.message.indexOf('not found') > 0) return false
-        throw e
-      }
+      return isVisibleBy(function() { return findSingle('.value', elem())})
     }
   }, Editor(elem))
 }

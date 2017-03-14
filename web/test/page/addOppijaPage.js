@@ -24,7 +24,6 @@ function AddOppijaPage() {
       params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
         return api.enterData(params)()
-          .then(wait.forMilliseconds(1000)) // TODO: this is needed in phantom, why?
           .then(api.selectTutkinto(params.tutkinto))
       }
     },
@@ -63,9 +62,10 @@ function AddOppijaPage() {
     selectTutkinto: function(name) {
       if (!name) { return wait.forAjax }
       return function() {
-        return pageApi.setInputValue('.tutkinto input', name)()
-          .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
-          .then(function() {triggerEvent(selectedTutkinto(), 'click')})
+        return wait.until(pageApi.getInput('.tutkinto input').isVisible)()
+            .then(pageApi.setInputValue('.tutkinto input', name))
+            .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
+            .then(function() {triggerEvent(selectedTutkinto(), 'click')})
       }
     },
     submit: function() {

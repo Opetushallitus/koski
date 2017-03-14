@@ -27,6 +27,15 @@ function findSingle(selector, base) {
   return result
 }
 
+function isVisibleBy(finder) {
+  try{
+    return finder().is(":visible")
+  } catch (e) {
+    if (e.message.indexOf('not found') > 0) return false
+    throw e
+  }
+}
+
 wait = {
   waitIntervalMs: 10,
   until: function(condition, maxWaitMs) {
