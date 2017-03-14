@@ -5,7 +5,7 @@ import {formatISODate, parseFinnishDate} from '../date.js'
 
 export const DateEditor = React.createClass({
   render() {
-    let {model, isValid = (d) => true } = this.props
+    let {model, isValid = () => true } = this.props
     let {invalidDate, valueBus} = this.state
 
     let onChange = (event) => {
