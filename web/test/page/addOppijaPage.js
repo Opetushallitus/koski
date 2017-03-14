@@ -27,7 +27,7 @@ function AddOppijaPage() {
       }
     },
     enterData: function(params) {
-      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '151161-075P'}, {}, params)
+      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä', hetu: '230872-7258'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
           .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))

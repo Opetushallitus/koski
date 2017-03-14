@@ -595,7 +595,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi (151161-075P)', 'Peruskoulu'))
+          before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
 
           it('lisätty oppija näytetään', function() {})
 
