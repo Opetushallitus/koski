@@ -25,14 +25,24 @@ export default BaconComponent({
 
   handleInput(e) {
     let query = e.target.value
-    this.props.resultBus.push(undefined)
+    this.setValue(undefined)
     this.state.inputBus.push(query)
     this.setState({query: query})
   },
 
   handleSelect(selected) {
     this.setState({query: undefined, items: []})
-    this.props.resultBus.push(selected)
+    this.setValue(selected)
+  },
+
+  setValue(value) {
+    if (this.props.resultBus) {
+      this.props.resultBus.push(value)
+    } else if (this.props.resultAtom) {
+      this.props.resultAtom.set(value)
+    } else {
+      throw 'resultBus, resultAtom missing'
+    }
   },
 
   onKeyDown(e) {

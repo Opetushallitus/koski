@@ -1,130 +1,109 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import Http from './http'
-import BaconComponent from './BaconComponent'
 import {navigateToOppija, showError} from './location'
 import {isValidHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
-import { formatISODate } from './date.js'
+import {formatISODate} from './date.js'
 
 export const createOppijaContentP = () => Bacon.constant({
-  content: (<div className='content-area'>
-    <CreateOppija/>
-  </div>)
+  content: (<CreateOppija/>)
 })
 
-export const CreateOppija = BaconComponent({
-  render() {
-    const opiskeluoikeus = this.state.opiskeluoikeus
-    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
-    const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opiskeluoikeus.valid
-    const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
-    const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
-    const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
+export const CreateOppija = () => {
+  const etunimetAtom = Atom('')
+  const kutsumanimiAtom = Atom('')
+  const sukunimiAtom = Atom('')
+  const hetuAtom = Atom('')
+  const opiskeluoikeusAtom = Atom({})
+  const createOppijaP = Bacon.combineWith(etunimetAtom, sukunimiAtom, kutsumanimiAtom, hetuAtom.map(h=>h.toUpperCase()), opiskeluoikeusAtom, toCreateOppija)
+  const submitBus = Bacon.Bus()
+  const createOppijaE = submitBus.map(createOppijaP)
+    .flatMapLatest((oppija) => Http.put('/koski/api/oppija', oppija))
+    .map(oppija => ({oid: oppija.henkilö.oid}))
 
-    const errors = []
+  createOppijaE.onValue(navigateToOppija)
+  createOppijaE.onError(showError)
 
-    if(!validKutsumanimi) {
-      errors.push(<li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
-    }
+  const inProgressP = submitBus.awaiting(createOppijaE.mapError())
 
-    return (
-      <form className='main-content oppija uusi-oppija' onInput={this.onInput}>
-        <label className='etunimet'>
-          Etunimet
-          <input ref='etunimet'></input>
-        </label>
-        <label className={kutsumanimiClassName}>
-          Kutsumanimi
-          <input ref='kutsumanimi'></input>
-        </label>
-        <label className='sukunimi'>
-          Sukunimi
-          <input ref='sukunimi'></input>
-        </label>
-        <label className={hetuClassName}>
-          Henkilötunnus
-          <input ref='hetu'></input>
-        </label>
-        <hr/>
-        <Opiskeluoikeus opiskeluoikeusBus={this.state.opiskeluoikeusBus}/>
-        <button className='button' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
-        <ul className='error-messages'>
-          {errors}
-        </ul>
-      </form>
-    )
-  },
+  return (<div className='content-area'>
+      {
+        Bacon.combineWith(createOppijaP, inProgressP, ({ henkilö: {etunimet, sukunimi, kutsumanimi, hetu }, opiskeluoikeudet}, inProgress) => {
+          const validKutsumanimi = kutsumanimi && etunimet ? etunimet.split(' ').indexOf(kutsumanimi) > -1 || etunimet.split('-').indexOf(kutsumanimi) > -1: true
+          const opiskeluoikeusValid = !!opiskeluoikeudet
+          const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opiskeluoikeusValid
+          const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
+          const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
+          const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
+          const errors = []
 
-  getInitialState() {
-    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: '', opiskeluoikeus: {valid: false}, opiskeluoikeusBus: Bacon.Bus()}
-  },
+          if(!validKutsumanimi) {
+            errors.push(<li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
+          }
 
-  oppijaFromDom() {
-    return {
-      etunimet: this.refs.etunimet.value,
-      sukunimi: this.refs.sukunimi.value,
-      kutsumanimi: this.refs.kutsumanimi.value,
-      hetu: this.refs.hetu.value.toUpperCase()
-    }
-  },
+          return (<form className='main-content oppija uusi-oppija'>
+            <label className='etunimet'>
+              Etunimet
+              <Input atom={etunimetAtom}/>
+            </label>
+            <label className={kutsumanimiClassName}>
+              Kutsumanimi
+              <Input atom={kutsumanimiAtom}/>
+            </label>
+            <label className='sukunimi'>
+              Sukunimi
+              <Input atom={sukunimiAtom}/>
+            </label>
+            <label className={hetuClassName}>
+              Henkilötunnus
+              <Input atom={hetuAtom}/>
+            </label>
+            <hr/>
+            <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
+            <button className='button' disabled={submitDisabled} onClick={() => submitBus.push()}>{buttonText}</button>
+            <ul className='error-messages'>
+              {errors}
+            </ul>
+          </form>)
+        })
+      }
+    </div>
+  )
+}
 
-  componentDidMount() {
-    this.state.opiskeluoikeusBus.takeUntil(this.unmountE).onValue(o => {this.setState({opiskeluoikeus: o})})
-    this.refs.etunimet.focus()
-  },
+const Input = ({ atom }) => <input type="text" onChange={ (e) => atom.set(e.target.value) }></input>
 
-  onInput() {
-    this.setState(this.oppijaFromDom())
-  },
-
-  submit(e) {
-    e.preventDefault()
-    this.setState({inProgress: true})
-    const createOppijaS = Http.put('/koski/api/oppija',  this.toCreateOppija()).map(oppija => ({oid: oppija.henkilö.oid}))
-    createOppijaS.onValue(navigateToOppija)
-    createOppijaS.onError((error) => {
-      this.setState({inProgress: false})
-      showError(error)
-    })
-  },
-
-  toCreateOppija() {
-    const {etunimet, sukunimi, kutsumanimi, hetu} = this.oppijaFromDom()
-    const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opiskeluoikeus
-    const date = new Date()
-    return {
-      henkilö: {
-        etunimet: etunimet,
-        sukunimi: sukunimi,
-        kutsumanimi: kutsumanimi,
-        hetu: hetu
+const toCreateOppija = (etunimet, sukunimi, kutsumanimi, hetu, opiskeluoikeus) => {
+  const {tutkinto, oppilaitos} = opiskeluoikeus || {}
+  const date = new Date()
+  return {
+    henkilö: {
+      etunimet: etunimet,
+      sukunimi: sukunimi,
+      kutsumanimi: kutsumanimi,
+      hetu: hetu
+    },
+    opiskeluoikeudet: tutkinto && oppilaitos && [{
+      tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
+      oppilaitos: oppilaitos,
+      alkamispäivä: formatISODate(date),
+      tila: {
+        opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila: { 'koodistoUri': 'koskiopiskeluoikeudentila', 'koodiarvo': 'lasna' } }]
       },
-      opiskeluoikeudet: [{
-        tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
-        oppilaitos: oppilaitosOrganisaatio,
-        alkamispäivä: formatISODate(date),
-        tila: {
-          opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila: { 'koodistoUri': 'koskiopiskeluoikeudentila', 'koodiarvo': 'lasna' } }]
-        },
-        suoritukset: [{
-          koulutusmoduuli: {
-            tunniste: {
-              koodiarvo: tutkinto.tutkintoKoodi,
-              koodistoUri: 'koulutus'
-            },
-            perusteenDiaarinumero: tutkinto.diaarinumero
+      suoritukset: [{
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: tutkinto.tutkintoKoodi,
+            koodistoUri: 'koulutus'
           },
-          toimipiste : oppilaitosOrganisaatio,
-          tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
-          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'}
-        }]
+          perusteenDiaarinumero: tutkinto.diaarinumero
+        },
+        toimipiste : oppilaitos,
+        tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
+        tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'}
       }]
-    }
-  },
-
-  isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) {
-    return kutsumanimi && etunimet ? etunimet.split(' ').indexOf(kutsumanimi) > -1 || etunimet.split('-').indexOf(kutsumanimi) > -1: true
+    }]
   }
-})
+}
