@@ -385,7 +385,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
-          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue('11.1.2009'))
+          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
           it('Tallennus on sallittu', function() {
             expect(opiskeluoikeus.isEnabled()).to.equal(true)
           })
