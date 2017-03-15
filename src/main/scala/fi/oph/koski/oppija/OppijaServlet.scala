@@ -51,7 +51,7 @@ class OppijaServlet(val application: KoskiApplication)
 
   get("/") {
     query(params).map {
-      case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluoikeus))
+      case (henkilö, rivit) => Map("henkilö" -> henkilö, "opiskeluoikeudet" -> rivit.map(_.data))
     }
   }
 
