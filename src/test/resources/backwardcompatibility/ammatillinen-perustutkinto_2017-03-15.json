@@ -1198,6 +1198,9 @@
                 },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
+            },
+            "kuvaus" : {
+              "fi" : "Matematiikan opinnot"
             }
           },
           "tila" : {
@@ -1222,10 +1225,8 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "FYK",
-              "nimi" : {
-                "fi" : "Fysiikka ja kemia"
-              }
+              "koodiarvo" : "FK",
+              "koodistoUri" : "ammatillisenoppiaineet"
             },
             "laajuus" : {
               "arvo" : 3.0,
@@ -1260,10 +1261,8 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "TIVI",
-              "nimi" : {
-                "fi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen"
-              }
+              "koodiarvo" : "TVT",
+              "koodistoUri" : "ammatillisenoppiaineet"
             },
             "laajuus" : {
               "arvo" : 3.0,
