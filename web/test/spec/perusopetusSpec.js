@@ -592,6 +592,9 @@ describe('Perusopetus', function() {
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)
           })
+          it('Vain yksi opiskeluoikeuden tyypin valinta näytetään', function() {
+            expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Perusopetus'])
+          })
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
@@ -603,6 +606,24 @@ describe('Perusopetus', function() {
             expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
             expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
           })
+        })
+      })
+
+      describe('Kun oppilaitos mahdollisesti tarjoaa myös ammatillista koulutusta', function() {
+        before(
+          resetFixtures,
+          prepareForNewOppija('kalle', 'kalle'),
+          addOppija.enterValidDataPerusopetus({oppilaitos:'Helsingin medialukio'}))
+
+        it('Opiskeluoikeuden tyypin valinnassa näytetään myös ammatillinen koulutus', function() {
+          expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Ammatillinen koulutus', 'Perusopetus'])
+        })
+
+        describe('Opiskeluoikeuden lisäys', function() {
+          before(addOppija.selectOpiskeluoikeudenTyyppi('perusopetus'),
+                 addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
+
+          it('lisätty oppija näytetään', function() {})
         })
       })
     })

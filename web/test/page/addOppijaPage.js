@@ -85,6 +85,12 @@ function AddOppijaPage() {
       return function() {
         return isElementVisible(form().find('.error-messages .' + field))
       }
+    },
+    opiskeluoikeudenTyypit: function() {
+      return textsOf(S('.opiskeluoikeudentyyppi select option'))
+    },
+    selectOpiskeluoikeudenTyyppi: function(tyyppi) {
+      return pageApi.setInputValue('.opiskeluoikeudentyyppi select', tyyppi)
     }
   }
   return api
