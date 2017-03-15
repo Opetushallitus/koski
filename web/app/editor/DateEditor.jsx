@@ -19,7 +19,7 @@ export const DateEditor = React.createClass({
     }
 
     return model.context.edit
-      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'error' : ''}></input>
+      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'date-editor error' : 'date-editor'}></input>
       : <span className="inline date">{modelTitle(model)}</span>
   },
 

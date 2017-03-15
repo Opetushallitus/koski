@@ -32,19 +32,29 @@ export const NullEditor = React.createClass({
 })
 
 const getEditorFunction = (model) => {
-  let editorByClass = classes => {
-    for (var i in classes) {
-      var editor = model.context.editorMapping[classes[i]]
-      if (editor && (!model.context.edit || !editor.readOnly)) { return editor }
+
+  let editorByClass = filter => mdl => {
+    if (!mdl.value) {
+      return undefined
+    }
+    for (var i in mdl.value.classes) {
+      var editor = mdl.context.editorMapping[mdl.value.classes[i]]
+      if (editor && (!mdl.context.edit || filter(editor))) { return editor }
     }
   }
 
+  let notReadOnlyEditor = editorByClass(e => !e.readOnly)
+  let optionalHandlingEditor = editorByClass(e => e.handlesOptional)
+
   if (!model) return NullEditor
+
   if (model.optional) {
-    let prototypeEditor = model.optionalPrototype && model.context.editorMapping[model.optionalPrototype.type]
-    return prototypeEditor && prototypeEditor.handlesOptional && prototypeEditor || model.context.editorMapping.optional
+    let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
+    let typeEditor = model.context.editorMapping[model.optionalPrototype.type]
+    return optionalHandlingEditor(prototype) || (typeEditor && typeEditor.handlesOptional && typeEditor) || model.context.editorMapping.optional
   }
-  let editor = (model.value && editorByClass(model.value.classes)) || model.context.editorMapping[model.type]
+
+  let editor = notReadOnlyEditor(model) || model.context.editorMapping[model.type]
   if (!editor) {
     if (!model.type) {
       console.error('Typeless model', model)
