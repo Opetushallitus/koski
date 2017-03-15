@@ -73,12 +73,16 @@ wait = {
     }
   },
   forAjax: function() {
-    return wait.forMilliseconds(1)().then(wait.until(function() {return !isLoading()}))
+    return wait.forMilliseconds(1)().then(wait.until(isNotLoading))
   }
 }
 
 function isLoading() {
   return S('.loading').length > 0
+}
+
+function isNotLoading() {
+  return !isLoading()
 }
 
 function getJson(url) {

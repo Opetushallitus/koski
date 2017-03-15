@@ -31,6 +31,9 @@ function KoskiPage() {
     getSearchResults: function() {
       return S('.oppija-haku li a').toArray().map(function(a) { return $(a).text()})
     },
+    canAddNewOppija: function() {
+      return !S('.oppija-haku .lisaa-oppija').hasClass('disabled')
+    },
     addNewOppija: function() {
       triggerEvent(S('.oppija-haku .lisaa-oppija'), 'click')
       return wait.until(AddOppijaPage().isVisible)()
@@ -180,13 +183,13 @@ function KoskiPage() {
   return api
 }
 
-function prepareForNewOppija(username, searchString) {
+function prepareForNewOppija(username, hetu) {
   var page = KoskiPage()
   return function() {
     return Authentication().login(username)()
       .then(resetFixtures)
       .then(page.openPage)
-      .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
+      .then(page.oppijaHaku.search(hetu, page.oppijaHaku.isNoResultsLabelShown))
       .then(page.oppijaHaku.addNewOppija)
   }
 }

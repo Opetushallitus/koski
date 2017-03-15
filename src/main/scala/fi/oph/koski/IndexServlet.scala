@@ -3,6 +3,8 @@ package fi.oph.koski
 import java.io.File
 import java.util.Properties
 
+import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
@@ -24,8 +26,11 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
     indexHtml()
   }
 
-  get("/uusioppija") {
-    indexHtml()
+  get("/uusioppija/:hetu") {
+    params.get("hetu").map(Hetu.validate(_)).getOrElse(Left(KoskiErrorCategory.notFound())) match {
+      case Left(status) => renderStatus(status)
+      case Right(hetu) => indexHtml()
+    }
   }
 
   get("/oppija/:oid") {

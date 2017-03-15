@@ -28,12 +28,11 @@ function AddOppijaPage() {
       }
     },
     enterData: function(params) {
-      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä', hetu: '230872-7258'}, {}, params)
+      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
           .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
           .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
-          .then(pageApi.setInputValue('.hetu input', params.hetu))
           .then(api.selectOppilaitos(params.oppilaitos))
       }
     },

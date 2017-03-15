@@ -10,11 +10,12 @@ import { oppijataulukkoContentP } from './Oppijataulukko.jsx'
 import { validointiContentP } from './Validointi.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
-  let oppijaIdMatch = path.match(new RegExp('/koski/oppija/(.*)'))
-  if (oppijaIdMatch) {
-    return oppijaContentP(oppijaIdMatch[1])
-  } else if (path === '/koski/uusioppija') {
-    return { content: (<CreateOppija/>) }
+  let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
+  let uusiOppijaHetu = (path.match(new RegExp('/koski/uusioppija/(.*)')) || [])[1]
+  if (oppijaId) {
+    return oppijaContentP(oppijaId)
+  } else if (uusiOppijaHetu) {
+    return { content: (<CreateOppija hetu={uusiOppijaHetu}/>) }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {

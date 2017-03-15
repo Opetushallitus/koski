@@ -573,7 +573,7 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Opinto-oikeuden lisääminen', function() {
+  describe('Opiskeluoikeuden lisääminen', function() {
     var addOppija = AddOppijaPage()
 
     describe('Uudelle henkilölle', function() {

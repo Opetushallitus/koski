@@ -23,6 +23,10 @@
   .lisaa-oppija {
     margin-left: 20px;
     line-height: 25px;
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 
 
@@ -40,10 +44,8 @@
     }
   }
 
+
   &.searching {
-    .lisaa-oppija {
-      opacity: 0.5;
-    }
     .hakutulokset {
       &:before {
         display: block;

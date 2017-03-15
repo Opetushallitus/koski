@@ -1,8 +1,9 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Http from './http'
-import {navigateToOppija, navigateToUusiOppija} from './location'
+import {navigateToOppija, navigateTo} from './location'
 import {showError} from './location'
+import {validateHetu} from './hetu'
 
 const oppijaHakuE = new Bacon.Bus()
 
@@ -20,12 +21,21 @@ const oppijatP = Bacon.update(
 
 const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
+const hetuP = oppijatP.map(({query}) => query)
+const hetuValidP = hetuP.map((hetu) => validateHetu(hetu).length == 0)
+const canAddP = searchInProgressP.not().and(hetuValidP).and(oppijatP.map(({results}) => results.length == 0))
+const uusiOppijaUrlP = canAddP.and(hetuP.map(hetu => '/koski/uusioppija/' + hetu))
+
 export const OppijaHaku = () => (
   <div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
     <div>
       <h3>Hae tai lisää opiskelija</h3>
       <input type="text" id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
-      <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
+      <a href={uusiOppijaUrlP}
+         className={canAddP.map((canAdd) => canAdd ? 'lisaa-oppija' : 'lisaa-oppija disabled')}
+         onClick={canAddP.and(uusiOppijaUrlP.map((url) => (e) => navigateTo(url, e)))}>
+        Lisää opiskelija
+      </a>
     </div>
     <div className='hakutulokset'>
       {

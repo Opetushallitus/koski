@@ -195,6 +195,7 @@ case class AmmatillinenTutkintoKoulutus(
 
 sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
   def laajuus: Option[LaajuusOsaamispisteissä]
+  def pakollinen: Boolean
 }
 
 @Description("Opetussuunnitelmaan kuuluvan tutkinnon osan tunnistetiedot")

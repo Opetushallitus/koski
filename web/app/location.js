@@ -16,7 +16,6 @@ window.onpopstate = function() {
 export const locationP = locationBus.toProperty(currentLocation())
 
 export const navigateToOppija = (oppija, event) => navigateTo(`/koski/oppija/${oppija.oid}`, event)
-export const navigateToUusiOppija = (event) => navigateTo('/koski/uusioppija', event)
 export const showError = (error) => locationBus.error(error)
 export const showInternalError = () => locationBus.error({ httpStatus: 500 })
 
