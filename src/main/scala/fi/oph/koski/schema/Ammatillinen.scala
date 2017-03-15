@@ -240,11 +240,14 @@ case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
 trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
+@Title("Paikallinen ammatillisen tutkinnon osan osa-alue")
 case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
 
+@Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
+@Title("Valtakunnallinen ammatillisen tutkinnon osan osa-alue")
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
