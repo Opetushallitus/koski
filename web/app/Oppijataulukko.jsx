@@ -2,7 +2,7 @@ import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
 import { navigateWithQueryParams, navigateToOppija } from './location'
-import { oppijaHakuElementP } from './OppijaHaku.jsx'
+import { OppijaHaku } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
 import DatePicker from './DateRangeSelection.jsx'
@@ -156,10 +156,10 @@ var edellisetRivit = null
 export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
   let taulukkoContentP = pager.rowsP.doAction((rivit) => edellisetRivit = rivit).startWith(null).map((rivit) => <Oppijataulukko rivit={rivit} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
-  return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
+  return Bacon.combineWith(taulukkoContentP, (taulukko) => ({
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
-        { hakuElement }
+        <OppijaHaku/>
         <h2 className="oppijataulukko-header">Opiskelijat</h2>
       { taulukko }
       </div>

@@ -6,10 +6,6 @@ import {navigateToOppija, showError} from './location'
 import {validateHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
 
-export const createOppijaContentP = () => Bacon.constant({
-  content: (<CreateOppija/>)
-})
-
 export const CreateOppija = () => {
   const etunimetAtom = Atom('')
   const kutsumanimiAtom = Atom('')
@@ -33,11 +29,12 @@ export const CreateOppija = () => {
 
   const kutsumanimiClassNameP = validKutsumanimiP.map(valid => valid ? 'kutsumanimi' : 'kutsumanimi error')
 
-  const submitEnabledP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(hetuP.map(validateHetu)).and(validKutsumanimiP).and(inProgressP.not()).and(opiskeluoikeusValidP)
+  const hetuErrors = hetuP.map((hetu) => hetu ? validateHetu(hetu).map((message) => ({field: 'hetu', message})) : [])
+
+  const submitEnabledP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(hetuErrors.map(errors => errors.length == 0)).and(validKutsumanimiP).and(inProgressP.not()).and(opiskeluoikeusValidP)
 
   const buttonTextP = inProgressP.map((inProgress) => !inProgress ? 'Lisää henkilö' : 'Lisätään...')
 
-  const hetuErrors = hetuP.map((hetu) => hetu ? validateHetu(hetu).map((message) => ({field: 'hetu', message})) : [])
   const hetuClassNameP = hetuErrors.map(errors => errors.length==0 ? 'hetu' : 'hetu error')
 
   const kutsumanimiErrors = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: 'Kutsumanimen on oltava yksi etunimistä.'}])

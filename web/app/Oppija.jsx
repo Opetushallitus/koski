@@ -7,7 +7,7 @@ import { Editor } from './editor/GenericEditor.jsx'
 import R from 'ramda'
 import {modelData} from './editor/EditorModel.js'
 import {currentLocation} from './location.js'
-import { oppijaHakuElementP } from './OppijaHaku.jsx'
+import { OppijaHaku } from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import { increaseLoading, decreaseLoading } from './loadingFlag'
 
@@ -63,10 +63,10 @@ export const oppijaContentP = (oppijaOid) => {
 
   saveBus.plug(savedOppijaE.map(true))
 
-  return Bacon.combineWith(oppijaP, oppijaHakuElementP, (oppija, haku) => {
+  return Bacon.combineWith(oppijaP, (oppija) => {
     return {
       content: (<div className='content-area'><div className="main-content oppija">
-        { haku }
+        <OppijaHaku/>
         <Link className="back-link" href="/koski/">Opiskelijat</Link>
         <ExistingOppija {...{oppija, changeBus, errorBus, doneEditingBus}}/>
         </div></div>),

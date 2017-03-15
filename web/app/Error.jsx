@@ -1,6 +1,6 @@
 import React from 'react'
 import { logout } from './user'
-import { routeErrorP } from './router'
+import { routeErrorP } from './router.jsx'
 import Bacon from 'baconjs'
 
 const logError = (error) => {

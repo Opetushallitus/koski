@@ -1,6 +1,7 @@
+import React from 'react'
 import { locationP } from './location.js'
 import { oppijaContentP } from './Oppija.jsx'
-import { createOppijaContentP } from './CreateOppija.jsx'
+import { CreateOppija } from './CreateOppija.jsx'
 import { tiedonsiirtolokiContentP } from './Tiedonsiirtoloki.jsx'
 import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
 import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
@@ -13,7 +14,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
   if (oppijaIdMatch) {
     return oppijaContentP(oppijaIdMatch[1])
   } else if (path === '/koski/uusioppija') {
-    return createOppijaContentP()
+    return { content: (<CreateOppija/>) }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {
