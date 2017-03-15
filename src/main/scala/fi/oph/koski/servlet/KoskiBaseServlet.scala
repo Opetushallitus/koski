@@ -39,6 +39,11 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
       haltWithInternalError(e)
   }
 
+  notFound {
+    // disable Scalatra's default "not found" page
+    haltWithStatus(KoskiErrorCategory.notFound())
+  }
+
   override protected def renderPipeline: RenderPipeline = ({
     case s: HttpStatus =>
       renderStatus(s)
