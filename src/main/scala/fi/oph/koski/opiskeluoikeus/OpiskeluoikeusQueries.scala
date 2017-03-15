@@ -31,7 +31,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
 
   private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters)
-    oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
+    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
