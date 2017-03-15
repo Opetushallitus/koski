@@ -8,7 +8,6 @@ describe('Koski', function() {
     before(login.openPage)
 
     describe('Login-sivu', function() {
-      before(login.openPage)
       it('näytetään, kun käyttäjä ei ole kirjautunut sisään', function() {
         expect(login.isVisible()).to.equal(true)
       })
