@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from './http'
 import {navigateToOppija, showError} from './location'
-import {isValidHetu} from './hetu'
+import {validateHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
 
 export const createOppijaContentP = () => Bacon.constant({
@@ -33,13 +33,16 @@ export const CreateOppija = () => {
 
   const kutsumanimiClassNameP = validKutsumanimiP.map(valid => valid ? 'kutsumanimi' : 'kutsumanimi error')
 
-  const submitEnabledP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(hetuP.map(isValidHetu)).and(validKutsumanimiP).and(inProgressP.not()).and(opiskeluoikeusValidP)
+  const submitEnabledP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(hetuP.map(validateHetu)).and(validKutsumanimiP).and(inProgressP.not()).and(opiskeluoikeusValidP)
 
   const buttonTextP = inProgressP.map((inProgress) => !inProgress ? 'Lisää henkilö' : 'Lisätään...')
 
-  const hetuClassNameP = hetuP.map(hetu => !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error')
+  const hetuErrors = hetuP.map((hetu) => hetu ? validateHetu(hetu).map((message) => ({field: 'hetu', message})) : [])
+  const hetuClassNameP = hetuErrors.map(errors => errors.length==0 ? 'hetu' : 'hetu error')
 
-  const errorsP = validKutsumanimiP.map(valid => valid ? [] : <li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
+  const kutsumanimiErrors = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: 'Kutsumanimen on oltava yksi etunimistä.'}])
+
+  const errorsP = Bacon.combineAsArray(hetuErrors, kutsumanimiErrors).map('.flatten')
 
   return (
     <div className='content-area'>
@@ -67,7 +70,7 @@ export const CreateOppija = () => {
           submitEnabledP.map((enabled) => <button className='button' disabled={!enabled} onClick={() => submitBus.push()}>{buttonTextP}</button>)
         }
         <ul className='error-messages'>
-          {errorsP}
+          {errorsP.map(errors => errors.map(({ field, message }, i) => <li key={i} className={field}>{message}</li>))}
         </ul>
       </form>
     </div>
