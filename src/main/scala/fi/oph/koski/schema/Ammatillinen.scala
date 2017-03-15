@@ -243,7 +243,9 @@ trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli
 @Title("Paikallinen ammatillisen tutkinnon osan osa-alue")
 case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOsaamispisteissä] = None
+  laajuus: Option[LaajuusOsaamispisteissä] = None,
+  @Description("Tutkinnonosan osa-alueen kuvaus")
+  kuvaus: LocalizedString
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
 
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
