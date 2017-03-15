@@ -97,7 +97,6 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
   const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, opiskeluoikeudenTyyppiAtom, suorituksetAtom, tilaAtom, (date, oppilaitos, tyyppi, suoritukset, tila) => {
-    console.log(date, oppilaitos, tyyppi, suoritukset, tila)
     return date && oppilaitos && tyyppi && suoritukset && tila && {
       tyyppi: tyyppi,
       oppilaitos: oppilaitos,
@@ -107,7 +106,7 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
       },
       suoritukset
     }
-  }).log("OO")
+  })
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
