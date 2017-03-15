@@ -1,6 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.json.Json
+import org.json4s.DefaultFormats
 import org.scalatra.servlet.ServletBase
 import rx.lang.scala.Observable
 
@@ -20,7 +21,8 @@ trait ObservableSupport extends ServletBase {
       if (index > 0) {
         writer.print(",")
       }
-      writer.print(org.json4s.jackson.Serialization.write(item)(Json.jsonFormats))
+      val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats)
+      writer.print(output)
     }
     writer.print("]")
     writer.flush
