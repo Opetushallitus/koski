@@ -65,6 +65,8 @@ snyk: # javascript dependency vulnerability check
 	cd web && npm install && node_modules/snyk/cli/index.js test
 mvndeps:
 	mvn dependency:tree|less
+scala-console:
+	./scripts/mvn-scala-console.sh
 
 ### Dist and deploy
 
