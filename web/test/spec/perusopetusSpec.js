@@ -384,13 +384,6 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
-          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
-          it('Tallennus on sallittu', function() {
-            expect(opiskeluoikeus.isEnabled()).to.equal(true)
-          })
-        })
-
         describe('Virheellinen päivämäärä ja tilan muutos', function() {
           before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.tila().click('input[value="valmistunut"]'))
           it('Tallennus on estetty', function() {
@@ -404,6 +397,14 @@ describe('Perusopetus', function() {
             expect(opiskeluoikeus.isEnabled()).to.equal(false)
           })
         })
+
+        describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
+          before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
+          it('Tallennus on sallittu', function() {
+            expect(opiskeluoikeus.isEnabled()).to.equal(true)
+          })
+        })
+
         after(editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
 

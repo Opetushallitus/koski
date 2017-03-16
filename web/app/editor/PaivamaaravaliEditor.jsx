@@ -30,9 +30,12 @@ export const PäivämääräväliEditor = React.createClass({
     let isValidRange = Bacon.combineAsArray(
       alkuPäiväBus.map(data).toProperty(modelData(model, 'alku')),
       loppuPäiväBus.map(data).toProperty(modelData(model, 'loppu'))
-    ).map(([alkuPäivä, loppuPäivä]) => !alkuPäivä || !loppuPäivä || new Date(alkuPäivä) <= new Date(loppuPäivä)).log('valid')
+    ).filter(model.context.edit).map(([alkuPäivä, loppuPäivä]) => !alkuPäivä || !loppuPäivä || new Date(alkuPäivä) <= new Date(loppuPäivä))
 
-    isValidRange.onValue(valid => this.setState({validRange: valid}))
+    isValidRange.onValue(valid => {
+      model.context.errorBus.push([model.context, {error: !valid}])
+      this.setState({validRange: valid})
+    })
 
     alkuPäiväBus.merge(loppuPäiväBus)
       .filter(isValidRange)
