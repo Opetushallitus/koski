@@ -1,13 +1,12 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.IndexServlet
 import org.scalatest.{FreeSpec, Matchers}
 
 class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
   "Single page app" - {
     verifyAppAt("")
     verifyAppAt("oppija/asdf")
-    verifyAppAt("uusioppija")
+    verifyAppAt("uusioppija/010101-123N")
     verifyAppAt("asdf", 404)
 
     def verifyAppAt(path: String, responseCode: Int = 200) = {
