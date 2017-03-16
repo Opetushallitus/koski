@@ -189,22 +189,24 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       "size" -> pagination.size
     ))
 
-    val response = runSearch(doc)
-    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
+    runSearch(doc)
+      .map(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]))
+      .getOrElse(Nil)
   }
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = Json.toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
-    val response = runSearch(doc)
-    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
+    runSearch(doc)
+      .map(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]))
+      .getOrElse(Nil)
   }
 
   def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
     val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-    val response = runSearch(doc)
-    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption
+    runSearch(doc)
+      .flatMap(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption)
   }
 
   def findOids(hakusana: String): List[Oid] = {
@@ -221,7 +223,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
-    (runSearch(doc) \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid])
+    runSearch(doc)
+      .map(response => (response \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid]))
+      .getOrElse(Nil)
   }
 
   /**
@@ -285,8 +289,12 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     observable
   }
 
-  private def runSearch(doc: JValue): JValue = {
-    Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+  private def runSearch(doc: JValue): Option[JValue] = try {
+    Some(Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+  } catch {
+    case e: HttpStatusException if e.status == 400 =>
+      logger.warn(e.getMessage)
+      None
   }
 
   private def nameFilter(hakusana: String) =
