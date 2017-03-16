@@ -74,5 +74,5 @@ const getModelEditor = (model, path) => {
     console.error('Context missing from model', model)
   }
   var ModelEditor = getEditorFunction(model)
-  return <ModelEditor model={model}/>
+  return <ModelEditor model={model} />
 }
