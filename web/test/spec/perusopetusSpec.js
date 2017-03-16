@@ -577,7 +577,7 @@ describe('Perusopetus', function() {
     var addOppija = AddOppijaPage()
 
     describe('Uudelle henkilölle', function() {
-      before(prepareForNewOppija('kalle', 'kalle'))
+      before(prepareForNewOppija('kalle', '230872-7258'))
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
@@ -612,7 +612,7 @@ describe('Perusopetus', function() {
       describe('Kun oppilaitos mahdollisesti tarjoaa myös ammatillista koulutusta', function() {
         before(
           resetFixtures,
-          prepareForNewOppija('kalle', 'kalle'),
+          prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataPerusopetus({oppilaitos:'Helsingin medialukio'}))
 
         it('Opiskeluoikeuden tyypin valinnassa näytetään myös ammatillinen koulutus', function() {

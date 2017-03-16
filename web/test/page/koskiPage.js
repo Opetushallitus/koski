@@ -17,6 +17,7 @@ function KoskiPage() {
       }
       return function() {
         return pageApi.setInputValue('#search-query', query)()
+          .then(wait.forAjax)
           .then(wait.until(expectedResults))
       }
     },
@@ -190,6 +191,7 @@ function prepareForNewOppija(username, hetu) {
       .then(resetFixtures)
       .then(page.openPage)
       .then(page.oppijaHaku.search(hetu, page.oppijaHaku.isNoResultsLabelShown))
+      .then(wait.until(page.oppijaHaku.canAddNewOppija))
       .then(page.oppijaHaku.addNewOppija)
   }
 }

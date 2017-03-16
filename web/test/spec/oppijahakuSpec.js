@@ -36,11 +36,6 @@ describe('Oppijahaku', function() {
     before(page.openPage, page.oppijaHaku.search('esimerkki', 1))
     before(page.oppijaHaku.search('', 0))
 
-    /*
-    it('säilyttää oppijavalinnan', function() {
-      expect(page.getSelectedOppija()).to.equal(eero)
-    })
-    */
 
     it('tyhjentää hakutulos-listauksen', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)

@@ -11,7 +11,7 @@ describe('Ammatillinen koulutus', function() {
     return function() {
       return prepareForNewOppija(username, hetu)()
         .then(addOppija.enterValidDataAmmatillinen(oppijaData))
-        .then(addOppija.submitAndExpectSuccess(hetu, oppijaData.tutkinto))
+        .then(addOppija.submitAndExpectSuccess(hetu, (oppijaData || {}).tutkinto))
     }
   }
 
@@ -194,7 +194,8 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '280608-6619'}))
+    before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
+
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
