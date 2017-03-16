@@ -333,15 +333,20 @@ describe('Ammatillinen koulutus', function() {
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +
+            'Osa-alueet Osa-alue Pakollisuus Laajuus Arvosana\n' +
+            'Äidinkieli kyllä 5 osp kiitettävä\n' +
+            'Äidinkieli ei 3 osp kiitettävä\n' +
+            'Toinen kotimainen kieli, ruotsi kyllä 1 osp kiitettävä\n' +
+            'Vieraat kielet kyllä 2 osp kiitettävä\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Osa-alueet Osa-alue Laajuus Arvosana\n' +
-            'Matematiikka 3 osp kiitettävä\n' +
-            'Fysiikka ja kemia 3 osp kiitettävä\n' +
-            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 3 osp kiitettävä\n' +
+            'Osa-alueet Osa-alue Pakollisuus Laajuus Arvosana\n' +
+            'Matematiikka kyllä 3 osp kiitettävä\n' +
+            'Fysiikka ja kemia kyllä 3 osp kiitettävä\n' +
+            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen kyllä 3 osp kiitettävä\n' +
             'Alkamispäivä 1.1.2014\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
