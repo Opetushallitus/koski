@@ -16,7 +16,7 @@ hakuTulosE.onError(showError)
 
 const oppijatP = Bacon.update(
   { query: '', results: [] },
-  hakuTulosE, ((current, hakutulos) => hakutulos)
+  hakuTulosE.skipErrors(), ((current, hakutulos) => hakutulos)
 )
 
 const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
