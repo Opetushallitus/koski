@@ -21,6 +21,9 @@ function OpinnotPage() {
         }
       }
     },
+    onTallennettavissa: function() {
+      return S('.toggle-edit.editing').is(':visible')
+    },
     avaaOpintosuoritusote: function (index) {
       return function() {
         triggerEvent(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote'), 'click')
@@ -79,6 +82,28 @@ function OpinnotPage() {
     }
   }
 
+  return api
+}
+
+function Päivämääräväli(elem) {
+  var api = {
+    setAlku: function(value) {
+      return function() {
+        return Page(elem).setInputValue('input:nth-child(1)', value)()
+      }
+    },
+    getAlku: function() {
+      return elem().find('span.inline.date:nth-child(1)').text()
+    },
+    setLoppu: function(value) {
+      return function() {
+        return Page(elem).setInputValue('input:nth-child(2)', value)()
+      }
+    },
+    isValid: function() {
+      return !elem().find('.date-range').hasClass('error')
+    }
+  }
   return api
 }
 
@@ -158,6 +183,9 @@ function Property(elem) {
       return function() {
         return Page(elem).setInputValue('select, input', value)()
       }
+    },
+    toPäivämääräväli: function() {
+      return Päivämääräväli(elem)
     },
     click: function(selector) {
       return function() {

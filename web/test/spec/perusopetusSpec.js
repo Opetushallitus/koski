@@ -428,6 +428,24 @@ describe('Perusopetus', function() {
             expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
           })
         })
+
+        describe('Validi päivämääräväli', function() {
+          var pidennettyOppivelvollisuus = editor.property('pidennettyOppivelvollisuus').toPäivämääräväli()
+          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuus.setAlku(currentDate), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('Tallennus onnistuu', function() {
+            expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDate)
+          })
+        })
+
+        describe('Virheellinen päivämääräväli', function() {
+          var pidennettyOppivelvollisuus = editor.property('pidennettyOppivelvollisuus').toPäivämääräväli()
+          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuus.setAlku(currentDate), pidennettyOppivelvollisuus.setLoppu('1.2.2008'))
+          it('Estää tallennuksen', function() {
+            expect(pidennettyOppivelvollisuus.isValid()).to.equal(false)
+            expect(opinnot.onTallennettavissa()).to.equal(false)
+          })
+          after(pidennettyOppivelvollisuus.setLoppu(currentDate), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        })
       })
     })
 

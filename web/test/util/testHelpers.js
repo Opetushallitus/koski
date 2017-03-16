@@ -282,6 +282,15 @@ function isElementVisible(el) {
       origBefore(arg)
     })
   }
+  var origAfter = after
+  after = function() {
+    Array.prototype.slice.call(arguments).forEach(function(arg) {
+      if (typeof arg !== "function") {
+        throw ("not a function: " + arg)
+      }
+      origAfter(arg)
+    })
+  }
 })()
 
 function debug(x) {
