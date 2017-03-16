@@ -1,5 +1,5 @@
 import React from 'react'
-import { modelData, modelTitle } from './EditorModel.js'
+import { modelData, modelTitle, modelLookup } from './EditorModel.js'
 import { Editor } from './GenericEditor.jsx'
 import { shouldShowProperty, PropertiesEditor } from './PropertiesEditor.jsx'
 
@@ -35,6 +35,7 @@ const SuoritusEditor = React.createClass({
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
     let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
+    let osasuoritukset = modelLookup(model, 'osasuoritukset')
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
     <tr>
       <td className="suoritus">
@@ -52,12 +53,16 @@ const SuoritusEditor = React.createClass({
       <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
     </tr>
     {
-      expanded && (<tr className="details">
+      expanded && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} propertyFilter={propertyFilter} getValueEditor={ (prop, getDefault) => prop.key == 'osasuoritukset' && prop.model
-              ? <Suoritustaulukko suoritukset={ prop.model.value }/>
-              : getDefault() }
-          />
+          <PropertiesEditor model={model} propertyFilter={(p) => propertyFilter(p) && p.key != 'osasuoritukset'} />
+        </td>
+      </tr>)
+    }
+    {
+      expanded && osasuoritukset && osasuoritukset.value && (<tr className="osasuoritukset" key="osasuoritukset">
+        <td colSpan="4">
+          <Suoritustaulukko suoritukset={ osasuoritukset.value }/>
         </td>
       </tr>)
     }

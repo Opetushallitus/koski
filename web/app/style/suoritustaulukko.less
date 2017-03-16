@@ -15,15 +15,19 @@
         }
       }
 
-      tr.details {
+      tr.details, tr.osasuoritukset {
         background: white;
         > td {
           padding-left: 45px;
           padding-right: 35px;
-          padding-bottom: 24px;
 
           .properties > table tr td {
             padding-top: 2px; // override for more compact layout
+          }
+        }
+        &:last-child {
+          > td {
+            padding-bottom: 24px;
           }
         }
       }
@@ -36,9 +40,6 @@
     }
     .suoritus-taulukko { // Nested table
       margin-top: 12px;
-      thead {
-        display: none;
-      }
     }
   }
 }
