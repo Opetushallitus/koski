@@ -34,7 +34,7 @@ export const NullEditor = React.createClass({
 const getEditorFunction = (model) => {
 
   let editorByClass = filter => mdl => {
-    if (!mdl.value) {
+    if (!mdl || !mdl.value) {
       return undefined
     }
     for (var i in mdl.value.classes) {
@@ -50,7 +50,7 @@ const getEditorFunction = (model) => {
 
   if (model.optional) {
     let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
-    let typeEditor = model.context.editorMapping[model.optionalPrototype.type]
+    let typeEditor = model.optionalPrototype && model.context.editorMapping[model.optionalPrototype.type]
     return optionalHandlingEditor(prototype) || (typeEditor && typeEditor.handlesOptional && typeEditor) || model.context.editorMapping.optional
   }
 
