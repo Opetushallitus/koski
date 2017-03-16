@@ -31,11 +31,16 @@ export const OppijaHaku = () => (
     <div>
       <h3>Hae tai lisää opiskelija</h3>
       <input type="text" id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
-      <a href={uusiOppijaUrlP}
-         className={canAddP.map((canAdd) => canAdd ? 'lisaa-oppija' : 'lisaa-oppija disabled')}
-         onClick={canAddP.and(uusiOppijaUrlP.map((url) => (e) => navigateTo(url, e)))}>
-        Lisää opiskelija
-      </a>
+      {
+        // TODO: observable embedding for attributes didn't work here in PhantomJS
+        Bacon.combineWith(uusiOppijaUrlP, canAddP, (url, canAdd) => (
+          <a href={url || ''}
+             className={canAdd ? 'lisaa-oppija' : 'lisaa-oppija disabled'}
+             onClick={canAdd && ((e) => navigateTo(url, e))}>
+            Lisää opiskelija
+          </a>
+        ))
+      }
     </div>
     <div className='hakutulokset'>
       {
