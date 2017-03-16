@@ -238,15 +238,18 @@ case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
 ) extends Suoritus with VahvistuksetonSuoritus
 
 @Title("Ammatillisen tutkinnon osan osa-alue")
-trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli
+trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli {
+  def pakollinen: Boolean
+}
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Paikallinen ammatillisen tutkinnon osan osa-alue")
 case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOsaamispisteissä] = None,
   @Description("Tutkinnonosan osa-alueen kuvaus")
-  kuvaus: LocalizedString
+  kuvaus: LocalizedString,
+  pakollinen: Boolean,
+  laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
 
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
@@ -254,6 +257,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
+  pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
 

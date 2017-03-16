@@ -238,14 +238,21 @@ object AmmatillinenExampleData {
           näyttö = Some(näyttö(date(2016, 4, 1), "Uimarin järven tilan arviointi ja kunnostus", "Vesipojat Oy", Some(näytönArviointi))),
           lisätiedot = Some(List(lisätietoMuutosArviointiasteikossa))
         ),
-        tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11),
+        tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          osasuoritukset = Some(List(
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(5))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä)))
+          ))
+        ),
         tutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
           lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
           osasuoritukset = Some(List(
-            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), Some(LaajuusOsaamispisteissä(3)), "Matematiikan opinnot"), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            AmmatillisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
             AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
-              koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), Some(LaajuusOsaamispisteissä(3))),
+              koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
               tila = tilaValmis,
               arviointi = Some(List(arviointiKiitettävä)),
               alkamispäivä = Some(date(2014, 1, 1)),
