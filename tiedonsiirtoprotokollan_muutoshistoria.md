@@ -1,3 +1,7 @@
+## 16.3.2017
+
+- Lisätty pakollinen-flägi ammatillisen tutkinnon osan osa-alueisiin
+
 ## 13.3.2017
 
 - Lisätty mahdollisuus käyttää valtakunnallista koodistoa \"ammatillisenoppiaineet\" yhteisten tutkinnon osien osa-alueissa
