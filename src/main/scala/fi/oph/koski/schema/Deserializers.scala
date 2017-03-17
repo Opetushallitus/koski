@@ -13,6 +13,7 @@ object Deserializers {
     LocalizedStringDeserializer,
     OpiskeluoikeusDeserializer,
     AmmatillisenTutkinnonOsaDeserializer,
+    ValtakunnallinenTutkinnonOsaDeserializer,
     AmmatillisenTutkinnonOsanOsaAlueDeserializer,
     HenkilöDeserialializer,
     JärjestämismuotoDeserializer,
@@ -49,8 +50,14 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
       json match {
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkintoosittainen") => suoritus.extract[AmmatillisenTutkinnonOsittainenSuoritus]
-        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosa") =>
+          if (ValtakunnallinenTutkinnonOsaDeserializer.isYhteinenTutkinnonOsa(suoritus \ "koulutusmoduuli")) {
+            suoritus.extract[YhteisenAmmatillisenTutkinnonOsanSuoritus]
+          } else {
+            suoritus.extract[MuunAmmatillisenTutkinnonOsanSuoritus]
+          }
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosanosaalue") => suoritus.extract[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosaapienempikokonaisuus") => suoritus.extract[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]
 
@@ -296,14 +303,38 @@ object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOpp
 }
 
 object AmmatillisenTutkinnonOsaDeserializer extends Deserializer[AmmatillisenTutkinnonOsa] {
-  private val classes = List(classOf[AmmatillisenTutkinnonOsa])
+  private val AmmatillisenTutkinnonOsaClass = classOf[AmmatillisenTutkinnonOsa]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillisenTutkinnonOsa] = {
-    case (TypeInfo(c, _), json) if classes.contains(c) =>
+    case (TypeInfo(AmmatillisenTutkinnonOsaClass, _), json) =>
       json match {
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[ValtakunnallinenTutkinnonOsa]
-        case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonOsa]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") =>
+          moduuli.extract[ValtakunnallinenTutkinnonOsa]
+        case moduuli: JObject =>
+          moduuli.extract[PaikallinenTutkinnonOsa]
       }
+  }
+}
+
+object ValtakunnallinenTutkinnonOsaDeserializer extends Deserializer[ValtakunnallinenTutkinnonOsa] {
+  private val ValtakunnallinenTutkinnonOsaClass = classOf[ValtakunnallinenTutkinnonOsa]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), ValtakunnallinenTutkinnonOsa] = {
+    case (TypeInfo(ValtakunnallinenTutkinnonOsaClass, _), json) =>
+      if (isYhteinenTutkinnonOsa(json)) {
+        json.extract[YhteinenTutkinnonOsa]
+      } else {
+        json.extract[MuuValtakunnallinenTutkinnonOsa]
+      }
+  }
+
+  def isYhteinenTutkinnonOsa(json: JValue)(implicit format: Formats) = {
+    val koodistoUri = (json \ "tunniste" \ "koodistoUri")
+    val koodiarvo = (json \ "tunniste" \ "koodiarvo")
+    (koodistoUri, koodiarvo) match {
+      case (JString("tutkinnonosat"), JString(koodiarvo)) if (AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.map(_.koodiarvo).contains(koodiarvo)) => true
+      case _ => false
+    }
   }
 }
 

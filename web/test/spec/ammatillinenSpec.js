@@ -330,6 +330,8 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Työssäoppimisen yhteydessä ei\n' +
+            'Kokonaisuus Laajuus Arvosana\n' +
+            'Hoitotarpeen määrittäminen Hyväksytty\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 osp kiitettävä\n' +
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +

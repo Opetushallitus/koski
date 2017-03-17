@@ -48,6 +48,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosaapienempikokonaisuus",
+    "koodiArvo": "ammatillisentutkinnonosaapienempikokonaisuus",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen tutkinnon osaa pienempi kokonaisuus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavakoulutus",
     "koodiArvo": "nayttotutkintoonvalmistavakoulutus",
     "metadata": [

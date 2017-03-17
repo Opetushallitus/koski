@@ -46,8 +46,8 @@ object ExamplesValma {
   val examples = List(Example("ammatilliseen peruskoulutukseen valmentava koulutus", "Oppija on suorittanut ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA)", valmaTodistus, 200))
 
   lazy val tunnustettu: Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(
-    osaaminen = Some(AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat", Some(1)), true, None),
+    osaaminen = Some(MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat", Some(1)), true, None),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,

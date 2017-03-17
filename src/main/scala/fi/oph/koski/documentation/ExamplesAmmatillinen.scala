@@ -121,10 +121,10 @@ object AmmatillinenPerustutkintoExample {
   lazy val tunnustettuPaikallinenTutkinnonOsaOpiskeluoikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
     osat = Some(List(
-      AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100031", Some("Moottorin ja voimansiirron huolto ja korjaus"), "tutkinnonosat", None), false, Some(LaajuusOsaamispisteissä(15))),
+      MuunAmmatillisenTutkinnonOsanSuoritus(
+        koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100031", Some("Moottorin ja voimansiirron huolto ja korjaus"), "tutkinnonosat", None), false, Some(LaajuusOsaamispisteissä(15))),
         tunnustettu = Some(OsaamisenTunnustaminen(
-          Some(AmmatillisenTutkinnonOsanSuoritus(
+          Some(MuunAmmatillisenTutkinnonOsanSuoritus(
             koulutusmoduuli = PaikallinenTutkinnonOsa(PaikallinenKoodi("11-22-33", "Moottorin korjaus"),
               """|Opiskelijan on
                  |- tunnettava jakopyörästön merkitys moottorin toiminnalle
@@ -186,8 +186,8 @@ object AmmatillinenOldExamples {
   lazy val mukautettu = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
-      AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
+      YhteisenAmmatillisenTutkinnonOsanSuoritus(
+        koulutusmoduuli = YhteinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
         lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
           Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
@@ -211,8 +211,8 @@ object AmmatillinenOldExamples {
     ),
 
     osat = Some(List(
-      AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
+      MuunAmmatillisenTutkinnonOsanSuoritus(
+        koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
         tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
         suorituskieli = None,
         tila = tilaValmis,
@@ -243,8 +243,8 @@ object AmmatillinenOldExamples {
           suorituskieli = suomenKieli,
 
           osasuoritukset = Some(List(
-            AmmatillisenTutkinnonOsanSuoritus(
-              koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
+            YhteisenAmmatillisenTutkinnonOsanSuoritus(
+              koulutusmoduuli = YhteinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
               tunnustettu = None,
               näyttö = None,
               lisätiedot = None,
@@ -319,8 +319,8 @@ object AmmatillinenOldExamples {
   )
 
   private lazy val tutkinnonOsat = List(
-    AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
+    MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
         true,
         laajuus = None
@@ -338,8 +338,8 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2013, 1, 31), stadinAmmattiopisto)
     ),
     paikallisenOsanSuoritus,
-    AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
+    MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
         true,
         None
@@ -356,8 +356,8 @@ object AmmatillinenOldExamples {
       ))),
       vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
     ),
-    AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
+    MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
         true,
         None
@@ -374,7 +374,7 @@ object AmmatillinenOldExamples {
       ))),
       vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
     ),
-    AmmatillisenTutkinnonOsanSuoritus(
+    MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = autonLisävarustetyöt(true),
       näyttö = Some(näyttö(date(2015, 4, 1), "Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
@@ -388,8 +388,8 @@ object AmmatillinenOldExamples {
       ))),
       vahvistus = vahvistus(date(2015, 5, 1), stadinAmmattiopisto)
     ),
-    AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
+    MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
         true,
         None

@@ -1020,6 +1020,46 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "htm",
+              "nimi" : {
+                "fi" : "Hoitotarpeen määrittäminen"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Hoitotarpeen määrittäminen"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "nimi" : {
+                "fi" : "Hyväksytty"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2013-03-20",
+            "arvioitsijat" : [ {
+              "nimi" : "Jaana Arstila"
+            }, {
+              "nimi" : "Pekka Saurmann"
+            }, {
+              "nimi" : "Juhani Mykkänen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
