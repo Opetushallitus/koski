@@ -193,29 +193,20 @@ trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArvi
 
 @Description("Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)")
 case class NumeerinenPerusopetuksenOppiaineenArviointi(
-  @KoodistoKoodiarvo("4")
-  @KoodistoKoodiarvo("5")
-  @KoodistoKoodiarvo("6")
-  @KoodistoKoodiarvo("7")
-  @KoodistoKoodiarvo("8")
-  @KoodistoKoodiarvo("9")
-  @KoodistoKoodiarvo("10")
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate]
-) extends PerusopetuksenOppiaineenArviointi {
+) extends PerusopetuksenOppiaineenArviointi with NumeerinenYleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
 }
 
 @Description("Sanallisessa arvioinnissa suorituksen hyväksymisen ilmaisuun käytetään koodiarvoja S (suoritettu) ja H (hylätty). Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään.")
 case class SanallinenPerusopetuksenOppiaineenArviointi(
-  @KoodistoKoodiarvo("S")
-  @KoodistoKoodiarvo("H")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
-) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
+) extends PerusopetuksenOppiaineenArviointi with SanallinenYleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
 }
 

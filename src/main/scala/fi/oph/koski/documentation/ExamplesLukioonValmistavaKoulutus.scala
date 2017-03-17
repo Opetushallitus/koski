@@ -31,7 +31,7 @@ object ExamplesLukioonValmistavaKoulutus {
             luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f),
             luvaKurssinSuoritus("STK", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f),
             luvaKurssinSuoritus("STK", "Opinto-ohjaus", 1.0f),
-            kurssisuoritus(valtakunnallinenKurssi("KU1"), Some(true)).copy(arviointi = kurssinArviointi(7))
+            kurssisuoritus(valtakunnallinenKurssi("KU1"), Some(true)).copy(arviointi = numeerinenArviointi(7))
           ))
         )),
         lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
@@ -50,7 +50,7 @@ object ExamplesLukioonValmistavaKoulutus {
       laajuus = laajuus(laajuusKursseissa),
       LocalizedString.finnish(kuvaus)
     ),
-    arviointi = kurssinArviointi("S")
+    arviointi = sanallinenArviointi("S")
   )
 
 }

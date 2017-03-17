@@ -3878,6 +3878,9 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "kuvaus" : {
+              "fi" : "Sujuvaa keskustelua"
+            },
             "päivä" : "2016-06-08",
             "hyväksytty" : true
           } ],

@@ -31,7 +31,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
           arviointi = arviointi("9"),
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = kurssinArviointi("9"))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = numeerinenArviointi(9))
           ))
         )))
       )))
@@ -47,7 +47,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
           tila = tilaKesken,
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = kurssinArviointi("9"))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = numeerinenArviointi(9))
           ))
         )))
       )))
@@ -75,7 +75,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         osasuoritukset = Some(List(
           suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9")).copy(
             osasuoritukset = Some(List(
-              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis, arviointi = kurssinArviointi("9"))
+              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis, arviointi = numeerinenArviointi(9))
             ))
           )))
       )))

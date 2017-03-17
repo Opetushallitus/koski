@@ -212,7 +212,6 @@ case class IBKurssinArviointi(
   arvosana: Koodistokoodiviite,
   @KoodistoUri("effortasteikkoib")
   effort: Option[Koodistokoodiviite] = None,
-  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: LocalDate
 ) extends IBArviointi with ArviointiPäivämäärällä
 

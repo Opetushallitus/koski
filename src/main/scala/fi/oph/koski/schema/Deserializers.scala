@@ -135,9 +135,22 @@ object ArviointiSerializer extends Serializer[Arviointi] {
     }
   }
 
+  object LukionKurssinArviointiDeserializer extends Deserializer[LukionKurssinArviointi] {
+    private val LukionKurssinArviointiClass = classOf[LukionKurssinArviointi]
+
+    def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukionKurssinArviointi] = {
+      case (TypeInfo(LukionKurssinArviointiClass, _), json) =>
+        json match {
+          case arviointi: JObject if (List(JString("S"), JString("H")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenLukionKurssinArviointi]
+          case arviointi: JObject => arviointi.extract[NumeerinenLukionKurssinArviointi]
+        }
+    }
+  }
+
+
   override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Arviointi] = {
     case (TypeInfo(c, _), json: JObject) if classOf[Arviointi].isAssignableFrom(c) =>
-      Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer + KorkeakoulunArviointiDeserializer + PerusopetuksenOppiaineenArviointiDeserializer).asInstanceOf[Arviointi]
+      Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer + KorkeakoulunArviointiDeserializer + PerusopetuksenOppiaineenArviointiDeserializer + LukionKurssinArviointiDeserializer).asInstanceOf[Arviointi]
   }
 
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {

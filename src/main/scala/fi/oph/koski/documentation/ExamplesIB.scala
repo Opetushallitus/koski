@@ -157,7 +157,7 @@ object ExamplesIB {
       PreIBKurssinSuoritus(
         koulutusmoduuli = kurssi,
         tila = tilaValmis,
-        arviointi = LukioExampleData.kurssinArviointi(arvosana)
+        arviointi = LukioExampleData.sanallinenArviointi(arvosana)
       )
     })
   )

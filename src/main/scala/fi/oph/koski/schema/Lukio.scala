@@ -171,12 +171,18 @@ object LukionOppiaineenArviointi {
   def apply(arvosana: String) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
-case class LukionKurssinArviointi(
+trait LukionKurssinArviointi extends ArviointiPäivämäärällä
+
+case class NumeerinenLukionKurssinArviointi(
   arvosana: Koodistokoodiviite,
-  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
-  @Title("Arviointipäivä")
   päivä: LocalDate
-) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
+) extends LukionKurssinArviointi with NumeerinenYleissivistävänKoulutuksenArviointi
+
+case class SanallinenLukionKurssinArviointi(
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  kuvaus: Option[LocalizedString],
+  päivä: LocalDate
+) extends LukionKurssinArviointi with SanallinenYleissivistävänKoulutuksenArviointi
 
 sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def laajuus: Option[LaajuusKursseissa]

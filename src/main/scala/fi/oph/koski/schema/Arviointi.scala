@@ -13,9 +13,7 @@ trait Arviointi {
   def arvioitsijat: Option[List[SuorituksenArvioitsija]]
 
   def arvosanaNumeroin: Option[LocalizedString] = {
-    try { Some(LocalizedString.unlocalized(arvosana.koodiarvo.toInt.toString)) } catch {
-      case e: NumberFormatException => None
-    }
+    Arviointi.numeerinen(arvosana.koodiarvo).map(x => LocalizedString.unlocalized(x.toString))
   }
   def arvosanaKirjaimin: LocalizedString
   @SyntheticProperty
@@ -26,8 +24,15 @@ trait Arviointi {
   def description = arvosanaNumeroin.getOrElse(arvosanaKirjaimin)
 }
 
+object Arviointi {
+  def numeerinen(arviointi: String) = try { Some(arviointi.toInt) } catch {
+    case e: NumberFormatException => None
+  }
+}
+
 trait ArviointiPäivämäärällä extends Arviointi {
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  @Title("Arviointipäivä")
   def päivä: LocalDate
   def arviointipäivä = Some(päivä)
 }
@@ -57,6 +62,7 @@ case class Arvioitsija(
 ) extends SuorituksenArvioitsija
 
 trait SanallinenArviointi extends Arviointi {
+  @Title("Sanallinen arviointi")
   def kuvaus: Option[LocalizedString]
   override def description = kuvaus.getOrElse(super.description)
 }

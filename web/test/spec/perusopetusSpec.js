@@ -120,7 +120,7 @@ describe('Perusopetus', function() {
             'Tietokoneen hyötykäyttö 9 -\n' +
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
-            'Kuvaus Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
+            'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
