@@ -23,15 +23,21 @@ trait ObservableSupport extends ApiServlet {
   def writeJsonStreamSynchronously(in: Observable[_ <: AnyRef]): Unit = {
     contentType = "application/json;charset=utf-8"
     val writer = response.getWriter
+    var empty = true
     in.zipWithIndex.toBlocking.foreach { case (item, index) =>
       if (index == 0) {
         writer.print("[")
+        empty = false
       }
       if (index > 0) {
         writer.print(",")
       }
       val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats)
       writer.print(output)
+    }
+
+    if (empty) {
+      writer.print("[")
     }
     writer.print("]")
     writer.flush
