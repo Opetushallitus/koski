@@ -180,6 +180,9 @@ object ExamplesLukio {
             suoritus(lukionOppiaine("TE")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("TE1")).copy(arviointi = kurssinArviointi(8))
             ))),
+            suoritus(PaikallinenLukionOppiaine(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
+              kurssisuoritus(soveltavaKurssi("ITT1", "Tanssin introkurssi", "Opiskelija oppii tuntemaan omaa kehoansa monipuolisesti. Hän osaa käyttää liikkeen peruselementtejä liikkumisessaan\nja kykenee improvisoimaan liikkeellisesti annetun aiheen mukaan.")).copy(arviointi = kurssinArviointi(10))
+            ))),
             MuidenLukioOpintojenSuoritus(
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("TO", "lukionmuutopinnot")),
               tila = tilaValmis,
@@ -287,7 +290,7 @@ object LukioExampleData {
 
   def laajuus(laajuus: Float, yksikkö: String = "4"): Some[LaajuusKursseissa] = Some(LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 
-  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None) = MuuOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
+  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None) = LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
   def lukionÄidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),

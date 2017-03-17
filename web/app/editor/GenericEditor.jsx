@@ -32,7 +32,6 @@ export const NullEditor = React.createClass({
 })
 
 const getEditorFunction = (model) => {
-
   let editorByClass = filter => mdl => {
     if (!mdl || !mdl.value) {
       return undefined

@@ -229,10 +229,13 @@ object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukionOppiaine] = {
     case (TypeInfo(LukionOppiaineClass, _), json) =>
       json match {
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
-        case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
-        case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
-        case moduuli: JObject => moduuli.extract[MuuOppiaine]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koskioppiaineetyleissivistava") => json match {
+          case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
+          case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
+          case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
+          case moduuli: JObject => moduuli.extract[LukionMuuValtakunnallinenOppiaine]
+        }
+        case moduuli: JObject => moduuli.extract[PaikallinenLukionOppiaine]
         case _ => throw CannotDeserializeException(this, json)
       }
   }

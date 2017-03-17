@@ -211,13 +211,22 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 @Description("Lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends YleissivistavaOppiaine with PreIBOppiaine {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
-  def tunniste: Koodistokoodiviite
+  def tunniste: KoodiViite
 }
 
-case class MuuOppiaine(
+case class PaikallinenLukionOppiaine(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
+  pakollinen: Boolean = true,
+  laajuus: Option[LaajuusKursseissa] = None
+) extends LukionOppiaine with PaikallinenKoulutusmoduuli
+
+trait LukionValtakunnallinenOppiaine extends LukionOppiaine with YleissivistavaOppiaine
+
+case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
@@ -237,7 +246,7 @@ case class MuuOppiaine(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukionOppiaine
+) extends LukionValtakunnallinenOppiaine
 
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
 case class AidinkieliJaKirjallisuus(
@@ -248,7 +257,7 @@ case class AidinkieliJaKirjallisuus(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukionOppiaine
+) extends LukionValtakunnallinenOppiaine
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class VierasTaiToinenKotimainenKieli(
@@ -263,7 +272,7 @@ case class VierasTaiToinenKotimainenKieli(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukionOppiaine {
+) extends LukionValtakunnallinenOppiaine {
   override def description = concat(nimi, ", ", kieli)
 }
 
@@ -276,7 +285,7 @@ case class LukionMatematiikka(
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukionOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
   override def description = oppimäärä.description
 }
 
