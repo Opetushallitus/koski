@@ -24,6 +24,10 @@ describe('Oppijahaku', function() {
       expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
     })
 
+    it('Uutta oppijaa ei voi lisätä', function() {
+      expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+    })
+
     describe('Kun klikataan oppijaa listalla', function() {
       before(page.oppijaHaku.selectOppija('Markkanen'))
 
@@ -36,7 +40,6 @@ describe('Oppijahaku', function() {
     before(page.openPage, page.oppijaHaku.search('esimerkki', 1))
     before(page.oppijaHaku.search('', 0))
 
-
     it('tyhjentää hakutulos-listauksen', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
       expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
@@ -44,10 +47,25 @@ describe('Oppijahaku', function() {
   })
 
   describe('Kun haku ei tuota tuloksia', function() {
-    before(page.oppijaHaku.search('asdf', page.oppijaHaku.isNoResultsLabelShown))
+    describe('Nimellä', function() {
+      before(page.oppijaHaku.search('asdf', page.oppijaHaku.isNoResultsLabelShown))
 
-    it('Näytetään kuvaava teksti', function() {
-      expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      it('Näytetään kuvaava teksti', function() {
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      })
+      it('Uutta oppijaa ei voi lisätä', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+      })
+    })
+    describe('Hetulla', function() {
+      before(page.oppijaHaku.search('', not(page.oppijaHaku.isNoResultsLabelShown)), page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Näytetään kuvaava teksti', function() {
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      })
+      it('Uuden oppijan lisääminen on mahdollista', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
+      })
     })
   })
 
@@ -55,7 +73,6 @@ describe('Oppijahaku', function() {
     before(page.oppijaHaku.search('Presidentti', page.oppijaHaku.isNoResultsLabelShown))
 
     it('Tuloksia ei näytetä', function() {
-
     })
   })
 
@@ -86,20 +103,20 @@ describe('Oppijahaku', function() {
       expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
     })
-
-    /*
-    it('Hakutulos näytetään', function() {
-      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
-    })
-    */
   })
 
   describe('Käyttöoikeudet', function() {
     describe('Oppijahaku', function() {
       before(Authentication().login('omnia-palvelukäyttäjä'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
-
       it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
 
+      })
+    })
+
+    describe('Oppijan lisääminen', function() {
+      before(Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown))
+      it('Ei ole mahdollista ilman kirjoitusoikeuksia', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
       })
     })
 

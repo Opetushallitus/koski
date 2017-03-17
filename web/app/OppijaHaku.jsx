@@ -3,28 +3,25 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, navigateTo} from './location'
 import {showError} from './location'
-import {validateHetu} from './hetu'
 
 const oppijaHakuE = new Bacon.Bus()
 
 const acceptableQuery = (q) => q.length >= 3
 
 const hakuTulosE = oppijaHakuE.debounce(500)
-  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/koski/api/henkilo/search?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
+  .flatMapLatest(query => (acceptableQuery(query) ? Http.get(`/koski/api/henkilo/search?query=${query}`) : Bacon.once({henkilöt: []})).map((results) => ({ results, query })))
 
 hakuTulosE.onError(showError)
 
 const oppijatP = Bacon.update(
-  { query: '', results: [] },
+  { query: '', results: { henkilöt: []} },
   hakuTulosE.skipErrors(), ((current, hakutulos) => hakutulos)
 )
 
 const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
-const hetuP = oppijatP.map(({query}) => query)
-const hetuValidP = hetuP.map((hetu) => validateHetu(hetu).length == 0)
-const canAddP = searchInProgressP.not().and(hetuValidP).and(oppijatP.map(({results}) => results.length == 0))
-const uusiOppijaUrlP = canAddP.and(hetuP.map(hetu => '/koski/uusioppija/' + hetu))
+const canAddP = searchInProgressP.not().and(oppijatP.map(({results}) => results.canAddNew))
+const uusiOppijaUrlP = canAddP.and(oppijatP.map(oppijat => '/koski/uusioppija/' + oppijat.query))
 
 export const OppijaHaku = () => (
   <div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
@@ -44,9 +41,9 @@ export const OppijaHaku = () => (
     </div>
     <div className='hakutulokset'>
       {
-        oppijatP.map(oppijat => oppijat.results.length > 0
+        oppijatP.map(oppijat => oppijat.results.henkilöt.length > 0
           ? (<ul> {
-              oppijat.results.map((o, i) =>
+              oppijat.results.henkilöt.map((o, i) =>
                 <li key={i}><a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a> </li>
               )
             } </ul>)

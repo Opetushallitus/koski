@@ -81,8 +81,12 @@ function isLoading() {
   return S('.loading').length > 0
 }
 
-function isNotLoading() {
-  return !isLoading()
+var isNotLoading = not(isLoading)
+
+function not(f) {
+  return function() {
+    return !f()
+  }
 }
 
 function getJson(url) {
