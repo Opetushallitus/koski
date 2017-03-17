@@ -14,22 +14,32 @@ import fi.oph.koski.schema._
 object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(
     exampleHenkilö,
-    List(PerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
-      päättymispäivä = None,
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      koulutustoimija = None,
-      suoritukset = List(
-        kahdeksannenLuokanSuoritus,
-        yhdeksännenLuokanSuoritus
-      ),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
-        List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
-        )
-      )
-    ))
+    List(ysiluokkalaisenOpiskeluoikeus)
   )
+
+  lazy val ysiluokkalaisenOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    alkamispäivä = Some(date(2008, 8, 15)),
+    päättymispäivä = None,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      kahdeksannenLuokanSuoritus,
+      yhdeksännenLuokanSuoritus
+    ),
+    tila = PerusopetuksenOpiskeluoikeudenTila(
+      List(
+        PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
+  lazy val ysinOpiskeluoikeusKesken: PerusopetuksenOpiskeluoikeus = ysiluokkalaisenOpiskeluoikeus.copy(
+    suoritukset = List(
+      kahdeksannenLuokanSuoritus,
+      yhdeksännenLuokanSuoritus.copy(tila = tilaKesken, vahvistus = None)
+    )
+  )
+
 
   val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
 
