@@ -18,7 +18,7 @@ const oppijatP = Bacon.update(
   hakuTulosE.skipErrors(), ((current, hakutulos) => hakutulos)
 )
 
-const searchInProgressP = oppijaHakuE.awaiting(oppijatP.mapError().changes()).throttle(200)
+const searchInProgressP = oppijaHakuE.awaiting(hakuTulosE.mapError()).throttle(200)
 
 const canAddP = searchInProgressP.not().and(oppijatP.map(({results}) => results.canAddNew))
 const uusiOppijaUrlP = canAddP.and(oppijatP.map(oppijat => '/koski/uusioppija/' + oppijat.query))
