@@ -17,7 +17,8 @@ function KoskiPage() {
       }
       return function() {
         return pageApi.setInputValue('#search-query', query)()
-          .then(wait.forAjax)
+          .then(wait.until(OppijaHaku.isSearchInProgress))
+          .then(wait.until(not(OppijaHaku.isSearchInProgress)))
           .then(wait.until(expectedResults))
       }
     },
@@ -44,6 +45,9 @@ function KoskiPage() {
     },
     getSelectedSearchResult: function() {
       return S('.hakutulokset .selected').text()
+    },
+    isSearchInProgress: function() {
+      return S('.oppija-haku').hasClass('searching')
     },
     selectOppija: function(oppija) {
       return function() {
