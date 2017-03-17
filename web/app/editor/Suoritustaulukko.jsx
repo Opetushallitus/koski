@@ -34,7 +34,7 @@ const SuoritusEditor = React.createClass({
     let properties = model.value.properties.filter(propertyFilter)
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
-    let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
+    let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
     <tr>

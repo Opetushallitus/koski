@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.finnish
+import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
@@ -260,6 +260,22 @@ case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
+
+@Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
+@Title("Valtakunnallinen ammatillisen tutkinnon osan osa-alue")
+case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
+  @KoodistoKoodiarvo("VK")
+  @KoodistoKoodiarvo("TK1")
+  @KoodistoUri("ammatillisenoppiaineet")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
+  override def description = concat(nimi, ", ", kieli)
+}
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
 case class AmmatillisenTutkinnonOsanLisätieto(
