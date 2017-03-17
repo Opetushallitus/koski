@@ -1,3 +1,8 @@
+## 17.3.2017
+
+- Lisätty lukion paikalliset oppiaineet
+- Lisätty kielivalinta ammatillisen tutkinnon osa osa-alueeseen
+
 ## 16.3.2017
 
 - Lisätty pakollinen-flägi ammatillisen tutkinnon osan osa-alueisiin
