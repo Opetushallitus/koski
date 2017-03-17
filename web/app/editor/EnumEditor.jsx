@@ -7,7 +7,7 @@ import Http from '../http'
 
 export const EnumEditor = BaconComponent({
   render() {
-    let {model, asRadiogroup} = this.props
+    let {model, asRadiogroup, disabledValue} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
 
@@ -23,8 +23,8 @@ export const EnumEditor = BaconComponent({
               {
                 alternatives.map(alternative =>
                   <li key={ alternative.value }>
-                    <label>
-                      <input type="radio" name="alternative" value={ alternative.value } onChange={onChange}></input>
+                    <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
+                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={onChange}></input>
                       {alternative.title}
                     </label>
                   </li>

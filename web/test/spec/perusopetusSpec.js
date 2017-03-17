@@ -403,9 +403,8 @@ describe('Perusopetus', function() {
           it('Tallennus on sallittu', function() {
             expect(opiskeluoikeus.isEnabled()).to.equal(true)
           })
+          after(editor.doneEditing, wait.until(page.isSavedLabelShown))
         })
-
-        after(editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
 
       describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
@@ -573,6 +572,14 @@ describe('Perusopetus', function() {
             expect(liitetiedot.isVisible()).to.equal(false)
           })
         })
+      })
+    })
+
+    describe('Valmis tilaa ei voi lisätä kun suoritus on kesken', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
+
+      it('Tallennus on estetty', function() {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
       })
     })
 

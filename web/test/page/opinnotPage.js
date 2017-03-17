@@ -121,6 +121,9 @@ function OpiskeluoikeusDialog() {
     },
     isEnabled: function() {
       return !findSingle('button.opiskeluoikeuden-tila').is(':disabled')
+    },
+    radioEnabled: function(value) {
+      return !findSingle('input[value="' + value + '"]').is(':disabled')
     }
   }
 }
