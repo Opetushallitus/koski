@@ -1,7 +1,10 @@
 ## 17.3.2017
 
 - Lisätty lukion paikalliset oppiaineet
-- Lisätty kielivalinta ammatillisen tutkinnon osa osa-alueeseen
+- Lisätty kielivalinta ammatillisen tutkinnon osa osa-alueeseen (oppiaineisiin AI, TK1, VK)
+- Yhteisille tutkinnon osille alisuorituksiksi osa-alueita, muille tutkinnon osille tutkinnon osaa pienempiä kokonaisuuksia
+- Lisätty sanallinen arviointi lukion kursseihin
+- Lisätty oman äidinkielen opinnot lukionmuutopinnot-koodistoon
 
 ## 16.3.2017
 
