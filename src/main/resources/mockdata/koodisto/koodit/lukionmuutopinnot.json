@@ -1,6 +1,6 @@
 [
   {
-    "koodiUri" : "lukionmuutopinnot_taiteidenvalisetopinnot",
+    "koodiUri" : "lukionmuutopinnot_tvo",
     "koodiArvo" : "TVO",
     "metadata" : [ {
       "nimi" : "Taiteiden väliset opinnot",
@@ -9,7 +9,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "lukionmuutopinnot_teemaopinnot",
+    "koodiUri" : "lukionmuutopinnot_to",
     "koodiArvo" : "TO",
     "metadata" : [ {
       "nimi" : "Teemaopinnot",
@@ -18,7 +18,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "lukionmuutopinnot_lukiodiplomit",
+    "koodiUri" : "lukionmuutopinnot_ld",
     "koodiArvo" : "LD",
     "metadata" : [ {
       "nimi" : "Lukiodiplomit",
@@ -27,7 +27,16 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "lukionmuutopinnot_muutsuoritukset",
+    "koodiUri" : "lukionmuutopinnot_oa",
+    "koodiArvo" : "OA",
+    "metadata" : [ {
+      "nimi" : "Oman äidinkielen opinnot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionmuutopinnot_ms",
     "koodiArvo" : "MS",
     "metadata" : [ {
       "nimi" : "Muut suoritukset",

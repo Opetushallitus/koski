@@ -189,6 +189,13 @@ object ExamplesLukio {
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = kurssinArviointi("S", päivä = date(2016, 6, 8)))
               ))
+            ),
+            MuidenLukioOpintojenSuoritus(
+              koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("OA", "lukionmuutopinnot")),
+              tila = tilaValmis,
+              osasuoritukset = Some(List(
+                kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = kurssinArviointi("S", päivä = date(2016, 6, 8)))
+              ))
             )
           ))
         )

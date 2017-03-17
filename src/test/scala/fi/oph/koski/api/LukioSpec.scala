@@ -96,6 +96,8 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |MAA16 Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2 1 9 4.6.2016
           |MU Musiikki 1 8
           |MU1 Musiikki ja minä 1 8 4.6.2016
+          |OA Oman äidinkielen opinnot 1
+          |OA1 Oman äidinkielen keskustelukurssi 1 hyväksytty 8.6.2016
           |PS Psykologia 1 9
           |PS1 Psyykkinen toiminta ja oppiminen 1 9 4.6.2016
           |ITT Tanssi ja liike 1 10
@@ -149,7 +151,9 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
                                                             |Tanssi ja liike 1 Erinomainen 10
                                                             |Teemaopinnot
                                                             |Monitieteinen ajattelu 1 Hyväksytty
-                                                            |Opiskelijan suorittama kokonaiskurssimäärä 89,5""".stripMargin)
+                                                            |Oman äidinkielen opinnot
+                                                            |Oman äidinkielen keskustelukurssi 1 Hyväksytty
+                                                            |Opiskelijan suorittama kokonaiskurssimäärä 90,5""".stripMargin)
     }
   }
 
