@@ -336,8 +336,8 @@ describe('Ammatillinen koulutus', function() {
             'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi\n' +
             'Osa-alue Pakollisuus Laajuus Arvosana\n' +
-            'Äidinkieli kyllä 5 osp kiitettävä\n' +
-            'Äidinkieli ei 3 osp kiitettävä\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 osp kiitettävä\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 osp kiitettävä\n' +
             'Toinen kotimainen kieli, ruotsi kyllä 1 osp kiitettävä\n' +
             'Vieraat kielet, englanti kyllä 2 osp kiitettävä\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 osp kiitettävä\n' +

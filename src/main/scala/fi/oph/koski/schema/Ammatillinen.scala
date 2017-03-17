@@ -337,8 +337,7 @@ case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
 
-@Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
-@Title("Valtakunnallinen ammatillisen tutkinnon osan osa-alue")
+@Title("Vieras tai toinen kotimainen kieli")
 case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("VK")
   @KoodistoKoodiarvo("TK1")
@@ -346,6 +345,20 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
+  override def description = concat(nimi, ", ", kieli)
+}
+
+@Title("Äidinkieli")
+case class AmmatillisenTutkinnonÄidinkieli(
+  @KoodistoKoodiarvo("AI")
+  @KoodistoUri("ammatillisenoppiaineet")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]

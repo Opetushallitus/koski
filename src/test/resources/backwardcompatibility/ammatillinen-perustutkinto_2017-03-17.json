@@ -1142,6 +1142,10 @@
               "koodiarvo" : "AI",
               "koodistoUri" : "ammatillisenoppiaineet"
             },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            },
             "pakollinen" : true,
             "laajuus" : {
               "arvo" : 5.0,
@@ -1178,6 +1182,10 @@
             "tunniste" : {
               "koodiarvo" : "AI",
               "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
             },
             "pakollinen" : false,
             "laajuus" : {

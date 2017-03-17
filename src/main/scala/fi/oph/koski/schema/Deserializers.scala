@@ -344,7 +344,11 @@ object AmmatillisenTutkinnonOsanOsaAlueDeserializer extends Deserializer[Ammatil
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillisenTutkinnonOsanOsaAlue] = {
     case (TypeInfo(OsaAlueClass, _), json: JObject) if json \ "tunniste" \ "koodistoUri" == JString("ammatillisenoppiaineet") =>
       if (json.values.contains("kieli")) {
-        json.extract[AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli]
+        if (json \ "tunniste" \ "koodiarvo" == JString("AI")) {
+          json.extract[AmmatillisenTutkinnonÄidinkieli]
+        } else {
+          json.extract[AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli]
+        }
       } else {
         json.extract[ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue]
       }
