@@ -35,17 +35,30 @@ export const oppijaContentP = (oppijaOid) => {
 
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
-  const localModificationE = changeBus.flatMapFirst(firstContextModelPairs => {
-    increaseLoading()
-    let firstModel = firstContextModelPairs[1]
-    let shouldThrottle = firstModel && firstModel.type == 'string'
-    let batch = shouldThrottle ? changeBus.takeUntil(Bacon.later(500).merge(changeSetE)).fold(firstContextModelPairs, '.concat') : Bacon.once(firstContextModelPairs)
-    return batch.map(contextModelPairs => oppijaBeforeChange => { // Throttle by 1000 milliseconds this way to block any other updates from happening during throttling period
-      //console.log("Apply", contextModelPairs)
-      let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
-      decreaseLoading()
-      return Bacon.once(R.merge(locallyModifiedOppija, {event: 'modify'}))
-    })
+  let changeBuffer = null
+
+  const localModificationE = changeBus.flatMap(firstContextModelPairs => {
+    if (changeBuffer) {
+      changeBuffer = changeBuffer.concat(firstContextModelPairs)
+      return Bacon.never()
+    } else {
+      increaseLoading()
+      let [firstModel, firstContext] = firstContextModelPairs
+      //console.log('start batch', firstContext)
+      let shouldThrottle = firstModel && firstModel.type == 'string'
+      changeBuffer = firstContextModelPairs
+      return Bacon.once(oppijaBeforeChange => {
+        let batchEndE = shouldThrottle ? Bacon.later(1000).merge(changeSetE).take(1) : Bacon.once()
+        return batchEndE.flatMap(() => {
+          let batch = changeBuffer
+          changeBuffer = null
+          //console.log("Apply", batch.length / 2, "changes:", batch)
+          let locallyModifiedOppija = R.splitEvery(2, batch).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
+          decreaseLoading()
+          return R.merge(locallyModifiedOppija, {event: 'modify'})
+        })
+      })
+    }
   })
 
   const saveOppijaE = changeSetE.map(contextModelPairs => oppijaBeforeSave => {
