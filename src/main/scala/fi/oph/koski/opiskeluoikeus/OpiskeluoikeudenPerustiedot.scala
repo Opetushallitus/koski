@@ -204,7 +204,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
     val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
-    Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    refreshIndex
     runSearch(doc)
       .flatMap(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption)
   }
@@ -227,6 +227,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       .map(response => (response \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid]))
       .getOrElse(Nil)
   }
+
+  def refreshIndex =
+    Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
 
   /**
     * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
