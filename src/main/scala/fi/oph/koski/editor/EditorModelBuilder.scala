@@ -152,9 +152,9 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val koodiarvot: List[String] = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(Nil).asInstanceOf[List[String]]
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
-  def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k)
+  def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k) // TODO: don't use MockKoodisto, use the real one!
   def defaultValue = koodiarvot.headOption.orElse(KoodistoEnumModelBuilder.defaults.get(koodistoUri)).getOrElse(MockKoodistoViitePalvelu.getKoodistoKoodiViitteet(MockKoodistoPalvelu().getLatestVersion(koodistoUri).get).get.head.koodiarvo)
-  def getPrototypeData = Koodistokoodiviite(defaultValue, koodistoUri)
+  def getPrototypeData = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(defaultValue, koodistoUri)).get
 }
 
 trait EnumModelBuilder[A] extends ModelBuilderForClass {
