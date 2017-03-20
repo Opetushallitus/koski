@@ -10,6 +10,7 @@ import {currentLocation} from './location.js'
 import { OppijaHaku } from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import { increaseLoading, decreaseLoading } from './loadingFlag'
+import { delays } from './delays'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -47,7 +48,7 @@ export const oppijaContentP = (oppijaOid) => {
       let shouldThrottle = firstModel && firstModel.type == 'string'
       changeBuffer = firstContextModelPairs
       return Bacon.once(oppijaBeforeChange => {
-        let batchEndE = shouldThrottle ? Bacon.later(1000).merge(changeSetE).take(1) : Bacon.once()
+        let batchEndE = shouldThrottle ? Bacon.later(delays().stringInput).merge(changeSetE).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
           let batch = changeBuffer
           changeBuffer = null

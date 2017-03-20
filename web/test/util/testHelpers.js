@@ -162,6 +162,9 @@ function openPage(path, predicate) {
   return function() {
     var newTestFrame = $('<iframe>').attr({src: path, width: 1280, height: 800, id: "testframe"}).load(function() {
       addScriptToDocument(this, "/koski/test/lib/jquery.js")
+      testFrame().delays = {
+        stringInput: 0
+      }
     })
     $("#testframe").replaceWith(newTestFrame)
     return wait.until(
