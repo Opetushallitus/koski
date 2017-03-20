@@ -29,19 +29,23 @@ export const oppijaContentP = (oppijaOid) => {
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
-  const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri))
+  const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri).map( oppija => R.merge(oppija, { event: 'load' })))
 
   const saveE = doneEditingBus
 
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
-  const localModificationE = changeBus.map(contextModelPairs => oppijaBeforeChange => {
-    //console.log("Apply", contextModelPairs)
-    let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
-    return Bacon.once(locallyModifiedOppija)
+  const localModificationE = changeBus.flatMapFirst(firstContextModelPairs => {
+    increaseLoading()
+    return changeBus.takeUntil(Bacon.later(500).merge(changeSetE)).fold(firstContextModelPairs, '.concat').map(contextModelPairs => oppijaBeforeChange => { // Throttle by 1000 milliseconds this way to block any other updates from happening during throttling period
+      //console.log("Apply", contextModelPairs)
+      let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
+      decreaseLoading()
+      return Bacon.once(R.merge(locallyModifiedOppija, {event: 'modify'}))
+    })
   })
 
-  const savedOppijaE = changeSetE.map(contextModelPairs => oppijaBeforeSave => {
+  const saveOppijaE = changeSetE.map(contextModelPairs => oppijaBeforeSave => {
     if (contextModelPairs.length == 0) {
       return Bacon.once(oppijaBeforeSave)
     }
@@ -56,17 +60,19 @@ export const oppijaContentP = (oppijaOid) => {
 
     return Http.put('/koski/api/oppija', oppijaUpdate)
       .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
+      .map( oppija => R.merge(oppija, { event: 'save' }))
   })
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
-    return updateF(currentOppija).doAction(decreaseLoading)
+    return updateF(currentOppija).doAction(function( ){
+      decreaseLoading();
+    })
   })
   oppijaP.onValue()
-
-  saveBus.plug(savedOppijaE.map(true))
+  oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
 
   return Bacon.combineWith(oppijaP, (oppija) => {
     return {
