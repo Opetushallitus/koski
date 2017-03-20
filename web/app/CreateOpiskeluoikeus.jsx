@@ -5,15 +5,13 @@ import Autocomplete from './Autocomplete.jsx'
 import Http from './http'
 import {showInternalError} from './location.js'
 import {formatISODate} from './date.js'
+import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 
 const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilaitos'>Oppilaitos
-  <Autocomplete
-    resultAtom={oppilaitosAtom}
-    fetchItems={value => (value.length >= 1)
-                ?  Http.cachedGet('/koski/api/oppilaitos').map(oppilaitokset => oppilaitokset.filter(o => o.nimi.fi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
-                : Bacon.once([])
-              }
-    selected={ oppilaitos }
+  <OrganisaatioPicker
+    selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi.fi }}
+    onSelectionChanged={org => oppilaitosAtom.set(org)}
+    oppilaitosOnly={true}
   />
 </label>)
 

@@ -8,25 +8,35 @@ import { showInternalError } from './location.js'
 export default BaconComponent({
   render() {
     let { organisaatiot = [], open, loading, searchString } = this.state
-    let { onSelectionChanged, selectedOrg } = this.props
+    let { onSelectionChanged, selectedOrg, oppilaitosOnly = false, noSelectionText = '' } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
-    let renderTree = (orgs) => orgs.map((org, i) =>
-      <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
-        <ul className="aliorganisaatiot">
-          { renderTree(org.children) }
-        </ul>
-      </li>
-    )
+    let link = org => <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
+    let renderTree = (orgs) => {
+      let filteredOrgs = oppilaitosOnly ? orgs.filter(o => !o.organisaatiotyypit.some(t => t === 'TOIMIPISTE')) : orgs
+      return filteredOrgs.map((org, i) =>
+        <li key={i}>{
+          !oppilaitosOnly
+            ? link(org)
+            : org.organisaatiotyypit.some(t => t === 'OPPILAITOS')
+              ? link(org)
+              : <span>{org.nimi.fi}</span>
+        }
+          <ul className="aliorganisaatiot">
+            { renderTree(org.children) }
+          </ul>
+        </li>
+      )
+    }
 
     return (
       <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
-        <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
+        <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
         { open &&
         <div className="organisaatio-popup">
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
-          <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>
+          {!oppilaitosOnly && <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>}
           <div className="scroll-container">
             <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
               { renderTree(organisaatiot) }
