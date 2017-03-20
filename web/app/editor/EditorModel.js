@@ -102,8 +102,13 @@ export const modelSet = (mainModel, newModel, path) => {
 }
 
 export const modelSetData = (model, data) => {
-  return R.merge(model, { value: { data }})
+  return modelSetValue(model, { data })
 }
+
+export const modelSetValue = (model, value) => {
+  return R.merge(model, { value })
+}
+
 
 export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)

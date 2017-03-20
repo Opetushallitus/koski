@@ -1,11 +1,12 @@
 import React from 'react'
-import {modelData, modelTitle, modelSetData} from './EditorModel.js'
+import {modelData, modelTitle, modelSetValue} from './EditorModel.js'
 
 export const BooleanEditor = React.createClass({
   render() {
     let {model} = this.props
     let onChange = event => {
-      model.context.changeBus.push([model.context, modelSetData(model, event.target.checked) ])
+      var data = event.target.checked
+      model.context.changeBus.push([model.context, modelSetValue(model, {data: data, title: data ? 'kyllä' : 'ei'}) ]) // TODO: i18n
     }
 
     return model.context.edit

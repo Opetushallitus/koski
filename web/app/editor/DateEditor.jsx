@@ -1,8 +1,8 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import {resetOptionalModel} from './OptionalEditor.jsx'
-import {modelTitle, modelSetData} from './EditorModel.js'
-import {formatISODate, parseFinnishDate} from '../date.js'
+import {modelTitle, modelSetValue} from './EditorModel.js'
+import {formatISODate, parseFinnishDate, formatFinnishDate} from '../date.js'
 
 export const DateEditor = React.createClass({
   render() {
@@ -14,7 +14,7 @@ export const DateEditor = React.createClass({
       let valid = (model.optional && !event.target.value) || (date && isValid(date))
       if (valid) {
         if (date) {
-          valueBus.push([model.context, modelSetData(model, formatISODate(date))])
+          valueBus.push([model.context, modelSetValue(model, { data : formatISODate(date) , title: formatFinnishDate(date) })])
         } else {
           resetOptionalModel(model)
         }
@@ -33,7 +33,6 @@ export const DateEditor = React.createClass({
   },
   componentDidMount() {
     this.state.valueBus.onValue((v) => {
-      console.log("Push date", v)
       this.props.model.context.changeBus.push(v)
     })
   }

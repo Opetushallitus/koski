@@ -1,8 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import * as L from 'partial.lenses'
-import {childContext, contextualizeModel, modelData, modelItems, modelLookup, addContext} from './EditorModel.js'
+import {childContext, contextualizeModel, modelData, modelItems, modelLookup, addContext, modelSet} from './EditorModel.js'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
@@ -12,7 +11,7 @@ import {DateEditor} from './DateEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model, opiskeluoikeusModel} = this.props
-    let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels} = this.state
+    let {addNewBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels} = this.state
     let items = modelItems(model).slice(0).reverse()
     let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
     let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(opiskeluoikeusModel, 'suoritukset') || [])
@@ -23,11 +22,8 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus, errorBus: errorBus})
       let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus, errorBus: errorBus})
       alkuPäiväBus.push([alkuPäiväModel.context, alkuPäiväModel])
-      this.setState({newStateModels: {alkuPäiväModel, tilaModel}})
+      this.setState({opiskeluoikeusjaksoModel, newStateModels: {alkuPäiväModel, tilaModel}})
     }
-
-    let add = () => saveChangesBus.push()
-    let cancel = () => cancelBus.push()
 
     let removeItem = () => {
       if (this.onLopputila(modelLookup(items[0], 'tila'))) {
@@ -62,7 +58,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
             newStateModels && (
               <div className="lisaa-opiskeluoikeusjakso-modal">
                 <div className="lisaa-opiskeluoikeusjakso">
-                  <a className="close-modal" onClick={cancel}>&#10005;</a>
+                  <a className="close-modal" onClick={() => cancelBus.push()}>&#10005;</a>
                   <h2>Opiskeluoikeuden tilan lisäys</h2>
                   <div className="property alku">
                     <label>Päivämäärä:</label>
@@ -72,8 +68,8 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                     <label>Tila:</label>
                     <EnumEditor asRadiogroup={true} model={newStateModels.tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
                   </div>
-                  <button disabled={!this.state.valid} className="opiskeluoikeuden-tila button" onClick={add}>Lisää</button>
-                  <a onClick={cancel}>Peruuta</a>
+                  <button disabled={!this.state.valid} className="opiskeluoikeuden-tila button" onClick={() => addNewBus.push()}>Lisää</button>
+                  <a onClick={() => cancelBus.push()}>Peruuta</a>
                 </div>
               </div>
             )
@@ -84,7 +80,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
   },
   getInitialState() {
     return {
-      saveChangesBus: Bacon.Bus(),
+      addNewBus: Bacon.Bus(),
       cancelBus: Bacon.Bus(),
       alkuPäiväBus: Bacon.Bus(),
       tilaBus: Bacon.Bus(),
@@ -93,7 +89,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
   },
   componentDidMount() {
     let {model, opiskeluoikeusModel} = this.props
-    let {alkuPäiväBus, tilaBus, cancelBus, saveChangesBus, errorBus} = this.state
+    let {alkuPäiväBus, tilaBus, cancelBus, addNewBus, errorBus} = this.state
 
     let stateP = Bacon.update({},
       alkuPäiväBus, (state, alkuPäivä) => R.merge(state, {alkuPäivä}),
@@ -106,19 +102,21 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       this.setState({valid: !state.error && state.alkuPäivä && state.tila})
     })
 
-    saveChangesBus.merge(cancelBus).onValue(() => {
+    addNewBus.merge(cancelBus).onValue(() => {
       this.setState({newStateModels: undefined})
       document.removeEventListener('keyup', this.handleKeys)
     })
 
     errorBus.onValue(e => model.context.errorBus.push(e))
 
-    stateP.sampledBy(saveChangesBus).onValue((state) => {
+    stateP.sampledBy(addNewBus).onValue((state) => {
       if (this.onLopputila(state.tila[1])) {
         let paattymispaivaModel = modelLookup(opiskeluoikeusModel, 'päättymispäivä')
         model.context.changeBus.push([paattymispaivaModel.context, state.alkuPäivä[1]])
       }
-      model.context.changeBus.push(state.alkuPäivä.concat(state.tila))
+      let withAlku = modelSet(this.state.opiskeluoikeusjaksoModel, state.alkuPäivä[1], 'alku')
+      let withTila = modelSet(withAlku, state.tila[1], 'tila')
+      model.context.changeBus.push([withTila.context, withTila])
       model.context.doneEditingBus.push()
       cancelBus.push()
     })

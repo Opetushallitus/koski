@@ -36,7 +36,7 @@ export const oppijaContentP = (oppijaOid) => {
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
   const localModificationE = changeBus.map(contextModelPairs => oppijaBeforeChange => {
-    console.log("Apply", contextModelPairs)
+    //console.log("Apply", contextModelPairs)
     let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
     return Bacon.once(locallyModifiedOppija)
   })
