@@ -158,9 +158,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
   def suorituskieli: Option[Koodistokoodiviite]
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  @ComplexObject
-  def näyttö: Option[Näyttö]
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
@@ -199,6 +196,8 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @ComplexObject
   näyttö: Option[Näyttö] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
