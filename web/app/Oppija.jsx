@@ -37,7 +37,10 @@ export const oppijaContentP = (oppijaOid) => {
 
   const localModificationE = changeBus.flatMapFirst(firstContextModelPairs => {
     increaseLoading()
-    return changeBus.takeUntil(Bacon.later(500).merge(changeSetE)).fold(firstContextModelPairs, '.concat').map(contextModelPairs => oppijaBeforeChange => { // Throttle by 1000 milliseconds this way to block any other updates from happening during throttling period
+    let firstModel = firstContextModelPairs[1]
+    let shouldThrottle = firstModel && firstModel.type == 'string'
+    let batch = shouldThrottle ? changeBus.takeUntil(Bacon.later(500).merge(changeSetE)).fold(firstContextModelPairs, '.concat') : Bacon.once(firstContextModelPairs)
+    return batch.map(contextModelPairs => oppijaBeforeChange => { // Throttle by 1000 milliseconds this way to block any other updates from happening during throttling period
       //console.log("Apply", contextModelPairs)
       let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
       decreaseLoading()
