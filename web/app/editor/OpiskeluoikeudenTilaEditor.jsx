@@ -13,7 +13,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     let {model, opiskeluoikeusModel} = this.props
     let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
     let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
-    let suorituksiaKesken = R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(opiskeluoikeusModel, 'suoritukset') || [])
+    let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(opiskeluoikeusModel, 'suoritukset') || [])
 
     let showAddDialog = () => {
       document.addEventListener('keyup', this.handleKeys)
@@ -69,7 +69,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                   </div>
                   <div className="property tila">
                     <label>Tila:</label>
-                    <EnumEditor asRadiogroup="true" model={newStateModels.tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
+                    <EnumEditor asRadiogroup={true} model={newStateModels.tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
                   </div>
                   <button disabled={!this.state.valid} className="opiskeluoikeuden-tila button" onClick={add}>Lisää</button>
                   <a onClick={cancel}>Peruuta</a>

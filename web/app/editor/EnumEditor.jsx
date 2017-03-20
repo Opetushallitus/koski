@@ -36,7 +36,7 @@ export const EnumEditor = BaconComponent({
             <select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>
               {
                 alternatives.map(alternative =>
-                  <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
+                  <option disabled={disabledValue === alternative.value} value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
                 )
               }
             </select>
