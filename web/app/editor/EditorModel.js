@@ -112,7 +112,7 @@ export const modelSetValue = (model, value) => {
 
 export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
-  return model && model.type == 'array' && model.value
+  return (model && model.type == 'array' && model.value) || []
 }
 
 const valueEmpty = (value) => {
@@ -131,7 +131,13 @@ export const contextualizeModel = (model, context) => {
     stuff.value = R.merge(model.value, { properties : model.value.properties.map( p => R.merge(p, { model: contextualizeModel(p.model, childContext(context, p.key))})) })
   }
   if (model.type == 'array' && model.value) {
-    stuff.value = model.value.map( (item, index) => contextualizeModel(item, childContext(context, index)))
+    stuff.value = model.value.map( (item, index) => {
+      if (!item.arrayKey) {
+        item.arrayKey = ++model.arrayKeyCounter || (model.arrayKeyCounter=1)
+      }
+      let itemModel = contextualizeModel(item, childContext(context, index))
+      return itemModel
+    })
   }
   return resolveModel(R.merge(model, stuff))
 }

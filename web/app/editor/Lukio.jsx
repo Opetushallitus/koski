@@ -34,7 +34,7 @@ const LukionOppiaineEditor = React.createClass({
 
     let {oppiaine} = this.props
     let arviointi = modelData(oppiaine, 'arviointi')
-    let kurssit = modelItems(oppiaine, 'osasuoritukset') || []
+    let kurssit = modelItems(oppiaine, 'osasuoritukset')
     let suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
     let numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
     let kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))

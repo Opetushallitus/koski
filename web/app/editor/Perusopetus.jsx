@@ -9,9 +9,9 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
   render() {
     let {model} = this.props
     let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
-    let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset') || []))
+    let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset')))
 
-    let osasuoritukset = modelItems(model, 'osasuoritukset') || []
+    let osasuoritukset = modelItems(model, 'osasuoritukset')
     let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
     let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
     let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []

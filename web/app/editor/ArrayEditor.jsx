@@ -16,13 +16,6 @@ export const ArrayEditor = React.createClass({
       model.context.changeBus.push([newItemModel.context, newItemModel])
     }
 
-    // Assign unique key values to item models to be able to track them in the face of additions and removals
-    items.forEach((itemModel) => {
-      if (!itemModel.arrayKey) {
-        itemModel.arrayKey = ++this.arrayKeyCounter || (this.arrayKeyCounter=1)
-      }
-    })
-
     return (
       <ul ref="ul" className={className}>
         {
