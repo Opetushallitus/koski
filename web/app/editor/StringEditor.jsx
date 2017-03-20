@@ -1,6 +1,6 @@
 import React from 'react'
 import Bacon from 'baconjs'
-import { modelData } from './EditorModel.js'
+import {modelData, modelSetData} from './EditorModel.js'
 
 export const StringEditor = React.createClass({
   render() {
@@ -8,7 +8,7 @@ export const StringEditor = React.createClass({
     let {valueBus} = this.state
 
     let onChange = (event) => {
-      valueBus.push([model.context, {data: event.target.value}])
+      valueBus.push([model.context, modelSetData(model, event.target.value)])
     }
 
     return model.context.edit

@@ -35,14 +35,19 @@ export const oppijaContentP = (oppijaOid) => {
 
   const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
 
-  const savedOppijaE = changeSetE.map(contextValuePairs => oppijaBeforeChange => {
-    if (contextValuePairs.length == 0) {
-      return Bacon.once(oppijaBeforeChange)
+  const localModificationE = changeBus.map(contextModelPairs => oppijaBeforeChange => {
+    console.log("Apply", contextModelPairs)
+    let locallyModifiedOppija = R.splitEvery(2, contextModelPairs).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
+    return Bacon.once(locallyModifiedOppija)
+  })
+
+  const savedOppijaE = changeSetE.map(contextModelPairs => oppijaBeforeSave => {
+    if (contextModelPairs.length == 0) {
+      return Bacon.once(oppijaBeforeSave)
     }
-    let locallyModifiedOppija = R.splitEvery(2, contextValuePairs).reduce((acc, [context, value]) => modelSet(acc, context.path, value), oppijaBeforeChange)
-    let firstPath = contextValuePairs[0].path
+    let firstPath = contextModelPairs[0].path
     let opiskeluoikeusPath = firstPath.split('.').slice(0, 6)
-    var oppijaData = locallyModifiedOppija.value.data
+    var oppijaData = oppijaBeforeSave.value.data
     let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
     let oppijaUpdate = {
       henkilö: {oid: oppijaData.henkilö.oid},
@@ -53,7 +58,7 @@ export const oppijaContentP = (oppijaOid) => {
       .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
   })
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, savedOppijaE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()

@@ -91,13 +91,18 @@ const valueData = (value) => {
   if (value instanceof Array) return value.map(modelData)
 }
 
-export const modelSet = (mainModel, path, value) => {
+export const modelSet = (mainModel, newModel, path) => {
+  var withUpdatedModel = L.set(modelLens(path), newModel, mainModel)
+
   let dataLens = L.compose('value', 'data', objectLens(path))
-  if (value == undefined) {
-    throw new Error('Trying to set ' + path + ' to undefined')
-  }
-  var data = valueData(value)
-  return L.set(dataLens, data, mainModel)
+  var data = valueData(newModel && newModel.value)
+
+  var withUpdatedTopLevelData = L.set(dataLens, data, withUpdatedModel)
+  return withUpdatedTopLevelData
+}
+
+export const modelSetData = (model, data) => {
+  return R.merge(model, { value: { data }})
 }
 
 export const modelItems = (mainModel, path) => {

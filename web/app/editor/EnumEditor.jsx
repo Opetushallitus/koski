@@ -13,7 +13,7 @@ export const EnumEditor = BaconComponent({
 
     let onChange = (event) => {
       let selected = alternatives.find(alternative => alternative.value == event.target.value)
-      model.context.changeBus.push([model.context, selected])
+      model.context.changeBus.push([model.context, R.merge(model, { value: selected })])
     }
 
     return model.context.edit

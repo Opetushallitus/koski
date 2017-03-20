@@ -31,7 +31,7 @@ export const ExpandablePropertiesEditor = React.createClass({
       if (!addingModel.value.data) {
         throw new Error('Prototype value data missing')
       }
-      model.context.changeBus.push([addingModel.context, addingModel.value])
+      model.context.changeBus.push([addingModel.context, addingModel])
       this.setState({addingModel})
     }
     this.setState({open: !this.state.open})

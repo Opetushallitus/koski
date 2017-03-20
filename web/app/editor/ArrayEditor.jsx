@@ -5,7 +5,7 @@ import {Editor} from './GenericEditor.jsx'
 export const ArrayEditor = React.createClass({
   render() {
     let {model, reverse} = this.props
-    var items = (this.state && this.state.items) || modelItems(model)
+    var items = modelItems(model)
     if (reverse && !model.context.edit) items = items.slice(0).reverse()
     let inline = ArrayEditor.canShowInline(this)
     let className = inline
@@ -13,8 +13,7 @@ export const ArrayEditor = React.createClass({
       : 'array'
     let addItem = () => {
       var newItemModel = contextualizeModel(model.arrayPrototype, childContext(model.context, items.length ))
-      model.context.changeBus.push([newItemModel.context, newItemModel.value])
-      this.setState({items: items.concat([newItemModel])})
+      model.context.changeBus.push([newItemModel.context, newItemModel])
     }
 
     // Assign unique key values to item models to be able to track them in the face of additions and removals
@@ -31,8 +30,7 @@ export const ArrayEditor = React.createClass({
               let removeItem = () => {
                 let newItems = items
                 newItems.splice(i, 1)
-                item.context.changeBus.push([item.context, {data: undefined}])
-                this.setState({ items: newItems.map((arrayItem, index) => contextualizeModel(arrayItem, childContext(model.context, index))) }) // Re-contextualize to apply correct index!
+                item.context.changeBus.push([item.context, undefined])
               }
               return (<li key={item.arrayKey}>
                 <Editor model = {item}/>
@@ -46,14 +44,6 @@ export const ArrayEditor = React.createClass({
         }
       </ul>
     )
-  },
-  componentWillReceiveProps(newProps) {
-    if (!newProps.model.context.edit && this.props.model.context.edit) {
-      this.setState(this.getInitialState())
-    }
-  },
-  getInitialState() {
-    return { items: undefined}
   }
 })
 ArrayEditor.canShowInline = (component) => {

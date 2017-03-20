@@ -1,10 +1,10 @@
 import React from 'react'
-import {modelData} from './EditorModel.js'
+import {modelData, modelSetData} from './EditorModel.js'
 
 export const NumberEditor = React.createClass({
   render() {
     let {model} = this.props
-    let onChange = (event) => model.context.changeBus.push([model.context, {data: parseFloat(event.target.value)}])
+    let onChange = (event) => model.context.changeBus.push([model.context, modelSetData(model, parseFloat(event.target.value))])
 
     let data = modelData(model)
     let value = data

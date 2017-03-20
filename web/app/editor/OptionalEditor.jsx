@@ -6,7 +6,6 @@ import {Editor} from './GenericEditor.jsx'
 export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
-    let {addingModel, removed} = this.state
     let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
 
     let addValue = () => {
@@ -18,17 +17,14 @@ export const OptionalEditor = React.createClass({
       if (!modelData(prototype)) {
         throw new Error('Prototype value data missing')
       }
-      model.context.changeBus.push([prototype.context, prototype.value])
-      this.setState({addingModel: prototype, removed: false})
-
+      model.context.changeBus.push([prototype.context, prototype])
     }
     let removeValue = () => {
-      this.props.model.context.changeBus.push([model.context, {data: undefined}])
-      this.setState({ removed: true, addingModel: undefined })
+      resetOptionalModel(this.props.model)
     }
 
-    let modelToBeShown = addingModel || model
-    let empty = (modelEmpty(modelToBeShown) || removed)
+    let modelToBeShown = model
+    let empty = modelEmpty(modelToBeShown)
     let canRemove = model.context.edit && !empty && prototype.type != 'array'
 
     return (<span className="optional-wrapper">
@@ -43,14 +39,7 @@ export const OptionalEditor = React.createClass({
         canRemove && <a className="remove-value" onClick={removeValue}></a>
       }
     </span>)
-  },
-  componentWillReceiveProps(props) {
-    if (!props.model.context.edit && this.props.model.context.edit) {
-      this.setState(this.getInitialState())
-    }
-  },
-  getInitialState() {
-    return { addingModel: undefined, removed: false }
   }
 })
 OptionalEditor.canShowInline = () => true
+export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, { optional: model.optional, optionalPrototype: model.optionalPrototype }])
