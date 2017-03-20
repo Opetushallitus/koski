@@ -12,7 +12,8 @@ import {DateEditor} from './DateEditor.jsx'
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model, opiskeluoikeusModel} = this.props
-    let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels, items = modelItems(model).slice(0).reverse()} = this.state
+    let {saveChangesBus, cancelBus, alkuPäiväBus, tilaBus, errorBus, newStateModels} = this.state
+    let items = modelItems(model).slice(0).reverse()
     let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
     let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(opiskeluoikeusModel, 'suoritukset') || [])
 
@@ -35,8 +36,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       }
       model.context.changeBus.push([items[0].context, undefined])
       model.context.doneEditingBus.push()
-      let newItems = L.set(L.index(0), undefined, items)
-      this.setState({newStateModels: undefined, items: newItems})
+      this.setState({newStateModels: undefined})
     }
 
     let lastOpiskeluoikeudenTila = modelData(modelLookup(items[0], 'tila'))
@@ -121,7 +121,6 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       model.context.changeBus.push(state.alkuPäivä.concat(state.tila))
       model.context.doneEditingBus.push()
       cancelBus.push()
-      this.setState({items: undefined})
     })
   },
   componentWillUnmount() {
