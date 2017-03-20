@@ -1,84 +1,82 @@
 
-.main-content .oppijataulukko table th {
-  .organisaatio {
-    outline: none;
+.organisaatio {
+  outline: none;
 
-    &:focus {
-      .organisaatio-selection {
-        outline: none;
-        background: #DEF1FF;
-        border: 1px solid @color-neutral-notification-border;
-        box-shadow: none;
-      }
-    }
-
-    .organisaatiot {
-      list-style: none;
-      margin: 5px 0;
-      padding: 0 8px;
-      li {
-        line-height: 22px;
-      }
-    }
-
-    .aliorganisaatiot {
-      padding-left: 25px;
-      list-style: disc;
-      li {
-        line-height: 24px;
-      }
-    }
-
-    .highlight {
-      background: #FFD024;
-    }
-
+  &:focus {
     .organisaatio-selection {
-      background: white;
-      height: 30px;
-      border: 1px solid #AEAEAE;
-      box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-      border-radius: 2px;
-      padding: 0 18px 0 8px;
-      vertical-align: bottom;
-      line-height: 28px;
-      &.no-selection {
-        color: #AEAEAE;
-      }
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
+      outline: none;
+      background: #DEF1FF;
+      border: 1px solid @color-neutral-notification-border;
+      box-shadow: none;
     }
+  }
 
-    .organisaatio-popup {
-      z-index: 10;
-      width: 410px;
-      position: absolute;
-      background: white;
-      padding: 21px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
-      input {
-        width: ~"calc(100% - 116px)";
-      }
-      .scroll-container {
-        overflow-y: auto;
-        max-height: 400px;
-        margin-top: 16px;
-        border: 1px solid #eeeeee;
-      }
-      .button {
-        width: 108px;
-        margin: 0 4px;
-        font-size: 13px;
-        height: 30px;
-        line-height: 29px;
-        margin-left: 8px;
-        margin-right: 0;
-      }
-      .loading {
-        .ajax-indicator-bg;
-      }
+  .organisaatiot {
+    list-style: none;
+    margin: 5px 0;
+    padding: 0 8px;
+    li {
+      line-height: 22px;
+    }
+  }
+
+  .aliorganisaatiot {
+    padding-left: 25px;
+    list-style: disc;
+    li {
+      line-height: 24px;
+    }
+  }
+
+  .highlight {
+    background: #FFD024;
+  }
+
+  .organisaatio-selection {
+    background: white;
+    height: 30px;
+    border: 1px solid #AEAEAE;
+    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    padding: 0 18px 0 8px;
+    vertical-align: bottom;
+    line-height: 28px;
+    &.no-selection {
+      color: #AEAEAE;
+    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  .organisaatio-popup {
+    z-index: 10;
+    width: 410px;
+    position: absolute;
+    background: white;
+    padding: 21px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+    input {
+      width: ~"calc(100% - 116px)";
+    }
+    .scroll-container {
+      overflow-y: auto;
+      max-height: 400px;
+      margin-top: 16px;
+      border: 1px solid #eeeeee;
+    }
+    .button {
+      width: 108px;
+      margin: 0 4px;
+      font-size: 13px;
+      height: 30px;
+      line-height: 29px;
+      margin-left: 8px;
+      margin-right: 0;
+    }
+    .loading {
+      .ajax-indicator-bg;
     }
   }
 }
