@@ -1,7 +1,6 @@
 function OrganisaatioHaku(elem) {
   var api = {
     select: function (value) {
-
       if (value) {
         return this.enter(value)
           .then(function () {
@@ -9,21 +8,20 @@ function OrganisaatioHaku(elem) {
           })
           .then(wait.forAjax)
       } else {
-        if (!window.callPhantom) { // workaround for focus glitch, when running in browser
-          triggerEvent('.organisaatio-selection', 'click')
-        }
+        this.open()
         triggerEvent(S('.organisaatio-popup .kaikki'), 'click')
         return wait.forAjax()
       }
     },
     enter: function (value) {
+      this.open()
+      return Page(elem).setInputValue(".organisaatio-popup input", value || "")().then(wait.forAjax)
+    },
+    open: function() {
       triggerEvent('.organisaatio-selection', 'click')
-      if (!window.callPhantom) { // workaround for focus glitch, when running in browser
+      if (!S('.organisaatio-popup').is(':visible')) { // workaround for focus glitch, when running in browser
         triggerEvent('.organisaatio-selection', 'click')
       }
-
-      return Page(elem).setInputValue(".organisaatio-popup input", value || "")().then(wait.forAjax)
-
     },
     oppilaitokset: function() {
       return textsOf(elem.find('.organisaatiot li'))

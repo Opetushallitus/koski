@@ -50,14 +50,6 @@ function AddOppijaPage() {
       return function() {
         return OrganisaatioHaku(form()).select(name)
       }
-
-      /*if (!name) { return wait.forAjax }
-      return function() {
-        return pageApi.setInputValue('.oppilaitos input', name)()
-          .then(wait.until(function() { return isElementVisible(selectedOppilaitos()) }))
-          .then(function() {triggerEvent(selectedOppilaitos(), 'click')})
-          .then(wait.forAjax)
-      }*/
     },
     oppilaitokset: function() {
       return OrganisaatioHaku(form()).oppilaitokset()
