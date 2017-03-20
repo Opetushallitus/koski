@@ -26,12 +26,13 @@ export const PropertiesEditor = React.createClass({
           return item.value.properties.filter(shouldShow).flatMap(munch(prefix + j + '.'))
         })
       } else {
+        let key = prefix + property.key
         let propertyClassName = 'property ' + property.key
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
           : getValueEditor(property, () => <Editor model={property.editable ? property.model : addContext(property.model, { edit: false })}/> )
 
-        return [(<tr className={propertyClassName} key={prefix + i}>
+        return [(<tr className={propertyClassName} key={key}>
           {
             property.complexObject
               ? (<td className="complex" colSpan="2">
