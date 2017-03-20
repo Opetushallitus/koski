@@ -124,8 +124,8 @@ describe('Ammatillinen koulutus', function() {
               })
           })
         })
-        describe('Kun oppilaitos on virheellinen', function() {
-          before(addOppija.enterValidDataAmmatillinen(), addOppija.enterOppilaitos('virheellinen'))
+        describe('Kun oppilaitosta ei olla valittu', function() {
+          before(addOppija.enterData({oppilaitos: undefined}))
           it('Lisää-nappi on disabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
