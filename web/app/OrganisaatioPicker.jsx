@@ -36,7 +36,7 @@ export default BaconComponent({
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
-          {!oppilaitosOnly && <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>}
+          <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{oppilaitosOnly ? 'tyhjennä' : 'kaikki'}</button>
           <div className="scroll-container">
             <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
               { renderTree(organisaatiot) }

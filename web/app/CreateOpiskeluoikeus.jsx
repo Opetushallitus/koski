@@ -9,8 +9,8 @@ import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 
 const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilaitos'>Oppilaitos
   <OrganisaatioPicker
-    selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi.fi }}
-    onSelectionChanged={org => oppilaitosAtom.set(org)}
+    selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
+    onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
     oppilaitosOnly={true}
   />
 </label>)
