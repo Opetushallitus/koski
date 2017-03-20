@@ -42,8 +42,7 @@ export const oppijaContentP = (oppijaOid) => {
       changeBuffer = changeBuffer.concat(firstContextModelPairs)
       return Bacon.never()
     } else {
-      increaseLoading()
-      let [firstModel, firstContext] = firstContextModelPairs
+      let firstModel = firstContextModelPairs[1]
       //console.log('start batch', firstContext)
       let shouldThrottle = firstModel && firstModel.type == 'string'
       changeBuffer = firstContextModelPairs
@@ -54,7 +53,6 @@ export const oppijaContentP = (oppijaOid) => {
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = R.splitEvery(2, batch).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
-          decreaseLoading()
           return R.merge(locallyModifiedOppija, {event: 'modify'})
         })
       })
@@ -83,9 +81,7 @@ export const oppijaContentP = (oppijaOid) => {
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
-    return updateF(currentOppija).doAction(function( ){
-      decreaseLoading();
-    })
+    return updateF(currentOppija).doAction(decreaseLoading)
   })
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
