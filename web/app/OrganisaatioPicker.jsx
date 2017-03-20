@@ -30,7 +30,7 @@ export default BaconComponent({
 
     return (
       <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
-        <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
+        <div className="organisaatio-selection text-like-input" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
         { open &&
         <div className="organisaatio-popup">
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
