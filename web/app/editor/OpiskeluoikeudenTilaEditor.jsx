@@ -31,7 +31,6 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
         resetOptionalModel(paattymispaivaModel)
       }
       model.context.changeBus.push([items[0].context, undefined])
-      model.context.doneEditingBus.push()
       this.setState({newStateModels: undefined})
     }
 
@@ -117,7 +116,6 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       let withAlku = modelSet(this.state.opiskeluoikeusjaksoModel, state.alkuPäivä[1], 'alku')
       let withTila = modelSet(withAlku, state.tila[1], 'tila')
       model.context.changeBus.push([withTila.context, withTila])
-      model.context.doneEditingBus.push()
       cancelBus.push()
     })
   },
