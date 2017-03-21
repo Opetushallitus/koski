@@ -8,19 +8,19 @@ import { showInternalError } from './location.js'
 export default BaconComponent({
   render() {
     let { organisaatiot = [], open, loading, searchString } = this.state
-    let { onSelectionChanged, selectedOrg, oppilaitosOnly = false, noSelectionText = '' } = this.props
+    let { onSelectionChanged, selectedOrg, renderOrg, filterOrgs, noSelectionText = '', clearText = 'kaikki' } = this.props
+
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
+
     let link = org => <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
+
     let renderTree = (orgs) => {
-      let filteredOrgs = oppilaitosOnly ? orgs.filter(o => !o.organisaatiotyypit.some(t => t === 'TOIMIPISTE')) : orgs
+      let filteredOrgs = filterOrgs ? orgs.filter(filterOrgs) : orgs
       return filteredOrgs.map((org, i) =>
-        <li key={i}>{
-          !oppilaitosOnly
-            ? link(org)
-            : org.organisaatiotyypit.some(t => t === 'OPPILAITOS')
-              ? link(org)
-              : <span>{org.nimi.fi}</span>
-        }
+        <li key={i}>
+          {
+            renderOrg ? renderOrg(org, link) : link(org)
+          }
           <ul className="aliorganisaatiot">
             { renderTree(org.children) }
           </ul>
@@ -36,7 +36,7 @@ export default BaconComponent({
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
-          <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{oppilaitosOnly ? 'tyhjennä' : 'kaikki'}</button>
+          <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
           <div className="scroll-container">
             <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
               { renderTree(organisaatiot) }

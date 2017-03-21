@@ -11,7 +11,9 @@ const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilait
   <OrganisaatioPicker
     selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
     onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
-    oppilaitosOnly={true}
+    filterOrgs={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
+    renderOrg={(org, defaultRender) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') ? defaultRender(org) : <span>{org.nimi.fi}</span> }
+    clearText="tyhjennä"
   />
 </label>)
 
