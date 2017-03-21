@@ -89,7 +89,7 @@ function Päivämääräväli(elem) {
   var api = {
     setAlku: function(value) {
       return function() {
-        return Page(elem).setInputValue('input:nth-child(1)', value)()
+        return Page(elem).setInputValue('.calendar-input:nth-child(1) input', value)()
       }
     },
     getAlku: function() {
@@ -97,7 +97,7 @@ function Päivämääräväli(elem) {
     },
     setLoppu: function(value) {
       return function() {
-        return Page(elem).setInputValue('input:nth-child(2)', value)()
+        return Page(elem).setInputValue('.calendar-input:nth-child(2) input', value)()
       }
     },
     isValid: function() {
