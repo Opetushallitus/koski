@@ -32,42 +32,41 @@ export const oppijaContentP = (oppijaOid) => {
 
   const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri).map( oppija => R.merge(oppija, { event: 'load' })))
 
-  const saveE = doneEditingBus
-
-  const changeSetE = Bacon.repeat(() => changeBus.takeUntil(saveE).fold([], '.concat'))
-
   let changeBuffer = null
 
-  const localModificationE = changeBus.flatMap(firstContextModelPairs => {
+  const shouldThrottle = (batch) => {
+    let model = batch[1]
+    return model && model.type == 'string'
+  }
+
+  const localModificationE = changeBus.flatMap(firstBatch => {
     if (changeBuffer) {
-      changeBuffer = changeBuffer.concat(firstContextModelPairs)
+      changeBuffer = changeBuffer.concat(firstBatch)
       return Bacon.never()
     } else {
-      let firstModel = firstContextModelPairs[1]
       //console.log('start batch', firstContext)
-      let shouldThrottle = firstModel && firstModel.type == 'string'
-      changeBuffer = firstContextModelPairs
+      changeBuffer = firstBatch
       return Bacon.once(oppijaBeforeChange => {
-        let batchEndE = shouldThrottle ? Bacon.later(delays().stringInput).merge(changeSetE).take(1) : Bacon.once()
+        let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(doneEditingBus).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
+          let firstPath = firstBatch[0].path
+          let opiskeluoikeusPath = firstPath.split('.').slice(0, 6).join('.')
           let batch = changeBuffer
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = R.splitEvery(2, batch).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
-          return R.merge(locallyModifiedOppija, {event: 'modify'})
+          return R.merge(locallyModifiedOppija, {event: 'modify', opiskeluoikeusPath})
         })
       })
     }
   })
 
-  const saveOppijaE = changeSetE.map(contextModelPairs => oppijaBeforeSave => {
-    if (contextModelPairs.length == 0) {
+  const saveOppijaE = doneEditingBus.map(() => oppijaBeforeSave => {
+    if (!oppijaBeforeSave.opiskeluoikeusPath) {
       return Bacon.once(oppijaBeforeSave)
     }
-    let firstPath = contextModelPairs[0].path
-    let opiskeluoikeusPath = firstPath.split('.').slice(0, 6)
     var oppijaData = oppijaBeforeSave.value.data
-    let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
+    let opiskeluoikeus = objectLookup(oppijaData, oppijaBeforeSave.opiskeluoikeusPath)
     let oppijaUpdate = {
       henkilö: {oid: oppijaData.henkilö.oid},
       opiskeluoikeudet: [opiskeluoikeus]
