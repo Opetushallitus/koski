@@ -37,6 +37,7 @@ case class Koulutustoimija(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
   @RegularExpression("\\d{7}-\\d")
+  @Discriminator
   yTunnus: Option[String] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -48,6 +49,7 @@ case class Oppilaitos(
   @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
   @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
   @KoodistoUri("oppilaitosnumero")
+  @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
   nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
@@ -58,7 +60,7 @@ case class Oppilaitos(
 case class Toimipiste(
   oid: String,
   nimi: Option[LocalizedString] = None
-) extends OrganisaatioWithOid with DefaultDescription {
+) extends OrganisaatioWithOid with DefaultDescription with IgnoreInAnyOfDeserialization {
   def toOppilaitos = None
 }
 
@@ -68,6 +70,7 @@ case class Yritys(
   nimi: LocalizedString,
   @Title("Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
+  @Discriminator
   yTunnus: String
 ) extends Organisaatio {
   def description = nimi
@@ -76,6 +79,7 @@ case class Yritys(
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
+  @Discriminator
   tutkintotoimikunnanNumero: String
 ) extends Organisaatio {
   def description = nimi
@@ -84,6 +88,7 @@ case class Tutkintotoimikunta(
 trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa")
   @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
+  @Discriminator
   def oid: String
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")

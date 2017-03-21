@@ -15,6 +15,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Hidden
+  @Discriminator
   def tyyppi: Koodistokoodiviite
   @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")

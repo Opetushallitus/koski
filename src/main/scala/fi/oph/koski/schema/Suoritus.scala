@@ -10,6 +10,7 @@ trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
   @KoodistoUri("suorituksentyyppi")
   @Hidden
+  @Discriminator
   def tyyppi: Koodistokoodiviite
   @Representative
   @ReadOnly("Suorituksen koulutusmoduulia ei voi vaihtaa")

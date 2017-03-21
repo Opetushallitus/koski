@@ -5,7 +5,7 @@ import fi.oph.scalaschema._
 import org.json4s._
 
 object KoskiSchema {
-  private val metadataTypes = SchemaFactory.defaultAnnotations ++ List(classOf[KoodistoUri], classOf[KoodistoKoodiarvo], classOf[ReadOnly], classOf[OksaUri], classOf[Hidden], classOf[Representative], classOf[ComplexObject], classOf[Flatten], classOf[Tabular])
+  private val metadataTypes = SchemaFactory.defaultAnnotations ++ List(classOf[KoodistoUri], classOf[KoodistoKoodiarvo], classOf[ReadOnly], classOf[OksaUri], classOf[Hidden], classOf[Representative], classOf[ComplexObject], classOf[Flatten], classOf[Tabular], classOf[Discriminator])
   lazy val schemaFactory: SchemaFactory = SchemaFactory(metadataTypes)
   lazy val schema = createSchema(classOf[Oppija])
   lazy val schemaJson = SchemaToJson.toJsonSchema(schema)

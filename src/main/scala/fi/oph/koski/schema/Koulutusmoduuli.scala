@@ -6,6 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, MinValueExclusive}
 
 trait Koulutusmoduuli extends Localizable {
   @Representative
+  @Discriminator
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString

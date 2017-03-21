@@ -200,6 +200,7 @@ case class IBKurssi(
   kuvaus: LocalizedString,
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: PaikallinenKoodi,
+  @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
 ) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi {
@@ -273,6 +274,7 @@ case class IBOppiaineLanguage(
   laajuus: Option[LaajuusTunneissa],
   taso: Option[Koodistokoodiviite],
   @KoodistoUri("kielivalikoima")
+  @Discriminator
   kieli: Koodistokoodiviite,
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true

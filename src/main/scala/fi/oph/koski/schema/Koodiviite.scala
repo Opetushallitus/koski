@@ -16,6 +16,7 @@ object Koodistokoodiviite {
 
 case class Koodistokoodiviite(
   @Description("Koodin tunniste koodistossa")
+  @Discriminator
   koodiarvo: String,
   @Description("Koodin selväkielinen, kielistetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
@@ -24,6 +25,7 @@ case class Koodistokoodiviite(
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
   lyhytNimi: Option[LocalizedString],
   @Description("Käytetyn koodiston tunniste")
+  @Discriminator
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   koodistoVersio: Option[Int]
@@ -40,6 +42,7 @@ case class Koodistokoodiviite(
 case class PaikallinenKoodi(
   @Description("Koodin yksilöivä tunniste käytetyssä koodistossa")
   @Title("Tunniste")
+  @Discriminator
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
   @Representative
