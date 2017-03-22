@@ -182,6 +182,11 @@ function Property(elem) {
         return elem().is(':visible') && !elem().find('.loading').is(':visible')
       })()
     },
+    selectValue: function(value) {
+      return function() {
+        return Page(elem).setInputValue('.dropdown', value)().then(wait.forAjax)
+      }
+    },
     setValue: function(value) {
       return function() {
         return Page(elem).setInputValue('select, input', value)()

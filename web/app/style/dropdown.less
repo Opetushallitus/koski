@@ -8,7 +8,7 @@
     padding: 0;
     border: 1px solid #E4E4E4;
     position: absolute;
-    top: 29px;
+    z-index: 1;
   }
 
   .option {
@@ -37,12 +37,10 @@
 
   .select {
     background: white;
-    height: 30px;
     border: 1px solid #AEAEAE;
-    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 4px 0 #DADADA;
     border-radius: 2px;
-    padding: 0 18px 0 8px;
-    vertical-align: bottom;
+    padding: 0 24px 0 8px;
     line-height: 28px;
     &.no-selection {
       color: #AEAEAE;
@@ -50,6 +48,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
+
     &:after {
       content: '';
       position: absolute;
@@ -59,7 +59,7 @@
       border-top: 1px solid #2B2B2B;
       width: 6px;
       height: 6px;
-      margin-top: 8px;
+      top: ~"calc(50% - 4px)";
     }
   }
 }

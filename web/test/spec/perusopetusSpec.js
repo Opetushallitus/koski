@@ -484,7 +484,7 @@ describe('Perusopetus', function() {
         var editor = opinnot.suoritusEditor()
         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
-        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.setValue('5'), editor.doneEditing)
+        before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.selectValue('5'), editor.doneEditing)
         it('muutettu arvosana näytetään', function() {
           expect(arvosana.getValue()).to.equal('5')
         })
@@ -499,7 +499,7 @@ describe('Perusopetus', function() {
           })
         })
         describe('Kun muutetaan arvosanaa', function() {
-          before(editor.edit, arvosana.setValue('10'), editor.doneEditing)
+          before(editor.edit, arvosana.selectValue('10'), editor.doneEditing)
           it('Näyttää muutetun arvon', function() {
             expect(arvosana.getValue()).to.equal('10')
           })

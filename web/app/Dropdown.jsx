@@ -4,13 +4,14 @@ import BaconComponent from './BaconComponent'
 export default BaconComponent({
   render() {
     const { options, open, selected, selectionIndex } = this.state
+    const { keyValue, displayValue } = this.props
     return (
       <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
-        <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen} >{selected ? selected.value : 'valitse'}</div>
+        <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen} >{selected ? displayValue(selected) : 'valitse'}<span className="toggle-open"/></div>
         { open ?
           <ul className="options">
             {
-              [{ value: 'ei valintaa' }].concat(options).map((o,i) => <li key={o.key || o.value} className={i == selectionIndex ? 'option selected' : 'option'} onClick={() => this.selectOption(o)} onMouseOver={() => this.handleMouseOver(o)}>{o.value}</li>)
+              [{ value: 'ei valintaa' }].concat(options).map((o,i) => <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onClick={() => this.selectOption(o)} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>)
             }
           </ul>
           : null
@@ -22,7 +23,7 @@ export default BaconComponent({
     this.setState({open: false})
   },
   selectOption(option) {
-    const selected = option.key ? option : undefined
+    const selected = this.props.keyValue(option) ? option : undefined
     this.setState({selected: selected, open: false, selectionIndex: 0}, () => this.props.onSelectionChanged(selected))
   },
   toggleOpen() {
@@ -33,9 +34,15 @@ export default BaconComponent({
       window.removeEventListener('click', this.handleClickOutside, false)
     })
     this.propsE.onValue(props => {
-      props.optionsP.takeUntil(this.unmountE).onValue(options => this.setState({options, selected: options.find(o => o.key == props.selected)}))
+      props.optionsP.takeUntil(this.unmountE).onValue(options => this.setState({options, selected: options.find(o => this.props.keyValue(o) == props.selected)}))
       window.addEventListener('click', this.handleClickOutside, false)
     })
+  },
+  getDefaultProps() {
+    return {
+      keyValue: option => option.key,
+      displayValue: option => option.value
+    }
   },
   handleClickOutside(e) {
     const dropdown = e.target.closest('.dropdown')
@@ -44,7 +51,7 @@ export default BaconComponent({
   },
   handleMouseOver(o) {
     const { options } = this.state
-    const index = options.findIndex(option => option.key == o.key)
+    const index = options.findIndex(option => this.props.keyValue(option) == this.props.keyValue(o))
     this.setState({selectionIndex: index + 1})
   },
   getInitialState() {

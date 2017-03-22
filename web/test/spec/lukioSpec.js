@@ -132,7 +132,7 @@ describe('Lukiokoulutus', function( ){
         before(suoritusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
           var kurssi = Kurssi('MAA16')
-          before(kurssi.showDetails, kurssi.editor().property('arvosana').setValue('6'), kurssi.toggleDetails, suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(kurssi.showDetails, kurssi.editor().property('arvosana').selectValue('6'), kurssi.toggleDetails, suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
             expect(kurssi.arvosana()).to.equal('6')
           })
