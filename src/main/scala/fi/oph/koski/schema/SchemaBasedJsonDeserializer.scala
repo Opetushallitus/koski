@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+import fi.oph.koski.cache.{Cache, GlobalCacheManager, KeyValueCache}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.ContextualExtractor.ExtractionException
 import fi.oph.koski.json.{GenericJsonFormats, Json}
@@ -214,9 +215,19 @@ object SchemaBasedJsonDeserializer {
 }
 
 object AnyOfDeserialization {
+  // TODO: move to context
+  private val criteriaCache: collection.mutable.Map[String, List[DiscriminatorCriterion]] = collection.mutable.Map.empty
+
+  private def criteriaForSchema(schema: SchemaWithClassName)(implicit context: DeserializationContext) = this.synchronized {
+    criteriaCache.getOrElseUpdate(schema.fullClassName, {
+      println("Resolve criteria for " + schema.fullClassName)
+      discriminatorCriteria(schema, KeyPath.root)
+    })
+  }
+
   def extractAnyOf(json: JValue, as: AnyOfSchema)(implicit context: DeserializationContext): Either[List[DeserializationError], Any] = {
     val mapping: List[(SchemaWithClassName, List[DiscriminatorCriterion])] = as.alternatives.filterNot(ignoredAlternative).map { schema =>
-      (schema, discriminatorCriteria(schema, KeyPath.root))
+      (schema, criteriaForSchema(schema))
     }.sortBy(-_._2.length)
 
     val matchingSchemas = mapping.collect {
@@ -224,6 +235,7 @@ object AnyOfDeserialization {
     }
 
     /*
+    // Just debugging
     mapping.foreach {
       case (schema, criteria) => criteria.foreach { criterion =>
         val errors = criterion.apply(json)
