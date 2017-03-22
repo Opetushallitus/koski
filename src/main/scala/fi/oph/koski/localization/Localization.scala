@@ -27,13 +27,13 @@ case class Finnish(@Representative fi: String, sv: Option[String] = None, en: Op
 }
 
 @Description("Lokalisoitu teksti, jossa mukana ruotsi")
-case class Swedish(@Representative sv: String, fi: Option[String] = None, en: Option[String] = None) extends LocalizedString {
-  def valueList = (("sv" -> sv) :: fi.toList.map(("fi", _))) ++ en.toList.map(("en", _))
+case class Swedish(@Representative sv: String, en: Option[String] = None) extends LocalizedString {
+  def valueList = ("sv" -> sv) :: en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana englanti")
-case class English(@Representative en: String, sv: Option[String] = None, fi: Option[String] = None) extends LocalizedString {
-  def valueList = (("en" -> en) :: sv.toList.map(("sv", _))) ++ fi.toList.map(("fi", _))
+case class English(@Representative en: String) extends LocalizedString {
+  def valueList = List(("en" -> en))
 }
 
 

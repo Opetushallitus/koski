@@ -28,24 +28,20 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    timed("extractAndValidateOppija")(KoskiJsonSchemaValidator.validateOppijaJson(parsedJson)) match {
-      case status: HttpStatus if status.isOk =>
-        val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
-        extractionResult.right.flatMap { oppija =>
-          validateOpiskeluoikeudet(oppija)
-        }
-      case status: HttpStatus => Left(status)
+    timed("extractAndValidateOppija"){
+      val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+      extractionResult.right.flatMap { oppija =>
+        validateOpiskeluoikeudet(oppija)
+      }
     }
   }
 
   def extractAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
-    timed("extractAndValidateOpiskeluoikeus")(KoskiJsonSchemaValidator.validateOpiskeluoikeusJson(parsedJson)) match {
-      case status: HttpStatus if status.isOk =>
-        val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
-        extractionResult.right.flatMap { opiskeluoikeus =>
-          validateOpiskeluoikeus(opiskeluoikeus)
-        }
-      case status: HttpStatus => Left(status)
+    timed("extractAndValidateOpiskeluoikeus") {
+      val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+      extractionResult.right.flatMap { opiskeluoikeus =>
+        validateOpiskeluoikeus(opiskeluoikeus)
+      }
     }
   }
 

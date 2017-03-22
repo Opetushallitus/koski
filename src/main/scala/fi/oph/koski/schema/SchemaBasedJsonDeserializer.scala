@@ -3,8 +3,12 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.ContextualExtractor.ExtractionException
 import fi.oph.koski.json.{GenericJsonFormats, Json}
-import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.AnyOfDeserialization.DiscriminatorCriterion
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.RegularExpression
@@ -16,7 +20,7 @@ case class DeserializationContext(rootSchema: SchemaWithClassName, path: String 
 }
 
 trait CustomDeserializer {
-  def extract(json: JValue, schema: Schema)(implicit context: DeserializationContext): Either[List[DeserializationError], Any]
+  def extract(json: JValue, schema: SchemaWithClassName)(implicit context: DeserializationContext): Either[List[DeserializationError], Any]
 }
 
 sealed trait ValidationRuleViolation
@@ -45,11 +49,11 @@ object SchemaBasedJsonDeserializer {
 
   def extract(json: JValue, schema: Schema)(implicit context: DeserializationContext): Either[List[DeserializationError], Any] = {
     schema match {
-      case ss: StringSchema => extractString(json, ss)
+      case ss: StringSchema => extractString(json, ss) // TODO: the Metadata from Properties is now lost
       case ns: NumberSchema => extractNumber(json, ns)
       case bs: BooleanSchema => extractBoolean(json, bs)
       case ds: DateSchema => extractDate(json, ds)
-      case cs: SchemaWithClassName if context.hasSerializerFor(cs) => context.customSerializerFor(cs).get.extract(json, schema)
+      case cs: SchemaWithClassName if context.hasSerializerFor(cs) => context.customSerializerFor(cs).get.extract(json, cs)
       case cs: ClassRefSchema => extract(json, resolveSchema(cs))
       case cs: ClassSchema => extractObject(json, cs)
       case as: AnyOfSchema => AnyOfDeserialization.extractAnyOf(json, as)
@@ -141,10 +145,11 @@ object SchemaBasedJsonDeserializer {
 
   private def extractNumber(json: JValue, schema: NumberSchema)(implicit context: DeserializationContext): Either[List[DeserializationError], Number] = json match {
     // TODO: maxValue, minValue, enumValues
-    case JDouble(num) => Right(num)
-    case JInt(num) => Right(num)
-    case JDecimal(num) => Right(num)
-    case JLong(num) => Right(num)
+    // NOTE: Number types don't necessarily match correctly and because of type erasure, an Option[Int] may end up containing a Double.
+    case JDouble(num: Double) => Right(num)
+    case JInt(num: BigInt) => Right(num.intValue)
+    case JDecimal(num: BigDecimal) => Right(num.doubleValue)
+    case JLong(num) => Right(num.toLong)
     case _ => Left(List(DeserializationError(context.path, json, UnexpectedType("number"))))
   }
 
@@ -174,6 +179,9 @@ object SchemaBasedJsonDeserializer {
           val errors = schema.metadata.flatMap {
             case RegularExpression(r) if !stringValue.matches(r) =>
               List(DeserializationError(context.path, json, RegExMismatch(r)))
+            case RegularExpression(r) if stringValue.matches(r) =>
+              println("Regex match " + r + ": " + stringValue)
+              Nil
             case (_) =>
               Nil
           } ++ {
@@ -331,14 +339,42 @@ object AnyOfDeserialization {
 
 }
 
-object CustomDeserializers {
-  object LocalizedStringDeserializer extends CustomDeserializer {
-    def extract(json: JValue, schema: Schema)(implicit context: DeserializationContext): Either[List[DeserializationError], Any] = json match {
-      case json: JObject if json.values.contains("fi") => SchemaBasedJsonDeserializer.extractAs(json, classOf[Finnish])
-      case json: JObject if json.values.contains("en") => SchemaBasedJsonDeserializer.extractAs(json, classOf[English])
-      case json: JObject if json.values.contains("sv") => SchemaBasedJsonDeserializer.extractAs(json, classOf[Swedish])
-      case _ => Left(List(DeserializationError(context.path, json, OtherViolation("One of fi, sv, en expected"))))
+case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePalvelu) extends CustomDeserializer with Logging {
+  override def extract(json: JValue, schema: SchemaWithClassName)(implicit context: DeserializationContext) = {
+    val viite = SchemaBasedJsonDeserializer.extract(json, schema)(context.copy(customDeserializers = Nil))
+    viite match {
+      case Right(viite: Koodistokoodiviite) =>
+        val validated: Option[Koodistokoodiviite] = try {
+          koodistoPalvelu.validate(viite)
+        } catch {
+          case e: Exception =>
+            logger.error(e)("Error from koodisto-service")
+            throw new ExtractionException(KoskiErrorCategory.internalError())
+        }
+        validated match {
+          case Some(viite) =>
+            Right(viite)
+          case None =>
+            throw new ExtractionException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia " + viite + " ei löydy koodistosta"))
+        }
+      case errors => errors
     }
   }
-  val serializers = List((classOf[LocalizedString].getName, LocalizedStringDeserializer))
+}
+
+case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: OrganisaatioRepository) extends CustomDeserializer with Logging {
+  override def extract(json: JValue, schema: SchemaWithClassName)(implicit context: DeserializationContext) = {
+    SchemaBasedJsonDeserializer.extract(json, schema)(context.copy(customDeserializers = Nil)) match {
+      case Right(o: OrganisaatioWithOid) =>
+        val c = Class.forName(schema.fullClassName)
+        organisaatioRepository.getOrganisaatio(o.oid) match {
+          case Some(org) if (c.isInstance(org)) => Right(org)
+          case Some(org) => throw new ExtractionException(KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase))
+          case None =>
+            throw new ExtractionException(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
+        }
+      case Right(org: Organisaatio) => Right(org)
+      case errors => errors
+    }
+  }
 }

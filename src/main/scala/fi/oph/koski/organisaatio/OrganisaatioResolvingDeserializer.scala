@@ -4,6 +4,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{ContextualExtractor, Json}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.Schema
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 

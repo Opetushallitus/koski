@@ -8,7 +8,7 @@ import org.json4s.JsonAST.JString
 import org.scalatest.{FreeSpec, Matchers}
 
 class SchemaBasedJsonDeserializerSpec extends FreeSpec with Matchers {
-  implicit val context = DeserializationContext(KoskiSchema.schema, customDeserializers = CustomDeserializers.serializers)
+  implicit val context = DeserializationContext(KoskiSchema.schema)
 
   "SchemaBasedJsonDeserializer" - {
     "Henkilö" in {
@@ -28,7 +28,7 @@ class SchemaBasedJsonDeserializerSpec extends FreeSpec with Matchers {
       testDeserialization(LocalizedString.finnish("Moi"), classOf[LocalizedString])
       testDeserialization(LocalizedString.swedish("Hej"), classOf[LocalizedString])
       testDeserialization(LocalizedString.english("Hello"), classOf[LocalizedString])
-      testDeserialization(English("Hello", Some("Hej")), classOf[LocalizedString])
+      testDeserialization(English("Hello"), classOf[LocalizedString])
       testDeserialization(Finnish("Moi", Some("Hej"), Some("Hi")), classOf[LocalizedString])
     }
     "Examples" - {
