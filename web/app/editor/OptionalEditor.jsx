@@ -17,6 +17,7 @@ export const OptionalEditor = React.createClass({
       if (!modelData(prototype)) {
         throw new Error('Prototype value data missing')
       }
+
       model.context.changeBus.push([prototype.context, prototype])
     }
     let removeValue = () => {

@@ -11,9 +11,12 @@ export const EnumEditor = BaconComponent({
     let {model, asRadiogroup, disabledValue} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
+    alternatives = model.context.zeroValue ? R.prepend(model.context.zeroValue, alternatives) : alternatives
+    let defaultValue = (model.value && model.value.value) || model.context.zeroValue
 
     let onChange = (option) => {
-      model.context.changeBus.push([model.context, R.merge(model, { value: option })])
+      let data = model.context.zeroValue && option.value === model.context.zeroValue.value ? undefined : R.merge(model, { value: option })
+      model.context.changeBus.push([model.context, data])
     }
 
     return model.context.edit
@@ -38,7 +41,7 @@ export const EnumEditor = BaconComponent({
                keyValue={option => option.value}
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
-               selected={model.value && model.value.value}
+               selected={defaultValue}
              />
           )
       : <span className="inline enum">{modelTitle(model)}</span>
@@ -62,4 +65,5 @@ export const EnumEditor = BaconComponent({
   }
 })
 EnumEditor.canShowInline = () => true
+EnumEditor.zeroValue = () => ({title: 'Ei valintaa', value: 'eivalintaa'})
 EnumEditor.AlternativesCache = {}

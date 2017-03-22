@@ -24,6 +24,7 @@ Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }
 Editor.canShowInline = (component) => (getEditorFunction(component.props.model).canShowInline || (() => false))(component)
+Editor.zeroValue = (component) => (getEditorFunction(component.props.model).zeroValue || (() => null))(component)
 
 export const NullEditor = React.createClass({
   render() {

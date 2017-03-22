@@ -517,7 +517,7 @@ describe('Perusopetus', function() {
         var editor = opinnot.suoritusEditor()
         var liitetiedot = editor.property('liitetiedot')
         describe('Liitetietojen lisäys', function() {
-          before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addValue, liitetiedot.property('kuvaus').setValue('TestiTesti'))
+          before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addItem, liitetiedot.property('kuvaus').setValue('TestiTesti'))
           it('Editoinnin aikana ei näytetä ylimääräistä poistonappia', function() {
             expect(liitetiedot.isRemoveValueVisible()).to.equal(false)
           })
@@ -568,7 +568,7 @@ describe('Perusopetus', function() {
         describe('Useamman liitetiedon poisto kerralla', function() {
           before(page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseSuoritus('7. vuosiluokka'),
             editor.edit,
-            liitetiedot.addValue, liitetiedot.itemEditor(0).property('kuvaus').setValue('T1'),
+            liitetiedot.addItem, liitetiedot.itemEditor(0).property('kuvaus').setValue('T1'),
             liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('T2'),
             editor.doneEditing,
             editor.edit,
