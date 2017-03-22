@@ -24,7 +24,7 @@ export const EnumEditor = BaconComponent({
                 alternatives.map(alternative =>
                   <li key={ alternative.value }>
                     <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
-                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}></input>
+                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
                       {alternative.title}
                     </label>
                   </li>
@@ -34,7 +34,7 @@ export const EnumEditor = BaconComponent({
           )
         : (
              <DropDown
-               optionsP={this.state.alternativesP}
+               options={alternatives}
                keyValue={option => option.value}
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
@@ -53,7 +53,6 @@ export const EnumEditor = BaconComponent({
           EnumEditor.AlternativesCache[alternativesPath] = alternativesP
         }
         alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
-        this.setState({alternativesP: alternativesP})
       }
     })
   },

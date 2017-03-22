@@ -16,6 +16,7 @@ import SortingTableHeader from './SortingTableHeader.jsx'
 export const Oppijataulukko = React.createClass({
   render() {
     let { rivit, edellisetRivit, pager, params } = this.props
+    let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
@@ -36,7 +37,7 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Opiskeluoikeuden tyyppi</span>
               <Dropdown
                 id="tyyppi-valinta"
-                optionsP={this.opiskeluoikeudenTyypit}
+                options={opiskeluoikeudenTyypit}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTyyppi']}
               />
@@ -45,7 +46,7 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Koulutus</span>
               <Dropdown
                 id="koulutus-valinta"
-                optionsP={this.koulutus}
+                options={koulutus}
                 onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option ? option.key : undefined })}
                 selected={params['suorituksenTyyppi']}
               />
@@ -65,7 +66,7 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Tila</span>
               <Dropdown
                 id="tila-valinta"
-                optionsP={this.opiskeluoikeudenTila}
+                options={opiskeluoikeudenTila}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTila']}
               />
@@ -139,16 +140,29 @@ export const Oppijataulukko = React.createClass({
     this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
 
-    this.opiskeluoikeudenTyypit = Http.cachedGet('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot).doError(showInternalError)
-    this.koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.cachedGet('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot)).toProperty().doError(showInternalError)
-    this.opiskeluoikeudenTila = Http.cachedGet('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot).doError(showInternalError)
+    let opiskeluoikeudenTyypit = Http.cachedGet('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot).doError(showInternalError)
+    let koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.cachedGet('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot)).toProperty().doError(showInternalError)
+    let opiskeluoikeudenTila = Http.cachedGet('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot).doError(showInternalError)
+
+    Bacon.combineTemplate({
+      opiskeluoikeudenTyypit: opiskeluoikeudenTyypit,
+      koulutus: koulutus,
+      opiskeluoikeudenTila: opiskeluoikeudenTila
+    }).onValue(values => this.setState(values))
 
     this.filterBus.plug(
-      this.koulutus
+      koulutus
         .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
     this.filterBus.merge(this.textFilterBus.throttle(500)).onValue(navigateWithQueryParams)
+  },
+  getInitialState() {
+    return {
+      opiskeluoikeudenTyypit: [],
+      koulutus: [],
+      opiskeluoikeudenTila: []
+    }
   }
 })
 
