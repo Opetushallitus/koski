@@ -111,8 +111,7 @@ object SchemaBasedJsonDeserializer {
       val errors: List[ValidationError] = valueResults.collect { case Left(errors) => errors }.flatten ++ metadataValidationErrors
 
       errors match {
-        case Nil =>
-          Right(valueResults.map(_.right.get))
+        case Nil => Right(valueResults.map(_.right.get))
         case _ => Left(errors)
       }
     case _ => Left(List(ValidationError(context.path, json, UnexpectedType("array"))))
