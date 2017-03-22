@@ -6,6 +6,8 @@ import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
 import org.json4s._
 import org.json4s.reflect.{Reflector, TypeInfo}
 
+//TODO: get rid of
+
 object Deserializers {
   val deserializers = List(
     ArviointiSerializer,

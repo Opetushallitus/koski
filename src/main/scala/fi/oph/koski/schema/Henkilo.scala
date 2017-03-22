@@ -39,7 +39,7 @@ case class HenkilötiedotJaOid(
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String
-) extends HenkilöWithOid with Henkilötiedot
+) extends HenkilöWithOid with Henkilötiedot with IgnoreInAnyOfDeserialization
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(

@@ -4,10 +4,10 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{ContextualExtractor, Json}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.Schema
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
+// TODO: get rid of
 object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with Logging {
   val OppilaitosClass = classOf[Oppilaitos]
   val organisaatioClasses = List(classOf[Organisaatio], classOf[OrganisaatioWithOid], classOf[Oppilaitos], classOf[OidOrganisaatio], classOf[Toimipiste], classOf[Koulutustoimija], classOf[Tutkintotoimikunta], classOf[Yritys])

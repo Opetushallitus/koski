@@ -23,7 +23,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         )))
       )))
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*instance value .+ not found.*".r))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*enumValueMismatch.*".r))
       }
     }
     "Suoritus valmis, kurssien laajuuksien summa ei täsmää -> HTTP 400" in {

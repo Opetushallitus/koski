@@ -87,7 +87,7 @@ case class Tutkintotoimikunta(
 
 trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa")
-  @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
+  @RegularExpression("""1\.2\.246\.562\.10\.\d{11,24}""")
   @Discriminator
   def oid: String
   @Description("Organisaation (kielistetty) nimi")

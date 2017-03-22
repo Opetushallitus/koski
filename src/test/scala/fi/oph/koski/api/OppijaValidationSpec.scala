@@ -97,7 +97,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
+          "palautetaan HTTP 400"  in (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
         }
 
         "Oppijaa ei löydy oidilla" - {
@@ -111,7 +111,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
+          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
         }
       }
     }
@@ -165,7 +165,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Kun oppilaitoksen oid on virheellistä muotoa" - {
         "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("asdf")) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*opiskeluoikeudet.0.oppilaitos.oid.*regularExpressionMismatch.*".r)))
         }
       }
 
@@ -216,12 +216,12 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
         "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
           putOpiskeluoikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015.01-12")){
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*opiskeluoikeudet.0.alkamispäivä.*yyyy-MM-dd.*".r))
           }
         }
         "Päivämäärä virheellinen -> palautetaan HTTP 400" in {
           putOpiskeluoikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015-01-32")){
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*opiskeluoikeudet.0.alkamispäivä.*yyyy-MM-dd.*".r))
           }
         }
 
@@ -283,7 +283,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "vähintään yksi kieli vaaditaan" in {
         putOpiskeluoikeusWithSomeMergedJson(Map("tyyppi" -> Map("nimi" -> Map()))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*object has missing required properties.*".r))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*notAnyOf.*".r))
         }
       }
     }

@@ -6,6 +6,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Deserializer, Koodistokoodiviite}
 import org.json4s.{Formats, JValue, TypeInfo}
 
+// TODO: get rid of / replace
 object KoodistoResolvingDeserializer extends Deserializer[Koodistokoodiviite] with Logging {
   private val TheClass = classOf[Koodistokoodiviite]
 

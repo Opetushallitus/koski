@@ -11,6 +11,7 @@ private[schema] case class Application(user: Option[User])
 
 private[schema] case class User(firstName: String, lastName: String)
 
+// TODO: use schema-based
 class SerializationSpec extends FreeSpec with Matchers with Logging {
   "Serialization / deserialization" - {
     "Optional field" - {
