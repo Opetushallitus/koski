@@ -14,9 +14,9 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Title
 
 object EditorModelBuilder {
-  def buildModel(schema: ClassSchema, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
-    val context = ModelBuilderContext(schema, editable)
-    ObjectModelBuilder(schema, true)(context).buildModelForObject(value)
+  def buildModel(deserializationContext: DeserializationContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
+    val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
+    ObjectModelBuilder(deserializationContext.rootSchema, true)(context).buildModelForObject(value)
   }
 
   def builder(schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
@@ -74,13 +74,11 @@ trait EditorModelBuilder[T] {
 }
 
 case class ModelBuilderContext(
-  mainSchema: ClassSchema,
+  mainSchema: SchemaWithClassName,
+  deserializationContext: DeserializationContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml {
-
-  implicit lazy val deserializationContext = DeserializationContext(mainSchema, validate = false)
-}
+  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends EditorModelBuilder[Number] {
   override def buildModelForObject(x: Number) = NumberModel(x)

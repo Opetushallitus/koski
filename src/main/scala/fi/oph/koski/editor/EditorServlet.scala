@@ -101,14 +101,14 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
       }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-      EditorModelBuilder.buildModel(EditorSchema.schema, editorView, editable)(koskiSession)
+      EditorModelBuilder.buildModel(EditorSchema.deserializationContext, editorView, editable)(koskiSession)
     }
   }
 }
 
 object EditorSchema {
-  // TODO: deserializationcontext should also be memoized
   lazy val schema = KoskiSchema.schemaFactory.createSchema(classOf[OppijaEditorView].getName).asInstanceOf[ClassSchema].moveDefinitionsToTopLevel
+  lazy val deserializationContext = DeserializationContext(schema)
 }
 
 case class OppijaEditorView(

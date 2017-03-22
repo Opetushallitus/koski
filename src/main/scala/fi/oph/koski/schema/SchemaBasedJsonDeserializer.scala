@@ -9,7 +9,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s._
 
-case class DeserializationContext(rootSchema: SchemaWithClassName, path: String = "", customDeserializers: List[CustomDeserializer] = Nil, validate: Boolean = true, criteriaCache: collection.mutable.Map[String, CriteriaCollection] = collection.mutable.Map.empty) {
+case class DeserializationContext(rootSchema: ClassSchema, path: String = "", customDeserializers: List[CustomDeserializer] = Nil, validate: Boolean = true, criteriaCache: collection.mutable.Map[String, CriteriaCollection] = collection.mutable.Map.empty) {
   def hasSerializerFor(schema: SchemaWithClassName) = customSerializerFor(schema).isDefined
   def customSerializerFor(schema: SchemaWithClassName) = customDeserializers.find(_.isApplicable(schema))
   def ifValidating(errors: => List[ValidationError]) = if (validate) { errors } else { Nil }
