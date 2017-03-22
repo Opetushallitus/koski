@@ -30,7 +30,7 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {

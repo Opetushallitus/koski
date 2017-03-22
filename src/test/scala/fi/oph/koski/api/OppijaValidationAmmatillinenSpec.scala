@@ -11,7 +11,6 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
-//TODO fix spec
 class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {

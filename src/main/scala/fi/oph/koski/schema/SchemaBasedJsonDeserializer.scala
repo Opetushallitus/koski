@@ -46,6 +46,7 @@ case class SchemaNotFoundException(path: String, className: String) extends Runt
 
 case class Discriminator() extends RepresentationalMetadata
 
+
 // TODO: replace with annotation
 trait IgnoreInAnyOfDeserialization {}
 
@@ -53,6 +54,10 @@ object SchemaBasedJsonDeserializer {
   private implicit val formats = GenericJsonFormats.genericFormats
   private val noErrors = Nil : List[ValidationError]
 
+  def extract[T](json: JValue)(implicit context: DeserializationContext, mf: ClassManifest[T]): Either[List[ValidationError], T] = {
+    val schema = context.rootSchema.getSchema(mf.runtimeClass.getName).get // TODO: check for Option.get in this file
+    extract(json, schema, Nil).right.map(_.asInstanceOf[T])
+  }
 
   def extract(json: JValue, schema: Schema, metadata: List[Metadata])(implicit context: DeserializationContext): Either[List[ValidationError], Any] = {
     schema match {

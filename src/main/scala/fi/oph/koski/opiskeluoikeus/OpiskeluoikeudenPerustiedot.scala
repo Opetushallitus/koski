@@ -10,6 +10,7 @@ import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
+import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.schema.Henkilö.Oid

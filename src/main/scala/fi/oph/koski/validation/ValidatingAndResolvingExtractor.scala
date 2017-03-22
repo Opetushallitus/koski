@@ -7,13 +7,15 @@ import fi.oph.koski.schema._
 import org.json4s._
 
 object ValidatingAndResolvingExtractor {
+  val deserializationContext = DeserializationContext(KoskiSchema.schema)
+
   /**
    *  Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */
   def extract[T](json: JValue, context: ValidationAndResolvingContext)(implicit mf: Manifest[T]): Either[HttpStatus, T] = {
     //ContextualExtractor.extract[T, ValidationAndResolvingContext](json, context)(mf, Json.jsonFormats + KoodistoResolvingDeserializer + OrganisaatioResolvingDeserializer)
     val klass = mf.asInstanceOf[ClassManifest[_]].runtimeClass
-    SchemaBasedJsonDeserializer.extract(json, KoskiSchema.schema.getSchema(klass.getName).get, Nil)(DeserializationContext(KoskiSchema.schema, customDeserializers = List(
+    SchemaBasedJsonDeserializer.extract(json, KoskiSchema.schema.getSchema(klass.getName).get, Nil)(deserializationContext.copy(customDeserializers = List(
       OrganisaatioResolvingCustomDeserializer(context.organisaatioRepository),
       KoodistoResolvingCustomDeserializer(context.koodistoPalvelu)
     ))) match {

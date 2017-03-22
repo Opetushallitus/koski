@@ -4,6 +4,8 @@ import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Representative
 import fi.oph.scalaschema.annotation.Description
+import org.json4s.{Formats, JObject, JValue, Serializer}
+import org.json4s.reflect.TypeInfo
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
 trait LocalizedString extends Localizable {
@@ -85,4 +87,17 @@ object LocalizedStringImplicits {
   implicit object LocalizedStringFinnishOrdering extends Ordering[LocalizedString] {
     override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
   }
+}
+
+object LocalizedStringDeserializer extends Deserializer[LocalizedString] {
+  val LocalizedStringClass = classOf[LocalizedString]
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LocalizedString] = {
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("fi") => json.extract[Finnish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("sv") => json.extract[Swedish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("en") => json.extract[English]
+  }
+}
+
+trait Deserializer[T] extends Serializer[T] {
+  def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
