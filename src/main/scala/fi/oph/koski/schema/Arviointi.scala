@@ -5,6 +5,8 @@ import java.time.LocalDate
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
+import org.json4s.reflect.{Reflector, TypeInfo}
+import org.json4s.{Extraction, _}
 
 trait Arviointi {
   def arvosana: KoodiViite
@@ -66,3 +68,22 @@ trait SanallinenArviointi extends Arviointi {
   def kuvaus: Option[LocalizedString]
   override def description = kuvaus.getOrElse(super.description)
 }
+
+object ArviointiSerializer extends Serializer[Arviointi] {
+  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
+    case (a: Arviointi) =>
+      val json = Extraction.decompose(a)(format - ArviointiSerializer).asInstanceOf[JObject]
+      if (!json.values.contains("hyväksytty")) {
+        json.merge(JObject("hyväksytty" -> JBool(a.hyväksytty)))
+      } else {
+        json
+      }
+  }
+
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Arviointi] = { // Could probably just be an empty partialfunction
+    case (TypeInfo(c, _), json: JObject) if classOf[Arviointi].isAssignableFrom(c) =>
+      Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer).asInstanceOf[Arviointi]
+  }
+}
+
+

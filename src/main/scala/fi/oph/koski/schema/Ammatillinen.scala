@@ -143,6 +143,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
 trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
+  @Discriminator
   def koulutusmoduuli: AmmatillisenTutkinnonOsa
   @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
   def tutkinto: Option[AmmatillinenTutkintoKoulutus]
@@ -346,6 +347,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
+  @Discriminator
   kieli: Koodistokoodiviite,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
@@ -360,6 +362,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
+  @Discriminator
   kieli: Koodistokoodiviite,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
@@ -453,6 +456,7 @@ case class Oppisopimus(
 )
 
 trait Järjestämismuoto {
+  @Discriminator
   def tunniste: Koodistokoodiviite
 }
 
@@ -469,6 +473,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
   @Flatten
+  @Discriminator
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 

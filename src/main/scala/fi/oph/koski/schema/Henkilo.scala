@@ -33,6 +33,7 @@ case class TäydellisetHenkilötiedot(
 }
 
 @Title("Henkilötiedot ja henkilö-OID")
+@IgnoreInAnyOfDeserialization
 case class HenkilötiedotJaOid(
   oid: Henkilö.Oid,
   hetu: Henkilö.Hetu,

@@ -25,13 +25,17 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
           fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.key + "), message=" + errorDetail.message)
         }
         expectedErrorDetail.message match {
-          case s: String => errorDetail.message.toString should equal(s)
-          case r: Regex => errorDetail.message.toString should fullyMatch regex(r)
+          case s: String => toString(errorDetail.message) should equal(s)
+          case r: Regex => toString(errorDetail.message) should fullyMatch regex(r)
         }
       }
       errors.length should equal(dets.length)
     }
   }
 
+  private def toString(x: AnyRef) = x match {
+    case x: String => x
+    case _ => Json.write(x)
+  }
 }
 

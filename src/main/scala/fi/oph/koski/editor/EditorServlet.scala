@@ -107,6 +107,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 }
 
 object EditorSchema {
+  // TODO: deserializationcontext should also be memoized
   lazy val schema = KoskiSchema.schemaFactory.createSchema(classOf[OppijaEditorView].getName).asInstanceOf[ClassSchema].moveDefinitionsToTopLevel
 }
 

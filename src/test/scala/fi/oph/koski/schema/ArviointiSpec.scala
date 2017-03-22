@@ -59,7 +59,7 @@ class ArviointiSpec extends FreeSpec with Matchers {
 
   "Korkeakoulu" - {
     "1" in {
-      val arviointi = read[KorkeakoulunKoodistostaLöytyväArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoammatillinent1k3","koodiarvo":"1"},"päivä":"2000-01-01"}""")
+      val arviointi = read[KorkeakoulunKoodistostaLöytyväArviointi]("""{"arvosana":{"koodistoUri":"virtaarvosana","koodiarvo":"1"},"päivä":"2000-01-01"}""")
       arviointi.hyväksytty should equal(true)
     }
   }

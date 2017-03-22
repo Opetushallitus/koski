@@ -77,7 +77,10 @@ case class ModelBuilderContext(
   mainSchema: ClassSchema,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
+  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml {
+
+  implicit lazy val deserializationContext = DeserializationContext(mainSchema, validate = false)
+}
 
 case class NumberModelBuilder(t: NumberSchema) extends EditorModelBuilder[Number] {
   override def buildModelForObject(x: Number) = NumberModel(x)
@@ -183,7 +186,12 @@ case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean)(implicit cont
   private def findOneOfSchema(t: AnyOfSchema, obj: AnyRef): Schema = {
     t.alternatives.find { classType =>
       classType.fullClassName == obj.getClass.getName
-    }.get
+    } match {
+      case Some(schema) =>
+        schema
+      case None =>
+        throw new RuntimeException("Alternative not found for schema " + t.simpleName + " / object " + obj)
+    }
   }
 
   override def getPrototypeData = {
@@ -197,6 +205,7 @@ case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean)(implicit cont
 }
 
 case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
+
   import scala.reflect.runtime.{universe => ru}
 
   def buildModelForObject(obj: AnyRef) = {
@@ -295,7 +304,10 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
     val clazz: Class[_] = Class.forName(schema.fullClassName)
     val keysAndValues = schema.properties.map(property => (property.key, Prototypes.getPrototypeData(property))).toMap
     val asJValue = Json.toJValue(keysAndValues)
-    Json.fromJValue(asJValue)(Manifest.classType(clazz))
+    SchemaBasedJsonDeserializer.extract(asJValue, clazz)(context.deserializationContext) match {
+      case Right(obj) => obj
+      case Left(errors) => throw new RuntimeException("Unable to build prototype for " + schema.fullClassName + ": " + errors)
+    }
   }
 }
 

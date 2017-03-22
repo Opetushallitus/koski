@@ -4,6 +4,8 @@ import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Representative
 import fi.oph.scalaschema.annotation.Description
+import org.json4s.{Formats, JObject, JValue, Serializer}
+import org.json4s.reflect.TypeInfo
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
 trait LocalizedString extends Localizable {
@@ -27,13 +29,13 @@ case class Finnish(@Representative fi: String, sv: Option[String] = None, en: Op
 }
 
 @Description("Lokalisoitu teksti, jossa mukana ruotsi")
-case class Swedish(@Representative sv: String, fi: Option[String] = None, en: Option[String] = None) extends LocalizedString {
-  def valueList = (("sv" -> sv) :: fi.toList.map(("fi", _))) ++ en.toList.map(("en", _))
+case class Swedish(@Representative sv: String, en: Option[String] = None) extends LocalizedString {
+  def valueList = ("sv" -> sv) :: en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana englanti")
-case class English(@Representative en: String, sv: Option[String] = None, fi: Option[String] = None) extends LocalizedString {
-  def valueList = (("en" -> en) :: sv.toList.map(("sv", _))) ++ fi.toList.map(("fi", _))
+case class English(@Representative en: String) extends LocalizedString {
+  def valueList = List(("en" -> en))
 }
 
 
@@ -85,4 +87,17 @@ object LocalizedStringImplicits {
   implicit object LocalizedStringFinnishOrdering extends Ordering[LocalizedString] {
     override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
   }
+}
+
+object LocalizedStringDeserializer extends Deserializer[LocalizedString] {
+  val LocalizedStringClass = classOf[LocalizedString]
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LocalizedString] = {
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("fi") => json.extract[Finnish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("sv") => json.extract[Swedish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("en") => json.extract[English]
+  }
+}
+
+trait Deserializer[T] extends Serializer[T] {
+  def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }

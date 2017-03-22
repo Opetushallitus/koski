@@ -4,8 +4,10 @@ import java.io.InputStream
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import com.github.fge.jsonpatch.diff.JsonDiff
+import fi.oph.koski.editor.EditorModelSerializer
 import fi.oph.koski.eperusteet.RakenneOsaSerializer
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
@@ -30,7 +32,7 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {

@@ -1,12 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema._
 import org.scalatest.Matchers
 
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
+  import KoskiSchema.deserializationContext
+
   def lastOpiskeluoikeus(oppijaOid: String, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     oppija(oppijaOid, user).tallennettavatOpiskeluoikeudet.last
   }
@@ -26,16 +27,24 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   def oppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/oppija/" + oppijaOid, user) {
       verifyResponseStatus(200)
-      Json.read[Oppija](body)
+      readOppija
     }
   }
 
   def tryOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Either[HttpStatus, Oppija] = {
     authGet("api/oppija/" + oppijaOid, user) {
       response.status match {
-        case 200 => Right(Json.read[Oppija](body))
+        case 200 => Right(readOppija)
         case status => Left(HttpStatus(status, Nil))
       }
     }
+  }
+
+  def readOppija = {
+    SchemaBasedJsonDeserializer.extract[Oppija](body).right.get
+  }
+
+  def readOpiskeluoikeus = {
+    SchemaBasedJsonDeserializer.extract[Opiskeluoikeus](body).right.get
   }
 }

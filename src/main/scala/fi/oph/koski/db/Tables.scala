@@ -24,11 +24,16 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
+    private implicit val deserializationContext = DeserializationContext(KoskiSchema.schema).copy(validate = false)
+
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
     }
     def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
-      Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+      SchemaBasedJsonDeserializer.extract[Opiskeluoikeus](data) match {
+        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+        case Left(errors) => throw new RuntimeException("Deserialization errors: " + errors)
+      }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, versionumero = None))

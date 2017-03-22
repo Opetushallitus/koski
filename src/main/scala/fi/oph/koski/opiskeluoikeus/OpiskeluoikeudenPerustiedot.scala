@@ -10,6 +10,7 @@ import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
+import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.schema.Henkilö.Oid
@@ -46,6 +47,8 @@ case class OpiskeluoikeudenPerustiedot(
 case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
 
 object OpiskeluoikeudenPerustiedot {
+  implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer + KoodiViiteDeserializer
+
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(row.id, row.data, row.luokka, henkilöRow.toNimitiedotJaOid)
   }
@@ -55,7 +58,6 @@ object OpiskeluoikeudenPerustiedot {
   }
 
   def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: NimitiedotJaOid): OpiskeluoikeudenPerustiedot = {
-    implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer
     val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
       .map { suoritus =>
         SuorituksenPerustiedot(
@@ -94,7 +96,7 @@ case class SuorituksenPerustiedot(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  toimipiste: OrganisaatioWithOid
+  toimipiste: OidOrganisaatio
 )
 
 case class KoulutusmoduulinPerustiedot(
@@ -107,8 +109,7 @@ object KoulutusmoduulinPerustiedot {
 
 class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
   import Http._
-  implicit val formats = Json.jsonFormats
-
+  import OpiskeluoikeudenPerustiedot.formats
   private val host = config.getString("elasticsearch.host")
   private val port = config.getInt("elasticsearch.port")
   private val url = s"http://$host:$port"
