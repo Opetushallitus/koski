@@ -106,7 +106,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get + "/1") {
           verifyResponseStatus(200)
-          val versio = Json.read[Opiskeluoikeus](body);
+          val versio = readOpiskeluoikeus
           versio should equal(opiskeluoikeus)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }

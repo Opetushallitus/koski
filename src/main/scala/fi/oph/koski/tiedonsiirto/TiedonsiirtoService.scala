@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 
 import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.db.KoskiDatabase._
-import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods._
-import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow, TiedonsiirtoYhteenvetoRow}
-import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
+import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow}
+import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -17,12 +17,11 @@ import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.henkilo.HenkilöRepository
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util._
-import org.json4s.JsonAST.{JArray, JString, JValue}
+import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
@@ -54,7 +53,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     }
 
     oppilaitosResult.right.map { oppilaitos =>
-      val converted: Tiedonsiirrot = Tiedonsiirrot(toHenkilönTiedonsiirrot(rows), oppilaitos = oppilaitos)
+      val converted: Tiedonsiirrot = Tiedonsiirrot(toHenkilönTiedonsiirrot(rows), oppilaitos = oppilaitos.map(_.toOidOrganisaatio))
       PaginatedResponse(query.paginationSettings, converted, rows.length)
     }
   }
@@ -78,8 +77,8 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
 
     val oppija = data.flatMap(extractHenkilö(_, oppijaOid))
     val lahdejarjestelma = data.flatMap(extractLahdejarjestelma)
-    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
-    val koulutustoimija: Option[Koulutustoimija] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija))
+    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio)).map(toJValue)
+    val koulutustoimija: Option[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio)))
 
     val juuriOrganisaatio = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatio
 
@@ -123,7 +122,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
       (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
         case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
           val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-          Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
+          Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio.toOidOrganisaatio, oppilaitos.toOidOrganisaatio, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
         case _ =>
           None
       }
@@ -175,7 +174,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
       case (x, rows) =>
         val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
         val rivit = rows.map { row =>
-          val oppilaitos: List[OrganisaatioWithOid] = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]]).toList.flatten.distinct
+          val oppilaitos: List[OidOrganisaatio] = row.oppilaitos.flatMap(_.extractOpt[List[OidOrganisaatio]]).toList.flatten.distinct
           TiedonsiirtoRivi(row.id, row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)
         }
         HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
@@ -183,12 +182,12 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
   }
 }
 
-case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[Oppilaitos])
+case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OrganisaatioWithOid], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
+case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: JValue)

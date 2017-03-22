@@ -10,6 +10,7 @@ object KoskiSchema {
   lazy val schema = createSchema(classOf[Oppija])
   lazy val schemaJson = SchemaToJson.toJsonSchema(schema)
   lazy val schemaJsonString = Json.write(schemaJson)
+  lazy implicit val deserializationContext = DeserializationContext(schema)
 
   def createSchema(clazz: Class[_]) = schemaFactory.createSchema(clazz) match {
     case s: AnyOfSchema => s

@@ -11,6 +11,7 @@ import MockOppijat.eerola
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot, Tiedonsiirrot, TiedonsiirtoYhteenveto}
 import fi.oph.koski.util.PaginatedResponse
+import org.json4s.JValue
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {

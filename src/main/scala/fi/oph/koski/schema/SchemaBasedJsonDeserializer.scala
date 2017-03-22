@@ -61,8 +61,10 @@ object SchemaBasedJsonDeserializer {
   }
 
   def extract(json: JValue, klass: Class[_])(implicit context: DeserializationContext): Either[List[ValidationError], AnyRef] = {
-    val schema = context.rootSchema.getSchema(klass.getName).get
-    extract(json, schema, Nil).right.map(_.asInstanceOf[AnyRef])
+    context.rootSchema.getSchema(klass.getName) match {
+      case Some(schema) => extract(json, schema, Nil).right.map(_.asInstanceOf[AnyRef])
+      case None => throw new SchemaNotFoundException(context.path, klass.getName)
+    }
   }
 
   def extract(json: JValue, schema: Schema, metadata: List[Metadata])(implicit context: DeserializationContext): Either[List[ValidationError], Any] = {
@@ -224,7 +226,7 @@ object SchemaBasedJsonDeserializer {
     case JString(s) =>
       val stringValue = json.extract[String]
       stringValue match {
-        case "" => Left(List(ValidationError(context.path, json, EmptyString())))
+        case "" if context.validate => Left(List(ValidationError(context.path, json, EmptyString())))
         case _ =>
           val errors = context.ifValidating((schema.metadata ++ metadata).collect {
             case RegularExpression(r) if !stringValue.matches(r) => ValidationError(context.path, json, RegExMismatch(r))
@@ -271,9 +273,6 @@ object AnyOfDeserialization {
     val mapping: List[(SchemaWithClassName, CriteriaCollection)] = as.alternatives.filterNot(ignoredAlternative).map { schema =>
       (schema, criteriaForSchema(schema))
     }.sortBy(-_._2.weight)
-    if (as.fullClassName == classOf[Opiskeluoikeus].getName) {
-      println(Json.writePretty(json))
-    }
 
     val matchingSchemas = mapping.collect {
       case (schema, criteria) if criteria.matches(json) =>

@@ -7,8 +7,7 @@ import fi.oph.koski.schema._
 import org.json4s._
 
 object ValidatingAndResolvingExtractor {
-  val deserializationContext = DeserializationContext(KoskiSchema.schema)
-
+  import KoskiSchema.deserializationContext
   /**
    *  Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */

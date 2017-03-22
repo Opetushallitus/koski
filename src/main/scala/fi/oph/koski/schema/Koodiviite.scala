@@ -1,8 +1,9 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString.unlocalized
-import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.localization.{Deserializer, Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Title}
+import org.json4s.{Formats, JObject, JValue, TypeInfo}
 
 trait KoodiViite extends Localizable {
   def koodiarvo: String
@@ -52,4 +53,14 @@ case class PaikallinenKoodi(
 ) extends KoodiViite {
   def getNimi = Some(nimi)
   def description: LocalizedString = nimi
+}
+
+object KoodiViiteDeserializer extends Deserializer[KoodiViite] {
+  private val KoodiViiteClass = classOf[KoodiViite] // Note that this guy always tries to extract as Koodistokoodiviite
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KoodiViite] =  {
+    case (TypeInfo(KoodiViiteClass, _), json) =>
+      json match {
+        case viite: JObject => viite.extract[Koodistokoodiviite]
+      }
+  }
 }

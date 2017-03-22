@@ -47,6 +47,8 @@ case class OpiskeluoikeudenPerustiedot(
 case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
 
 object OpiskeluoikeudenPerustiedot {
+  implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer + KoodiViiteDeserializer
+
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(row.id, row.data, row.luokka, henkilöRow.toNimitiedotJaOid)
   }
@@ -56,7 +58,6 @@ object OpiskeluoikeudenPerustiedot {
   }
 
   def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: NimitiedotJaOid): OpiskeluoikeudenPerustiedot = {
-    implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer
     val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
       .map { suoritus =>
         SuorituksenPerustiedot(
@@ -95,7 +96,7 @@ case class SuorituksenPerustiedot(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  toimipiste: OrganisaatioWithOid
+  toimipiste: OidOrganisaatio
 )
 
 case class KoulutusmoduulinPerustiedot(
@@ -108,8 +109,7 @@ object KoulutusmoduulinPerustiedot {
 
 class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
   import Http._
-  implicit val formats = Json.jsonFormats
-
+  import OpiskeluoikeudenPerustiedot.formats
   private val host = config.getString("elasticsearch.host")
   private val port = config.getInt("elasticsearch.port")
   private val url = s"http://$host:$port"
