@@ -33,13 +33,14 @@ case class TäydellisetHenkilötiedot(
 }
 
 @Title("Henkilötiedot ja henkilö-OID")
+@IgnoreInAnyOfDeserialization
 case class HenkilötiedotJaOid(
   oid: Henkilö.Oid,
   hetu: Henkilö.Hetu,
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String
-) extends HenkilöWithOid with Henkilötiedot with IgnoreInAnyOfDeserialization
+) extends HenkilöWithOid with Henkilötiedot
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(

@@ -211,12 +211,13 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
 }
 
 @Description("Käyttäytymisen arviointi. Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään.")
+@IgnoreInAnyOfDeserialization
 case class PerusopetuksenKäyttäytymisenArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString] = None,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
-) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi with IgnoreInAnyOfDeserialization {
+) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
 }
 

@@ -57,10 +57,11 @@ case class Oppilaitos(
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä toimipiste-tyyppinen organisaatio.")
+@IgnoreInAnyOfDeserialization
 case class Toimipiste(
   oid: String,
   nimi: Option[LocalizedString] = None
-) extends OrganisaatioWithOid with DefaultDescription with IgnoreInAnyOfDeserialization {
+) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
 

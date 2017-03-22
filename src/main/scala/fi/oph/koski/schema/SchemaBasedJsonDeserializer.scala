@@ -46,10 +46,7 @@ case class TooManyMatchingCasesException(path: String, cases: List[(SchemaWithCl
 case class SchemaNotFoundException(path: String, className: String) extends RuntimeException(s"Deserialization error at ${path}: schema not found for class ${className}")
 
 case class Discriminator() extends RepresentationalMetadata
-
-
-// TODO: replace with annotation
-trait IgnoreInAnyOfDeserialization {}
+case class IgnoreInAnyOfDeserialization() extends RepresentationalMetadata
 
 object SchemaBasedJsonDeserializer {
   private implicit val formats = GenericJsonFormats.genericFormats
@@ -312,7 +309,9 @@ object AnyOfDeserialization {
     }
   }
 
-  private def ignoredAlternative(schema: SchemaWithClassName) = classOf[IgnoreInAnyOfDeserialization].isAssignableFrom(Class.forName(schema.fullClassName))
+  private def ignoredAlternative(schema: SchemaWithClassName) = {
+    schema.metadata.contains(IgnoreInAnyOfDeserialization())
+  }
 
   private def discriminatorCriteria(schema: SchemaWithClassName, keyPath: KeyPath)(implicit context: DeserializationContext): CriteriaCollection = schema match {
     case s: ClassRefSchema =>
