@@ -165,6 +165,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus
 }
 
+@Title("Yhteisen tutkinnon osan suoritus")
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
@@ -185,6 +186,8 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
 }
 
+
+@Title("Muun tutkinnon osan suoritus")
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
@@ -312,13 +315,12 @@ case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends PaikallinenKoulutusmoduuli
 
-@Title("Ammatillisen tutkinnon osan osa-alue")
 trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli {
   def pakollinen: Boolean
 }
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
-@Title("Paikallinen ammatillisen tutkinnon osan osa-alue")
+@Title("Paikallinen tutkinnon osan osa-alue")
 case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan osa-alueen kuvaus")
@@ -328,7 +330,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
 
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
-@Title("Valtakunnallinen ammatillisen tutkinnon osan osa-alue")
+@Title("Valtakunnallinen tutkinnon osan osa-alue")
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
