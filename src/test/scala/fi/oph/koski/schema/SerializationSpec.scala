@@ -4,27 +4,11 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
-import org.json4s.MappingException
 import org.scalatest.{FreeSpec, Matchers}
 
-private[schema] case class Application(user: Option[User])
-
-private[schema] case class User(firstName: String, lastName: String)
-
 class SerializationSpec extends FreeSpec with Matchers with Logging {
-  import KoskiSchema.deserializationContext
   "Serialization / deserialization" - {
-    "Optional field" - {
-      // TODO: use schema-based
-      "Success case" in {
-        Json.read[Application]("""{"user": {"firstName": "John", "lastName": "Doe"}}""")
-      }
-      "When deserialization fails -> throw exception" in {
-        intercept[MappingException] {
-          Json.read[Application]("""{"user": {"firstName": "John"}}""")
-        }
-      }
-    }
+    import KoskiSchema.deserializationContext
     "Tunnustaminen" in {
       val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
       val tunnustettu = SchemaBasedJsonDeserializer.extract[OsaamisenTunnustaminen](jsonString).right.get
