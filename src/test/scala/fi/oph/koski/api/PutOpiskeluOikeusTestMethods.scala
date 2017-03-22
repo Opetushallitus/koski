@@ -17,7 +17,8 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
-    putOppija(Json.toJValue(Json.fromJValue[Oppija](makeOppija()).copy(henkilö = henkilö)))(f)
+    import KoskiSchema.deserializationContext
+    putOppija(Json.toJValue(SchemaBasedJsonDeserializer.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

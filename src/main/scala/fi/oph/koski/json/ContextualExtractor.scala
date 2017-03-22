@@ -3,7 +3,7 @@ package fi.oph.koski.json
 import fi.oph.koski.http.HttpStatus
 import org.json4s.{Formats, JValue, MappingException}
 
-// TODO: get rid of
+// TODO: get rid of (after tests pass)
 
 object ContextualExtractor {
   case class ExtractionState(val context: Any, var status: HttpStatus)

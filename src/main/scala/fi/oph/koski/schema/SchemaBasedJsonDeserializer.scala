@@ -57,8 +57,13 @@ object SchemaBasedJsonDeserializer {
 
   def extract[T](json: JValue)(implicit context: DeserializationContext, mf: ClassManifest[T]): Either[List[ValidationError], T] = {
     val schema = context.rootSchema.getSchema(mf.runtimeClass.getName).get // TODO: check for Option.get in this file
-    extract(json, schema, Nil).right.map(_.asInstanceOf[T])
+    extract(json, schema, Nil).right.map(_.asInstanceOf[T]) // TODO: delegate to below
   }
+
+  def extract[T](json: String)(implicit context: DeserializationContext, mf: ClassManifest[T]): Either[List[ValidationError], T] = {
+    extract(Json.read[JValue](json))
+  }
+
 
   def extract(json: JValue, klass: Class[_])(implicit context: DeserializationContext): Either[List[ValidationError], AnyRef] = {
     context.rootSchema.getSchema(klass.getName) match {

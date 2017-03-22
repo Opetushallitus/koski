@@ -11,10 +11,11 @@ private[schema] case class Application(user: Option[User])
 
 private[schema] case class User(firstName: String, lastName: String)
 
-// TODO: use schema-based
 class SerializationSpec extends FreeSpec with Matchers with Logging {
+  import KoskiSchema.deserializationContext
   "Serialization / deserialization" - {
     "Optional field" - {
+      // TODO: use schema-based
       "Success case" in {
         Json.read[Application]("""{"user": {"firstName": "John", "lastName": "Doe"}}""")
       }
@@ -26,7 +27,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
     }
     "Tunnustaminen" in {
       val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
-      val tunnustettu = Json.read[OsaamisenTunnustaminen](jsonString)
+      val tunnustettu = SchemaBasedJsonDeserializer.extract[OsaamisenTunnustaminen](jsonString).right.get
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
@@ -34,7 +35,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
       Examples.examples.foreach { example =>
         example.name in {
           val jsonString = Json.write(example.data)
-          val oppija = Json.read[Oppija](jsonString)
+          val oppija = SchemaBasedJsonDeserializer.extract[Oppija](jsonString).right.get
           oppija should(equal(example.data))
           logger.info(example.name + " ok")
         }
@@ -56,7 +57,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = Json.write(s)
-            val suoritus = Json.read[Suoritus](jsonString)
+            val suoritus = SchemaBasedJsonDeserializer.extract[Suoritus](jsonString).right.get
             suoritus should (equal(s))
           }
         }
