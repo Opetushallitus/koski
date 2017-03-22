@@ -24,7 +24,7 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
-    private implicit val deserializationContext = DeserializationContext(KoskiSchema.schema)
+    private implicit val deserializationContext = DeserializationContext(KoskiSchema.schema).copy(validate = false)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
