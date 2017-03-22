@@ -9,7 +9,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s._
 
-case class DeserializationContext(rootSchema: SchemaWithClassName, path: String = "", customDeserializers: List[CustomDeserializer] = Nil, validate: Boolean = true) {
+case class DeserializationContext(rootSchema: SchemaWithClassName, path: String = "", customDeserializers: List[CustomDeserializer] = Nil, validate: Boolean = true, criteriaCache: collection.mutable.Map[String, CriteriaCollection] = collection.mutable.Map.empty) {
   def hasSerializerFor(schema: SchemaWithClassName) = customSerializerFor(schema).isDefined
   def customSerializerFor(schema: SchemaWithClassName) = customDeserializers.find(_.isApplicable(schema))
   def ifValidating(errors: => List[ValidationError]) = if (validate) { errors } else { Nil }
@@ -262,11 +262,8 @@ object SchemaBasedJsonDeserializer {
 }
 
 object AnyOfDeserialization {
-  // TODO: move to context
-  private val criteriaCache: collection.mutable.Map[String, CriteriaCollection] = collection.mutable.Map.empty
-
-  private def criteriaForSchema(schema: SchemaWithClassName)(implicit context: DeserializationContext) = this.synchronized {
-    criteriaCache.getOrElseUpdate(schema.fullClassName, {
+  private def criteriaForSchema(schema: SchemaWithClassName)(implicit context: DeserializationContext) = context.criteriaCache.synchronized {
+    context.criteriaCache.getOrElseUpdate(schema.fullClassName, {
       discriminatorCriteria(schema, KeyPath.root)
     })
   }
