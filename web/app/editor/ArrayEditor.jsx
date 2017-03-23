@@ -26,10 +26,6 @@ export const ArrayEditor = React.createClass({
     }
 
     let addItem = () => {
-      if (this.props.model.optional && items.length == 0) {
-        let prototype = this.props.model.optionalPrototype && contextualizeModel(this.props.model.optionalPrototype, this.props.model.context)
-        prototype && model.context.changeBus.push([prototype.context, prototype])
-      }
       let item = itemModel()
       model.context.changeBus.push([item.context, item])
     }
@@ -66,6 +62,16 @@ export const ArrayEditor = React.createClass({
     let { model } = this.props
     let optionalModel = () => R.dissoc('value', contextualizeModel(model.optionalPrototype, model.context))
     return model.optional ? R.merge(model, optionalModel()) : model
+  },
+  componentWillMount() {
+    this.props.model.context.changeBus.filter(c => c[1] && !c[0].optionalSetup && c[0].path.startsWith(this.props.model.context.path + '.'))
+      .onValue((c) => {
+        if (this.props.model.optional && modelItems(this.props.model).length == 0) {
+          let mdl = this.getUsedModel()
+          mdl.context.changeBus.push([mdl.context, mdl])
+          mdl.context.changeBus.push([R.merge(c[0], {optionalSetup: true}), c[1]])
+        }
+      })
   }
 })
 
