@@ -60,7 +60,7 @@ export const ArrayEditor = React.createClass({
   },
   getUsedModel() {
     let { model } = this.props
-    let optionalModel = () => R.dissoc('value', contextualizeModel(model.optionalPrototype, model.context))
+    let optionalModel = () => contextualizeModel(model.optionalPrototype, model.context)
     return model.optional ? R.merge(model, optionalModel()) : model
   },
   componentWillMount() {
