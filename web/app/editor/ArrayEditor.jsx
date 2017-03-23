@@ -1,10 +1,11 @@
 import React from 'react'
+import BaconComponent from '../BaconComponent'
 import R from 'ramda'
 import {addContext, childContext, contextualizeModel, modelItems} from './EditorModel.js'
 import {Editor} from './GenericEditor.jsx'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 
-export const ArrayEditor = React.createClass({
+export const ArrayEditor = BaconComponent({
   render() {
     let reverse = this.props.reverse
     let model = this.getUsedModel()
@@ -65,6 +66,7 @@ export const ArrayEditor = React.createClass({
   },
   componentWillMount() {
     this.props.model.context.changeBus.filter(c => c[1] && !c[0].optionalSetup && c[0].path.startsWith(this.props.model.context.path + '.'))
+      .takeUntil(this.unmountE)
       .onValue((c) => {
         if (this.props.model.optional && modelItems(this.props.model).length == 0) {
           let mdl = this.getUsedModel()
