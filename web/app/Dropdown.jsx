@@ -1,5 +1,6 @@
 import React from 'react'
 import BaconComponent from './BaconComponent'
+import R from 'ramda'
 
 export default BaconComponent({
   render() {
@@ -38,7 +39,7 @@ export default BaconComponent({
     this.propsE.onValue(props => {
       window.addEventListener('click', this.handleClickOutside, false)
       this.setState({
-        selected: props.options.find(o => this.props.keyValue(o) == props.selected)
+        selected: props.options.find(o => this.props.keyValue(o) == props.selected || R.equals(o, props.selected))
       })
     })
   },
@@ -66,7 +67,6 @@ export default BaconComponent({
     }
   },
   onKeyDown(e) {
-    console.log('onKeyDown')
     let handler = this.keyHandlers[e.key]
     if (handler) {
       handler.call(this, e)
