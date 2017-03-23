@@ -38,20 +38,19 @@ export const ArrayEditor = React.createClass({
       <ul ref="ul" className={className}>
         {
           items.map((item, i) => {
-              let removeItem = () => {
-                let newItems = items
-                newItems.splice(i, 1)
-                item.context.changeBus.push([item.context, undefined])
-                if (newItems.length === 0) {
-                  resetOptionalModel(this.props.model)
-                }
+            let removeItem = () => {
+              let newItems = items
+              newItems.splice(i, 1)
+              item.context.changeBus.push([item.context, undefined])
+              if (newItems.length === 0) {
+                resetOptionalModel(this.props.model)
               }
-              return (<li key={item.arrayKey}>
-                <Editor model = {addContext(item, {zeroValue: zeroValue})} />
-                {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
-              </li>)
             }
-          )
+            return (<li key={item.arrayKey}>
+              <Editor model = {addContext(item, {zeroValue: zeroValue})} />
+              {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
+            </li>)
+          })
         }
         {
           model.context.edit && model.arrayPrototype !== undefined
