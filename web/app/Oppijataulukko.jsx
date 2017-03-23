@@ -18,6 +18,7 @@ export const Oppijataulukko = React.createClass({
     let { rivit, edellisetRivit, pager, params } = this.props
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
+    let nullSelection = {value : 'ei valintaa'}
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
@@ -37,8 +38,8 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Opiskeluoikeuden tyyppi</span>
               <Dropdown
                 id="tyyppi-valinta"
-                options={opiskeluoikeudenTyypit}
-                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option ? option.key : undefined })}
+                options={[nullSelection].concat(opiskeluoikeudenTyypit)}
+                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option.key })}
                 selected={params['opiskeluoikeudenTyyppi']}
               />
             </th>
@@ -46,8 +47,8 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Koulutus</span>
               <Dropdown
                 id="koulutus-valinta"
-                options={koulutus}
-                onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option ? option.key : undefined })}
+                options={[nullSelection].concat(koulutus)}
+                onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option.key })}
                 selected={params['suorituksenTyyppi']}
               />
             </th>
@@ -66,8 +67,8 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Tila</span>
               <Dropdown
                 id="tila-valinta"
-                options={opiskeluoikeudenTila}
-                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option ? option.key : undefined })}
+                options={[nullSelection].concat(opiskeluoikeudenTila)}
+                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option.key })}
                 selected={params['opiskeluoikeudenTila']}
               />
             </th>
