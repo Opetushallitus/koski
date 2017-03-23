@@ -65,7 +65,7 @@ export const ArrayEditor = BaconComponent({
     return model.optional ? R.merge(model, optionalModel()) : model
   },
   componentWillMount() {
-    this.props.model.context.changeBus.filter(c => c[1] && !c[0].optionalSetup && c[0].path.startsWith(this.props.model.context.path + '.'))
+    this.props.model.context.changeBus && this.props.model.context.changeBus.filter(c => c[1] && !c[0].optionalSetup && c[0].path.startsWith(this.props.model.context.path + '.'))
       .takeUntil(this.unmountE)
       .onValue((c) => {
         if (this.props.model.optional && modelItems(this.props.model).length == 0) {
