@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression, Title}
+import fi.oph.scalaschema.annotation._
 
 sealed trait Organisaatio extends Localizable
 

@@ -4,6 +4,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
+import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
 class SerializationSpec extends FreeSpec with Matchers with Logging {
@@ -11,7 +12,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
     import KoskiSchema.deserializationContext
     "Tunnustaminen" in {
       val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
-      val tunnustettu = SchemaBasedJsonDeserializer.extract[OsaamisenTunnustaminen](jsonString).right.get
+      val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](jsonString).right.get
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
@@ -19,7 +20,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
       Examples.examples.foreach { example =>
         example.name in {
           val jsonString = Json.write(example.data)
-          val oppija = SchemaBasedJsonDeserializer.extract[Oppija](jsonString).right.get
+          val oppija = SchemaValidatingExtractor.extract[Oppija](jsonString).right.get
           oppija should(equal(example.data))
           logger.info(example.name + " ok")
         }
@@ -41,7 +42,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = Json.write(s)
-            val suoritus = SchemaBasedJsonDeserializer.extract[Suoritus](jsonString).right.get
+            val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString).right.get
             suoritus should (equal(s))
           }
         }

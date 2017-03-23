@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{concat, english}
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
+import fi.oph.scalaschema.annotation._
 
 @Description("IB-tutkinnon opiskeluoikeus")
 @Title("IB-tutkinnon opiskeluoikeus")

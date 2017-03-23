@@ -8,6 +8,8 @@ import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.{English, Finnish, LocalizedString}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.extraction.{EmptyString, RegExMismatch, ValidationError}
 import org.json4s.JsonAST.JString
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -76,6 +78,6 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
 
   def deserialize(obj: AnyRef, klass: Class[_]): Either[List[ValidationError], Any] = {
     val schema = KoskiSchema.schema.getSchema(klass.getName).get
-    SchemaBasedJsonDeserializer.extract(Json.toJValue(obj), schema, Nil)
+    SchemaValidatingExtractor.extract(Json.toJValue(obj), schema, Nil)
   }
 }

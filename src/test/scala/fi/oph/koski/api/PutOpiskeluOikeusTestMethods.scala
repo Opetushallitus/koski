@@ -4,6 +4,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
 
 trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] {
@@ -18,7 +19,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
     import KoskiSchema.deserializationContext
-    putOppija(Json.toJValue(SchemaBasedJsonDeserializer.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
+    putOppija(Json.toJValue(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

@@ -4,12 +4,13 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija, SchemaBasedJsonDeserializer}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import org.scalatest.{FreeSpec, Matchers}
 import java.io.File
 import java.time.LocalDate
 
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.scalaschema.SchemaValidatingExtractor
 
 /**
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
@@ -36,7 +37,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
             files.foreach { filename =>
               val json = Json.readFile(fullName(filename))
               println("Checking backward compatibility: " + filename)
-              val oppija: Oppija = SchemaBasedJsonDeserializer.extract[Oppija](json).right.get
+              val oppija: Oppija = SchemaValidatingExtractor.extract[Oppija](json).right.get
               val afterRoundtrip = Json.toJValue(oppija)
               Json.write(afterRoundtrip) should equal(Json.write(json))
               validator.validateAsJson(oppija) match {

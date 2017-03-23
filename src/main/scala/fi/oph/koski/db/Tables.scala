@@ -3,10 +3,10 @@ package fi.oph.koski.db
 import java.sql.Timestamp
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s._
 
 object Tables {
@@ -24,13 +24,13 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
-    private implicit val deserializationContext = DeserializationContext(KoskiSchema.schema).copy(validate = false)
+    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schema).copy(validate = false)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
     }
     def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
-      SchemaBasedJsonDeserializer.extract[Opiskeluoikeus](data) match {
+      SchemaValidatingExtractor.extract[Opiskeluoikeus](data) match {
         case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
         case Left(errors) => throw new RuntimeException("Deserialization errors: " + errors)
       }

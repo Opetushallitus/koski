@@ -14,9 +14,9 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Title
 
 object EditorModelBuilder {
-  def buildModel(deserializationContext: DeserializationContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
+  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
     val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
-    ObjectModelBuilder(deserializationContext.rootSchema, true)(context).buildModelForObject(value)
+    ObjectModelBuilder(deserializationContext.rootSchema.asInstanceOf[ClassSchema], true)(context).buildModelForObject(value)
   }
 
   def builder(schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
@@ -75,7 +75,7 @@ trait EditorModelBuilder[T] {
 
 case class ModelBuilderContext(
   mainSchema: SchemaWithClassName,
-  deserializationContext: DeserializationContext,
+  deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
   prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
@@ -203,7 +203,6 @@ case class AnyOfModelBuilder(t: AnyOfSchema, includeData: Boolean)(implicit cont
 }
 
 case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
-
   import scala.reflect.runtime.{universe => ru}
 
   def buildModelForObject(obj: AnyRef) = {
@@ -302,7 +301,7 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
     val clazz: Class[_] = Class.forName(schema.fullClassName)
     val keysAndValues = schema.properties.map(property => (property.key, Prototypes.getPrototypeData(property))).toMap
     val asJValue = Json.toJValue(keysAndValues)
-    SchemaBasedJsonDeserializer.extract(asJValue, clazz)(context.deserializationContext) match {
+    SchemaValidatingExtractor.extract(asJValue, clazz)(context.deserializationContext) match {
       case Right(obj) => obj
       case Left(errors) => throw new RuntimeException("Unable to build prototype for " + schema.fullClassName + ": " + errors)
     }

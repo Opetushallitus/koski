@@ -4,12 +4,13 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.scalaschema.{Metadata, SchemaWithClassName}
+import fi.oph.scalaschema.extraction.CustomDeserializer
+import fi.oph.scalaschema.{ExtractionContext, Metadata, SchemaValidatingExtractor, SchemaWithClassName}
 import org.json4s._
 
 case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: OrganisaatioRepository) extends CustomDeserializer with Logging {
-  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: DeserializationContext) = {
-    SchemaBasedJsonDeserializer.extract(json, schema, metadata)(context.copy(customDeserializers = Nil)) match {
+  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext) = {
+    SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil)) match {
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
         organisaatioRepository.getOrganisaatio(o.oid) match {

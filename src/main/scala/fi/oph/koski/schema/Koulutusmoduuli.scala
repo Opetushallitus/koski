@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.{Description, MinValueExclusive}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclusive}
 
 trait Koulutusmoduuli extends Localizable {
   @Representative

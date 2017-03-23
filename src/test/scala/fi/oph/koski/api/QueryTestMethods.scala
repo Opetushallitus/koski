@@ -3,7 +3,8 @@ package fi.oph.koski.api
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.UserWithPassword
-import fi.oph.koski.schema.{Oppija, SchemaBasedJsonDeserializer}
+import fi.oph.koski.schema.Oppija
+import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JValue
 
 trait QueryTestMethods extends HttpSpecification {
@@ -12,7 +13,7 @@ trait QueryTestMethods extends HttpSpecification {
       verifyResponseStatus(200)
       val oppijat: List[Oppija] = Json.read[List[JValue]](response.body).map { json =>
         import fi.oph.koski.schema.KoskiSchema.deserializationContext
-        SchemaBasedJsonDeserializer.extract[Oppija](json).right.get
+        SchemaValidatingExtractor.extract[Oppija](json).right.get
       }
       oppijat
     }

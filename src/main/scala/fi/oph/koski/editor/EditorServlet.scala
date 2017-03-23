@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
-import fi.oph.scalaschema.ClassSchema
+import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 
 /**
   *  Endpoints for the Koski UI
@@ -108,7 +108,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
 object EditorSchema {
   lazy val schema = KoskiSchema.schemaFactory.createSchema(classOf[OppijaEditorView].getName).asInstanceOf[ClassSchema].moveDefinitionsToTopLevel
-  lazy val deserializationContext = DeserializationContext(schema, validate = false)
+  lazy val deserializationContext = ExtractionContext(schema, validate = false)
 }
 
 case class OppijaEditorView(

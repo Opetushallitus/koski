@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.Matchers
 
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
@@ -41,10 +42,10 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   }
 
   def readOppija = {
-    SchemaBasedJsonDeserializer.extract[Oppija](body).right.get
+    SchemaValidatingExtractor.extract[Oppija](body).right.get
   }
 
   def readOpiskeluoikeus = {
-    SchemaBasedJsonDeserializer.extract[Opiskeluoikeus](body).right.get
+    SchemaValidatingExtractor.extract[Opiskeluoikeus](body).right.get
   }
 }

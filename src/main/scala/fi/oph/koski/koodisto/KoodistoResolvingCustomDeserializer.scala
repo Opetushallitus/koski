@@ -2,14 +2,15 @@ package fi.oph.koski.koodisto
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{CustomDeserializer, DeserializationContext, Koodistokoodiviite, SchemaBasedJsonDeserializer}
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.scalaschema.{Metadata, SchemaWithClassName}
+import fi.oph.scalaschema.extraction.CustomDeserializer
+import fi.oph.scalaschema.{ExtractionContext, Metadata, SchemaValidatingExtractor, SchemaWithClassName}
 import org.json4s._
 
 case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePalvelu) extends CustomDeserializer with Logging {
-  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: DeserializationContext) = {
-    val viite = SchemaBasedJsonDeserializer.extract(json, schema, metadata)(context.copy(customDeserializers = Nil))
+  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext) = {
+    val viite = SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil))
     viite match {
       case Right(viite: Koodistokoodiviite) =>
         val validated: Option[Koodistokoodiviite] = try {
