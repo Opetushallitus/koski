@@ -1,6 +1,5 @@
 import React from 'react'
 import BaconComponent from './BaconComponent'
-import R from 'ramda'
 
 export default BaconComponent({
   render() {
@@ -36,7 +35,7 @@ export default BaconComponent({
     this.propsE.merge(this.unmountE).onValue(() => {
       window.removeEventListener('click', this.handleClickOutside, false)
     })
-    this.propsE.onValue(props => {
+    this.propsE.onValue(() => {
       window.addEventListener('click', this.handleClickOutside, false)
     })
   },
