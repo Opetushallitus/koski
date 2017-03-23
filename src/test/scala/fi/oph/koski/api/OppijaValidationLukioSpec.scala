@@ -13,6 +13,7 @@ import fi.oph.koski.schema._
 class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
+  def eperusteistaLöytymätönValidiDiaarinumero: String = "33/011/2003"
 
   "Laajuudet" - {
     """Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""" in {

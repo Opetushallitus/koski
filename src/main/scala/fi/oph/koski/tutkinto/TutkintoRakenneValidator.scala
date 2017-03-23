@@ -1,10 +1,11 @@
 package fi.oph.koski.tutkinto
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 
-case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
+case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
     case (todistus: PerusopetuksenOppimääränSuoritus) =>
       HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, perusopetuksenKoulutustyypit))
@@ -34,8 +35,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
-          case Some(d) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d))
-          case None => Left(KoskiErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
+          case Some(d) if koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutusdiaarinumerot", d).isEmpty =>
+            Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d))
+          case _ =>
+            Left(KoskiErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
         }
       case Some(rakenne) =>
         if (koulutustyypit.contains(rakenne.koulutustyyppi)) {

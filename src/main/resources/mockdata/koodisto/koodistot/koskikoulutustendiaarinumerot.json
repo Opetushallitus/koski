@@ -1,0 +1,11 @@
+{
+  "koodistoUri" : "koskikoulutustendiaarinumerot",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Koski - koulutusten diaarinumerot"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2017-03-23",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

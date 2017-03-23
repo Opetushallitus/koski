@@ -401,4 +401,5 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
+  def eperusteistaLöytymätönValidiDiaarinumero: String = "13/011/2009"
 }

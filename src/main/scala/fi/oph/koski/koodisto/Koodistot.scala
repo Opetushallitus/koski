@@ -19,6 +19,7 @@ object Koodistot {
     "arviointiasteikkoyleissivistava",
     "effortasteikkoib",
     "erityinenkoulutustehtava",
+    "koskikoulutustendiaarinumerot",
     "koskiopiskeluoikeudentila",
     "koskioppiaineetyleissivistava",
     "koskiyoarvosanat",

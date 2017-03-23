@@ -10,6 +10,7 @@ import fi.oph.koski.schema._
 
 class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
+  def eperusteistaLöytymätönValidiDiaarinumero: String = "1/011/2004"
 
   "Suoritusten tila" - {
     "Todistus VALMIS ilman vahvistusta -> HTTP 400" in {

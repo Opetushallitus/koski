@@ -1,0 +1,353 @@
+[ {
+  "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
+  "koodiArvo" : "1/011/2004",
+  "metadata" : [ {
+    "nimi" : "oppivelvollisille tarkoitettu perusopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_120112009",
+  "koodiArvo" : "12/011/2009",
+  "metadata" : [ {
+    "nimi" : "Liikenne-esimiehen erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_1210111995",
+  "koodiArvo" : "121/011/1995",
+  "metadata" : [ {
+    "nimi" : "Keruutuotetarkastajan erikoisammattitutkinto 1.8.1995",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_130112009",
+  "koodiArvo" : "13/011/2009",
+  "metadata" : [ {
+    "nimi" : "Rytmimusiikkituotannon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_150112006",
+  "koodiArvo" : "15/011/2006",
+  "metadata" : [ {
+    "nimi" : "Valmentajan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_160112009",
+  "koodiArvo" : "16/011/2009",
+  "metadata" : [ {
+    "nimi" : "Lentoasemapalvelujen ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_190112004",
+  "koodiArvo" : "19/011/2004",
+  "metadata" : [ {
+    "nimi" : "Pienkonemekaanikon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_190112015",
+  "koodiArvo" : "19/011/2015",
+  "metadata" : [ {
+    "nimi" : "aikuisten perusopetus (ml. Alkuvaihe)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
+  "koodiArvo" : "2/011/2004",
+  "metadata" : [ {
+    "nimi" : "perusopetukseen valmistava opetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_210112008",
+  "koodiArvo" : "21/011/2008",
+  "metadata" : [ {
+    "nimi" : "Raskaskalustomekaanikon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_220111998",
+  "koodiArvo" : "22/011/1998",
+  "metadata" : [ {
+    "nimi" : "Nahanvalmistajan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_250112008",
+  "koodiArvo" : "25/011/2008",
+  "metadata" : [ {
+    "nimi" : "Sahamestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_30112004",
+  "koodiArvo" : "3/011/2004",
+  "metadata" : [ {
+    "nimi" : "lisäopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_30112015",
+  "koodiArvo" : "3/011/2015",
+  "metadata" : [ {
+    "nimi" : "Valmentajan erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_310112015",
+  "koodiArvo" : "31/011/2015",
+  "metadata" : [ {
+    "nimi" : "Autokorimekaanikon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_320112015",
+  "koodiArvo" : "32/011/2015",
+  "metadata" : [ {
+    "nimi" : "Autokorimestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_330112003",
+  "koodiArvo" : "33/011/2003",
+  "metadata" : [ {
+    "nimi" : "lukiokoulutus (nuorille tarkoitettu opetussuunnitelma)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_330112015",
+  "koodiArvo" : "33/011/2015",
+  "metadata" : [ {
+    "nimi" : "Automaalarin ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_340112008",
+  "koodiArvo" : "34/011/2008",
+  "metadata" : [ {
+    "nimi" : "Kultaajamestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_340112015",
+  "koodiArvo" : "34/011/2015",
+  "metadata" : [ {
+    "nimi" : "Automaalarimestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_350112008",
+  "koodiArvo" : "35/011/2008",
+  "metadata" : [ {
+    "nimi" : "Kultaajakisällin ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_350112015",
+  "koodiArvo" : "35/011/2015",
+  "metadata" : [ {
+    "nimi" : "Kultaajakisällin ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_360112014",
+  "koodiArvo" : "36/011/2014",
+  "metadata" : [ {
+    "nimi" : "Valmentajan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_360112015",
+  "koodiArvo" : "36/011/2015",
+  "metadata" : [ {
+    "nimi" : "Kultaajamestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_370112012",
+  "koodiArvo" : "37/011/2012",
+  "metadata" : [ {
+    "nimi" : "Rengasalan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_380112001",
+  "koodiArvo" : "38/011/2001",
+  "metadata" : [ {
+    "nimi" : "Automekaanikon erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_390112001",
+  "koodiArvo" : "39/011/2001",
+  "metadata" : [ {
+    "nimi" : "Autoalan myyjän erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_40112004",
+  "koodiArvo" : "4/011/2004",
+  "metadata" : [ {
+    "nimi" : "aikuisten perusopetus ja lukiokoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_410112006",
+  "koodiArvo" : "41/011/2006",
+  "metadata" : [ {
+    "nimi" : "Faktorin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_460112004",
+  "koodiArvo" : "46/011/2004",
+  "metadata" : [ {
+    "nimi" : "Painajamestarin/rotaatiomestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_480112006",
+  "koodiArvo" : "48/011/2006",
+  "metadata" : [ {
+    "nimi" : "Henkilöautomekaanikon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_480112009",
+  "koodiArvo" : "48/011/2009",
+  "metadata" : [ {
+    "nimi" : "Jälkikäsittelykoneenhoitajan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_50112015",
+  "koodiArvo" : "5/011/2015",
+  "metadata" : [ {
+    "nimi" : "ammatilliseen peruskoulutukseen valmentava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_500112006",
+  "koodiArvo" : "50/011/2006",
+  "metadata" : [ {
+    "nimi" : "Valmentajan erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_520112002",
+  "koodiArvo" : "52/011/2002",
+  "metadata" : [ {
+    "nimi" : "Autokorimekaanikon ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_530112002",
+  "koodiArvo" : "53/011/2002",
+  "metadata" : [ {
+    "nimi" : "Autokorimestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_540112002",
+  "koodiArvo" : "54/011/2002",
+  "metadata" : [ {
+    "nimi" : "Automaalarimestarin erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_550112002",
+  "koodiArvo" : "55/011/2002",
+  "metadata" : [ {
+    "nimi" : "Automaalarin ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_560112015",
+  "koodiArvo" : "56/011/2015",
+  "metadata" : [ {
+    "nimi" : "lukiokoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_60112015",
+  "koodiArvo" : "6/011/2015",
+  "metadata" : [ {
+    "nimi" : "työhön ja itsenäiseen elämään valmentava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_650112002",
+  "koodiArvo" : "65/011/2002",
+  "metadata" : [ {
+    "nimi" : "Varaosamyyjän ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_660112002",
+  "koodiArvo" : "66/011/2002",
+  "metadata" : [ {
+    "nimi" : "Automyyjän ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_700112015",
+  "koodiArvo" : "70/011/2015",
+  "metadata" : [ {
+    "nimi" : "aikuisten lukiokoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_80112009",
+  "koodiArvo" : "8/011/2009",
+  "metadata" : [ {
+    "nimi" : "Isännöinnin ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

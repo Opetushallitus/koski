@@ -32,6 +32,6 @@ object MockKoodistoPalvelu {
     found.map(uri => "/mockdata/koodisto/koodistot/" + uri + ".json")
   }
 
-  protected[koodisto] def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri).get
-  protected[koodisto] def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri).get
+  def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri).get
+  def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri).get
 }

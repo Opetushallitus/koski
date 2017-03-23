@@ -13,6 +13,11 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
           verifyResponseStatus(200)
         }
       }
+      "myös ePerusteista löytymätön, mutta koodistosta \"koskikoulutusdiaarinumerot\" löytyvä diaarinumero kelpaa" in {
+        putOpiskeluoikeus(opiskeluoikeusWithPerusteenDiaarinumero(Some(eperusteistaLöytymätönValidiDiaarinumero))) {
+          verifyResponseStatus(200)
+        }
+      }
     }
 
     "Kun yritetään liittää suoritus tuntemattomaan tutkinnon perusteeseen" - {
@@ -43,6 +48,8 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
   def vääräntyyppisenPerusteenDiaarinumero: String = "39/011/2014"
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): T
+
+  def eperusteistaLöytymätönValidiDiaarinumero: String
 
   def putTodistus[A](opiskeluoikeus: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus))), headers)(f)

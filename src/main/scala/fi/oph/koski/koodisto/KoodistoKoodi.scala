@@ -17,5 +17,10 @@ case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[Koo
   def getMetadata(kieli: String): Option[KoodistoKoodiMetadata] = {
     metadata.find(_.kieli == Some(kieli.toUpperCase))
   }
+}
 
+object KoodistoKoodi {
+  def koodiUri(koodistoUri: String, koodiarvo: String) = {
+    koodistoUri + "_" + koodiarvo.toLowerCase.replaceAll("\\.|/", "")
+  }
 }
