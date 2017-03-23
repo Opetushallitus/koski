@@ -12,7 +12,7 @@ export const EnumEditor = BaconComponent({
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
     alternatives = model.context.zeroValue ? R.prepend(model.context.zeroValue, alternatives) : alternatives
-    let defaultValue = (model.value && model.value.value) || model.context.zeroValue
+    let defaultValue = model.value || model.context.zeroValue
 
     let onChange = (option) => {
       let data = model.context.zeroValue && option.value === model.context.zeroValue.value ? undefined : R.merge(model, { value: option })

@@ -4,8 +4,8 @@ import R from 'ramda'
 
 export default BaconComponent({
   render() {
-    const {open, selected, selectionIndex} = this.state
-    const {keyValue, displayValue, options} = this.props
+    const {open, selectionIndex} = this.state
+    const {keyValue, displayValue, options, selected} = this.props
     return (
       <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
         <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen}>{selected ? displayValue(selected): 'valitse'}<span className="toggle-open"/>
@@ -38,9 +38,6 @@ export default BaconComponent({
     })
     this.propsE.onValue(props => {
       window.addEventListener('click', this.handleClickOutside, false)
-      this.setState({
-        selected: props.options.find(o => this.props.keyValue(o) == props.selected || R.equals(o, props.selected))
-      })
     })
   },
   getDefaultProps() {

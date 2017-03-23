@@ -40,7 +40,7 @@ export const Oppijataulukko = React.createClass({
                 id="tyyppi-valinta"
                 options={[nullSelection].concat(opiskeluoikeudenTyypit)}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option.key })}
-                selected={params['opiskeluoikeudenTyyppi']}
+                selected={opiskeluoikeudenTyypit.find(o => o.key == params['opiskeluoikeudenTyyppi'])}
               />
             </th>
             <th className="koulutus">
@@ -49,7 +49,7 @@ export const Oppijataulukko = React.createClass({
                 id="koulutus-valinta"
                 options={[nullSelection].concat(koulutus)}
                 onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option.key })}
-                selected={params['suorituksenTyyppi']}
+                selected={koulutus.find(o => o.key == params['suorituksenTyyppi'])}
               />
             </th>
             <th className="tutkinto">
@@ -69,7 +69,7 @@ export const Oppijataulukko = React.createClass({
                 id="tila-valinta"
                 options={[nullSelection].concat(opiskeluoikeudenTila)}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option.key })}
-                selected={params['opiskeluoikeudenTila']}
+                selected={opiskeluoikeudenTila.find(o => o.key == params['opiskeluoikeudenTila'])}
               />
             </th>
             <th className="oppilaitos">
