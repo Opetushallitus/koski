@@ -22,8 +22,9 @@ export default BaconComponent({
       </div>
     )
   },
-  handleOnBlur() {
-    this.setState({open: false})
+  handleOnBlur(e) {
+    // ie fires onBlur event so we have to check where it came from before closing the dropdown
+    e.target != this.select && this.setState({open: false})
   },
   selectOption(option) {
     this.setState({selected: option, open: false, selectionIndex: 0}, () => this.props.onSelectionChanged(option))
