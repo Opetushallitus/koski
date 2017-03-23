@@ -22,7 +22,7 @@ export const ArrayEditor = React.createClass({
 
     let newItem = () => {
       let item = itemModel()
-      return addContext(item.type === 'enum' ? R.dissoc('value', item) : item, {inArray: true})
+      return item.type === 'enum' ? R.dissoc('value', item) : item // remove default value from enums
     }
 
     let addItem = () => {
