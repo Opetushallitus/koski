@@ -6,10 +6,11 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.editor.EditorModelSerializer
 import fi.oph.koski.eperusteet.RakenneOsaSerializer
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.Files
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
@@ -117,9 +118,9 @@ object Json extends Logging {
 
 object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
   {
-    case JString(s) => ContextualExtractor.tryExtract(LocalDate.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
-    case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate())(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
-    case JNull => ContextualExtractor.extractionError(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
+    case JString(s) => ExtractionHelper.tryExtract(LocalDate.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
+    case JInt(i) => ExtractionHelper.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate())(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
+    case JNull => throw new InvalidRequestException(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
   },
   {
     case d: LocalDate => JString(d.toString)
@@ -129,12 +130,22 @@ object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
 
 object LocalDateTimeSerializer extends CustomSerializer[LocalDateTime](format => (
   {
-    case JString(s) => ContextualExtractor.tryExtract(LocalDateTime.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
-    case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
-    case JNull => ContextualExtractor.extractionError(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
+    case JString(s) => ExtractionHelper.tryExtract(LocalDateTime.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
+    case JInt(i) => ExtractionHelper.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
+    case JNull => throw new InvalidRequestException(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
   },
   {
     case d: LocalDateTime => JString(d.toString)
   }
   )
 )
+
+private object ExtractionHelper {
+  def tryExtract[T](block: => T)(status: => HttpStatus) = {
+    try {
+      block
+    } catch {
+      case e: Exception => throw new InvalidRequestException(status)
+    }
+  }
+}

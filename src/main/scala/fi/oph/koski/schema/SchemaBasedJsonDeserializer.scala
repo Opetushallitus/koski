@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.json.{GenericJsonFormats, Json}
-import fi.oph.koski.schema.AnyOfDeserialization.{CriteriaCollection, DiscriminatorCriterion, extractAnyOf}
+import fi.oph.koski.schema.AnyOfDeserialization.{CriteriaCollection, extractAnyOf}
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s._
@@ -407,7 +407,7 @@ object AnyOfDeserialization {
           case JObject(values) =>
             values.toList.map(_._1).filterNot(keys.contains(_)) match {
               case Nil => Nil
-              case unwanted => List(withKeyPath(s"allowed properties [${keys.mkString(", ")}] do not contain [${unwanted.mkString(", ")}]")) // TODO: unified list formatting
+              case unwanted => List(withKeyPath(s"allowed properties [${keys.mkString(", ")}] do not contain [${unwanted.mkString(", ")}]"))
             }
           case _ =>
             List(withKeyPath("object expected"))
