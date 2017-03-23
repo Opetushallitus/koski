@@ -95,9 +95,11 @@ export default BaconComponent({
     },
     Enter(e) {
       e.preventDefault()
-      let {selectionIndex} = this.state
-      let {options} = this.props
-      this.selectOption(options[selectionIndex])
+      let {selectionIndex, open} = this.state
+      if (open) {
+        let {options} = this.props
+        this.selectOption(options[selectionIndex])
+      }
     }
   }
 })
