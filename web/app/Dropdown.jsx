@@ -7,7 +7,7 @@ export default BaconComponent({
     const {keyValue, displayValue, options, selected} = this.props
     return (
       <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
-        <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen}>{selected ? displayValue(selected): 'valitse'}<span className="toggle-open"/>
+        <div ref={(select => this.select = select)} className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen}>{selected ? displayValue(selected): 'valitse'}<span className="toggle-open"/>
         </div>
         { open ?
           <ul className="options">
