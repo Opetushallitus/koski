@@ -460,7 +460,7 @@ describe('Perusopetus', function() {
     describe('Suoritusten tiedot', function() {
       describe('Suorituskielen lisäys', function() {
         var editor = opinnot.suoritusEditor()
-        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, editor.property('suorituskieli').addValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, editor.property('suorituskieli').selectValue('suomi'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu suorituskieli näytetään', function() {
           expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
         })
