@@ -13,9 +13,9 @@ export const EnumEditor = BaconComponent({
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
 
-    if (model.optional && !model.value) {
-      // Replace the enum default with the zero value
-      let prototype = R.dissoc('value', R.merge(model, optionalModel(model)))
+    if (model.optional) {
+      let prototype = model.value ? model
+                                  : R.dissoc('value', R.merge(model, optionalModel(model))) // Replace the enum default with the zero value
       model.context.changeBus.push([prototype.context, R.merge(prototype, {optional: false, zeroValue: EnumEditor.zeroValue()})])
     }
 
@@ -23,8 +23,12 @@ export const EnumEditor = BaconComponent({
     let defaultValue = model.value || model.zeroValue
 
     let onChange = (option) => {
-      let data = model.zeroValue && option.value === model.zeroValue.value ? undefined : R.merge(model, { value: option })
-      model.context.changeBus.push([model.context, data])
+      let data = model.zeroValue && option.value === model.zeroValue.value ? R.dissoc('value', model) : R.merge(model, { value: option })
+      if (model.zeroValue && option.value === model.zeroValue.value) {
+        model.context.changeBus.push([model.context, data])
+      } else {
+        model.context.changeBus.push([model.context, data])
+      }
     }
 
     return model.context.edit
