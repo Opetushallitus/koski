@@ -315,8 +315,8 @@ Henkilöpalvelun swagger:
 
 ### ePerusteet
 
-Tällä hetkellä Koskeen voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
-ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/koski/opiskeluoikeus/Opiskeluoikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/koski/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
+Tällä hetkellä Koskeen voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opiskeluoikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
+ePerusteista ja [Opiskeluoikeuden](src/main/scala/fi/oph/koski/opiskeluoikeus/Opiskeluoikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/koski/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
 
 EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/koski/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala)
 
