@@ -88,7 +88,7 @@ var DateInput = React.createClass({
   }
 })
 DateInput.propTypes = {
-  value: React.PropTypes.object.isRequired,
+  value: React.PropTypes.object,
   isAllowedDate: React.PropTypes.func,
   valueCallback: React.PropTypes.func,
   validityCallback: React.PropTypes.func
