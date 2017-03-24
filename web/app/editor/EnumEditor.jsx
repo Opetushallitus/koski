@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import {modelTitle} from './EditorModel.js'
+import {optionalModel} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
 import BaconComponent from '../BaconComponent'
 import Http from '../http'
@@ -11,8 +12,15 @@ export const EnumEditor = BaconComponent({
     let {model, asRadiogroup, disabledValue} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
-    alternatives = model.context.zeroValue ? R.prepend(model.context.zeroValue, alternatives) : alternatives
-    let defaultValue = model.value || model.context.zeroValue
+
+    if (model.optional && !model.value) {
+      let prototype = R.dissoc('value', R.merge(model, optionalModel(model)))
+      model.context.changeBus.push([prototype.context, R.merge(prototype, {optional: false, zeroValue: EnumEditor.zeroValue()})])
+    }
+
+    let zeroValue = model.context.zeroValue || model.zeroValue
+    alternatives = zeroValue ? R.prepend(zeroValue, alternatives) : alternatives
+    let defaultValue = model.value || zeroValue
 
     let onChange = (option) => {
       let data = model.context.zeroValue && option.value === model.context.zeroValue.value ? undefined : R.merge(model, { value: option })
@@ -67,3 +75,4 @@ export const EnumEditor = BaconComponent({
 EnumEditor.canShowInline = () => true
 EnumEditor.zeroValue = () => ({title: 'Ei valintaa', value: 'eivalintaa'})
 EnumEditor.AlternativesCache = {}
+EnumEditor.handlesOptional = true

@@ -6,14 +6,9 @@ import {Editor} from './GenericEditor.jsx'
 export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
-    let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
+    let prototype = optionalModel(model)
 
     let addValue = () => {
-      if (!prototype.value.data && prototype.oneOfPrototypes) {
-        // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
-        prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
-      }
-
       if (!modelData(prototype)) {
         throw new Error('Prototype value data missing')
       }
@@ -43,4 +38,12 @@ export const OptionalEditor = React.createClass({
   }
 })
 OptionalEditor.canShowInline = () => true
+export const optionalModel = (model) => {
+  let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
+  if (prototype && prototype.oneOfPrototypes && !prototype.value.data) {
+    // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
+    prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
+  }
+  return prototype
+}
 export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, { optional: model.optional, optionalPrototype: model.optionalPrototype }])

@@ -50,7 +50,7 @@ const getEditorFunction = (model) => {
 
   if (model.optional) {
     let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
-    let typeEditor = model.optionalPrototype && model.context.editorMapping[model.optionalPrototype.type]
+    let typeEditor = prototype && model.context.editorMapping[prototype.type]
     return optionalHandlingEditor(prototype) || (typeEditor && typeEditor.handlesOptional && typeEditor) || model.context.editorMapping.optional
   }
 
