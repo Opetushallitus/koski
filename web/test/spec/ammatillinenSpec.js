@@ -221,7 +221,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Kun valitaan suoritustapa', function() {
       var suoritusEditor = opinnot.suoritusEditor()
       var suoritustapa = suoritusEditor.property('suoritustapa')
-      before(suoritusEditor.edit, suoritustapa.selectValue('Opetussuunnitelman mukainen'), suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
+      before(suoritusEditor.edit, suoritustapa.waitUntilLoaded, suoritustapa.selectValue('Opetussuunnitelman mukainen'), suoritusEditor.doneEditing, wait.until(page.isSavedLabelShown))
 
       describe('Muutosten näyttäminen', function() {
         it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
