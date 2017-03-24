@@ -61,7 +61,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
                   <h2>Opiskeluoikeuden tilan lisäys</h2>
                   <div className="property alku">
                     <label>Päivämäärä:</label>
-                    <DateEditor model={newStateModels.alkuPäiväModel} isValid={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
+                    <DateEditor model={newStateModels.alkuPäiväModel} isAllowedDate={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
                   </div>
                   <div className="property tila">
                     <label>Tila:</label>
