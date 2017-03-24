@@ -63,6 +63,9 @@ function AddOppijaPage() {
             .then(function() {triggerEvent(selectedTutkinto(), 'click')})
       }
     },
+    selectAloituspäivä: function(date) {
+      return pageApi.setInputValue('.aloituspaiva input', date)
+    },
     submit: function() {
       triggerEvent(button(), 'click')
     },

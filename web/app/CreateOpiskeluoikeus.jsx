@@ -6,6 +6,7 @@ import Http from './http'
 import {showInternalError} from './location.js'
 import {formatISODate} from './date.js'
 import Dropdown from './Dropdown.jsx'
+import DateInput from './DateInput.jsx'
 import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 
 const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilaitos'>Oppilaitos
@@ -47,6 +48,12 @@ const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, tyypit}) => {
       selected={opiskeluoikeudenTyyppiAtom}
     />
   </label> )
+}
+
+const Aloituspäivä = ({dateAtom}) => {
+  return (<label className='aloituspaiva'>Aloituspäivä
+    <DateInput value={dateAtom.get()} valueCallback={(value) => dateAtom.set(value)} validityCallback={(valid) => !valid && dateAtom.set(undefined)} />
+  </label>)
 }
 
 var makeSuoritukset = (tyyppi, tutkinto, oppilaitos) => {
@@ -116,12 +123,11 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
     {
       Bacon.combineWith(oppilaitosAtom, tutkintoAtom, opiskeluoikeustyypitP, opiskeluoikeudenTyyppiAtom, (oppilaitos, tutkinto, tyypit, tyyppi) => <div>
         <Oppilaitos oppilaitosAtom={oppilaitosAtom} oppilaitos={oppilaitos} />
-        {
-          <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={opiskeluoikeudenTyyppiAtom} tyypit={tyypit}/>
-        }
+        <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={opiskeluoikeudenTyyppiAtom} tyypit={tyypit}/>
         {
           tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus' && <Tutkinto tutkintoAtom={tutkintoAtom} tutkinto={tutkinto} oppilaitos={oppilaitos}/>
         }
+        <Aloituspäivä dateAtom={dateAtom} />
       </div>)
     }
   </div>)

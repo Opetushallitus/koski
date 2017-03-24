@@ -80,6 +80,24 @@ describe('Ammatillinen koulutus', function() {
           expect(addOppija.isEnabled()).to.equal(true)
         })
       })
+      describe('Kun valitaan kelvollinen päivämäärä', function() {
+        before(
+          addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
+          addOppija.selectAloituspäivä('1.1.2070')
+        )
+        it('Lisää-nappi on enabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(true)
+        })
+      })
+      describe('Kun syötetään epäkelpo päivämäärä', function() {
+        before(
+          addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
+          addOppija.selectAloituspäivä('38.1.2070')
+        )
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
       describe('Kun oppilaitosta ei ole valittu', function() {
         before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataAmmatillinen({oppilaitos: null, tutkinto: null}))
         it('Lisää-nappi on disabloitu', function(){

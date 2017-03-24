@@ -8,7 +8,7 @@ const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
 
 const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La']
 
-export default React.createClass({
+var DateInput = React.createClass({
   render() {
     let {isAllowedDate = () => true, validityCallback = () => {}, valueCallback = () => {}, optional = false } = this.props
     let {invalidDate} = this.state
@@ -87,3 +87,10 @@ export default React.createClass({
     this.removeListeners()
   }
 })
+DateInput.propTypes = {
+  value: React.PropTypes.object.isRequired,
+  isAllowedDate: React.PropTypes.func,
+  valueCallback: React.PropTypes.func,
+  validityCallback: React.PropTypes.func
+}
+export default DateInput
