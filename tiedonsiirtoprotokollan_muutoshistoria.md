@@ -1,3 +1,8 @@
+## 24.3.2017
+
+- Lisätty LUVA-koulutukseen oppiainetaso
+- Haetaan diaarinumeroita ePerusteiden lisäksi myös koodistosta koskikoulutustendiaarinumerot
+
 ## 17.3.2017
 
 - Lisätty lukion paikalliset oppiaineet
