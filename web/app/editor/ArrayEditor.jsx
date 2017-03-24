@@ -1,7 +1,7 @@
 import React from 'react'
 import BaconComponent from '../BaconComponent'
 import R from 'ramda'
-import {addContext, childContext, contextualizeModel, modelItems} from './EditorModel.js'
+import {childContext, contextualizeModel, modelItems} from './EditorModel.js'
 import {Editor} from './GenericEditor.jsx'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 
@@ -44,7 +44,7 @@ export const ArrayEditor = BaconComponent({
               }
             }
             return (<li key={item.arrayKey}>
-              <Editor model = {addContext(item, {zeroValue: zeroValue})} />
+              <Editor model = {R.merge(item, {zeroValue: zeroValue})} />
               {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
             </li>)
           })
