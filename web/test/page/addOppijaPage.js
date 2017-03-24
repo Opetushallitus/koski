@@ -82,10 +82,10 @@ function AddOppijaPage() {
       }
     },
     opiskeluoikeudenTyypit: function() {
-      return textsOf(S('.opiskeluoikeudentyyppi select option'))
+      return pageApi.getInputOptions('.opiskeluoikeudentyyppi .dropdown')
     },
     selectOpiskeluoikeudenTyyppi: function(tyyppi) {
-      return pageApi.setInputValue('.opiskeluoikeudentyyppi select', tyyppi)
+      return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
     }
   }
   return api

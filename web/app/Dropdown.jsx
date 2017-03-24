@@ -9,16 +9,13 @@ export default BaconComponent({
       <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
         <div ref={(select => this.select = select)} className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen}>{selected ? displayValue(selected): 'valitse'}<span className="toggle-open"/>
         </div>
-        { open ?
-          <ul className="options">
-            {
-              options.map((o,i) =>
-                <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onClick={() => this.selectOption(o)} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
-              )
-            }
-          </ul>
-          : null
-        }
+        <ul className={open ? 'options open' : 'options'}>
+          {
+            options.map((o,i) =>
+              <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onClick={() => this.selectOption(o)} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
+            )
+          }
+        </ul>
       </div>
     )
   },

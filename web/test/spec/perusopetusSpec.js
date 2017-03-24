@@ -655,7 +655,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Opiskeluoikeuden lisäys', function() {
-          before(addOppija.selectOpiskeluoikeudenTyyppi('perusopetus'),
+          before(addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
                  addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
 
           it('lisätty oppija näytetään', function() {})

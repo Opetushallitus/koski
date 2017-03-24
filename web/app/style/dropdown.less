@@ -2,28 +2,6 @@
   position: relative;
   outline: none;
   cursor: pointer;
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border: 1px solid #E4E4E4;
-    position: absolute;
-    z-index: 1;
-    min-width: 100%;
-  }
-
-  .option {
-    line-height: 30px;
-    padding: 0 0.7em;
-    background: white;
-    border-bottom: 1px solid #E4E4E4;
-    &.selected {
-      background: #EAEAEA;
-    }
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 
   &:focus {
     .select {
@@ -58,6 +36,33 @@
       width: 6px;
       height: 6px;
       top: ~"calc(50% - 4px)";
+    }
+  }
+
+  .options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #E4E4E4;
+    position: absolute;
+    z-index: 1;
+    min-width: 100%;
+
+    &:not(.open) {
+      display: none;
+    }
+
+    .option {
+      line-height: 30px;
+      padding: 0 0.7em;
+      background: white;
+      border-bottom: 1px solid #E4E4E4;
+      &.selected {
+        background: #EAEAEA;
+      }
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

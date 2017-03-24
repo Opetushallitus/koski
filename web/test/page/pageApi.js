@@ -24,6 +24,9 @@ function Page(mainElement) {
           .then(wait.forAjax)
       }
     },
+    getInputOptions: function(selector) {
+      return api.getInput(selector).getOptions()
+    },
     button: function(el) {
       return Clickable(el)
     },
@@ -93,13 +96,22 @@ function Page(mainElement) {
             triggerEvent(input, "change")
             break;
           case "DROPDOWN": // Dropdown.jsx
-            triggerEvent(findSingle('.select', S(input)), 'click')
-            wait.forAjax().then(function () {
-              triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'click')
-            })
+            if (!findSingle('.options', S(input)).hasClass('open')) {
+              triggerEvent(findSingle('.select', S(input)), 'click')
+            }
+            triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'click')
             break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
+        }
+      },
+      getOptions: function() {
+        var input = el()
+        switch (inputType(input)) {
+          case "DROPDOWN": // Dropdown.jsx
+            return textsOf(input.find('.option'))
+          default:
+            throw new Error("getOptions not supported for " + inputType(input))
         }
       }
     }

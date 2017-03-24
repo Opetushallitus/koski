@@ -208,10 +208,10 @@ function Property(elem) {
       return extractAsText(elem())
     },
     itemEditor: function(index) {
-      return this.propertyBySelector('.array li:nth-child(' + (index + 1) +')')
+      return this.propertyBySelector('.array > li:nth-child(' + (index + 1) +')')
     },
     getItems: function() {
-      return toArray(elem().find('.value .array li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
+      return toArray(elem().find('.value .array > li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
       return isVisibleBy(function() { return findSingle('.value', elem())})

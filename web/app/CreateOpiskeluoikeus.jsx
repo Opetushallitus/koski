@@ -5,6 +5,7 @@ import Autocomplete from './Autocomplete.jsx'
 import Http from './http'
 import {showInternalError} from './location.js'
 import {formatISODate} from './date.js'
+import Dropdown from './Dropdown.jsx'
 import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 
 const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilaitos'>Oppilaitos
@@ -31,19 +32,20 @@ const Tutkinto = ({tutkintoAtom, oppilaitos, tutkinto}) =>{
 }
 
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, tyypit}) => {
-  let onChange = (event) => {
-    let tyyppi = tyypit.find(t => t.koodiarvo == event.target.value)
+  let onChange = (tyyppi) => {
     opiskeluoikeudenTyyppiAtom.set(tyyppi)
   }
   if (tyypit.length == 0) {
     return null
   }
   return (<label className='opiskeluoikeudentyyppi'>Opiskeluoikeus
-    <select defaultValue={opiskeluoikeudenTyyppiAtom.map('.koodiarvo')} onChange={ onChange }>
-      {
-        tyypit.map((tyyppi, i) => <option key={i} value={tyyppi.koodiarvo}>{tyyppi.nimi.fi}</option>)
-      }
-    </select>
+    <Dropdown baret-lift
+      options={tyypit}
+      keyValue={option => option.koodiarvo}
+      displayValue={option => option.nimi.fi}
+      onSelectionChanged={option => onChange(option)}
+      selected={opiskeluoikeudenTyyppiAtom}
+    />
   </label> )
 }
 
