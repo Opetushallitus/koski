@@ -35,7 +35,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
-          case Some(d) if koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutusdiaarinumerot", d).isEmpty =>
+          case Some(d) if koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutustendiaarinumerot", d).isEmpty =>
             Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d))
           case _ =>
             Left(KoskiErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
