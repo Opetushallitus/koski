@@ -56,6 +56,28 @@ const Aloituspäivä = ({dateAtom}) => {
   </label>)
 }
 
+const OpiskeluoikeudenTila = ({tilaAtom}) => {
+  const opiskeluoikeudenTilatP = Http.cachedGet('/koski/api/editor/koodit/koskiopiskeluoikeudentila').map(tilat => tilat.map(t => t.data))
+  let onChange = (tila) => { tilaAtom.set(tila) }
+  opiskeluoikeudenTilatP.onValue(tilat => {
+    tilaAtom.set(tilat.find(t => t.koodiarvo == 'lasna'))
+  })
+
+  return (<label className='opiskeluoikeudentila'>Opiskeluoikeuden tila
+    {
+      Bacon.combineWith(opiskeluoikeudenTilatP, tilaAtom, (tilat, tila) => tila && (
+        <Dropdown
+                  options={tilat}
+                  keyValue={option => option.koodiarvo}
+                  displayValue={option => option.nimi.fi}
+                  onSelectionChanged={option => onChange(option)}
+                  selected={tila}
+        />
+      ))
+    }
+  </label>)
+}
+
 var makeSuoritukset = (tyyppi, tutkinto, oppilaitos) => {
   if (tutkinto && oppilaitos && tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus') {
     return [{
@@ -93,7 +115,7 @@ var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritukset, tila) => {
       oppilaitos: oppilaitos,
       alkamispäivä: formatISODate(date),
       tila: {
-        opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila: { 'koodistoUri': 'koskiopiskeluoikeudentila', 'koodiarvo': tila } }]
+        opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila }]
       },
       suoritukset
     }
@@ -104,7 +126,7 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
   const oppilaitosAtom = Atom()
   const tutkintoAtom = Atom()
   const opiskeluoikeudenTyyppiAtom = Atom()
-  const tilaAtom = Atom('lasna')
+  const tilaAtom = Atom()
 
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
@@ -128,6 +150,7 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
           tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus' && <Tutkinto tutkintoAtom={tutkintoAtom} tutkinto={tutkinto} oppilaitos={oppilaitos}/>
         }
         <Aloituspäivä dateAtom={dateAtom} />
+        <OpiskeluoikeudenTila tilaAtom={tilaAtom} />
       </div>)
     }
   </div>)
