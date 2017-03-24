@@ -24,11 +24,7 @@ export const EnumEditor = BaconComponent({
 
     let onChange = (option) => {
       let data = model.zeroValue && option.value === model.zeroValue.value ? R.dissoc('value', model) : R.merge(model, { value: option })
-      if (model.zeroValue && option.value === model.zeroValue.value) {
-        model.context.changeBus.push([model.context, data])
-      } else {
-        model.context.changeBus.push([model.context, data])
-      }
+      model.context.changeBus.push([model.context, data])
     }
 
     return model.context.edit
