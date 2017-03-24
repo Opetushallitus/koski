@@ -183,7 +183,7 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "RUOTSI",
+              "koodiarvo" : "RU1",
               "nimi" : {
                 "fi" : "Ruotsin alkeet"
               }
