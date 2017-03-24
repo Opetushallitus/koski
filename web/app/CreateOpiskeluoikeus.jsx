@@ -9,45 +9,59 @@ import Dropdown from './Dropdown.jsx'
 import DateInput from './DateInput.jsx'
 import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 
-const Oppilaitos = ({oppilaitosAtom, oppilaitos}) => (<label className='oppilaitos'>Oppilaitos
-  <OrganisaatioPicker
-    selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
-    onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
-    filterOrgs={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
-    renderOrg={(org, defaultRender) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') ? defaultRender(org) : <span>{org.nimi.fi}</span> }
-    clearText="tyhjennä"
-  />
+const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilaitos
+  {
+    oppilaitosAtom.map(oppilaitos => (
+      <OrganisaatioPicker
+        selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
+        onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
+        filterOrgs={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
+        renderOrg={(org, defaultRender) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') ? defaultRender(org) : <span>{org.nimi.fi}</span> }
+        clearText="tyhjennä"
+      />
+    ))
+  }
 </label>)
 
-const Tutkinto = ({tutkintoAtom, oppilaitos, tutkinto}) =>{
-  return (<label className='tutkinto'>Tutkinto
-    <Autocomplete
-      resultAtom={tutkintoAtom}
-      fetchItems={(value) => (value.length >= 3)
-                          ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value).doError(showInternalError)
-                          : Bacon.constant([])}
-      disabled={!oppilaitos}
-      selected={tutkinto}
-    />
-  </label> )
+const Tutkinto = ({tutkintoAtom, opiskeluoikeudenTyyppiP, oppilaitosP}) =>{
+  return (<div>
+    {
+      Bacon.combineWith(oppilaitosP, opiskeluoikeudenTyyppiP, tutkintoAtom, (oppilaitos, tyyppi, tutkinto) =>
+        oppilaitos && tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus' && <label className='tutkinto'>Tutkinto<Autocomplete
+          resultAtom={tutkintoAtom}
+          fetchItems={(value) => (value.length >= 3)
+            ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value).doError(showInternalError)
+            : Bacon.constant([])}
+          disabled={!oppilaitos}
+          selected={tutkinto}
+        /></label>
+      )
+    }
+  </div> )
 }
 
-const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, tyypit}) => {
-  let onChange = (tyyppi) => {
-    opiskeluoikeudenTyyppiAtom.set(tyyppi)
-  }
-  if (tyypit.length == 0) {
-    return null
-  }
-  return (<label className='opiskeluoikeudentyyppi'>Opiskeluoikeus
-    <Dropdown baret-lift
-      options={tyypit}
-      keyValue={option => option.koodiarvo}
-      displayValue={option => option.nimi.fi}
-      onSelectionChanged={option => onChange(option)}
-      selected={opiskeluoikeudenTyyppiAtom}
-    />
-  </label> )
+const KoodistoDropdown = ({ className, title, optionsP, pickInitialValue, atom}) => {
+  let onChange = (value) => { atom.set(value) }
+
+  optionsP.map(pickInitialValue).onValue(value => {
+    atom.set(value)
+  })
+
+  return (<div>{
+      Bacon.combineWith(optionsP, atom, (options, selected) => selected && (
+        <label className={className}>{title}<Dropdown
+          options={options}
+          keyValue={option => option.koodiarvo}
+          displayValue={option => option.nimi.fi}
+          onSelectionChanged={option => onChange(option)}
+          selected={selected}
+        /></label>
+      ))
+  }</div>)
+}
+
+const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => {
+  return <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} pickInitialValue={(values) => values[0]} atom={opiskeluoikeudenTyyppiAtom}/>
 }
 
 const Aloituspäivä = ({dateAtom}) => {
@@ -58,24 +72,12 @@ const Aloituspäivä = ({dateAtom}) => {
 
 const OpiskeluoikeudenTila = ({tilaAtom}) => {
   const opiskeluoikeudenTilatP = Http.cachedGet('/koski/api/editor/koodit/koskiopiskeluoikeudentila').map(tilat => tilat.map(t => t.data))
-  let onChange = (tila) => { tilaAtom.set(tila) }
-  opiskeluoikeudenTilatP.onValue(tilat => {
-    tilaAtom.set(tilat.find(t => t.koodiarvo == 'lasna'))
-  })
-
-  return (<label className='opiskeluoikeudentila'>Opiskeluoikeuden tila
-    {
-      Bacon.combineWith(opiskeluoikeudenTilatP, tilaAtom, (tilat, tila) => tila && (
-        <Dropdown
-                  options={tilat}
-                  keyValue={option => option.koodiarvo}
-                  displayValue={option => option.nimi.fi}
-                  onSelectionChanged={option => onChange(option)}
-                  selected={tila}
-        />
-      ))
-    }
-  </label>)
+  return (<KoodistoDropdown
+    className="opiskeluoikeudentila"
+    title="Opiskeluoikeuden tila"
+    optionsP={opiskeluoikeudenTilatP}
+    pickInitialValue={tilat => tilat.find(t => t.koodiarvo == 'lasna')}
+    atom={tilaAtom}/>)
 }
 
 var makeSuoritukset = (tyyppi, tutkinto, oppilaitos) => {
@@ -132,8 +134,6 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
     .toProperty()
 
-  opiskeluoikeustyypitP.onValue((tyypit) => opiskeluoikeudenTyyppiAtom.set(tyypit[0]))
-
   const suorituksetP = Bacon.combineWith(opiskeluoikeudenTyyppiAtom, tutkintoAtom, oppilaitosAtom, makeSuoritukset)
 
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
@@ -142,16 +142,10 @@ export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-    {
-      Bacon.combineWith(oppilaitosAtom, tutkintoAtom, opiskeluoikeustyypitP, opiskeluoikeudenTyyppiAtom, (oppilaitos, tutkinto, tyypit, tyyppi) => <div>
-        <Oppilaitos oppilaitosAtom={oppilaitosAtom} oppilaitos={oppilaitos} />
-        <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={opiskeluoikeudenTyyppiAtom} tyypit={tyypit}/>
-        {
-          tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus' && <Tutkinto tutkintoAtom={tutkintoAtom} tutkinto={tutkinto} oppilaitos={oppilaitos}/>
-        }
-        <Aloituspäivä dateAtom={dateAtom} />
-        <OpiskeluoikeudenTila tilaAtom={tilaAtom} />
-      </div>)
-    }
+      <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
+      <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={opiskeluoikeudenTyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP}/>
+      <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} opiskeluoikeudenTyyppiP={opiskeluoikeudenTyyppiAtom}/>
+      <Aloituspäivä dateAtom={dateAtom} />
+      <OpiskeluoikeudenTila tilaAtom={tilaAtom} />
   </div>)
 }
