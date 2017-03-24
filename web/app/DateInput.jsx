@@ -74,7 +74,8 @@ export default React.createClass({
     document.removeEventListener('click', this.handleClickOutside, false)
   },
   getInitialState() {
-    return {value: formatFinnishDate(this.props.value)}
+    var value = this.props.value
+    return {value: value ? formatFinnishDate(value) : ''}
   },
   handleClickOutside(e) {
     if(!(this.calendarInput && this.calendarInput.contains(e.target))) {
