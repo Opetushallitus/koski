@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExamplesLukioonValmistavaKoulutus {
@@ -28,10 +29,62 @@ object ExamplesLukioonValmistavaKoulutus {
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(),
           osasuoritukset = Some(List(
-            luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f),
-            luvaKurssinSuoritus("STK", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f),
-            luvaKurssinSuoritus("STK", "Opinto-ohjaus", 1.0f),
-            kurssisuoritus(valtakunnallinenKurssi("KU1"), Some(true)).copy(arviointi = numeerinenArviointi(7))
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              ÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva")),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f)
+              ))
+            ),
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              MuutKielet(Koodistokoodiviite("LVMUUTK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "SV", koodistoUri = "kielivalikoima")),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("RU1", "Ruotsin alkeet", 1.0f)
+              ))
+            ),
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVMALUO", "oppiaineetluva")),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("MAT1", "Matematiikan kertauskurssi", 1.0f)
+              ))
+            ),
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVYHKU", "oppiaineetluva")),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("YHKU1", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f)
+              ))
+            ),
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVOPO", "oppiaineetluva")),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("OPO1", "Opinto-ohjaus", 1.0f)
+              ))
+            ),
+            LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+              PaikallinenLukioonValmistavanKoulutuksenOppiaine(PaikallinenKoodi("LVATK", "Tietojenkäsittely"), "Tietojenkäsittely", pakollinen = false),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                luvaKurssinSuoritus("ATK1", "Tietokoneen käytön peruskurssi", 1.0f)
+              ))
+            ),
+            LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
+              lukionKieli("A1", "EN"),
+              tila = tilaValmis,
+              arviointi = arviointi("S"),
+              osasuoritukset = Some(List(
+                kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(8))
+              ))
+            )
           ))
         )),
         lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(

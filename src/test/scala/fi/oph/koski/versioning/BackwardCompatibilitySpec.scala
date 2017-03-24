@@ -37,14 +37,18 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
             files.foreach { filename =>
               val json = Json.readFile(fullName(filename))
               println("Checking backward compatibility: " + filename)
-              val oppija: Oppija = SchemaValidatingExtractor.extract[Oppija](json).right.get
-              val afterRoundtrip = Json.toJValue(oppija)
-              Json.write(afterRoundtrip) should equal(Json.write(json))
-              validator.validateAsJson(oppija) match {
-                case Right(validated) => // Valid
-                case Left(err) =>
-                  println("Backward compatibility problem with file: " + filename)
-                  throw new IllegalStateException(err.toString)
+              SchemaValidatingExtractor.extract[Oppija](json) match {
+                case Right(oppija) =>
+                  val afterRoundtrip = Json.toJValue(oppija)
+                  Json.write(afterRoundtrip) should equal(Json.write(json))
+                  validator.validateAsJson(oppija) match {
+                    case Right(validated) => // Valid
+                    case Left(err) =>
+                      println("Backward compatibility problem with file: " + filename)
+                      throw new IllegalStateException(err.toString)
+                  }
+                case Left(errors) =>
+                  fail("Backward compatibility problem with file: " + filename + ": " + errors)
               }
             }
             val latest = files.last

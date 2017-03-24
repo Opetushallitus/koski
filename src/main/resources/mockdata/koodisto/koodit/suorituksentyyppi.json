@@ -455,6 +455,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_luvaoppiaine",
+    "koodiArvo": "luvaoppiaine",
+    "metadata": [
+      {
+        "nimi": "Lukioon valmentavan koulutuksen oppiaine",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_luvakurssi",
     "koodiArvo": "luvakurssi",
     "metadata": [
@@ -465,7 +477,20 @@
       }
     ],
     "versio": 1
-  },  {
+  },
+  {
+    "koodiUri": "suorituksentyyppi_luvalukionoppiaine",
+    "koodiArvo": "luvalukionoppiaine",
+    "metadata": [
+      {
+        "nimi": "Lukion oppiaineen opinnnot osana lukioon valmistavaa koulutusta",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetus",
     "koodiArvo": "perusopetuksenlisaopetus",
     "metadata": [

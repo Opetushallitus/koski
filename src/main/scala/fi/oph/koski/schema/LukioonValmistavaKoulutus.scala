@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
@@ -54,19 +55,92 @@ case class LukioonValmistavaKoulutus(
 
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 
+case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[LukioonValmistavanKurssinSuoritus]],
+  @KoodistoKoodiarvo("luvaoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvaoppiaine", koodistoUri = "suorituksentyyppi")
+) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
+
+case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
+  @Title("Oppiaine")
+  koulutusmoduuli: LukionOppiaine,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @KoodistoKoodiarvo("luvalukionoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine", koodistoUri = "suorituksentyyppi")
+) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
+
+
+trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {
+  @Title("Oppiaine")
+  def tunniste: KoodiViite
+}
+
+case class ÄidinkieliJaKirjallisuus(
+  @KoodistoKoodiarvo("LVAIK")
+  @KoodistoUri("oppiaineetluva")
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  override val laajuus: Option[LaajuusKursseissa] = None
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli
+
+case class MuutKielet(
+  @KoodistoKoodiarvo("LVMUUTK")
+  @KoodistoUri("oppiaineetluva")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  override val laajuus: Option[LaajuusKursseissa] = None
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+  override def description = concat(nimi, ", ", kieli)
+}
+
+case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(
+  @KoodistoKoodiarvo("LVMALUO")
+  @KoodistoKoodiarvo("LVYHKU")
+  @KoodistoKoodiarvo("LVOPO")
+  @KoodistoUri("oppiaineetluva")
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  override val laajuus: Option[LaajuusKursseissa] = None
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli
+
+case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
+  pakollinen: Boolean = true,
+  override val laajuus: Option[LaajuusKursseissa] = None
+) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli
+
 case class LukioonValmistavanKurssinSuoritus(
   @Title("Kurssi")
+  @Flatten
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   tila: Koodistokoodiviite,
+  @Flatten
   arviointi: Option[List[LukionKurssinArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
   suoritettuLukiodiplomina: Option[Boolean] = None
-) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
+) extends VahvistuksetonSuoritus
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(
+  @Flatten
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString

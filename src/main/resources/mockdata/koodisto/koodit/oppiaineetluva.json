@@ -1,0 +1,57 @@
+[
+  {
+    "koodiUri": "oppiaineetluva_lvaik",
+    "metadata": [
+      {
+        "nimi": "Äidinkieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "LVAIK"
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmuutk",
+    "metadata": [
+      {
+        "nimi": "Muut kielet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "LVMUUTK"
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmaluo",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset ja luonnontieteelliset opinnot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "LVMALUO"
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvyhku",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatietous ja kulttuurintuntemus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "LVYHKU"
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvopo",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "LVOPO"
+  }
+]

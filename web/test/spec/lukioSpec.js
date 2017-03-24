@@ -185,18 +185,52 @@ describe('Lukiokoulutus', function( ){
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
-      it('näyttää koulutuksen osat', function() {
+      it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Lukioon valmistavat opinnot\n' +
-          'Kurssi Laajuus Arvosana\n' +
-          'Suomi toisena kielenä ja kirjallisuus 2 kurssia S\n' +
-          'Yhteiskuntatietous ja kulttuurintuntemus 1 kurssia S\n' +
-          'Opinto-ohjaus 1 kurssia S\n' +
+          'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
+          'Äidinkieli ja kirjallisuus\n' +
+          'STK\n' +
+          'S 1 S\n' +
+          'Muut kielet, ruotsi\n' +
+          'RU1\n' +
+          'S 1 S\n' +
+          'Matemaattiset ja luonnontieteelliset opinnot\n' +
+          'MAT1\n' +
+          'S 1 S\n' +
+          'Yhteiskuntatietous ja kulttuurintuntemus\n' +
+          'YHKU1\n' +
+          'S 1 S\n' +
+          'Opinto-ohjaus\n' +
+          'OPO1\n' +
+          'S 1 S\n' +
+          'Tietojenkäsittely\n' +
+          'ATK1\n' +
+          'S 1 S\n' +
           'Valinnaisena suoritetut lukiokurssit\n' +
-          'Kurssi Laajuus Arvosana\n' +
-          'Kuvat ja kulttuurit 1 kurssia 7\n' +
-          'Suoritettu lukiodiplomina kyllä'
+          'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
+          'A1-kieli, englanti\n' +
+          'ENA1\n' +
+          '8 1 S\n' +
+          '(8.0)'
         )
+      })
+    })
+    describe('Kurssin tiedot', function() {
+      var kurssi = Kurssi('MAT1')
+      describe('Kun klikataan', function() {
+        before(kurssi.toggleDetails)
+        it('näyttää kurssin tiedot', function() {
+          expect(kurssi.detailsText()).to.equal(
+            'Tunniste MAT1\n' +
+            'Nimi Matematiikan kertauskurssi\n' +
+            'Laajuus 1 kurssia\n' +
+            'Kuvaus Matematiikan kertauskurssi\n' +
+            'Tila Suoritus valmis\n' +
+            'Arvosana S\n' +
+            'Arviointipäivä 4.6.2016'
+          )
+        })
       })
     })
     describe('Tulostettava todistus', function() {

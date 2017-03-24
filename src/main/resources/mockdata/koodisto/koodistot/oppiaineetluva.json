@@ -1,0 +1,14 @@
+{
+  "koodistoUri": "oppiaineetluva",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "codesGroupUri": "http://koski",
+  "versio": 1,
+  "voimassaAlkuPvm": "2017-03-24",
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineet LUVA",
+      "kuvaus": "Oppiaineet LUVA"
+    }
+  ]
+}

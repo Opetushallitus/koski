@@ -78,9 +78,10 @@ const LukionKurssiEditor = React.createClass({
         })
       }
     }
+    let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     return (
       <li onClick={showDetails} className="kurssi" ref={e => this.kurssiElement = e}>
-        <div className={'tunniste ' + koulutusmoduuli.kurssinTyyppi.koodiarvo} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
+        <div className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
         <div className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
         {
           open && (<div className={'details details-' + tooltipPosition}>

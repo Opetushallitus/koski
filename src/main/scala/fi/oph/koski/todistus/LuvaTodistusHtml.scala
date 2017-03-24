@@ -1,7 +1,6 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.schema._
 
@@ -33,8 +32,8 @@ class LuvaTodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
             </tr>
             {
               def tyypinKuvaus(tyyppi: Koodistokoodiviite) = tyyppi.koodiarvo match {
-                case "luvakurssi" => finnish("Lukioon valmistavat opinnot")
-                case "lukionkurssi" => finnish("Valinnaisena suoritetut lukiokurssit")
+                case "luvaoppiaine" => finnish("Lukioon valmistavat opinnot")
+                case "luvalukionoppiaine" => finnish("Valinnaisena suoritetut lukiokurssit")
                 case _ => tyyppi.nimi.getOrElse(finnish(tyyppi.koodiarvo))
               }
               oppiaineet.groupBy(s => tyypinKuvaus(s.tyyppi)).toList.sortBy(_._1.get("fi")).map { case (tyyppi, suoritukset) =>

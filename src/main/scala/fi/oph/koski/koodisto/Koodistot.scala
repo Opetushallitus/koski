@@ -37,6 +37,7 @@ object Koodistot {
     "oppiainematematiikka",
     "oppiaineentasoib",
     "oppiaineetib",
+    "oppiaineetluva",
     "perusopetuksenluokkaaste",
     "perusopetuksenoppimaara",
     "perusopetuksentodistuksenliitetieto",
