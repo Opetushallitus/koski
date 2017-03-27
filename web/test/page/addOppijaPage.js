@@ -89,6 +89,12 @@ function AddOppijaPage() {
     },
     selectOpiskeluoikeudenTyyppi: function(tyyppi) {
       return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
+    },
+    oppimäärät: function() {
+      return pageApi.getInputOptions('.oppimaara .dropdown')
+    },
+    selectOppimäärä: function(oppimäärä) {
+      return pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
     }
   }
   return api

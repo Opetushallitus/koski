@@ -661,6 +661,27 @@ describe('Perusopetus', function() {
           it('lisätty oppija näytetään', function() {})
         })
       })
+
+      describe('Oppimäärän valinta', function() {
+        before(
+          resetFixtures,
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataPerusopetus(),
+          addOppija.selectOppimäärä('Aikuisten perusopetus')
+        )
+        describe('Käyttöliittymän tila', function() {
+          it('Näytetään oppimäärävaihtoehdot (perusopetus, aikuisten perusopetus)', function() {
+            expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetus', 'Perusopetus'])
+          })
+        })
+        describe('Kun valitaan aikuisten perusopetus', function() {
+          before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
+          it('Valittu oppimäärä päätyy suoritukseen', function() {
+            var editor = opinnot.suoritusEditor()
+            expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
+          })
+        })
+      })
     })
   })
   describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
