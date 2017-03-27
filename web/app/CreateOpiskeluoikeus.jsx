@@ -142,7 +142,7 @@ var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritukset, tila) => {
     }
 }
 
-export const Opiskeluoikeus = ({opiskeluoikeusAtom}) => {
+export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
   const oppilaitosAtom = Atom()
   const tutkintoAtom = Atom()
