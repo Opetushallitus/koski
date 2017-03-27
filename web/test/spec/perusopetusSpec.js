@@ -468,7 +468,7 @@ describe('Perusopetus', function() {
       describe('Todistuksella näkyvien lisätietojen lisäys', function() {
         var editor = opinnot.suoritusEditor()
         var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.addValue, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Uudet lisätiedot näytetään', function() {
           expect(lisätiedot.getValue()).to.equal('Testitesti')
         })
@@ -506,7 +506,7 @@ describe('Perusopetus', function() {
         })
         describe('Kun lisätään sanallinen kuvaus', function() {
           var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
-          before(editor.edit, kuvaus.addValue, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing)
+          before(editor.edit, kuvaus.setValue('Hyvää käytöstä'), editor.doneEditing)
           it('Näyttää muutetun arvon', function() {
             expect(kuvaus.getValue()).to.equal('Hyvää käytöstä')
           })

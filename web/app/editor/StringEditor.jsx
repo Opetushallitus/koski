@@ -11,9 +11,10 @@ export const StringEditor = React.createClass({
       valueBus.push([model.context, modelSetData(model, event.target.value)])
     }
 
+    let data = modelData(model)
     return model.context.edit
-      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
-      : <span className="inline string">{modelData(model).split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
+      ? <input type="text" defaultValue={data} onChange={ onChange }></input>
+      : <span className="inline string">{!data ? '' : data.split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
   },
 
   getInitialState() {
@@ -24,4 +25,5 @@ export const StringEditor = React.createClass({
     this.state.valueBus.onValue((v) => {this.props.model.context.changeBus.push(v)})
   }
 })
+StringEditor.handlesOptional = true
 StringEditor.canShowInline = () => true
