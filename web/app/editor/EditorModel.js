@@ -32,15 +32,9 @@ export const objectLookup = (mainObj, path) => {
   return L.get(objectLens(path), mainObj)
 }
 
-export const modelData = (mainModel, path) => {
-  if (mainModel && path && mainModel.value && mainModel.value.data) {
-    return objectLookup(mainModel.value.data, path)
-  } else {
-    return L.get(dataLens([]), modelLookup(mainModel, path))
-  }
+export const modelData = (model, path) => {
+  return L.get(dataLens(path), model)
 }
-
-let dataLens = (path) => L.compose('value', 'data', objectLens(path))
 
 export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
@@ -94,6 +88,22 @@ export const childContext = (context, ...pathElems) => {
 
 // Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, additionalContext))
+
+let dataLens = (path) => {
+  let localDataLens = L.compose('value', 'data', objectLens(path))
+  return L.lens(
+    (mainModel) => {
+      if (mainModel && path && mainModel.value && mainModel.value.data) {
+        return objectLookup(mainModel.value.data, path)
+      } else {
+        return L.get(localDataLens, modelLookup(mainModel, path))
+      }
+    },
+    (newData, mainModel) => {
+      return L.set(localDataLens, newData, mainModel)
+    }
+  )
+}
 
 const valueEmpty = (value) => {
   return !value
