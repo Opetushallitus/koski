@@ -8,6 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
+import fi.oph.koski.schema.HenkilötiedotJaOid
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
@@ -42,6 +43,19 @@ object KoskiApiOperations extends ApiGroup {
         KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = List(MockOppijat.eero.toHenkilötiedotJaOid)),
         KoskiErrorCategory.badRequest.queryParam.searchTermTooShort,
         KoskiErrorCategory.unauthorized
+      )
+    ))
+    val byHetu = add(ApiOperation(
+      "GET", "/koski/api/henkilo/hetu/{hetu}",
+      "Palauttaa henkilötiedot hetulla",
+      <p></p>,
+      Nil,
+      List(
+        PathParameter("hetu", "Henkilötunnus", List("010101-123N"))
+      ),
+      List(
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = List(MockOppijat.eero.toHenkilötiedotJaOid)),
+        KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu
       )
     ))
   }

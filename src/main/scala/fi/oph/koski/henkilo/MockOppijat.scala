@@ -7,11 +7,12 @@ import fi.oph.koski.schema._
 object MockOppijat {
   private val oppijat = new MockOppijat
 
+  val tyhjä = oppijat.oppija("Tyhjä", "Tero", "230872-7258", add = false) // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun. Tämän opiskeluoikeudet kuitenkin poistetaan fikstuuri-resetissä.
+
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
   val markkanen = oppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R")
   val teija = oppijat.oppija("Tekijä", "Teija", "251019-039B")
-  val tyhjä = oppijat.oppija("Tyhjä", "Tero", "230872-7258") // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "280608-6619")
   val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = oppijat.oppija("Koululainen", "Kaisa", "220109-784L")
@@ -41,16 +42,17 @@ object MockOppijat {
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
 
-  def defaultOppijat = oppijat.getOppijat
+  def löytyvätOppijat = oppijat.getOppijat
+  def tunnetutOppijat = tyhjä :: löytyvätOppijat
 }
 
 class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot = {
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), add: Boolean = true): TäydellisetHenkilötiedot = {
     val oppija = TäydellisetHenkilötiedot(oid, hetu, etu, etu, suku, äidinkieli, None)
-    oppijat = oppija :: oppijat
+    if (add) oppijat = oppija :: oppijat
     oppija
   }
 

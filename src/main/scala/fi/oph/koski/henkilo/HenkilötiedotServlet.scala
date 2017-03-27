@@ -10,16 +10,21 @@ import fi.oph.koski.util.Timing
 import org.scalatra._
 
 class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with GZipSupport with NoCache with Timing {
+  private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository)
+
   get("/search") {
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        val henkilöt: List[HenkilötiedotJaOid] = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession).toList
+        val henkilöt: List[HenkilötiedotJaOid] = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
         val canAddNew = Hetu.validate(query).isRight && henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
         HenkilötiedotSearchResponse(henkilöt, canAddNew)
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
+  }
+  get("/hetu/:hetu") {
+    renderEither(henkilötiedotFacade.findByHetu(params("hetu"))(koskiSession))
   }
 }
 

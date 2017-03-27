@@ -26,7 +26,9 @@ class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthe
 }
 
 class MockAuthenticationServiceClient() extends AuthenticationServiceClient with Logging {
-  protected var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  protected var oppijat = new MockOppijat(MockOppijat.löytyvätOppijat)
+
+  def resetFixtures = oppijat = new MockOppijat(MockOppijat.löytyvätOppijat)
 
   def search(query: String): HenkilöQueryResult = {
     if (query.toLowerCase.contains("error")) {
@@ -96,7 +98,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     })
   }
 
-  def reset(): Unit = oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  def reset(): Unit = oppijat = new MockOppijat(MockOppijat.löytyvätOppijat)
 
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
@@ -107,5 +109,5 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 
-  override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
+  override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.löytyvätOppijat.diff(oppijat.getOppijat).map(_.oid)
 }

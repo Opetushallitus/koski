@@ -66,6 +66,11 @@ function AddOppijaPage() {
     selectAloituspäivä: function(date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
     },
+    henkilötiedot: function() {
+      return ['.etunimet', '.kutsumanimi', '.sukunimi'].map(function(selector) {
+        return pageApi.getInputValue(selector + ' input')
+      })
+    },
     submit: function() {
       triggerEvent(button(), 'click')
     },

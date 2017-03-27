@@ -6,7 +6,7 @@ import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
-class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid {
+case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid {
   def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
     henkilöPalveluClient.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, hetu, h.etunimet, h.kutsumanimi, h.sukunimi))
   }

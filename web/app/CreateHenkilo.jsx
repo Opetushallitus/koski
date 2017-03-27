@@ -1,5 +1,8 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import R from 'ramda'
+import Http from './http'
+import { elementWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
 
 export default ({ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')
@@ -15,26 +18,36 @@ export default ({ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) =
   const errorsP = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: 'Kutsumanimen on oltava yksi etunimistä.'}])
   errorsP.changes().onValue((errors) => henkilöErrorsAtom.set(errors))
 
+  const existingHenkilöP = Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0')
+  existingHenkilöP.filter(R.identity).onValue((henkilö) => henkilöAtom.set(henkilö))
+
   return (
     <div className='henkilo'>
-      <label className='hetu'>
-        Henkilötunnus
-        <span className='value'>{hetu}</span>
-      </label>
-      <label className='etunimet'>
-        Etunimet
-        <Input atom={etunimetAtom}/>
-      </label>
-      <label className={kutsumanimiClassNameP}>
-        Kutsumanimi
-        <Input atom={kutsumanimiAtom}/>
-      </label>
-      <label className='sukunimi'>
-        Sukunimi
-        <Input atom={sukunimiAtom}/>
-      </label>
+      {
+        elementWithLoadingIndicator(existingHenkilöP.map(henkilö => {
+            return (<span>
+            <label className='hetu'>
+              Henkilötunnus
+              <span className='value'>{hetu}</span>
+            </label>
+            <label className='etunimet'>
+              Etunimet
+              <InputOrValue existing={henkilö} atom={etunimetAtom}/>
+            </label>
+            <label className={kutsumanimiClassNameP}>
+              Kutsumanimi
+              <InputOrValue existing={henkilö} atom={kutsumanimiAtom}/>
+            </label>
+            <label className='sukunimi'>
+              Sukunimi
+              <InputOrValue existing={henkilö} atom={sukunimiAtom}/>
+            </label>
+          </span>)
+          })
+        )
+      }
     </div>
   )
 }
 
-const Input = ({ atom }) => <input type="text" onChange={ (e) => atom.set(e.target.value) }></input>
+const InputOrValue = ({ existing, atom }) => <input type="text" disabled={!!existing} value={ atom } onChange={ !existing && ((e) => atom.set(e.target.value)) }></input>

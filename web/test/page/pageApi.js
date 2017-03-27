@@ -24,6 +24,9 @@ function Page(mainElement) {
           .then(wait.forAjax)
       }
     },
+    getInputValue: function(selector) {
+      return api.getInput(selector).value()
+    },
     getInputOptions: function(selector) {
       return api.getInput(selector).getOptions()
     },

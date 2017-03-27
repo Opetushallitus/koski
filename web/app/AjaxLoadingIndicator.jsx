@@ -4,3 +4,4 @@ const loadingElement = <div className="ajax-indicator-bg">Ladataan...</div>
 const loadingContent = { title: 'Ladataan...', content: loadingElement } // TODO: i18n
 
 export const contentWithLoadingIndicator = (contentP) => contentP.startWith(loadingContent)
+export const elementWithLoadingIndicator = (elementP) => elementP.startWith(loadingElement)
