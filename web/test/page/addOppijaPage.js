@@ -94,7 +94,11 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.oppimaara .dropdown')
     },
     selectOppimäärä: function(oppimäärä) {
-      return pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
+      return function () {
+        return wait.until(pageApi.getInput('.oppimaara').isVisible)().then(
+          pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
+        )
+      }
     }
   }
   return api
