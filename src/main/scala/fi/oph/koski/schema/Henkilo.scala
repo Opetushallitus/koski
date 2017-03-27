@@ -56,7 +56,10 @@ case class OidHenkilö(
   oid: String
 ) extends HenkilöWithOid
 
-trait Henkilötiedot extends NimellinenHenkilö {
+trait Henkilötiedot extends NimellinenHenkilö with Hetullinen {
+}
+
+trait Hetullinen {
   @Description("Suomalainen henkilötunnus")
   def hetu: String
 }

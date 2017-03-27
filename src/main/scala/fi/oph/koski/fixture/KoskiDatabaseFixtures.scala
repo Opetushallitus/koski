@@ -8,14 +8,13 @@ import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeusRepository}
-import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.{HenkilöRepository, MockAuthenticationServiceClient, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.validation.KoskiValidator
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
@@ -26,14 +25,16 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
   def resetFixtures: Unit = {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    val deleteOpiskeluOikeudet = MockOppijat.tunnetutOppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
+    val oids = MockOppijat.oids
+
+    val deleteOpiskeluOikeudet = oids.map{oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid).delete}
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.filter(t => t.tallentajaOrganisaatioOid === MockOrganisaatiot.stadinAmmattiopisto || t.tallentajaOrganisaatioOid === MockOrganisaatiot.helsinginKaupunki).delete
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
 
-    perustiedot.deleteByOppijaOids(MockOppijat.tunnetutOppijat.map(_.oid))
+    perustiedot.deleteByOppijaOids(oids)
 
-    val henkilöOids: List[Oid] = MockOppijat.tunnetutOppijat.map(_.oid)
+    val henkilöOids: List[Oid] = oids
     runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
     runDbSync(DBIO.sequence(henkilöOids.flatMap(henkilöRepository.findByOid).map{ henkilö => Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi) }))
 

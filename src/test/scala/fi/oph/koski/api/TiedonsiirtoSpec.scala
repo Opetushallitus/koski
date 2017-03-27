@@ -4,18 +4,17 @@ package fi.oph.koski.api
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.eerola
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import MockOppijat.eerola
 import fi.oph.koski.schema._
-import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot, Tiedonsiirrot, TiedonsiirtoYhteenveto}
+import fi.oph.koski.tiedonsiirto._
 import fi.oph.koski.util.PaginatedResponse
-import org.json4s.JValue
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
-  val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
+  val oppija = MockOppijat.tyhjä
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
@@ -113,7 +112,9 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400)
       }
 
-      getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).flatMap(_.oppija.flatMap(_.hetu)).filter(_ == eerola.hetu) should equal(List(eerola.hetu, eerola.hetu))
+      val tiedonsiirtorivit: List[TiedonsiirtoRivi] = getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).filter(_.oppija.toList.flatMap(_.hetu).contains(eerola.hetu))
+      val hetutRiveiltä = tiedonsiirtorivit.flatMap(_.oppija.flatMap(_.hetu)).filter(_ == eerola.hetu)
+      hetutRiveiltä should equal(List(eerola.hetu, eerola.hetu))
     }
 
     "näytetään virheelliset" in {

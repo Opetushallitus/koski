@@ -9,6 +9,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
   "Korkeakoulun opiskeluoikeudet" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {
+        resetFixtures
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
         }

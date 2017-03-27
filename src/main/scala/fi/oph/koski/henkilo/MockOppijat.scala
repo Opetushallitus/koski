@@ -7,7 +7,8 @@ import fi.oph.koski.schema._
 object MockOppijat {
   private val oppijat = new MockOppijat
 
-  val tyhjä = oppijat.oppija("Tyhjä", "Tero", "230872-7258", add = false) // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun. Tämän opiskeluoikeudet kuitenkin poistetaan fikstuuri-resetissä.
+  // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
+  val tyhjä = UusiHenkilö("230872-7258", "Tero", "Tero", "Tyhjä")
 
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
@@ -42,17 +43,20 @@ object MockOppijat {
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
 
-  def löytyvätOppijat = oppijat.getOppijat
-  def tunnetutOppijat = tyhjä :: löytyvätOppijat
+  def defaultOppijat = oppijat.getOppijat
+
+  def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
+
+  def oids = (1 to defaultOppijat.length + 10).map(generateOid).toList // oids that should be considered when deleting fixture data
 }
 
 class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), add: Boolean = true): TäydellisetHenkilötiedot = {
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot = {
     val oppija = TäydellisetHenkilötiedot(oid, hetu, etu, etu, suku, äidinkieli, None)
-    if (add) oppijat = oppija :: oppijat
+    oppijat = oppija :: oppijat
     oppija
   }
 
@@ -60,7 +64,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
 
   private def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
-    "1.2.246.562.24." + "%011d".format(idCounter)
+    MockOppijat.generateOid(idCounter)
   }
 }
 

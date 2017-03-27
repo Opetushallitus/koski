@@ -9,12 +9,12 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import org.scalatest.FreeSpec
 
 class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
-  val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
+  val oppija = MockOppijat.tyhjä
 
   "Muutoshistoria" - {
     "Luotaessa uusi opiskeluoikeus" - {
@@ -129,7 +129,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     }
   }
 
-  def verifyHistory(oppija: TäydellisetHenkilötiedot, opiskeluoikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
+  def verifyHistory(oppija: Henkilö, opiskeluoikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
     val historia: List[OpiskeluoikeusHistoryRow] = getHistory(opiskeluoikeus.id.get)
     historia.map(_.versionumero) should equal(versions)
 
