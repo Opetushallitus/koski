@@ -50,4 +50,6 @@ export default ({ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) =
   )
 }
 
-const InputOrValue = ({ existing, atom }) => <input type="text" disabled={!!existing} value={ atom } onChange={ !existing && ((e) => atom.set(e.target.value)) }></input>
+const InputOrValue = ({ existing, atom }) => existing
+  ? <input type="text" disabled value={ atom }></input>
+  : <input type="text" onChange={ (e) => atom.set(e.target.value) }></input>
