@@ -21,9 +21,14 @@ export const LocalizedStringEditor = React.createClass({
     return {valueBus: Bacon.Bus()}
   },
   componentDidMount() {
+    let {model} = this.props
     let {valueBus} = this.state
-    valueBus.onValue(([context,model]) => {
-      this.props.model.context.changeBus.push([context, model.value.data ? model : modelSetValue(model, undefined)])
+    valueBus.onValue(([context,mdl]) => {
+      if (mdl.value.data && !modelTitle(model)) {
+        // To avoid Typeless model error
+        model.context.changeBus.push([model.context, R.merge(modelSetValue(model, {fi: ''}), {type: 'string'})])
+      }
+      model.context.changeBus.push([context, mdl.value.data ? mdl : modelSetValue(mdl, undefined)])
     })
   }
 })
