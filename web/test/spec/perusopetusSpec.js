@@ -458,6 +458,22 @@ describe('Perusopetus', function() {
     })
 
     describe('Suoritusten tiedot', function() {
+      describe('Luokan muuttaminen', function() {
+        var editor = opinnot.suoritusEditor()
+        before(opinnot.valitseSuoritus('9. vuosiluokka'), editor.edit)
+        describe('Tyhjäksi', function() {
+          before(editor.property('luokka').setValue(''))
+          it('aiheuttaa validaatiovirheen', function() {
+            expect(editor.property('luokka').isValid()).to.equal(false)
+          })
+        })
+        describe('Ei tyhjäksi', function() {
+          before(editor.property('luokka').setValue('9C'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('läpäisee validaation', function() {
+            expect(editor.property('luokka').isValid()).to.equal(true)
+          })
+        })
+      })
       describe('Suorituskielen lisäys', function() {
         var editor = opinnot.suoritusEditor()
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, editor.property('suorituskieli').selectValue('suomi'), editor.doneEditing, wait.until(page.isSavedLabelShown))

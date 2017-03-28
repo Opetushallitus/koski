@@ -215,6 +215,9 @@ function Property(elem) {
     },
     isVisible: function() {
       return isVisibleBy(function() { return findSingle('.value', elem())})
+    },
+    isValid: function() {
+      return !elem().find('.error').is(':visible')
     }
   }, Editor(elem))
 }
