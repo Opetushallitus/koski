@@ -65,7 +65,7 @@ const TilaJaVahvistus = React.createClass({
         }
         {(() => {
           let jääLuokalle = modelData(model, 'jääLuokalle')
-          let luokka = modelData(model, 'koulutusmoduuli').tunniste.koodiarvo
+          let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
           if (jääLuokalle === true) {
             return <div>Ei siirretä seuraavalle luokalle</div>
           } else if (jääLuokalle === false && luokka !== '9') {

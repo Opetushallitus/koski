@@ -21,14 +21,26 @@ export const objectLookup = (mainObj, path) => {
 }
 
 export const modelData = (mainModel, path) => {
-  let model = modelLookup(mainModel, path)
-  if (!model || !model.value) return
-  if (model.value.properties) {
-    return R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
-  } else if (model.value instanceof Array) {
-    return model.value.map(item => modelData(item))
+  if (!mainModel || !mainModel.value) return
+  if (mainModel.value.data) {
+    return L.get(objectLens(path), mainModel.value.data)
+  }
+
+  let head = toPath(path).slice(0, 1)
+  if (head.length) {
+    let model = modelLookup(mainModel, head)
+    let tail = toPath(path).slice(1)
+    return modelData(model, tail)
   } else {
-    return model.value.data
+    let model = mainModel
+    if (!model || !model.value) return
+    if (model.value.properties) {
+      return R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
+    } else if (model.value instanceof Array) {
+      return model.value.map(item => modelData(item))
+    } else {
+      return model.value.data
+    }
   }
 }
 
