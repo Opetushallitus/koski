@@ -215,10 +215,9 @@ case class ObjectModelBuilder(schema: ClassSchema, includeData: Boolean)(implici
       case o: Localizable => Some(context.i(o.description))
       case _ => None
     }
-    val data: Option[AnyRef] = if (includeData) { Some(obj) } else { None }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested
     val includedPrototypes: Map[String, EditorModel] = if (context.root) { createRequestedPrototypes} else { Map.empty }
-    ObjectModel(classes(schema.fullClassName), properties, data, objectTitle, objectContext.editable, includedPrototypes)
+    ObjectModel(classes(schema.fullClassName), properties, None, objectTitle, objectContext.editable, includedPrototypes)
   }
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
