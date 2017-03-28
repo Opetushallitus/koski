@@ -1,6 +1,8 @@
 @import "mixins";
 
 .oppija-haku {
+  @left-margin: 175px;
+
   font-size: 0.8em;
   padding: 7px 16px;
   background: white;
@@ -12,19 +14,19 @@
   h3 {
     font-size: 15px;
     font-weight: normal;
-    display: inline;
-    margin-right: 15px;
+    display: inline-block;
+    width: @left-margin;
   }
 
   input {
-    width: 210px;
+    width: 270px;
   }
 
   .lisaa-oppija {
-    margin-left: 20px;
     line-height: 25px;
+    display: block;
     &.disabled {
-      opacity: 0.5;
+      visibility: hidden;
       pointer-events: none;
     }
   }
@@ -38,6 +40,7 @@
   .hakutulokset {
     position: relative;
     font-size: 15px;
+    margin-left: @left-margin;
     ul {
       .CompactList;
       padding: 0;

@@ -28,28 +28,30 @@ export const OppijaHaku = () => (
     <div>
       <h3>Hae tai lisää opiskelija</h3>
       <input type="text" id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
-      {
-        // TODO: observable embedding for attributes didn't work here in PhantomJS
-        Bacon.combineWith(uusiOppijaUrlP, canAddP, (url, canAdd) => (
-          <a href={url || ''}
-             className={canAdd ? 'lisaa-oppija' : 'lisaa-oppija disabled'}
-             onClick={canAdd && ((e) => navigateTo(url, e))}>
-            Lisää opiskelija
-          </a>
-        ))
-      }
+
     </div>
     <div className='hakutulokset'>
       {
-        oppijatP.map(oppijat => oppijat.results.henkilöt.length > 0
-          ? (<ul> {
+        oppijatP.map(oppijat => {
+            let url = '/koski/uusioppija/' + oppijat.query
+            return oppijat.results.henkilöt.length > 0
+              ? (<ul> {
               oppijat.results.henkilöt.map((o, i) =>
-                <li key={i}><a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a> </li>
+                <li key={i}><a href={`/koski/oppija/${o.oid}`}
+                               onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a></li>
               )
             } </ul>)
-          : oppijat.query.length > 2
-            ? <div className='no-results'>Ei hakutuloksia</div>
-            : null
+              : oppijat.query.length > 2
+              ? <div className='no-results'>
+              Ei hakutuloksia
+              <a href={url || ''}
+                 className={oppijat.results.canAddNew ? 'lisaa-oppija' : 'lisaa-oppija disabled'}
+                 onClick={oppijat.results.canAddNew && ((e) => navigateTo(url, e))}>
+                Lisää uusi opiskelija
+              </a>
+            </div>
+              : null
+          }
         )
       }
     </div>

@@ -32,6 +32,7 @@ export const CreateOppija = ({hetu}) => {
   return (
     <div className='content-area'>
       <form className='main-content oppija uusi-oppija'>
+        <h2>Uuden opiskelijan lisäys</h2>
         <CreateHenkilö {...{ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
         <hr/>
         <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
