@@ -51,21 +51,21 @@ export const SuoritusEditor = React.createClass({
     />)
   }
 })
-SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(s.value.data.tyyppi.koodiarvo)
+SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
 
 const TilaJaVahvistus = React.createClass({
   render() {
     let { model } = this.props
     return (<div className="tila-vahvistus">
         <span className="tila">
-          Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span> { /* TODO: i18n */ }
+          Suoritus: <span className={ 'VALMIS' == modelData(model).tila.koodiarvo ? 'valmis' : ''}>{ modelData(model).tila.koodiarvo }</span> { /* TODO: i18n */ }
         </span>
         {
-          model.value.data.vahvistus && <PropertyEditor model={model} propertyName="vahvistus"/>
+          modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus"/>
         }
         {(() => {
           let jääLuokalle = modelData(model, 'jääLuokalle')
-          let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+          let luokka = modelData(model, 'koulutusmoduuli').tunniste.koodiarvo
           if (jääLuokalle === true) {
             return <div>Ei siirretä seuraavalle luokalle</div>
           } else if (jääLuokalle === false && luokka !== '9') {

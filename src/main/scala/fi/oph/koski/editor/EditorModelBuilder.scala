@@ -16,7 +16,7 @@ import fi.oph.scalaschema.annotation.Title
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
     val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
-    ObjectModelBuilder(deserializationContext.rootSchema.asInstanceOf[ClassSchema], true)(context).buildModelForObject(value)
+    ObjectModelBuilder(deserializationContext.rootSchema.asInstanceOf[ClassSchema], false)(context).buildModelForObject(value)
   }
 
   def builder(schema: Schema, includeData: Boolean)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {

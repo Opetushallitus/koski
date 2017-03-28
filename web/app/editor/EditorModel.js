@@ -13,19 +13,7 @@ export const modelLens = (path) => {
       ? L.compose('properties', L.find(R.whereEq({key})), 'model')
       : indexL(index))
   })
-  let theLens = L.compose(...pathLenses)
-  return L.lens(
-    (mainModel) => {
-      let subModel = L.get(theLens, mainModel)
-      return prepareModel(mainModel, subModel, path)
-    },
-    (newValue, mainModel) => {
-      let updated = L.set(theLens, newValue, mainModel)
-      let newData = modelData(newValue)
-      let withUpdatedTopLevelData = L.set(dataLens(path), newData, updated)
-      return withUpdatedTopLevelData
-    }
-  )
+  return L.compose(...pathLenses)
 }
 
 export const objectLookup = (mainObj, path) => {
@@ -33,12 +21,20 @@ export const objectLookup = (mainObj, path) => {
 }
 
 export const modelData = (mainModel, path) => {
-  return L.get(dataLens(path), mainModel)
+  let model = modelLookup(mainModel, path)
+  if (!model || !model.value) return
+  if (model.value.properties) {
+    return R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
+  } else if (model.value instanceof Array) {
+    return model.value.map(item => modelData(item))
+  } else {
+    return model.value.data
+  }
 }
 
 export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
-  return (model && (model.title || (model.value && model.value.title) || (model.value && '' + model.value.data))) || ''
+  return (model && (model.title || (model.value && model.value.title) || (model.value && '' + modelData(model)))) || ''
 }
 
 export const modelEmpty = (model) => {
@@ -62,22 +58,6 @@ export const modelItems = (mainModel, path) => {
   return (model && model.type == 'array' && model.value) || []
 }
 
-let dataLens = (path) => {
-  return L.lens(
-    (mainModel) => {
-      if (mainModel && path && mainModel.value && mainModel.value.data) {
-        return objectLookup(mainModel.value.data, path)
-      } else {
-        let localDataLens = L.compose('value', 'data')
-        return L.get(localDataLens, modelLookup(mainModel, path))
-      }
-    },
-    (newData, mainModel) => {
-      let localDataLens = L.compose('value', 'data', objectLens(path))
-      return L.set(localDataLens, newData, mainModel)
-    }
-  )
-}
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
@@ -135,19 +115,6 @@ let lastL = L.lens(
 
 let indexL = (index) => index == -1 ? lastL : L.index(index)
 
-const prepareModel = (mainModel, subModel, path) => {
-  if (subModel && subModel.value && !subModel.value.data && mainModel.value && mainModel.value.data) {
-    // fill in data from main model (data is not transmitted for all subModels, to save bandwidth)
-    let data = objectLookup(mainModel.value.data, path)
-    if (subModel.type == 'array' && data) {
-      data.forEach((x, i) => subModel.value[i].value.data = x)
-    } else {
-      subModel.value.data = data
-    }
-  }
-  return subModel
-}
-
 const toPath = (path) => {
   if (path == undefined) {
     return []
@@ -165,6 +132,7 @@ const toPath = (path) => {
 }
 
 const objectLens = (path) => {
+
   let pathLenses = toPath(path).map(key => {
     let index = parseInt(key)
     return Number.isNaN(index)

@@ -16,7 +16,7 @@ export const OppijaEditor = React.createClass({
     var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
 
     let selectedIndex = selectedTyyppi
-      ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
+      ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo)
       : 0
 
     return (
@@ -25,7 +25,7 @@ export const OppijaEditor = React.createClass({
           {
             opiskeluoikeusTyypit.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
               let selected = tyyppiIndex == selectedIndex
-              let koodiarvo = modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo')
+              let koodiarvo = modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
               let className = selected ? koodiarvo + ' selected' : koodiarvo
               let content = (<div>
                 <div className="opiskeluoikeustyyppi">{ modelTitle(opiskeluoikeudenTyyppi, 'tyyppi') }</div>

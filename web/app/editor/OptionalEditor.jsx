@@ -40,7 +40,7 @@ export const OptionalEditor = React.createClass({
 OptionalEditor.canShowInline = () => true
 export const optionalModel = (model) => {
   let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
-  if (prototype && prototype.oneOfPrototypes && !prototype.value.data) {
+  if (prototype && prototype.oneOfPrototypes && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
     prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
   }

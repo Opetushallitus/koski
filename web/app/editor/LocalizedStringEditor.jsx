@@ -4,7 +4,8 @@ import Bacon from 'baconjs'
 import {optionalModel} from './OptionalEditor.jsx'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
-import {addContext, modelLookup, modelSetValue, modelTitle} from './EditorModel.js'
+import {addContext, modelLookup, modelData, modelSetValue, modelSet, modelTitle} from './EditorModel.js'
+import {resetOptionalModel} from './OptionalEditor.jsx'
 
 export const LocalizedStringEditor = React.createClass({
   render() {
@@ -23,12 +24,15 @@ export const LocalizedStringEditor = React.createClass({
   componentDidMount() {
     let {model} = this.props
     let {valueBus} = this.state
-    valueBus.onValue(([context,mdl]) => {
-      if (mdl.value.data && !modelTitle(model)) {
-        // To avoid Typeless model error
-        model.context.changeBus.push([model.context, R.merge(modelSetValue(model, {fi: ''}), {type: 'string'})])
+    valueBus.onValue(([context,stringModel]) => {
+      if (!modelData(stringModel)) {
+        resetOptionalModel(model)
+      } else {
+        let myModel = model.optional ? optionalModel(model) : model
+        let subpath = context.path.substring(model.context.path.length + 1)
+        let updatedModel = modelSet(myModel, stringModel, subpath)
+        model.context.changeBus.push([model.context, updatedModel])
       }
-      model.context.changeBus.push([context, mdl.value.data ? mdl : modelSetValue(mdl, undefined)])
     })
   }
 })

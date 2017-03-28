@@ -1,11 +1,10 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import { modelTitle, modelLookup, modelSet, objectLookup } from './editor/EditorModel'
+import { modelTitle, modelLookup, modelSet, objectLookup, modelData } from './editor/EditorModel'
 import { editorMapping } from './editor/Editors.jsx'
 import { Editor } from './editor/GenericEditor.jsx'
 import R from 'ramda'
-import {modelData} from './editor/EditorModel.js'
 import {currentLocation} from './location.js'
 import { OppijaHaku } from './OppijaHaku.jsx'
 import Link from './Link.jsx'
@@ -65,7 +64,7 @@ export const oppijaContentP = (oppijaOid) => {
     if (!oppijaBeforeSave.opiskeluoikeusPath) {
       return Bacon.once(oppijaBeforeSave)
     }
-    var oppijaData = oppijaBeforeSave.value.data
+    var oppijaData = modelData(oppijaBeforeSave)
     let opiskeluoikeus = objectLookup(oppijaData, oppijaBeforeSave.opiskeluoikeusPath)
     let oppijaUpdate = {
       henkilö: {oid: oppijaData.henkilö.oid},
