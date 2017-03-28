@@ -34,7 +34,8 @@ function KoskiPage() {
       return S('.oppija-haku li a').toArray().map(function(a) { return $(a).text()})
     },
     canAddNewOppija: function() {
-      return S('.oppija-haku .lisaa-oppija').is(':visible')
+      var button = S('.oppija-haku .lisaa-oppija')
+      return button.is(":visible") && !button.hasClass('disabled')
     },
     addNewOppija: function() {
       triggerEvent(S('.oppija-haku .lisaa-oppija'), 'click')
