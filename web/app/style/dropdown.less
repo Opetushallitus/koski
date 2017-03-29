@@ -25,18 +25,22 @@
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+  }
 
-    &:after {
-      content: '';
-      position: absolute;
-      right: 10px;
-      transform: rotate(135deg);
-      border-right: 1px solid #2B2B2B;
-      border-top: 1px solid #2B2B2B;
-      width: 6px;
-      height: 6px;
-      top: ~"calc(50% - 4px)";
-    }
+  .select:after, .input-container:after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    transform: rotate(135deg);
+    border-right: 1px solid #2B2B2B;
+    border-top: 1px solid #2B2B2B;
+    width: 6px;
+    height: 6px;
+    top: ~"calc(50% - 4px)";
+  }
+
+  .input-container {
+    position: relative;
   }
 
   .options {

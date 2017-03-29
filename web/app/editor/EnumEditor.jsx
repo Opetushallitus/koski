@@ -10,6 +10,7 @@ import DropDown from '../Dropdown.jsx'
 export const EnumEditor = BaconComponent({
   render() {
     let {model, asRadiogroup, disabledValue} = this.props
+    let {query} = this.state
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let className = alternatives.length ? '' : 'loading'
 
@@ -25,6 +26,10 @@ export const EnumEditor = BaconComponent({
     let onChange = (option) => {
       let data = model.zeroValue && option.value === model.zeroValue.value ? R.dissoc('value', model) : R.merge(model, { value: option })
       model.context.changeBus.push([model.context, data])
+    }
+
+    let filter = q => {
+      return q ? alternatives.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : alternatives
     }
 
     return model.context.edit
@@ -45,11 +50,12 @@ export const EnumEditor = BaconComponent({
           )
         : (
              <DropDown
-               options={alternatives}
+               options={filter(query)}
                keyValue={option => option.value}
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
                selected={defaultValue}
+               onFilter={q => this.setState({query: q})}
              />
           )
       : <span className="inline enum">{modelTitle(model)}</span>
