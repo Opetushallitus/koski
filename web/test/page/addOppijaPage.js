@@ -9,7 +9,7 @@ function AddOppijaPage() {
       return isElementVisible(form()) && !KoskiPage().isLoading()
     },
     isEnabled: function() {
-      return !button().is(':disabled')
+      return button().is(":visible") && !button().is(':disabled')
     },
     tutkintoIsEnabled: function() {
       return S('.tutkinto input').is(':visible') && !S('.tutkinto input').is(':disabled')
@@ -104,6 +104,9 @@ function AddOppijaPage() {
           pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
         )
       }
+    },
+    goBack: function() {
+      triggerEvent(S('h1 a'), 'click')
     }
   }
   return api

@@ -154,10 +154,10 @@ export default ({opiskeluoikeusAtom}) => {
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
     .toProperty()
 
-  opiskeluoikeustyypitP.changes().onValue(tyypit => tyyppiAtom.set(tyypit[0]))
+  opiskeluoikeustyypitP.onValue(tyypit => tyyppiAtom.set(tyypit[0]))
 
   const opiskeluoikeudenTilatP = Http.cachedGet('/koski/api/editor/koodit/koskiopiskeluoikeudentila').map(tilat => tilat.map(t => t.data))
-  opiskeluoikeudenTilatP.changes().onValue(tilat => tilaAtom.set(tilat.find(t => t.koodiarvo == 'lasna')))
+  opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(t => t.koodiarvo == 'lasna')))
 
   const perusopetuksenOppimäärätP = Http.cachedGet('/koski/api/editor/koodit/perusopetuksenoppimaara').map(tilat => tilat.map(t => t.data))
   perusopetuksenOppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(o => o.koodiarvo == 'perusopetus')))

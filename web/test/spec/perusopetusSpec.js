@@ -699,7 +699,25 @@ describe('Perusopetus', function() {
         })
       })
     })
+    describe('Back-nappi', function() {
+      describe('Kun täytetään tiedot, palataan hakuun ja täytetään uudestaan', function() {
+        before(
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataPerusopetus(),
+          addOppija.goBack,
+          wait.until(page.oppijataulukko.isVisible),
+          page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown),
+          wait.until(page.oppijaHaku.canAddNewOppija),
+          page.oppijaHaku.addNewOppija,
+          addOppija.enterValidDataPerusopetus()
+        )
+        it('Lisää-nappi on enabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(true)
+        })
+      })
+    })
   })
+
   describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
     describe('Kaikki tiedot näkyvissä', function() {
