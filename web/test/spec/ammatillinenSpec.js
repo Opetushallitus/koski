@@ -217,7 +217,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before(
           Authentication().login(),
-          openPage('/koski/uusioppija/230872-7258', function() {return addOppija.isVisible()}),
+          openPage('/koski/uusioppija#230872-7258', function() {return addOppija.isVisible()}),
           addOppija.enterValidDataAmmatillinen({sukunimi: "error"}),
           addOppija.submit)
 

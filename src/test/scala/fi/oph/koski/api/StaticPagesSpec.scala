@@ -6,7 +6,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
   "Single page app" - {
     verifyAppAt("")
     verifyAppAt("oppija/asdf")
-    verifyAppAt("uusioppija/010101-123N")
+    verifyAppAt("uusioppija")
     verifyAppAt("asdf", 404)
 
     def verifyAppAt(path: String, responseCode: Int = 200) = {
