@@ -16,6 +16,7 @@ export default BaconComponent({
                 type="text"
                 ref={(input => this.input = input)}
                 onChange={this.handleInput}
+                onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 value={query != undefined ? query : selected ? displayValue(selected) : 'valitse'}
                 className={selected ? 'select' : 'select no-selection'}
@@ -48,6 +49,9 @@ export default BaconComponent({
     } else {
       this.setState({open: false, selectionIndex: 0, query: undefined})
     }
+  },
+  handleInputFocus() {
+    this.input.select()
   },
   handleOnBlur(e) {
     // ie fires onBlur event so we have to check where it came from before closing the dropdown
