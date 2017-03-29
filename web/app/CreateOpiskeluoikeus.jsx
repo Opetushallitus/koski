@@ -16,8 +16,8 @@ const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilait
         preselectSingleOption={true}
         selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
         onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
-        filterOrgs={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
-        renderOrg={(org, defaultRender) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') ? defaultRender(org) : <span>{org.nimi.fi}</span> }
+        shouldShowOrg={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
+        canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') }
         clearText="tyhjennä"
       />
     ))

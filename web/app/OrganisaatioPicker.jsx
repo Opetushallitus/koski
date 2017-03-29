@@ -1,26 +1,36 @@
 import React from 'react'
 import Bacon from 'baconjs'
+import R from 'ramda'
 import BaconComponent from './BaconComponent'
 import Http from './http'
 import Highlight from 'react-highlighter'
 import { showInternalError } from './location.js'
 import { buildClassNames } from './classnames.js'
 
+let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) => (organisaatiot) => {
+  let selectableOrgs = (org) => {
+    let thisSelectable = canSelectOrg(org) ? [org] : []
+    let selectableChildren = org.children.flatMap(selectableOrgs)
+    return thisSelectable.concat(selectableChildren)
+  }
+  let selectables = organisaatiot.flatMap(selectableOrgs)
+  return selectables.length == 1 && selectables[0]
+}
 export default BaconComponent({
   render() {
     let { organisaatiot = [], open, loading, searchString, singleResult } = this.state
-    let { onSelectionChanged, selectedOrg, renderOrg, filterOrgs, noSelectionText = '', clearText = 'kaikki' } = this.props
+    let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = 'kaikki' } = this.props
 
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
 
-    let link = org => <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
-
     let renderTree = (orgs) => {
-      let filteredOrgs = filterOrgs ? orgs.filter(filterOrgs) : orgs
+      let filteredOrgs = orgs.filter(shouldShowOrg)
       return filteredOrgs.map((org, i) =>
         <li key={i}>
           {
-            renderOrg ? renderOrg(org, link) : link(org)
+            canSelectOrg(org)
+              ? <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
+              : <span>{org.nimi.fi}</span>
           }
           <ul className="aliorganisaatiot">
             { renderTree(org.children) }
@@ -64,14 +74,13 @@ export default BaconComponent({
       .onValue((searchString) => this.setState({searchString, loading: true}))
     let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
       Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)
-        .map((organisaatiot) => ({ organisaatiot, loading: false }))
-    )
-      .doError(showInternalError)
-      .takeUntil(this.unmountE)
-    searchResult.onValue((result) => this.setState(result))
+        .map((organisaatiot) => ({ organisaatiot, searchString }))
+    ).doError(showInternalError)
+     .takeUntil(this.unmountE)
+    searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))
     if (this.props.preselectSingleOption) {
       this.searchStringBus.push('')
-      searchResult.map('.organisaatiot').filter(xs => xs.length == 1).map('.0').onValue( singleResult => {
+      searchResult.filter(r => r.searchString == '').take(1).map('.organisaatiot').map(findSingleResult(this.props.shouldShowOrg, this.props.canSelectOrg)).filter(R.identity).onValue( singleResult => {
         this.setState({singleResult})
         this.props.onSelectionChanged(singleResult)
       })
