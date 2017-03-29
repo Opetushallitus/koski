@@ -17,7 +17,7 @@ export default BaconComponent({
 
     return (
       <div ref='autocomplete' className='autocomplete'>
-        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={query ? query : (selected ? selected.nimi.fi : '')} disabled={disabled}></input>
+        <input type="text" className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={query ? query : (selected ? selected.nimi.fi : '')} disabled={disabled}></input>
         {results}
       </div>
     )

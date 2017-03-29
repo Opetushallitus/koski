@@ -92,6 +92,10 @@ function AddOppijaPage() {
     opiskeluoikeudenTyypit: function() {
       return pageApi.getInputOptions('.opiskeluoikeudentyyppi .dropdown')
     },
+    opiskeluoikeudenTyyppi: function() {
+      return pageApi.getInputValue('.opiskeluoikeudentyyppi input')
+    },
+    
     selectOpiskeluoikeudenTyyppi: function(tyyppi) {
       return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
     },
