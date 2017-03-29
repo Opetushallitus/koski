@@ -25,13 +25,13 @@ export default BaconComponent({
                  onClick={this.toggleOpen}>{selected ? displayValue(selected) : 'valitse'}
             </div>
         }
-        <ul className={open ? 'options open' : 'options'}>
+        {options.length > 0 && <ul className={open ? 'options open' : 'options'}>
           {
             options.map((o,i) =>
               <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onClick={(e) => this.selectOption(e, o)} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
             )
           }
-        </ul>
+        </ul>}
       </div>
     )
   },
