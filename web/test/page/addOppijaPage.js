@@ -20,6 +20,14 @@ function AddOppijaPage() {
         return api.enterData(params)()
       }
     },
+    enterHenkilötiedot: function(params) {
+      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
+      return function() {
+        return pageApi.setInputValue('.etunimet input', params.etunimet)()
+          .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
+          .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
+      }
+    },
     enterValidDataAmmatillinen: function(params) {
       params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
@@ -28,12 +36,8 @@ function AddOppijaPage() {
       }
     },
     enterData: function(params) {
-      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
       return function() {
-        return pageApi.setInputValue('.etunimet input', params.etunimet)()
-          .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
-          .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
-          .then(api.selectOppilaitos(params.oppilaitos))
+        return api.enterHenkilötiedot(params)().then(api.selectOppilaitos(params.oppilaitos))
       }
     },
     enterTutkinto: function(name) {
@@ -53,6 +57,9 @@ function AddOppijaPage() {
     },
     oppilaitokset: function() {
       return OrganisaatioHaku(form()).oppilaitokset()
+    },
+    oppilaitos: function() {
+      return OrganisaatioHaku(form()).oppilaitos()
     },
     selectTutkinto: function(name) {
       if (!name) { return wait.forAjax }

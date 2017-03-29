@@ -4,10 +4,11 @@ import BaconComponent from './BaconComponent'
 import Http from './http'
 import Highlight from 'react-highlighter'
 import { showInternalError } from './location.js'
+import { buildClassNames } from './classnames.js'
 
 export default BaconComponent({
   render() {
-    let { organisaatiot = [], open, loading, searchString } = this.state
+    let { organisaatiot = [], open, loading, searchString, singleResult } = this.state
     let { onSelectionChanged, selectedOrg, renderOrg, filterOrgs, noSelectionText = '', clearText = 'kaikki' } = this.props
 
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
@@ -30,7 +31,7 @@ export default BaconComponent({
 
     return (
       <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
-        <div className="organisaatio-selection text-like-input" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
+        <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
         { open &&
         <div className="organisaatio-popup">
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
@@ -61,12 +62,20 @@ export default BaconComponent({
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
-    this.searchStringBus.flatMapLatest((searchString) =>
-      Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString))
-        .doError(showInternalError)
+    let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
+      Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)
         .map((organisaatiot) => ({ organisaatiot, loading: false }))
-        .takeUntil(this.unmountE)
-        .onValue((result) => this.setState(result))
+    )
+      .doError(showInternalError)
+      .takeUntil(this.unmountE)
+    searchResult.onValue((result) => this.setState(result))
+    if (this.props.preselectSingleOption) {
+      this.searchStringBus.push('')
+      searchResult.map('.organisaatiot').filter(xs => xs.length == 1).map('.0').onValue( singleResult => {
+        this.setState({singleResult})
+        this.props.onSelectionChanged(singleResult)
+      })
+    }
   },
   getInitialState() {
     return { open: false }

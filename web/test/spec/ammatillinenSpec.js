@@ -109,21 +109,29 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Oppilaitosvalinta', function() {
         describe('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
-          it('1', function() {
-            return prepareForNewOppija('omnia-palvelukäyttäjä', '230872-7258')()
-              .then(addOppija.enterOppilaitos('ammatti'))
-              .then(wait.forMilliseconds(500))
-              .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnian ammattiopisto'])
-              })
+          describe('Kun vain 1 vaihtoehto', function() {
+            before(
+              prepareForNewOppija('omnia-palvelukäyttäjä', '230872-7258'),
+              addOppija.enterHenkilötiedot(),
+              addOppija.selectTutkinto('auto')
+            )
+            it('Vaihtoehto on valmiiksi valittu', function() {
+              expect(addOppija.oppilaitos()).to.deep.equal('Omnian ammattiopisto')
+            })
+            it('Lisää-nappi on enabloitu', function() {
+              expect(addOppija.isEnabled()).to.equal(true)
+            })
           })
-          it('2', function() {
-            return prepareForNewOppija('kalle', '230872-7258')()
-              .then(addOppija.enterOppilaitos('ammatti'))
-              .then(wait.forMilliseconds(500))
-              .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Lahden ammattikorkeakoulu', 'Omnian ammattiopisto', 'Stadin ammattiopisto'])
-              })
+          describe('Kun useampia vaihtoehtoja', function() {
+            before(
+              prepareForNewOppija('kalle', '230872-7258'),
+              addOppija.enterValidDataAmmatillinen(),
+              addOppija.enterOppilaitos('ammatti'),
+              wait.forMilliseconds(500)
+            )
+            it('Mahdollistetaan valinta', function() {
+              expect(addOppija.oppilaitokset()).to.deep.equal(['Lahden ammattikorkeakoulu', 'Omnian ammattiopisto', 'Stadin ammattiopisto'])
+            })
           })
         })
         describe('Kun oppilaitosta ei olla valittu', function() {
@@ -149,14 +157,17 @@ describe('Ammatillinen koulutus', function() {
           })
           describe('Tutkinnon valinnan jälkeen', function() {
             before(addOppija.selectTutkinto('auto'))
-            it('Lisää nappi on enabloitu', function() {
+            it('Lisää-nappi on enabloitu', function() {
               expect(addOppija.isEnabled()).to.equal(true)
             })
           })
         })
       })
       describe('Kun tutkinto on virheellinen', function() {
-        before(addOppija.enterValidDataAmmatillinen(), addOppija.enterTutkinto('virheellinen'))
+        before(
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataAmmatillinen(),
+          addOppija.enterTutkinto('virheellinen'))
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })

@@ -13,6 +13,7 @@ const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilait
   {
     oppilaitosAtom.map(oppilaitos => (
       <OrganisaatioPicker
+        preselectSingleOption={true}
         selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
         onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
         filterOrgs={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}

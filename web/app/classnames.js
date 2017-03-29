@@ -1,3 +1,5 @@
+import R from 'ramda'
+
 const parseClassNames = (classNames) => typeof classNames == 'string'
   ? classNames.split(' ')
   : (classNames instanceof Array
@@ -5,7 +7,7 @@ const parseClassNames = (classNames) => typeof classNames == 'string'
       : [])
 export const buildClassNames = (classNames) => typeof classNames == 'string'
   ? classNames
-  : classNames.join(' ')
+  : classNames.filter(R.identity).join(' ')
 
 export const hasClass = (x, name) => {
   if (isElement(x)) {

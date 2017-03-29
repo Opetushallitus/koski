@@ -25,6 +25,9 @@ function OrganisaatioHaku(elem) {
     },
     oppilaitokset: function() {
       return textsOf(elem.find('.organisaatiot li'))
+    },
+    oppilaitos: function() {
+      return elem.find('.organisaatio-selection').text()
     }
   }
   return api
