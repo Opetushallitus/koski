@@ -86,22 +86,22 @@ case class ModelBuilderContext(
   prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
-  override def buildModelForObject(x: Number) = NumberModel(x)
+  override def buildModelForObject(x: Number) = NumberModel(ValueWithData(x))
   override def getPrototypeData = 0
 }
 
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {
-  override def buildModelForObject(x: Boolean) = BooleanModel(x)
+  override def buildModelForObject(x: Boolean) = BooleanModel(ValueWithData(x))
   override def getPrototypeData = false
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
-  override def buildModelForObject(x: String) = StringModel(x)
+  override def buildModelForObject(x: String) = StringModel(ValueWithData(x))
   override def getPrototypeData = ""
 }
 
 case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[LocalDate] {
-  override def buildModelForObject(x: LocalDate) = DateModel(x)
+  override def buildModelForObject(x: LocalDate) = DateModel(ValueWithData(x))
   override def getPrototypeData = LocalDate.now
 }
 

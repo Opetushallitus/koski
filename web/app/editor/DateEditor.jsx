@@ -1,6 +1,6 @@
 import React from 'react'
-import {modelTitle, modelSetValue} from './EditorModel.js'
-import {formatISODate, parseFinnishDate, formatFinnishDate} from '../date.js'
+import {modelSetValue, modelData} from './EditorModel.js'
+import {formatISODate, parseISODate, formatFinnishDate} from '../date.js'
 import DateInput from '../DateInput.jsx'
 
 export const DateEditor = React.createClass({
@@ -8,11 +8,12 @@ export const DateEditor = React.createClass({
     let {model, isAllowedDate = () => true } = this.props
     let validityCallback = (valid) => model.context.errorBus.push([model.context, {error: !valid}])
     let valueCallback = (date) => model.context.changeBus.push([model.context, modelSetValue(model, { data : formatISODate(date) , title: formatFinnishDate(date) })])
-    var value = parseFinnishDate(modelTitle(model))
+    let dateInISOFormat = modelData(model)
+    var dateValue = dateInISOFormat && parseISODate(modelData(model))
     var optional = model.optional
     return model.context.edit
-      ? <DateInput {...{value, optional, isAllowedDate, validityCallback, valueCallback}} />
-      : <span className="inline date">{modelTitle(model)}</span>
+      ? <DateInput {...{dateValue, optional, isAllowedDate, validityCallback, valueCallback}} />
+      : <span className="inline date">{dateValue && formatFinnishDate(dateValue)}</span>
   }
 })
 DateEditor.canShowInline = () => true

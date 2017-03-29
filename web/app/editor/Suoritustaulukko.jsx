@@ -48,7 +48,7 @@ const SuoritusEditor = React.createClass({
         }
 
       </td>
-      {showPakollisuus && <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>}
+      {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" /></td>
       <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
     </tr>

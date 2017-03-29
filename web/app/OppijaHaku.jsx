@@ -20,9 +20,6 @@ const oppijatP = Bacon.update(
 
 const searchInProgressP = oppijaHakuE.awaiting(hakuTulosE.mapError()).throttle(200)
 
-const canAddP = searchInProgressP.not().and(oppijatP.map(({results}) => results.canAddNew))
-const uusiOppijaUrlP = canAddP.and(oppijatP.map(oppijat => '/koski/uusioppija/' + oppijat.query))
-
 export const OppijaHaku = () => (
   <div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
     <div>

@@ -2,11 +2,6 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
-import fi.oph.koski.log.Logging
-import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import org.json4s.JsonAST.{JObject, JValue}
-import org.json4s.{Extraction, _}
-
 sealed trait EditorModel
 
 case class ObjectModel(classes: List[String], properties: List[EditorProperty], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel]) extends EditorModel
@@ -20,53 +15,12 @@ case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) e
 case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String]) extends EditorModel
 case class EnumValue(value: String, title: String, data: Any)
 
-case class NumberModel(data: Number) extends EditorModel
-case class BooleanModel(data: Boolean) extends EditorModel
-case class DateModel(data: LocalDate) extends EditorModel
-case class StringModel(data: String) extends EditorModel
+case class NumberModel(value: ValueWithData[Number]) extends EditorModel
+case class BooleanModel(value: ValueWithData[Boolean]) extends EditorModel
+case class DateModel(value: ValueWithData[LocalDate]) extends EditorModel
+case class StringModel(value: ValueWithData[String]) extends EditorModel
+case class ValueWithData[T](data: T)
 
 case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel]) extends EditorModel
 
 case class OneOfModel(`class`: String, model: Option[EditorModel], prototypes: List[EditorModel]) extends EditorModel
-
-object EditorModelSerializer extends Serializer[EditorModel] with Logging {
-  override def deserialize(implicit format: Formats) = PartialFunction.empty
-
-  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
-    case (model: EditorModel) => {
-      model match {
-        case (ObjectModel(c, properties, title, editable, prototypes)) =>
-          json("object", "value" -> Map("classes" -> c, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> (if (prototypes.nonEmpty) { prototypes} else {JNothing}))
-        case (PrototypeModel(key)) => json("prototype", "key" -> key)
-        case (OptionalModel(model, prototype)) =>
-          val optionalInfo: JValue = json("optional" -> true, "optionalPrototype" -> prototype)
-          val typeAndValue = modelOrEmptyObject(model)
-          typeAndValue.merge(optionalInfo)
-
-        case (ListModel(items, prototype)) =>
-          json("array", "value" -> items, "arrayPrototype" -> prototype)
-        case (EnumeratedModel(value, alternatives, path)) =>
-          json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
-        case (OneOfModel(c, model, prototypes)) =>
-          val oneOfInfo: JValue = json("oneOfClass" -> c, "oneOfPrototypes" -> prototypes)
-          modelOrEmptyObject(model).merge(oneOfInfo)
-
-        case (NumberModel(data)) => json("number", "simple" -> true, "value" -> Map("data" -> data))
-        case (BooleanModel(data)) => json("boolean", "simple" -> true, "value" -> Map("data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" }))) // TODO: localization
-        case (DateModel(data)) => json("date", "simple" -> true, "value" -> Map("data" -> data, "title" -> finnishDateFormat.format(data)))
-        case (StringModel(data)) => json("string", "simple" -> true, "value" -> Map("data" -> data))
-        case _ => throw new RuntimeException("No match : " + model)
-      }
-    }
-  }
-
-  private def modelOrEmptyObject(model: Option[EditorModel])(implicit format: Formats) = model.map(Extraction.decompose).getOrElse(emptyObject)
-
-  private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
-    val elems: List[(String, Any)] = ("type" -> tyep) :: props.toList
-    json(elems: _*)
-  }
-
-  private def json(props: (String, Any)*)(implicit format: Formats): JValue = Extraction.decompose(Map(props : _*))
-  private def emptyObject = JObject()
-}
