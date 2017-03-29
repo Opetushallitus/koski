@@ -104,6 +104,10 @@
             "koodiarvo" : "LVAIK",
             "koodistoUri" : "oppiaineetluva"
           },
+          "kieli" : {
+            "koodiarvo" : "AI7",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
           "pakollinen" : true
         },
         "tila" : {
