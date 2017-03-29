@@ -86,7 +86,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
   toimipiste: OrganisaatioWithOid,
-  override val alkamispäivä: Option[LocalDate],
+  override val alkamispäivä: Option[LocalDate] = None,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite],
@@ -246,7 +246,7 @@ case class Perusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
-) extends Koulutus with DiaarinumerollinenKoulutus {
+) extends Koulutus with PerusopetuksenDiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = true
 }
@@ -257,10 +257,12 @@ case class PerusopetuksenLuokkaAste(
  @KoodistoUri("perusopetuksenluokkaaste")
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with DiaarinumerollinenKoulutus {
+) extends KoodistostaLöytyväKoulutusmoduuli with PerusopetuksenDiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = false
 }
+
+trait PerusopetuksenDiaarinumerollinenKoulutus extends DiaarinumerollinenKoulutus
 
 object PerusopetuksenLuokkaAste {
   def apply(luokkaAste: Int): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), None)

@@ -7,12 +7,8 @@ import fi.oph.koski.tutkinto.Koulutustyyppi._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
-    case (todistus: PerusopetuksenOppimääränSuoritus) =>
-      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, perusopetuksenKoulutustyypit))
-    case (todistus: LukionOppimääränSuoritus) =>
-      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, lukionKoulutustyypit))
     case (tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) =>
-      getRakenne(tutkintoSuoritus.koulutusmoduuli, ammatillisetKoulutustyypit) match {
+      getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
@@ -27,11 +23,19 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           }))
       }
     case _ =>
-      // Jos juurisuorituksena on jokin muu kuin tutkintosuoritus, ei rakennetta voida validoida
-      HttpStatus.ok
+      suoritus.koulutusmoduuli match {
+        case d: PerusopetuksenDiaarinumerollinenKoulutus =>
+          HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
+        case d: LukionOppimäärä =>
+          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
+        case d: DiaarinumerollinenKoulutus =>
+          HttpStatus.justStatus(getRakenne(d, None))
+        case _ =>
+          HttpStatus.ok
+      }
   }
 
-  private def getRakenne(tutkinto: DiaarinumerollinenKoulutus, koulutustyypit: List[Koulutustyyppi.Koulutustyyppi]): Either[HttpStatus, TutkintoRakenne] = {
+  private def getRakenne(tutkinto: DiaarinumerollinenKoulutus, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
@@ -41,10 +45,11 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             Left(KoskiErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
         }
       case Some(rakenne) =>
-        if (koulutustyypit.contains(rakenne.koulutustyyppi)) {
-          Right(rakenne)
-        } else {
-          Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
+        koulutustyypit match {
+          case Some(koulutustyypit) if !koulutustyypit.contains(rakenne.koulutustyyppi) =>
+            Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
+          case _ =>
+            Right(rakenne)
         }
     }
   }
@@ -66,7 +71,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case Some(tutkinto) =>
             // Tutkinnon osa toisesta tutkinnosta.
             // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
-            HttpStatus.justStatus(getRakenne(tutkinto, ammatillisetKoulutustyypit))
+            HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
           case None =>
             // Validoidaan tutkintorakenteen mukaisesti
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
