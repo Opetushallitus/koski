@@ -1,3 +1,7 @@
+## 29.4.2017
+
+- Pieniä muutoksia ja korjauksia LUVA-koulutuksen rakenteeseen
+
 ## 24.3.2017
 
 - Lisätty LUVA-koulutukseen oppiainetaso
