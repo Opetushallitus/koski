@@ -206,7 +206,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun sessio on vanhentunut', function() {
         before(
           resetFixtures,
-          openPage('/koski/uusioppija/230872-7258', function() {return addOppija.isVisible()}),
+          openPage('/koski/uusioppija#230872-7258', function() {return addOppija.isVisible()}),
           addOppija.enterValidDataAmmatillinen(),
           Authentication().logout,
           addOppija.submit)
