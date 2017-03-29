@@ -98,7 +98,9 @@ case class ÄidinkieliJaKirjallisuus(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+  override def description = concat(nimi, ", ", kieli)
+}
 
 case class MuutKielet(
   @KoodistoKoodiarvo("LVMUUTK")

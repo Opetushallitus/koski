@@ -12,7 +12,7 @@ class LuvaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opis
                                                      |Lukioonvalmistautuja, Luke 211007-442N
                                                      |
                                                      |Lukioon valmistavat opinnot 7
-                                                     |Äidinkieli ja kirjallisuus 2 Hyväksytty
+                                                     |Äidinkieli ja kirjallisuus, Suomi toisena kielenä ja kirjallisuus 2 Hyväksytty
                                                      |Muut kielet, ruotsi 1 Hyväksytty
                                                      |Matemaattiset ja luonnontieteelliset opinnot 1 Hyväksytty
                                                      |Yhteiskuntatietous ja kulttuurintuntemus 1 Hyväksytty

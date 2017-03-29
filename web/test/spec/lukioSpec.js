@@ -189,7 +189,7 @@ describe('Lukiokoulutus', function( ){
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Lukioon valmistavat opinnot\n' +
           'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
-          'Äidinkieli ja kirjallisuus\n' +
+          'Äidinkieli ja kirjallisuus, Suomi toisena kielenä ja kirjallisuus\n' +
           'STK\n' +
           'S 1 S\n' +
           'Muut kielet, ruotsi\n' +
