@@ -45,10 +45,17 @@ const Oppiainetaulukko = React.createClass({
     let {suoritukset} = this.props
     let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
     let showExpand = !!suoritukset.find(s => modelData(s, 'arviointi.-1.kuvaus'))
+    let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
     return (<table>
-        <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th>{showLaajuus && <th className="laajuus">Laajuus</th>}</tr></thead>
+        <thead>
+          <tr>
+            <th className="oppiaine">Oppiaine</th>
+            <th className="arvosana" colSpan={showFootnotes ? '2' : '1'}>Arvosana</th>
+            {showLaajuus && <th className="laajuus">Laajuus</th>}
+          </tr>
+        </thead>
         {
-          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand}/> ))
+          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand} showFootnotes={showFootnotes}/> ))
         }
       </table>
     )
@@ -57,7 +64,7 @@ const Oppiainetaulukko = React.createClass({
 
 const OppiaineEditor = React.createClass({
   render() {
-    let {model, showLaajuus, showExpand} = this.props
+    let {model, showLaajuus, showExpand, showFootnotes} = this.props
     let {expanded} = this.state
     var oppiaine = modelTitle(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
@@ -76,10 +83,17 @@ const OppiaineEditor = React.createClass({
         </td>
         <td className="arvosana">
           <span className="value"><Editor model={ modelLookup(model, 'arviointi.-1.arvosana')}/></span>
-          {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
-          {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
-          {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
+
         </td>
+        {
+          showFootnotes && (
+            <td className="footnotes">
+              {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
+              {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
+              {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
+            </td>
+          )
+        }
         {
           showLaajuus && (<td className="laajuus">
             <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} />
