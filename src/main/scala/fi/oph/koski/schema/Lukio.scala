@@ -139,7 +139,7 @@ case class LukionOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus with LukioonValmistavanKoulutuksenOsasuoritus
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus
 
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
