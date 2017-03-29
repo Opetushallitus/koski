@@ -31,27 +31,29 @@ export const OppijaHaku = () => (
     </div>
     <div className='hakutulokset'>
       {
-        oppijatP.map(oppijat => {
-            let url = '/koski/uusioppija/' + oppijat.query
-            return oppijat.results.henkilöt.length > 0
-              ? (<ul> {
-              oppijat.results.henkilöt.map((o, i) =>
-                <li key={i}><a href={`/koski/oppija/${o.oid}`}
-                               onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a></li>
-              )
-            } </ul>)
-              : oppijat.query.length > 2
-              ? <div className='no-results'>
-              Ei hakutuloksia
-              <a href={url || ''}
-                 className={oppijat.results.canAddNew ? 'lisaa-oppija' : 'lisaa-oppija disabled'}
-                 onClick={oppijat.results.canAddNew && ((e) => navigateTo(url, e))}>
-                Lisää uusi opiskelija
-              </a>
-            </div>
-              : null
+        oppijatP.map(response => {
+          if (response.results.henkilöt.length > 0) {
+            return <ul>{
+              response.results.henkilöt.map((o, i) =>
+                  <li key={i}>
+                    <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a>
+                  </li>)
+              }
+            </ul>
           }
-        )
+          if (response.query.length > 2) {
+            let url = '/koski/uusioppija/' + response.query
+            return <div className='no-results'>
+              Ei hakutuloksia
+              { response.results.canAddNew &&
+                <a href={url} className="lisaa-oppija" onClick={(e) => navigateTo(url, e)}>
+                  Lisää uusi opiskelija
+                </a>
+              }
+
+            </div>
+          }
+        })
       }
     </div>
   </div>
