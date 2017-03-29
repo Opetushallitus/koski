@@ -703,19 +703,29 @@ describe('Perusopetus', function() {
     })
 
     describe('Back-nappi', function() {
-      describe('Kun täytetään tiedot, palataan hakuun ja täytetään uudestaan', function() {
+      describe('Kun täytetään tiedot ja palataan hakuun', function() {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataPerusopetus(),
           addOppija.goBack,
-          wait.until(page.oppijataulukko.isVisible),
-          page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown),
-          wait.until(page.oppijaHaku.canAddNewOppija),
-          page.oppijaHaku.addNewOppija,
-          addOppija.enterValidDataPerusopetus()
+          wait.until(page.oppijataulukko.isVisible)
         )
-        it('Lisää-nappi on enabloitu', function() {
-          expect(addOppija.isEnabled()).to.equal(true)
+        describe('Käyttöliittymän tila', function() {
+          it('Syötetty henkilötunnus näytetään', function() {
+            expect(page.oppijaHaku.getSearchString()).to.equal('230872-7258')
+          })
+          it('Uuden oppijan lisäys on mahdollista', function() {
+            expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
+          })
+        })
+        describe('Kun täytetään uudestaan', function() {
+          before(
+            page.oppijaHaku.addNewOppija,
+            addOppija.enterValidDataPerusopetus()
+          )
+          it('Lisää-nappi on enabloitu', function() {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
         })
       })
     })

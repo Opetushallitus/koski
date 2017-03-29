@@ -1,10 +1,12 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import Http from './http'
 import {navigateToOppija, navigateTo} from './location'
 import {showError} from './location'
 
-const oppijaHakuE = new Bacon.Bus()
+const searchStringAtom = Atom('')
+const oppijaHakuE = searchStringAtom.changes()
 
 const acceptableQuery = (q) => q.length >= 3
 
@@ -24,7 +26,7 @@ export const OppijaHaku = () => (
   <div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
     <div>
       <h3>Hae tai lisää opiskelija</h3>
-      <input type="text" id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+      <input type="text" value={searchStringAtom} id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onChange={(e) => searchStringAtom.set(e.target.value)}></input>
 
     </div>
     <div className='hakutulokset'>

@@ -33,6 +33,9 @@ function KoskiPage() {
     getSearchResults: function() {
       return S('.oppija-haku li a').toArray().map(function(a) { return $(a).text()})
     },
+    getSearchString: function() {
+      return pageApi.getInputValue('#search-query')
+    },
     canAddNewOppija: function() {
       var button = S('.oppija-haku .lisaa-oppija')
       return button.is(":visible") && !button.hasClass('disabled')
