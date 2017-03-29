@@ -2,7 +2,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
   "koodiArvo" : "1/011/2004",
   "metadata" : [ {
-    "nimi" : "oppivelvollisille tarkoitettu perusopetus",
+    "nimi" : "Oppivelvollisille tarkoitetun perusopetuksen opetussuunitelman perusteet 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -66,7 +66,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
   "koodiArvo" : "2/011/2004",
   "metadata" : [ {
-    "nimi" : "perusopetukseen valmistava opetus",
+    "nimi" : "Perusopetukseen valmistavan opetuksen opetussuunitelman perusteet 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -98,7 +98,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_30112004",
   "koodiArvo" : "3/011/2004",
   "metadata" : [ {
-    "nimi" : "lisäopetus",
+    "nimi" : "Perusopetuksen lisäopetuksen opetussuunitelman perusteet 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1
