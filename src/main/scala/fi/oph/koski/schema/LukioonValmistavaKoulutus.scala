@@ -91,6 +91,11 @@ case class ÄidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("LVAIK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("oppiaineaidinkielijakirjallisuus")
+  @KoodistoKoodiarvo("AI7")
+  @KoodistoKoodiarvo("AI8")
+  kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli
@@ -135,7 +140,6 @@ case class LukioonValmistavanKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
-  suoritettuLukiodiplomina: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
