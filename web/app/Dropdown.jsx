@@ -11,7 +11,7 @@ export default BaconComponent({
       <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
         {
           onFilter ?
-            <div className="input-container">
+            <div className="input-container" onClick={this.toggleOpen}>
               <input
                 type="text"
                 ref={(input => this.input = input)}
@@ -19,7 +19,6 @@ export default BaconComponent({
                 onBlur={this.handleInputBlur}
                 value={query != undefined ? query : selected ? displayValue(selected) : 'valitse'}
                 className={selected ? 'select' : 'select no-selection'}
-                onClick={this.toggleOpen}
               />
             </div> :
             <div ref={(select => this.select = select)} className={selected ? 'select' : 'select no-selection'}
