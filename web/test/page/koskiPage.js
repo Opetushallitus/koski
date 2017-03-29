@@ -60,6 +60,9 @@ function KoskiPage() {
         triggerEvent(link, 'click')
         return api.waitUntilOppijaSelected(oppija)()
       }
+    },
+    getErrorMessage: function() {
+      return S('.oppija-haku .error').text()
     }
   }
 

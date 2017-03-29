@@ -30,6 +30,7 @@ export function parseLocation(location) {
     path: location.pathname.replace(/(^\/?)/,'/'),
     params: parseQuery(location.search),
     queryString: location.search || '',
+    hash: location.hash,
     addQueryParams(newParams) {
       return this.replaceQueryParams(R.merge(this.params, newParams))
     },

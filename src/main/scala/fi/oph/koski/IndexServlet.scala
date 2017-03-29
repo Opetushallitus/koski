@@ -26,11 +26,8 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
     indexHtml()
   }
 
-  get("/uusioppija/:hetu") {
-    params.get("hetu").map(Hetu.validate(_)).getOrElse(Left(KoskiErrorCategory.notFound())) match {
-      case Left(status) => renderStatus(status)
-      case Right(hetu) => indexHtml()
-    }
+  get("/uusioppija") {
+    indexHtml()
   }
 
   get("/oppija/:oid") {

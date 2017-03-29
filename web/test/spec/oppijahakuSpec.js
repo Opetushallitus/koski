@@ -67,6 +67,16 @@ describe('Oppijahaku', function() {
         expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
       })
     })
+    describe('Keinotekoisella hetulla', function() {
+      before(page.oppijaHaku.search('', not(page.oppijaHaku.isNoResultsLabelShown)), page.oppijaHaku.search('290397-979R', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Näytetään virheilmoitus', function() {
+        expect(page.oppijaHaku.getErrorMessage()).to.equal('Keinotekoinen henkilötunnus: 290397-979R')
+      })
+      it('Uuden oppijan lisääminen ei ole mahdollista', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+      })
+    })
   })
 
   describe('Kun haetaan olemassa olevaa henkilöä, jolla ei ole opinto-oikeuksia', function() {

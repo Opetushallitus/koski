@@ -16,10 +16,19 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        val henkilöt: List[HenkilötiedotJaOid] = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
-        val canAddNew = Hetu.validate(query).isRight && henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
-        val error = Hetu.validFormat(query).right.toOption.flatMap(hetu => Hetu.validate(hetu).left.toOption).flatMap(_.errors.headOption).map(_.message.toString)
-        HenkilötiedotSearchResponse(henkilöt, canAddNew, error)
+        if (Hetu.validFormat(query).isRight) {
+          Hetu.validate(query) match {
+            case Right(hetu) =>
+              val henkilöt = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
+              val canAddNew = henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
+              HenkilötiedotSearchResponse(henkilöt, canAddNew, None)
+            case Left(status) =>
+              val error = status.errors.headOption.map(_.message.toString)
+              HenkilötiedotSearchResponse(Nil, false, error)
+          }
+        } else {
+          HenkilötiedotSearchResponse(henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList, false, None)
+        }
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }

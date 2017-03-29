@@ -9,12 +9,12 @@ import { omatTiedotContentP } from './OmatTiedot.jsx'
 import { oppijataulukkoContentP } from './Oppijataulukko.jsx'
 import { validointiContentP } from './Validointi.jsx'
 
-export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
+export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
-  let uusiOppijaHetu = (path.match(new RegExp('/koski/uusioppija/(.*)')) || [])[1]
+  let uusiOppijaHetu = (hash.match(new RegExp('#(.*)')) || [])[1]
   if (oppijaId) {
     return oppijaContentP(oppijaId)
-  } else if (uusiOppijaHetu) {
+  } else if (path === '/koski/uusioppija' && uusiOppijaHetu) {
     return { content: (<CreateOppija hetu={uusiOppijaHetu}/>) }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
