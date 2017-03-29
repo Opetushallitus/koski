@@ -1,11 +1,10 @@
 import R from 'ramda'
 import React from 'react'
 import Bacon from 'baconjs'
-import {optionalModel} from './OptionalEditor.jsx'
+import {optionalModel, resetOptionalModel} from './OptionalEditor.jsx'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
-import {addContext, modelLookup, modelData, modelSetValue, modelSet, modelTitle} from './EditorModel.js'
-import {resetOptionalModel} from './OptionalEditor.jsx'
+import {addContext, modelLookup, modelData, modelSet, modelTitle} from './EditorModel.js'
 
 export const LocalizedStringEditor = React.createClass({
   render() {
