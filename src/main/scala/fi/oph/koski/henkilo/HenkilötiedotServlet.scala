@@ -18,7 +18,8 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
       case Some(query) if (query.length >= 3) =>
         val henkilöt: List[HenkilötiedotJaOid] = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
         val canAddNew = Hetu.validate(query).isRight && henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
-        HenkilötiedotSearchResponse(henkilöt, canAddNew)
+        val error = Hetu.validFormat(query).right.toOption.flatMap(hetu => Hetu.validate(hetu).left.toOption).flatMap(_.errors.headOption).map(_.message.toString)
+        HenkilötiedotSearchResponse(henkilöt, canAddNew, error)
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
@@ -28,4 +29,4 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
   }
 }
 
-case class HenkilötiedotSearchResponse(henkilöt: List[HenkilötiedotJaOid], canAddNew: Boolean)
+case class HenkilötiedotSearchResponse(henkilöt: List[HenkilötiedotJaOid], canAddNew: Boolean, error: Option[String])
