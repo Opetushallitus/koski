@@ -381,6 +381,9 @@
           <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
+              <archive>
+                <addMavenDescriptor>false</addMavenDescriptor>
+              </archive>
               <archiveClasses>true</archiveClasses>
               <attachClasses>true</attachClasses>
               <webResources>
