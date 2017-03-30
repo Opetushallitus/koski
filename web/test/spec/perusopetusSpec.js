@@ -582,7 +582,7 @@ describe('Perusopetus', function() {
           })
         })
         describe('Useamman liitetiedon poisto kerralla', function() {
-          before(page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseSuoritus('7. vuosiluokka'),
+          before(opinnot.valitseSuoritus('7. vuosiluokka'),
             editor.edit,
             liitetiedot.addItem, liitetiedot.itemEditor(0).property('kuvaus').setValue('T1'),
             liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('T2'),
