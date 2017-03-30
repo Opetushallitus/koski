@@ -101,7 +101,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
       }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-      EditorModelBuilder.buildModel(EditorSchema.deserializationContext, editorView, editable)(koskiSession)
+      EditorModelBuilder.buildModel(EditorSchema.deserializationContext, editorView, editable)(koskiSession, application.koodistoViitePalvelu)
     }
   }
 }

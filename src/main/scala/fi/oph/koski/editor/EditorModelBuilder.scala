@@ -3,18 +3,16 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
-import fi.oph.koski.json.Json
-import fi.oph.koski.koodisto.{MockKoodistoPalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Title
 
 object EditorModelBuilder {
-  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession): EditorModel = {
+  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu): EditorModel = {
     val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
     ObjectModelBuilder(deserializationContext.rootSchema.asInstanceOf[ClassSchema])(context).buildModelForObject(value)
   }
@@ -83,7 +81,7 @@ case class ModelBuilderContext(
   deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession) extends LocalizedHtml
+  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number) = NumberModel(ValueWithData(x))
@@ -162,8 +160,8 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val koodiarvot: List[String] = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(Nil).asInstanceOf[List[String]]
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
-  def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k) // TODO: don't use MockKoodisto, use the real one!
-  def defaultValue = koodiarvot.headOption.orElse(KoodistoEnumModelBuilder.defaults.get(koodistoUri)).getOrElse(MockKoodistoViitePalvelu.getKoodistoKoodiViitteet(MockKoodistoPalvelu().getLatestVersion(koodistoUri).get).get.head.koodiarvo)
+  def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k)
+  def defaultValue = koodiarvot.headOption.orElse(KoodistoEnumModelBuilder.defaults.get(koodistoUri)).getOrElse(context.koodisto.getKoodistoKoodiViitteet(context.koodisto.koodistoPalvelu.getLatestVersion(koodistoUri).get).get.head.koodiarvo)
   def getPrototypeData = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(defaultValue, koodistoUri)).get
   def buildPrototype: EditorModel = buildModelForObject(getPrototypeData)
 }
@@ -271,7 +269,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       val requestsFromPreviousRound = newRequests
       newRequests = Set.empty
       requestsFromPreviousRound.foreach { schema =>
-        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user)
+        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user, context.koodisto)
         val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
         val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype)
 
@@ -322,7 +320,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId == None
       case _ => true
     }
-    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user)
+    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user, context.koodisto)
   }
 }
 
