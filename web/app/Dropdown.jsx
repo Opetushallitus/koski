@@ -8,7 +8,7 @@ export default BaconComponent({
     let {options, keyValue, displayValue, selected, onFilter} = this.props
 
     return (
-      <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
+      <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} onBlur={this.handleOnBlur} ref={el => this.dropdown = el} onKeyDown={this.onKeyDown}>
         {
           onFilter ?
             <div className="input-container" onClick={this.toggleOpen}>
@@ -28,7 +28,7 @@ export default BaconComponent({
         {options.length > 0 && <ul className={open ? 'options open' : 'options'}>
           {
             options.map((o,i) =>
-              <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onClick={(e) => this.selectOption(e, o)} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
+              <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onMouseDown={(e) => {this.selectOption(e, o)}} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
             )
           }
         </ul>}
@@ -49,9 +49,8 @@ export default BaconComponent({
       this.setState({open: false, selectionIndex: 0, query: undefined})
     }
   },
-  handleOnBlur(e) {
-    // ie fires onBlur event so we have to check where it came from before closing the dropdown
-    e.target != this.select && this.setState({open: false})
+  handleOnBlur() {
+    this.setState({open: false})
   },
   selectOption(e, option) {
     e.preventDefault()
