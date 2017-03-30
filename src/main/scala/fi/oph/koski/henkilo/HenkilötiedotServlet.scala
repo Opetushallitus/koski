@@ -14,20 +14,26 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
 
   get("/search") {
     contentType = "application/json;charset=utf-8"
+
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
+        val henkilöt = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
         if (Hetu.validFormat(query).isRight) {
           Hetu.validate(query) match {
             case Right(hetu) =>
-              val henkilöt = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
               val canAddNew = henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
               HenkilötiedotSearchResponse(henkilöt, canAddNew, None)
             case Left(status) =>
-              val error = status.errors.headOption.map(_.message.toString)
-              HenkilötiedotSearchResponse(Nil, false, error)
+              henkilöt match {
+                case Nil =>
+                  val error = status.errors.headOption.map(_.message.toString)
+                  HenkilötiedotSearchResponse(henkilöt, false, error)
+                case _ =>
+                  HenkilötiedotSearchResponse(henkilöt, false, None)
+              }
           }
         } else {
-          HenkilötiedotSearchResponse(henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList, false, None)
+          HenkilötiedotSearchResponse(henkilöt, false, None)
         }
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
