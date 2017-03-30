@@ -1,4 +1,5 @@
 import R from 'ramda'
+import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 
 // Find submodel with given path
@@ -97,6 +98,35 @@ export const childContext = (context, ...pathElems) => {
 
 // Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, additionalContext))
+
+export const applyChanges = (modelBeforeChange, changes) => {
+  let basePath = modelBeforeChange.context ? modelBeforeChange.context.path : ''
+  return R.splitEvery(2, changes).reduce((acc, [context, model]) => {
+    var subPath = removeCommonPath(context.path, basePath)
+    return modelSet(acc, model, subPath)
+  }, modelBeforeChange)
+}
+
+const removeCommonPath = (p1, p2) => {
+  if (p2.length == 0) return p1
+  return p1.substring(p2.length + 1)
+}
+
+export const accumulateErrors = (errorBus, path = '') => errorBus
+  .filter(e => e[0].path.startsWith(path))
+  .scan({}, (p, e) => Object.assign(p, R.objOf(e[0].path, e[1].error)))
+  .map(e => R.reduce((acc, error) => acc || error[1], false, R.toPairs(e)))
+
+export const accumulateModelState = (model) => {
+  let errorBus = Bacon.Bus()
+  let changeBus = Bacon.Bus()
+  let modelP = changeBus.scan(addContext(model, {changeBus, errorBus}), (m, changes) => applyChanges(m, changes))
+  let errorP = accumulateErrors(errorBus, model.context.path)
+  return {
+    modelP,
+    errorP
+  }
+}
 
 const valueEmpty = (value) => {
   return !value

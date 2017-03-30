@@ -110,7 +110,7 @@ function Päivämääräväli(elem) {
 function OpiskeluoikeusDialog() {
   return {
     tila: function() {
-      return Property(function() {return S('.lisaa-opiskeluoikeusjakso')})
+      return Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
     },
     alkuPaiva: function() {
       return Property(function() {return S('.property.alku')})

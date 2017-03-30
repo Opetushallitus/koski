@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {contextualizeModel} from './EditorModel.js'
+import {contextualizeModel, accumulateErrors} from './EditorModel.js'
 import BaconComponent from '../BaconComponent'
 
 export const TogglableEditor = BaconComponent({
@@ -31,10 +31,7 @@ export const TogglableEditor = BaconComponent({
   componentDidMount() {
     let {model} = this.props
 
-    model.context.errorBus
-      .filter(e => e[0].path.startsWith(model.context.path))
-      .scan({}, (p, e) => Object.assign(p, R.objOf(e[0].path, e[1].error)))
-      .map(e => R.reduce((acc, error) => acc || error[1], false, R.toPairs(e)))
+    accumulateErrors(model.context.errorBus, model.context.path)
       .takeUntil(this.unmountE)
       .onValue(hasErrors => this.setState({ hasErrors }))
   },

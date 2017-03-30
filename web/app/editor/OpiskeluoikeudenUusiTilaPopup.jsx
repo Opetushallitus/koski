@@ -1,88 +1,32 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
-import R from 'ramda'
-import {childContext, contextualizeModel, modelItems, modelLookup, addContext, modelSet} from './EditorModel.js'
+import {childContext, contextualizeModel, modelItems, modelLookup, accumulateModelState} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
+import ModalDialog from './ModalDialog.jsx'
 
-export const OpiskeluoikeudenUusiTilaPopup = React.createClass({
-  render() {
-    let {suorituksiaKesken, edellisenTilanAlkupäivä} = this.props
+export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
+  let submitBus = Bacon.Bus()
+  let initialModel = contextualizeModel(tilaListModel.arrayPrototype, childContext(tilaListModel.context, modelItems(tilaListModel).length))
 
-    let {addNewBus, cancelBus, alkuPäiväModel, tilaModel} = this.state
+  let { modelP, errorP } = accumulateModelState(initialModel)
 
-    return (
-      <div className="lisaa-opiskeluoikeusjakso-modal">
-        <div className="lisaa-opiskeluoikeusjakso">
-          <a className="close-modal" onClick={() => cancelBus.push()}>&#10005;</a>
-          <h2>Opiskeluoikeuden tilan lisäys</h2>
-          <div className="property alku">
-            <label>Päivämäärä:</label>
-            <DateEditor model={alkuPäiväModel} isAllowedDate={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
-          </div>
-          <div className="property tila">
-            <label>Tila:</label>
-            <EnumEditor asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
-          </div>
-          <button disabled={!this.state.valid} className="opiskeluoikeuden-tila button" onClick={() => addNewBus.push()}>Lisää</button>
-          <a onClick={() => cancelBus.push()}>Peruuta</a>
-        </div>
-      </div>
-    )
-  },
-  getInitialState() {
-    return {
-      addNewBus: Bacon.Bus(),
-      cancelBus: Bacon.Bus(),
-      alkuPäiväBus: Bacon.Bus(),
-      tilaBus: Bacon.Bus(),
-      errorBus: Bacon.Bus()
-    }
-  },
-  componentWillMount() {
-    let { tilaListModel, resultCallback } = this.props
-    let {alkuPäiväBus, tilaBus, cancelBus, addNewBus, errorBus} = this.state
+  let alkuPäiväModel = modelP.map(m => modelLookup(m, 'alku'))
+  let tilaModel = modelP.map(m => modelLookup(m, 'tila'))
+  let validP = tilaModel.changes().map(true).toProperty(false).and(errorP.not())
 
-    document.addEventListener('keyup', this.handleKeys)
-    let items = modelItems(tilaListModel).slice(0).reverse()
-    let opiskeluoikeusjaksoModel = contextualizeModel(tilaListModel.arrayPrototype, childContext(tilaListModel.context, items.length))
+  modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 
-    let alkuPäiväModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'alku'), {changeBus: alkuPäiväBus, errorBus: errorBus})
-    let tilaModel = addContext(modelLookup(opiskeluoikeusjaksoModel, 'tila'), {changeBus: tilaBus, errorBus: errorBus})
-
-    let stateP = Bacon.update({},
-      alkuPäiväBus, (state, alkuPäivä) => R.merge(state, {alkuPäivä: alkuPäivä[1]}),
-      tilaBus, (state, tila) => R.merge(state, {tila: tila[1]}),
-      cancelBus, () => ({}),
-      errorBus, (state, [,e]) => R.merge(state, {error: e.error})
-    )
-
-    stateP.onValue(state => {
-      this.setState({valid: !state.error && state.alkuPäivä && state.tila})
-    })
-
-    alkuPäiväBus.push([alkuPäiväModel.context, alkuPäiväModel])
-    this.setState({alkuPäiväModel, tilaModel})
-
-    errorBus.onValue(e => tilaListModel.context.errorBus.push(e))
-
-    stateP.sampledBy(addNewBus).onValue((state) => {
-      let withAlku = modelSet(opiskeluoikeusjaksoModel, state.alkuPäivä, 'alku')
-      let withTila = modelSet(withAlku, state.tila, 'tila')
-      resultCallback(withTila)
-    })
-
-    cancelBus.onValue(() => resultCallback(undefined)) // exit without value
-  },
-  componentWillUnmount() {
-    document.removeEventListener('keyup', this.handleKeys)
-  },
-
-  handleKeys(e) {
-    if (e.keyCode == 27) { // esc
-      this.state.cancelBus.push()
-    } else if (e.keyCode == 13) { // enter
-      this.state.valid && this.state.addNewBus.push()
-    }
-  }
-})
+  return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+    <h2>Opiskeluoikeuden tilan lisäys</h2>
+    <div className="property alku">
+      <label>Päivämäärä:</label>
+      <DateEditor baret-lift model={alkuPäiväModel} isAllowedDate={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
+    </div>
+    <div className="property tila">
+      <label>Tila:</label>
+      <EnumEditor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
+    </div>
+    <button disabled={validP.not()} className="opiskeluoikeuden-tila button" onClick={() => submitBus.push()}>Lisää</button>
+  </ModalDialog>)
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import { modelTitle, modelLookup, modelSet, objectLookup, modelData } from './editor/EditorModel'
+import { modelTitle, modelLookup, objectLookup, modelData, applyChanges } from './editor/EditorModel'
 import { editorMapping } from './editor/Editors.jsx'
 import { Editor } from './editor/GenericEditor.jsx'
 import R from 'ramda'
@@ -53,7 +53,7 @@ export const oppijaContentP = (oppijaOid) => {
           let batch = changeBuffer
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
-          let locallyModifiedOppija = R.splitEvery(2, batch).reduce((acc, [context, model]) => modelSet(acc, model, context.path), oppijaBeforeChange)
+          let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
           return R.merge(locallyModifiedOppija, {event: 'modify', opiskeluoikeusPath})
         })
       })
