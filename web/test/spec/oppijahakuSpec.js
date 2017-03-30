@@ -58,7 +58,7 @@ describe('Oppijahaku', function() {
       })
     })
     describe('Hetulla', function() {
-      before(page.oppijaHaku.search('', not(page.oppijaHaku.isNoResultsLabelShown)), page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown))
+      before(page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown))
 
       it('Näytetään kuvaava teksti', function() {
         expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
@@ -68,7 +68,7 @@ describe('Oppijahaku', function() {
       })
     })
     describe('Keinotekoisella hetulla', function() {
-      before(page.oppijaHaku.search('', not(page.oppijaHaku.isNoResultsLabelShown)), page.oppijaHaku.search('290397-979R', page.oppijaHaku.isNoResultsLabelShown))
+      before(page.oppijaHaku.search('290397-979R', page.oppijaHaku.isNoResultsLabelShown))
 
       it('Näytetään virheilmoitus', function() {
         expect(page.oppijaHaku.getErrorMessage()).to.equal('Keinotekoinen henkilötunnus: 290397-979R')
