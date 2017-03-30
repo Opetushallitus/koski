@@ -140,15 +140,13 @@ trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
 case class OppilaitosEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
   override def alternativesPath = "/koski/api/editor/oppilaitokset"
   override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(OidOrganisaatio(Opetushallitus.organisaatioOid)) // TODO: not the best default. We should allow for things that don't have a prototype
-  def buildPrototype: EditorModel = buildModelForObject(getPrototypeData)
+  def buildPrototype: EditorModel = buildModelForObject(Oppilaitos(""))
 }
 
 case class OrganisaatioEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
   override def alternativesPath = "/koski/api/editor/organisaatiot"
   override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  def getPrototypeData = context.user.organisaatiot.headOption.getOrElse(OidOrganisaatio(Opetushallitus.organisaatioOid)) // TODO: not the best default
-  def buildPrototype: EditorModel = buildModelForObject(getPrototypeData)
+  def buildPrototype: EditorModel = buildModelForObject(OidOrganisaatio(""))
 }
 
 object KoodistoEnumModelBuilder {
