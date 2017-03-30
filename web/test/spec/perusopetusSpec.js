@@ -459,7 +459,7 @@ describe('Perusopetus', function() {
 
     describe('Suoritusten tiedot', function() {
       describe('Luokan muuttaminen', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         before(opinnot.valitseSuoritus('9. vuosiluokka'), editor.edit)
         describe('Tyhjäksi', function() {
           before(editor.property('luokka').setValue(''))
@@ -475,14 +475,14 @@ describe('Perusopetus', function() {
         })
       })
       describe('Suorituskielen lisäys', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, editor.property('suorituskieli').selectValue('suomi'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu suorituskieli näytetään', function() {
           expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
         })
       })
       describe('Todistuksella näkyvien lisätietojen lisäys', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Uudet lisätiedot näytetään', function() {
@@ -490,14 +490,14 @@ describe('Perusopetus', function() {
         })
       })
       describe('Oppiaineen laajuuden muutos', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu laajuus näytetään', function() {
           expect(editor.property('laajuus').getValue()).to.equal('2')
         })
       })
       describe('Oppiaineen arvosanan muutos', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
         before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.selectValue('5'), editor.doneEditing)
@@ -506,7 +506,7 @@ describe('Perusopetus', function() {
         })
       })
       describe('Käyttäytymisen arvioinnin lisäys', function() {
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
         before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.doneEditing)
         describe('Muuttamatta arviointia', function() {
@@ -530,7 +530,7 @@ describe('Perusopetus', function() {
       })
       describe('Liitetiedot', function() {
         // Liitetiedot testataan isolla testisetillä, joilla varmistetaan ArrayEditorin toiminta
-        var editor = opinnot.suoritusEditor()
+        var editor = opinnot.opiskeluoikeusEditor()
         var liitetiedot = editor.property('liitetiedot')
         describe('Liitetietojen lisäys', function() {
           before(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, liitetiedot.addItem, liitetiedot.property('kuvaus').setValue('TestiTesti'))
@@ -618,7 +618,7 @@ describe('Perusopetus', function() {
     describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
       before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
       it('Muutokset estetty', function() {
-        var suoritus = opinnot.suoritusEditor()
+        var suoritus = opinnot.opiskeluoikeusEditor()
         expect(suoritus.isEditable()).to.equal(false)
       })
     })
@@ -694,7 +694,7 @@ describe('Perusopetus', function() {
         describe('Kun valitaan oppiaineen oppimäärä', function() {
           before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
           it('Valittu oppimäärä päätyy suoritukseen', function() {
-            var editor = opinnot.suoritusEditor()
+            var editor = opinnot.opiskeluoikeusEditor()
             expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
           })
         })

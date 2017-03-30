@@ -47,11 +47,8 @@ function OpinnotPage() {
         return wait.forAjax()
       }
     },
-    suoritusEditor: function() {
-      return Editor(function() { return findSingle('.suoritus') })
-    },
     opiskeluoikeusEditor: function() {
-      return Editor(function() { return findSingle('.opiskeluoikeuden-tiedot') })
+      return Editor(function() { return findSingle('.opiskeluoikeus-content') })
     },
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()

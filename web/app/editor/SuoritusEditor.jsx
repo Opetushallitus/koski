@@ -1,7 +1,6 @@
 import React from 'react'
 import {modelData, modelItems} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
-import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import * as Lukio from './Lukio.jsx'
 import {Suoritustaulukko} from './Suoritustaulukko.jsx'
@@ -32,23 +31,17 @@ export const SuoritusEditor = React.createClass({
       return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
     }
 
-    return (<TogglableEditor
-      model={model}
-      renderChild={ (mdl, editLink) => {
-        let className = 'suoritus ' + (mdl.context.edit ? 'editing ' : '') + mdl.value.classes.join(' ')
-        return (<div className={className}>
-          {editLink}
-          <TodistusLink suoritus={mdl} />
-          <PropertiesEditor
-            model={mdl}
-            propertyFilter={p => !excludedProperties.includes(p.key)}
-          />
-          <TilaJaVahvistus model={mdl} />
-          <div className="osasuoritukset">{resolveEditor(mdl)}</div>
-        </div>)
-        }
-      }
-    />)
+    let className = 'suoritus ' + model.value.classes.join(' ')
+
+    return (<div className={className}>
+      <TodistusLink suoritus={model} />
+      <PropertiesEditor
+        model={model}
+        propertyFilter={p => !excludedProperties.includes(p.key)}
+      />
+      <TilaJaVahvistus model={model} />
+      <div className="osasuoritukset">{resolveEditor(model)}</div>
+    </div>)
   }
 })
 SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)

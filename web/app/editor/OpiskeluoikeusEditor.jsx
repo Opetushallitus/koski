@@ -13,73 +13,72 @@ import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
 
 export const OpiskeluoikeusEditor = React.createClass({
   render() {
-    let {model} = this.props
-    let context = model.context
-    let id = modelData(model, 'id')
-    let suoritukset = modelItems(model, 'suoritukset')
-    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
-    let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-    let valittuSuoritus = suoritukset[SuoritusTabs.suoritusIndex(context)]
-
-    return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => (<div className="opiskeluoikeus">
-      <h3>
-        <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
-        <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
-         { modelData(mdl, 'alkamispäivä')
-            ? <span className="inline-text">(
-                  <span className="alku pvm">{yearFromFinnishDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
-                  <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
-              </span>
-            : null
-          }
-        <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
-        <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
-      </h3>
-      <div className="opiskeluoikeus-content">
-        <div className={mdl.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
-          {editLink}
-          <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
-          <div className="alku-loppu">
-            <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
-          </div>
-          <PropertiesEditor
-            model={mdl}
-            propertyFilter={ p => !excludedProperties.includes(p.key) }
-            getValueEditor={ (prop, getDefault) => prop.key == 'tila'
-              ? <OpiskeluoikeudenTilaEditor model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} opiskeluoikeusModel={mdl} />
-              : getDefault() }
-           />
-          <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
-        </div>
-        <div className="suoritukset">
-          {
-            suoritukset.length >= 2 ? (
-              <div>
-                <h4>Suoritukset</h4>
-                <SuoritusTabs {...{ context, suoritukset}}/>
+    return (<TogglableEditor model={this.props.model} renderChild={ (model, editLink) => {
+      let context = model.context
+      let id = modelData(model, 'id')
+      let suoritukset = modelItems(model, 'suoritukset')
+      let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
+      let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
+      let valittuSuoritus = suoritukset[SuoritusTabs.suoritusIndex(context)]
+      return(
+        <div className="opiskeluoikeus">
+          <h3>
+            <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
+            <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
+             { modelData(model, 'alkamispäivä')
+                ? <span className="inline-text">(
+                      <span className="alku pvm">{yearFromFinnishDateString(modelTitle(model, 'alkamispäivä'))}</span>-
+                      <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(model, 'päättymispäivä'))},</span>
+                  </span>
+                : null
+              }
+            <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
+            <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
+          </h3>
+          <div className="opiskeluoikeus-content">
+            <div className={model.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
+              {editLink}
+              <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model}/>
+              <div className="alku-loppu">
+                <PropertyEditor model={addContext(model, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(model, {edit: false})} propertyName={päättymispäiväProperty} />
               </div>
-            ) : <hr/>
-          }
-          <SuoritusEditor model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
-        </div>
-      </div>
-    </div>)
+              <PropertiesEditor
+                model={model}
+                propertyFilter={ p => !excludedProperties.includes(p.key) }
+                getValueEditor={ (prop, getDefault) => prop.key == 'tila'
+                  ? <OpiskeluoikeudenTilaEditor model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} opiskeluoikeusModel={model} />
+                  : getDefault() }
+               />
+              <ExpandablePropertiesEditor model={model} propertyName="lisätiedot" />
+            </div>
+            <div className="suoritukset">
+              <h4>Suoritukset</h4>
+              <SuoritusTabs model={model}/>
+              <SuoritusEditor model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
+            </div>
+          </div>
+        </div>)
+      }
     } />)
   }
 })
 
-const SuoritusTabs = ({ suoritukset, context }) => (<ul className="suoritus-tabs">
+const SuoritusTabs = ({ model }) => {
+  let suoritukset = modelItems(model, 'suoritukset')
+  var tyyppi = modelData(model, 'tyyppi.koodiarvo')
+  return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
-        let selected = i == SuoritusTabs.suoritusIndex(context)
+        let selected = i == SuoritusTabs.suoritusIndex(model.context)
         let title = modelTitle(suoritusModel, 'koulutusmoduuli')
         return (<li className={selected ? 'selected': null} key={i}>
-          { selected ? title : <Link href={currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(context)]: i}).toString()}> {title} </Link>}
+          { selected ? title : <Link href={currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()}> {title} </Link>}
         </li>)
       })
     }
   </ul>
-)
+)}
+
 SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'
 SuoritusTabs.suoritusIndex = (context) => currentLocation().params[SuoritusTabs.suoritusQueryParam(context)] || 0
 
