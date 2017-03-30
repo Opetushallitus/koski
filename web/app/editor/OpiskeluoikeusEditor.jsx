@@ -46,7 +46,7 @@ export const OpiskeluoikeusEditor = React.createClass({
                 model={model}
                 propertyFilter={ p => !excludedProperties.includes(p.key) }
                 getValueEditor={ (prop, getDefault) => prop.key == 'tila'
-                  ? <OpiskeluoikeudenTilaEditor model={modelLookup(prop.model, 'opiskeluoikeusjaksot')} opiskeluoikeusModel={model} />
+                  ? <OpiskeluoikeudenTilaEditor model={model} />
                   : getDefault() }
                />
               <ExpandablePropertiesEditor model={model} propertyName="lisätiedot" />

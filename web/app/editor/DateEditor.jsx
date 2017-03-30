@@ -9,10 +9,10 @@ export const DateEditor = React.createClass({
     let validityCallback = (valid) => model.context.errorBus.push([model.context, {error: !valid}])
     let valueCallback = (date) => model.context.changeBus.push([model.context, modelSetValue(model, { data : formatISODate(date) , title: formatFinnishDate(date) })])
     let dateInISOFormat = modelData(model)
-    var dateValue = dateInISOFormat && parseISODate(modelData(model))
+    var dateValue = dateInISOFormat && parseISODate(dateInISOFormat)
     var optional = model.optional
     return model.context.edit
-      ? <DateInput {...{dateValue, optional, isAllowedDate, validityCallback, valueCallback}} />
+      ? <DateInput {...{value: dateValue, optional, isAllowedDate, validityCallback, valueCallback}} />
       : <span className="inline date">{dateValue && formatFinnishDate(dateValue)}</span>
   }
 })
