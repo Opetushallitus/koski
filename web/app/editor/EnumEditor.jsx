@@ -49,14 +49,14 @@ export const EnumEditor = BaconComponent({
             </ul>
           )
         : (
-             <DropDown
+             <span className={className}><DropDown
                options={filter(query)}
                keyValue={option => option.value}
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
                selected={defaultValue}
                onFilter={q => this.setState({query: q})}
-             />
+             /></span>
           )
       : <span className="inline enum">{modelTitle(model)}</span>
   },
