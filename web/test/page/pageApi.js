@@ -102,7 +102,7 @@ function Page(mainElement) {
             if (!findSingle('.options', S(input)).hasClass('open')) {
               triggerEvent(findSingle('.select', S(input)), 'click')
             }
-            triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'click')
+            triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
             break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
