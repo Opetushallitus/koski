@@ -326,6 +326,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
     logger.info(s"Using elasticsearch at $host:$port")
 
+    Wait.until(clusterHealthOk)
     val reIndexingNeeded = setupIndex
 
     if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
@@ -333,6 +334,12 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         reIndex() // Re-index on background
       }
     }
+  }
+
+  private def clusterHealthOk = {
+    val healthResponse: JValue = Http.runTask(elasticSearchHttp.get(uri"/_cluster/health")(Http.parseJson[JValue]))
+    val healthCode = (healthResponse \ "status").extract[String]
+    List("green", "yellow").contains(healthCode)
   }
 
   private def setupIndex: Boolean = {
@@ -380,13 +387,12 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   private def indexExists = {
-    Wait.until(Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode)) match {
+    Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode)) match {
       case 200 => true
       case 404 => false
       case statusCode =>
-        logger.error("Unexpected status code from elasticsearch: " + statusCode)
-        false
-    }, timeoutMs = 10000)
+        throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
+    }
   }
 }
 
