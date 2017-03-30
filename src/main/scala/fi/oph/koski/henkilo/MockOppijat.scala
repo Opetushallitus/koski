@@ -47,7 +47,7 @@ object MockOppijat {
 
   def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
 
-  def oids = (1 to defaultOppijat.length + 10).map(generateOid).toList // oids that should be considered when deleting fixture data
+  def oids = (defaultOppijat.map(_.oid) ++ (1 to defaultOppijat.length + 10).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
 }
 
 class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) extends Logging {
