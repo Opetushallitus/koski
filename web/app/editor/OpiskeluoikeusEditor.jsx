@@ -76,6 +76,11 @@ const SuoritusTabs = ({ model }) => {
         </li>)
       })
     }
+    {
+      model.context.edit && tyyppi == 'perusopetus' && (
+        <li className="add-suoritus"><a><span className="plus"></span>lisää suoritus</a></li>
+      )
+    }
   </ul>
 )}
 

@@ -50,6 +50,9 @@ function OpinnotPage() {
     opiskeluoikeusEditor: function() {
       return Editor(function() { return findSingle('.opiskeluoikeus-content') })
     },
+    lisääSuoritusVisible: function() {
+      return S(".add-suoritus").is(":visible")
+    },
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -128,7 +131,9 @@ function OpiskeluoikeusDialog() {
 function Editor(elem) {
   return {
     edit: function() {
-      triggerEvent(findSingle('.toggle-edit:not(.editing)', elem()), 'click')
+      var editLink = findSingle('.toggle-edit', elem())
+      if (!editLink.hasClass('editing'))
+        triggerEvent(editLink, 'click')
       return KoskiPage().verifyNoError()
     },
     doneEditing: function() {

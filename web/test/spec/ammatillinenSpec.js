@@ -227,6 +227,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
+    var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
     before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
 
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
@@ -234,7 +235,6 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Kun valitaan suoritustapa', function() {
-      var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
       var suoritustapa = opiskeluoikeusEditor.property('suoritustapa')
       before(opiskeluoikeusEditor.edit, suoritustapa.waitUntilLoaded, suoritustapa.selectValue('Opetussuunnitelman mukainen'), opiskeluoikeusEditor.doneEditing, wait.until(page.isSavedLabelShown))
 
@@ -265,6 +265,13 @@ describe('Ammatillinen koulutus', function() {
         it('Näytetään muuttuneet tiedot', function() {
           expect(suoritustapa.isVisible()).to.equal(false)
         })
+      })
+    })
+
+    describe('Suorituksen lisääminen', function() {
+      before(opiskeluoikeusEditor.edit)
+      it('Päätason suoritusta ei voi lisätä ammatillisissa opinnoissa', function() {
+        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
       })
     })
   })
