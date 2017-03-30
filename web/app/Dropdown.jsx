@@ -64,24 +64,11 @@ export default BaconComponent({
     }
     this.setState({open: !this.state.open})
   },
-  componentWillMount() {
-    this.propsE.merge(this.unmountE).onValue(() => {
-      window.removeEventListener('click', this.handleClickOutside, false)
-    })
-    this.propsE.onValue(() => {
-      window.addEventListener('click', this.handleClickOutside, false)
-    })
-  },
   getDefaultProps() {
     return {
       keyValue: option => option.key,
       displayValue: option => option.value
     }
-  },
-  handleClickOutside(e) {
-    let dropdown = e.target.closest('.dropdown')
-    let clickedInside = dropdown && dropdown == this.dropdown
-    !clickedInside && this.setState({open: false})
   },
   handleMouseOver(o) {
     let {options} = this.props
