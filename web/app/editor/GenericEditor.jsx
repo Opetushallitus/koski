@@ -1,10 +1,10 @@
 import React from 'react'
 import R from 'ramda'
-import { modelLookup, contextualizeModel } from './EditorModel.js'
+import {modelLookup, contextualizeModel, addContext} from './EditorModel'
 
 export const Editor = React.createClass({
   render() {
-    let { model, editorMapping, changeBus, errorBus, doneEditingBus, path } = this.props
+    let { model, editorMapping, changeBus, errorBus, doneEditingBus, path, edit } = this.props
     if (!model.context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
@@ -16,6 +16,9 @@ export const Editor = React.createClass({
         prototypes: model.prototypes,
         editorMapping
       })
+    }
+    if (edit != undefined) {
+      model = addContext(model, { edit })
     }
     return getModelEditor(model, path)
   }
