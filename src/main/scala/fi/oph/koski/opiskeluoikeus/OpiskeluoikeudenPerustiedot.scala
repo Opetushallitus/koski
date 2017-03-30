@@ -326,7 +326,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
     logger.info(s"Using elasticsearch at $host:$port")
 
-    Wait.until(clusterHealthOk)
     val reIndexingNeeded = setupIndex
 
     if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
@@ -334,12 +333,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         reIndex() // Re-index on background
       }
     }
-  }
-
-  private def clusterHealthOk = {
-    val healthResponse: JValue = Http.runTask(elasticSearchHttp.get(uri"/_cluster/health")(Http.parseJson[JValue]))
-    val healthCode = (healthResponse \ "status").extract[String]
-    List("green", "yellow").contains(healthCode)
   }
 
   private def setupIndex: Boolean = {
