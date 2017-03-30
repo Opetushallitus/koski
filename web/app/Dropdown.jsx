@@ -63,9 +63,7 @@ export default BaconComponent({
     e.stopPropagation()
     this.setState({selected: option, open: false, selectionIndex: 0, query: undefined}, () => this.props.onSelectionChanged(option))
   },
-  toggleOpen(e) {
-    e.preventDefault()
-    e.stopPropagation()
+  toggleOpen() {
     this.setState({open: !this.state.open})
   },
   componentWillMount() {
@@ -84,7 +82,7 @@ export default BaconComponent({
   },
   handleClickOutside(e) {
     let dropdown = e.target.closest('.dropdown')
-    let clickedInside = dropdown && dropdown.getAttribute('id') == this.props.id
+    let clickedInside = dropdown && dropdown == this.dropdown
     !clickedInside && this.setState({open: false})
   },
   handleMouseOver(o) {
