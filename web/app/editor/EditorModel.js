@@ -119,6 +119,7 @@ export const accumulateErrors = (errorBus, path = '') => errorBus
   .filter(e => e[0].path.startsWith(path))
   .scan({}, (p, e) => Object.assign(p, R.objOf(e[0].path, e[1].error)))
   .map(e => R.reduce((acc, error) => acc || error[1], false, R.toPairs(e)))
+  .skipDuplicates()
 
 export const accumulateModelState = (model) => {
   let errorBus = Bacon.Bus()
