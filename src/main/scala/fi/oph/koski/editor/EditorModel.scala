@@ -23,4 +23,4 @@ case class ValueWithData[T](data: T)
 
 case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel]) extends EditorModel
 
-case class OneOfModel(`class`: String, model: Option[EditorModel], prototypes: List[EditorModel]) extends EditorModel
+case class OneOfModel(`class`: String, model: EditorModel, prototypes: List[EditorModel]) extends EditorModel

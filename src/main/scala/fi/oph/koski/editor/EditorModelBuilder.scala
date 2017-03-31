@@ -30,7 +30,7 @@ object EditorModelBuilder {
           ObjectModelBuilder(t)
       }
     case t: ClassRefSchema => modelBuilderForClass(context.mainSchema.getSchema(t.fullClassName).get)
-    case t: AnyOfSchema => AnyOfModelBuilder(t)
+    case t: AnyOfSchema => OneOfModelBuilder(t)
     case t: ListSchema => ListModelBuilder(t)
     case t: OptionalSchema => OptionalModelBuilder(t)
     case t: NumberSchema => NumberModelBuilder(t)
@@ -52,7 +52,7 @@ object EditorModelBuilder {
           ObjectModelBuilder(t)
       }
     case t: ClassRefSchema => modelBuilderForClass(resolveSchema(t))
-    case t: AnyOfSchema => AnyOfModelBuilder(t)
+    case t: AnyOfSchema => OneOfModelBuilder(t)
   }
 
   def buildModel(obj: Any, schema: Schema)(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj)
@@ -179,12 +179,17 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
   }
 }
 
-case class AnyOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
+case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
   def buildModelForObject(obj: AnyRef) = obj match {
     case None =>
       throw new RuntimeException("None value not allowed for AnyOf")
     case x: AnyRef =>
-      OneOfModel(sanitizeName(t.simpleName), Some(EditorModelBuilder.buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+      val selectedModel = EditorModelBuilder.buildModel(x, findOneOfSchema(t, x))
+      buildModel(selectedModel)
+  }
+
+  private def buildModel(selectedModel: EditorModel) = {
+    OneOfModel(sanitizeName(t.simpleName), selectedModel, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
   }
 
   def prototypeKey = sanitizeName(t.simpleName)
@@ -205,7 +210,7 @@ case class AnyOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
     if (clazz == classOf[LocalizedString]) {
       buildModelForObject(LocalizedString.finnish(""))
     } else {
-      modelBuilderForClass(t.alternatives.head).buildPrototype
+      buildModel(modelBuilderForClass(t.alternatives.head).buildPrototype)
     }
   }
 }

@@ -24,7 +24,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
           json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>
           val oneOfInfo: JValue = json("oneOfClass" -> c, "oneOfPrototypes" -> prototypes)
-          modelOrEmptyObject(model).merge(oneOfInfo)
+          Extraction.decompose(model).merge(oneOfInfo)
 
         case (NumberModel(value)) => json("number", "value" -> value)
         case (BooleanModel(value)) => json("boolean", "value" -> value)
