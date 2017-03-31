@@ -1,5 +1,6 @@
 package fi.oph.koski.oppija
 
+import java.net.InetAddress
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
@@ -90,9 +91,10 @@ class OppijaServlet(val application: KoskiApplication)
 
   private def trackIPAddress() {
     val ip = application.ipService.getIP(koskiSession.username)
-    if (ip != koskiSession.clientIp) {
+
+    if (!ip.contains(InetAddress.getByName(koskiSession.clientIp))) {
       if (ip.nonEmpty) {
-        logger(koskiSession).error(s"IP-osoite on muuttunut, vanha: $ip, uusi: ${koskiSession.clientIp}")
+        logger(koskiSession).error(s"IP-osoite on muuttunut, vanha: ${ip.get.getHostAddress}, uusi: ${koskiSession.clientIp}")
       }
       application.ipService.setIP(koskiSession.username, koskiSession.clientIp)
     }

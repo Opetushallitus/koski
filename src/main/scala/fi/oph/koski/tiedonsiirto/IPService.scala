@@ -1,5 +1,6 @@
 package fi.oph.koski.tiedonsiirto
 
+import java.net.InetAddress
 import java.sql.SQLException
 
 import fi.oph.koski.db.KoskiDatabase.DB
@@ -16,6 +17,6 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
       logger.info("Inserting new ip address caused duplicate key exception, ignoring.")
   }
 
-  def getIP(username: String): String =
-    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).getOrElse("")
+  def getIP(username: String): Option[InetAddress] =
+    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).map(InetAddress.getByName)
 }
