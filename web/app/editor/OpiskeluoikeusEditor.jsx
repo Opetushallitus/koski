@@ -1,15 +1,19 @@
-import React from 'react'
+import React from 'baret'
+import Atom from 'bacon.atom'
 import {modelData, modelLookup, modelTitle, modelItems, addContext} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
+import {OpiskeluoikeudenTilaEditor, onLopputilassa} from './OpiskeluoikeudenTilaEditor.jsx'
 import Versiohistoria from '../Versiohistoria.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
 import {yearFromFinnishDateString} from '../date'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
+import UusiSuoritusPopup from './UusiSuoritusPopup.jsx'
+import {Editor} from './GenericEditor.jsx'
+import {navigateTo} from '../location'
 
 export const OpiskeluoikeusEditor = React.createClass({
   render() {
@@ -19,7 +23,13 @@ export const OpiskeluoikeusEditor = React.createClass({
       let suoritukset = modelItems(model, 'suoritukset')
       let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
       let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-      let valittuSuoritus = suoritukset[SuoritusTabs.suoritusIndex(context)]
+      var suoritusIndex = SuoritusTabs.suoritusIndex(context)
+      if (suoritusIndex >= suoritukset.length) {
+        navigateTo(SuoritusTabs.urlForTab(model, 0))
+        return null
+      }
+      let valittuSuoritus = suoritukset[suoritusIndex]
+
       return(
         <div className="opiskeluoikeus">
           <h3>
@@ -54,7 +64,7 @@ export const OpiskeluoikeusEditor = React.createClass({
             <div className="suoritukset">
               <h4>Suoritukset</h4>
               <SuoritusTabs model={model}/>
-              <SuoritusEditor model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
+              <SuoritusEditor key={suoritusIndex} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
             </div>
           </div>
         </div>)
@@ -66,24 +76,37 @@ export const OpiskeluoikeusEditor = React.createClass({
 const SuoritusTabs = ({ model }) => {
   let suoritukset = modelItems(model, 'suoritukset')
   var tyyppi = modelData(model, 'tyyppi.koodiarvo')
+  let addingAtom = Atom(false)
+  let uusiSuoritusCallback = (suoritus) => {
+    addingAtom.set(false)
+    if (suoritus) {
+      model.context.changeBus.push([suoritus.context, suoritus])
+      model.context.doneEditingBus.push()
+    }
+  }
   return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
         let selected = i == SuoritusTabs.suoritusIndex(model.context)
-        let title = modelTitle(suoritusModel, 'koulutusmoduuli')
+        let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
         return (<li className={selected ? 'selected': null} key={i}>
-          { selected ? title : <Link href={currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()}> {title} </Link>}
+          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, i) }> {titleEditor} </Link>}
         </li>)
       })
     }
     {
-      model.context.edit && tyyppi == 'perusopetus' && (
-        <li className="add-suoritus"><a><span className="plus"></span>lisää suoritus</a></li>
+      model.context.edit && tyyppi == 'perusopetus' && !onLopputilassa(model) && (
+        <li className="add-suoritus"><a onClick={() => { addingAtom.set(true) }}><span className="plus"></span>lisää suoritus</a></li>
       )
+    }
+    {
+      addingAtom.map(adding => adding && <UusiSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
     }
   </ul>
 )}
 
+
+SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
 SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'
 SuoritusTabs.suoritusIndex = (context) => currentLocation().params[SuoritusTabs.suoritusQueryParam(context)] || 0
 

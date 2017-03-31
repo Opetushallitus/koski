@@ -16,7 +16,7 @@ export const PropertiesEditor = React.createClass({
       context = model.context
     }
     let edit = context.edit
-    let shouldShow = (property) => shouldShowProperty(edit)(property) && propertyFilter(property)
+    let shouldShow = (property) => shouldShowProperty(context)(property) && propertyFilter(property)
 
     let munch = (prefix) => (property) => { // TODO: just index passing is enough, no context needed
       if (!edit && property.flatten && property.model.value && property.model.value.properties) {
@@ -55,7 +55,7 @@ export const PropertiesEditor = React.createClass({
   }
 })
 PropertiesEditor.canShowInline = () => false
-export const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
+export const shouldShowProperty = (context) => (property) => (context.edit || !modelEmpty(property.model)) && !property.hidden && (!context.hideOptional || (property.model && !property.model.optional))
 
 export const TabularArrayEditor = React.createClass({
   render() {

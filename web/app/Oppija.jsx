@@ -35,7 +35,8 @@ export const oppijaContentP = (oppijaOid) => {
 
   const shouldThrottle = (batch) => {
     let model = batch[1]
-    return model && model.type == 'string'
+    var willThrottle = model && (model.type == 'string' || model.oneOfClass == 'localizedstring')
+    return willThrottle
   }
 
   const localModificationE = changeBus.flatMap(firstBatch => {

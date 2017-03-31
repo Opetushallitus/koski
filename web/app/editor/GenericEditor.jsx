@@ -4,7 +4,7 @@ import {modelLookup, contextualizeModel, addContext} from './EditorModel'
 
 export const Editor = React.createClass({
   render() {
-    let { model, editorMapping, changeBus, errorBus, doneEditingBus, path, edit } = this.props
+    let { model, editorMapping, changeBus, errorBus, doneEditingBus, path, edit, hideOptional } = this.props
     if (!model.context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
@@ -17,19 +17,23 @@ export const Editor = React.createClass({
         editorMapping
       })
     }
-    if (edit != undefined) {
-      model = addContext(model, { edit })
-    }
+    model = addContext(model, { edit: parseBool(edit), hideOptional: parseBool(hideOptional) })
     return getModelEditor(model, path)
   }
 })
+const parseBool = (b) => {
+  if (typeof b === 'string') {
+    return b === 'true'
+  }
+  return b
+}
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }
 Editor.canShowInline = (component) => (getEditorFunction(component.props.model).canShowInline || (() => false))(component)
 Editor.zeroValue = (component) => (getEditorFunction(component.props.model).zeroValue || (() => null))(component)
 
-export const NullEditor = React.createClass({
+const NullEditor = React.createClass({
   render() {
     return null
   }

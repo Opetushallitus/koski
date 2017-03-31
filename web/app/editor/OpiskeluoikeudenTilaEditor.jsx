@@ -9,30 +9,29 @@ import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx
 export const OpiskeluoikeudenTilaEditor = React.createClass({
   render() {
     let {model} = this.props
-    let jaksotModel = modelLookup(model, 'tila.opiskeluoikeusjaksot')
+    let jaksotModel = opiskeluoikeusjaksot(model)
     let {addingNew} = this.state
     let items = modelItems(jaksotModel).slice(0).reverse()
-    let suorituksiaKesken = jaksotModel.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(model, 'suoritukset') || [])
+    let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(model, 'suoritukset') || [])
 
     let showAddDialog = () => {
       this.setState({addingNew: true})
     }
 
     let removeItem = () => {
-      if (this.onLopputila(modelLookup(items[0], 'tila'))) {
+      if (onLopputila(modelLookup(items[0], 'tila'))) {
         let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
         resetOptionalModel(paattymispaivaModel)
       }
-      jaksotModel.context.changeBus.push([items[0].context, undefined])
+      model.context.changeBus.push([items[0].context, undefined])
       this.setState({addingNew: false})
     }
 
-    let lastOpiskeluoikeudenTila = modelData(modelLookup(items[0], 'tila'))
-    let showLisaaTila = !lastOpiskeluoikeudenTila || lastOpiskeluoikeudenTila.koodiarvo === 'lasna' || lastOpiskeluoikeudenTila.koodiarvo === 'valiaikaisestikeskeytynyt'
+    let showLisaaTila = !onLopputilassa(model)
     let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
 
     return (
-      jaksotModel.context.edit ?
+      model.context.edit ?
         <div>
           <ul ref="ul" className="array">
             {
@@ -63,7 +62,7 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
     if (uusiJakso) {
       let {model} = this.props
       let tilaModel = modelLookup(uusiJakso, 'tila')
-      if (this.onLopputila(tilaModel)) {
+      if (onLopputila(tilaModel)) {
         let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
         let uudenJaksonAlku = modelLookup(uusiJakso, 'alku')
         model.context.changeBus.push([paattymispaivaModel.context, uudenJaksonAlku])
@@ -71,9 +70,21 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       model.context.changeBus.push([uusiJakso.context, uusiJakso])
     }
     this.setState({addingNew: false})
-  },
-  onLopputila(tilaModel) {
-    let tila = modelData(tilaModel).koodiarvo
-    return tila === 'eronnut' || tila === 'valmistunut' || tila === 'katsotaaneronneeksi'
   }
 })
+
+export const onLopputila = (tila) => {
+  let koodi = modelData(tila).koodiarvo
+  return koodi === 'eronnut' || koodi === 'valmistunut' || koodi === 'katsotaaneronneeksi'
+}
+
+export const onLopputilassa = (opiskeluoikeus) => {
+  let jaksot = modelItems(opiskeluoikeusjaksot(opiskeluoikeus))
+  let viimeinenJakso = jaksot.last()
+  if (!viimeinenJakso) return false
+  return onLopputila(modelLookup(viimeinenJakso, 'tila'))
+}
+
+export const opiskeluoikeusjaksot = (opiskeluoikeus) => {
+  return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
+}

@@ -13,7 +13,8 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 
   let alkuPäiväModel = modelP.map(m => modelLookup(m, 'alku'))
   let tilaModel = modelP.map(m => modelLookup(m, 'tila'))
-  let validP = tilaModel.changes().map(true).toProperty(false).and(errorP.not())
+  var tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
+  let validP = tilaSelectedP.and(errorP.not())
 
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 

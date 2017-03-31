@@ -150,7 +150,8 @@ case class OrganisaatioEnumBuilder(t: ClassSchema)(implicit context: ModelBuilde
 object KoodistoEnumModelBuilder {
   val defaults = Map(
     "kieli" -> "FI",
-    "arviointiasteikkoyleissivistava" -> "S"
+    "arviointiasteikkoyleissivistava" -> "S",
+    "suorituksentila" -> "KESKEN"
   )
 }
 

@@ -96,15 +96,18 @@ export const childContext = (context, ...pathElems) => {
   return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
 }
 
+const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v]) => v !== undefined))
+
 // Add more context parameters to the current context of the model.
-export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, additionalContext))
+export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
 
 export const applyChanges = (modelBeforeChange, changes) => {
   let basePath = modelBeforeChange.context ? modelBeforeChange.context.path : ''
-  return R.splitEvery(2, changes).reduce((acc, [context, model]) => {
+  var withAppliedChanges = R.splitEvery(2, changes).reduce((acc, [context, model]) => {
     var subPath = removeCommonPath(context.path, basePath)
     return modelSet(acc, model, subPath)
   }, modelBeforeChange)
+  return withAppliedChanges
 }
 
 const removeCommonPath = (p1, p2) => {

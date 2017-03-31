@@ -13,7 +13,7 @@ export const ObjectEditor = React.createClass({
     let representativeEditor = () => <Editor model={representative.model}/>
     let objectEditor = () => <div className={className}><PropertiesEditor model={model}/></div>
 
-    let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context.edit)).length == 1
+    let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context)).length == 1
     let isInline = ObjectEditor.canShowInline(this)
     let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' inline' : '')
 

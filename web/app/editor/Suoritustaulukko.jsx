@@ -30,7 +30,7 @@ const SuoritusEditor = React.createClass({
     let {model, showPakollisuus} = this.props
     let context = model.context
     let {expanded} = this.state
-    let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && shouldShowProperty(context.edit)(p)
+    let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && shouldShowProperty(context)(p)
     let properties = model.value.properties.filter(propertyFilter)
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
