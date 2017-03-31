@@ -15,7 +15,7 @@ export const LocalizedStringEditor = React.createClass({
     }
 
     let stringModel = addContext(modelLookup(model.optional ? optionalModel(model) : model, 'fi'), {changeBus: valueBus})
-    return <StringEditor model={model.optional ? R.merge(stringModel, {value: {data: modelTitle(model)}}) : stringModel} />
+    return <StringEditor model={model.optional ? R.merge(stringModel, {value: {data: modelTitle(model)}, optional: true}) : stringModel} />
   },
   getInitialState() {
     return {valueBus: Bacon.Bus()}

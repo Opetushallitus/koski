@@ -485,6 +485,21 @@ describe('Perusopetus', function() {
           expect(lisätiedot.getValue()).to.equal('Testitesti')
         })
       })
+      describe('Todistuksella näkyvien lisätietojen poisto', function() {
+        var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+        before(opinnot.valitseSuoritus('Peruskoulu'),
+               editor.edit,
+               lisätiedot.setValue("Testitesti"),
+               editor.doneEditing,
+               wait.until(page.isSavedLabelShown),
+               editor.edit,
+               lisätiedot.setValue(""),
+               editor.doneEditing,
+               wait.until(page.isSavedLabelShown))
+        it('Uudet lisätiedot näytetään', function() {
+          expect(lisätiedot.isVisible()).to.equal(false)
+        })
+      })
       describe('Oppiaineen laajuuden muutos', function() {
         before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu laajuus näytetään', function() {
