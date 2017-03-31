@@ -496,7 +496,7 @@ describe('Perusopetus', function() {
                lisätiedot.setValue(""),
                editor.doneEditing,
                wait.until(page.isSavedLabelShown))
-        it('Uudet lisätiedot näytetään', function() {
+        it('Lisätiedot piilotetaan', function() {
           expect(lisätiedot.isVisible()).to.equal(false)
         })
       })
