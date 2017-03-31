@@ -5,6 +5,7 @@ import {optionalModel, resetOptionalModel} from './OptionalEditor.jsx'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
 import {addContext, modelLookup, modelData, modelSet, modelTitle} from './EditorModel.js'
+import { delays } from '../delays'
 
 export const LocalizedStringEditor = React.createClass({
   render() {
@@ -23,7 +24,7 @@ export const LocalizedStringEditor = React.createClass({
   componentDidMount() {
     let {model} = this.props
     let {valueBus} = this.state
-    valueBus.onValue(([context,stringModel]) => {
+    valueBus.debounce(delays().stringInput).onValue(([context,stringModel]) => {
       if (!modelData(stringModel)) {
         resetOptionalModel(model)
       } else {
