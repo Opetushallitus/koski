@@ -10,9 +10,9 @@ export default ({className, onDismiss, onSubmit, children}) => {
 
   return (<div className={className + ' modal'}>
     <div className="modal-content">
-      <a className="close-modal" onClick={onDismiss}>&#10005;</a>
+      <a className="close-modal" onClick={() => onDismiss()}>&#10005;</a>
       { children }
-      <a onClick={onDismiss}>Peruuta</a>
+      <a onClick={() => onDismiss()}>Peruuta</a>
     </div>
     { doActionWhileMounted(keyE, handleKeys) }
   </div>)
