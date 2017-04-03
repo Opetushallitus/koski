@@ -500,6 +500,14 @@ describe('Perusopetus', function() {
           expect(lisätiedot.isVisible()).to.equal(false)
         })
       })
+      describe('Vieraan kielen valinta', function() {
+        var b1kieli = editor.subEditor('.oppiaineet tbody:eq(1) tr:eq(0)')
+        var kieli = b1kieli.propertyBySelector('.oppiaine')
+        before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.doneEditing)
+        it('muutettu kielivalinta näytetään', function() {
+          expect(kieli.getValue()).to.equal('saksa')
+        })
+      })
       describe('Oppiaineen laajuuden muutos', function() {
         before(editor.edit, editor.property('laajuus').setValue('2'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu laajuus näytetään', function() {

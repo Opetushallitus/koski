@@ -55,7 +55,7 @@ const Oppiainetaulukko = React.createClass({
           </tr>
         </thead>
         {
-          suoritukset.map((oppiaine, i) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} showExpand={showExpand} showFootnotes={showFootnotes}/> ))
+          suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showExpand={showExpand} showFootnotes={showFootnotes}/> ))
         }
       </table>
     )
@@ -66,19 +66,25 @@ const OppiaineEditor = React.createClass({
   render() {
     let {model, showLaajuus, showExpand, showFootnotes} = this.props
     let {expanded} = this.state
-    var oppiaine = modelTitle(model, 'koulutusmoduuli')
+    let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
-    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
-    if (pakollinen === false) {
-      oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
-    }
+    let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let toggleExpand = () => { if (sanallinenArviointi) this.setState({expanded : !expanded}) }
+
+    let oppiaineTitle = (aine) => {
+      let title = kielenOppiaine ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
+      return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
+    }
+
     return (<tbody className={expanded && 'expanded'}>
       <tr>
         <td className="oppiaine">
           { showExpand && <a className={ sanallinenArviointi ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
           {
-            showExpand && sanallinenArviointi ? <a className="nimi" onClick={toggleExpand}>{oppiaine}</a> : <span className="nimi">{oppiaine}</span>
+            showExpand && sanallinenArviointi ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+          }
+          {
+            kielenOppiaine && <span className="value"><Editor model={modelLookup(model, 'koulutusmoduuli.kieli')}/></span>
           }
         </td>
         <td className="arvosana">
