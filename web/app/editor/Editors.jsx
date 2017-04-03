@@ -15,6 +15,7 @@ import {JaksoEditor} from './JaksoEditor.jsx'
 import {BooleanEditor} from './BooleanEditor.jsx'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
+import {ToimipisteEditor} from './ToimipisteEditor.jsx'
 import * as Ammatillinen from './Ammatillinen.jsx'
 import * as Perusopetus from './Perusopetus.jsx'
 
@@ -35,5 +36,6 @@ export const editorMapping = R.mergeAll([{
   'koulutus' : KoulutusmoduuliEditor,
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
   'paatosjakso': PäivämääräväliEditor,
-  'jakso': JaksoEditor
+  'jakso': JaksoEditor,
+  'organisaatiowithoid': ToimipisteEditor
 }, Ammatillinen.editorMapping, Perusopetus.editorMapping])

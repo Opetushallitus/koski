@@ -3,7 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
@@ -32,10 +32,6 @@ object EditorModelBuilder {
       Class.forName(t.fullClassName) match {
         case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
           KoodistoEnumModelBuilder(t)
-        case c if classOf[Oppilaitos].isAssignableFrom(c) =>
-          OppilaitosEnumBuilder(t)
-        case c if classOf[OrganisaatioWithOid].isAssignableFrom(c) =>
-          OrganisaatioEnumBuilder(t)
         case c =>
           ObjectModelBuilder(t)
       }
@@ -121,18 +117,6 @@ trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
   def prototypeKey: String
   def buildPrototypePlaceholder = PrototypeModel(prototypeKey)
   def buildPrototype: EditorModel
-}
-
-case class OppilaitosEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
-  override def alternativesPath = "/koski/api/editor/oppilaitokset"
-  override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  def buildPrototype: EditorModel = buildModelForObject(Oppilaitos(""))
-}
-
-case class OrganisaatioEnumBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[OrganisaatioWithOid] {
-  override def alternativesPath = "/koski/api/editor/organisaatiot"
-  override def toEnumValue(o: OrganisaatioWithOid) = organisaatioEnumValue(context)(o)
-  def buildPrototype: EditorModel = buildModelForObject(OidOrganisaatio(""))
 }
 
 object KoodistoEnumModelBuilder {

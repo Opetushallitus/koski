@@ -39,9 +39,15 @@ export default BaconComponent({
       )
     }
 
+    let selectionStr = selectedOrg.nimi // TODO: users should always supply the localized value here
+      ? selectedOrg.nimi.fi
+        ? selectedOrg.nimi.fi
+        : selectedOrg.nimi
+      : noSelectionText
+
     return (
       <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
-        <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : noSelectionText}</div>
+        <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectionStr }</div>
         { open &&
         <div className="organisaatio-popup">
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
