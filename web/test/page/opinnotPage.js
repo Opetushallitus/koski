@@ -21,6 +21,9 @@ function OpinnotPage() {
         }
       }
     },
+    suoritusTabs: function() {
+      return textsOf(S('.suoritus-tabs li:not(.add-suoritus)'))
+    },
     onTallennettavissa: function() {
       return S('.toggle-edit.editing').is(':visible')
     },
@@ -53,6 +56,12 @@ function OpinnotPage() {
     lisääSuoritusVisible: function() {
       return S(".add-suoritus").is(":visible")
     },
+    lisääSuoritus: function() {
+      triggerEvent(S(".add-suoritus a"), 'click')
+    },
+    lisääSuoritusDialog: function() {
+      return LisääSuoritusDialog()
+    },
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -82,6 +91,21 @@ function OpinnotPage() {
     }
   }
 
+  return api
+}
+
+function LisääSuoritusDialog() {
+  function elem() { return findSingle('.lisaa-suoritus-modal')}
+  function buttonElem() { return findSingle('button', elem())}
+  var api = _.merge({
+    isEnabled: function() {
+      return !buttonElem().is(':disabled')
+    },
+    lisääSuoritus: function() {
+      triggerEvent(buttonElem(), 'click')
+      return wait.forAjax()
+    }
+  }, {}, Editor(elem))
   return api
 }
 

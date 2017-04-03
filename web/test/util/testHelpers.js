@@ -196,7 +196,7 @@ function takeScreenshot(name) {
 }
 
 function textsOf(elements) {
-  return toArray(elements).map(function(el) { return $(el).text() })
+  return toArray(elements).map(function(el) { return $(el).text().trim() })
 }
 
 

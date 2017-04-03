@@ -623,13 +623,6 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Suorituksen lisääminen', function() {
-      before(editor.edit)
-      it('Päätason suorituksen voi lisätä', function() {
-        expect(opinnot.lisääSuoritusVisible()).to.equal(true)
-      })
-    })
-
     describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
       it('Muutokset estetty', function() {
@@ -642,6 +635,54 @@ describe('Perusopetus', function() {
       it('Muutokset estetty', function() {
         var suoritus = opinnot.opiskeluoikeusEditor()
         expect(suoritus.isEditable()).to.equal(false)
+      })
+    })
+  })
+
+  describe('Vuosiluokan suorituksen lisääminen', function() {
+    var editor = opinnot.opiskeluoikeusEditor()
+    before(resetFixtures,
+           Authentication().login(),
+           page.openPage,
+           page.oppijaHaku.searchAndSelect('220109-784L'),
+           editor.edit
+    )
+    describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
+      it('Päätason suoritusta ei voi lisätä', function() {
+        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+      })
+    })
+    describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
+      before(editor.property('tila').removeItem(0))
+      describe('Ennen lisäystä', function() {
+        it('Päätason suorituksen voi lisätä', function() {
+          expect(opinnot.lisääSuoritusVisible()).to.equal(true)
+        })
+        it('Näytetään muut luokka-asteen suoritukset', function() {
+          expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka'])
+        })
+      })
+      describe('Lisättäessä', function() {
+        before(opinnot.lisääSuoritus)
+        var dialog = opinnot.lisääSuoritusDialog()
+        describe('Aluksi', function() {
+          it('Lisää-nappi on disabloitu', function() {
+            expect(dialog.isEnabled()).to.equal(false)
+          })
+        })
+        describe('Kun syötetään luokkatieto', function() {
+          before(dialog.property('luokka').setValue('1a'))
+          it('Lisää-nappi on enabloitu', function() {
+            expect(dialog.isEnabled()).to.equal(true)
+          })
+
+          describe('Kun painetaan Lisää-nappia', function() {
+            before(dialog.lisääSuoritus)
+            it('Näytetään uusi suoritus', function() {
+              expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka', '1. vuosiluokka'])
+            })
+          })
+        })
       })
     })
   })
