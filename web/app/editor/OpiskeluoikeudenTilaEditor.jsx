@@ -1,66 +1,21 @@
-import React from 'react'
+import React from 'baret'
 import R from 'ramda'
+import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
 
-export const OpiskeluoikeudenTilaEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    let jaksotModel = opiskeluoikeusjaksot(model)
-    let {addingNew} = this.state
-    let items = modelItems(jaksotModel).slice(0).reverse()
-    let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(model, 'suoritukset') || [])
+export const OpiskeluoikeudenTilaEditor = ({model}) => {
+  let jaksotModel = opiskeluoikeusjaksot(model)
+  let addingNew = Atom(false)
+  let items = modelItems(jaksotModel).slice(0).reverse()
+  let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(model, 'suoritukset') || [])
+  let showAddDialog = () => addingNew.modify(x => !x)
 
-    let showAddDialog = () => {
-      this.setState({addingNew: true})
-    }
-
-    let removeItem = () => {
-      if (onLopputila(modelLookup(items[0], 'tila'))) {
-        let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
-        resetOptionalModel(paattymispaivaModel)
-      }
-      model.context.changeBus.push([items[0].context, undefined])
-      this.setState({addingNew: false})
-    }
-
-    let showLisaaTila = !onLopputilassa(model)
-    let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
-
-    return (
-      model.context.edit ?
-        <div>
-          <ul ref="ul" className="array">
-            {
-              items.map((item, i) => {
-                return (<li key={i}>
-                  <OpiskeluoikeusjaksoEditor model={item}/>
-                  {i === 0 && <a className="remove-item" onClick={removeItem}></a>}
-                </li>)
-              })
-            }
-            {
-              showLisaaTila && <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
-            }
-          </ul>
-          {
-            addingNew && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => this.lisääJakso(uusiJakso)} />
-          }
-        </div> :
-        <div><ArrayEditor reverse={true} model={jaksotModel}/></div>
-    )
-  },
-  getInitialState() {
-    return {
-      addingNew: false
-    }
-  },
-  lisääJakso(uusiJakso) {
+  let lisääJakso = (uusiJakso) => {
     if (uusiJakso) {
-      let {model} = this.props
       let tilaModel = modelLookup(uusiJakso, 'tila')
       if (onLopputila(tilaModel)) {
         let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
@@ -69,9 +24,44 @@ export const OpiskeluoikeudenTilaEditor = React.createClass({
       }
       model.context.changeBus.push([uusiJakso.context, uusiJakso])
     }
-    this.setState({addingNew: false})
+    addingNew.set(false)
   }
-})
+
+  let removeItem = () => {
+    if (onLopputila(modelLookup(items[0], 'tila'))) {
+      let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
+      resetOptionalModel(paattymispaivaModel)
+    }
+    model.context.changeBus.push([items[0].context, undefined])
+    addingNew.set(false)
+  }
+
+  let showLisaaTila = !onLopputilassa(model)
+  let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
+
+  return (
+    model.context.edit ?
+      <div>
+        <ul className="array">
+          {
+            items.map((item, i) => {
+              return (<li key={i}>
+                <OpiskeluoikeusjaksoEditor model={item}/>
+                {i === 0 && <a className="remove-item" onClick={removeItem}></a>}
+              </li>)
+            })
+          }
+          {
+            showLisaaTila && <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
+          }
+        </ul>
+        {
+          addingNew.map(adding => adding && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => lisääJakso(uusiJakso)} />)
+        }
+      </div> :
+      <div><ArrayEditor reverse={true} model={jaksotModel}/></div>
+  )
+}
 
 export const onLopputila = (tila) => {
   let koodi = modelData(tila).koodiarvo

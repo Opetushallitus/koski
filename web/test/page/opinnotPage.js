@@ -41,8 +41,10 @@ function OpinnotPage() {
       }
     },
     avaaLisaysDialogi: function() {
-      triggerEvent(S('.opiskeluoikeuden-tiedot .add-item a'), 'click')
-      return wait.forAjax()
+      if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
+        triggerEvent(S('.opiskeluoikeuden-tiedot .add-item a'), 'click')
+        return wait.forAjax()
+      }
     },
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {

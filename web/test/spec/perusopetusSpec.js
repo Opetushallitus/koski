@@ -386,33 +386,35 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe('Virheellinen päivämäärä', function() {
-          before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'))
-          it('Tallennus on estetty', function() {
-            expect(opiskeluoikeus.isEnabled()).to.equal(false)
+        describe('Päivämäärän validointi', function() {
+          before(editor.edit, opinnot.avaaLisaysDialogi)
+          describe('Virheellinen päivämäärä', function() {
+            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'))
+            it('Tallennus on estetty', function() {
+              expect(opiskeluoikeus.isEnabled()).to.equal(false)
+            })
           })
-        })
 
-        describe('Virheellinen päivämäärä ja tilan muutos', function() {
-          before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.tila().click('input[value="valmistunut"]'))
-          it('Tallennus on estetty', function() {
-            expect(opiskeluoikeus.isEnabled()).to.equal(false)
+          describe('Virheellinen päivämäärä ja tilan muutos', function() {
+            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.tila().click('input[value="valmistunut"]'))
+            it('Tallennus on estetty', function() {
+              expect(opiskeluoikeus.isEnabled()).to.equal(false)
+            })
           })
-        })
 
-        describe('Uusi alkupäivä on aikaisempi kuin viimeisen tilan alkupäivämäärä', function() {
-          before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('14.8.2008'))
-          it('Tallennus on estetty', function() {
-            expect(opiskeluoikeus.isEnabled()).to.equal(false)
+          describe('Uusi alkupäivä on aikaisempi kuin viimeisen tilan alkupäivämäärä', function() {
+            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('14.8.2008'))
+            it('Tallennus on estetty', function() {
+              expect(opiskeluoikeus.isEnabled()).to.equal(false)
+            })
           })
-        })
 
-        describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
-          before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
-          it('Tallennus on sallittu', function() {
-            expect(opiskeluoikeus.isEnabled()).to.equal(true)
+          describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
+            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
+            it('Tallennus on sallittu', function() {
+              expect(opiskeluoikeus.isEnabled()).to.equal(true)
+            })
           })
-          after(editor.doneEditing, wait.until(page.isSavedLabelShown))
         })
       })
 
