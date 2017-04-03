@@ -81,7 +81,7 @@ ArrayEditor.canShowInline = (component) => {
   let items = modelItems(component.props.model)
   // consider inlineability of first item here. make a stateless "fake component" because the actual React component isn't available to us here.
   let fakeComponent = {props: { model: items[0] }}
-  return Editor.canShowInline(fakeComponent)
+  return items[0] && items[0].context.edit ? false : Editor.canShowInline(fakeComponent)
 }
 ArrayEditor.zeroValue = (component) => {
   let mdl = component.getUsedModel()

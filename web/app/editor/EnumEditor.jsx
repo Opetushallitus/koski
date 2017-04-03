@@ -49,7 +49,7 @@ export const EnumEditor = BaconComponent({
             </ul>
           )
         : (
-             <span className={className}><DropDown
+             <span className={'dropdown-wrapper ' + className}><DropDown
                options={filter(query)}
                keyValue={option => option.value}
                displayValue={option => option.title}
