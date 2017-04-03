@@ -1,28 +1,6 @@
 .modal {
   position: absolute;
-  &:before {
-    content: "";
-    transform: rotate(-315deg);
-    background: #FFFFFF;
-    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    height: 27px;
-    width: 27px;
-    top: 7px;
-    left: 68px;
-    z-index: 1;
-  }
-  &:after {
-    content: "";
-    transform: rotate(-315deg);
-    background: #FFFFFF;
-    position: absolute;
-    height: 27px;
-    width: 27px;
-    top: 7px;
-    left: 68px;
-    z-index: 3;
-  }
+
   .modal-content {
     position: absolute;
     padding: 30px;
@@ -48,5 +26,33 @@
     right: 18px;
     color: #5E5E5E;
     font-size: 18px;
+  }
+}
+
+.modal-with-arrow {
+  .modal;
+
+  &:before {
+    content: "";
+    transform: rotate(-315deg);
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    top: 7px;
+    left: 68px;
+    z-index: 1;
+  }
+  &:after {
+    content: "";
+    transform: rotate(-315deg);
+    background: #FFFFFF;
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    top: 7px;
+    left: 68px;
+    z-index: 3;
   }
 }
