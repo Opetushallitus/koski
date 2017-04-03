@@ -24,7 +24,7 @@ export const OpiskeluoikeusEditor = React.createClass({
       let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
       let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
       var suoritusIndex = SuoritusTabs.suoritusIndex(model)
-      if (suoritusIndex >= suoritukset.length) {
+      if (suoritusIndex < 0 || suoritusIndex >= suoritukset.length) {
         navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritukset[0])))
         return null
       }
