@@ -18,19 +18,7 @@ object EditorModelBuilder {
   }
 
   def builder(schema: Schema)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
-    case t: ClassSchema =>
-      Class.forName(t.fullClassName) match {
-        case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
-          KoodistoEnumModelBuilder(t)
-        case c if classOf[Oppilaitos].isAssignableFrom(c) =>
-          OppilaitosEnumBuilder(t)
-        case c if classOf[OrganisaatioWithOid].isAssignableFrom(c) =>
-          OrganisaatioEnumBuilder(t)
-        case c =>
-          ObjectModelBuilder(t)
-      }
-    case t: ClassRefSchema => modelBuilderForClass(context.mainSchema.getSchema(t.fullClassName).get)
-    case t: AnyOfSchema => OneOfModelBuilder(t)
+    case t: SchemaWithClassName => modelBuilderForClass(t)
     case t: ListSchema => ListModelBuilder(t)
     case t: OptionalSchema => OptionalModelBuilder(t)
     case t: NumberSchema => NumberModelBuilder(t)
