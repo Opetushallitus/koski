@@ -30,7 +30,7 @@ export const PropertiesEditor = React.createClass({
         let propertyClassName = 'property ' + property.key
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
-          : getValueEditor(property, () => <Editor model={property.editable ? property.model : addContext(property.model, { edit: false })}/> )
+          : getValueEditor(property, () => <Editor model={(property.editable || model.context.editAll ) ? property.model : addContext(property.model, { edit: false })}/> )
 
         return [(<tr className={propertyClassName} key={key}>
           {
@@ -55,7 +55,13 @@ export const PropertiesEditor = React.createClass({
   }
 })
 PropertiesEditor.canShowInline = () => false
-export const shouldShowProperty = (context) => (property) => (context.edit || !modelEmpty(property.model)) && !property.hidden && (!context.hideOptional || (property.model && !property.model.optional))
+
+export const shouldShowProperty = (context) => (property) => {
+  if (!context.edit && modelEmpty(property.model)) return false
+  if (property.hidden) return false
+  if (context.hideOptional && property.model.optional) return false
+  return true
+}
 
 export const TabularArrayEditor = React.createClass({
   render() {
