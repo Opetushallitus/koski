@@ -449,7 +449,8 @@ describe('Ammatillinen koulutus', function() {
           'Toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2013 Reijo Reksi\n' +
           'Tunnustettu\n' +
-          'Tutkinnon osa Moottorin korjaus\n' +
+          'Tutkinnon osa Tunniste 11-22-33\n' +
+          'Nimi Moottorin korjaus\n' +
           'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
           'Tila Suoritus valmis\n' +
           'Vahvistus 28.5.2002 Reijo Reksi\n' +
