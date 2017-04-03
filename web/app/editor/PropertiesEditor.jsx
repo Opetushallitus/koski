@@ -59,7 +59,6 @@ PropertiesEditor.canShowInline = () => false
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
   if (property.hidden) return false
-  if (context.hideOptional && property.model.optional) return false
   return true
 }
 

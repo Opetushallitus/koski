@@ -735,15 +735,24 @@ describe('Perusopetus', function() {
             })
 
             describe('Lisättäessä toinen vuosiluokan suoritus', function() {
-              before(editor.edit, opinnot.lisääSuoritus, dialog.propertyBySelector('.koulutusmoduuli .tunniste').setValue('2. vuosiluokka'), dialog.property('luokka').setValue('2a'), dialog.lisääSuoritus)
+              before(editor.edit, opinnot.lisääSuoritus, dialog.property('luokka').setValue('2a'))
 
-              it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
-                expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+              describe('Automaattinen valinta', function() {
+                it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
+                  expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('2. vuosiluokka')
+                })
               })
+              describe('Lisäyksen jälkeen', function() {
+                before(dialog.lisääSuoritus)
 
-              it('Uusi suoritus on valittuna', function() {
-                expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
-                expect(editor.property('luokka').getValue()).to.equal('2a')
+                it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
+                  expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+                })
+
+                it('Uusi suoritus on valittuna', function() {
+                  expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
+                  expect(editor.property('luokka').getValue()).to.equal('2a')
+                })
               })
 
             })

@@ -23,11 +23,6 @@ export const EnumEditor = BaconComponent({
     alternatives = model.zeroValue ? R.prepend(model.zeroValue, alternatives) : alternatives
     let defaultValue = model.value || model.zeroValue
 
-    let onChange = (option) => {
-      let data = model.zeroValue && option.value === model.zeroValue.value ? R.dissoc('value', model) : R.merge(model, { value: option })
-      model.context.changeBus.push([model.context, data])
-    }
-
     let filter = q => {
       return q ? alternatives.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : alternatives
     }
@@ -40,7 +35,7 @@ export const EnumEditor = BaconComponent({
                 alternatives.map(alternative =>
                   <li key={ alternative.value }>
                     <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
-                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
+                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => this.onChange(alternative)}/>
                       {alternative.title}
                     </label>
                   </li>
@@ -53,7 +48,7 @@ export const EnumEditor = BaconComponent({
                options={filter(query)}
                keyValue={option => option.value}
                displayValue={option => option.title}
-               onSelectionChanged={option => onChange(option)}
+               onSelectionChanged={option => this.onChange(option)}
                selected={defaultValue}
                onFilter={q => this.setState({query: q})}
              /></span>
@@ -62,16 +57,37 @@ export const EnumEditor = BaconComponent({
   },
 
   componentWillMount() {
-    this.propsE.map((props) => [props.model.alternativesPath, props.model.context.edit]).skipDuplicates(R.equals).onValues((alternativesPath, edit) => {
+    let interestingProps = (model) => [model.alternativesPath, model.context.edit]
+
+    this.propsE.map(props => props.model).skipDuplicates(R.eqBy(interestingProps)).onValue(model => {
+      let alternativesPath = model.alternativesPath
+      let edit = model.context.edit
       if (edit && alternativesPath) {
         let alternativesP = EnumEditor.AlternativesCache[alternativesPath]
         if (!alternativesP) {
           alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError)
           EnumEditor.AlternativesCache[alternativesPath] = alternativesP
         }
-        alternativesP.takeUntil(this.unmountE).onValue(alternatives => this.setState({alternatives}))
+        alternativesP.takeUntil(this.unmountE).onValue(alternatives => {
+          this.setState({alternatives})
+          if (model.value) {
+            let foundValue = alternatives.find(a => a.value == model.value.value)
+            if (!foundValue && alternatives[0]) {
+              // selected value not found in options -> pick first available option or zero value if optional
+              this.onChange(model.optional ? EnumEditor.zeroValue() : alternatives[0])
+            }
+          }
+        })
       }
     })
+  },
+
+  onChange(option) {
+    let model = this.props.model
+    let data = model.zeroValue && option.value === model.zeroValue.value
+      ? R.dissoc('value', model)
+      : R.merge(model, { value: option })
+    model.context.changeBus.push([model.context, data])
   },
 
   getInitialState() {

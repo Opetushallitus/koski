@@ -228,7 +228,7 @@ function Property(elem) {
       }
     },
     getValue: function() {
-      return findSingle('.value', elem()).text() || elem().find('input').val()
+      return elem().find('.value').text() || elem().find('input').val()
     },
     getText: function() {
       return extractAsText(elem())
