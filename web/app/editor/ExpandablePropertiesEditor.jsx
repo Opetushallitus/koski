@@ -40,6 +40,9 @@ export const ExpandablePropertiesEditor = React.createClass({
     if (!newProps.model.context.edit && this.props.model.context.edit) { // TODO: this is a bit dirty and seems that it's needed in many editors
       this.setState({ addingModel: undefined})
     }
+    if (newProps.model.context.edit && !this.props.model.context.edit && !modelEmpty(modelLookup(newProps.model, newProps.propertyName))) {
+      this.setState({open: true})
+    }
   },
   getInitialState() {
     return {open: false, addingModel: undefined}
