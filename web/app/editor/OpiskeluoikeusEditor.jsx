@@ -97,7 +97,7 @@ const SuoritusTabs = ({ model }) => {
     }
     {
       model.context.edit && !onLopputilassa(model) && UusiPerusopetuksenSuoritusPopup.canAddSuoritus(model) && (
-        <li className="add-suoritus"><a onClick={() => { addingAtom.set(true) }}><span className="plus"></span>lisää suoritus</a></li>
+        <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus"></span>lisää suoritus</a></li>
       )
     }
     {
