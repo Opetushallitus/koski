@@ -11,7 +11,7 @@ import {currentLocation} from '../location.js'
 import {yearFromFinnishDateString} from '../date'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
-import UusiSuoritusPopup from './UusiSuoritusPopup.jsx'
+import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.jsx'
 import {Editor} from './GenericEditor.jsx'
 import {navigateTo} from '../location'
 
@@ -75,7 +75,7 @@ export const OpiskeluoikeusEditor = React.createClass({
 
 const SuoritusTabs = ({ model }) => {
   let suoritukset = modelItems(model, 'suoritukset')
-  var tyyppi = modelData(model, 'tyyppi.koodiarvo')
+  let tyyppi = modelData(model, 'tyyppi.koodiarvo')
   let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
     addingAtom.set(false)
@@ -84,7 +84,6 @@ const SuoritusTabs = ({ model }) => {
       model.context.doneEditingBus.push((oppija) => {
         navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
       })
-
     }
   }
   return (<ul className="suoritus-tabs">
@@ -98,16 +97,15 @@ const SuoritusTabs = ({ model }) => {
       })
     }
     {
-      model.context.edit && tyyppi == 'perusopetus' && !onLopputilassa(model) && (
+      model.context.edit && !onLopputilassa(model) && UusiPerusopetuksenSuoritusPopup.canAddSuoritus(model) && (
         <li className="add-suoritus"><a onClick={() => { addingAtom.set(true) }}><span className="plus"></span>lisää suoritus</a></li>
       )
     }
     {
-      addingAtom.map(adding => adding && <UusiSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
+      addingAtom.map(adding => adding && <UusiPerusopetuksenSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
     }
   </ul>
 )}
-
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
 SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'

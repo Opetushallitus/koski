@@ -745,13 +745,25 @@ describe('Perusopetus', function() {
               describe('Lisäyksen jälkeen', function() {
                 before(dialog.lisääSuoritus)
 
-                it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
-                  expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+                describe('2. luokan suoritus', function() {
+                  it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
+                    expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+                  })
+
+                  it('Uusi suoritus on valittuna', function() {
+                    expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
+                    expect(editor.property('luokka').getValue()).to.equal('2a')
+                  })
                 })
 
-                it('Uusi suoritus on valittuna', function() {
-                  expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
-                  expect(editor.property('luokka').getValue()).to.equal('2a')
+                describe('Kun kaikki luokka-asteet on lisätty', function() {
+                  for (var i = 3; i <= 9; i++) {
+                    before(opinnot.lisääSuoritus, dialog.property('luokka').setValue(i + 'a'), dialog.lisääSuoritus)
+                  }
+
+                  it('Suorituksia ei voi enää lisätä', function() {
+                    expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                  })
                 })
               })
 

@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import { PropertiesEditor } from './PropertiesEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {
   childContext,
   contextualizeModel,
@@ -11,13 +11,12 @@ import {
   accumulateModelState,
   modelSet,
   addContext,
-  modelData
+  modelData,
+  modelLens
 } from './EditorModel'
 import ModalDialog from './ModalDialog.jsx'
-import {Editor} from './GenericEditor.jsx'
-import {modelLens} from './EditorModel';
 
-export default ({opiskeluoikeus, resultCallback}) => {
+const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
   var context = childContext(suoritukset.context, modelItems(suoritukset).length)
@@ -25,19 +24,10 @@ export default ({opiskeluoikeus, resultCallback}) => {
 
 
   let initialModel = contextualizeModel(suoritukset.arrayPrototype, context)
+  let selectedProto = initialModel.oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
 
-  if (initialModel.oneOfPrototypes) {
-    let selectedProto = initialModel.oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
-
-    let olemassaolevatLuokkaAsteet = modelItems(opiskeluoikeus, 'suoritukset')
-      .filter(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenvuosiluokka')
-      .map(suoritus => parseInt(modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')))
-
-    let puuttuvatLuokkaAsteet = [1,2,3,4,5,6,7,8,9].filter(x => !olemassaolevatLuokkaAsteet.includes(x))
-
-    initialModel = contextualizeModel(selectedProto, context)
-    initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet.join(',')) , initialModel)
-  }
+  initialModel = contextualizeModel(selectedProto, context)
+  initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
 
   let withToimipiste = modelSet(initialModel, toimipiste, 'toimipiste')
   let withEditAll = addContext(withToimipiste, { editAll: true })
@@ -57,3 +47,14 @@ export default ({opiskeluoikeus, resultCallback}) => {
     <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
   </ModalDialog>)
 }
+UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
+  let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
+  return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
+}
+export default UusiPerusopetuksenSuoritusPopup
+
+let puuttuvatLuokkaAsteet = (opiskeluoikeus) => [1,2,3,4,5,6,7,8,9].filter(x => !olemassaolevatLuokkaAsteet(opiskeluoikeus).includes(x))
+
+let olemassaolevatLuokkaAsteet = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset')
+  .filter(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenvuosiluokka')
+  .map(suoritus => parseInt(modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')))
