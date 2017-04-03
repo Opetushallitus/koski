@@ -61,7 +61,7 @@ export const oppijaContentP = (oppijaOid) => {
     }
   })
 
-  const saveOppijaE = doneEditingBus.map(() => oppijaBeforeSave => {
+  const saveOppijaE = doneEditingBus.map((onAfterLoad) => oppijaBeforeSave => {
     if (!oppijaBeforeSave.opiskeluoikeusPath) {
       return Bacon.once(oppijaBeforeSave)
     }
@@ -75,6 +75,7 @@ export const oppijaContentP = (oppijaOid) => {
     return Http.put('/koski/api/oppija', oppijaUpdate)
       .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
       .map( oppija => R.merge(oppija, { event: 'save' }))
+      .doAction(onAfterLoad)
   })
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE) // :: EventStream [Model -> EventStream[Model]]

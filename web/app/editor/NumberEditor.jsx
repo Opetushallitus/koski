@@ -12,7 +12,7 @@ export const NumberEditor = React.createClass({
       : data
 
     return model.context.edit
-      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange } className="inline number"></input>
+      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange } className="editor-input inline number"></input>
       : <span className="inline number">{value}</span>
   }
 })

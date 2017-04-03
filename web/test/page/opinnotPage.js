@@ -22,7 +22,7 @@ function OpinnotPage() {
       }
     },
     suoritusTabs: function() {
-      return textsOf(S('.suoritus-tabs li:not(.add-suoritus)'))
+      return textsOf(S('.suoritus-tabs > li:not(.add-suoritus)'))
     },
     onTallennettavissa: function() {
       return S('.toggle-edit.editing').is(':visible')
@@ -215,7 +215,7 @@ function Property(elem) {
     },
     setValue: function(value) {
       return function() {
-        return Page(elem).setInputValue('select, input', value)()
+        return Page(elem).setInputValue('.dropdown, .editor-input', value)()
       }
     },
     toPäivämääräväli: function() {

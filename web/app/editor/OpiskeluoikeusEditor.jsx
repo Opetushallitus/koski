@@ -23,9 +23,9 @@ export const OpiskeluoikeusEditor = React.createClass({
       let suoritukset = modelItems(model, 'suoritukset')
       let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
       let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-      var suoritusIndex = SuoritusTabs.suoritusIndex(context)
+      var suoritusIndex = SuoritusTabs.suoritusIndex(model)
       if (suoritusIndex >= suoritukset.length) {
-        navigateTo(SuoritusTabs.urlForTab(model, 0))
+        navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritukset[0])))
         return null
       }
       let valittuSuoritus = suoritukset[suoritusIndex]
@@ -64,7 +64,7 @@ export const OpiskeluoikeusEditor = React.createClass({
             <div className="suoritukset">
               <h4>Suoritukset</h4>
               <SuoritusTabs model={model}/>
-              <SuoritusEditor key={suoritusIndex} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
+              <SuoritusEditor key={tabName(valittuSuoritus)} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
             </div>
           </div>
         </div>)
@@ -81,16 +81,19 @@ const SuoritusTabs = ({ model }) => {
     addingAtom.set(false)
     if (suoritus) {
       model.context.changeBus.push([suoritus.context, suoritus])
-      model.context.doneEditingBus.push()
+      model.context.doneEditingBus.push((oppija) => {
+        navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
+      })
+
     }
   }
   return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
-        let selected = i == SuoritusTabs.suoritusIndex(model.context)
+        let selected = i == SuoritusTabs.suoritusIndex(model)
         let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
         return (<li className={selected ? 'selected': null} key={i}>
-          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, i) }> {titleEditor} </Link>}
+          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, tabName(suoritusModel)) }> {titleEditor} </Link>}
         </li>)
       })
     }
@@ -108,7 +111,14 @@ const SuoritusTabs = ({ model }) => {
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
 SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'
-SuoritusTabs.suoritusIndex = (context) => currentLocation().params[SuoritusTabs.suoritusQueryParam(context)] || 0
+SuoritusTabs.suoritusIndex = (model) => {
+  var paramName = SuoritusTabs.suoritusQueryParam(model.context)
+  let index = currentLocation().params[paramName] || 0
+  if (!isNaN(index)) return index // numeric index
+  return modelItems(model, 'suoritukset').map(tabName).indexOf(index)
+}
+
+const tabName = (suoritus) =>  modelTitle(suoritus, 'koulutusmoduuli.tunniste')
 
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {

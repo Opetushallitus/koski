@@ -11,7 +11,7 @@ export const BooleanEditor = React.createClass({
     }
 
     return model.context.edit
-      ? <input type="checkbox" defaultChecked={modelData(model)} onChange={ onChange }></input>
+      ? <input type="checkbox" className="editor-input" defaultChecked={modelData(model)} onChange={ onChange }></input>
       : <span className="inline string">{localizedBoolean(modelData(model))}</span>
   }
 })

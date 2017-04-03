@@ -22,7 +22,7 @@ export const StringEditor = React.createClass({
 
     let data = modelData(model)
     return model.context.edit
-      ? <input className={error ? 'error' : 'valid'} type="text" defaultValue={data} onChange={ onChange }></input>
+      ? <input className={error ? 'editor-input error' : 'editor-input valid'} type="text" defaultValue={data} onChange={ onChange }></input>
       : <span className="inline string">{!data ? '' : data.split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
   },
 
