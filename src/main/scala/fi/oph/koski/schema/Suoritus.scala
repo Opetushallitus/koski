@@ -13,7 +13,6 @@ trait Suoritus {
   @Discriminator
   def tyyppi: Koodistokoodiviite
   @Representative
-  @ReadOnly("Suorituksen koulutusmoduulia ei voi vaihtaa")
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate] = None

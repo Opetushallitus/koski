@@ -7,6 +7,7 @@ import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclus
 trait Koulutusmoduuli extends Localizable {
   @Representative
   @Discriminator
+  @ReadOnly("Tunnistetta ei voi muuttaa")
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString

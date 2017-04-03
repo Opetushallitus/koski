@@ -267,10 +267,22 @@
         margin-top: 20px;
       }
 
-      .koulutusmoduuli .diaarinumero {
-        margin-left: 1em;
-        color: @color-label;
+      .koulutusmoduuli {
+        .tunniste {
+          display: inline-block;
+        }
+        .diaarinumero {
+          margin-left: 1em;
+          color: @color-label;
+          label {
+            margin-right: 10px;
+          }
+          input {
+            width: 140px;
+          }
+        }
       }
+
     }
 
     a.opintosuoritusote {
