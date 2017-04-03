@@ -52,7 +52,7 @@ export default ({opiskeluoikeus, resultCallback}) => {
     <h2>Suorituksen lisäys</h2>
     <PropertiesEditor baret-lift
                       model={modelP}
-                      propertyFilter={property => !property.model.optional}
+                      propertyFilter={property => !property.model.optional && !['tila', 'jääLuokalle'].includes(property.key)}
                       />
     <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
   </ModalDialog>)
