@@ -75,13 +75,12 @@ export const OpiskeluoikeusEditor = React.createClass({
 
 const SuoritusTabs = ({ model }) => {
   let suoritukset = modelItems(model, 'suoritukset')
-  let tyyppi = modelData(model, 'tyyppi.koodiarvo')
   let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
     addingAtom.set(false)
     if (suoritus) {
       model.context.changeBus.push([suoritus.context, suoritus])
-      model.context.doneEditingBus.push((oppija) => {
+      model.context.doneEditingBus.push(() => {
         navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
       })
     }
