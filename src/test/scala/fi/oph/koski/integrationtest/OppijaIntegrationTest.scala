@@ -26,6 +26,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     o.opiskeluoikeudet.length should be >= 1
   }
 
+  /*
   "Virta-integraatio" taggedAs(KoskiDevEnvironment) in {
     searchForHenkilötiedot("290492-9455").map(_.oid).headOption match {
       case None => fail("Virta-testihenkilöä ei löydy")
@@ -34,6 +35,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
         o.opiskeluoikeudet.filter(_.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo) == Some("virta")).length should be >= 1
     }
   }
+  */
 
   "YTR-integraatio" taggedAs(KoskiDevEnvironment) in {
     searchForHenkilötiedot("140389-8638").map(_.oid).headOption match {
