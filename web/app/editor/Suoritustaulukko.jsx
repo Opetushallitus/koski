@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelData, modelTitle, modelLookup } from './EditorModel.js'
-import { Editor } from './GenericEditor.jsx'
+import { Editor } from './Editor.jsx'
 import { shouldShowProperty, PropertiesEditor } from './PropertiesEditor.jsx'
 
 export const Suoritustaulukko = React.createClass({

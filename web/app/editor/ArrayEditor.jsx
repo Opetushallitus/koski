@@ -2,7 +2,7 @@ import React from 'react'
 import BaconComponent from '../BaconComponent'
 import R from 'ramda'
 import {childContext, contextualizeModel, modelItems} from './EditorModel.js'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 
 export const ArrayEditor = BaconComponent({

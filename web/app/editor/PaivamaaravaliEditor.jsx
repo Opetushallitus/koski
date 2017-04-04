@@ -1,5 +1,5 @@
 import React from 'react'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 import {contextualizeModel, addContext, modelData, modelLookup, childContext, modelSet} from './EditorModel.js'
 import Bacon from 'baconjs'
 

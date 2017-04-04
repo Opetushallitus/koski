@@ -1,5 +1,5 @@
 import React from 'react'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 import {modelData} from './EditorModel.js'
 
 export const LaajuusEditor = React.createClass({

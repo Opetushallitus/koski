@@ -12,7 +12,7 @@ import {yearFromFinnishDateString} from '../date'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
 import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.jsx'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
 
 export const OpiskeluoikeusEditor = ({model}) => {

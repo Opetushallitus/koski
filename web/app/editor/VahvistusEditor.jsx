@@ -1,6 +1,6 @@
 import React from 'react'
 import {modelData, modelTitle, modelItems} from './EditorModel.js'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 
 export const VahvistusEditor = React.createClass({
   render() {

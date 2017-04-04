@@ -1,7 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 
 export const OptionalEditor = React.createClass({
   render() {

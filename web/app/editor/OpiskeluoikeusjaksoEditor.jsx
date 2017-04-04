@@ -1,6 +1,6 @@
 import React from 'react'
 import {modelTitle} from './EditorModel.js'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 
 export const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {

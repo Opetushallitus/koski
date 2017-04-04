@@ -1,6 +1,6 @@
 import React from 'react'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {Editor} from './GenericEditor.jsx'
+import {Editor} from './Editor.jsx'
 
 export const KoulutusmoduuliEditor = React.createClass({
   render() {
