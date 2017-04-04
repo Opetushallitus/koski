@@ -39,8 +39,6 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
   }
 })
 
-export const canAddSuoritus = () => {}
-
 const Oppiainetaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
