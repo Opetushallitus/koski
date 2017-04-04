@@ -8,6 +8,10 @@ export const ToimipisteEditor = ({model}) => {
     model.context.changeBus.push([model.context, updatedModel])
   }
   return model.context.edit
-    ? <OrganisaatioPicker selectedOrg={ modelData(model) } onSelectionChanged = { onSelectionChanged } />
+    ? <OrganisaatioPicker
+        selectedOrg={ modelData(model) }
+        onSelectionChanged = { onSelectionChanged }
+        canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'TOIMIPISTE') }
+    />
     : <span>{modelData(model, 'nimi.fi')}</span>
 }
