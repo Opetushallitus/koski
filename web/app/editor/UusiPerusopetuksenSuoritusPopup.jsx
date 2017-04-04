@@ -20,21 +20,24 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
   var context = childContext(suoritukset.context, modelItems(suoritukset).length)
-  let toimipiste = R.merge(modelLookup(opiskeluoikeus, 'oppilaitos'), { optional: false, optionalPrototypes: undefined })
 
 
-  let initialModel = contextualizeModel(suoritukset.arrayPrototype, context)
-  let selectedProto = initialModel.oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
+  let selectedProto = contextualizeModel(suoritukset.arrayPrototype, context).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
 
-  initialModel = contextualizeModel(selectedProto, context)
+  let initialModel = contextualizeModel(selectedProto, context)
   initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
 
-  let withToimipiste = modelSet(initialModel, toimipiste, 'toimipiste')
-  let withEditAll = addContext(withToimipiste, { editAll: true })
+  let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
+  if (viimeisin) {
+    initialModel = modelSet(initialModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
+  }
 
-  let { modelP, errorP } = accumulateModelState(withEditAll)
+  initialModel = addContext(initialModel, { editAll: true })
 
-  let validP = errorP.not()
+  let { modelP, errorP } = accumulateModelState(initialModel)
+
+  let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
+  let validP = errorP.not().and(hasToimipisteP)
 
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 
@@ -53,8 +56,19 @@ UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
 }
 export default UusiPerusopetuksenSuoritusPopup
 
-let puuttuvatLuokkaAsteet = (opiskeluoikeus) => [1,2,3,4,5,6,7,8,9].filter(x => !olemassaolevatLuokkaAsteet(opiskeluoikeus).includes(x))
+let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
+  var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).map(suorituksenLuokkaAste)
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(x => !olemassaOlevatLuokkaAsteet.includes(x))
+}
 
-let olemassaolevatLuokkaAsteet = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset')
+let olemassaolevatLuokkaAsteenSuoritukset = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset')
   .filter(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenvuosiluokka')
-  .map(suoritus => parseInt(modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')))
+
+let suorituksenLuokkaAste = (suoritus) => parseInt(modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo'))
+
+let viimeisinLuokkaAste = (opiskeluoikeus) => {
+  let suoritukset = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus)
+  if (suoritukset.length) {
+    return suoritukset.reduce(R.maxBy(suorituksenLuokkaAste))
+  }
+}

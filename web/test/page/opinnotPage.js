@@ -60,6 +60,7 @@ function OpinnotPage() {
     },
     lisääSuoritus: function() {
       triggerEvent(S(".add-suoritus a"), 'click')
+      return wait.forAjax()
     },
     lisääSuoritusDialog: function() {
       return LisääSuoritusDialog()
@@ -106,7 +107,8 @@ function LisääSuoritusDialog() {
     lisääSuoritus: function() {
       triggerEvent(buttonElem(), 'click')
       return wait.forAjax()
-    }
+    },
+    toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
   return api
 }

@@ -87,7 +87,7 @@ function KoskiPage() {
         if (className == "nimi" || className == "tutkinto" || className == "luokka") {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className + " input", value || "")().then(wait.forMilliseconds(500)).then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
         } else if (className == "oppilaitos") {
-          return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)
+          return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)()
         } else if (className == 'alkamispäivä') {
           triggerEvent(S('.date-range-selection'), 'click')
           return Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || "")()

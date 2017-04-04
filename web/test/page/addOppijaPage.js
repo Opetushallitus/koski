@@ -46,21 +46,13 @@ function AddOppijaPage() {
       }
     },
     enterOppilaitos: function(name) {
-      return function() {
-        return OrganisaatioHaku(form()).enter(name)
-      }
+      return OrganisaatioHaku(form).enter(name)
     },
     selectOppilaitos: function(name) {
-      return function() {
-        return OrganisaatioHaku(form()).select(name)
-      }
+      return OrganisaatioHaku(form).select(name)
     },
-    oppilaitokset: function() {
-      return OrganisaatioHaku(form()).oppilaitokset()
-    },
-    oppilaitos: function() {
-      return OrganisaatioHaku(form()).oppilaitos()
-    },
+    oppilaitokset: OrganisaatioHaku(form).oppilaitokset,
+    oppilaitos: OrganisaatioHaku(form).oppilaitos,
     selectTutkinto: function(name) {
       if (!name) { return wait.forAjax }
       return function() {

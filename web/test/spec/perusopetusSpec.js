@@ -3,6 +3,9 @@ describe('Perusopetus', function() {
   var login = LoginPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
+  var addOppija = AddOppijaPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
+
   var currentDate = new Date().getDate() + "." + (1 + new Date().getMonth()) + "." + new Date().getFullYear()
 
   before(Authentication().login(), resetFixtures)
@@ -248,7 +251,6 @@ describe('Perusopetus', function() {
       })
 
       describe('Opiskeluoikeuden tila', function() {
-        var opiskeluoikeus = OpiskeluoikeusDialog()
         before(editor.edit, editor.property('tila').removeItem(0), editor.doneEditing, wait.until(page.isSavedLabelShown))
 
         describe('Eronnut', function() {
@@ -641,60 +643,7 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('Vuosiluokan suorituksen lisääminen', function() {
-    var editor = opinnot.opiskeluoikeusEditor()
-    before(resetFixtures,
-           Authentication().login(),
-           page.openPage,
-           page.oppijaHaku.searchAndSelect('220109-784L'),
-           editor.edit
-    )
-    describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
-      it('Päätason suoritusta ei voi lisätä', function() {
-        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
-      })
-    })
-    describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
-      before(editor.property('tila').removeItem(0))
-      describe('Ennen lisäystä', function() {
-        it('Päätason suorituksen voi lisätä', function() {
-          expect(opinnot.lisääSuoritusVisible()).to.equal(true)
-        })
-        it('Näytetään muut luokka-asteen suoritukset', function() {
-          expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka'])
-        })
-      })
-      describe('Lisättäessä', function() {
-        before(opinnot.lisääSuoritus)
-        var dialog = opinnot.lisääSuoritusDialog()
-        describe('Aluksi', function() {
-          it('Lisää-nappi on disabloitu', function() {
-            expect(dialog.isEnabled()).to.equal(false)
-          })
-        })
-        describe('Kun syötetään luokkatieto', function() {
-          before(dialog.property('luokka').setValue('1a'))
-          it('Lisää-nappi on enabloitu', function() {
-            expect(dialog.isEnabled()).to.equal(true)
-          })
-
-          describe('Kun painetaan Lisää-nappia', function() {
-            before(dialog.lisääSuoritus)
-            it('Näytetään uusi suoritus', function() {
-              expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka', '1. vuosiluokka'])
-            })
-            it('Uusi suoritus on valittuna', function() {
-              expect(opinnot.getTutkinto()).to.equal('1. vuosiluokka')
-            })
-          })
-        })
-      })
-    })
-  })
-
   describe('Opiskeluoikeuden lisääminen', function() {
-    var addOppija = AddOppijaPage()
-
     describe('Uudelle henkilölle', function() {
       before(prepareForNewOppija('kalle', '230872-7258'))
 
@@ -724,52 +673,6 @@ describe('Perusopetus', function() {
           it('Lisätty opiskeluoikeus näytetään', function() {
             expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
             expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
-          })
-
-          describe('Lisättäessä vuosiluokan suoritus', function() {
-            var editor = opinnot.opiskeluoikeusEditor()
-            var dialog = opinnot.lisääSuoritusDialog()
-            before(editor.edit, opinnot.lisääSuoritus, dialog.property('luokka').setValue('1a'), dialog.lisääSuoritus)
-            var dialog = opinnot.lisääSuoritusDialog()
-
-            it('Näytetään uusi suoritus', function() {
-              expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '1. vuosiluokka'])
-            })
-
-            describe('Lisättäessä toinen vuosiluokan suoritus', function() {
-              before(editor.edit, opinnot.lisääSuoritus, dialog.property('luokka').setValue('2a'))
-
-              describe('Automaattinen valinta', function() {
-                it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
-                  expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('2. vuosiluokka')
-                })
-              })
-              describe('Lisäyksen jälkeen', function() {
-                before(dialog.lisääSuoritus)
-
-                describe('2. luokan suoritus', function() {
-                  it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
-                    expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
-                  })
-
-                  it('Uusi suoritus on valittuna', function() {
-                    expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
-                    expect(editor.property('luokka').getValue()).to.equal('2a')
-                  })
-                })
-
-                describe('Kun kaikki luokka-asteet on lisätty', function() {
-                  for (var i = 3; i <= 9; i++) {
-                    before(opinnot.lisääSuoritus, dialog.property('luokka').setValue(i + 'a'), dialog.lisääSuoritus)
-                  }
-
-                  it('Suorituksia ei voi enää lisätä', function() {
-                    expect(opinnot.lisääSuoritusVisible()).to.equal(false)
-                  })
-                })
-              })
-
-            })
           })
         })
       })
@@ -838,6 +741,105 @@ describe('Perusopetus', function() {
           )
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+      })
+    })
+  })
+
+  describe('Vuosiluokan suorituksen lisääminen', function() {
+    var editor = opinnot.opiskeluoikeusEditor()
+    var dialog = opinnot.lisääSuoritusDialog()
+
+    before(
+      prepareForNewOppija('kalle', '230872-7258'),
+      addOppija.enterValidDataPerusopetus(),
+      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'),
+      editor.edit
+    )
+    describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
+      before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna)
+
+      it('Päätason suoritusta ei voi lisätä', function() {
+        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+      })
+
+      after(editor.property('tila').removeItem(0))
+    })
+    describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
+      describe('Ennen lisäystä', function() {
+        it('Päätason suorituksen voi lisätä', function() {
+          expect(opinnot.lisääSuoritusVisible()).to.equal(true)
+        })
+        it('Näytetään muut päätason suoritukset', function() {
+          expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu'])
+        })
+      })
+      describe('Lisättäessä ensimmäinen', function() {
+        before(opinnot.lisääSuoritus)
+        describe('Aluksi', function() {
+          it('Lisää-nappi on disabloitu', function() {
+            expect(dialog.isEnabled()).to.equal(false)
+          })
+          it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
+            expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('1. vuosiluokka')
+          })
+        })
+        describe('Kun syötetään luokkatieto ja valitaan toimipiste', function() {
+          before(dialog.property('luokka').setValue('1a'), dialog.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'))
+          it('Lisää-nappi on enabloitu', function() {
+            expect(dialog.isEnabled()).to.equal(true)
+          })
+
+          describe('Kun painetaan Lisää-nappia', function() {
+            before(dialog.lisääSuoritus)
+            describe('Käyttöliittymän tila', function() {
+              it('Näytetään uusi suoritus', function() {
+                expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '1. vuosiluokka'])
+              })
+              it('Uusi suoritus on valittuna', function() {
+                expect(opinnot.getTutkinto()).to.equal('1. vuosiluokka')
+              })
+              it('Toimipiste on oikein', function() {
+                expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
+              })
+            })
+            describe('Lisättäessä toinen', function() {
+              before(opinnot.lisääSuoritus)
+              describe('Aluksi', function() {
+                it('Lisää-nappi on disabloitu', function() {
+                  expect(dialog.isEnabled()).to.equal(false)
+                })
+                it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
+                  expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('2. vuosiluokka')
+                })
+                it('Käytetään oletusarvona edellisen luokan toimipistettä', function() {
+                  expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
+                })
+              })
+              describe('Lisäyksen jälkeen', function() {
+                before(dialog.property('luokka').setValue('2a'), dialog.lisääSuoritus)
+
+                it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
+                  expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+                })
+
+                it('Uusi suoritus on valittuna', function() {
+                  expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
+                  expect(editor.property('luokka').getValue()).to.equal('2a')
+                })
+
+                describe('Kun kaikki luokka-asteet on lisätty', function() {
+                  for (var i = 3; i <= 9; i++) {
+                    before(opinnot.lisääSuoritus, dialog.property('luokka').setValue(i + 'a'), dialog.lisääSuoritus)
+                  }
+
+                  it('Suorituksia ei voi enää lisätä', function() {
+                    expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                  })
+                })
+              })
+            })
           })
         })
       })
