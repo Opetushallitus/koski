@@ -255,6 +255,7 @@ case class Perusopetus(
 case class PerusopetuksenLuokkaAste(
  @Description("Luokka-asteen tunniste (1-9)")
  @KoodistoUri("perusopetuksenluokkaaste")
+ @Title("Luokka-aste")
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
 ) extends KoodistostaLöytyväKoulutusmoduuli with PerusopetuksenDiaarinumerollinenKoulutus {

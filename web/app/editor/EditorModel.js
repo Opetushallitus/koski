@@ -71,6 +71,25 @@ export const modelItems = (mainModel, path) => {
   return (model && model.type == 'array' && model.value) || []
 }
 
+export const modelProperty = (mainModel, path) => {
+  path = toPath(path)
+  if (path.length > 1) {
+    return modelProperty(modelLookup(mainModel, path.slice(0, -1)), path.slice(-1))
+  }
+  if (!mainModel.value || !mainModel.value.properties) {
+    throw new Error('No properties found')
+  }
+  var found = mainModel.value.properties.find(p => p.key == path[0])
+  if (!found) {
+    throw new Error('Property ' + path[0] + ' not found')
+  }
+  return found
+}
+
+export const modelProperties = (mainModel, paths) => {
+  return paths.map(p => modelProperty(mainModel, p))
+}
+
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.

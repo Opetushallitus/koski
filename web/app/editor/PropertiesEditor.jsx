@@ -30,7 +30,7 @@ export const PropertiesEditor = React.createClass({
         let propertyClassName = 'property ' + property.key
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
-          : getValueEditor(property, () => <Editor model={(property.editable || model.context.editAll ) ? property.model : addContext(property.model, { edit: false })}/> )
+          : getValueEditor(property, () => <Editor model={(property.editable || context.editAll ) ? property.model : addContext(property.model, { edit: false })}/> )
 
         return [(<tr className={propertyClassName} key={key}>
           {

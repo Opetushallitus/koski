@@ -232,7 +232,7 @@ function Property(elem) {
       }
     },
     getValue: function() {
-      return elem().find('.value').text() || elem().find('input').val()
+      return elem().find('input').val() || elem().find('.value').text()
     },
     getText: function() {
       return extractAsText(elem())

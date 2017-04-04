@@ -782,7 +782,7 @@ describe('Perusopetus', function() {
             expect(dialog.isEnabled()).to.equal(false)
           })
           it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
-            expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('1. vuosiluokka')
+            expect(dialog.property('tunniste').getValue()).to.equal('1. vuosiluokka')
           })
         })
         describe('Kun syötetään luokkatieto ja valitaan toimipiste', function() {
@@ -811,7 +811,7 @@ describe('Perusopetus', function() {
                   expect(dialog.isEnabled()).to.equal(false)
                 })
                 it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
-                  expect(dialog.propertyBySelector('.koulutusmoduuli .tunniste').getValue()).to.equal('2. vuosiluokka')
+                  expect(dialog.property('tunniste').getValue()).to.equal('2. vuosiluokka')
                 })
                 it('Käytetään oletusarvona edellisen luokan toimipistettä', function() {
                   expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')

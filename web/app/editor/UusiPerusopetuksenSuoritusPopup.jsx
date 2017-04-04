@@ -12,7 +12,8 @@ import {
   modelSet,
   addContext,
   modelData,
-  modelLens
+  modelLens,
+  modelProperties
 } from './EditorModel'
 import ModalDialog from './ModalDialog.jsx'
 
@@ -43,10 +44,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
     <h2>Suorituksen lisäys</h2>
-    <PropertiesEditor baret-lift
-                      model={modelP}
-                      propertyFilter={property => !property.model.optional && !['tila', 'jääLuokalle'].includes(property.key)}
-                      />
+    <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
     <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
   </ModalDialog>)
 }
