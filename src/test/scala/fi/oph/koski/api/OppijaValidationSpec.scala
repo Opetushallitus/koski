@@ -153,13 +153,13 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Kun opinto-oikeutta yritetään lisätä koulutustoimijaan oppilaitoksen sijaan" - {
         "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.346830761110")) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio 1.2.246.562.10.346830761110 ei ole oppilaitos vaan koulutustoimija")))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"Organisaatio 1.2.246.562.10.346830761110 ei ole oppilaitos vaan koulutustoimija","errorType":"vääränTyyppinenOrganisaatio".*""".r)))
         }
       }
 
       "Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta" - {
         "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.146810761111")) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota 1.2.246.562.10.146810761111 ei löydy organisaatiopalvelusta")))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Organisaatiota 1.2.246.562.10.146810761111 ei löydy organisaatiopalvelusta","errorType":"organisaatioTuntematon"}.*""".r)))
         }
       }
 

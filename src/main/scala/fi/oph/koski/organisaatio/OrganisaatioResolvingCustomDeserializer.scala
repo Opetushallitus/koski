@@ -1,15 +1,13 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.scalaschema.extraction.CustomDeserializer
+import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
 import fi.oph.scalaschema.{ExtractionContext, Metadata, SchemaValidatingExtractor, SchemaWithClassName}
 import org.json4s._
 
 case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: OrganisaatioRepository) extends CustomDeserializer with Logging {
-  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext) = {
+  override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext): Either[List[ValidationError], Any] = {
     SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil)) match {
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
@@ -17,9 +15,9 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
           case Some(org) if (c == classOf[OidOrganisaatio] || c.isInstance(org)) =>
             Right(org)
           case Some(org) =>
-            throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase))
+            Left(List(ValidationError(context.path, json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
           case None =>
-            throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
+            Left(List(ValidationError(context.path, json, OtherViolation("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta", "organisaatioTuntematon"))))
         }
       case Right(org: Organisaatio) => Right(org)
       case errors => errors

@@ -1,10 +1,8 @@
 package fi.oph.koski.koodisto
 
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.scalaschema.extraction.CustomDeserializer
+import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
 import fi.oph.scalaschema.{ExtractionContext, Metadata, SchemaValidatingExtractor, SchemaWithClassName}
 import org.json4s._
 
@@ -18,13 +16,13 @@ case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePal
         } catch {
           case e: Exception =>
             logger.error(e)("Error from koodisto-service")
-            throw new InvalidRequestException(KoskiErrorCategory.internalError())
+            None
         }
         validated match {
           case Some(viite) =>
             Right(viite)
           case None =>
-            throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia " + viite + " ei löydy koodistosta"))
+            Left(List(ValidationError(context.path, json, OtherViolation("Koodia " + viite + " ei löydy koodistosta", "tuntematonKoodi"))))
         }
       case errors => errors
     }
