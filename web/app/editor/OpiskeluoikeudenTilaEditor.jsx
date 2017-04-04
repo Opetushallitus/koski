@@ -6,6 +6,7 @@ import {resetOptionalModel} from './OptionalEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
+import {modelSetValue} from './EditorModel';
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let jaksotModel = opiskeluoikeusjaksot(model)
@@ -20,7 +21,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
       if (onLopputila(tilaModel)) {
         let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
         let uudenJaksonAlku = modelLookup(uusiJakso, 'alku')
-        model.context.changeBus.push([paattymispaivaModel.context, uudenJaksonAlku])
+        model.context.changeBus.push([paattymispaivaModel.context, modelSetValue(paattymispaivaModel, uudenJaksonAlku.value)])
       }
       model.context.changeBus.push([uusiJakso.context, uusiJakso])
     }
