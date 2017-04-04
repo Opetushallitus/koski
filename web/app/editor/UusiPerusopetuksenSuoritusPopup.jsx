@@ -21,8 +21,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
   var context = childContext(suoritukset.context, modelItems(suoritukset).length)
-
-
+  
   let selectedProto = contextualizeModel(suoritukset.arrayPrototype, context).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
 
   let initialModel = contextualizeModel(selectedProto, context)

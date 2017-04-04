@@ -79,6 +79,8 @@ const SuoritusTabs = ({ model }) => {
     if (suoritus) {
       model.context.changeBus.push([suoritus.context, suoritus])
       navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
+    } else {
+      addingAtom.set(false)
     }
   }
   return (<ul className="suoritus-tabs">
