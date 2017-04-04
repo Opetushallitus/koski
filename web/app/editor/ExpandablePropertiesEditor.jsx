@@ -9,7 +9,7 @@ export const ExpandablePropertiesEditor = React.createClass({
 
     let propertiesModel = modelLookup(model, propertyName)
 
-    return propertiesModel.value || model.context.edit ?
+    return modelData(model, propertyName) || model.context.edit ?
       <div className={'expandable-container ' + propertyName}>
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
         { (open && propertiesModel.value) ?
