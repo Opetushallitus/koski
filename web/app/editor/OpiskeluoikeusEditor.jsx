@@ -44,9 +44,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
           <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
         </h3>
-        <div className="opiskeluoikeus-content">
-          <div className="shield"/>
-          <div className={mdl.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
+        <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
+          <div className="opiskeluoikeuden-tiedot">
             {editLink}
             <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
             <div className="alku-loppu">

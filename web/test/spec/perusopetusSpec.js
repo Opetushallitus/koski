@@ -35,7 +35,7 @@ describe('Perusopetus', function() {
             'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus 9\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
             'Uskonto tai elämänkatsomustieto 10\n' +
@@ -97,7 +97,7 @@ describe('Perusopetus', function() {
             'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus 9\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
             'Uskonto tai elämänkatsomustieto 10\n' +
@@ -909,7 +909,7 @@ describe('Perusopetus', function() {
           'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
           'Pakolliset oppiaineet\n' +
           'Oppiaine Arvosana\n' +
-          'Äidinkieli ja kirjallisuus 7 †\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 7 †\n' +
           'A1-kieli, englanti 10 †\n' +
           'B1-kieli, ruotsi 6 †\n' +
           'Matematiikka 6 †\n' +

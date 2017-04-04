@@ -68,10 +68,11 @@ const OppiaineEditor = React.createClass({
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
+    let äidinkieli = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let toggleExpand = () => { if (sanallinenArviointi) this.setState({expanded : !expanded}) }
 
     let oppiaineTitle = (aine) => {
-      let title = kielenOppiaine ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
+      let title = kielenOppiaine || äidinkieli ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
       return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
 
@@ -83,7 +84,7 @@ const OppiaineEditor = React.createClass({
           showExpand && sanallinenArviointi ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
         }
         {
-          kielenOppiaine && <span className="value"><Editor model={modelLookup(model, 'koulutusmoduuli.kieli')}/></span>
+          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={modelLookup(model, 'koulutusmoduuli.kieli')}/></span>
         }
       </td>
       <td className="arvosana">
@@ -101,7 +102,7 @@ const OppiaineEditor = React.createClass({
       }
       {
         showLaajuus && (<td className="laajuus">
-          <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} />
+          <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} showUnit={!model.context.edit}/>
         </td>)
       }
     </tr>

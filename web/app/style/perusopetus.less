@@ -79,10 +79,24 @@
   }
 }
 
-.oppija .opiskeluoikeus {
+.oppija .opiskeluoikeus .editing {
 
-  .luokka input {
-    width: 50px;
+  .suoritukset .oppiaineet {
+    .oppiaine {
+      .dropdown {
+        float: right;
+        margin-right: 15px;
+        width: initial;
+        max-width: initial;
+      }
+      .nimi {
+        line-height: 32px;
+      }
+    }
+    .laajuus {
+      width: auto;
+      text-align: right;
+    }
   }
 
   .tukimuodot {
@@ -98,5 +112,9 @@
     .dropdown-wrapper {
       display: inline-block;
     }
+  }
+
+  .luokka input {
+    width: 50px;
   }
 }
