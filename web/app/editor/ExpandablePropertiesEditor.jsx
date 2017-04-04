@@ -5,17 +5,14 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 export const ExpandablePropertiesEditor = React.createClass({
   render() {
     let {model, propertyName} = this.props
-    let edit = model.context.edit
-    let {open, addingModel} = this.state
-    // TODO: state needs to reset on context switch (tab switch), how to detect?
-    // TODO: similar logic for pushing the newly created value should be included in OptionalEditor, ArrayEditor
-    //console.log({edit, open, addingModel})
-    let propertiesModel = addingModel || modelLookup(model, propertyName)
+    let {open} = this.state
 
-    return modelData(model, propertyName) || edit ?
+    let propertiesModel = modelLookup(model, propertyName)
+
+    return propertiesModel.value || model.context.edit ?
       <div className={'expandable-container ' + propertyName}>
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a>
-        { (open && propertiesModel.value) ? // can be "open" without value, when 1. edit, 2. doneWithEdit : still open, but new value from server still missing
+        { (open && propertiesModel.value) ?
           <div className="value">
             <PropertiesEditor model={propertiesModel} />
           </div> : null
@@ -24,27 +21,23 @@ export const ExpandablePropertiesEditor = React.createClass({
   },
   toggleOpen() {
     let {model, propertyName} = this.props
-    let edit = model.context.edit
     let propertiesModel = modelLookup(model, propertyName)
-    if (edit && modelEmpty(propertiesModel) && !this.state.addingModel) {
+
+    if (model.context.edit && modelEmpty(propertiesModel)) {
       let addingModel = contextualizeModel(propertiesModel.optionalPrototype, propertiesModel.context)
       if (!modelData(addingModel)) {
         throw new Error('Prototype value data missing')
       }
       model.context.changeBus.push([addingModel.context, addingModel])
-      this.setState({addingModel})
     }
     this.setState({open: !this.state.open})
   },
   componentWillReceiveProps(newProps) {
-    if (!newProps.model.context.edit && this.props.model.context.edit) { // TODO: this is a bit dirty and seems that it's needed in many editors
-      this.setState({ addingModel: undefined})
-    }
     if (newProps.model.context.edit && !this.props.model.context.edit && !modelEmpty(modelLookup(newProps.model, newProps.propertyName))) {
       this.setState({open: true})
     }
   },
   getInitialState() {
-    return {open: false, addingModel: undefined}
+    return {open: false}
   }
 })
