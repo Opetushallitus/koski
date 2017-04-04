@@ -7,7 +7,7 @@ export const DateEditor = React.createClass({
   render() {
     let {model, isAllowedDate = () => true } = this.props
     let validityCallback = (valid) => model.context.errorBus.push([model.context, {error: !valid}])
-    let valueCallback = (date) => model.context.changeBus.push([model.context, modelSetValue(model, { data : formatISODate(date) , title: formatFinnishDate(date) })])
+    let valueCallback = (date) => model.context.changeBus.push([model.context, modelSetValue(model, date && { data : formatISODate(date) , title: formatFinnishDate(date) })])
     let dateInISOFormat = modelData(model)
     var dateValue = dateInISOFormat && parseISODate(dateInISOFormat)
     var optional = model.optional

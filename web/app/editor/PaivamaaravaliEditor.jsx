@@ -1,7 +1,9 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
 import {contextualizeModel, addContext, modelData, modelLookup, childContext, modelSet} from './EditorModel.js'
+import {resetOptionalModel} from './OptionalEditor.jsx'
 import Bacon from 'baconjs'
+import {modelEmpty} from './EditorModel'
 
 export const PäivämääräväliEditor = React.createClass({
   render() {
@@ -46,13 +48,16 @@ export const PäivämääräväliEditor = React.createClass({
     })
 
     rangeP.filter(isValidRangeP).changes().onValue(({alku, loppu}) => {
-      // TODO: remove whole value if all empty and is optional
-      let withAlku = modelSet(this.getUsedModel(), alku[1], 'alku')
-      let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
-      let context = model.context
+      if (modelEmpty(alku[1]) && modelEmpty(loppu[1]) && model.optional) {
+        resetOptionalModel(model)
+      } else {
+        let withAlku = modelSet(this.getUsedModel(), alku[1], 'alku')
+        let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
+        let context = model.context
 
-      var values = [context, withLoppu]
-      model.context.changeBus.push(values)
+        var values = [context, withLoppu]
+        model.context.changeBus.push(values)
+      }
     })
   }
 })
