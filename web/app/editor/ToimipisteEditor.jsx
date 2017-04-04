@@ -12,6 +12,7 @@ export const ToimipisteEditor = ({model}) => {
         selectedOrg={ modelData(model) }
         onSelectionChanged = { onSelectionChanged }
         canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'TOIMIPISTE') }
+        clearText=""
     />
     : <span>{modelData(model, 'nimi.fi')}</span>
 }
