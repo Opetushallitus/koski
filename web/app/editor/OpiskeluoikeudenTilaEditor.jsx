@@ -6,7 +6,7 @@ import {resetOptionalModel} from './OptionalEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
-import {modelSetValue} from './EditorModel';
+import {modelSetValue} from './EditorModel'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let jaksotModel = opiskeluoikeusjaksot(model)
