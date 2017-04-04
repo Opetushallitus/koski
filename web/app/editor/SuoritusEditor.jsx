@@ -5,7 +5,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import * as Lukio from './Lukio.jsx'
 import {Suoritustaulukko} from './Suoritustaulukko.jsx'
 import {LuvaEditor} from './LuvaEditor.jsx'
-import * as Perusopetus from './Perusopetus.jsx'
+import {PerusopetuksenOppiaineetEditor}  from './PerusopetuksenOppiaineetEditor.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -14,7 +14,7 @@ export const SuoritusEditor = React.createClass({
 
     let resolveEditor = (mdl) => {
       if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
-        return <Perusopetus.PerusopetuksenOppiaineetEditor model={mdl}/>
+        return <PerusopetuksenOppiaineetEditor model={mdl}/>
       }
       if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
         return <Suoritustaulukko suoritukset={modelItems(model, 'osasuoritukset') || []}/>
