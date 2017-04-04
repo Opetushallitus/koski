@@ -820,8 +820,8 @@ describe('Perusopetus', function() {
               describe('Lisäyksen jälkeen', function() {
                 before(dialog.property('luokka').setValue('2a'), dialog.lisääSuoritus)
 
-                it('Näytetään uudet suoritukset oikeassa järjestyksessä', function() {
-                  expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '2. vuosiluokka', '1. vuosiluokka'])
+                it('Uusin suoritus näytetään täbeissä viimeisenä', function() {
+                  expect(opinnot.suoritusTabs()).to.deep.equal(['Peruskoulu', '1. vuosiluokka', '2. vuosiluokka'])
                 })
 
                 it('Uusi suoritus on valittuna', function() {
@@ -838,6 +838,12 @@ describe('Perusopetus', function() {
                     expect(opinnot.lisääSuoritusVisible()).to.equal(false)
                   })
                 })
+              })
+            })
+            describe('Kun tallennetaan', function() {
+              before(editor.doneEditing, wait.until(page.isSavedLabelShown))
+              it('Tallennus onnistuu', function() {
+
               })
             })
           })

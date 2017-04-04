@@ -20,7 +20,18 @@ Bacon.Observable.prototype.flatScan = function(seed, f) {
 
 export const saveBus = Bacon.Bus()
 
+let currentState = null
+
 export const oppijaContentP = (oppijaOid) => {
+  if (!currentState || currentState.oppijaOid != oppijaOid ) {
+    currentState = {
+      oppijaOid, state: createState(oppijaOid)
+    }
+  }
+  return stateToContent(currentState.state)
+}
+
+const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
   const errorBus = Bacon.Bus()
   const doneEditingBus = Bacon.Bus()
@@ -87,17 +98,18 @@ export const oppijaContentP = (oppijaOid) => {
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
 
-  return Bacon.combineWith(oppijaP, (oppija) => {
-    return {
-      content: (<div className='content-area'><div className="main-content oppija">
-        <OppijaHaku/>
-        <Link className="back-link" href="/koski/">Opiskelijat</Link>
-        <ExistingOppija {...{oppija, changeBus, errorBus, doneEditingBus}}/>
-        </div></div>),
-      title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
-    }
-  })
+  return { oppijaP, changeBus, errorBus, doneEditingBus}
 }
+
+const stateToContent = ({ oppijaP, changeBus, errorBus, doneEditingBus}) => oppijaP.map(oppija => ({
+  content: (<div className='content-area'><div className="main-content oppija">
+    <OppijaHaku/>
+    <Link className="back-link" href="/koski/">Opiskelijat</Link>
+    <ExistingOppija {...{oppija, changeBus, errorBus, doneEditingBus}}/>
+  </div></div>),
+  title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
+}))
+
 
 export const ExistingOppija = React.createClass({
   render() {

@@ -15,74 +15,70 @@ import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.j
 import {Editor} from './GenericEditor.jsx'
 import {navigateTo} from '../location'
 
-export const OpiskeluoikeusEditor = React.createClass({
-  render() {
-    return (<TogglableEditor model={this.props.model} renderChild={ (model, editLink) => {
-      let context = model.context
-      let id = modelData(model, 'id')
-      let suoritukset = modelItems(model, 'suoritukset')
-      let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
-      let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-      var suoritusIndex = SuoritusTabs.suoritusIndex(model)
-      if (suoritusIndex < 0 || suoritusIndex >= suoritukset.length) {
-        navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritukset[0])))
-        return null
-      }
-      let valittuSuoritus = suoritukset[suoritusIndex]
+export const OpiskeluoikeusEditor = ({model}) => {
+  return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
+    let context = mdl.context
+    let id = modelData(mdl, 'id')
+    let suoritukset = modelItems(mdl, 'suoritukset')
+    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
+    let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
+    var suoritusIndex = SuoritusTabs.suoritusIndex(mdl)
+    if (suoritusIndex < 0 || suoritusIndex >= suoritukset.length) {
+      navigateTo(SuoritusTabs.urlForTab(mdl, tabName(suoritukset[0])))
+      return null
+    }
+    let valittuSuoritus = suoritukset[suoritusIndex]
 
-      return(
-        <div className="opiskeluoikeus">
-          <h3>
-            <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
-            <span className="koulutus inline-text">{modelTitle(modelLookup(model, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
-             { modelData(model, 'alkamispäivä')
-                ? <span className="inline-text">(
-                      <span className="alku pvm">{yearFromFinnishDateString(modelTitle(model, 'alkamispäivä'))}</span>-
-                      <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(model, 'päättymispäivä'))},</span>
-                  </span>
-                : null
-              }
-            <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
-            <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
-          </h3>
-          <div className="opiskeluoikeus-content">
-            <div className={model.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
-              {editLink}
-              <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model}/>
-              <div className="alku-loppu">
-                <PropertyEditor model={addContext(model, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(model, {edit: false})} propertyName={päättymispäiväProperty} />
-              </div>
-              <PropertiesEditor
-                model={model}
-                propertyFilter={ p => !excludedProperties.includes(p.key) }
-                getValueEditor={ (prop, getDefault) => prop.key == 'tila'
-                  ? <OpiskeluoikeudenTilaEditor model={model} />
-                  : getDefault() }
-               />
-              <ExpandablePropertiesEditor model={model} propertyName="lisätiedot" />
+    return(
+      <div className="opiskeluoikeus">
+        <h3>
+          <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
+          <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
+           { modelData(mdl, 'alkamispäivä')
+              ? <span className="inline-text">(
+                    <span className="alku pvm">{yearFromFinnishDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
+                    <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
+                </span>
+              : null
+            }
+          <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
+          <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
+        </h3>
+        <div className="opiskeluoikeus-content">
+          <div className="shield"/>
+          <div className={mdl.context.edit ? 'opiskeluoikeuden-tiedot editing' : 'opiskeluoikeuden-tiedot'}>
+            {editLink}
+            <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
+            <div className="alku-loppu">
+              <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
             </div>
-            <div className="suoritukset">
-              <h4>Suoritukset</h4>
-              <SuoritusTabs model={model}/>
-              <SuoritusEditor key={tabName(valittuSuoritus)} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
-            </div>
+            <PropertiesEditor
+              model={mdl}
+              propertyFilter={ p => !excludedProperties.includes(p.key) }
+              getValueEditor={ (prop, getDefault) => prop.key == 'tila'
+                ? <OpiskeluoikeudenTilaEditor model={mdl} />
+                : getDefault() }
+             />
+            <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
           </div>
-        </div>)
-      }
-    } />)
-  }
-})
+          <div className="suoritukset">
+            <h4>Suoritukset</h4>
+            <SuoritusTabs model={mdl}/>
+            <SuoritusEditor key={tabName(valittuSuoritus)} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
+          </div>
+        </div>
+      </div>)
+    }
+  } />)
+}
 
 const SuoritusTabs = ({ model }) => {
   let suoritukset = modelItems(model, 'suoritukset')
   let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
-    addingAtom.set(false)
     if (suoritus) {
       model.context.changeBus.push([suoritus.context, suoritus])
-      model.context.doneEditingBus.push(() => {
-        navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
-      })
+      navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
     }
   }
   return (<ul className="suoritus-tabs">
