@@ -1,3 +1,7 @@
+## 4.4.2017
+
+ - Lisätty ulkomaanjaksot LUVA-koulutuksen lisätietoihin
+
 ## 29.3.2017
 
 - Pieniä muutoksia ja korjauksia LUVA-koulutuksen rakenteeseen
