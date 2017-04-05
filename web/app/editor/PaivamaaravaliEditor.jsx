@@ -1,55 +1,44 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
 import {contextualizeModel, addContext, modelData, modelLookup, childContext, modelSet} from './EditorModel.js'
-import {resetOptionalModel} from './OptionalEditor.jsx'
 import Bacon from 'baconjs'
-import {modelEmpty, modelValid} from './EditorModel'
+import {modelValid, modelEmpty} from './EditorModel'
+import {resetOptionalModel} from './OptionalEditor.jsx'
 
-export const PäivämääräväliEditor = React.createClass({
-  render() {
-    let { alkuPäiväBus, loppuPäiväBus } = this.state
-    var model = this.getUsedModel()
-    let validRange = modelValid(model)
-    return (<span className={validRange ? 'date-range' : 'date-range error'}>
-      <Editor model={addContext(model, {changeBus: alkuPäiväBus})} path="alku"/> — <Editor model={addContext(model, {changeBus: loppuPäiväBus})} path="loppu"/>
-    </span>)
-  },
-  getInitialState() {
-    return {
-      alkuPäiväBus: Bacon.Bus(),
-      loppuPäiväBus: Bacon.Bus()
-    }
-  },
-  getUsedModel() {
-    let { model } = this.props
-    return model.value ? model : model.optional ? contextualizeModel(model.optionalPrototype, model.context) : model
-  },
-  componentDidMount() {
-    let {alkuPäiväBus, loppuPäiväBus} = this.state
-    let {model} = this.props
+export const PäivämääräväliEditor = ({model}) => {
+  let alkuPäiväBus = Bacon.Bus(),
+      loppuPäiväBus = Bacon.Bus()
 
-    let initialChangeEventFromModel = (path) => {
-      return [childContext(this.getUsedModel().context, path), modelLookup(this.getUsedModel(), path)]
-    }
+  let usedModel = model.value ? model : model.optional ? contextualizeModel(model.optionalPrototype, model.context) : model
 
-    let rangeP = Bacon.combineTemplate({
-      alku: alkuPäiväBus.toProperty(initialChangeEventFromModel('alku')),
-      loppu: loppuPäiväBus.toProperty(initialChangeEventFromModel('loppu'))
-    })
-
-    rangeP.changes().onValue(({alku, loppu}) => {
-      if (modelEmpty(alku[1]) && modelEmpty(loppu[1]) && model.optional) {
-        resetOptionalModel(model)
-      } else {
-        let withAlku = modelSet(this.getUsedModel(), alku[1], 'alku')
-        let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
-        let context = model.context
-        var values = [context, withLoppu]
-        model.context.changeBus.push(values)
-      }
-    })
+  let initialChangeEventFromModel = (path) => {
+    return [childContext(usedModel.context, path), modelLookup(usedModel, path)]
   }
-})
+
+  let rangeP = Bacon.combineTemplate({
+    alku: alkuPäiväBus.toProperty(initialChangeEventFromModel('alku')),
+    loppu: loppuPäiväBus.toProperty(initialChangeEventFromModel('loppu'))
+  })
+
+  rangeP.changes().onValue(({alku, loppu}) => {
+    if (modelEmpty(alku[1]) && modelEmpty(loppu[1]) && model.optional) {
+      resetOptionalModel(model)
+    } else {
+      let withAlku = modelSet(usedModel, alku[1], 'alku')
+      let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
+      let context = model.context
+      var values = [context, withLoppu]
+      model.context.changeBus.push(values)
+    }
+  })
+
+  let validRange = modelValid(usedModel)
+
+  return (<span className={validRange ? 'date-range' : 'date-range error'}>
+    <Editor model={addContext(usedModel, {changeBus: alkuPäiväBus})} path="alku"/> — <Editor model={addContext(usedModel, {changeBus: loppuPäiväBus})} path="loppu"/>
+  </span>)
+}
+
 PäivämääräväliEditor.canShowInline = () => true
 PäivämääräväliEditor.handlesOptional = true
 PäivämääräväliEditor.validateModel = (model) => {
