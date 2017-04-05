@@ -28,7 +28,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     koskiRoot + request.getServletPath + request.getPathInfo
   }
 
-  private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+  private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
   def setUserCookie(user: AuthenticationUser) = {
     response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
@@ -58,7 +58,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def redirectToLogin = {
-    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60)))
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
     } else {
