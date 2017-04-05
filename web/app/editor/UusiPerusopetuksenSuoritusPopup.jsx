@@ -9,11 +9,11 @@ import {
   modelItems,
   modelLookup,
   accumulateModelState,
-  modelSet,
   addContext,
   modelData,
   modelLens,
-  modelProperties
+  modelProperties,
+  modelSetValue
 } from './EditorModel'
 import ModalDialog from './ModalDialog.jsx'
 
@@ -27,7 +27,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
   if (viimeisin) {
-    initialModel = modelSet(initialModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
+    initialModel = modelSetValue(initialModel, modelLookup(viimeisin, 'toimipiste').value, 'toimipiste')
   }
 
   initialModel = addContext(initialModel, { editAll: true })

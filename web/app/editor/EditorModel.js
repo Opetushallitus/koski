@@ -62,8 +62,8 @@ export const modelSetData = (model, data) => {
   return modelSetValue(model, { data })
 }
 
-export const modelSetValue = (model, value) => {
-  return R.merge(model, { value })
+export const modelSetValue = (model, value, path) => {
+  return L.set(L.compose(modelLens(path), 'value'), value, model)
 }
 
 export const modelItems = (mainModel, path) => {

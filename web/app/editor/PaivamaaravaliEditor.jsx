@@ -1,8 +1,8 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
-import {contextualizeModel, addContext, modelData, modelLookup, childContext, modelSet} from './EditorModel.js'
+import {contextualizeModel, addContext, modelData, modelLookup, childContext} from './EditorModel.js'
 import Bacon from 'baconjs'
-import {modelValid, modelEmpty} from './EditorModel'
+import {modelValid, modelEmpty, modelSetValue} from './EditorModel'
 import {resetOptionalModel} from './OptionalEditor.jsx'
 
 export const PäivämääräväliEditor = ({model}) => {
@@ -24,8 +24,8 @@ export const PäivämääräväliEditor = ({model}) => {
     if (modelEmpty(alku[1]) && modelEmpty(loppu[1]) && model.optional) {
       resetOptionalModel(model)
     } else {
-      let withAlku = modelSet(usedModel, alku[1], 'alku')
-      let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
+      let withAlku = modelSetValue(usedModel, alku[1].value, 'alku')
+      let withLoppu = modelSetValue(withAlku, loppu[1].value, 'loppu')
       let context = model.context
       var values = [context, withLoppu]
       model.context.changeBus.push(values)
