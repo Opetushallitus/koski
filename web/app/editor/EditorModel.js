@@ -1,7 +1,6 @@
 import R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import {parseISODate} from '../date'
 
 // Find submodel with given path
 export const modelLookup = (mainModel, path) => {
@@ -148,38 +147,18 @@ export const accumulateModelState = (model) => {
   }
 }
 
-const validateJakso = (model) => {
-  let alkuData = modelData(model, 'alku')
-  let loppuData = modelData(model, 'loppu')
-  if (!alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)) return
-  return ['invalid range']
-}
-
-const validatorMapping = {
-  string: (model) => !model.optional && !modelData(model) ? ['empty string'] : [],
-  date: (model) => {
-    var data = modelData(model)
-    if (!model.optional && !data) return ['empty date']
-    var dateValue = data && parseISODate(data)
-    if (!dateValue) return ['invalid date']
-  },
-  paatosjakso: validateJakso,
-  jakso: validateJakso
-}
 const getValidator = (model) => {
-  let validator = validatorMapping[model.type]
-  if (!validator && model.value) {
+  let validatorMapping = model.context.editorMapping
+  let editor = validatorMapping[model.type]
+  if (model.value && model.value.classes) {
     for (var i in model.value.classes) {
-      validator = validatorMapping[model.value.classes[i]]
-      if (validator) return validator
+      editor = validatorMapping[model.value.classes[i]]
+      if (editor) break
     }
   }
-  return validator
+  return editor && editor.validateModel
 }
 export const validateModel = (model, results = {}, path = []) => {
-  if (!model.context) {
-    console.log("CONTEXT MISSING")
-  }
   let validator = getValidator(model)
   if (validator) {
     let myResult = validator(model)

@@ -37,6 +37,7 @@ export const PäivämääräväliEditor = React.createClass({
     })
 
     let isValidRangeP = rangeP.filter(model.context.edit).map(({alku, loppu}) => {
+      // TODO: duplicateion
       let alkuData = modelData(alku[1])
       let loppuData = modelData(loppu[1])
       return !alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)
@@ -61,3 +62,9 @@ export const PäivämääräväliEditor = React.createClass({
 })
 PäivämääräväliEditor.canShowInline = () => true
 PäivämääräväliEditor.handlesOptional = true
+PäivämääräväliEditor.validateModel = (model) => {
+  let alkuData = modelData(model, 'alku')
+  let loppuData = modelData(model, 'loppu')
+  if (!alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)) return
+  return ['invalid range']
+}

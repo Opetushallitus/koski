@@ -8,7 +8,7 @@ export const DateEditor = ({model, isAllowedDate}) => {
 
   let validityCallback = (valid, stringInput) => {
     if (!valid) {
-      pushValue({ data: stringInput})
+      pushValue({ data: stringInput}) // push raw string value to model in case of invalid input. will cause model validation to fail
     }
   }
   let valueCallback = (date) => {
@@ -23,3 +23,9 @@ export const DateEditor = ({model, isAllowedDate}) => {
 }
 DateEditor.canShowInline = () => true
 DateEditor.handlesOptional = true
+DateEditor.validateModel = (model) => {
+  var data = modelData(model)
+  if (!model.optional && !data) return ['empty date']
+  var dateValue = data && parseISODate(data)
+  if (!dateValue) return ['invalid date']
+}

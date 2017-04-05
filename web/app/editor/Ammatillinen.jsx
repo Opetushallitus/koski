@@ -62,6 +62,7 @@ export const TyössäoppimisjaksoEditor = React.createClass({
   }
 })
 TyössäoppimisjaksoEditor.readOnly = true
+TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
 export const editorMapping = {
   'ammatillisentutkinnonosa': KoulutusmoduuliEditor,

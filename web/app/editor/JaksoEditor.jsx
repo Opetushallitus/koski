@@ -13,3 +13,4 @@ export const JaksoEditor = React.createClass({
     )
   }
 })
+JaksoEditor.validateModel = PäivämääräväliEditor.validateModel

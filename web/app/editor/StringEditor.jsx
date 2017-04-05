@@ -23,3 +23,6 @@ export const StringEditor = ({model}) => {
 }
 StringEditor.handlesOptional = true
 StringEditor.canShowInline = () => true
+StringEditor.validateModel = (model) => {
+  return !model.optional && !modelData(model) ? ['empty string'] : []
+}
