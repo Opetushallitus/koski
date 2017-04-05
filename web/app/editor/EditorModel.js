@@ -8,11 +8,17 @@ export const modelLookup = (mainModel, path) => {
 }
 
 export const modelLens = (path) => {
-  let pathLenses = toPath(path).map(key => {
-    let index = parseInt(key)
-    return L.compose('value', Number.isNaN(index)
-      ? L.compose('properties', L.find(R.whereEq({key})), 'model')
-      : indexL(index))
+  var pathElems = toPath(path)
+  let pathLenses = pathElems.map(key => {
+    let numeric = !isNaN(key)
+    let string = typeof key == 'string'
+
+    var l1 = numeric
+      ? indexL(parseInt(key))
+      : string
+        ? L.compose('properties', L.find(R.whereEq({key})), 'model')
+        : (console.log('other path elem ' + key), key) // other lens
+    return L.compose('value', l1)
   })
   return L.compose(...pathLenses)
 }
@@ -115,7 +121,13 @@ export const contextualizeModel = (model, context) => {
 }
 
 export const childContext = (context, ...pathElems) => {
-  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
+  var basePath = (context.path && typeof context.path == 'string' ? [context.path]: context.path) || []
+
+  let allPathElems = (basePath).concat(pathElems)
+
+  //console.log(allPathElems)
+
+  let path = L.compose(...allPathElems)
   return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
 }
 

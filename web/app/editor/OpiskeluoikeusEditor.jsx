@@ -107,7 +107,7 @@ const SuoritusTabs = ({ model }) => {
 )}
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
-SuoritusTabs.suoritusQueryParam = context => context.path + '.suoritus'
+SuoritusTabs.suoritusQueryParam = context => 'suoritus'
 SuoritusTabs.suoritusIndex = (model) => {
   var paramName = SuoritusTabs.suoritusQueryParam(model.context)
   let index = currentLocation().params[paramName] || 0
