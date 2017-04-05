@@ -6,6 +6,7 @@ import {Editor} from './Editor.jsx'
 import * as L from 'partial.lenses'
 import {modelSetValue} from './EditorModel'
 import {addContext} from './EditorModel';
+import {childContext} from './EditorModel';
 
 export const OptionalEditor = React.createClass({
   render() {
@@ -58,16 +59,15 @@ const createOptional = (optModel) => ({ optional: optModel.optional, optionalPro
 
 export const wrapOptional = ({model, isEmpty = (m => !m.value || !m.value.data), createEmpty = (x => x)}) => {
   if (!model.optional) return model
-  let usedModel = model.value ? model : createEmpty(optionalModel(model))
-  let changeBus = Bacon.Bus()
-  changeBus.onValue(([context, newModel]) => {
-    if (isEmpty(newModel)) {
-      resetOptionalModel(model)
-    } else {
-      newModel.context.changeBus.push([newModel.context, modelSetValue(usedModel, newModel.value)])
-    }
-  })
-  return addContext(usedModel, { changeBus })
+
+  let getUsedModel = (m) => m.value ? m : createEmpty(optionalModel(m))
+  let optionalLens = L.lens(
+    (m) => getUsedModel(m),
+    (newModel, m) => isEmpty(newModel) ? createOptional(m) : modelSetValue(getUsedModel(m), newModel.value)
+  )
+  var modelFromLens = L.get(optionalLens, model)
+  let lensedModel = R.merge(modelFromLens, { context : childContext(model.context, optionalLens)})
+  return lensedModel
 }
 
 export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
