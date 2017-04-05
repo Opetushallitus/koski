@@ -482,26 +482,35 @@ describe('Perusopetus', function() {
           expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
         })
       })
-      describe('Todistuksella näkyvien lisätietojen lisäys', function() {
-        var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
-        it('Uudet lisätiedot näytetään', function() {
-          expect(lisätiedot.getValue()).to.equal('Testitesti')
+      describe('Todistuksella näkyvät lisätiedot', function() {
+        describe('lisäys', function() {
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('Uudet lisätiedot näytetään', function() {
+            expect(lisätiedot.getValue()).to.equal('Testitesti')
+          })
         })
-      })
-      describe('Todistuksella näkyvien lisätietojen poisto', function() {
-        var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-        before(opinnot.valitseSuoritus('Peruskoulu'),
-               editor.edit,
-               lisätiedot.setValue("Testitesti"),
-               editor.doneEditing,
-               wait.until(page.isSavedLabelShown),
-               editor.edit,
-               lisätiedot.setValue(""),
-               editor.doneEditing,
-               wait.until(page.isSavedLabelShown))
-        it('Lisätiedot piilotetaan', function() {
-          expect(lisätiedot.isVisible()).to.equal(false)
+        describe('poisto', function() {
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          before(opinnot.valitseSuoritus('Peruskoulu'),
+            editor.edit,
+            lisätiedot.setValue("Testitesti"),
+            editor.doneEditing,
+            wait.until(page.isSavedLabelShown),
+            editor.edit,
+            lisätiedot.setValue(""),
+            editor.doneEditing,
+            wait.until(page.isSavedLabelShown))
+          it('Lisätiedot piilotetaan', function() {
+            expect(lisätiedot.isVisible()).to.equal(false)
+          })
+        })
+        describe('lisäys ja poisto kerralla', function() {
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), wait.forAjax, lisätiedot.setValue(""), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('Lisätiedot piilotetaan', function() {
+            expect(lisätiedot.isVisible()).to.equal(false)
+          })
         })
       })
       describe('Vieraan kielen valinta', function() {
