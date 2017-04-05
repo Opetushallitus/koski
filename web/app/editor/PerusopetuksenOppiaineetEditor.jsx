@@ -70,7 +70,7 @@ const OppiaineEditor = React.createClass({
     let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let äidinkieli = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let editing = model.context.edit
-    let extraPropertiesFilter = p => ['painotettuOpetus', 'yksilöllistettyOppimäärä', 'korotus'].includes(p.key)
+    let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi', 'tila', 'suorituskieli'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
 
