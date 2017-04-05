@@ -23,10 +23,11 @@ var DateInput = React.createClass({
     }
 
     let onChange = (event) => {
-      this.setState({value: event.target.value})
-      let date = parseFinnishDate(event.target.value)
-      let valid = (optional && !event.target.value) || (date && isAllowedDate(date))
-      handleDaySelection(date, valid)
+      var stringInput = event.target.value
+      this.setState({value: stringInput})
+      let date = parseFinnishDate(stringInput)
+      let valid = (optional && !stringInput) || (date && isAllowedDate(date))
+      handleDaySelection(date, valid, stringInput)
     }
 
     let handleDayClick = (e, date, { disabled }) => {
@@ -40,11 +41,11 @@ var DateInput = React.createClass({
       })
     }
 
-    let handleDaySelection = (date, valid) => {
+    let handleDaySelection = (date, valid, stringInput) => {
       if (valid) {
         valueCallback(date)
       }
-      validityCallback(valid)
+      validityCallback(valid, stringInput)
       this.setState({invalidDate: !valid})
     }
 
@@ -88,7 +89,6 @@ var DateInput = React.createClass({
   }
 })
 DateInput.propTypes = {
-  value: React.PropTypes.object,
   isAllowedDate: React.PropTypes.func,
   valueCallback: React.PropTypes.func,
   validityCallback: React.PropTypes.func

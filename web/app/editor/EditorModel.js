@@ -1,6 +1,7 @@
 import R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
+import {parseISODate} from '../date'
 
 // Find submodel with given path
 export const modelLookup = (mainModel, path) => {
@@ -87,7 +88,10 @@ export const modelProperty = (mainModel, path) => {
 }
 
 export const modelProperties = (mainModel, paths) => {
-  return paths.map(p => modelProperty(mainModel, p))
+  if (paths) {
+    return paths.map(p => modelProperty(mainModel, p))
+  }
+  return (mainModel.value && mainModel.value.properties) || []
 }
 
 
@@ -134,22 +138,61 @@ const removeCommonPath = (p1, p2) => {
   return p1.substring(p2.length + 1)
 }
 
-export const accumulateErrors = (errorBus, path = '') => errorBus
-  .filter(e => e[0].path.startsWith(path))
-  .scan({}, (p, e) => Object.assign(p, R.objOf(e[0].path, e[1].error)))
-  .map(e => R.reduce((acc, error) => acc || error[1], false, R.toPairs(e)))
-  .skipDuplicates()
-
 export const accumulateModelState = (model) => {
-  let errorBus = Bacon.Bus()
   let changeBus = Bacon.Bus()
-  let modelP = changeBus.scan(addContext(model, {changeBus, errorBus}), (m, changes) => applyChanges(m, changes))
-  let errorP = accumulateErrors(errorBus, model.context.path)
+  let modelP = changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
+  let errorP = modelP.map(modelValid).not()
   return {
     modelP,
     errorP
   }
 }
+
+const validateJakso = (model) => {
+  let alkuData = modelData(model, 'alku')
+  let loppuData = modelData(model, 'loppu')
+  if (!alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)) return
+  return ['invalid range']
+}
+
+const validatorMapping = {
+  string: (model) => !model.optional && !modelData(model) ? ['empty string'] : [],
+  date: (model) => {
+    var data = modelData(model)
+    if (!model.optional && !data) return ['empty date']
+    var dateValue = data && parseISODate(data)
+    if (!dateValue) return ['invalid date']
+  },
+  paatosjakso: validateJakso,
+  jakso: validateJakso
+}
+const getValidator = (model) => {
+  let validator = validatorMapping[model.type]
+  if (!validator && model.value) {
+    for (var i in model.value.classes) {
+      validator = validatorMapping[model.value.classes[i]]
+      if (validator) return validator
+    }
+  }
+  return validator
+}
+export const validateModel = (model, results = {}, path = []) => {
+  if (!model.context) {
+    console.log("CONTEXT MISSING")
+  }
+  let validator = getValidator(model)
+  if (validator) {
+    let myResult = validator(model)
+    if (myResult && myResult.length) {
+      results[path.join('.')] = myResult
+    }
+  }
+  modelProperties(model).forEach(p => validateModel(p.model, results, path.concat(p.key)))
+  modelItems(model).forEach((item, i) => validateModel(item, results, path.concat(i)))
+  return results
+}
+
+export const modelValid = (model) => R.keys(validateModel(model)).length == 0
 
 const valueEmpty = (value) => {
   return !value

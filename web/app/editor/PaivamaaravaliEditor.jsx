@@ -43,18 +43,16 @@ export const PäivämääräväliEditor = React.createClass({
     })
 
     isValidRangeP.onValue(valid => {
-      model.context.errorBus.push([model.context, {error: !valid}])
       this.setState({validRange: valid})
     })
 
-    rangeP.filter(isValidRangeP).changes().onValue(({alku, loppu}) => {
+    rangeP.changes().onValue(({alku, loppu}) => {
       if (modelEmpty(alku[1]) && modelEmpty(loppu[1]) && model.optional) {
         resetOptionalModel(model)
       } else {
         let withAlku = modelSet(this.getUsedModel(), alku[1], 'alku')
         let withLoppu = modelSet(withAlku, loppu[1], 'loppu')
         let context = model.context
-
         var values = [context, withLoppu]
         model.context.changeBus.push(values)
       }

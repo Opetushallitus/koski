@@ -1,15 +1,15 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import { modelTitle, modelLookup, objectLookup, modelData, applyChanges } from './editor/EditorModel'
-import { editorMapping } from './editor/Editors.jsx'
-import { Editor } from './editor/Editor.jsx'
+import {modelTitle, modelLookup, objectLookup, modelData, applyChanges} from './editor/EditorModel'
+import {editorMapping} from './editor/Editors.jsx'
+import {Editor} from './editor/Editor.jsx'
 import R from 'ramda'
 import {currentLocation} from './location.js'
-import { OppijaHaku } from './OppijaHaku.jsx'
+import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
-import { increaseLoading, decreaseLoading } from './loadingFlag'
-import { delays } from './delays'
+import {increaseLoading, decreaseLoading} from './loadingFlag'
+import {delays} from './delays'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -33,7 +33,6 @@ export const oppijaContentP = (oppijaOid) => {
 
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
-  const errorBus = Bacon.Bus()
   const doneEditingBus = Bacon.Bus()
 
   const queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
@@ -46,7 +45,7 @@ const createState = (oppijaOid) => {
 
   const shouldThrottle = (batch) => {
     let model = batch[1]
-    var willThrottle = model && (model.type == 'string' || model.oneOfClass == 'localizedstring')
+    var willThrottle = model && (model.type == 'string' || model.type == 'date' || model.oneOfClass == 'localizedstring')
     return willThrottle
   }
 
@@ -98,14 +97,14 @@ const createState = (oppijaOid) => {
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
 
-  return { oppijaP, changeBus, errorBus, doneEditingBus}
+  return { oppijaP, changeBus, doneEditingBus}
 }
 
-const stateToContent = ({ oppijaP, changeBus, errorBus, doneEditingBus}) => oppijaP.map(oppija => ({
+const stateToContent = ({ oppijaP, changeBus, doneEditingBus}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
     <Link className="back-link" href="/koski/">Opiskelijat</Link>
-    <ExistingOppija {...{oppija, changeBus, errorBus, doneEditingBus}}/>
+    <ExistingOppija {...{oppija, changeBus, doneEditingBus}}/>
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
@@ -113,7 +112,7 @@ const stateToContent = ({ oppijaP, changeBus, errorBus, doneEditingBus}) => oppi
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija, changeBus, errorBus, doneEditingBus} = this.props
+    let {oppija, changeBus, doneEditingBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
     return oppija.loading
       ? <div className="loading"/>
@@ -125,7 +124,7 @@ export const ExistingOppija = React.createClass({
           </h2>
           {
             oppija
-              ? <Editor model={oppija} {... {doneEditingBus, changeBus, errorBus, editorMapping}}/>
+              ? <Editor model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
               : null
           }
         </div>

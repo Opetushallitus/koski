@@ -11,18 +11,21 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 
   let { modelP, errorP } = accumulateModelState(initialModel)
 
+  let isAllowedDate = d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true
+
   let alkuPäiväModel = modelP.map(m => modelLookup(m, 'alku'))
   let tilaModel = modelP.map(m => modelLookup(m, 'tila'))
-  var tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
+  let tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
   let validP = tilaSelectedP.and(errorP.not())
 
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
+
 
   return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
     <h2>Opiskeluoikeuden tilan lisäys</h2>
     <div className="property alku">
       <label>Päivämäärä:</label>
-      <DateEditor baret-lift model={alkuPäiväModel} isAllowedDate={d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true }/>
+      <DateEditor baret-lift model={alkuPäiväModel} isAllowedDate={isAllowedDate}/>
     </div>
     <div className="property tila">
       <label>Tila:</label>
