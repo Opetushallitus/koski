@@ -440,11 +440,20 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe('Validi päivämääräväli', function() {
+        describe('Päivämäärän syöttö', function() {
           var pidennettyOppivelvollisuus = editor.property('pidennettyOppivelvollisuus').toPäivämääräväli()
-          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuus.setAlku(currentDate), editor.doneEditing, wait.until(page.isSavedLabelShown))
-          it('Tallennus onnistuu', function() {
-            expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDate)
+          before(editor.edit, opinnot.expandAll)
+          describe('Virheellinen päivämäärä', function() {
+            before(pidennettyOppivelvollisuus.setAlku('34.9.2000'))
+            it('Estää tallennuksen', function() {
+              expect(opinnot.onTallennettavissa()).to.equal(false)
+            })
+          })
+          describe('Oikeellinen päivämäärä', function() {
+            before(pidennettyOppivelvollisuus.setAlku(currentDate), editor.doneEditing, wait.until(page.isSavedLabelShown))
+            it('Tallennus onnistuu', function() {
+              expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDate)
+            })
           })
         })
 
