@@ -2,6 +2,8 @@ import React from 'react'
 import R from 'ramda'
 import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
+import * as L from 'partial.lenses'
+import {modelSetValue} from './EditorModel'
 
 export const OptionalEditor = React.createClass({
   render() {
@@ -44,6 +46,22 @@ export const optionalModel = (model) => {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
     prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
   }
-  return prototype
+
+  return makeOptional(prototype, model)
 }
-export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, { optional: model.optional, optionalPrototype: model.optionalPrototype }])
+export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, createOptional(model)])
+
+export const pushOptionalModelValue = (model, value, path) => {
+  if (!model.optional) {
+    model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
+  } else {
+    let usedModel = model.value ? model : optionalModel(model)
+    if (value) {
+      model.context.changeBus.push([model.context, modelSetValue(usedModel, value, path)])
+    } else {
+      resetOptionalModel(model)
+    }
+  }
+}
+const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptional(optModel)))
+const createOptional = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })

@@ -1,18 +1,13 @@
 import React from 'react'
-import {modelData, modelSetData} from './EditorModel.js'
-import {resetOptionalModel} from './OptionalEditor.jsx'
+import {modelData} from './EditorModel.js'
+import {pushOptionalModelValue} from './OptionalEditor.jsx'
 import {modelValid} from './EditorModel'
 
 export const StringEditor = ({model}) => {
   let onChange = (event) => {
     let value = event.target.value
-    let updatedModel = modelSetData(model, value)
-
-    if (!value && model.optional) {
-      resetOptionalModel(model)
-    } else {
-      model.context.changeBus.push([model.context, updatedModel])
-    }
+    value = value ? {data: value} : null
+    pushOptionalModelValue(model, value)
   }
 
   let data = modelData(model)
