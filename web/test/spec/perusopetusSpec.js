@@ -420,10 +420,12 @@ describe('Perusopetus', function() {
         })
       })
 
-      describe('Kun lisätään opiskeluoikeuden lisätiedot', function() {
+      describe('Opiskeluoikeuden lisätiedot', function() {
         before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
-        it('Toimii', function() {
-          expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+        describe('Lisätietojen lisäys', function() {
+          it('Toimii', function() {
+            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+          })
         })
 
         describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
@@ -465,6 +467,36 @@ describe('Perusopetus', function() {
             expect(opinnot.onTallennettavissa()).to.equal(false)
           })
           after(pidennettyOppivelvollisuus.setLoppu(currentDate), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        })
+
+        describe('Tukimuodot', function() {
+          describe('Lisättäessä ensimmäinen', function() {
+            before(editor.edit, editor.propertyBySelector('.tukimuodot .add-item').setValue('Erityiset apuvälineet'), editor.doneEditing)
+            it('Toimii', function() {
+              expect(editor.property('tukimuodot').getValue()).to.equal('Erityiset apuvälineet')
+            })
+
+            describe('Lisättäessä toinen', function() {
+              before(editor.edit, editor.propertyBySelector('.tukimuodot .add-item').setValue('Tukiopetus'), editor.doneEditing)
+              it('Toimii', function() {
+                expect(editor.property('tukimuodot').getValue()).to.equal('Erityiset apuvälineetTukiopetus')
+              })
+
+              describe('Poistettaessa ensimmäinen', function() {
+                before(editor.edit, editor.property('tukimuodot').removeItem(0), editor.doneEditing)
+                it('Toimii', function() {
+                  expect(editor.property('tukimuodot').getValue()).to.equal('Tukiopetus')
+                })
+
+                describe('Poistettaessa viimeinen', function() {
+                  before(editor.edit, editor.property('tukimuodot').removeItem(0), editor.doneEditing)
+                  it('Toimii', function() {
+                    expect(editor.property('tukimuodot').isVisible()).to.equal(false)
+                  })
+                })
+              })
+            })
+          })
         })
       })
     })
