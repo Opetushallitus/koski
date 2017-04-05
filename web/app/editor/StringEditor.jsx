@@ -1,15 +1,13 @@
 import React from 'react'
 import {modelData} from './EditorModel.js'
-import {pushOptionalModelValue} from './OptionalEditor.jsx'
+import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
 import {modelValid} from './EditorModel'
 
 export const StringEditor = ({model}) => {
+  let wrappedModel = wrapOptional({model})
   let onChange = (event) => {
-    let value = event.target.value
-    value = value ? {data: value} : null
-    pushOptionalModelValue(model, value)
+    pushModelValue(wrappedModel, { data: event.target.value })
   }
-
   let data = modelData(model)
   let error = !modelValid(model)
   return model.context.edit

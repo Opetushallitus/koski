@@ -1,9 +1,11 @@
 import React from 'react'
+import Bacon from 'baconjs'
 import R from 'ramda'
 import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import * as L from 'partial.lenses'
 import {modelSetValue} from './EditorModel'
+import {addContext} from './EditorModel';
 
 export const OptionalEditor = React.createClass({
   render() {
@@ -51,17 +53,21 @@ export const optionalModel = (model) => {
 }
 export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, createOptional(model)])
 
-export const pushOptionalModelValue = (model, value, path) => {
-  if (!model.optional) {
-    model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
-  } else {
-    let usedModel = model.value ? model : optionalModel(model)
-    if (value) {
-      model.context.changeBus.push([model.context, modelSetValue(usedModel, value, path)])
-    } else {
-      resetOptionalModel(model)
-    }
-  }
-}
 const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptional(optModel)))
 const createOptional = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
+
+export const wrapOptional = ({model, isEmpty = (m => !m.value || !m.value.data), createEmpty = (x => x)}) => {
+  if (!model.optional) return model
+  let usedModel = model.value ? model : createEmpty(optionalModel(model))
+  let changeBus = Bacon.Bus()
+  changeBus.onValue(([context, newModel]) => {
+    if (isEmpty(newModel)) {
+      resetOptionalModel(model)
+    } else {
+      newModel.context.changeBus.push([newModel.context, modelSetValue(usedModel, newModel.value)])
+    }
+  })
+  return addContext(usedModel, { changeBus })
+}
+
+export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])

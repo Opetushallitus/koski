@@ -2,16 +2,18 @@ import React from 'react'
 import {modelData} from './EditorModel.js'
 import {formatISODate, parseISODate, formatFinnishDate} from '../date.js'
 import DateInput from '../DateInput.jsx'
-import {pushOptionalModelValue} from './OptionalEditor.jsx'
+import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
 
 export const DateEditor = ({model, isAllowedDate}) => {
+  let wrappedModel = wrapOptional({model})
+
   let validityCallback = (valid, stringInput) => {
     if (!valid) {
-      ((value) => pushOptionalModelValue(model, value))({ data: stringInput}) // push raw string value to model in case of invalid input. will cause model validation to fail
+      ((value) => pushModelValue(wrappedModel, value))({ data: stringInput}) // push raw string value to model in case of invalid input. will cause model validation to fail
     }
   }
   let valueCallback = (date) => {
-    ((value) => pushOptionalModelValue(model, value))(date && { data: formatISODate(date), title: formatFinnishDate(date)})
+    ((value) => pushModelValue(wrappedModel, value))(date && { data: formatISODate(date), title: formatFinnishDate(date)})
   }
   let dateInISOFormat = modelData(model)
   var dateValue = dateInISOFormat && parseISODate(dateInISOFormat) || dateInISOFormat
