@@ -19,6 +19,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
     let context = mdl.context
     let id = modelData(mdl, 'id')
+    mdl = addContext(mdl, {opiskeluoikeusId: id})
     let suoritukset = modelItems(mdl, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
@@ -65,7 +66,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <div className="suoritukset">
             <h4>Suoritukset</h4>
             <SuoritusTabs model={mdl}/>
-            <SuoritusEditor key={tabName(valittuSuoritus)} model={addContext(valittuSuoritus, {opiskeluoikeusId: id})} />
+            <SuoritusEditor key={tabName(valittuSuoritus)} model={valittuSuoritus} />
           </div>
         </div>
       </div>)

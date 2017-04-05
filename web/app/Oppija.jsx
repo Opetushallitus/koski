@@ -59,24 +59,26 @@ const createState = (oppijaOid) => {
       return Bacon.once(oppijaBeforeChange => {
         let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(doneEditingBus).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
-          let firstPath = firstBatch[0].path
-          let opiskeluoikeusPath = firstPath.split('.').slice(0, 6).join('.')
+          let opiskeluoikeusId = firstBatch[0].opiskeluoikeusId
           let batch = changeBuffer
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
-          return R.merge(locallyModifiedOppija, {event: 'modify', opiskeluoikeusPath})
+          return R.merge(locallyModifiedOppija, {event: 'modify', opiskeluoikeusId})
         })
       })
     }
   })
 
   const saveOppijaE = doneEditingBus.map((onAfterLoad) => oppijaBeforeSave => {
-    if (!oppijaBeforeSave.opiskeluoikeusPath) {
+    if (oppijaBeforeSave.event != 'modify') {
       return Bacon.once(oppijaBeforeSave)
     }
     var oppijaData = modelData(oppijaBeforeSave)
-    let opiskeluoikeus = objectLookup(oppijaData, oppijaBeforeSave.opiskeluoikeusPath)
+    let opiskeluoikeusId = oppijaBeforeSave.opiskeluoikeusId
+    let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
+    let opiskeluoikeus = opiskeluoikeudet.find(x => x.id == opiskeluoikeusId)
+
     let oppijaUpdate = {
       henkilö: {oid: oppijaData.henkilö.oid},
       opiskeluoikeudet: [opiskeluoikeus]
