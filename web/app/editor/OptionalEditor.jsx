@@ -44,10 +44,6 @@ export const optionalModel = (model) => {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
     prototype = contextualizeModel(prototype.oneOfPrototypes[0], model.context)
   }
-  if (prototype) {
-    prototype.optional = true
-    prototype.optionalPrototype = model.optionalPrototype
-  }
   return prototype
 }
 export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, { optional: model.optional, optionalPrototype: model.optionalPrototype }])

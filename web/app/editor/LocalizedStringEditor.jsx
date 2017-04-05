@@ -4,19 +4,18 @@ import Bacon from 'baconjs'
 import {optionalModel, resetOptionalModel} from './OptionalEditor.jsx'
 import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
-import {addContext, modelLookup, modelData, modelTitle} from './EditorModel.js'
-import {delays} from '../delays'
-import {modelSetValue} from './EditorModel'
+import {addContext, modelLookup, modelData, modelSet, modelTitle} from './EditorModel.js'
+import { delays } from '../delays'
 
 export const LocalizedStringEditor = ({model}) => {
   let valueBus = Bacon.Bus()
-  valueBus.debounce(delays().stringInput).onValue(([context, stringModel]) => {
+  valueBus.debounce(delays().stringInput).onValue(([context,stringModel]) => {
     if (!modelData(stringModel)) {
       resetOptionalModel(model)
     } else {
       let myModel = model.optional ? optionalModel(model) : model
       let subpath = context.path.substring(model.context.path.length + 1)
-      let updatedModel = modelSetValue(myModel, stringModel.value, subpath)
+      let updatedModel = modelSet(myModel, stringModel, subpath)
       model.context.changeBus.push([model.context, updatedModel])
     }
   })
