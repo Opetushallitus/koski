@@ -81,7 +81,7 @@ function Page(mainElement) {
           case "CHECKBOX":
             if (value != input.is(":checked")) {
               if(window.callPhantom) {
-                input.prop("checked", true)
+                input.prop("checked", value)
               }
               triggerEvent(input, "click")
             }

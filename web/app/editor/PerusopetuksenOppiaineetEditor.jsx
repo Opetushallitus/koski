@@ -2,6 +2,7 @@ import React from 'react'
 import {modelData, modelLookup, modelTitle, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {LaajuusEditor} from './LaajuusEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 
 export const PerusopetuksenOppiaineetEditor = React.createClass({
@@ -43,7 +44,6 @@ const Oppiainetaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
     let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
-    let showExpand = !!suoritukset.find(s => modelData(s, 'arviointi.-1.kuvaus'))
     let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
     return (<table>
         <thead>
@@ -54,7 +54,7 @@ const Oppiainetaulukko = React.createClass({
         </tr>
         </thead>
         {
-          suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showExpand={showExpand} showFootnotes={showFootnotes}/> ))
+          suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
         }
       </table>
     )
@@ -63,13 +63,16 @@ const Oppiainetaulukko = React.createClass({
 
 const OppiaineEditor = React.createClass({
   render() {
-    let {model, showLaajuus, showExpand, showFootnotes} = this.props
+    let {model, showLaajuus, showFootnotes} = this.props
     let {expanded} = this.state
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let äidinkieli = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
-    let toggleExpand = () => { if (sanallinenArviointi) this.setState({expanded : !expanded}) }
+    let editing = model.context.edit
+    let extraPropertiesFilter = p => ['painotettuOpetus', 'yksilöllistettyOppimäärä', 'korotus'].includes(p.key)
+    let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
+    let toggleExpand = () => { this.setState({expanded : !expanded}) }
 
     let oppiaineTitle = (aine) => {
       let title = kielenOppiaine || äidinkieli ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
@@ -79,9 +82,9 @@ const OppiaineEditor = React.createClass({
     return (<tbody className={expanded && 'expanded'}>
     <tr>
       <td className="oppiaine">
-        { showExpand && <a className={ sanallinenArviointi ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
+        { showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
         {
-          showExpand && sanallinenArviointi ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+          showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
         }
         {
           (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={modelLookup(model, 'koulutusmoduuli.kieli')}/></span>
@@ -108,6 +111,9 @@ const OppiaineEditor = React.createClass({
     </tr>
     {
       !!sanallinenArviointi && expanded && <tr><td className="details" colSpan="2"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
+    }
+    {
+      editing && expanded && <tr><td className="details" colSpan="2"><PropertiesEditor model={model} propertyFilter={extraPropertiesFilter} /></td></tr>
     }
     </tbody>)
   },

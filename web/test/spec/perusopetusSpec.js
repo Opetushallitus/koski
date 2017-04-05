@@ -575,6 +575,22 @@ describe('Perusopetus', function() {
         it('muutettu arvosana näytetään', function() {
           expect(arvosana.getValue()).to.equal('5')
         })
+        after(opinnot.valitseSuoritus('7. vuosiluokka'), editor.edit, arvosana.selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+      })
+      describe('Yksilöllistäminen', function() {
+        before(editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.doneEditing)
+        it('toimii', function() {
+          expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 *')
+        })
+        after(editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(false), editor.doneEditing, wait.until(page.isSavedLabelShown))
+      })
+      describe('Painotus', function() {
+        before(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('toimii', function() {
+          console.log('painotus')
+          expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 **')
+        })
+        after(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(false), editor.doneEditing)
       })
       describe('Käyttäytymisen arvioinnin lisäys', function() {
         var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
