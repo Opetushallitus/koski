@@ -1,99 +1,102 @@
-import React from 'react'
+import React from 'baret'
 import R from 'ramda'
+import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import {modelTitle} from './EditorModel.js'
 import {optionalModel} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
-import BaconComponent from '../BaconComponent'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
+import {doActionWhileMounted} from '../util'
 
-export const EnumEditor = BaconComponent({
-  render() {
-    let {model, asRadiogroup, disabledValue} = this.props
-    let {query} = this.state
-    let alternatives = model.alternatives || (this.state.alternatives) || []
-    let className = alternatives.length ? '' : 'loading'
-
-    if (model.optional) {
-      let prototype = model.value ? model
-                                  : R.dissoc('value', R.merge(model, optionalModel(model))) // Replace the enum default with the zero value
-      model.context.changeBus.push([prototype.context, R.merge(prototype, {optional: false, zeroValue: EnumEditor.zeroValue()})])
+let fetchAlternatives = (model) => {
+  let alternativesPath = model.alternativesPath
+  let edit = model.context.edit
+  if (edit && alternativesPath) {
+    let alternativesP = EnumEditor.AlternativesCache[alternativesPath]
+    if (!alternativesP) {
+      alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
+      EnumEditor.AlternativesCache[alternativesPath] = alternativesP
     }
+    return alternativesP
+  } else {
+    return Bacon.constant([])
+  }
+}
 
-    alternatives = model.zeroValue ? R.prepend(model.zeroValue, alternatives) : alternatives
-    let defaultValue = model.value || model.zeroValue
+export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
+  let query = Atom()
+  let alternativesP = fetchAlternatives(model)
+  let classNameP = alternativesP.map(xs => xs.length ? '' : 'loading')
 
-    let filter = q => {
-      return q ? alternatives.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : alternatives
-    }
+  if (model.optional) { // TODO: replace with wrapOptional construct
+    let prototype = model.value ? model
+                                : R.dissoc('value', R.merge(model, optionalModel(model))) // Replace the enum default with the zero value
+    model.context.changeBus.push([prototype.context, R.merge(prototype, {optional: false, zeroValue: EnumEditor.zeroValue()})])
+  }
 
-    return model.context.edit
-      ? asRadiogroup
-        ? (
-            <ul className={className}>
-              {
-                alternatives.map(alternative =>
-                  <li key={ alternative.value }>
-                    <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
-                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => this.onChange(alternative)}/>
-                      {alternative.title}
-                    </label>
-                  </li>
-                )
-              }
-            </ul>
-          )
-        : (
-             <span className={'dropdown-wrapper ' + className}><DropDown
-               options={filter(query)}
-               keyValue={option => option.value}
-               displayValue={option => option.title}
-               onSelectionChanged={option => this.onChange(option)}
-               selected={defaultValue}
-               onFilter={q => this.setState({query: q})}
-             /></span>
-          )
-      : <span className="inline enum">{modelTitle(model)}</span>
-  },
+  // TODO: get rid of zeroValue
+  let alternativesWithZeroValueP = alternativesP.map(xs => model.zeroValue ? R.prepend(model.zeroValue, xs) : xs)
 
-  componentWillMount() {
-    let interestingProps = (model) => [model.alternativesPath, model.context.edit]
+  let defaultValue = model.value || model.zeroValue
 
-    this.propsE.map(props => props.model).skipDuplicates(R.eqBy(interestingProps)).onValue(model => {
-      let alternativesPath = model.alternativesPath
-      let edit = model.context.edit
-      if (edit && alternativesPath) {
-        let alternativesP = EnumEditor.AlternativesCache[alternativesPath]
-        if (!alternativesP) {
-          alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError)
-          EnumEditor.AlternativesCache[alternativesPath] = alternativesP
-        }
-        alternativesP.takeUntil(this.unmountE).onValue(alternatives => {
-          this.setState({alternatives})
-          if (model.value) {
-            let foundValue = alternatives.find(a => a.value == model.value.value)
-            if (!foundValue && alternatives[0]) {
-              // selected value not found in options -> pick first available option or zero value if optional
-              this.onChange(model.optional ? EnumEditor.zeroValue() : alternatives[0])
-            }
-          }
-        })
+  let selectDefaultValue = (alternatives) => {
+    if (model.value) {
+      let foundValue = alternatives.find(a => a.value == model.value.value)
+      if (!foundValue && alternatives[0]) {
+        setTimeout(function() { // Not very nice
+          // selected value not found in options -> pick first available option or zero value if optional
+          onChange(model.optional ? EnumEditor.zeroValue() : alternatives[0])
+        }, 0)
       }
-    })
-  },
+    }
+  }
 
-  onChange(option) {
-    let model = this.props.model
+  let filteredAlternativesP = Bacon.combineWith(alternativesWithZeroValueP, query, (xs, q) => {
+    return q ? xs.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : xs
+  })
+
+  let onChange = (option) => {
     let data = model.zeroValue && option.value === model.zeroValue.value
       ? R.dissoc('value', model)
       : R.merge(model, { value: option })
     model.context.changeBus.push([model.context, data])
-  },
-
-  getInitialState() {
-    return { alternatives: [] }
   }
-})
+
+  return model.context.edit
+    ? asRadiogroup
+      ? (
+          <ul className={classNameP}>
+            {
+              alternativesP.map(alternatives =>
+                alternatives.map(alternative =>
+                  <li key={ alternative.value }>
+                    <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
+                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
+                      {alternative.title}
+                    </label>
+                  </li>
+                )
+              )
+            }
+          </ul>
+        )
+      : (
+           <span className={classNameP.map(n => 'dropdown-wrapper ' + n)}>
+             <DropDown baret-lift
+               options={filteredAlternativesP}
+               keyValue={option => option.value}
+               displayValue={option => option.title}
+               onSelectionChanged={option => onChange(option)}
+               selected={defaultValue}
+               onFilter={q => query.set(q)}
+             />
+             { doActionWhileMounted(alternativesP, selectDefaultValue) }
+           </span>
+        )
+    : <span className="inline enum">{modelTitle(model)}</span>
+}
+
 EnumEditor.canShowInline = () => true
 EnumEditor.zeroValue = () => ({title: 'Ei valintaa', value: 'eivalintaa'})
 EnumEditor.AlternativesCache = {}

@@ -1,8 +1,10 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import {doActionWhileMounted} from '../util';
 
 export default ({className, onDismiss, onSubmit, children}) => {
   let keyE = Bacon.fromEvent(document, 'keyup')
+
   function handleKeys(e) {
     if (e.keyCode == 27) onDismiss()
     if (e.keyCode == 13) onSubmit()
@@ -17,5 +19,3 @@ export default ({className, onDismiss, onSubmit, children}) => {
     { doActionWhileMounted(keyE, handleKeys) }
   </div>)
 }
-
-const doActionWhileMounted = (stream, action) => stream.doAction(action).map(undefined).toProperty(undefined)
