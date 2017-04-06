@@ -1,8 +1,8 @@
 import React from 'react'
-import {modelData} from './EditorModel.js'
+import {modelData, pushModelValue} from './EditorModel.js'
 import {formatISODate, parseISODate, formatFinnishDate} from '../date.js'
 import DateInput from '../DateInput.jsx'
-import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './OptionalEditor.jsx'
 import {modelSetData} from './EditorModel'
 
 export const DateEditor = ({model, isAllowedDate}) => {
@@ -21,8 +21,10 @@ export const DateEditor = ({model, isAllowedDate}) => {
 DateEditor.canShowInline = () => true
 DateEditor.handlesOptional = true
 DateEditor.validateModel = (model) => {
-  var data = modelData(model)
-  if (!model.optional && !data) return ['empty date']
+  let data = modelData(model)
+  let empty = !data
+  if (empty && model.optional) return
+  if (!data) return ['empty date']
   var dateValue = data && parseISODate(data)
-  if (!dateValue) return ['invalid date']
+  if (!dateValue) return ['invalid date: ' + data]
 }

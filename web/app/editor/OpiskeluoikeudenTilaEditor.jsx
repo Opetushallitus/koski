@@ -1,47 +1,39 @@
 import React from 'baret'
 import R from 'ramda'
+import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
-import {resetOptionalModel} from './OptionalEditor.jsx'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
-import {modelSetValue} from './EditorModel'
+import {modelSetValue, lensedModel} from './EditorModel'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
-  let jaksotModel = opiskeluoikeusjaksot(model)
+  let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
+  
+  let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
-  let suorituksiaKesken = model.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(model, 'suoritukset') || [])
+  let suorituksiaKesken = wrappedModel.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(wrappedModel, 'suoritukset') || [])
   let showAddDialog = () => addingNew.modify(x => !x)
 
   let lisääJakso = (uusiJakso) => {
     if (uusiJakso) {
-      let tilaModel = modelLookup(uusiJakso, 'tila')
-      if (onLopputila(tilaModel)) {
-        let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
-        let uudenJaksonAlku = modelLookup(uusiJakso, 'alku')
-        model.context.changeBus.push([paattymispaivaModel.context, modelSetValue(paattymispaivaModel, uudenJaksonAlku.value)])
-      }
-      model.context.changeBus.push([uusiJakso.context, uusiJakso])
+      wrappedModel.context.changeBus.push([uusiJakso.context, uusiJakso])
     }
     addingNew.set(false)
   }
 
   let removeItem = () => {
-    if (onLopputila(modelLookup(items[0], 'tila'))) {
-      let paattymispaivaModel = modelLookup(model, 'päättymispäivä')
-      resetOptionalModel(paattymispaivaModel)
-    }
-    model.context.changeBus.push([items[0].context, undefined])
+    wrappedModel.context.changeBus.push([items[0].context, undefined])
     addingNew.set(false)
   }
 
-  let showLisaaTila = !onLopputilassa(model)
+  let showLisaaTila = !onLopputilassa(wrappedModel)
   let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
 
   return (
-    model.context.edit ?
+    wrappedModel.context.edit ?
       <div>
         <ul className="array">
           {
@@ -70,12 +62,21 @@ export const onLopputila = (tila) => {
 }
 
 export const onLopputilassa = (opiskeluoikeus) => {
-  let jaksot = modelItems(opiskeluoikeusjaksot(opiskeluoikeus))
-  let viimeinenJakso = jaksot.last()
-  if (!viimeinenJakso) return false
-  return onLopputila(modelLookup(viimeinenJakso, 'tila'))
+  let jakso = viimeinenJakso(opiskeluoikeus)
+  if (!jakso) return false
+  return onLopputila(modelLookup(jakso, 'tila'))
 }
 
-export const opiskeluoikeusjaksot = (opiskeluoikeus) => {
+const viimeinenJakso = (opiskeluoikeus) => modelItems(opiskeluoikeusjaksot(opiskeluoikeus)).last()
+
+const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
+}
+
+let fixPäättymispäivä = (opiskeluoikeus) => {
+  let päättymispäivä = onLopputilassa(opiskeluoikeus)
+    ? modelLookup(viimeinenJakso(opiskeluoikeus), 'alku').value
+    : null
+
+  return modelSetValue(opiskeluoikeus, päättymispäivä, 'päättymispäivä')
 }

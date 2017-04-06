@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData} from './EditorModel.js'
-import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
-import {modelValid} from './EditorModel'
+import {wrapOptional} from './OptionalEditor.jsx'
+import {pushModelValue, modelValid} from './EditorModel'
 
 export const StringEditor = ({model}) => {
   let wrappedModel = wrapOptional({model})

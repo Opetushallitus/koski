@@ -183,7 +183,26 @@ export const validateModel = (model, results = {}, path = []) => {
   return results
 }
 
-export const modelValid = (model) => R.keys(validateModel(model)).length == 0
+export const modelValid = (model) => {
+  var errors = validateModel(model)
+  let valid = R.keys(errors).length == 0
+  //if (!valid) console.log("errors", errors)
+  return valid
+}
+
+
+export const lensedModel = (model, lens, newContext) => {
+  let modelFromLens = L.get(lens, model)
+  if (!modelFromLens) {
+    throw new Error('lens returned ' + modelFromLens)
+  }
+  if (!newContext) {
+    newContext = childContext(model.context, lens)
+  }
+  return contextualizeModel(modelFromLens, newContext)
+}
+
+export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
 
 const valueEmpty = (value) => {
   return !value

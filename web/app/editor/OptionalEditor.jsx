@@ -3,7 +3,7 @@ import R from 'ramda'
 import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import * as L from 'partial.lenses'
-import {modelSetValue, childContext} from './EditorModel'
+import {modelSetValue, childContext, lensedModel} from './EditorModel'
 
 export const OptionalEditor = React.createClass({
   render() {
@@ -54,7 +54,7 @@ const optionalModel = (model, context) => {
 
   return makeOptional(prototype, model)
 }
-export const resetOptionalModel = (model) => model.context.changeBus.push([model.context, createOptionalEmpty(model)])
+const resetOptionalModel = (model) => model.context.changeBus.push([model.context, createOptionalEmpty(model)])
 
 const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptionalEmpty(optModel)))
 const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
@@ -97,12 +97,6 @@ export const wrapOptional = ({model, isEmpty = modelEmptyForOptional, createEmpt
     }
   )
 
-  let modelFromLens = L.get(myLens, model)
-  if (!modelFromLens) {
-    throw new Error('lens returned ' + modelFromLens)
-  }
   let newContext = childContext(model.context, myLens)
-  return contextualizeModel(modelFromLens, newContext)
+  return lensedModel(model, myLens, newContext)
 }
-
-export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
