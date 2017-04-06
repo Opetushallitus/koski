@@ -33,7 +33,7 @@ Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }
 Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
-Editor.zeroValue = (model) => (getEditorFunction(model).zeroValue || (() => null))(model)
+Editor.handlesOptional = (model) => getEditorFunction(model).handlesOptional
 
 const NullEditor = React.createClass({
   render() {

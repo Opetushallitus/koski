@@ -11,7 +11,6 @@ export const ArrayEditor = ({model, reverse}) => {
 
   if (reverse && !wrappedModel.context.edit) items = items.slice(0).reverse()
 
-  let zeroValue = ArrayEditor.zeroValue(wrappedModel)
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
   let newItemModel = () => {
@@ -28,6 +27,11 @@ export const ArrayEditor = ({model, reverse}) => {
     wrappedModel.context.changeBus.push([item.context, item])
   }
 
+  let itemEditorHandlesOptional = () => {
+    let childModel = wrappedModel.arrayPrototype && contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, modelItems(wrappedModel).length))
+    return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
+  }
+
   return (
     <ul className={className}>
       {
@@ -38,14 +42,14 @@ export const ArrayEditor = ({model, reverse}) => {
             item.context.changeBus.push([item.context, undefined])
           }
           return (<li key={item.arrayKey}>
-            <Editor model = {R.merge(item, {zeroValue: zeroValue})} />
+            <Editor model = {item} />
             {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
           </li>)
         })
       }
       {
         wrappedModel.context.edit && wrappedModel.arrayPrototype !== undefined
-          ? zeroValue
+          ? itemEditorHandlesOptional()
             ? <li className="add-item"><Editor model = {newItem()} /></li>
             : <li className="add-item"><a onClick={addItem}>lisää uusi</a></li>
           :null
@@ -57,9 +61,5 @@ export const ArrayEditor = ({model, reverse}) => {
 ArrayEditor.canShowInline = (model) => {
   let items = modelItems(model)
   return items[0] && model.context.edit ? false : Editor.canShowInline(items[0])
-}
-ArrayEditor.zeroValue = (mdl) => {
-  let childModel = mdl.arrayPrototype && contextualizeModel(mdl.arrayPrototype, childContext(mdl.context, modelItems(mdl).length))
-  return childModel && childModel.type !== 'prototype' ? Editor.zeroValue(childModel) : null
 }
 ArrayEditor.handlesOptional = true
