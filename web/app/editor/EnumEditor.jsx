@@ -7,7 +7,6 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
-import {doActionWhileMounted} from '../util'
 import {modelSetValue} from './EditorModel'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
