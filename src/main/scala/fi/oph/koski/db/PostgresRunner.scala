@@ -37,6 +37,7 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
       logger.info("Starting server on port " + port)
       serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
       PortChecker.waitUntilReservedLocalPort(port)
+      Thread.sleep(2000)
       sys.addShutdownHook {
         stop
       }
