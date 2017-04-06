@@ -13,8 +13,10 @@ import {
   addContext,
   modelData,
   modelLens,
-  modelProperties
+  modelProperties,
+  modelSetValue
 } from './EditorModel'
+import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
@@ -23,8 +25,8 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   var context = childContext(suoritukset.context, modelItems(suoritukset).length)
   let selectedProto = contextualizeModel(suoritukset.arrayPrototype, context).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
   let initialModel = contextualizeModel(selectedProto, context)
-  initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
 
+  initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
   if (viimeisin) {
     initialModel = modelSet(initialModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
@@ -32,24 +34,39 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   initialModel = addContext(initialModel, { editAll: true })
 
-  let { modelP, errorP } = accumulateModelState(initialModel)
 
-  let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
-  let validP = errorP.not().and(hasToimipisteP)
+  return (<div>
+    {
+      valittuLuokkaAsteP(initialModel).map(valittuLuokkaAste => {
+        initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
 
-  modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
+        let { modelP, errorP } = accumulateModelState(initialModel)
 
-  return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
-    <h2>Suorituksen lisäys</h2>
-    <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
-    <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
-  </ModalDialog>)
+        let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
+        let validP = errorP.not().and(hasToimipisteP)
+
+        modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
+
+        return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+          <h2>Suorituksen lisäys</h2>
+          <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
+          <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
+        </ModalDialog>)
+      })
+    }
+  </div>)
 }
 UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
   let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
   return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
 }
 export default UusiPerusopetuksenSuoritusPopup
+
+let valittuLuokkaAsteP = (model) => {
+  let luokkaAsteLens = modelLens('koulutusmoduuli.tunniste')
+  let luokkaAsteModel = L.get(luokkaAsteLens, model)
+  return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
+}
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
   var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).map(suorituksenLuokkaAste)

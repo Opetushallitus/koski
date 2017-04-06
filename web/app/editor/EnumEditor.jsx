@@ -17,24 +17,12 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
   })
 
   let query = Atom()
-  let alternativesP = fetchAlternatives(wrappedModel)
+  let alternativesP = EnumEditor.fetchAlternatives(wrappedModel)
   let classNameP = alternativesP.map(xs => xs.length ? '' : 'loading')
 
   let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
 
   let defaultValue = wrappedModel.value || zeroValue
-
-  let selectDefaultValue = (alternatives) => {
-    if (wrappedModel.value && wrappedModel.value.data) {
-      let foundValue = alternatives.find(a => a.value == wrappedModel.value.value)
-      if (!foundValue && alternatives[0]) {
-        setTimeout(function() { // TODO: Not very nice
-          // selected value not found in options -> pick first available option or zero value if optional
-          onChange(wrappedModel.optional ? zeroValue : alternatives[0])
-        }, 0)
-      }
-    }
-  }
 
   let filteredAlternativesP = Bacon.combineWith(alternativesWithZeroValueP, query, (xs, q) => {
     return q ? xs.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : xs
@@ -72,14 +60,14 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
                selected={defaultValue}
                onFilter={q => query.set(q)}
              />
-             { doActionWhileMounted(alternativesP, selectDefaultValue) }
            </span>
         )
     : <span className="inline enum">{modelTitle(wrappedModel)}</span>
 }
 
 let zeroValue = {title: 'Ei valintaa', value: 'eivalintaa'}
-let fetchAlternatives = (model) => {
+
+EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath
   let edit = model.context.edit
   if (edit && alternativesPath) {
