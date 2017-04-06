@@ -3,50 +3,34 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelTitle} from './EditorModel.js'
-import {optionalModel} from './OptionalEditor.jsx'
+import {wrapOptional} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {doActionWhileMounted} from '../util'
-
-let fetchAlternatives = (model) => {
-  let alternativesPath = model.alternativesPath
-  let edit = model.context.edit
-  if (edit && alternativesPath) {
-    let alternativesP = EnumEditor.AlternativesCache[alternativesPath]
-    if (!alternativesP) {
-      alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
-      EnumEditor.AlternativesCache[alternativesPath] = alternativesP
-    }
-    return alternativesP
-  } else {
-    return Bacon.constant([])
-  }
-}
+import {modelSetValue} from './EditorModel'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
+  let wrappedModel = wrapOptional({
+    model,
+    createEmpty: (protomodel) => modelSetValue(protomodel, zeroValue)
+  })
+
   let query = Atom()
-  let alternativesP = fetchAlternatives(model)
+  let alternativesP = fetchAlternatives(wrappedModel)
   let classNameP = alternativesP.map(xs => xs.length ? '' : 'loading')
 
-  if (model.optional) { // TODO: replace with wrapOptional construct
-    let prototype = model.value ? model
-                                : R.dissoc('value', R.merge(model, optionalModel(model))) // Replace the enum default with the zero value
-    model.context.changeBus.push([prototype.context, R.merge(prototype, {optional: false, zeroValue: EnumEditor.zeroValue()})])
-  }
+  let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
 
-  // TODO: get rid of zeroValue
-  let alternativesWithZeroValueP = alternativesP.map(xs => model.zeroValue ? R.prepend(model.zeroValue, xs) : xs)
-
-  let defaultValue = model.value || model.zeroValue
+  let defaultValue = wrappedModel.value || zeroValue
 
   let selectDefaultValue = (alternatives) => {
-    if (model.value) {
-      let foundValue = alternatives.find(a => a.value == model.value.value)
+    if (wrappedModel.value && wrappedModel.value.data) {
+      let foundValue = alternatives.find(a => a.value == wrappedModel.value.value)
       if (!foundValue && alternatives[0]) {
-        setTimeout(function() { // Not very nice
+        setTimeout(function() { // TODO: Not very nice
           // selected value not found in options -> pick first available option or zero value if optional
-          onChange(model.optional ? EnumEditor.zeroValue() : alternatives[0])
+          onChange(wrappedModel.optional ? zeroValue : alternatives[0])
         }, 0)
       }
     }
@@ -57,13 +41,10 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
   })
 
   let onChange = (option) => {
-    let data = model.zeroValue && option.value === model.zeroValue.value
-      ? R.dissoc('value', model)
-      : R.merge(model, { value: option })
-    model.context.changeBus.push([model.context, data])
+    wrappedModel.context.changeBus.push([wrappedModel.context, modelSetValue(wrappedModel, option)])
   }
 
-  return model.context.edit
+  return wrappedModel.context.edit
     ? asRadiogroup
       ? (
           <ul className={classNameP}>
@@ -94,10 +75,26 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
              { doActionWhileMounted(alternativesP, selectDefaultValue) }
            </span>
         )
-    : <span className="inline enum">{modelTitle(model)}</span>
+    : <span className="inline enum">{modelTitle(wrappedModel)}</span>
 }
 
+let zeroValue = {title: 'Ei valintaa', value: 'eivalintaa'}
+let fetchAlternatives = (model) => {
+  let alternativesPath = model.alternativesPath
+  let edit = model.context.edit
+  if (edit && alternativesPath) {
+    let alternativesP = alternativesCache[alternativesPath]
+    if (!alternativesP) {
+      alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
+      alternativesCache[alternativesPath] = alternativesP
+    }
+    return alternativesP
+  } else {
+    return Bacon.constant([])
+  }
+}
+
+let alternativesCache = {}
+
 EnumEditor.canShowInline = () => true
-EnumEditor.zeroValue = () => ({title: 'Ei valintaa', value: 'eivalintaa'})
-EnumEditor.AlternativesCache = {}
 EnumEditor.handlesOptional = true

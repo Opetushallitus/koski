@@ -87,14 +87,19 @@ export const wrapOptional = ({model, isEmpty = modelEmptyForOptional, createEmpt
     },
     (newModel, contextModel) => {
       if (isEmpty(newModel)) {
+        //console.log('set empty', newModel)
         return createOptionalEmpty(contextModel)
       } else {
+        //console.log('set non-empty', newModel)
         return modelSetValue(getUsedModel(contextModel), newModel.value)
       }
     }
   )
 
   let modelFromLens = L.get(myLens, model)
+  if (!modelFromLens) {
+    throw new Error('lens returned ' + modelFromLens)
+  }
   let newContext = childContext(model.context, myLens)
   return contextualizeModel(modelFromLens, newContext)
 }

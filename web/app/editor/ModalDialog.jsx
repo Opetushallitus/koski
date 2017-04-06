@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {doActionWhileMounted} from '../util';
+import {doActionWhileMounted} from '../util'
 
 export default ({className, onDismiss, onSubmit, children}) => {
   let keyE = Bacon.fromEvent(document, 'keyup')
