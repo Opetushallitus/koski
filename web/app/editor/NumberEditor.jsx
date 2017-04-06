@@ -1,6 +1,6 @@
 import React from 'react'
-import {modelData} from './EditorModel.js'
-import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
+import {modelData, pushModelValue} from './EditorModel.js'
+import {wrapOptional} from './OptionalEditor.jsx'
 
 export const NumberEditor = React.createClass({
   render() {
