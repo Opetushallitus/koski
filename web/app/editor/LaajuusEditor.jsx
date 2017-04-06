@@ -1,15 +1,22 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
-import {modelData} from './EditorModel.js'
+import {modelData, modelEmpty} from './EditorModel'
+import {wrapOptional} from './OptionalEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
-    let { model, showUnit = true } = this.props
-    var yksikköData = modelData(model, 'yksikkö')
+    let { model } = this.props
+    let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo')})
+    let yksikköData = modelData(wrappedModel, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
-    return (modelData(model, 'arvo'))
-      ? <span className="property laajuus"><span className="value"><Editor model={model} path="arvo"/></span> {showUnit && <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span>}</span>
-      : <span>-</span>
+
+    // TODO, validointi ja yksikön editointi
+    return <span className="property laajuus">
+             <span className="value">
+               <Editor model={wrappedModel} path="arvo"/>
+             </span> {!wrappedModel.context.edit && <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span>}
+           </span>
   }
 })
-LaajuusEditor.readOnly = true
+LaajuusEditor.readOnly = false
+LaajuusEditor.handlesOptional = true

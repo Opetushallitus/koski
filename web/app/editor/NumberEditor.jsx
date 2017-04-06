@@ -1,18 +1,22 @@
 import React from 'react'
-import {modelData, modelSetData} from './EditorModel.js'
+import {modelData} from './EditorModel.js'
+import {pushModelValue, wrapOptional} from './OptionalEditor.jsx'
 
 export const NumberEditor = React.createClass({
   render() {
     let {model} = this.props
-    let onChange = (event) => model.context.changeBus.push([model.context, modelSetData(model, parseFloat(event.target.value))])
+    let wrappedModel = wrapOptional({model})
+    let onChange = (event) => pushModelValue(wrappedModel, event.target.value ? { data: parseFloat(event.target.value) } : undefined)
 
-    let data = modelData(model)
+    let data = modelData(wrappedModel)
     let value = data
       ? Math.round(data * 100) / 100
       : data
 
-    return model.context.edit
-      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange } className="editor-input inline number"></input>
+    return wrappedModel.context.edit
+      ? <input type="text" defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"></input>
       : <span className="inline number">{value}</span>
   }
 })
+
+NumberEditor.handlesOptional = true

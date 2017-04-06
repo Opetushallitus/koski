@@ -1,7 +1,6 @@
 import React from 'react'
 import {modelData, modelLookup, modelTitle, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
-import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 
@@ -42,8 +41,8 @@ export const PerusopetuksenOppiaineetEditor = React.createClass({
 
 const Oppiainetaulukko = React.createClass({
   render() {
-    let {suoritukset} = this.props
-    let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
+    let {suoritukset, model} = this.props
+    let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
     let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
     return (<table>
         <thead>
@@ -70,7 +69,7 @@ const OppiaineEditor = React.createClass({
     let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let äidinkieli = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let editing = model.context.edit
-    let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi', 'tila', 'suorituskieli'].includes(p.key)
+    let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
 
@@ -105,7 +104,7 @@ const OppiaineEditor = React.createClass({
       }
       {
         showLaajuus && (<td className="laajuus">
-          <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} showUnit={!model.context.edit}/>
+          <Editor model={modelLookup(model, 'koulutusmoduuli.laajuus')}/>
         </td>)
       }
     </tr>

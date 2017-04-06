@@ -40,8 +40,9 @@
           }
         }
         td.laajuus, th.laajuus {
-          width: 212px;
           padding-left: 10px;
+          text-align: right;
+          white-space: nowrap;
           .yksikko.vuosiviikkotuntia {
             font-size: 0.8em;
           }
@@ -89,13 +90,14 @@
         width: initial;
         max-width: initial;
       }
-      .nimi {
-        line-height: 32px;
-      }
+    }
+    td {
+      line-height: 32px;
     }
     .laajuus {
-      width: auto;
-      text-align: right;
+      .remove-value {
+        margin-right: 0;
+      }
     }
   }
 
@@ -123,9 +125,5 @@
       width: 95%;
       display: inline-block;
     }
-  }
-
-  .arvosana .dropdown {
-    width: 68px;
   }
 }

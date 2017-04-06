@@ -58,7 +58,7 @@ describe('Perusopetus', function() {
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
             'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9 -\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
@@ -120,7 +120,7 @@ describe('Perusopetus', function() {
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
             'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9 -\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
             'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
