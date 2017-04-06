@@ -1,12 +1,12 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
-import {modelData, modelEmpty} from './EditorModel'
+import {modelData, modelEmpty, modelSetValue} from './EditorModel'
 import {wrapOptional} from './OptionalEditor.jsx'
 
 export const LaajuusEditor = React.createClass({
   render() {
     let { model } = this.props
-    let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo')})
+    let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo'), createEmpty: m => modelSetValue(m, undefined, 'arvo')})
     let yksikköData = modelData(wrappedModel, 'yksikkö')
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
 
