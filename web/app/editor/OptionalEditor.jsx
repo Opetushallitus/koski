@@ -40,7 +40,8 @@ export const OptionalEditor = React.createClass({
   }
 })
 OptionalEditor.canShowInline = () => true
-export const optionalModel = (model, context) => {
+
+const optionalModel = (model, context) => {
   if (!context) {
     if (!model.context) throw new Error('Context missing')
     context = model.context
