@@ -11,11 +11,13 @@ export const LaajuusEditor = React.createClass({
     let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
 
     // TODO, validointi ja yksikön editointi
-    return <span className="property laajuus">
-             <span className="value">
-               <Editor model={wrappedModel} path="arvo"/>
-             </span> {!wrappedModel.context.edit && <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span>}
-           </span>
+    return (
+      <span className="property laajuus">
+        <span className="value">
+          <Editor model={wrappedModel} path="arvo"/>
+        </span> {!wrappedModel.context.edit && <span className={'yksikko ' + yksikkö.toLowerCase()}>{yksikkö}</span>}
+      </span>
+    )
   }
 })
 LaajuusEditor.readOnly = false

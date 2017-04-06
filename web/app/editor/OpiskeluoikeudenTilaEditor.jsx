@@ -10,7 +10,6 @@ import {modelSetValue, lensedModel} from './EditorModel'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
-  
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
