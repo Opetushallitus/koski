@@ -8,8 +8,8 @@ export const ExpandablePropertiesEditor = React.createClass({
     let {model, propertyName} = this.props
     let {open} = this.state
     let propertyModel = modelLookup(model, propertyName)
-    let wrappedModel = wrapOptional({model: propertyModel})
     let edit = model.context.edit
+    let wrappedModel = edit ? wrapOptional({model: propertyModel}) : propertyModel
 
     return modelData(model, propertyName) || wrappedModel.context.edit ?
       <div className={'expandable-container ' + propertyName}>
