@@ -2,6 +2,8 @@ import React from 'react'
 import {modelData, modelLookup, contextualizeModel, modelEmpty} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 
+// TODO: use wrapOptional for automatic creation/deletion
+
 export const ExpandablePropertiesEditor = React.createClass({
   render() {
     let {model, propertyName} = this.props

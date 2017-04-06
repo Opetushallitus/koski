@@ -14,7 +14,7 @@ export const ObjectEditor = React.createClass({
     let objectEditor = () => <div className={className}><PropertiesEditor model={model}/></div>
 
     let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context)).length == 1
-    let isInline = ObjectEditor.canShowInline(this)
+    let isInline = ObjectEditor.canShowInline(model)
     let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' inline' : '')
 
     return !representative
@@ -31,10 +31,8 @@ export const ObjectEditor = React.createClass({
              </span>)
   }
 })
-ObjectEditor.canShowInline = (component) => {
-  var canInline = !!findRepresentative(component.props.model) && !component.props.model.context.edit && !isArrayItem(component.props.model.context)
-  //console.log("Object inline", component.props.model.context.path, canInline)
-  return canInline
+ObjectEditor.canShowInline = (model) => {
+  return !!findRepresentative(model) && !model.context.edit && !isArrayItem(model.context)
 }
 
 const findRepresentative = (model) => model.value.properties.find(property => property.representative)

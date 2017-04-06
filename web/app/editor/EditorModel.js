@@ -14,11 +14,12 @@ export const modelLens = (path) => {
     let string = typeof key == 'string'
 
     var l1 = numeric
-      ? indexL(parseInt(key))
+      ? L.compose('value', indexL(parseInt(key)))
       : string
-        ? L.compose('properties', L.find(R.whereEq({key})), 'model')
-        : (console.log('other path elem ' + key), key) // other lens
-    return L.compose('value', l1)
+        ? L.compose('value', 'properties', L.find(R.whereEq({key})), 'model')
+        : key // an actual lens TODO might be dangerous way to recognize this
+
+    return l1
   })
   return L.compose(...pathLenses)
 }
@@ -122,11 +123,7 @@ export const contextualizeModel = (model, context) => {
 
 export const childContext = (context, ...pathElems) => {
   var basePath = (context.path && typeof context.path == 'string' ? [context.path]: context.path) || []
-
   let allPathElems = (basePath).concat(pathElems)
-
-  //console.log(allPathElems)
-
   let path = L.compose(...allPathElems)
   return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
 }
@@ -137,17 +134,19 @@ const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v])
 export const addContext = (model, additionalContext) => contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
 
 export const applyChanges = (modelBeforeChange, changes) => {
-  let basePath = modelBeforeChange.context ? modelBeforeChange.context.path : ''
+  let basePath = modelBeforeChange.context ? modelBeforeChange.context.path : []
   var withAppliedChanges = R.splitEvery(2, changes).reduce((acc, [context, model]) => {
-    var subPath = removeCommonPath(context.path, basePath)
-    return modelSet(acc, model, subPath)
+    //console.log('apply', model, 'to', context.path)
+    let subPath = removeCommonPath(context.path, basePath)
+    let actualLens = modelLens(subPath)
+    return L.set(actualLens, model, acc)
   }, modelBeforeChange)
   return withAppliedChanges
 }
 
 const removeCommonPath = (p1, p2) => {
   if (p2.length == 0) return p1
-  return p1.substring(p2.length + 1)
+  return p1.slice(p2.length)
 }
 
 export const accumulateModelState = (model) => {

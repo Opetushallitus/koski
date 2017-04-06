@@ -32,8 +32,8 @@ const parseBool = (b) => {
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }
-Editor.canShowInline = (component) => (getEditorFunction(component.props.model).canShowInline || (() => false))(component)
-Editor.zeroValue = (component) => (getEditorFunction(component.props.model).zeroValue || (() => null))(component)
+Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
+Editor.zeroValue = (model) => (getEditorFunction(model).zeroValue || (() => null))(model)
 
 const NullEditor = React.createClass({
   render() {
