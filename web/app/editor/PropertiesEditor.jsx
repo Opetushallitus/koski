@@ -2,7 +2,7 @@ import React from 'react'
 import { modelEmpty, modelItems, addContext } from './EditorModel.js'
 import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
-import {modelProperties} from './EditorModel';
+import {modelProperties} from './EditorModel'
 
 export const PropertiesEditor = React.createClass({
   render() {
@@ -22,7 +22,7 @@ export const PropertiesEditor = React.createClass({
     let munch = (prefix) => (property) => { // TODO: just index passing is enough, no context needed
       if (!edit && property.flatten && property.model.value && property.model.value.properties) {
         return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
-      } else if (!edit && property.flatten && (property.model.type == 'array')) {
+      } else if (!edit && property.flatten && (property.model.type === 'array')) {
         return modelItems(property.model).flatMap((item, j) => {
           return modelProperties(item, shouldShow).flatMap(munch(prefix + j + '.'))
         })

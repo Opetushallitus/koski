@@ -56,7 +56,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             <PropertiesEditor
               model={mdl}
               propertyFilter={ p => !excludedProperties.includes(p.key) }
-              getValueEditor={ (prop, getDefault) => prop.key == 'tila'
+              getValueEditor={ (prop, getDefault) => prop.key === 'tila'
                 ? <OpiskeluoikeudenTilaEditor model={mdl} />
                 : getDefault() }
              />
@@ -70,7 +70,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             <SuoritusTabs model={mdl}/>
             <SuoritusEditor key={tabName(valittuSuoritus)} model={valittuSuoritus} />
           </div>
-          
+
         </div>
       </div>)
     }
@@ -91,7 +91,7 @@ const SuoritusTabs = ({ model }) => {
   return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
-        let selected = i == SuoritusTabs.suoritusIndex(model)
+        let selected = i === SuoritusTabs.suoritusIndex(model)
         let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
         return (<li className={selected ? 'selected': null} key={i}>
           { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, tabName(suoritusModel)) }> {titleEditor} </Link>}
@@ -125,10 +125,10 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
     let {opiskeluoikeus} = this.props
     let oppijaOid = opiskeluoikeus.context.oppijaOid
     var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
-    if (opiskeluoikeusTyyppi == 'lukiokoulutus' || opiskeluoikeusTyyppi == 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
+    if (opiskeluoikeusTyyppi === 'lukiokoulutus' || opiskeluoikeusTyyppi === 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
-    } else if (opiskeluoikeusTyyppi == 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
+    } else if (opiskeluoikeusTyyppi === 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(opiskeluoikeus, 'oppilaitos').oid
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {

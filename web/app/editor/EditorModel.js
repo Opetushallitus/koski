@@ -151,7 +151,7 @@ let contextualizeProperty = (mainModel) => (property) => {
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
-export const contextualizeModel = (model, context, root) => {
+export const contextualizeModel = (model, context) => {
   incCounter('contextualize')
   if (!context) {
     throw new Error('context missing')
@@ -162,7 +162,7 @@ export const contextualizeModel = (model, context, root) => {
 }
 
 const resolvePrototype = (model, context) => {
-  if (model && model.type == 'prototype') {
+  if (model && model.type === 'prototype') {
     if (!context.edit) {
       return model
     }
@@ -172,7 +172,7 @@ const resolvePrototype = (model, context) => {
       console.error('Prototype not found: ' + model.key)
     }
     modelPropertiesRaw(foundProto).forEach(p => p.model = resolvePrototype(p.model, context))
-    if (model.type == 'array' && model.value) {
+    if (model.type === 'array' && model.value) {
       for (var i in model.value) {
         model.value[i] = resolvePrototype(model.value[i], context)
       }
@@ -184,7 +184,7 @@ const resolvePrototype = (model, context) => {
 
 export const childContext = (context, ...pathElems) => {
   incCounter('childContext')
-  var basePath = (context.path && typeof context.path == 'string' ? [context.path]: context.path) || []
+  var basePath = (context.path && typeof context.path === 'string' ? [context.path]: context.path) || []
   let allPathElems = (basePath).concat(pathElems)
   let path = L.compose(...allPathElems)
   return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })

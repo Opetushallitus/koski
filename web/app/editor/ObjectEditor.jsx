@@ -1,8 +1,8 @@
 import React from 'react'
 import { Editor } from './Editor.jsx'
 import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor.jsx'
-import {modelProperties} from './EditorModel';
-import {findModelProperty} from './EditorModel';
+import {modelProperties} from './EditorModel'
+import {findModelProperty} from './EditorModel'
 
 export const ObjectEditor = React.createClass({
   render() {
@@ -15,7 +15,7 @@ export const ObjectEditor = React.createClass({
     let representativeEditor = () => <Editor model={representative.model}/>
     let objectEditor = () => <div className={className}><PropertiesEditor model={model}/></div>
 
-    let exactlyOneVisibleProperty = modelProperties(model, shouldShowProperty(context)).length == 1
+    let exactlyOneVisibleProperty = modelProperties(model, shouldShowProperty(context)).length === 1
     let isInline = ObjectEditor.canShowInline(model)
     let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' inline' : '')
 
