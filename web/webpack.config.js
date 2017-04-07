@@ -21,7 +21,11 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel',
-        include: [ __dirname + '/app' ]
+        include: [ __dirname + '/app' ],
+        query: {
+          cacheDirectory: true,
+          presets: ['es2015', 'react']
+        }
       },
       {test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules/},
       {
