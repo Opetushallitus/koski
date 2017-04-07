@@ -24,7 +24,6 @@
         }
         .arvosana {
           text-align: right;
-          padding-right: 5px;
           select {
             width: initial;
           }
@@ -34,9 +33,15 @@
           color: @color-link-blue;
           width: 1px;
           white-space: nowrap;
+          position: relative;
+          .footnotes-container {
+            position: absolute;
+            right: -45px;
+            width: 40px;
+          }
           sup {
             line-height: initial;
-            position: initial;
+            top: -0.3em
           }
         }
         td.laajuus, th.laajuus {

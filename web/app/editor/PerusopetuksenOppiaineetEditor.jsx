@@ -48,8 +48,8 @@ const Oppiainetaulukko = React.createClass({
         <thead>
         <tr>
           <th className="oppiaine">Oppiaine</th>
-          <th className="arvosana" colSpan={showFootnotes ? '2' : '1'}>Arvosana</th>
-          {showLaajuus && <th className="laajuus">Laajuus</th>}
+          <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
+          {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
         </tr>
         </thead>
         {
@@ -94,18 +94,20 @@ const OppiaineEditor = React.createClass({
 
       </td>
       {
-        showFootnotes && (
-          <td className="footnotes">
-            {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
-            {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
-            {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
-          </td>
-        )
-      }
-      {
         showLaajuus && (<td className="laajuus">
           <Editor model={modelLookup(model, 'koulutusmoduuli.laajuus')}/>
         </td>)
+      }
+      {
+        showFootnotes && (
+          <td className="footnotes">
+            <div className="footnotes-container">
+              {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
+              {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
+              {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
+            </div>
+          </td>
+        )
       }
     </tr>
     {
