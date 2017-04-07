@@ -147,11 +147,7 @@ let contextualizeProperty = (mainModel) => (property) => {
 
 export const contextualizeSubModel = (subModel, parentModel, path) => {
   incCounter('contextualizeSubModel')
-  if (!parentModel.context) {
-    //throw new Error('context missing from parent model')
-  }
   subModel = resolvePrototype(subModel, parentModel.context)
-
   var subPath = childPath(parentModel, path)
   return R.merge(subModel, { context: parentModel.context, path: subPath })
 }
