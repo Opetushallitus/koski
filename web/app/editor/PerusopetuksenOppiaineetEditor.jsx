@@ -1,16 +1,26 @@
-import React from 'react'
-import {modelData, modelLookup, modelTitle, modelItems} from './EditorModel.js'
+import React from 'baret'
+import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {EnumEditor} from './EnumEditor.jsx'
+import DropDown from '../Dropdown.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {
-  modelLookupRequired,
-  lensedModel,
-  modelLens,
-  modelSetValue,
+  addContext,
+  contextualizeSubModel,
   createOptionalEmpty,
-  modelErrors
+  lensedModel,
+  modelData,
+  modelErrors,
+  modelItems,
+  modelLens,
+  modelLookup,
+  modelLookupRequired,
+  modelSet,
+  modelSetValue,
+  modelTitle,
+  pushModel
 } from './EditorModel'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
@@ -45,8 +55,10 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 }
 
 const Oppiainetaulukko = ({suoritukset, model}) => {
-  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
+  let valinnaiset = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
+  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && valinnaiset
   let showFootnotes = !model.context.edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+  let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
   return (<table>
       <thead>
       <tr>
@@ -57,6 +69,9 @@ const Oppiainetaulukko = ({suoritukset, model}) => {
       </thead>
       {
         suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+      }
+      {
+        model.context.edit && valinnaiset && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} resultCallback={addOppiaine} />
       }
     </table>
   )
@@ -105,7 +120,7 @@ export const OppiaineEditor = React.createClass({
     let errors = modelErrors(model)
 
     let oppiaineTitle = (aine) => {
-      let title = kielenOppiaine || äidinkieli ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
+      let title = modelTitle(aine, 'tunniste') + (kielenOppiaine || äidinkieli ? ', ' : '')
       return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
 
@@ -124,7 +139,6 @@ export const OppiaineEditor = React.createClass({
       </td>
       <td className="arvosana">
         <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={this.sortGrades}/></span>
-
       </td>
       {
         showLaajuus && (<td className="laajuus">
@@ -182,4 +196,46 @@ OppiaineEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
     return ['Suoritus valmis, mutta arvosana puuttuu']
   }
+}
+
+const NewOppiaine = ({oppiaineet, resultCallback}) => {
+  let selectionBus = Bacon.Bus()
+
+  let newItemIndex = modelItems(oppiaineet).length
+  let oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
+  let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, oppiaineet, newItemIndex)
+  oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
+
+  let oppiaineModels = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
+    .oneOfPrototypes.filter(p => p.key !== 'perusopetuksenpaikallinenvalinnainenoppiaine')
+    .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
+
+  let emptyAlternatives = alts => !alts.some(a => a === undefined || a.length === 0)
+
+  selectionBus.onValue(resultCallback)
+
+  return (<tbody className="uusi-oppiaine">
+  <tr>
+    <td>
+      {
+        <DropDown baret-lift
+          options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).filter(emptyAlternatives).map(x => x.flatten())}
+          keyValue={([,tunniste]) => tunniste.value}
+          displayValue={([,tunniste]) => tunniste.title}
+          onSelectionChanged={([oppiaineModel, tunniste]) => {
+            oppiaineModel = modelSetValue(oppiaineModel, tunniste, 'tunniste')
+            selectionBus.push(modelSet(oppiaineenSuoritusModel, oppiaineModel, 'koulutusmoduuli'))
+          }}
+          selectionText="Lisää valinnainen oppiaine"
+        />
+      }
+    </td>
+  </tr>
+  </tbody>)
+}
+
+// oppiaineModel -> Prop [(oppiainemodel, tunniste)]
+const oppiaineAlternativesP = oppiaineModel => {
+  let tunniste = modelLookup(oppiaineModel, 'tunniste')
+  return EnumEditor.fetchAlternatives(tunniste).map(alt => alt.map(a => [oppiaineModel, a]))
 }

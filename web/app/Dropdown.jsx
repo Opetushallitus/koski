@@ -5,7 +5,7 @@ import R from 'ramda'
 export default BaconComponent({
   render() {
     let {open, selectionIndex, query} = this.state
-    let {options, keyValue, displayValue, selected, onFilter} = this.props
+    let {options, keyValue, displayValue, selected, onFilter, selectionText = 'valitse'} = this.props
 
     return (
       <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} onBlur={this.handleOnBlur} ref={el => this.dropdown = el} onKeyDown={this.onKeyDown}>
@@ -17,12 +17,12 @@ export default BaconComponent({
                 ref={(input => this.input = input)}
                 onChange={this.handleInput}
                 onBlur={this.handleInputBlur}
-                value={query != undefined ? query : selected ? displayValue(selected) : 'valitse'}
+                value={query != undefined ? query : selected ? displayValue(selected) : selectionText}
                 className={selected ? 'select' : 'select no-selection'}
               />
             </div> :
             <div ref={(select => this.select = select)} className={selected ? 'select' : 'select no-selection'}
-                 onClick={this.toggleOpen}>{selected ? displayValue(selected) : 'valitse'}
+                 onClick={this.toggleOpen}>{selected ? displayValue(selected) : selectionText}
             </div>
         }
         {options.length > 0 && <ul className={open ? 'options open' : 'options'}>
