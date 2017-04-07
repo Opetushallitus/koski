@@ -146,7 +146,6 @@ let contextualizeProperty = (mainModel) => (property) => {
 }
 
 export const contextualizeSubModel = (subModel, parentModel, path) => {
-  incCounter('contextualizeSubModel')
   subModel = resolvePrototype(subModel, parentModel.context)
   var subPath = childPath(parentModel, path)
   return R.merge(subModel, { context: parentModel.context, path: subPath })
@@ -155,7 +154,6 @@ export const contextualizeSubModel = (subModel, parentModel, path) => {
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
 export const contextualizeModel = (model, context, path) => {
-  incCounter('contextualize')
   if (!context) {
     throw new Error('context missing')
   }
@@ -198,7 +196,6 @@ const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v])
 
 // Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => {
-  incCounter('addContext')
   if (!model.context) throw new Error('context missing')
   return contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
 }
@@ -276,10 +273,6 @@ export const modelValid = (model, context) => {
   return valid
 }
 
-
-window.counters = {}
-const incCounter = (key) => window.counters[key] = (window.counters[key] || 0) + 1
-window.resetCounters = () => window.counters = {}
 
 export const lensedModel = (model, lens) => {
   let modelFromLens = L.get(lens, model)
