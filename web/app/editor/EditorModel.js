@@ -104,17 +104,20 @@ export const modelProperties = (mainModel, paths) => {
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
-export const contextualizeModel = (model, context) => {
+export const contextualizeModel = (model, context, root) => {
+  if (root === undefined) root = context
+  if (model.type == 'prototype') root = { path: 'proto' }
+  incCounter('contextualize-' + root.path)
   let stuff = { context }
   if (model.value && model.value.properties) {
-    stuff.value = R.merge(model.value, { properties : model.value.properties.map( p => R.merge(p, { model: contextualizeModel(p.model, childContext(context, p.key))})) })
+    stuff.value = R.merge(model.value, { properties : model.value.properties.map( p => R.merge(p, { model: contextualizeModel(p.model, childContext(context, p.key), root)})) })
   }
   if (model.type == 'array' && model.value) {
     stuff.value = model.value.map( (item, index) => {
       if (!item.arrayKey) {
         item.arrayKey = ++model.arrayKeyCounter || (model.arrayKeyCounter=1)
       }
-      let itemModel = contextualizeModel(item, childContext(context, index))
+      let itemModel = contextualizeModel(item, childContext(context, index), root)
       return itemModel
     })
   }
@@ -122,6 +125,7 @@ export const contextualizeModel = (model, context) => {
 }
 
 export const childContext = (context, ...pathElems) => {
+  incCounter('childContext')
   var basePath = (context.path && typeof context.path == 'string' ? [context.path]: context.path) || []
   let allPathElems = (basePath).concat(pathElems)
   let path = L.compose(...allPathElems)
@@ -190,6 +194,10 @@ export const modelValid = (model) => {
   return valid
 }
 
+
+window.counters = {}
+const incCounter = (key) => window.counters[key] = (window.counters[key] || 0) + 1
+window.resetCounters = () => window.counters = {}
 
 export const lensedModel = (model, lens, newContext) => {
   let modelFromLens = L.get(lens, model)
