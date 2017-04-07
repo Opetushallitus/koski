@@ -30,7 +30,7 @@ let contextualizeChild = (m, child, pathElem) => {
   if (!m) {
     throw new Error('parent missing')
   }
-  return m.context ? contextualizeModel(child, childContext(m.context, pathElem)) : child
+  return m.context ? contextualizeModel(child, m.context, pathElem) : child
 }
 
 export const modelLens = (path) => {
@@ -151,10 +151,13 @@ let contextualizeProperty = (mainModel) => (property) => {
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
-export const contextualizeModel = (model, context) => {
+export const contextualizeModel = (model, context, path) => {
   incCounter('contextualize')
   if (!context) {
     throw new Error('context missing')
+  }
+  if (path != undefined) {
+    context = childContext(context, path)
   }
   model = resolvePrototype(model, context)
 
@@ -265,15 +268,12 @@ window.counters = {}
 const incCounter = (key) => window.counters[key] = (window.counters[key] || 0) + 1
 window.resetCounters = () => window.counters = {}
 
-export const lensedModel = (model, lens, newContext) => {
+export const lensedModel = (model, lens) => {
   let modelFromLens = L.get(lens, model)
   if (!modelFromLens) {
     throw new Error('lens returned ' + modelFromLens)
   }
-  if (!newContext) {
-    newContext = childContext(model.context, lens)
-  }
-  return contextualizeModel(modelFromLens, newContext)
+  return contextualizeModel(modelFromLens, model.context, lens)
 }
 
 export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])

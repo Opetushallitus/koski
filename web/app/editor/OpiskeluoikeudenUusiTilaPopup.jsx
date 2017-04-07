@@ -1,13 +1,13 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {childContext, contextualizeModel, modelItems, modelLookup, accumulateModelState} from './EditorModel'
+import {contextualizeModel, modelItems, modelLookup, accumulateModelState} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()
-  let initialModel = contextualizeModel(tilaListModel.arrayPrototype, childContext(tilaListModel.context, modelItems(tilaListModel).length))
+  let initialModel = contextualizeModel(tilaListModel.arrayPrototype, tilaListModel.context, modelItems(tilaListModel).length)
 
   let { modelP, errorP } = accumulateModelState(initialModel)
 

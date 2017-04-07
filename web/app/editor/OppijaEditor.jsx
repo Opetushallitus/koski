@@ -14,7 +14,7 @@ export const OppijaEditor = React.createClass({
 
     let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
 
-    var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
+    var opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
 
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo)

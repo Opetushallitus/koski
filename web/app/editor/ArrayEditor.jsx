@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {childContext, contextualizeModel, modelItems} from './EditorModel.js'
+import {contextualizeModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 
@@ -16,7 +16,7 @@ export const ArrayEditor = ({model, reverse}) => {
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
   let newItemModel = () => {
-    var m = contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, items.length))
+    var m = contextualizeModel(wrappedModel.arrayPrototype, wrappedModel.context, items.length)
     m.arrayKey = 'new-' + (counter++)
     return m
   }
@@ -32,7 +32,7 @@ export const ArrayEditor = ({model, reverse}) => {
   }
 
   let itemEditorHandlesOptional = () => {
-    let childModel = wrappedModel.arrayPrototype && contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, modelItems(wrappedModel).length))
+    let childModel = wrappedModel.arrayPrototype && contextualizeModel(wrappedModel.arrayPrototype, wrappedModel.context, modelItems(wrappedModel).length)
     return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
   }
   //console.log(model.context.path.slice(-1),items.map(item => item.arrayKey).join(','))

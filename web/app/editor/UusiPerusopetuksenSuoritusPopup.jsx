@@ -4,7 +4,6 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {
-  childContext,
   contextualizeModel,
   modelItems,
   modelLookup,
@@ -22,9 +21,10 @@ import ModalDialog from './ModalDialog.jsx'
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
-  var context = childContext(suoritukset.context, modelItems(suoritukset).length)
-  let selectedProto = contextualizeModel(suoritukset.arrayPrototype, context).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
-  let initialModel = contextualizeModel(selectedProto, context)
+
+  let indexForNewItem = modelItems(suoritukset).length
+  let selectedProto = contextualizeModel(suoritukset.arrayPrototype, suoritukset.context, indexForNewItem).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
+  let initialModel = contextualizeModel(selectedProto, suoritukset.context, indexForNewItem)
 
   initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
@@ -33,7 +33,6 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   }
 
   initialModel = addContext(initialModel, { editAll: true })
-
 
   return (<div>
     {
