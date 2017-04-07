@@ -109,10 +109,10 @@ const OppiaineEditor = React.createClass({
       }
     </tr>
     {
-      !!sanallinenArviointi && expanded && <tr><td className="details" colSpan="2"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
+      !!sanallinenArviointi && expanded && <tr><td className="details"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
     }
     {
-      editing && expanded && <tr><td className="details" colSpan="2"><PropertiesEditor model={model} propertyFilter={extraPropertiesFilter} /></td></tr>
+      editing && expanded && <tr><td className="details"><PropertiesEditor model={model} propertyFilter={extraPropertiesFilter} /></td></tr>
     }
     </tbody>)
   },
