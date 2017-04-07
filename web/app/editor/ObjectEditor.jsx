@@ -1,6 +1,8 @@
 import React from 'react'
 import { Editor } from './Editor.jsx'
 import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor.jsx'
+import {modelProperties} from './EditorModel';
+import {findModelProperty} from './EditorModel';
 
 export const ObjectEditor = React.createClass({
   render() {
@@ -13,7 +15,7 @@ export const ObjectEditor = React.createClass({
     let representativeEditor = () => <Editor model={representative.model}/>
     let objectEditor = () => <div className={className}><PropertiesEditor model={model}/></div>
 
-    let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context)).length == 1
+    let exactlyOneVisibleProperty = modelProperties(model, shouldShowProperty(context)).length == 1
     let isInline = ObjectEditor.canShowInline(model)
     let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' inline' : '')
 
@@ -35,5 +37,5 @@ ObjectEditor.canShowInline = (model) => {
   return !!findRepresentative(model) && !model.context.edit && !isArrayItem(model.context)
 }
 
-const findRepresentative = (model) => model.value.properties.find(property => property.representative)
+const findRepresentative = (model) => findModelProperty(model, property => property.representative)
 const isArrayItem = (context) => context.arrayItems && context.arrayItems.length > 1 // TODO: looks suspicious

@@ -5,6 +5,7 @@ import {currentLocation} from '../location.js'
 import {yearFromFinnishDateString} from '../date'
 import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
+import {modelItems} from './EditorModel'
 
 export const OppijaEditor = React.createClass({
   render() {
@@ -31,13 +32,13 @@ export const OppijaEditor = React.createClass({
                 <div className="opiskeluoikeustyyppi">{ modelTitle(opiskeluoikeudenTyyppi, 'tyyppi') }</div>
                 <ul className="oppilaitokset">
                   {
-                    modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
+                    modelItems(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
                       <li key={oppilaitosIndex}>
                         <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
                         <ul className="opiskeluoikeudet">
                           {
-                            modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                              modelLookup(opiskeluoikeus, 'suoritukset').value.filter(SuoritusEditor.näytettäväPäätasonSuoritus).map((suoritus, suoritusIndex) =>
+                            modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
+                              modelItems(opiskeluoikeus, 'suoritukset').filter(SuoritusEditor.näytettäväPäätasonSuoritus).map((suoritus, suoritusIndex) =>
                                 <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
                                   <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
@@ -68,8 +69,8 @@ export const OppijaEditor = React.createClass({
 
         <ul className="opiskeluoikeuksientiedot">
           {
-            modelLookup(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
-              return modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
+            modelItems(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+              return modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
                 <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                   <OpiskeluoikeusEditor
                     model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid }) }

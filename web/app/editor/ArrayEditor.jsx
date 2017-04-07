@@ -4,6 +4,8 @@ import {childContext, contextualizeModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 
+let counter = 1
+
 export const ArrayEditor = ({model, reverse}) => {
   let wrappedModel = wrapOptional({model})
 
@@ -14,7 +16,9 @@ export const ArrayEditor = ({model, reverse}) => {
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
   let newItemModel = () => {
-    return contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, items.length))
+    var m = contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, items.length))
+    m.arrayKey = 'new-' + (counter++)
+    return m
   }
 
   let newItem = () => {
@@ -31,7 +35,7 @@ export const ArrayEditor = ({model, reverse}) => {
     let childModel = wrappedModel.arrayPrototype && contextualizeModel(wrappedModel.arrayPrototype, childContext(wrappedModel.context, modelItems(wrappedModel).length))
     return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
   }
-
+  //console.log(model.context.path.slice(-1),items.map(item => item.arrayKey).join(','))
   return (
     <ul className={className}>
       {
@@ -41,7 +45,7 @@ export const ArrayEditor = ({model, reverse}) => {
             newItems.splice(i, 1)
             item.context.changeBus.push([item.context, undefined])
           }
-          return (<li key={item.arrayKey}>
+          return (<li key={item.arrayKey || i}>
             <Editor model = {item} />
             {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
           </li>)

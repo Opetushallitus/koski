@@ -1,7 +1,8 @@
 import React from 'react'
-import { modelData, modelTitle, modelLookup } from './EditorModel.js'
-import { Editor } from './Editor.jsx'
-import { shouldShowProperty, PropertiesEditor } from './PropertiesEditor.jsx'
+import {modelData, modelTitle, modelLookup} from './EditorModel.js'
+import {Editor} from './Editor.jsx'
+import {shouldShowProperty, PropertiesEditor} from './PropertiesEditor.jsx'
+import {modelProperties, modelProperty, modelItems} from './EditorModel'
 
 export const Suoritustaulukko = React.createClass({
   render() {
@@ -10,7 +11,7 @@ export const Suoritustaulukko = React.createClass({
     return suoritukset.length > 0 && (<div className="suoritus-taulukko">
         <table>
           <thead><tr>
-            <th className="suoritus">{suoritukset[0].value.properties.find(p => p.key == 'koulutusmoduuli').title}</th>
+            <th className="suoritus">{modelProperty(suoritukset[0], 'koulutusmoduuli').title}</th>
             {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
             <th className="laajuus">Laajuus</th>
             <th className="arvosana">Arvosana</th>
@@ -31,7 +32,7 @@ const SuoritusEditor = React.createClass({
     let context = model.context
     let {expanded} = this.state
     let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && shouldShowProperty(context)(p)
-    let properties = model.value.properties.filter(propertyFilter)
+    let properties = modelProperties(model, propertyFilter)
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
     let nimi = modelTitle(model, 'koulutusmoduuli')
@@ -62,7 +63,7 @@ const SuoritusEditor = React.createClass({
     {
       expanded && osasuoritukset && osasuoritukset.value && (<tr className="osasuoritukset" key="osasuoritukset">
         <td colSpan="4">
-          <Suoritustaulukko suoritukset={ osasuoritukset.value }/>
+          <Suoritustaulukko suoritukset={ modelItems(osasuoritukset) }/>
         </td>
       </tr>)
     }

@@ -30,7 +30,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
     }
     let valittuSuoritus = suoritukset[suoritusIndex]
 
-    return(
+    return (
       <div className="opiskeluoikeus">
         <h3>
           <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
@@ -52,6 +52,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             <div className="alku-loppu">
               <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
             </div>
+
             <PropertiesEditor
               model={mdl}
               propertyFilter={ p => !excludedProperties.includes(p.key) }
@@ -63,11 +64,13 @@ export const OpiskeluoikeusEditor = ({model}) => {
               modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
             }
           </div>
+
           <div className="suoritukset">
             <h4>Suoritukset</h4>
             <SuoritusTabs model={mdl}/>
             <SuoritusEditor key={tabName(valittuSuoritus)} model={valittuSuoritus} />
           </div>
+          
         </div>
       </div>)
     }

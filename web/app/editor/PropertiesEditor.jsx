@@ -2,6 +2,7 @@ import React from 'react'
 import { modelEmpty, modelItems, addContext } from './EditorModel.js'
 import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
+import {modelProperties} from './EditorModel';
 
 export const PropertiesEditor = React.createClass({
   render() {
@@ -9,7 +10,7 @@ export const PropertiesEditor = React.createClass({
     let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true} = this.props
     if (!properties) {
       if (!model) throw new Error('model or properties required')
-      properties = model.value.properties
+      properties = modelProperties(model)
     }
     if (!context) {
       if (!model) throw new Error('model or context required')
@@ -20,10 +21,10 @@ export const PropertiesEditor = React.createClass({
 
     let munch = (prefix) => (property) => { // TODO: just index passing is enough, no context needed
       if (!edit && property.flatten && property.model.value && property.model.value.properties) {
-        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + property.key + '.'))
+        return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
       } else if (!edit && property.flatten && (property.model.type == 'array')) {
         return modelItems(property.model).flatMap((item, j) => {
-          return item.value.properties.filter(shouldShow).flatMap(munch(prefix + j + '.'))
+          return modelProperties(item, shouldShow).flatMap(munch(prefix + j + '.'))
         })
       } else {
         let key = prefix + property.key
@@ -68,7 +69,7 @@ export const TabularArrayEditor = React.createClass({
     let items = modelItems(model)
     if (!items.length) return null
     if (model.context.edit) return <ArrayEditor {...this.props}/>
-    let properties = items[0].value.properties
+    let properties = modelProperties(items[0])
     return (<table className="tabular-array">
       <thead>
       <tr>{ properties.map((p, i) => <th key={i}>{p.title}</th>) }</tr>
@@ -78,7 +79,7 @@ export const TabularArrayEditor = React.createClass({
         items.map((item, i) => {
           return (<tr key={i}>
             {
-              item.value.properties.map((p, j) => {
+              modelProperties(item).map((p, j) => {
                 return (<td key={j}><Editor model = {p.model}/></td>)
               })
             }
