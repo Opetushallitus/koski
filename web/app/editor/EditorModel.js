@@ -7,30 +7,12 @@ export const modelLookup = (mainModel, path) => {
   return L.get(modelLens(path), mainModel)
 }
 
-
-let modelItemLens = (index) => {
-  let baseLens = L.compose('value', indexL(index))
-  return recontextualizingLens(baseLens, index)
-}
-
-let modelPropertyValueLens = (key) => {
-  let baseLens = L.compose('value', 'properties', L.find(R.whereEq({key})), 'model')
-  return recontextualizingLens(baseLens, key)
-}
-
-let recontextualizingLens = (baseLens, pathElem) => {
-  return L.lens(
-    (m) => contextualizeChild(m, L.get(baseLens, m), pathElem),
-    (v, m) => L.set(baseLens, v, m)
-  )
-}
-
-let contextualizeChild = (m, child, pathElem) => {
-  if (!child) return child
-  if (!m) {
-    throw new Error('parent missing')
+export const lensedModel = (model, lens) => {
+  let modelFromLens = L.get(lens, model)
+  if (!modelFromLens) {
+    throw new Error('lens returned ' + modelFromLens)
   }
-  return contextualizeSubModel(child, m, pathElem)
+  return contextualizeSubModel(modelFromLens, model, lens)
 }
 
 export const modelLens = (path) => {
@@ -104,8 +86,6 @@ export const modelItems = (mainModel, path) => {
   })
 }
 
-const modelItemsRaw = (model) => ((model && model.type == 'array' && model.value) || [])
-
 export const findModelProperty = (mainModel, filter) => {
   var found = mainModel.value.properties.find(filter)
   return contextualizeProperty(mainModel)(found)
@@ -137,12 +117,14 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
   return props.map(contextualizeProperty(mainModel))
 }
 
-const modelPropertiesRaw = (mainModel) => ((mainModel.value && mainModel.value.properties) || [])
-
-let contextualizeProperty = (mainModel) => (property) => {
-  if (!property) return property
-  let model = contextualizeChild(mainModel, property.model, property.key)
-  return R.merge(property, { model })
+// Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
+// so that modifications can be targeted to the correct position in the data that's to be sent to the server.
+export const contextualizeModel = (model, context, path) => {
+  if (!context) {
+    throw new Error('context missing')
+  }
+  model = resolvePrototype(model, context)
+  return R.merge(model, { context, path: childPath(model, path) })
 }
 
 export const contextualizeSubModel = (subModel, parentModel, path) => {
@@ -151,19 +133,94 @@ export const contextualizeSubModel = (subModel, parentModel, path) => {
   return R.merge(subModel, { context: parentModel.context, path: subPath })
 }
 
-// Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
-// so that modifications can be targeted to the correct position in the data that's to be sent to the server.
-export const contextualizeModel = (model, context, path) => {
-  if (!context) {
-    throw new Error('context missing')
-  }
-
-  model = resolvePrototype(model, context)
-
-  return R.merge(model, { context, path: childPath(model, path) })
+// Add more context parameters to the current context of the model.
+export const addContext = (model, additionalContext) => {
+  if (!model.context) throw new Error('context missing')
+  return contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
 }
 
-export const childPath = (model, ...pathElems) => {
+export const modelValid = (model, context) => {
+  if (!context) {
+    if (!model.context) throw new Error('context missing')
+    context = model.context
+  }
+  var errors = validateModel(model, context)
+  let valid = R.keys(errors).length == 0
+  //if (!valid) console.log("errors", errors)
+  return valid
+}
+
+export const applyChanges = (modelBeforeChange, changes) => {
+  let basePath = toPath(modelBeforeChange.path)
+  var withAppliedChanges = changes.reduce((acc, change) => {
+    //console.log('apply', model, 'to', context.path)
+
+    let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
+    let actualLens = modelLens(subPath)
+
+    return L.set(actualLens, getModelFromChange(change), acc)
+  }, modelBeforeChange)
+  return withAppliedChanges
+}
+
+export const getPathFromChange = (change) => {
+  let modelForPath = change._remove ? change._remove : change
+  return modelForPath.path
+}
+
+export const getModelFromChange = (change) => {
+  return change._remove ? undefined : change
+}
+
+export const accumulateModelState = (model) => {
+  let changeBus = Bacon.Bus()
+  let modelP = changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
+  let errorP = modelP.map(modelValid).not()
+  return {
+    modelP,
+    errorP
+  }
+}
+
+export const pushModelValue = (model, value, path) => pushModel(modelSetValue(model, value, path))
+export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
+export const pushRemoval = (model, changeBus) => getChangeBus(model, changeBus).push([{_remove: model}])
+
+const modelPropertiesRaw = (mainModel) => ((mainModel.value && mainModel.value.properties) || [])
+const modelItemsRaw = (model) => ((model && model.type == 'array' && model.value) || [])
+
+let contextualizeProperty = (mainModel) => (property) => {
+  if (!property) return property
+  let model = contextualizeChild(mainModel, property.model, property.key)
+  return R.merge(property, { model })
+}
+
+let modelItemLens = (index) => {
+  let baseLens = L.compose('value', indexL(index))
+  return recontextualizingLens(baseLens, index)
+}
+
+let modelPropertyValueLens = (key) => {
+  let baseLens = L.compose('value', 'properties', L.find(R.whereEq({key})), 'model')
+  return recontextualizingLens(baseLens, key)
+}
+
+let recontextualizingLens = (baseLens, pathElem) => {
+  return L.lens(
+    (m) => contextualizeChild(m, L.get(baseLens, m), pathElem),
+    (v, m) => L.set(baseLens, v, m)
+  )
+}
+
+let contextualizeChild = (m, child, pathElem) => {
+  if (!child) return child
+  if (!m) {
+    throw new Error('parent missing')
+  }
+  return contextualizeSubModel(child, m, pathElem)
+}
+
+const childPath = (model, ...pathElems) => {
   if (!pathElems || pathElems[0] === undefined) return toPath(model.path)
   let basePath = toPath(model.path)
   let allPathElems = (basePath).concat(pathElems)
@@ -194,48 +251,9 @@ const resolvePrototype = (model, context) => {
 
 const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v]) => v !== undefined))
 
-// Add more context parameters to the current context of the model.
-export const addContext = (model, additionalContext) => {
-  if (!model.context) throw new Error('context missing')
-  return contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
-}
-
-export const applyChanges = (modelBeforeChange, changes) => {
-  let basePath = toPath(modelBeforeChange.path)
-  var withAppliedChanges = changes.reduce((acc, change) => {
-    //console.log('apply', model, 'to', context.path)
-
-    let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
-    let actualLens = modelLens(subPath)
-
-    return L.set(actualLens, getModelFromChange(change), acc)
-  }, modelBeforeChange)
-  return withAppliedChanges
-}
-
-export const getPathFromChange = (change) => {
-  let modelForPath = change._remove ? change._remove : change
-  return modelForPath.path
-}
-
-export const getModelFromChange = (change) => {
-  return change._remove ? undefined : change
-}
-
-
 const removeCommonPath = (p1, p2) => {
   if (p2.length == 0) return p1
   return p1.slice(p2.length)
-}
-
-export const accumulateModelState = (model) => {
-  let changeBus = Bacon.Bus()
-  let modelP = changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
-  let errorP = modelP.map(modelValid).not()
-  return {
-    modelP,
-    errorP
-  }
 }
 
 const getValidator = (model, context) => {
@@ -261,30 +279,6 @@ const validateModel = (model, context, results = {}, path = []) => {
   modelItemsRaw(model).forEach((item, i) => validateModel(item, context, results, path.concat(i)))
   return results
 }
-
-export const modelValid = (model, context) => {
-  if (!context) {
-    if (!model.context) throw new Error('context missing')
-    context = model.context
-  }
-  var errors = validateModel(model, context)
-  let valid = R.keys(errors).length == 0
-  //if (!valid) console.log("errors", errors)
-  return valid
-}
-
-
-export const lensedModel = (model, lens) => {
-  let modelFromLens = L.get(lens, model)
-  if (!modelFromLens) {
-    throw new Error('lens returned ' + modelFromLens)
-  }
-  return contextualizeSubModel(modelFromLens, model, lens)
-}
-
-export const pushModelValue = (model, value, path) => pushModel(modelSetValue(model, value, path))
-export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
-export const pushRemoval = (model, changeBus) => getChangeBus(model, changeBus).push([{_remove: model}])
 
 const getChangeBus = (model, changeBus) => changeBus || model.context.changeBus
 
