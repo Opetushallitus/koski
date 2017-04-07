@@ -19,7 +19,10 @@ export const Editor = React.createClass({
         editorMapping
       })
     }
-    model = addContext(model, { edit: parseBool(edit) })
+    edit = parseBool(edit)
+    if (edit != model.context.edit) {
+      model = addContext(model, { edit })
+    }
     return getModelEditor(model, path)
   }
 })
