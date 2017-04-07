@@ -384,5 +384,18 @@
     ],
     "versio": 1,
     "koodiArvo": "OP"
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_yl",
+    "metadata": [
+      {
+        "nimi": "Ympäristöoppi",
+        "lyhytNimi": "Ympäristöoppi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "YL"
   }
+
 ]
