@@ -6,7 +6,7 @@ import {modelData, modelItems, modelLookup} from './EditorModel.js'
 import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
-import {modelSetValue, lensedModel} from './EditorModel'
+import {modelSetValue, lensedModel, pushModel, pushRemoval} from './EditorModel'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
@@ -18,13 +18,13 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
 
   let lisääJakso = (uusiJakso) => {
     if (uusiJakso) {
-      wrappedModel.context.changeBus.push([uusiJakso.context, uusiJakso])
+      pushModel(uusiJakso, wrappedModel.context.changeBus)
     }
     addingNew.set(false)
   }
 
   let removeItem = () => {
-    wrappedModel.context.changeBus.push([items[0].context, { _remove: items[0]} ])
+    pushRemoval(items[0], wrappedModel.context.changeBus)
     addingNew.set(false)
   }
 

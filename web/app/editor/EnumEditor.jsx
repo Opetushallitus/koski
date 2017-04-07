@@ -7,7 +7,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
-import {modelSetValue} from './EditorModel'
+import {modelSetValue, pushModel} from './EditorModel'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
   let wrappedModel = wrapOptional({
@@ -28,7 +28,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue}) => {
   })
 
   let onChange = (option) => {
-    wrappedModel.context.changeBus.push([wrappedModel.context, modelSetValue(wrappedModel, option)])
+    pushModel(modelSetValue(wrappedModel, option))
   }
 
   return wrappedModel.context.edit

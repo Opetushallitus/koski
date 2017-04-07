@@ -205,18 +205,26 @@ export const addContext = (model, additionalContext) => {
 
 export const applyChanges = (modelBeforeChange, changes) => {
   let basePath = toPath(modelBeforeChange.path)
-  var withAppliedChanges = R.splitEvery(2, changes).reduce((acc, [, model]) => {
+  var withAppliedChanges = changes.reduce((acc, change) => {
     //console.log('apply', model, 'to', context.path)
-    let modelForPath = model._remove ? model._remove : model
-    let modelForValue = model._remove ? undefined : model
 
-    let subPath = removeCommonPath(toPath(modelForPath.path), basePath)
+    let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
     let actualLens = modelLens(subPath)
 
-    return L.set(actualLens, modelForValue, acc)
+    return L.set(actualLens, getModelFromChange(change), acc)
   }, modelBeforeChange)
   return withAppliedChanges
 }
+
+export const getPathFromChange = (change) => {
+  let modelForPath = change._remove ? change._remove : change
+  return modelForPath.path
+}
+
+export const getModelFromChange = (change) => {
+  return change._remove ? undefined : change
+}
+
 
 const removeCommonPath = (p1, p2) => {
   if (p2.length == 0) return p1
@@ -281,7 +289,11 @@ export const lensedModel = (model, lens) => {
   return contextualizeSubModel(modelFromLens, model, lens)
 }
 
-export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
+export const pushModelValue = (model, value, path) => pushModel(modelSetValue(model, value, path))
+export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
+export const pushRemoval = (model, changeBus) => getChangeBus(model, changeBus).push([{_remove: model}])
+
+const getChangeBus = (model, changeBus) => changeBus || model.context.changeBus
 
 const valueEmpty = (value) => {
   return !value

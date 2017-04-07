@@ -3,6 +3,7 @@ import R from 'ramda'
 import {contextualizeSubModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
+import {pushRemoval, pushModel} from './EditorModel'
 
 let counter = 1
 
@@ -28,7 +29,7 @@ export const ArrayEditor = ({model, reverse}) => {
 
   let addItem = () => {
     let item = newItemModel()
-    wrappedModel.context.changeBus.push([item.context, item])
+    pushModel(item)
   }
 
   let itemEditorHandlesOptional = () => {
@@ -40,14 +41,9 @@ export const ArrayEditor = ({model, reverse}) => {
     <ul className={className}>
       {
         items.map((item, i) => {
-          let removeItem = () => {
-            let newItems = items
-            newItems.splice(i, 1)
-            item.context.changeBus.push([item.context, { _remove: item }])
-          }
           return (<li key={item.arrayKey || i}>
             <Editor model = {item} />
-            {item.context.edit && <a className="remove-item" onClick={removeItem}></a>}
+            {item.context.edit && <a className="remove-item" onClick={() => pushRemoval(item)}></a>}
           </li>)
         })
       }

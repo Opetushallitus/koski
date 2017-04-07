@@ -1,7 +1,14 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import {modelTitle, modelLookup, modelData, applyChanges} from './editor/EditorModel'
+import {
+  modelTitle,
+  modelLookup,
+  modelData,
+  applyChanges,
+  getModelFromChange,
+  getPathFromChange
+} from './editor/EditorModel'
 import {editorMapping} from './editor/Editors.jsx'
 import {Editor} from './editor/Editor.jsx'
 import R from 'ramda'
@@ -44,7 +51,7 @@ const createState = (oppijaOid) => {
   let changeBuffer = null
 
   const shouldThrottle = (batch) => {
-    let model = batch[1]
+    let model = getModelFromChange(batch[0])
     var willThrottle = model && (model.type == 'string' || model.type == 'date' || model.oneOfClass == 'localizedstring')
     return willThrottle
   }
@@ -59,7 +66,9 @@ const createState = (oppijaOid) => {
       return Bacon.once(oppijaBeforeChange => {
         let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(doneEditingBus).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
-          let opiskeluoikeusId = firstBatch[0].opiskeluoikeusId
+          let opiskeluoikeusPath = getPathFromChange(firstBatch[0]).slice(0, 6).join('.')
+          let opiskeluoikeusId = modelData(oppijaBeforeChange, opiskeluoikeusPath).id
+
           let batch = changeBuffer
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)

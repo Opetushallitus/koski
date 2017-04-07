@@ -14,6 +14,7 @@ import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
 import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.jsx'
 import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
+import {pushModel} from './EditorModel'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
@@ -82,7 +83,7 @@ const SuoritusTabs = ({ model }) => {
   let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
     if (suoritus) {
-      model.context.changeBus.push([suoritus.context, suoritus])
+      pushModel(suoritus, model.context.changeBus)
       navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
     } else {
       addingAtom.set(false)

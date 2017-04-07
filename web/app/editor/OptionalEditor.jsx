@@ -3,20 +3,13 @@ import R from 'ramda'
 import {modelEmpty, modelData, contextualizeSubModel} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import * as L from 'partial.lenses'
-import {modelSetValue, lensedModel} from './EditorModel'
+import {modelSetValue, lensedModel, pushModel} from './EditorModel'
 
 export const OptionalEditor = React.createClass({
   render() {
     let {model} = this.props
     let prototype = optionalModel(model)
 
-    let addValue = () => {
-      if (!modelData(prototype)) {
-        throw new Error('Prototype value data missing')
-      }
-
-      model.context.changeBus.push([prototype.context, prototype])
-    }
     let removeValue = () => {
       resetOptionalModel(this.props.model)
     }
@@ -29,7 +22,7 @@ export const OptionalEditor = React.createClass({
       {
         empty
           ? model.context.edit && model.optionalPrototype !== undefined
-              ? <a className="add-value" onClick={addValue}>lisää</a>
+              ? <a className="add-value" onClick={() => pushModel(prototype)}>lisää</a>
               : null
           : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
       }
@@ -50,7 +43,7 @@ const optionalModel = (model, pathElem) => {
 
   return makeOptional(prototype, model)
 }
-const resetOptionalModel = (model) => model.context.changeBus.push([model.context, createOptionalEmpty(model)])
+const resetOptionalModel = (model) => pushModel(createOptionalEmpty(model))
 
 const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptionalEmpty(optModel)))
 const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })

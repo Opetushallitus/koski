@@ -1,5 +1,6 @@
 import React from 'react'
 import {modelData, modelSetValue} from './EditorModel.js'
+import {pushModel} from './EditorModel'
 
 export const BooleanEditor = React.createClass({
   render() {
@@ -7,7 +8,7 @@ export const BooleanEditor = React.createClass({
     let localizedBoolean = (b) => b ? 'kyllä' : 'ei' // TODO: i18n
     let onChange = event => {
       var data = event.target.checked
-      model.context.changeBus.push([model.context, modelSetValue(model, {data: data}) ])
+      pushModel(modelSetValue(model, {data: data}))
     }
 
     return model.context.edit
