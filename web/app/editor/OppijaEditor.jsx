@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelLookup, modelTitle, addContext} from './EditorModel.js'
+import {modelData, modelTitle, addContext} from './EditorModel.js'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
 import {yearFromFinnishDateString} from '../date'

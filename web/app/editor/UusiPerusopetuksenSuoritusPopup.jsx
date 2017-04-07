@@ -4,7 +4,7 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {
-  contextualizeModel,
+  contextualizeSubModel,
   modelItems,
   modelLookup,
   accumulateModelState,
@@ -23,8 +23,8 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
 
   let indexForNewItem = modelItems(suoritukset).length
-  let selectedProto = contextualizeModel(suoritukset.arrayPrototype, suoritukset.context, indexForNewItem).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
-  let initialModel = contextualizeModel(selectedProto, suoritukset.context, indexForNewItem)
+  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
+  let initialModel = contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 
   initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)

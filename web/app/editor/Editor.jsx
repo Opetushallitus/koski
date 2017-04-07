@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {modelLookup, contextualizeModel, addContext} from './EditorModel'
+import {modelLookup, contextualizeModel, addContext, contextualizeSubModel} from './EditorModel'
 
 export const Editor = React.createClass({
   render() {
@@ -14,7 +14,6 @@ export const Editor = React.createClass({
       model = contextualizeModel(model, {
         changeBus, doneEditingBus,
         root: true,
-        rootModel: model,
         path: '',
         prototypes: model.prototypes,
         editorMapping
@@ -27,6 +26,7 @@ export const Editor = React.createClass({
     return getModelEditor(model, path)
   }
 })
+
 const parseBool = (b) => {
   if (typeof b === 'string') {
     return b === 'true'
@@ -62,7 +62,7 @@ const getEditorFunction = (model) => {
   if (!model) return NullEditor
 
   if (model.optional) {
-    let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, model.context)
+    let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
     let typeEditor = prototype && model.context.editorMapping[prototype.type]
     return optionalHandlingEditor(prototype) || (typeEditor && typeEditor.handlesOptional && typeEditor) || model.context.editorMapping.optional
   }

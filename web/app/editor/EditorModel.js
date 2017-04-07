@@ -30,7 +30,7 @@ let contextualizeChild = (m, child, pathElem) => {
   if (!m) {
     throw new Error('parent missing')
   }
-  return m.context ? contextualizeModel(child, m.context, pathElem) : child
+  return contextualizeSubModel(child, m, pathElem)
 }
 
 export const modelLens = (path) => {
@@ -48,10 +48,6 @@ export const modelLens = (path) => {
     return l1
   })
   return L.compose(...pathLenses)
-}
-
-export const objectLookup = (mainObj, path) => {
-  return L.get(objectLens(path), mainObj)
 }
 
 export const modelData = (mainModel, path) => {
@@ -149,6 +145,17 @@ let contextualizeProperty = (mainModel) => (property) => {
   return R.merge(property, { model })
 }
 
+export const contextualizeSubModel = (subModel, parentModel, path) => {
+  incCounter('contextualizeSubModel')
+  if (!parentModel.context) {
+    //throw new Error('context missing from parent model')
+  }
+  subModel = resolvePrototype(subModel, parentModel.context)
+
+  var subPath = childPath(parentModel, path)
+  return R.merge(subModel, { context: parentModel.context, path: subPath })
+}
+
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
 export const contextualizeModel = (model, context, path) => {
@@ -156,12 +163,18 @@ export const contextualizeModel = (model, context, path) => {
   if (!context) {
     throw new Error('context missing')
   }
-  if (path != undefined) {
-    context = childContext(context, path)
-  }
+
   model = resolvePrototype(model, context)
 
-  return R.merge(model, { context })
+  return R.merge(model, { context, path: childPath(model, path) })
+}
+
+export const childPath = (model, ...pathElems) => {
+  if (!pathElems || pathElems[0] === undefined) return toPath(model.path)
+  let basePath = toPath(model.path)
+  let allPathElems = (basePath).concat(pathElems)
+  let path = L.compose(...allPathElems)
+  return toPath(path)
 }
 
 const resolvePrototype = (model, context) => {
@@ -185,14 +198,6 @@ const resolvePrototype = (model, context) => {
   return model
 }
 
-export const childContext = (context, ...pathElems) => {
-  incCounter('childContext')
-  var basePath = (context.path && typeof context.path === 'string' ? [context.path]: context.path) || []
-  let allPathElems = (basePath).concat(pathElems)
-  let path = L.compose(...allPathElems)
-  return R.merge(context, { path, root: false, arrayItems: null, parentContext: context })
-}
-
 const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v]) => v !== undefined))
 
 // Add more context parameters to the current context of the model.
@@ -203,12 +208,16 @@ export const addContext = (model, additionalContext) => {
 }
 
 export const applyChanges = (modelBeforeChange, changes) => {
-  let basePath = modelBeforeChange.context ? modelBeforeChange.context.path : []
-  var withAppliedChanges = R.splitEvery(2, changes).reduce((acc, [context, model]) => {
+  let basePath = toPath(modelBeforeChange.path)
+  var withAppliedChanges = R.splitEvery(2, changes).reduce((acc, [, model]) => {
     //console.log('apply', model, 'to', context.path)
-    let subPath = removeCommonPath(context.path, basePath)
+    let modelForPath = model._remove ? model._remove : model
+    let modelForValue = model._remove ? undefined : model
+
+    let subPath = removeCommonPath(toPath(modelForPath.path), basePath)
     let actualLens = modelLens(subPath)
-    return L.set(actualLens, model, acc)
+
+    return L.set(actualLens, modelForValue, acc)
   }, modelBeforeChange)
   return withAppliedChanges
 }
@@ -273,7 +282,7 @@ export const lensedModel = (model, lens) => {
   if (!modelFromLens) {
     throw new Error('lens returned ' + modelFromLens)
   }
-  return contextualizeModel(modelFromLens, model.context, lens)
+  return contextualizeSubModel(modelFromLens, model, lens)
 }
 
 export const pushModelValue = (model, value, path) => model.context.changeBus.push([model.context, modelSetValue(model, value, path)])
@@ -304,6 +313,9 @@ const toPath = (path) => {
   }
   if (typeof path == 'string') {
     return path.split('.')
+  }
+  if (typeof path == 'function') {
+    return [path]
   }
   if (path instanceof Array) {
     return path

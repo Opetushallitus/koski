@@ -24,7 +24,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
   }
 
   let removeItem = () => {
-    wrappedModel.context.changeBus.push([items[0].context, undefined])
+    wrappedModel.context.changeBus.push([items[0].context, { _remove: items[0]} ])
     addingNew.set(false)
   }
 

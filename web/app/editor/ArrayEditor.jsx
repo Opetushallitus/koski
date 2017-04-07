@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {contextualizeModel, modelItems} from './EditorModel.js'
+import {contextualizeSubModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 
@@ -16,7 +16,7 @@ export const ArrayEditor = ({model, reverse}) => {
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
   let newItemModel = () => {
-    var m = contextualizeModel(wrappedModel.arrayPrototype, wrappedModel.context, items.length)
+    var m = contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, items.length)
     m.arrayKey = 'new-' + (counter++)
     return m
   }
@@ -32,7 +32,7 @@ export const ArrayEditor = ({model, reverse}) => {
   }
 
   let itemEditorHandlesOptional = () => {
-    let childModel = wrappedModel.arrayPrototype && contextualizeModel(wrappedModel.arrayPrototype, wrappedModel.context, modelItems(wrappedModel).length)
+    let childModel = wrappedModel.arrayPrototype && contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, modelItems(wrappedModel).length)
     return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
   }
   //console.log(model.context.path.slice(-1),items.map(item => item.arrayKey).join(','))
@@ -43,7 +43,7 @@ export const ArrayEditor = ({model, reverse}) => {
           let removeItem = () => {
             let newItems = items
             newItems.splice(i, 1)
-            item.context.changeBus.push([item.context, undefined])
+            item.context.changeBus.push([item.context, { _remove: item }])
           }
           return (<li key={item.arrayKey || i}>
             <Editor model = {item} />

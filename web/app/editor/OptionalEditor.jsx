@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {modelEmpty, modelData, contextualizeModel} from './EditorModel.js'
+import {modelEmpty, modelData, contextualizeSubModel} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import * as L from 'partial.lenses'
 import {modelSetValue, lensedModel} from './EditorModel'
@@ -41,15 +41,11 @@ export const OptionalEditor = React.createClass({
 })
 OptionalEditor.canShowInline = () => true
 
-const optionalModel = (model, context, pathElem) => {
-  if (!context) {
-    if (!model.context) throw new Error('Context missing')
-    context = model.context
-  }
-  let prototype = model.optionalPrototype && contextualizeModel(model.optionalPrototype, context, pathElem)
+const optionalModel = (model, pathElem) => {
+  let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model, pathElem)
   if (prototype && prototype.oneOfPrototypes && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
-    prototype = contextualizeModel(prototype.oneOfPrototypes[0], context)
+    prototype = contextualizeSubModel(prototype.oneOfPrototypes[0], model, pathElem)
   }
 
   return makeOptional(prototype, model)
@@ -79,7 +75,11 @@ export const wrapOptional = ({model, isEmpty = modelEmptyForOptional, createEmpt
   if (!model.context) throw new Error('cannot wrap without context')
 
   let getUsedModel = (m) => {
-    return m.value ? m : createEmpty(optionalModel(m, model.context, myLens))
+    if (m.value) return m
+    if (!m.context) {
+      m = contextualizeSubModel(m, model)
+    }
+    return createEmpty(optionalModel(m, myLens))
   }
 
   let myLens = L.lens(
