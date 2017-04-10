@@ -61,7 +61,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
              />
            </span>
         )
-    : <span className="inline enum">{modelTitle(wrappedModel)}</span>
+    : <span className="inline enum">{modelTitle(model)}</span>
 }
 
 let zeroValue = {title: 'Ei valintaa', value: 'eivalintaa'}

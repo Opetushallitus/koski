@@ -898,6 +898,13 @@ describe('Perusopetus', function() {
               it('suoritus siirtyy VALMIS-tilaan', function() {
                 expect(äidinkieli.elem().hasClass('valmis')).to.equal(true)
               })
+
+              describe('Siirrettäessä suoritus KESKEN-tilaan', function() {
+                before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+                it('Arvosana poistetaan', function() {
+                  expect(arvosana.getValue()).to.equal('')
+                })
+              })
             })
 
             describe('Lisättäessä toinen', function() {

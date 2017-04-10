@@ -4,7 +4,7 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {modelLookupRequired, lensedModel, modelLens, modelSetValue} from './EditorModel'
+import {modelLookupRequired, lensedModel, modelLens, modelSetValue, createOptionalEmpty} from './EditorModel'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -56,20 +56,37 @@ const Oppiainetaulukko = ({suoritukset, model}) => {
   )
 }
 
+let arvosanaLens = modelLens('arviointi.-1.arvosana')
+let tilaLens = modelLens('tila')
+
+let fixTila = (model) => {
+  return lensedModel(model, L.rewrite(m => {
+    let t = L.get(tilaLens, m)
+    if (L.get(arvosanaLens, m).value && t.value.data.koodiarvo == 'KESKEN') {
+      t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' })
+      return L.set(tilaLens, t, m)
+    }
+    return m
+  }))
+}
+
+let fixArvosana = (model) => {
+  let arviointiLens = modelLens('arviointi')
+  return lensedModel(model, L.rewrite(m => {
+    let t = L.get(tilaLens, m)
+    var arviointiModel = L.get(arviointiLens, m)
+    if (arviointiModel.value && t.value.data.koodiarvo != 'VALMIS') {
+      return L.set(arviointiLens, createOptionalEmpty(arviointiModel), m)
+    }
+    return m
+  }))
+}
+
+
 const OppiaineEditor = React.createClass({
   render() {
     let {model, showLaajuus, showFootnotes} = this.props
     let {expanded} = this.state
-
-    let arvosanaLens = modelLens('arviointi.-1.arvosana')
-    let tilaLens = modelLens('tila')
-    let modelWithRewrite = lensedModel(model, L.rewrite(m => {
-      let t = L.get(tilaLens, m)
-      if (L.get(arvosanaLens, m).value && t.value.data.koodiarvo == 'KESKEN') {
-        t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' } })
-      }
-      return L.set(tilaLens, t, m)
-    }))
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
@@ -100,7 +117,7 @@ const OppiaineEditor = React.createClass({
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ lensedModel(modelWithRewrite, arvosanaLens) } sortBy={this.sortGrades}/></span>
+        <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={this.sortGrades}/></span>
 
       </td>
       {
@@ -124,7 +141,7 @@ const OppiaineEditor = React.createClass({
       !!sanallinenArviointi && expanded && <tr><td className="details"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
     }
     {
-      editing && expanded && <tr><td className="details"><PropertiesEditor model={model} propertyFilter={extraPropertiesFilter} /></td></tr>
+      editing && expanded && <tr><td className="details"><PropertiesEditor model={fixArvosana(model)} propertyFilter={extraPropertiesFilter} /></td></tr>
     }
     </tbody>)
   },
