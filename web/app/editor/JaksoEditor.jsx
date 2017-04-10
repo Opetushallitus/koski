@@ -1,16 +1,19 @@
 import React from 'react'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {wrapOptional} from './OptionalEditor.jsx'
 
 export const JaksoEditor = React.createClass({
   render() {
     let {model} = this.props
+    let wrappedModel = wrapOptional({model: model})
     return (
       <div className="jaksollinen">
-        <PäivämääräväliEditor model={model}/>
-        <PropertiesEditor model={model} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
+        <PäivämääräväliEditor model={wrappedModel}/>
+        <PropertiesEditor model={wrappedModel} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
       </div>
     )
   }
 })
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
+JaksoEditor.handlesOptional = true
