@@ -6,7 +6,7 @@ describe('Perusopetus', function() {
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
 
-  var currentDate = new Date().getDate() + "." + (1 + new Date().getMonth()) + "." + new Date().getFullYear()
+  var currentDate = new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + new Date().getFullYear()
 
   before(Authentication().login(), resetFixtures)
 
@@ -428,17 +428,33 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe("Kun lisätiedot piilotetaan ja näytetään uudestaan", function() {
+        describe('Kun lisätiedot piilotetaan ja näytetään uudestaan', function() {
           before(opinnot.collapseAll, opinnot.expandAll)
           it('Toimii', function() {
             expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
           })
         })
 
-        describe("Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta", function() {
+        describe('Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta', function() {
           before(opinnot.collapseAll, editor.edit, opinnot.expandAll, editor.doneEditing)
           it('Toimii', function() {
             expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+          })
+          after(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(false), editor.doneEditing)
+        })
+
+        describe('Erityisen tuen päätös', function() {
+          describe('lisätään, kun erityisen tuen tietoja asetetaan', function() {
+            before(editor.edit, opinnot.expandAll, editor.property('opiskeleeToimintaAlueittain').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
+            it('Toimii', function() {
+              expect(editor.property('opiskeleeToimintaAlueittain').getValue()).to.equal('kyllä')
+            })
+          })
+          describe('poistetaan, kun erityisen tuen tiedot tyhjennetään', function() {
+            before(editor.edit, opinnot.expandAll, editor.property('opiskeleeToimintaAlueittain').setValue(false), editor.doneEditing, wait.until(page.isSavedLabelShown))
+            it('Toimii', function() {
+              expect(isElementVisible(S('.property.erityisenTuenPäätös'))).to.equal(false)
+            })
           })
         })
 
@@ -526,7 +542,7 @@ describe('Perusopetus', function() {
       describe('Todistuksella näkyvät lisätiedot', function() {
         describe('lisäys', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue('Testitesti'), editor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Uudet lisätiedot näytetään', function() {
             expect(lisätiedot.getValue()).to.equal('Testitesti')
           })
@@ -535,11 +551,11 @@ describe('Perusopetus', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
           before(opinnot.valitseSuoritus('Peruskoulu'),
             editor.edit,
-            lisätiedot.setValue("Testitesti"),
+            lisätiedot.setValue('Testitesti'),
             editor.doneEditing,
             wait.until(page.isSavedLabelShown),
             editor.edit,
-            lisätiedot.setValue(""),
+            lisätiedot.setValue(''),
             editor.doneEditing,
             wait.until(page.isSavedLabelShown))
           it('Lisätiedot piilotetaan', function() {
@@ -548,7 +564,7 @@ describe('Perusopetus', function() {
         })
         describe('lisäys ja poisto kerralla', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue("Testitesti"), wait.forAjax, lisätiedot.setValue(""), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, lisätiedot.setValue('Testitesti'), wait.forAjax, lisätiedot.setValue(''), editor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Lisätiedot piilotetaan', function() {
             expect(lisätiedot.isVisible()).to.equal(false)
           })
@@ -587,7 +603,6 @@ describe('Perusopetus', function() {
       describe('Painotus', function() {
         before(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(true), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('toimii', function() {
-          console.log('painotus')
           expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 **')
         })
         after(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(false), editor.doneEditing)
