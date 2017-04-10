@@ -148,7 +148,7 @@ export const optionalModel = (model, pathElem) => {
 
 const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptionalEmpty(optModel)))
 const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
-export const resetOptionalModel = (model) => pushModel(createOptionalEmpty(model))
+export const resetOptionalModel = (model) => pushModel(contextualizeChild(model, createOptionalEmpty(model)))
 
 export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
