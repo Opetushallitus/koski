@@ -90,7 +90,7 @@ const OppiaineEditor = React.createClass({
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ modelLookup(model, 'arviointi.-1.arvosana')}/></span>
+        <span className="value"><Editor model={ modelLookup(model, 'arviointi.-1.arvosana')} sortBy={this.sortGrades}/></span>
 
       </td>
       {
@@ -120,5 +120,21 @@ const OppiaineEditor = React.createClass({
   },
   getInitialState() {
     return { expanded: false }
+  },
+  sortGrades(gradeX, gradeY) {
+    let x = gradeX.value
+    let y = gradeY.value
+    let xAsFloat = parseFloat(x)
+    let yAsFloat = parseFloat(y)
+    if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
+      return (x < y) ? -1 : (x > y) ? 1 : 0
+    }
+    if (isNaN(xAsFloat)) {
+      return 1
+    }
+    if (isNaN(yAsFloat)) {
+      return -1
+    }
+    return parseFloat(x) - parseFloat(y)
   }
 })

@@ -4,7 +4,7 @@ import {modelLookup, contextualizeModel, addContext, contextualizeSubModel} from
 
 export const Editor = React.createClass({
   render() {
-    let { model, editorMapping, changeBus, doneEditingBus, path, edit } = this.props
+    let { model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest } = this.props
     if (!model.context) {
       if (!editorMapping) {
         console.error('editorMapping required for root editor', model)
@@ -20,10 +20,10 @@ export const Editor = React.createClass({
       })
     }
     edit = parseBool(edit)
-    if (edit != model.context.edit) {
+    if (edit !== model.context.edit) {
       model = addContext(model, { edit })
     }
-    return getModelEditor(model, path)
+    return getModelEditor(model, path, rest)
   }
 })
 
@@ -79,13 +79,13 @@ const getEditorFunction = (model) => {
   return editor
 }
 
-const getModelEditor = (model, path) => {
+const getModelEditor = (model, path, props) => {
   if (path) {
-    return getModelEditor(modelLookup(model, path))
+    return getModelEditor(modelLookup(model, path, props))
   }
   if (model && !model.context) {
     console.error('Context missing from model', model)
   }
   var ModelEditor = getEditorFunction(model)
-  return <ModelEditor model={model} />
+  return <ModelEditor model={model} {...props} />
 }

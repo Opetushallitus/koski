@@ -24,7 +24,7 @@ module.exports = {
         include: [ __dirname + '/app' ],
         query: {
           cacheDirectory: true,
-          presets: ['es2015', 'react', 'stage-2']
+          presets: ['es2015', 'react', 'stage-3']
         }
       },
       {test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules/},
