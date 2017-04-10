@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {contextualizeSubModel, modelItems, modelLookup, accumulateModelState} from './EditorModel'
+import {contextualizeSubModel, modelItems, accumulateModelState, modelLookupRequired} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
@@ -13,8 +13,8 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 
   let isAllowedDate = d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true
 
-  let alkuPäiväModel = modelP.map(m => modelLookup(m, 'alku'))
-  let tilaModel = modelP.map(m => modelLookup(m, 'tila'))
+  let alkuPäiväModel = modelP.map(m => modelLookupRequired(m, 'alku'))
+  let tilaModel = modelP.map(m => modelLookupRequired(m, 'tila'))
   let tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
   let validP = tilaSelectedP.and(errorP.not())
 

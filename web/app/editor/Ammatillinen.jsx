@@ -1,9 +1,9 @@
 import React from 'react'
-import { modelData, modelTitle, modelLookup } from './EditorModel.js'
-import { Editor } from './Editor.jsx'
-import { PropertiesEditor } from './PropertiesEditor.jsx'
-import { KoulutusmoduuliEditor } from './KoulutusmoduuliEditor.jsx'
-import { PäivämääräväliEditor } from './PaivamaaravaliEditor.jsx'
+import {modelData, modelTitle} from './EditorModel.js'
+import {Editor} from './Editor.jsx'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
+import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -39,9 +39,9 @@ const TutkinnonOsanLisätietoEditor = React.createClass({
   render() {
     let {model} = this.props
     return (<div className="ammatillisentutkinnonosanlisatieto">
-      <Editor model={ modelLookup(model, 'tunniste') }/>
+      <Editor model={ model } path="tunniste"/>
       <div className="kuvaus">
-        <Editor model={ modelLookup(model, 'kuvaus') }/>
+        <Editor model={ model } path="kuvaus"/>
       </div>
     </div>)
   }

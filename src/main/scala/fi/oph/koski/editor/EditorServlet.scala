@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -47,6 +47,18 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   get("/oppilaitokset") {
     def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+  }
+
+  get("/suoritukset/prefill/:koodistoUri/:koodiarvo") {
+    if (params("koodistoUri") == "perusopetuksenluokkaaste") {
+      val oppiaine = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"))
+      val suoritus = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = oppiaine, tila = application.koodistoViitePalvelu.validateRequired("suorituksentila", "KESKEN"))
+      val suoritukset = List(suoritus)
+      val models = suoritukset.map { suoritus => EditorModelBuilder.buildModel(EditorSchema.deserializationContext, suoritus, true)(koskiSession, application.koodistoViitePalvelu)}
+      ListModel(models, None)
+    } else {
+      haltWithStatus(KoskiErrorCategory.notFound())
+    }
   }
 
   private def getKoodit() = {

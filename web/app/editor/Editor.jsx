@@ -1,31 +1,38 @@
 import React from 'react'
 import R from 'ramda'
-import {modelLookup, contextualizeModel, addContext, contextualizeSubModel} from './EditorModel'
+import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from './EditorModel'
 
-export const Editor = React.createClass({
-  render() {
-    let { model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest } = this.props
-    if (!model.context) {
-      if (!editorMapping) {
-        console.error('editorMapping required for root editor', model)
-        throw new Error('editorMapping required for root editor')
-      }
-      R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
-      model = contextualizeModel(model, {
-        changeBus, doneEditingBus,
-        root: true,
-        path: '',
-        prototypes: model.prototypes,
-        editorMapping
-      })
-    }
-    edit = parseBool(edit)
-    if (edit !== model.context.edit) {
-      model = addContext(model, { edit })
-    }
-    return getModelEditor(model, path, rest)
+/*
+    model: required model object
+    path: optional path to actually used model. It's ok if the model cannot be found by path: a NullEditor will be used
+ */
+export const Editor = ({ model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest }) => {
+  if (!model) {
+    throw new Error('model missing')
   }
-})
+  if (!model.context) {
+    if (!editorMapping) {
+      console.error('editorMapping required for root editor', model)
+      throw new Error('editorMapping required for root editor')
+    }
+    R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
+    model = contextualizeModel(model, {
+      changeBus, doneEditingBus,
+      root: true,
+      path: '',
+      prototypes: model.prototypes,
+      editorMapping
+    })
+  }
+  edit = parseBool(edit)
+    if (edit !== model.context.edit) {
+    model = addContext(model, { edit })
+  }
+  if (path) {
+    model = modelLookup(model, path)
+  }
+  return getModelEditor(model, rest)
+}
 
 const parseBool = (b) => {
   if (typeof b === 'string') {
@@ -79,10 +86,7 @@ const getEditorFunction = (model) => {
   return editor
 }
 
-const getModelEditor = (model, path, props) => {
-  if (path) {
-    return getModelEditor(modelLookup(model, path, props))
-  }
+const getModelEditor = (model, props) => {
   if (model && !model.context) {
     console.error('Context missing from model', model)
   }

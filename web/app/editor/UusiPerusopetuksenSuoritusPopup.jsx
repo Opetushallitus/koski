@@ -1,6 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
+import Http from '../http'
 import * as L from 'partial.lenses'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {
@@ -36,8 +37,9 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   return (<div>
     {
-      valittuLuokkaAsteP(initialModel).map(valittuLuokkaAste => {
+      Bacon.combineWith(valittuLuokkaAsteP(initialModel), osasuorituksetP(initialModel), (valittuLuokkaAste, osasuoritukset) => {
         initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
+        initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
 
         let { modelP, errorP } = accumulateModelState(initialModel)
 
@@ -65,6 +67,12 @@ let valittuLuokkaAsteP = (model) => {
   let luokkaAsteLens = modelLens('koulutusmoduuli.tunniste')
   let luokkaAsteModel = L.get(luokkaAsteLens, model)
   return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
+}
+
+let osasuorituksetP = (model) => {
+  let koodisto = modelData(model, 'koulutusmoduuli.tunniste').koodistoUri
+  let koodiarvo = modelData(model, 'koulutusmoduuli.tunniste').koodiarvo
+  return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${koodisto}/${koodiarvo}`)
 }
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {

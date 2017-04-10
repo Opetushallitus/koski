@@ -13,8 +13,11 @@ import fi.oph.scalaschema.annotation.Title
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu): EditorModel = {
-    val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
-    ObjectModelBuilder(deserializationContext.rootSchema.asInstanceOf[ClassSchema])(context).buildModelForObject(value)
+    implicit val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
+    deserializationContext.rootSchema.getSchema(value.getClass.getName) match {
+      case Some(objectSchema) => builder(objectSchema).buildModelForObject(value)
+      case None => throw new RuntimeException("Schema not found for " + value.getClass.getName)
+    }
   }
 
   def builder(schema: Schema)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {

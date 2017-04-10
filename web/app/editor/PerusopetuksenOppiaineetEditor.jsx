@@ -3,6 +3,7 @@ import {modelData, modelLookup, modelTitle, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
+import {modelLookupRequired} from './EditorModel'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -25,7 +26,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
               käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div className="kayttaytyminen">
                 <h5>Käyttäytymisen arviointi</h5>
                 {
-                  <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
+                  <Editor model={model} path="käyttäytymisenArvio"/>
                 }
               </div>)
             }
@@ -60,8 +61,8 @@ const OppiaineEditor = React.createClass({
     let {expanded} = this.state
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
-    let kielenOppiaine = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
-    let äidinkieli = modelLookup(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
+    let kielenOppiaine = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
+    let äidinkieli = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let editing = model.context.edit
     let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
@@ -80,16 +81,16 @@ const OppiaineEditor = React.createClass({
           showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
         }
         {
-          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={modelLookup(model, 'koulutusmoduuli.kieli')}/></span>
+          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={model} path="koulutusmoduuli.kieli"/></span>
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ modelLookup(model, 'arviointi.-1.arvosana')} sortBy={this.sortGrades}/></span>
+        <span className="value"><Editor model={ model } path="arviointi.-1.arvosana" sortBy={this.sortGrades}/></span>
 
       </td>
       {
         showLaajuus && (<td className="laajuus">
-          <Editor model={modelLookup(model, 'koulutusmoduuli.laajuus')}/>
+          <Editor model={model} path="koulutusmoduuli.laajuus"/>
         </td>)
       }
       {
@@ -122,7 +123,7 @@ const OppiaineEditor = React.createClass({
     let yAsFloat = parseFloat(y)
     if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
       return (x < y) ? -1 : (x > y) ? 1 : 0
-    }
+  }
     if (isNaN(xAsFloat)) {
       return 1
     }

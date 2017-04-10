@@ -3,9 +3,19 @@ import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 
 // Find submodel with given path
+export const modelLookupRequired = (mainModel, path) => {
+  var model = modelLookup(mainModel, path)
+  if (!model) {
+    console.error('model for', path, 'not found from', mainModel)
+    throw new Error('model for ' + path + ' not found')
+  }
+  return model
+}
+
 export const modelLookup = (mainModel, path) => {
   return L.get(modelLens(path), mainModel)
 }
+
 
 export const lensedModel = (model, lens) => {
   let modelFromLens = L.get(lens, model)
@@ -75,8 +85,70 @@ export const modelSetData = (model, data) => {
 }
 
 export const modelSetValue = (model, value, path) => {
-  return L.set(L.compose(modelLens(path), 'value'), value, model)
+  return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
 }
+
+let modelValueLens = ({model, createEmpty} = {}) => L.lens(
+  (m) => m.value,
+  (v, m) => {
+    let usedModel = m.optional ? getUsedModelForOptionalModel(m, {model, createEmpty}) : m
+    return L.set('value', v, usedModel)
+  }
+)
+
+let getUsedModelForOptionalModel = (m, {model, createEmpty = (x => x)} = {}) => {
+  if (!model) model = m
+  if (m.value) return m
+  if (!m.context) {
+    m = contextualizeSubModel(m, model)
+  }
+  return createEmpty(optionalModel(m, optionalModelLens))
+}
+const modelEmptyForOptional = (m) => {
+  if (!m.value) return true
+  if (m.type == 'object') {
+    if (!m.value.properties) return true
+    for (var i in m.value.properties) {
+      if (!modelEmptyForOptional(m.value.properties[i].model)) return false
+    }
+    return true
+  }
+  if (m.type == 'array') {
+    return m.value.length == 0
+  }
+  return !m.value.data
+}
+
+export const optionalModelLens = ({model, isEmpty = modelEmptyForOptional, createEmpty}) => {
+  return L.lens(
+    m => {
+      return getUsedModelForOptionalModel(m, {model, isEmpty, createEmpty}) // why not just m?
+    },
+    (newModel, contextModel) => {
+      if (isEmpty(newModel)) {
+        //console.log('set empty', newModel)
+        return createOptionalEmpty(contextModel)
+      } else {
+        //console.log('set non-empty', newModel)
+        return modelSetValue(getUsedModelForOptionalModel(contextModel, {model, isEmpty, createEmpty}), newModel.value)
+      }
+    }
+  )
+}
+
+export const optionalModel = (model, pathElem) => {
+  let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model, pathElem)
+  if (prototype && prototype.oneOfPrototypes && !modelData(prototype)) {
+    // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
+    prototype = contextualizeSubModel(prototype.oneOfPrototypes[0], model, pathElem)
+  }
+
+  return makeOptional(prototype, model)
+}
+
+const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptionalEmpty(optModel)))
+const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
+export const resetOptionalModel = (model) => pushModel(createOptionalEmpty(model))
 
 export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
