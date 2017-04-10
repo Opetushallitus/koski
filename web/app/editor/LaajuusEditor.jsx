@@ -2,7 +2,6 @@ import React from 'react'
 import {Editor} from './Editor.jsx'
 import {modelData, modelEmpty, modelSetValue, modelValid} from './EditorModel'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelLookup} from './EditorModel';
 
 export const LaajuusEditor = React.createClass({
   render() {

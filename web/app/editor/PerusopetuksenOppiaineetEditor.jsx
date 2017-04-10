@@ -4,8 +4,7 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {modelLookupRequired, lensedModel, modelLens} from './EditorModel'
-import {modelSetValue} from './EditorModel';
+import {modelLookupRequired, lensedModel, modelLens, modelSetValue} from './EditorModel'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -61,6 +60,17 @@ const OppiaineEditor = React.createClass({
   render() {
     let {model, showLaajuus, showFootnotes} = this.props
     let {expanded} = this.state
+
+    let arvosanaLens = modelLens('arviointi.-1.arvosana')
+    let tilaLens = modelLens('tila')
+    let modelWithRewrite = lensedModel(model, L.rewrite(m => {
+      let t = L.get(tilaLens, m)
+      if (L.get(arvosanaLens, m).value && t.value.data.koodiarvo == 'KESKEN') {
+        t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' } })
+      }
+      return L.set(tilaLens, t, m)
+    }))
+
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let kielenOppiaine = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
@@ -76,20 +86,6 @@ const OppiaineEditor = React.createClass({
       return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
 
-    let arvosanaLens = modelLens('arviointi.-1.arvosana')
-    let tilaLens = modelLens('tila')
-    let tilaArvosanaLens = L.lens(
-      (m) => L.get(arvosanaLens, m),
-      (newModel, m) => {
-        let t = L.get(tilaLens, m)
-        if (newModel.value && t.value.data.koodiarvo == 'KESKEN') {
-          t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' } })
-        }
-        return L.set(tilaLens, t, L.set(arvosanaLens, newModel, m))
-      }
-    )
-    let arvosanaModel = lensedModel(model, tilaArvosanaLens)
-
     let className = 'oppiaine' + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
 
     return (<tbody className={className}>
@@ -104,7 +100,7 @@ const OppiaineEditor = React.createClass({
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ arvosanaModel } sortBy={this.sortGrades}/></span>
+        <span className="value"><Editor model={ lensedModel(modelWithRewrite, arvosanaLens) } sortBy={this.sortGrades}/></span>
 
       </td>
       {
