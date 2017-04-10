@@ -222,6 +222,9 @@ export const modelValid = (model, context) => {
 }
 
 export const applyChanges = (modelBeforeChange, changes) => {
+  if (!modelBeforeChange.context) {
+    modelBeforeChange.context = { prototypes: modelBeforeChange.prototypes }
+  }
   let basePath = toPath(modelBeforeChange.path)
   var withAppliedChanges = changes.reduce((acc, change) => {
     //console.log('apply', model, 'to', context.path)
@@ -267,12 +270,46 @@ let contextualizeProperty = (mainModel) => (property) => {
 }
 
 let modelItemLens = (index) => {
-  let baseLens = L.compose('value', indexL(index))
+  let valueIndexLens = L.compose('value', indexL(index))
+  let baseLens = L.lens(
+    (m) => {
+      if (m && m.optional && !m.value && m.optionalPrototype) {
+        var arrayPrototype = optionalPrototypeModel(m).arrayPrototype
+        return { optional: true, optionalPrototype: arrayPrototype }
+      }
+      return L.get(valueIndexLens, m)
+    },
+    (v, m) => {
+      if (m && m.optional && !m.value && m.optionalPrototype) {
+        let prototypeForArray = optionalPrototypeModel(m)
+        return L.set(valueIndexLens, v, prototypeForArray)
+      }
+
+      return L.set(valueIndexLens, v, m)
+    }
+  )
   return recontextualizingLens(baseLens, index)
 }
 
 let modelPropertyValueLens = (key) => {
-  let baseLens = L.compose('value', 'properties', L.find(R.whereEq({key})), 'model')
+  let propertyModelLens = L.compose('value', 'properties', L.find(R.whereEq({key})), 'model')
+  let baseLens = L.lens(
+    (m) => {
+      if (m && m.optional && !m.value && m.optionalPrototype) {
+        let proto = optionalPrototypeModel(m)
+        var propertyProto = L.get(propertyModelLens, proto)
+        return { optional: true, optionalPrototype: propertyProto}
+      }
+      return L.get(propertyModelLens, m)
+    },
+    (v, m) => {
+      if (m && m.optional && !m.value && m.optionalPrototype) {
+        let proto = optionalPrototypeModel(m)
+        return L.set(propertyModelLens, v, proto)
+      }
+      return L.set(propertyModelLens, v, m)
+    }
+  )
   return recontextualizingLens(baseLens, key)
 }
 
@@ -301,9 +338,6 @@ const childPath = (model, ...pathElems) => {
 
 const resolvePrototype = (model, context) => {
   if (model && model.type === 'prototype') {
-    if (!context.edit) {
-      return model
-    }
     // Some models are delivered as prototype references and are replaced with the actual prototype found in the context
     let foundProto = context.prototypes[model.key]
     if (!foundProto) {

@@ -18,11 +18,14 @@ export const Editor = ({ model, editorMapping, changeBus, doneEditingBus, path,
     R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
     model = contextualizeModel(model, {
       changeBus, doneEditingBus,
-      root: true,
       path: '',
       prototypes: model.prototypes,
       editorMapping
     })
+  } else {
+    if (editorMapping) model = addContext(model, {editorMapping})
+    if (changeBus) model = addContext(model, {changeBus})
+    if (doneEditingBus) model = addContext(model, {doneEditingBus})
   }
   edit = parseBool(edit)
     if (edit !== model.context.edit) {

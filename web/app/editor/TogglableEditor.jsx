@@ -1,10 +1,9 @@
 import React from 'react'
 import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
-import BaconComponent from '../BaconComponent'
 import {modelValid} from './EditorModel'
 
-export const TogglableEditor = BaconComponent({
+export const TogglableEditor = React.createClass({
   render() {
     let { model, renderChild } = this.props
     let context = model.context
