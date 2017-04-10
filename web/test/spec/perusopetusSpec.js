@@ -869,6 +869,9 @@ describe('Perusopetus', function() {
               it('Toimipiste on oikein', function() {
                 expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
               })
+              it('Esitäyttää pakolliset oppiaineet', function() {
+                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Musiikki', 'Kuvataide', 'Musiikki', 'Liikunta'])
+              })
             })
             describe('Lisättäessä toinen', function() {
               before(opinnot.lisääSuoritus)

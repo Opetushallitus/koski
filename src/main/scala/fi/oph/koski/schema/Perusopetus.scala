@@ -2,6 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
 import fi.oph.scalaschema.annotation._
@@ -352,3 +354,21 @@ case class PerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
 ) extends KoskiOpiskeluoikeusjakso
+
+object PakollisetOppiaineet {
+  def pakollistenOppiaineidenSuoritukset(koodistoViitePalvelu: KoodistoViitePalvelu) = {
+    def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
+    val kesken = koodi("suorituksentila", "KESKEN")
+    def aine(koodiarvo: String) = koodi("koskioppiaineetyleissivistava", koodiarvo)
+    def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine, tila = kesken)
+
+    List(
+      PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus")),
+      MuuPeruskoulunOppiaine(aine("MA")),
+      MuuPeruskoulunOppiaine(aine("MU")),
+      MuuPeruskoulunOppiaine(aine("KU")),
+      MuuPeruskoulunOppiaine(aine("MU")),
+      MuuPeruskoulunOppiaine(aine("LI"))
+    ).map(suoritus)
+  }
+}
