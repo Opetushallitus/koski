@@ -211,14 +211,15 @@ export const addContext = (model, additionalContext) => {
 }
 
 export const modelValid = (model, context) => {
-  if (!context) {
-    if (!model.context) throw new Error('context missing')
-    context = model.context
-  }
   var errors = validateModel(model, context)
   let valid = R.keys(errors).length == 0
   //if (!valid) console.log("errors", errors)
   return valid
+}
+
+export const modelErrors = (model, context) => {
+  var errors = validateModel(model, context)
+  return R.values(errors).flatten()
 }
 
 export const applyChanges = (modelBeforeChange, changes) => {
@@ -373,6 +374,9 @@ const getValidator = (model, context) => {
   return editor && editor.validateModel
 }
 const validateModel = (model, context, results = {}, path = []) => {
+  if (!context) context = model.context
+  if (!context) throw new Error('context missing')
+
   let validator = getValidator(model, context)
   if (validator) {
     let myResult = validator(model)

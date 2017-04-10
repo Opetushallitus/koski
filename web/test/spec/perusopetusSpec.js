@@ -904,6 +904,20 @@ describe('Perusopetus', function() {
                 it('Arvosana poistetaan', function() {
                   expect(arvosana.getValue()).to.equal('')
                 })
+
+                describe('Siirrettäessä VALMIS-tilaan ilman arvosanaa', function() {
+                  before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus valmis'))
+                  it('Tallennus on estetty', function() {
+                    expect(editor.canSave()).to.equal(false)
+                  })
+
+                  describe('Lisättäessä arvosana', function() {
+                    before(arvosana.selectValue('5'))
+                    it('Tallennus on sallittu', function() {
+                      expect(editor.canSave()).to.equal(true)
+                    })
+                  })
+                })
               })
             })
 

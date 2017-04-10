@@ -164,6 +164,9 @@ function Editor(elem) {
         triggerEvent(editLink, 'click')
       return KoskiPage().verifyNoError()
     },
+    canSave: function() {
+      return S('.toggle-edit.editing').is(':visible')
+    },
     doneEditing: function() {
       triggerEvent(findSingle('.toggle-edit.editing', elem()), 'click')
       return KoskiPage().verifyNoError()

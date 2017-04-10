@@ -4,12 +4,18 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {modelLookupRequired, lensedModel, modelLens, modelSetValue, createOptionalEmpty} from './EditorModel'
+import {
+  modelLookupRequired,
+  lensedModel,
+  modelLens,
+  modelSetValue,
+  createOptionalEmpty,
+  modelErrors
+} from './EditorModel'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
   let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset')))
-
   let osasuoritukset = modelItems(model, 'osasuoritukset')
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
   let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
@@ -62,7 +68,7 @@ let tilaLens = modelLens('tila')
 let fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {
     let t = L.get(tilaLens, m)
-    if (L.get(arvosanaLens, m).value && t.value.data.koodiarvo == 'KESKEN') {
+    if (hasArvosana(m) && !suoritusValmis(m)) {
       t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' })
       return L.set(tilaLens, t, m)
     }
@@ -73,9 +79,8 @@ let fixTila = (model) => {
 let fixArvosana = (model) => {
   let arviointiLens = modelLens('arviointi')
   return lensedModel(model, L.rewrite(m => {
-    let t = L.get(tilaLens, m)
     var arviointiModel = L.get(arviointiLens, m)
-    if (arviointiModel.value && t.value.data.koodiarvo != 'VALMIS') {
+    if (!suoritusValmis(m)) {
       return L.set(arviointiLens, createOptionalEmpty(arviointiModel), m)
     }
     return m
@@ -83,7 +88,7 @@ let fixArvosana = (model) => {
 }
 
 
-const OppiaineEditor = React.createClass({
+export const OppiaineEditor = React.createClass({
   render() {
     let {model, showLaajuus, showFootnotes} = this.props
     let {expanded} = this.state
@@ -97,6 +102,7 @@ const OppiaineEditor = React.createClass({
     let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
+    let errors = modelErrors(model)
 
     let oppiaineTitle = (aine) => {
       let title = kielenOppiaine || äidinkieli ? modelTitle(aine, 'tunniste') + ', ' : modelTitle(aine)
@@ -138,10 +144,13 @@ const OppiaineEditor = React.createClass({
       }
     </tr>
     {
-      !!sanallinenArviointi && expanded && <tr><td className="details"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
+      !!sanallinenArviointi && expanded && <tr key='sanallinen-arviointi'><td className="details"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
     }
     {
-      editing && expanded && <tr><td className="details"><PropertiesEditor model={fixArvosana(model)} propertyFilter={extraPropertiesFilter} /></td></tr>
+      editing && expanded && <tr key='details'><td className="details"><PropertiesEditor model={fixArvosana(model)} propertyFilter={extraPropertiesFilter} /></td></tr>
+    }
+    {
+      errors.map((error, i) => <tr key={'error-' + i} className="error"><td className="error">{error}</td></tr>)
     }
     </tbody>)
   },
@@ -165,3 +174,12 @@ const OppiaineEditor = React.createClass({
     return parseFloat(x) - parseFloat(y)
   }
 })
+
+const suoritusValmis = (m) => modelData(m, 'tila').koodiarvo === 'VALMIS'
+const hasArvosana = (m) => !!modelData(m, 'arviointi.-1.arvosana')
+
+OppiaineEditor.validateModel = (m) => {
+  if (suoritusValmis(m) && !hasArvosana(m)) {
+    return ['Suoritus valmis, mutta arvosana puuttuu']
+  }
+}
