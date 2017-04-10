@@ -179,7 +179,8 @@ function Editor(elem) {
     },
     subEditor: function(selector) {
       return Editor(function() { return findSingle(selector, elem()) })
-    }
+    },
+    elem: elem
   }
 }
 

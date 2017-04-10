@@ -146,7 +146,7 @@ export const optionalPrototypeModel = (model) => {
   return R.merge(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
 }
 
-const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
+export const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
 export const resetOptionalModel = (model) => pushModel(contextualizeChild(model, createOptionalEmpty(model)))
 
 export const modelItems = (mainModel, path) => {

@@ -3,7 +3,9 @@ import {modelData, modelLookup, modelTitle, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
-import {modelLookupRequired} from './EditorModel'
+import * as L from 'partial.lenses'
+import {modelLookupRequired, lensedModel, modelLens} from './EditorModel'
+import {modelSetValue} from './EditorModel';
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -64,6 +66,7 @@ const OppiaineEditor = React.createClass({
     let kielenOppiaine = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let äidinkieli = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let editing = model.context.edit
+    let tila = modelData(model, 'tila.koodiarvo')
     let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
@@ -73,7 +76,23 @@ const OppiaineEditor = React.createClass({
       return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
 
-    return (<tbody className={expanded && 'expanded'}>
+    let arvosanaLens = modelLens('arviointi.-1.arvosana')
+    let tilaLens = modelLens('tila')
+    let tilaArvosanaLens = L.lens(
+      (m) => L.get(arvosanaLens, m),
+      (newModel, m) => {
+        let t = L.get(tilaLens, m)
+        if (newModel.value && t.value.data.koodiarvo == 'KESKEN') {
+          t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' } })
+        }
+        return L.set(tilaLens, t, L.set(arvosanaLens, newModel, m))
+      }
+    )
+    let arvosanaModel = lensedModel(model, tilaArvosanaLens)
+
+    let className = 'oppiaine' + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
+
+    return (<tbody className={className}>
     <tr>
       <td className="oppiaine">
         { showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
@@ -85,7 +104,7 @@ const OppiaineEditor = React.createClass({
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ model } path="arviointi.-1.arvosana" sortBy={this.sortGrades}/></span>
+        <span className="value"><Editor model={ arvosanaModel } sortBy={this.sortGrades}/></span>
 
       </td>
       {

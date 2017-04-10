@@ -888,8 +888,20 @@ describe('Perusopetus', function() {
                 expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Musiikki', 'Kuvataide', 'Musiikki', 'Liikunta'])
               })
             })
+            describe('Annettaessa oppiaineelle arvosana', function() {
+              var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+              var arvosana = äidinkieli.propertyBySelector('.arvosana')
+              before(editor.edit, arvosana.selectValue('5'), editor.doneEditing)
+              it('muutettu arvosana näytetään', function() {
+                expect(arvosana.getValue()).to.equal('5')
+              })
+              it('suoritus siirtyy VALMIS-tilaan', function() {
+                expect(äidinkieli.elem().hasClass('valmis')).to.equal(true)
+              })
+            })
+
             describe('Lisättäessä toinen', function() {
-              before(opinnot.lisääSuoritus)
+              before(editor.edit, opinnot.lisääSuoritus)
               describe('Aluksi', function() {
                 it('Lisää-nappi on disabloitu', function() {
                   expect(dialog.isEnabled()).to.equal(false)
