@@ -41,7 +41,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 
 const Oppiainetaulukko = ({suoritukset, model}) => {
   let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
-  let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+  let showFootnotes = !model.context.edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
   return (<table>
       <thead>
       <tr>
