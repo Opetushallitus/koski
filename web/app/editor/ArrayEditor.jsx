@@ -60,6 +60,6 @@ export const ArrayEditor = ({model, reverse}) => {
 
 ArrayEditor.canShowInline = (model) => {
   let items = modelItems(model)
-  return items[0] && model.context.edit ? false : Editor.canShowInline(items[0])
+  return items[0] && Editor.canShowInline(items[0])
 }
 ArrayEditor.handlesOptional = true
