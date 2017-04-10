@@ -102,7 +102,7 @@ let getUsedModelForOptionalModel = (m, {model, createEmpty = (x => x)} = {}) => 
   if (!m.context) {
     m = contextualizeSubModel(m, model)
   }
-  return createEmpty(optionalModel(m, optionalModelLens))
+  return createEmpty(optionalPrototypeModel(m))
 }
 const modelEmptyForOptional = (m) => {
   if (!m.value) return true
@@ -136,17 +136,16 @@ export const optionalModelLens = ({model, isEmpty = modelEmptyForOptional, creat
   )
 }
 
-export const optionalModel = (model, pathElem) => {
-  let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model, pathElem)
-  if (prototype && prototype.oneOfPrototypes && !modelData(prototype)) {
+export const optionalPrototypeModel = (model) => {
+  let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
+  if (!prototype) return prototype
+  if (prototype.oneOfPrototypes && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
-    prototype = contextualizeSubModel(prototype.oneOfPrototypes[0], model, pathElem)
+    prototype = contextualizeSubModel(prototype.oneOfPrototypes[0], model)
   }
-
-  return makeOptional(prototype, model)
+  return R.merge(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
 }
 
-const makeOptional = (model, optModel) => model && (model.optional ? model : R.merge(model, createOptionalEmpty(optModel)))
 const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
 export const resetOptionalModel = (model) => pushModel(contextualizeChild(model, createOptionalEmpty(model)))
 
