@@ -4,61 +4,55 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import R from 'ramda'
 
-export const PerusopetuksenOppiaineetEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
-    let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset')))
+export const PerusopetuksenOppiaineetEditor = ({model}) => {
+  let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
+  let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset')))
 
-    let osasuoritukset = modelItems(model, 'osasuoritukset')
-    let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
-    let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
-    let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
-    let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
+  let osasuoritukset = modelItems(model, 'osasuoritukset')
+  let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
+  let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
+  let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
+  let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
 
-    return grouped.length > 0 && (<div className="oppiaineet">
-        <h5>Oppiaineiden arvosanat</h5>
-        <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
-        {
-          grouped.map(([name, suoritukset], i) => (<section key={i}>
-              { grouped.length > 1 && <h5>{name}</h5> }
-              <Oppiainetaulukko model={model} suoritukset={suoritukset} />
-              {
-                käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div className="kayttaytyminen">
-                  <h5>Käyttäytymisen arviointi</h5>
-                  {
-                    <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
-                  }
-                </div>)
-              }
-            </section>
-          ))
-        }
-        {selitteet && <p className="selitteet">{selitteet}</p>}
-      </div>)
-  }
-})
+  return grouped.length > 0 && (<div className="oppiaineet">
+      <h5>Oppiaineiden arvosanat</h5>
+      <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
+      {
+        grouped.map(([name, suoritukset], i) => (<section key={i}>
+            { grouped.length > 1 && <h5>{name}</h5> }
+            <Oppiainetaulukko model={model} suoritukset={suoritukset} />
+            {
+              käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div className="kayttaytyminen">
+                <h5>Käyttäytymisen arviointi</h5>
+                {
+                  <Editor model={modelLookup(model, 'käyttäytymisenArvio')}/>
+                }
+              </div>)
+            }
+          </section>
+        ))
+      }
+      {selitteet && <p className="selitteet">{selitteet}</p>}
+    </div>)
+}
 
-const Oppiainetaulukko = React.createClass({
-  render() {
-    let {suoritukset, model} = this.props
-    let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
-    let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
-    return (<table>
-        <thead>
-        <tr>
-          <th className="oppiaine">Oppiaine</th>
-          <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
-          {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
-        </tr>
-        </thead>
-        {
-          suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
-        }
-      </table>
-    )
-  }
-})
+const Oppiainetaulukko = ({suoritukset, model}) => {
+  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
+  let showFootnotes = !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+  return (<table>
+      <thead>
+      <tr>
+        <th className="oppiaine">Oppiaine</th>
+        <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
+        {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
+      </tr>
+      </thead>
+      {
+        suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+      }
+    </table>
+  )
+}
 
 const OppiaineEditor = React.createClass({
   render() {
