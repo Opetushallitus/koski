@@ -65,6 +65,7 @@ function OpinnotPage() {
     lisääSuoritusDialog: function() {
       return LisääSuoritusDialog()
     },
+    tilaJaVahvistus: TilaJaVahvistus,
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -95,6 +96,38 @@ function OpinnotPage() {
   }
 
   return api
+}
+
+function TilaJaVahvistus() {
+  function elem() { return findSingle('.tila-vahvistus') }
+  function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
+  var api = {
+    merkitseValmiiksiEnabled: function() {
+      return merkitseValmiiksiButton().is(':visible')
+    },
+    merkitseValmiiksi: function( ) {
+      triggerEvent(merkitseValmiiksiButton(), 'click')
+      return wait.forAjax()
+    },
+    text: function( ){
+      return extractAsText(findSingle('.tiedot', elem()))
+    },
+    merkitseValmiiksiDialog: MerkitseValmiiksiDialog()
+  }
+  return api
+}
+
+function MerkitseValmiiksiDialog() {
+  function elem() { return findSingle('.merkitse-valmiiksi-modal')}
+  function buttonElem() { return findSingle('button', elem())}
+  return {
+    merkitseValmiiksi: function( ) {
+      triggerEvent(buttonElem(), 'click')
+      return wait.forAjax()
+    },
+    organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
+    editor: Editor(elem)
+  }
 }
 
 function LisääSuoritusDialog() {
@@ -252,6 +285,9 @@ function Property(elem) {
     },
     isValid: function() {
       return !elem().find('.error').is(':visible')
+    },
+    organisaatioValitsin: function() {
+      return OrganisaatioHaku(elem)
     }
   }, Editor(elem))
 }

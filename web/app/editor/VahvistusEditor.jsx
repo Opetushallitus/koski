@@ -6,7 +6,7 @@ export const VahvistusEditor = React.createClass({
   render() {
     let { model } = this.props
     return (<span className="vahvistus inline">
-      <span className="date"><Editor model={model} path="päivä" edit={false}/></span>&nbsp;
+      <span className="date"><Editor model={model} path="päivä" edit="false"/></span>&nbsp;
       <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
         (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>

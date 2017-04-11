@@ -1,5 +1,7 @@
-import React from 'react'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
+import React from 'baret'
+import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import * as Lukio from './Lukio.jsx'
@@ -8,6 +10,16 @@ import {LuvaEditor} from './LuvaEditor.jsx'
 import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
+import ModalDialog from './ModalDialog.jsx'
+import {
+  accumulateModelState,
+  modelLookup,
+  optionalPrototypeModel,
+  modelSet,
+  modelSetValue,
+  pushModel
+} from './EditorModel'
+import {setTila, suoritusValmis} from './Suoritus'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -51,29 +63,68 @@ export const SuoritusEditor = React.createClass({
 })
 SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
 
-const TilaJaVahvistus = React.createClass({
-  render() {
-    let { model } = this.props
-    return (<div className="tila-vahvistus">
+const TilaJaVahvistus = ({model}) => {
+  let addingAtom = Atom(false)
+  let merkitseValmiiksiCallback = (suoritusModel) => {
+    if (suoritusModel) {
+      pushModel(suoritusModel, model.context.changeBus)
+    } else {
+      addingAtom.set(false)
+    }
+  }
+  let tila = modelData(model).tila.koodiarvo
+  return (<div className="tila-vahvistus">
+      <span className="tiedot">
         <span className="tila">
-          Suoritus: <span className={ 'VALMIS' == modelData(model).tila.koodiarvo ? 'valmis' : ''}>{ modelData(model).tila.koodiarvo }</span> { /* TODO: i18n */ }
+          Suoritus: <span className={ tila === 'VALMIS' ? 'valmis' : ''}>{ modelData(model).tila.koodiarvo }</span> { /* TODO: i18n */ }
         </span>
         {
-          modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus"/>
+          modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
         }
-        {(() => {
-          let jääLuokalle = modelData(model, 'jääLuokalle')
-          let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
-          if (jääLuokalle === true) {
-            return <div>Ei siirretä seuraavalle luokalle</div>
-          } else if (jääLuokalle === false && luokka !== '9') {
-            return <div>Siirretään seuraavalle luokalle</div>
-          }
-        })()}
-      </div>
-    )
+        <JääLuokalleTaiSiirretään model={model}/>
+      </span>
+      <span className="controls">
+        {
+          model.context.edit && tila === 'KESKEN' && <button className="merkitse-valmiiksi" onClick={() => addingAtom.modify(x => !x)}>Merkitse valmiiksi</button>
+        }
+      </span>
+      {
+        addingAtom.map(adding => adding && <MerkitseValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
+      }
+    </div>
+  )
+}
+
+const MerkitseValmiiksiPopup = ({ suoritus, resultCallback }) => {
+  let submitBus = Bacon.Bus()
+  let vahvistus = optionalPrototypeModel(modelLookup(suoritus, 'vahvistus'))
+  suoritus = modelSet(suoritus, vahvistus, 'vahvistus')
+  let toimipiste = modelLookup(suoritus, 'toimipiste')
+  suoritus = modelSetValue(suoritus, toimipiste.value, 'vahvistus.myöntäjäOrganisaatio')
+  suoritus = setTila(suoritus, 'VALMIS')
+  let { modelP, errorP } = accumulateModelState(suoritus)
+  let validP = errorP.not()
+  modelP.sampledBy(submitBus).onValue(resultCallback)
+
+  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+    <h2>Suoritus valmis</h2>
+    <PropertiesEditor baret-lift model={modelP.map(s => modelLookup(s, 'vahvistus'))}  />
+    <button disabled={validP.not()} onClick={() => submitBus.push()}>Merkitse valmiiksi</button>
+  </ModalDialog>)
+}
+
+const JääLuokalleTaiSiirretään = ({model}) => {
+  let jääLuokalle = modelData(model, 'jääLuokalle')
+  let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+  if (luokka && suoritusValmis(model)) {
+    if (jääLuokalle === true) {
+      return <div>Ei siirretä seuraavalle luokalle</div>
+    } else if (jääLuokalle === false && luokka !== '9') {
+      return <div>Siirretään seuraavalle luokalle</div>
+    }
   }
-})
+  return null
+}
 
 const TodistusLink = React.createClass({
   render() {

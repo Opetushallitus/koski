@@ -267,23 +267,36 @@
         display: inline-block;
         margin: 15px 0;
 
-        .tila {
-          & > span {
-            display: inline-block;
-            text-transform: lowercase;
-            margin-right: 4px;
+        .tiedot {
+          display: inline-block;
+          .tila {
+            & > span {
+              display: inline-block;
+              text-transform: lowercase;
+              margin-right: 4px;
+            }
+            & > span:first-letter {
+              text-transform: uppercase;
+            }
+            & > span.valmis {
+              color: #74b419;
+            }
+            margin-right: 13px;
+            font-weight: 600;
           }
-          & > span:first-letter {
-            text-transform: uppercase;
+
+          .vahvistus {
+            color: @color-label;
           }
-          & > span.valmis {
-            color: #74b419;
-          }
-          margin-right: 13px;
-          font-weight: 600;
         }
-        .single-property {
-          color: @color-label;
+        .controls {
+          button {
+            vertical-align: top;
+            margin-left: 20px;
+          }
+        }
+        .merkitse-valmiiksi-modal .modal-content {
+          width: 580px;
         }
       }
 

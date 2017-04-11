@@ -24,6 +24,7 @@ import {
   pushModel
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
+import {suoritusValmis, hasArvosana, arvosanaLens, setTila} from './Suoritus'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -79,15 +80,11 @@ const Oppiainetaulukko = ({suoritukset, model}) => {
   )
 }
 
-let arvosanaLens = modelLens('arviointi.-1.arvosana')
-let tilaLens = modelLens('tila')
 
 let fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {
-    let t = L.get(tilaLens, m)
     if (hasArvosana(m) && !suoritusValmis(m)) {
-      t = modelSetValue(t, { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' })
-      return L.set(tilaLens, t, m)
+      return setTila(m, 'VALMIS')
     }
     return m
   }))
@@ -103,7 +100,6 @@ let fixArvosana = (model) => {
     return m
   }))
 }
-
 
 export const OppiaineEditor = React.createClass({
   render() {
@@ -177,9 +173,6 @@ export const OppiaineEditor = React.createClass({
     return { expanded: false }
   }
 })
-
-const suoritusValmis = (m) => modelData(m, 'tila').koodiarvo === 'VALMIS'
-const hasArvosana = (m) => !!modelData(m, 'arviointi.-1.arvosana')
 
 OppiaineEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {

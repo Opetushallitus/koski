@@ -939,6 +939,58 @@ describe('Perusopetus', function() {
               })
             })
 
+            describe('Merkitseminen valmiiksi', function() {
+              function merkitseOppiaineetValmiiksi() {
+                var count = 6
+                for (var i = 0; i < count; i++) {
+                  var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
+                  var arvosana = oppiaine.propertyBySelector('.arvosana')
+                  before(
+                    arvosana.selectValue('5')
+                  )
+                }
+              }
+              var tilaJaVahvistus = opinnot.tilaJaVahvistus()
+              var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+              merkitseOppiaineetValmiiksi()
+              before(editor.edit)
+              describe('Aluksi', function() {
+                it('Tila on "kesken"', function() {
+                  expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEN')
+                })
+                it('Merkitse valmiiksi -nappi näytetään', function() {
+                  expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+                })
+              })
+              describe('Kun merkitään valmiksi', function() {
+                var dialogEditor = dialog.editor
+                var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
+                before(tilaJaVahvistus.merkitseValmiiksi,
+                  myöntäjät.addItem,
+                  myöntäjät.itemEditor(0).property('nimi').setValue('Reijo Reksi'),
+                  myöntäjät.itemEditor(0).property('titteli').setValue('rehtori'),
+                  myöntäjät.organisaatioValitsin().select('Jyväskylän normaalikoulu, alakoulu'),
+                  dialog.merkitseValmiiksi
+                )
+
+                describe('Käyttöliittymän tila', function() {
+                  it('Tila on "valmis" ja vahvistus näytetään', function() {
+                    expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Vaasa Reijo Reksi\nSiirretään seuraavalle luokalle')
+                  })
+
+                  it('Merkitse valmiiksi -nappia ei näytetä', function() {
+                    expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+                  })
+                })
+
+                describe('Kun tallennetaan', function() {
+                  before(editor.doneEditing)
+                  it('Toimii', function() {
+
+                  })
+                })
+              })
+            })
             describe('Lisättäessä toinen', function() {
               before(editor.edit, opinnot.lisääSuoritus)
               describe('Aluksi', function() {
