@@ -28,38 +28,45 @@ import {suoritusValmis, hasArvosana, arvosanaLens, setTila} from './Suoritus'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
-  let grouped = R.toPairs(R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset')))
+  let oppiaineSuoritukset = R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset'))
   let osasuoritukset = modelItems(model, 'osasuoritukset')
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
   let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
 
-  return grouped.length > 0 && (<div className="oppiaineet">
-      <h5>Oppiaineiden arvosanat</h5>
-      <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
-      {
-        grouped.map(([name, suoritukset], i) => (<section key={i}>
-            { grouped.length > 1 && <h5>{name}</h5> }
-            <Oppiainetaulukko model={model} suoritukset={suoritukset} />
-            {
-              käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && (i == grouped.length - 1) && (<div className="kayttaytyminen">
-                <h5>Käyttäytymisen arviointi</h5>
-                {
-                  <Editor model={model} path="käyttäytymisenArvio"/>
-                }
-              </div>)
-            }
-          </section>
-        ))
+  let groups = ['Pakolliset oppiaineet', 'Valinnaiset oppiaineet']
+  groups = oppiaineSuoritukset['Pakolliset oppiaineet'] || model.context.edit ? groups : groups.slice(1) // shove valinnaiset to left if there are no pakolliset
+
+  return (<div className="oppiaineet">
+    <h5>Oppiaineiden arvosanat</h5>
+    <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
+    {groups.map(pakollisuus => {
+    let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
+    let suoritukset = oppiaineSuoritukset[pakollisuus] || []
+    return (<section className={onPakolliset ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
+      {(suoritukset.length > 0 || model.context.edit) && (<section>
+        {groups.length > 1 && <h5>{pakollisuus}</h5>}
+        <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={onPakolliset} />
+        </section>)
       }
-      {selitteet && <p className="selitteet">{selitteet}</p>}
-    </div>)
+      {
+        käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && !onPakolliset && (<div className="kayttaytyminen">
+        <h5>Käyttäytymisen arviointi</h5>
+        {
+          <Editor model={model} path="käyttäytymisenArvio"/>
+        }
+        </div>)
+      }
+      </section>)
+    })
+  }
+  {selitteet && <p className="selitteet">{selitteet}</p>}
+  </div>)
 }
 
-const Oppiainetaulukko = ({suoritukset, model}) => {
-  let valinnaiset = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') === false)
-  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && valinnaiset
+const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
+  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !pakolliset
   let showFootnotes = !model.context.edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
   let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
   return (<table>
@@ -74,7 +81,7 @@ const Oppiainetaulukko = ({suoritukset, model}) => {
         suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
       }
       {
-        model.context.edit && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} pakollinen={!valinnaiset} resultCallback={addOppiaine} />
+        model.context.edit && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} />
       }
     </table>
   )
