@@ -73,7 +73,7 @@ EnumEditor.fetchAlternatives = (model, sortBy) => {
     let alternativesP = alternativesCache[alternativesPath]
     if (!alternativesP) {
       alternativesP = Http.cachedGet(alternativesPath).map(alts => {
-          return !sortBy ? alts : alts.sort(sortBy)
+          return !sortBy ? alts : sortBy(alts)
         }
       ).doError(showInternalError).startWith([])
       alternativesCache[alternativesPath] = alternativesP

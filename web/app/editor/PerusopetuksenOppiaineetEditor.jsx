@@ -23,6 +23,7 @@ import {
   modelTitle,
   pushModel
 } from './EditorModel'
+import {sortGrades, sortLanguages} from '../sorting'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -138,11 +139,11 @@ export const OppiaineEditor = React.createClass({
           showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
         }
         {
-          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={model} path="koulutusmoduuli.kieli"/></span>
+          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={model} path="koulutusmoduuli.kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
         }
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={this.sortGrades}/></span>
+        <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={sortGrades}/></span>
       </td>
       {
         showLaajuus && (<td className="laajuus">
@@ -174,22 +175,6 @@ export const OppiaineEditor = React.createClass({
   },
   getInitialState() {
     return { expanded: false }
-  },
-  sortGrades(gradeX, gradeY) {
-    let x = gradeX.value
-    let y = gradeY.value
-    let xAsFloat = parseFloat(x)
-    let yAsFloat = parseFloat(y)
-    if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
-      return (x < y) ? -1 : (x > y) ? 1 : 0
-  }
-    if (isNaN(xAsFloat)) {
-      return 1
-    }
-    if (isNaN(yAsFloat)) {
-      return -1
-    }
-    return parseFloat(x) - parseFloat(y)
   }
 })
 

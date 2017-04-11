@@ -1,11 +1,13 @@
 import React from 'react'
-import {modelData, modelItems} from './EditorModel.js'
+import {modelData, modelItems, modelLookup} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import * as Lukio from './Lukio.jsx'
 import {Suoritustaulukko} from './Suoritustaulukko.jsx'
 import {LuvaEditor} from './LuvaEditor.jsx'
-import {PerusopetuksenOppiaineetEditor}  from './PerusopetuksenOppiaineetEditor.jsx'
+import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.jsx'
+import {sortLanguages} from '../sorting'
+import {Editor} from './Editor.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -38,6 +40,9 @@ export const SuoritusEditor = React.createClass({
       <PropertiesEditor
         model={model}
         propertyFilter={p => !excludedProperties.includes(p.key)}
+        getValueEditor={ (prop, getDefault) => prop.key === 'suorituskieli'
+          ? <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
+          : getDefault() }
       />
       <TilaJaVahvistus model={model} />
       <div className="osasuoritukset">{resolveEditor(model)}</div>
