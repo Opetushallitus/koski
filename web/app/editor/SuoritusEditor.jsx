@@ -1,4 +1,13 @@
-import {modelData, modelItems, modelLookup} from './EditorModel.js'
+import {
+  modelData,
+  modelItems,
+  modelLookup,
+  accumulateModelState,
+  optionalPrototypeModel,
+  modelSet,
+  modelSetValue,
+  pushModel
+} from './EditorModel'
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
@@ -11,14 +20,6 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import ModalDialog from './ModalDialog.jsx'
-import {
-  accumulateModelState,
-  modelLookup,
-  optionalPrototypeModel,
-  modelSet,
-  modelSetValue,
-  pushModel
-} from './EditorModel'
 import {setTila, suoritusValmis} from './Suoritus'
 
 export const SuoritusEditor = React.createClass({
