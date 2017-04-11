@@ -8,7 +8,7 @@ case class ObjectModel(classes: List[String], properties: List[EditorProperty], 
 
 case class PrototypeModel(key: String) extends EditorModel
 
-case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean, flatten: Boolean, complexObject: Boolean, tabular: Boolean, editable: Boolean)
+case class EditorProperty(key: String, title: String, model: EditorModel, props: Map[String, Any])
 
 case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) extends EditorModel
 

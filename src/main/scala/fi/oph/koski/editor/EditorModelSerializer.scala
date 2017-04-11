@@ -4,6 +4,20 @@ import fi.oph.koski.log.Logging
 import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
+object EditorPropertySerializer extends Serializer[EditorProperty] {
+  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
+    case (property: EditorProperty) => {
+      Extraction.decompose(Map(
+        "key" -> property.key,
+        "title" -> property.title,
+        "model" -> property.model
+      ) ++ property.props)
+    }
+  }
+
+  override def deserialize(implicit format: Formats) = PartialFunction.empty
+}
+
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 

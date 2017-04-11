@@ -9,7 +9,7 @@ import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
-import fi.oph.scalaschema.annotation.Title
+import fi.oph.scalaschema.annotation._
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu): EditorModel = {
@@ -236,11 +236,24 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val complexObject: Boolean = property.metadata.contains(ComplexObject())
     val tabular: Boolean = property.metadata.contains(Tabular())
     val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
+    var props: Map[String, Any] = Map.empty
+    if (hidden) props += ("hidden" -> true)
+    if (representative) props += ("representative" -> true)
+    if (flatten) props += ("flatten" -> true)
+    if (complexObject) props += ("complexObject" -> true)
+    if (tabular) props += ("tabular" -> true)
+    if (!readOnly) props += ("editable" -> true)
+    property.metadata.collect { case MinItems(x) => x }.foreach { x => props += ("minItems" -> x)}
+    property.metadata.collect { case MaxItems(x) => x }.foreach { x => props += ("maxItems" -> x)}
+    property.metadata.collect { case MinValue(x) => x }.foreach { x => props += ("minValue" -> x)}
+    property.metadata.collect { case MaxValue(x) => x }.foreach { x => props += ("maxValue" -> x)}
+    property.metadata.collect { case MinValueExclusive(x) => x }.foreach { x => props += ("minValueExclusive" -> x)}
+    property.metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
     val propertyTitle = property.metadata.flatMap {
       case Title(t) => Some(t)
       case _ => None
     }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-    EditorProperty(property.key, propertyTitle, propertyModel, hidden, representative, flatten, complexObject, tabular, !readOnly)
+    EditorProperty(property.key, propertyTitle, propertyModel, props)
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
