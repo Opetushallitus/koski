@@ -18,6 +18,7 @@ import {
 } from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
+import {doActionWhileMounted} from '../util'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -35,9 +36,10 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   initialModel = addContext(initialModel, { editAll: true })
 
+  let luokkaAsteP = valittuLuokkaAsteP(initialModel)
   return (<div>
     {
-      Bacon.combineWith(valittuLuokkaAsteP(initialModel), osasuorituksetP(initialModel), (valittuLuokkaAste, osasuoritukset) => {
+      Bacon.combineWith(luokkaAsteP, osasuorituksetP(initialModel, luokkaAsteP), (valittuLuokkaAste, osasuoritukset) => {
         initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
         initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
 
@@ -46,13 +48,14 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
         let validP = errorP.not().and(hasToimipisteP)
 
-        modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
-
-        return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
-          <h2>Suorituksen lisäys</h2>
-          <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
-          <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
-        </ModalDialog>)
+        return (<div>
+          <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+            <h2>Suorituksen lisäys</h2>
+            <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
+            <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
+          </ModalDialog>
+          { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
+        </div>)
       })
     }
   </div>)
@@ -69,11 +72,10 @@ let valittuLuokkaAsteP = (model) => {
   return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
 }
 
-let osasuorituksetP = (model) => {
-  let koodisto = modelData(model, 'koulutusmoduuli.tunniste').koodistoUri
-  let koodiarvo = modelData(model, 'koulutusmoduuli.tunniste').koodiarvo
-  return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${koodisto}/${koodiarvo}`)
-}
+let osasuorituksetP = (model, luokkaAsteP) =>
+  luokkaAsteP.map('.data').filter(R.identity).flatMapLatest(({koodistoUri, koodiarvo}) => {
+    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${koodistoUri}/${koodiarvo}`)
+  }).toProperty([])
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
   var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).map(suorituksenLuokkaAste)

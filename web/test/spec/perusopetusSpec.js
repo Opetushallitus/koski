@@ -970,12 +970,13 @@ describe('Perusopetus', function() {
                   myöntäjät.itemEditor(0).property('nimi').setValue('Reijo Reksi'),
                   myöntäjät.itemEditor(0).property('titteli').setValue('rehtori'),
                   myöntäjät.organisaatioValitsin().select('Jyväskylän normaalikoulu, alakoulu'),
+                  dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
                   dialog.merkitseValmiiksi
                 )
 
                 describe('Käyttöliittymän tila', function() {
                   it('Tila on "valmis" ja vahvistus näytetään', function() {
-                    expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Vaasa Reijo Reksi\nSiirretään seuraavalle luokalle')
+                    expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi\nSiirretään seuraavalle luokalle')
                   })
 
                   it('Merkitse valmiiksi -nappia ei näytetä', function() {

@@ -1,1 +1,1 @@
-export const doActionWhileMounted = (stream, action) => stream.doAction(action).map(undefined).toProperty().startWith(undefined)
+export const doActionWhileMounted = (stream, action) => stream.doAction(action).map(null).toProperty().startWith(null)

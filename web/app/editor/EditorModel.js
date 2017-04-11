@@ -275,8 +275,13 @@ let modelItemLens = (index) => {
   let baseLens = L.lens(
     (m) => {
       if (m && m.optional && !m.value && m.optionalPrototype) {
+        // Array is missing -> create optional value using array prototype
         var arrayPrototype = optionalPrototypeModel(m).arrayPrototype
         return { optional: true, optionalPrototype: arrayPrototype }
+      }
+      if (m && m.value && index >= m.value.length && m.arrayPrototype) {
+        // Index out of bounds -> create optional value using array prototype
+        return { optional: true, optionalPrototype: m.arrayPrototype}
       }
       return L.get(valueIndexLens, m)
     },
@@ -285,7 +290,10 @@ let modelItemLens = (index) => {
         let prototypeForArray = optionalPrototypeModel(m)
         return L.set(valueIndexLens, v, prototypeForArray)
       }
-
+      if (m && (!v || !v.value)) {
+        // remove value at index
+        return L.set(valueIndexLens, undefined, m)
+      }
       return L.set(valueIndexLens, v, m)
     }
   )

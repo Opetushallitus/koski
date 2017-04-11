@@ -137,8 +137,8 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
   def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k)
-  def defaultValue = koodiarvot.headOption.orElse(KoodistoEnumModelBuilder.defaults.get(koodistoUri)).getOrElse(context.koodisto.getKoodistoKoodiViitteet(context.koodisto.koodistoPalvelu.getLatestVersion(koodistoUri).get).get.head.koodiarvo)
-  def getPrototypeData = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(defaultValue, koodistoUri)).get
+  def defaultValue = KoodistoEnumModelBuilder.defaults.get(koodistoUri).filter(arvo => koodiarvot.isEmpty || koodiarvot.contains(arvo)).orElse(koodiarvot.headOption)
+  def getPrototypeData = defaultValue.flatMap(value => MockKoodistoViitePalvelu.validate(Koodistokoodiviite(value, koodistoUri)))
   def buildPrototype: EditorModel = buildModelForObject(getPrototypeData)
 }
 
@@ -149,8 +149,8 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
 
   def buildModelForObject(o: AnyRef) = {
     o match {
-      case None => throw new RuntimeException("None value not allowed for Enum")
-      case k: A => EnumeratedModel(Some(toEnumValue(k)), None, Some(alternativesPath))
+      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath))
+      case k: A => buildModelForObject(Some(k))
     }
   }
 }

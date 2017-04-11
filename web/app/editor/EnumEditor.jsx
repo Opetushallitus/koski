@@ -7,7 +7,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {showInternalError} from '../location.js'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
-import {modelSetValue, pushModel} from './EditorModel'
+import {modelSetValue, pushModel, modelValid} from './EditorModel'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefined }) => {
   let wrappedModel = wrapOptional({
@@ -17,7 +17,8 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
 
   let query = Atom()
   let alternativesP = EnumEditor.fetchAlternatives(wrappedModel, sortBy)
-  let classNameP = alternativesP.map(xs => xs.length ? '' : 'loading')
+  let valid = modelValid(model)
+  let classNameP = alternativesP.map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
 
   let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
 
@@ -88,3 +89,8 @@ let alternativesCache = {}
 
 EnumEditor.canShowInline = () => true
 EnumEditor.handlesOptional = true
+EnumEditor.validateModel = (model) => {
+  if (!model.value && !model.optional) {
+    return ['Arvo puuttuu']
+  }
+}
