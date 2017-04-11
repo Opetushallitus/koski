@@ -571,11 +571,41 @@ describe('Perusopetus', function() {
         })
       })
       describe('Vieraan kielen valinta', function() {
-        var b1kieli = editor.subEditor('.oppiaineet tbody:eq(1) tr:eq(0)')
-        var kieli = b1kieli.propertyBySelector('.oppiaine')
-        before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.doneEditing)
-        it('muutettu kielivalinta näytetään', function() {
-          expect(kieli.getValue()).to.equal('saksa')
+
+        describe('kielivalinnan muuttaminen', function() {
+          var b1kieli = editor.subEditor('.oppiaineet tbody:eq(1) tr:eq(0)')
+          var kieli = b1kieli.propertyBySelector('.oppiaine')
+          before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.doneEditing)
+          it('muutettu kielivalinta näytetään', function() {
+            expect(kieli.getValue()).to.equal('saksa')
+          })
+        })
+        describe('kielien järjestys listassa', function() {
+          before(editor.edit)
+          it('on oikein', function() {
+            expect(textsOf(S('.oppiaine.B1.pakollinen .oppiaine .options li'))).to.deep.equal(
+              ['suomi',
+              'ruotsi',
+              'englanti',
+              'Ei suoritusta',
+              'espanja',
+              'italia',
+              'japani',
+              'kiina',
+              'kreikka',
+              'latina',
+              'latvia, lätti',
+              'liettua',
+              'muu kieli',
+              'portugali',
+              'ranska',
+              'saame, lappi',
+              'saksa',
+              'venäjä',
+              'viittomakieli',
+              'viro, eesti'])
+          })
+          after(editor.doneEditing)
         })
       })
       describe('Oppiaineen laajuuden muutos', function() {

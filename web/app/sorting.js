@@ -21,13 +21,9 @@ export const sortGrades = grades => {
 // expects that the list is already sorted, just puts the preordered ones first
 export const sortLanguages = languages => {
   let preordered = ['FI', 'SV', 'EN']
-  return languages.reduce((acc, k) => {
-    let preorderedIndex = preordered.findIndex(v => v === k.value)
-    if (preorderedIndex > -1) {
-      acc[preorderedIndex] = k
-    } else {
-      acc.push(k)
-    }
-    return acc
-  }, [])
+
+  return languages
+    .filter(l => preordered.includes(l.value))
+    .sort((l1, l2) => preordered.findIndex(v => v === l1.value) - preordered.findIndex(v => v === l2.value))
+    .concat(languages.filter(l => !preordered.includes(l.value)))
 }
