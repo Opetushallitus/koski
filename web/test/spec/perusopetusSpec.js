@@ -701,10 +701,19 @@ describe('Perusopetus', function() {
 
       describe('Valinnainen oppiaine', function() {
         var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.valinnainen')
-        var historia = editor.subEditor('.valinnainen.HI');
+        var historia = editor.subEditor('.valinnainen.HI')
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Lisääminen', function () {
           expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
+        })
+      })
+
+      describe('Pakollinen oppiaine', function() {
+        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.pakollinen')
+        var filosofia = editor.subEditor('.pakollinen.FI')
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('Lisääminen', function () {
+          expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
         })
       })
     })
