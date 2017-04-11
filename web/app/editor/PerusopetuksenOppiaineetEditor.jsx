@@ -18,6 +18,7 @@ import {
   modelLookup,
   modelLookupRequired,
   modelSet,
+  modelSetData,
   modelSetValue,
   modelTitle,
   pushModel
@@ -71,7 +72,7 @@ const Oppiainetaulukko = ({suoritukset, model}) => {
         suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
       }
       {
-        model.context.edit && valinnaiset && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} resultCallback={addOppiaine} />
+        model.context.edit && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} pakollinen={!valinnaiset} resultCallback={addOppiaine} />
       }
     </table>
   )
@@ -201,9 +202,10 @@ OppiaineEditor.validateModel = (m) => {
   }
 }
 
-const NewOppiaine = ({oppiaineet, resultCallback}) => {
+const NewOppiaine = ({oppiaineet, pakollinen, resultCallback}) => {
   let selectionBus = Bacon.Bus()
 
+  let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   let newItemIndex = modelItems(oppiaineet).length
   let oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
   let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, oppiaineet, newItemIndex)
@@ -212,12 +214,13 @@ const NewOppiaine = ({oppiaineet, resultCallback}) => {
   let oppiaineModels = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
     .oneOfPrototypes.filter(p => p.key !== 'perusopetuksenpaikallinenvalinnainenoppiaine')
     .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
+    .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
 
   let emptyAlternatives = alts => !alts.some(a => a === undefined || a.length === 0)
 
   selectionBus.onValue(resultCallback)
 
-  return (<tbody className="uusi-oppiaine">
+  return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
   <tr>
     <td>
       {
@@ -229,7 +232,7 @@ const NewOppiaine = ({oppiaineet, resultCallback}) => {
             oppiaineModel = modelSetValue(oppiaineModel, tunniste, 'tunniste')
             selectionBus.push(modelSet(oppiaineenSuoritusModel, oppiaineModel, 'koulutusmoduuli'))
           }}
-          selectionText="Lisää valinnainen oppiaine"
+          selectionText={`Lisää ${pakollisuus} oppiaine`}
         />
       }
     </td>

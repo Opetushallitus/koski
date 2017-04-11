@@ -700,7 +700,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Valinnainen oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.valinnainen')
         var historia = editor.subEditor('.valinnainen.HI');
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Lisääminen', function () {
