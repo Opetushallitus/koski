@@ -109,6 +109,7 @@ export const OppiaineEditor = React.createClass({
     let {expanded} = this.state
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
+    let tunniste = modelData(oppiaine, 'tunniste')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
     let kielenOppiaine = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
     let äidinkieli = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
@@ -118,13 +119,15 @@ export const OppiaineEditor = React.createClass({
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
     let errors = modelErrors(model)
+    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
 
     let oppiaineTitle = (aine) => {
       let title = modelTitle(aine, 'tunniste') + (kielenOppiaine || äidinkieli ? ', ' : '')
-      return modelData(model, 'koulutusmoduuli.pakollinen') === false ? 'Valinnainen ' + title.toLowerCase() : title
+      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
 
-    let className = 'oppiaine' + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
+    let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
+    let className = 'oppiaine ' + pakollisuus + ' ' + tunniste.koodiarvo + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
 
     return (<tbody className={className}>
     <tr>

@@ -698,6 +698,15 @@ describe('Perusopetus', function() {
           })
         })
       })
+
+      describe('Valinnainen oppiaine', function() {
+        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+        var historia = editor.subEditor('.valinnainen.HI');
+        before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('Lisääminen', function () {
+          expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
+        })
+      })
     })
 
     describe('Valmis tilaa ei voi lisätä kun suoritus on kesken', function() {
