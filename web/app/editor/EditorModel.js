@@ -80,8 +80,8 @@ export const modelSet = (mainModel, newModel, path) => {
   return L.set(modelLens(path), newModel, mainModel)
 }
 
-export const modelSetData = (model, data) => {
-  return modelSetValue(model, { data })
+export const modelSetData = (model, data, path) => {
+  return modelSetValue(model, { data }, path)
 }
 
 export const modelSetValue = (model, value, path) => {
