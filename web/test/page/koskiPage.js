@@ -42,7 +42,7 @@ function KoskiPage() {
     },
     addNewOppija: function() {
       triggerEvent(S('.oppija-haku .lisaa-oppija'), 'click')
-      return wait.until(AddOppijaPage().isVisible)()
+      return wait.until(AddOppijaPage().isVisible)().then(wait.forAjax)
     },
     isNoResultsLabelShown: function() {
       return isElementVisible(S('.oppija-haku .no-results'))
