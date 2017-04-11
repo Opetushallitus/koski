@@ -736,6 +736,13 @@ describe('Perusopetus', function() {
         it('Lisääminen', function () {
           expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
         })
+
+        describe('Poistaminen', function () {
+          before(editor.edit, historia.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.not.contain('Valinnainen historia 9')
+          })
+        })
       })
 
       describe('Pakollinen oppiaine', function() {
@@ -744,6 +751,13 @@ describe('Perusopetus', function() {
         before(opinnot.valitseSuoritus('Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Lisääminen', function () {
           expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+        })
+
+        describe('Poistaminen', function () {
+          before(editor.edit, filosofia.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
+          })
         })
       })
     })

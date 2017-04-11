@@ -21,7 +21,8 @@ import {
   modelSetData,
   modelSetValue,
   modelTitle,
-  pushModel
+  pushModel,
+  pushRemoval
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, arvosanaLens, setTila} from './Suoritus'
@@ -161,6 +162,13 @@ export const OppiaineEditor = React.createClass({
               {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
               {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
             </div>
+          </td>
+        )
+      }
+      {
+        model.context.edit && (
+          <td>
+            <a className="remove-value" onClick={() => pushRemoval(model)}></a>
           </td>
         )
       }
