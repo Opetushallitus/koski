@@ -69,7 +69,6 @@ describe('Ammatillinen koulutus', function() {
       })
       describe('Kun kutsumanimi ei löydy etunimistä', function() {
         before(
-          prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({kutsumanimi: 'eiloydy'})
         )
         it('Lisää-nappi on disabloitu', function() {
@@ -88,6 +87,15 @@ describe('Ammatillinen koulutus', function() {
         })
       })
       describe('Aloituspäivä', function() {
+        describe('Kun syötetään epäkelpo päivämäärä', function() {
+          before(
+            addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
+            addOppija.selectAloituspäivä('38.1.2070')
+          )
+          it('Lisää-nappi on disabloitu', function() {
+            expect(addOppija.isEnabled()).to.equal(false)
+          })
+        })
         describe('Kun valitaan kelvollinen päivämäärä', function() {
           before(
             addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
@@ -97,11 +105,16 @@ describe('Ammatillinen koulutus', function() {
             expect(addOppija.isEnabled()).to.equal(true)
           })
         })
-        describe('Kun syötetään epäkelpo päivämäärä', function() {
-          before(
-            addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
-            addOppija.selectAloituspäivä('38.1.2070')
-          )
+      })
+      describe('Tutkinto', function() {
+        before(addOppija.enterValidDataAmmatillinen())
+        describe('Aluksi', function() {
+          it('Lisää-nappi enabloitu', function( ){
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+        describe('Kun tutkinto on virheellinen', function() {
+          before(addOppija.enterTutkinto('virheellinen'))
           it('Lisää-nappi on disabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
@@ -163,41 +176,31 @@ describe('Ammatillinen koulutus', function() {
           })
         })
       })
-      describe('Kun tutkinto on virheellinen', function() {
-        before(
-          prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataAmmatillinen(),
-          addOppija.enterTutkinto('virheellinen'))
-        it('Lisää-nappi on disabloitu', function() {
-          expect(addOppija.isEnabled()).to.equal(false)
+      describe('Hetun validointi', function() {
+        before(Authentication().login(), page.openPage)
+        describe('Kun hetu on virheellinen', function() {
+          before(
+            page.oppijaHaku.search('123456-1234', page.oppijaHaku.isNoResultsLabelShown)
+          )
+          it('Lisää-nappi on disabloitu', function() {
+            expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+          })
         })
-      })
-
-      describe('Kun hetu on virheellinen', function() {
-        before(
-          Authentication().login(), page.openPage,
-          page.oppijaHaku.search('123456-1234', page.oppijaHaku.isNoResultsLabelShown)
-        )
-        it('Lisää-nappi on disabloitu', function() {
-          expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+        describe('Kun hetu sisältää väärän tarkistusmerkin', function() {
+          before(
+            page.oppijaHaku.search('011095-953Z', page.oppijaHaku.isNoResultsLabelShown)
+          )
+          it('Lisää-nappi on disabloitu', function() {
+            expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+          })
         })
-      })
-      describe('Kun hetu sisältää väärän tarkistusmerkin', function() {
-        before(
-          Authentication().login(), page.openPage,
-          page.oppijaHaku.search('011095-953Z', page.oppijaHaku.isNoResultsLabelShown)
-        )
-        it('Lisää-nappi on disabloitu', function() {
-          expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
-        })
-      })
-      describe('Kun hetu sisältää väärän päivämäärän, mutta on muuten validi', function() {
-        before(
-          Authentication().login(), page.openPage,
-          page.oppijaHaku.search('300275-5557', page.oppijaHaku.isNoResultsLabelShown)
-        )
-        it('Lisää-nappi on disabloitu', function() {
-          expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+        describe('Kun hetu sisältää väärän päivämäärän, mutta on muuten validi', function() {
+          before(
+            page.oppijaHaku.search('300275-5557', page.oppijaHaku.isNoResultsLabelShown)
+          )
+          it('Lisää-nappi on disabloitu', function() {
+            expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+          })
         })
       })
     })
