@@ -1061,14 +1061,15 @@ describe('Perusopetus', function() {
                   expect(editor.property('luokka').getValue()).to.equal('2a')
                 })
 
-                describe('Kun merkitään valmiksi', function() {
+                describe('Kun merkitään valmiiksi', function() {
                   var tilaJaVahvistus = opinnot.tilaJaVahvistus()
                   var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
                   var dialogEditor = dialog.editor
                   var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
-                  before(tilaJaVahvistus.merkitseValmiiksi,
-                    dialogEditor.property('päivä').setValue('11.4.2017'),
-                    myöntäjät.itemEditor(0).setValue('Reijo Reksi, rehtori')
+                  before(
+                    tilaJaVahvistus.merkitseValmiiksi,
+                    myöntäjät.itemEditor(0).setValue('Reijo Reksi, rehtori'),
+                    dialogEditor.property('päivä').setValue('11.4.2017')
                   )
 
                   it('Edellisen suorituksen vahvistaja löytyy listalta', function() {

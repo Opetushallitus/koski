@@ -26,13 +26,13 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
   let validP = errorP.not()
 
   modelP.sampledBy(submitBus).onValue(updatedSuoritus => {
-    modelItems(updatedSuoritus, 'vahvistus.myöntäjäHenkilöt').filter(h => h.value.newItem).forEach(h => {
+    let saveResults = modelItems(updatedSuoritus, 'vahvistus.myöntäjäHenkilöt').filter(h => h.value.newItem).map(h => {
       let data = modelData(h)
       let key = data.nimi
       let organisaatioOid = modelData(updatedSuoritus, 'toimipiste').oid
-      Http.put(`/koski/api/preferences/${organisaatioOid}/myöntäjät`, { key, value: data})
+      return Http.put(`/koski/api/preferences/${organisaatioOid}/myöntäjät`, { key, value: data})
     })
-    resultCallback(updatedSuoritus)
+    Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })
 
   return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
