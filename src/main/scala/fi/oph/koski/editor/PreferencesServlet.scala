@@ -28,6 +28,8 @@ class PreferencesServlet(val application: KoskiApplication) extends ApiServlet w
     val `type` = params("type")
     service.get(organisaatioOid, `type`)(koskiSession)
   }
+
+  // TODO: add restrictions to allowed keys and data size
 }
 
 class PreferencesService(protected val db: DB) extends Logging with KoskiDatabaseMethods {
