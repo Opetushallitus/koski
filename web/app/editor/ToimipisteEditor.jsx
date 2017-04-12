@@ -1,17 +1,7 @@
 import React from 'baret'
-import {modelData, modelSetValue, pushModel} from './EditorModel'
-import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
+import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 
 export const ToimipisteEditor = ({model}) => {
-  return model.context.edit
-    ? <OrganisaatioPicker
-        selectedOrg={ modelData(model) }
-        onSelectionChanged = { (org) => pushModel(modelSetValue(model, { data: { oid: org.oid, nimi: org.nimi }, classes: model.value.classes })) }
-        canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'TOIMIPISTE') }
-        clearText=""
-    />
-    : <span>{modelData(model, 'nimi.fi')}</span>
+  return <div>wat<OrganisaatioEditor model={model} organisaatioTyypit={['TOIMIPISTE']} /></div>
 }
-ToimipisteEditor.validateModel = (model) => {
-  if(!modelData(model, 'oid')) return ['Organisaatio puuttuu']
-}
+ToimipisteEditor.validateModel = OrganisaatioEditor.validateModel
