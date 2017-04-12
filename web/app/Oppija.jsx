@@ -30,9 +30,10 @@ export const saveBus = Bacon.Bus()
 let currentState = null
 
 export const oppijaContentP = (oppijaOid) => {
-  if (!currentState || currentState.oppijaOid != oppijaOid ) {
+  let version = currentLocation().params['versionumero']
+  if (!currentState || currentState.oppijaOid != oppijaOid || currentState.version != version) {
     currentState = {
-      oppijaOid, state: createState(oppijaOid)
+      oppijaOid, version, state: createState(oppijaOid)
     }
   }
   return stateToContent(currentState.state)
