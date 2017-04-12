@@ -153,7 +153,7 @@ export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
   var items = modelItemsRaw(model)
   return items.map((item, index) => {
-    return contextualizeChild(model, item, index)
+    return modelLookup(model, index)
   })
 }
 
@@ -270,6 +270,14 @@ let contextualizeProperty = (mainModel) => (property) => {
   return R.merge(property, { model })
 }
 
+let arrayKeyCounter = 0
+let ensureArrayKey = (v) => {
+  if (v && v.value && !v.arrayKey) {
+    v.arrayKey = ++arrayKeyCounter
+  }
+  return v
+}
+
 let modelItemLens = (index) => {
   let valueIndexLens = L.compose('value', indexL(index))
   let baseLens = L.lens(
@@ -288,7 +296,7 @@ let modelItemLens = (index) => {
           return m.arrayPrototype
         }
       }
-      return L.get(valueIndexLens, m)
+      return ensureArrayKey(L.get(valueIndexLens, m))
     },
     (v, m) => {
       if (m && m.optional && !m.value && m.optionalPrototype) {

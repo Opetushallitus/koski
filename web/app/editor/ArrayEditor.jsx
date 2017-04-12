@@ -4,8 +4,6 @@ import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'
 
-let counter = 1
-
 export const ArrayEditor = ({model, reverse}) => {
   let wrappedModel = wrapOptional({model})
 
@@ -15,14 +13,8 @@ export const ArrayEditor = ({model, reverse}) => {
 
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
-  let newItem = () => {
-    let newItemModel = contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, items.length)
-    newItemModel.arrayKey = 'new-' + (counter++)
-    return newItemModel
-  }
-
   let addItem = () => {
-    pushModel(newItem())
+    pushModel(contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, items.length))
   }
 
   let itemEditorHandlesOptional = () => {
