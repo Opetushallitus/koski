@@ -42,7 +42,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
-    <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
+    <p>Arvostelu 4-10, S (suoritettu) tai H (hylätty)</p>
     {groups.map(pakollisuus => {
     let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
     let suoritukset = oppiaineSuoritukset[pakollisuus] || []

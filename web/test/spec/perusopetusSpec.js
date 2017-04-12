@@ -32,7 +32,7 @@ describe('Perusopetus', function() {
         it('näyttää oppiaineiden arvosanat', function() {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Oppiaineiden arvosanat\n' +
-            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
@@ -94,7 +94,7 @@ describe('Perusopetus', function() {
         it('näyttää oppiaineiden arvosanat', function() {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Oppiaineiden arvosanat\n' +
-            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
@@ -206,7 +206,7 @@ describe('Perusopetus', function() {
         })
         it('näyttää oppiaineiden arvosanat', function() {
           expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
-            'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Oppiaine Arvosana\n' +
             'motoriset taidot S\n' +
             'Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
@@ -1191,7 +1191,7 @@ describe('Perusopetus', function() {
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
-          'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Pakolliset oppiaineet\n' +
           'Oppiaine Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 7 †\n' +
@@ -1241,7 +1241,7 @@ describe('Perusopetus', function() {
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Oppiaineiden arvosanat\n' +
-          'Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)\n' +
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Oppiaine Arvosana Laajuus\n' +
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
           'Keskustelee sujuvasti suomeksi')
