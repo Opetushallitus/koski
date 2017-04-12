@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
+import {wrapOptional} from './OptionalEditor.jsx'
 import DropDown from '../Dropdown.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
@@ -82,7 +83,7 @@ const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
         suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
       }
       {
-        model.context.edit && <NewOppiaine oppiaineet={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} />
+        model.context.edit && <NewOppiaine osasuoritukset={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} />
       }
     </table>
   )
@@ -195,13 +196,13 @@ OppiaineEditor.validateModel = (m) => {
   }
 }
 
-const NewOppiaine = ({oppiaineet, pakollinen, resultCallback}) => {
+const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
   let selectionBus = Bacon.Bus()
-
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
-  let newItemIndex = modelItems(oppiaineet).length
-  let oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
-  let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, oppiaineet, newItemIndex)
+  let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
+  let newItemIndex = modelItems(wrappedOsasuoritukset).length
+  let oppiaineenSuoritusProto = contextualizeSubModel(wrappedOsasuoritukset.arrayPrototype, wrappedOsasuoritukset, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
+  let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, wrappedOsasuoritukset, newItemIndex)
   oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
 
   let oppiaineModels = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
