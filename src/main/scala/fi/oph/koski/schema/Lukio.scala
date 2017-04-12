@@ -217,7 +217,7 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 @Description("Lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
   def tunniste: KoodiViite
@@ -227,7 +227,8 @@ case class PaikallinenLukionOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   pakollinen: Boolean = true,
-  laajuus: Option[LaajuusKursseissa] = None
+  laajuus: Option[LaajuusKursseissa] = None,
+  perusteenDiaarinumero: Option[String] = None
 ) extends LukionOppiaine with PaikallinenKoulutusmoduuli
 
 trait LukionValtakunnallinenOppiaine extends LukionOppiaine with YleissivistavaOppiaine
@@ -251,7 +252,8 @@ case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("OP")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None
+  override val laajuus: Option[LaajuusKursseissa] = None,
+  perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine
 
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
@@ -262,7 +264,8 @@ case class AidinkieliJaKirjallisuus(
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None
+  override val laajuus: Option[LaajuusKursseissa] = None,
+  perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
@@ -277,7 +280,8 @@ case class VierasTaiToinenKotimainenKieli(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None
+  override val laajuus: Option[LaajuusKursseissa] = None,
+  perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine {
   override def description = concat(nimi, ", ", kieli)
 }
@@ -290,7 +294,8 @@ case class LukionMatematiikka(
   @KoodistoUri("oppiainematematiikka")
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None
+  override val laajuus: Option[LaajuusKursseissa] = None,
+  perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
   override def description = oppimäärä.description
 }

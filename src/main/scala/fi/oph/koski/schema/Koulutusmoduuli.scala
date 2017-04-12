@@ -27,10 +27,12 @@ trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
 }
 
-trait DiaarinumerollinenKoulutus extends Koulutus {
+trait Diaarinumerollinen {
   @Description("Tutkinnon perusteen diaarinumero Ks. ePerusteet-palvelu")
   def perusteenDiaarinumero: Option[String]
 }
+
+trait DiaarinumerollinenKoulutus extends Koulutus with Diaarinumerollinen
 
 trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: PaikallinenKoodi

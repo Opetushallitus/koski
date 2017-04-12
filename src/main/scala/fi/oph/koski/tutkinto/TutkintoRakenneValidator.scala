@@ -28,15 +28,17 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
         case d: LukionOppimäärä =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
-        case d: DiaarinumerollinenKoulutus =>
+        case d: LukionOppiaine =>
+          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
+        case d: Diaarinumerollinen =>
           HttpStatus.justStatus(getRakenne(d, None))
         case _ =>
           HttpStatus.ok
       }
   }
 
-  private def getRakenne(tutkinto: DiaarinumerollinenKoulutus, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {
-    tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
+  private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {
+    tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
           case Some(d) if koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutustendiaarinumerot", d).isEmpty =>
