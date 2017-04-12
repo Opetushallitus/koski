@@ -36,6 +36,8 @@ test: logdir
 	mvn test
 testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
+js-unit-test:
+	cd web && npm run unit-test
 fronttest:
 	cd web && npm run test
 screenshot:
