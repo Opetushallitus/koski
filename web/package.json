@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1",
-    "babel-cli": "^6",
     "babel-core": "^6",
     "babel-eslint": "^7.2.1",
     "babel-loader": "^6",
@@ -54,6 +53,7 @@
     "postinstall": "webpack -p --bail",
     "watch": "webpack -d --progress --colors --watch",
     "test": "mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP}",
-    "unit-test": "babel --ignore *.jsx app -d target && mocha --compilers js:babel-core/register --reporter spec ./test/unit-test"
+    "unit-test": "mocha --compilers js:babel-core/register --reporter spec ./test/unit-test",
+    "unit-test-watch": "mocha -w --compilers js:babel-core/register --reporter spec ./test/unit-test"
   }
 }

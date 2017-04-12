@@ -38,6 +38,8 @@ testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
 js-unit-test:
 	cd web && npm run unit-test
+js-unit-test-watch:
+	cd web && npm run unit-test-watch
 fronttest:
 	cd web && npm run test
 screenshot:
