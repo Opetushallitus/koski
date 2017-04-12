@@ -38,6 +38,8 @@ testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
 fronttest:
 	cd web && npm run test
+screenshot:
+	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
 
 ### Running application and database 
 
