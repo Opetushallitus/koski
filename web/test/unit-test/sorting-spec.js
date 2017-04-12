@@ -1,4 +1,4 @@
-import {sortLanguages} from '../../app/sorting'
+import {sortLanguages, sortGrades} from '../../app/sorting'
 import * as assert from 'assert'
 
 let kielet = [
@@ -46,5 +46,17 @@ describe('When sorting languages', () => {
       {'value': 'RU', 'title': 'venäjä'},
       {'value': 'VK', 'title': 'viittomakieli'},
       {'value': 'ET', 'title': 'viro, eesti'}])
+  })
+})
+
+describe('When sorting grades', () => {
+  it('sorts character grades correctly', () => {
+    assert.deepEqual(sortGrades([{value: 'S'}, {value: 'H'}]), [{value: 'H'}, {value: 'S'}])
+  })
+  it('sorts numeric grades correctly', () => {
+    assert.deepEqual(sortGrades([{value: 6}, {value: 3}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}])
+  })
+  it('sorts mixed grades correctly', () => {
+    assert.deepEqual(sortGrades([{value: 6}, {value: 'H'}, {value: 3}, {value: 'S'}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}, {value: 'H'}, {value: 'S'}])
   })
 })
