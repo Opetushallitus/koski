@@ -60,7 +60,7 @@ function OpinnotPage() {
     },
     lisääSuoritus: function() {
       triggerEvent(S(".add-suoritus a"), 'click')
-      return wait.forAjax()
+      return wait.until(api.lisääSuoritusDialog().isVisible)()
     },
     lisääSuoritusDialog: function() {
       return LisääSuoritusDialog()
@@ -134,12 +134,18 @@ function LisääSuoritusDialog() {
   function elem() { return findSingle('.lisaa-suoritus-modal')}
   function buttonElem() { return findSingle('button', elem())}
   var api = _.merge({
+    isVisible: function() {
+      return isVisibleBy(elem)
+    },
     isEnabled: function() {
       return !buttonElem().is(':disabled')
     },
     lisääSuoritus: function() {
+      if (!api.isEnabled()) throw new Error('button not enabled')
+      function count() { return OpinnotPage().suoritusTabs().length }
+      var prevCount = count()
       triggerEvent(buttonElem(), 'click')
-      return wait.forAjax()
+      return wait.until(function() { return count() == prevCount + 1 })()
     },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))

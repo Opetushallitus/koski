@@ -39,7 +39,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let luokkaAsteP = valittuLuokkaAsteP(initialModel)
   return (<div>
     {
-      Bacon.combineWith(luokkaAsteP, osasuorituksetP(initialModel, luokkaAsteP), (valittuLuokkaAste, osasuoritukset) => {
+      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialModel, luokkaAsteP).last(), (valittuLuokkaAste, osasuoritukset) => {
         initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
         initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
 
@@ -73,9 +73,10 @@ let valittuLuokkaAsteP = (model) => {
 }
 
 let osasuorituksetP = (model, luokkaAsteP) =>
-  luokkaAsteP.map('.data').filter(R.identity).flatMapLatest(({koodistoUri, koodiarvo}) => {
-    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${koodistoUri}/${koodiarvo}`)
-  }).toProperty([])
+  luokkaAsteP.map('.data').flatMapLatest(data => {
+    if (!data) return []
+    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${data.koodistoUri}/${data.koodiarvo}`)
+  }).toProperty()
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
   var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).map(suorituksenLuokkaAste)
