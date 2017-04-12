@@ -1010,6 +1010,7 @@ describe('Perusopetus', function() {
                 var dialogEditor = dialog.editor
                 var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
                 before(tilaJaVahvistus.merkitseValmiiksi,
+                  dialogEditor.property('päivä').setValue('11.4.2017'),
                   myöntäjät.addItem,
                   myöntäjät.itemEditor(0).property('nimi').setValue('Reijo Reksi'),
                   myöntäjät.itemEditor(0).property('titteli').setValue('rehtori'),
