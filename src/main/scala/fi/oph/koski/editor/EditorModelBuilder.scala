@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
+import fi.oph.koski.editor.MetadataToModel.propsFromMetadata
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
@@ -15,7 +16,7 @@ object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu): EditorModel = {
     implicit val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
     deserializationContext.rootSchema.getSchema(value.getClass.getName) match {
-      case Some(objectSchema) => builder(objectSchema).buildModelForObject(value)
+      case Some(objectSchema) => builder(objectSchema).buildModelForObject(value, Nil)
       case None => throw new RuntimeException("Schema not found for " + value.getClass.getName)
     }
   }
@@ -42,7 +43,7 @@ object EditorModelBuilder {
     case t: AnyOfSchema => OneOfModelBuilder(t)
   }
 
-  def buildModel(obj: Any, schema: Schema)(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj)
+  def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
   def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o.description), o)
   def koodistoEnumValue(localization: LocalizedHtml)(k: Koodistokoodiviite) = EnumValue(k.koodiarvo, localization.i(k.description), k)
@@ -54,13 +55,13 @@ object EditorModelBuilder {
 
 
 trait EditorModelBuilder[T] {
-  def buildModelForObject(obj: T): EditorModel
-  def buildPrototype: EditorModel
+  def buildModelForObject(obj: T, metadata: List[Metadata]): EditorModel
+  def buildPrototype(metadata: List[Metadata]): EditorModel
 }
 
 trait ModelBuilderWithData[T] extends EditorModelBuilder[T]{
   def getPrototypeData: T
-  def buildPrototype = buildModelForObject(getPrototypeData)
+  def buildPrototype(metadata: List[Metadata]) = buildModelForObject(getPrototypeData, metadata)
 }
 
 case class ModelBuilderContext(
@@ -71,55 +72,69 @@ case class ModelBuilderContext(
   prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
-  override def buildModelForObject(x: Number) = NumberModel(ValueWithData(x))
+  override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x), propsFromMetadata(metadata))
   override def getPrototypeData = 0
 }
 
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {
-  override def buildModelForObject(x: Boolean) = BooleanModel(ValueWithData(x))
+  override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x), propsFromMetadata(metadata))
   override def getPrototypeData = false
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
-  override def buildModelForObject(x: String) = StringModel(ValueWithData(x))
+  override def buildModelForObject(x: String, metadata: List[Metadata]) = StringModel(ValueWithData(x), propsFromMetadata(metadata))
   override def getPrototypeData = ""
 }
 
 case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[LocalDate] {
-  override def buildModelForObject(x: LocalDate) = DateModel(ValueWithData(x))
+  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x), propsFromMetadata(metadata))
   override def getPrototypeData = LocalDate.now
 }
 
 case class OptionalModelBuilder(t: OptionalSchema)(implicit context: ModelBuilderContext) extends EditorModelBuilder[Any] {
-  override def buildModelForObject(x: Any) = {
+  override def buildModelForObject(x: Any, metadata: List[Metadata]) = {
     val innerModel = x match {
-      case x: Option[_] => x.map(value => buildModel(value, t.itemSchema))
-      case x: AnyRef => Some(buildModel(x, t.itemSchema))
+      case x: Option[_] => x.map(value => buildModel(value, t.itemSchema, metadata))
+      case x: AnyRef => Some(buildModel(x, t.itemSchema, metadata))
     }
     OptionalModel(
       innerModel,
-      Prototypes.getPrototypePlaceholder(t.itemSchema)
+      Prototypes.getPrototypePlaceholder(t.itemSchema, metadata),
+      propsFromMetadata(metadata)
     )
   }
-  def buildPrototype = OptionalModel(
+  def buildPrototype(metadata: List[Metadata]) = OptionalModel(
     None,
-    Prototypes.getPrototypePlaceholder(t.itemSchema)
+    Prototypes.getPrototypePlaceholder(t.itemSchema, metadata),
+    Map.empty
   )
 }
 
 case class ListModelBuilder(t: ListSchema)(implicit context: ModelBuilderContext) extends EditorModelBuilder[Iterable[_]] {
-  def buildModelForObject(xs: Iterable[_]) = {
-    val models: List[EditorModel] = xs.toList.map(item => buildModel(item, t.itemSchema))
-    ListModel(models, Prototypes.getPrototypePlaceholder(t.itemSchema))
+  def buildModelForObject(xs: Iterable[_], metadata: List[Metadata]) = {
+    val models: List[EditorModel] = xs.toList.map(item => buildModel(item, t.itemSchema, metadata))
+    ListModel(models, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), propsFromMetadata(t.metadata ++ metadata))
   }
-  def buildPrototype: EditorModel = ListModel(Nil, Prototypes.getPrototypePlaceholder(t.itemSchema))
+  def buildPrototype(metadata: List[Metadata]): EditorModel = ListModel(Nil, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), propsFromMetadata(metadata))
+}
+
+object MetadataToModel {
+  def propsFromMetadata(metadata: List[Metadata]) = {
+    var props: Map[String, Any] = Map.empty
+    metadata.collect { case MinItems(x) => x }.foreach { x => props += ("minItems" -> x)}
+    metadata.collect { case MaxItems(x) => x }.foreach { x => props += ("maxItems" -> x)}
+    metadata.collect { case MinValue(x) => x }.foreach { x => props += ("minValue" -> x)}
+    metadata.collect { case MaxValue(x) => x }.foreach { x => props += ("maxValue" -> x)}
+    metadata.collect { case MinValueExclusive(x) => x }.foreach { x => props += ("minValueExclusive" -> x)}
+    metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
+    props
+  }
 }
 
 trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
-  def buildModelForObject(obj: AnyRef): EditorModel
+  def buildModelForObject(obj: AnyRef, metadata: List[Metadata]): EditorModel
   def prototypeKey: String
-  def buildPrototypePlaceholder = PrototypeModel(prototypeKey)
-  def buildPrototype: EditorModel
+  def buildPrototypePlaceholder(metadata: List[Metadata]) = PrototypeModel(prototypeKey, propsFromMetadata(metadata))
 }
 
 object KoodistoEnumModelBuilder {
@@ -139,7 +154,7 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   def toEnumValue(k: Koodistokoodiviite) = koodistoEnumValue(context)(k)
   def defaultValue = KoodistoEnumModelBuilder.defaults.get(koodistoUri).filter(arvo => koodiarvot.isEmpty || koodiarvot.contains(arvo)).orElse(koodiarvot.headOption)
   def getPrototypeData = defaultValue.flatMap(value => MockKoodistoViitePalvelu.validate(Koodistokoodiviite(value, koodistoUri)))
-  def buildPrototype: EditorModel = buildModelForObject(getPrototypeData)
+  def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getPrototypeData, metadata)
 }
 
 trait EnumModelBuilder[A] extends ModelBuilderForClass {
@@ -147,25 +162,25 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
   def toEnumValue(a: A): EnumValue
   def prototypeKey = sanitizeName(alternativesPath)
 
-  def buildModelForObject(o: AnyRef) = {
+  def buildModelForObject(o: AnyRef, metadata: List[Metadata]) = {
     o match {
-      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath))
-      case k: A => buildModelForObject(Some(k))
+      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath), propsFromMetadata(metadata))
+      case k: A => buildModelForObject(Some(k), metadata)
     }
   }
 }
 
 case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
-  def buildModelForObject(obj: AnyRef) = obj match {
+  def buildModelForObject(obj: AnyRef, metadata: List[Metadata]) = obj match {
     case None =>
       throw new RuntimeException("None value not allowed for AnyOf")
     case x: AnyRef =>
-      val selectedModel = EditorModelBuilder.buildModel(x, findOneOfSchema(t, x))
-      buildModel(selectedModel)
+      val selectedModel = EditorModelBuilder.buildModel(x, findOneOfSchema(t, x), metadata)
+      buildModel(selectedModel, metadata)
   }
 
-  private def buildModel(selectedModel: EditorModel) = {
-    OneOfModel(sanitizeName(t.simpleName), selectedModel, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+  private def buildModel(selectedModel: EditorModel, metadata: List[Metadata]) = {
+    OneOfModel(sanitizeName(t.simpleName), selectedModel, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_, metadata)), propsFromMetadata(metadata ++ t.metadata))
   }
 
   def prototypeKey = sanitizeName(t.simpleName)
@@ -181,12 +196,12 @@ case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
     }
   }
 
-  def buildPrototype: EditorModel = {
+  def buildPrototype(metadata: List[Metadata]): EditorModel = {
     val clazz: Class[_] = Class.forName(t.fullClassName)
     if (clazz == classOf[LocalizedString]) {
-      buildModelForObject(LocalizedString.finnish(""))
+      buildModelForObject(LocalizedString.finnish(""), metadata)
     } else {
-      buildModel(modelBuilderForClass(t.alternatives.head).buildPrototype)
+      buildModel(modelBuilderForClass(t.alternatives.head).buildPrototype(metadata), metadata)
     }
   }
 }
@@ -194,7 +209,7 @@ case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
 case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
   import scala.reflect.runtime.{universe => ru}
 
-  def buildModelForObject(obj: AnyRef) = {
+  def buildModelForObject(obj: AnyRef, metadata: List[Metadata]) = {
     if (obj == None) {
       throw new RuntimeException("None value not allowed for ClassSchema")
     }
@@ -210,21 +225,20 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     } else {
       Map.empty
     }
-    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, includedPrototypes)
+    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, includedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
   }
 
-  def buildPrototype = {
+  def buildPrototype(metadata: List[Metadata]) = {
     val properties: List[EditorProperty] = schema.properties.map{property =>
-      val propertyPrototype = Prototypes.getPrototypePlaceholder(property.schema).get
+      val propertyPrototype = Prototypes.getPrototypePlaceholder(property.schema, property.metadata).get
       createModelProperty(property, propertyPrototype)
     }
-    val objectTitle = None
-    ObjectModel(classes(schema.fullClassName), properties, title = None, true, Map.empty)
+    ObjectModel(classes(schema.fullClassName), properties, title = None, true, Map.empty, propsFromMetadata(metadata ++ schema.metadata))
   }
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
     val value = schema.getPropertyValue(property, obj)
-    val propertyModel = EditorModelBuilder.buildModel(value, property.schema)(objectContext)
+    val propertyModel = EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
 
     createModelProperty(property, propertyModel)
   }
@@ -243,12 +257,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (complexObject) props += ("complexObject" -> true)
     if (tabular) props += ("tabular" -> true)
     if (!readOnly) props += ("editable" -> true)
-    property.metadata.collect { case MinItems(x) => x }.foreach { x => props += ("minItems" -> x)}
-    property.metadata.collect { case MaxItems(x) => x }.foreach { x => props += ("maxItems" -> x)}
-    property.metadata.collect { case MinValue(x) => x }.foreach { x => props += ("minValue" -> x)}
-    property.metadata.collect { case MaxValue(x) => x }.foreach { x => props += ("maxValue" -> x)}
-    property.metadata.collect { case MinValueExclusive(x) => x }.foreach { x => props += ("minValueExclusive" -> x)}
-    property.metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
+
     val propertyTitle = property.metadata.flatMap {
       case Title(t) => Some(t)
       case _ => None
@@ -265,7 +274,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       requestsFromPreviousRound.foreach { schema =>
         val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user, context.koodisto)
         val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
-        val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype)
+        val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype(Nil))
 
         if (model.isInstanceOf[PrototypeModel]) {
           throw new IllegalStateException()
@@ -320,13 +329,13 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
 
 object Prototypes {
-  def getPrototypePlaceholder(schema: Schema)(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
+  def getPrototypePlaceholder(schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
     schema match {
       case s: SchemaWithClassName =>
         val classRefSchema = resolveSchema(s)
         context.prototypesRequested += classRefSchema
-        Some(modelBuilderForClass(s).buildPrototypePlaceholder)
-      case _ => Some(builder(schema).buildPrototype)
+        Some(modelBuilderForClass(s).buildPrototypePlaceholder(metadata))
+      case _ => Some(builder(schema).buildPrototype(metadata))
     }
   } else {
     None

@@ -54,7 +54,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
       val oppiaine = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"))
       val suoritukset = PakollisetOppiaineet.pakollistenOppiaineidenSuoritukset(application.koodistoViitePalvelu)
       val models = suoritukset.map { suoritus => EditorModelBuilder.buildModel(EditorSchema.deserializationContext, suoritus, true)(koskiSession, application.koodistoViitePalvelu)}
-      ListModel(models, None)
+      ListModel(models, None, Map.empty)
     } else {
       haltWithStatus(KoskiErrorCategory.notFound())
     }
