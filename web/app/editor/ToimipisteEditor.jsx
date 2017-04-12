@@ -12,3 +12,6 @@ export const ToimipisteEditor = ({model}) => {
     />
     : <span>{modelData(model, 'nimi.fi')}</span>
 }
+ToimipisteEditor.validateModel = (model) => {
+  if(!modelData(model, 'oid')) return ['Organisaatio puuttuu']
+}

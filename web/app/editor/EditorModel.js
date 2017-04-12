@@ -280,8 +280,13 @@ let modelItemLens = (index) => {
         return { optional: true, optionalPrototype: arrayPrototype }
       }
       if (m && m.value && index >= m.value.length && m.arrayPrototype) {
-        // Index out of bounds -> create optional value using array prototype
-        return { optional: true, optionalPrototype: m.arrayPrototype}
+        if (index >= (m.minItems || 0)) {
+          // Index out of bounds -> create optional value using array prototype
+          return { optional: true, optionalPrototype: m.arrayPrototype} // TODO: move arrayKey construction here
+        } else {
+          // Index out of bounds within required number of items -> create required value using array prototype
+          return m.arrayPrototype
+        }
       }
       return L.get(valueIndexLens, m)
     },

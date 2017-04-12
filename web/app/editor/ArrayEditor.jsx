@@ -15,29 +15,35 @@ export const ArrayEditor = ({model, reverse}) => {
 
   let className = ArrayEditor.canShowInline(wrappedModel) ? 'array inline' : 'array'
 
-  let addItem = () => {
-    var newItemModel = contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, items.length)
+  let newItem = () => {
+    let newItemModel = contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, items.length)
     newItemModel.arrayKey = 'new-' + (counter++)
-    pushModel(newItemModel)
+    return newItemModel
+  }
+
+  let addItem = () => {
+    pushModel(newItem())
   }
 
   let itemEditorHandlesOptional = () => {
     let childModel = wrappedModel.arrayPrototype && contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, modelItems(wrappedModel).length)
     return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
   }
+  let minItems = wrappedModel.minItems || 0
+  let tooFewItems = items.length < minItems
   return (
     <ul className={className}>
       {
         items.map((item, i) => {
           return (<li key={item.arrayKey || i}>
             <Editor model = {item} />
-            {item.context.edit && <a className="remove-item" onClick={() => pushRemoval(item)}></a>}
+            {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}></a>}
           </li>)
         })
       }
       {
         wrappedModel.context.edit && wrappedModel.arrayPrototype !== undefined
-          ? itemEditorHandlesOptional()
+          ? itemEditorHandlesOptional() || tooFewItems
             ? <li className="add-item"><Editor model = {modelLookup(model, items.length)} /></li>
             : <li className="add-item"><a onClick={addItem}>lisää uusi</a></li>
           :null
@@ -46,6 +52,12 @@ export const ArrayEditor = ({model, reverse}) => {
   )
 }
 
+ArrayEditor.validateModel = (model) => {
+  if (model.optional && !model.value) return
+  if (!model.value) return ['Arvo puuttuu']
+  if (model.minItems && model.value.length < model.minItems) return [`Tarvitaan vähintään ${model.minItems} alkiota`]
+  if (model.maxItems && model.value.length > model.maxItems) return [`Hyväksytään korkeintaan ${model.minItems} alkiota`]
+}
 ArrayEditor.canShowInline = (model) => {
   let items = modelItems(model)
   return items[0] && Editor.canShowInline(items[0])
