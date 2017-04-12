@@ -298,7 +298,8 @@ object LukioExampleData {
 
   def laajuus(laajuus: Float, yksikkö: String = "4"): Some[LaajuusKursseissa] = Some(LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 
-  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) = LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
+  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) =
+    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = laajuus)
   def lukionÄidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),

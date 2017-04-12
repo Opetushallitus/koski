@@ -1,0 +1,264 @@
+{
+  "henkilö" : {
+    "hetu" : "020655-2479",
+    "etunimet" : "Liisa",
+    "kutsumanimi" : "Liisa",
+    "sukunimi" : "Lukiolainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "alkamispäivä" : "2015-09-01",
+    "päättymispäivä" : "2016-01-10",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2015-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-01-10",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "HI",
+          "koodistoUri" : "koskioppiaineetyleissivistava"
+        },
+        "pakollinen" : true,
+        "perusteenDiaarinumero" : "60/011/2015"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        },
+        "hyväksytty" : true
+      } ],
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI1",
+            "koodistoUri" : "lukionkurssitops2003nuoret"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kurssinTyyppi" : {
+            "koodiarvo" : "pakollinen",
+            "koodistoUri" : "lukionkurssintyyppi"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI2",
+            "koodistoUri" : "lukionkurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kurssinTyyppi" : {
+            "koodiarvo" : "pakollinen",
+            "koodistoUri" : "lukionkurssintyyppi"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI3",
+            "koodistoUri" : "lukionkurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kurssinTyyppi" : {
+            "koodiarvo" : "pakollinen",
+            "koodistoUri" : "lukionkurssintyyppi"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI4",
+            "koodistoUri" : "lukionkurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kurssinTyyppi" : {
+            "koodiarvo" : "pakollinen",
+            "koodistoUri" : "lukionkurssintyyppi"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppiaineenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "lukiokoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
