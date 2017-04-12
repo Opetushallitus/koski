@@ -66,6 +66,7 @@ function OpinnotPage() {
       return LisääSuoritusDialog()
     },
     tilaJaVahvistus: TilaJaVahvistus,
+    versiohistoria: Versiohistoria,
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -95,6 +96,38 @@ function OpinnotPage() {
     }
   }
 
+  return api
+}
+
+function Versiohistoria() {
+  function elem() { return findSingle('.versiohistoria') }
+  function versiot() {
+    return elem().find('td.versionumero')
+  }
+
+  var api = {
+    avaa: function () {
+      if (!S('.versiohistoria > table').is(':visible')) {
+        triggerEvent(findSingle('> a', elem()), 'click')
+      }
+      return wait.until(function(){
+        return elem().find('tr.selected').is(':visible')
+      })().then(wait.forAjax)
+    },
+    sulje: function () {
+      if (S('.versiohistoria > table').is(':visible')) {
+        triggerEvent(findSingle('> a', elem()), 'click')
+      }
+    },
+    listaa: function() {
+      return textsOf(versiot())
+    },
+    valitse: function(versio) {
+      return function() {
+        triggerEvent(findSingle('td.versionumero:contains('+ versio +')', elem()).next('td.aikaleima').find('a'), 'click')
+      }
+    }
+  }
   return api
 }
 

@@ -786,6 +786,41 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Opiskeluoikeuden versiot', function() {
+    var editor = opinnot.opiskeluoikeusEditor()
+    var versiohistoria = opinnot.versiohistoria()
+
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), versiohistoria.avaa)
+
+    it('Alussa on vain yksi versio', function() {
+      expect(versiohistoria.listaa()).to.deep.equal(['v1'])
+    })
+
+    describe('Muutoksen jälkeen', function() {
+      var liitetiedot = editor.property('liitetiedot')
+      before(
+        versiohistoria.sulje,
+        opinnot.valitseSuoritus('7. vuosiluokka'),
+        editor.edit,
+        liitetiedot.addItem, liitetiedot.itemEditor(0).property('kuvaus').setValue('T2'),
+        editor.doneEditing,
+        versiohistoria.avaa
+      )
+
+      it('On kaksi versiota', function() {
+        expect(versiohistoria.listaa()).to.deep.equal(['v1', 'v2'])
+        expect(liitetiedot.getItems().length).to.equal(1)
+      })
+
+      describe('Vanhan version', function() {
+        before(versiohistoria.valitse('v1'))
+        it('Tarkastelu onnistuu', function() {
+          expect(liitetiedot.isVisible()).to.equal(false)
+        })
+      })
+    })
+  })
+
   describe('Opiskeluoikeuden lisääminen', function() {
     describe('Uudelle henkilölle', function() {
       before(prepareForNewOppija('kalle', '230872-7258'))
