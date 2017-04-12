@@ -5,7 +5,7 @@ import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
 import {modelLookup} from './EditorModel.js'
 
-export const LocalizedStringEditor = ({model}) => {
+export const LocalizedStringEditor = ({model, ...rest}) => {
   if (!model.context.edit) {
     return <ObjectEditor model={model}/>
   }
@@ -13,7 +13,7 @@ export const LocalizedStringEditor = ({model}) => {
   let wrappedModel = wrapOptional({model})
   let stringModel = R.merge(modelLookup(wrappedModel, 'fi'), { optional: model.optional })
 
-  return <StringEditor model={stringModel} />
+  return <StringEditor {...{model: stringModel, ...rest}} />
 }
 LocalizedStringEditor.handlesOptional = true
 LocalizedStringEditor.canShowInline = () => true

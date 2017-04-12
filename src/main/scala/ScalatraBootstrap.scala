@@ -6,7 +6,7 @@ import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationServlet, KoodistoServlet}
-import fi.oph.koski.editor.EditorServlet
+import fi.oph.koski.editor.{EditorServlet, PreferencesServlet}
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
@@ -59,6 +59,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/oppija", new OppijaServlet(application))
     mount("/api/oppilaitos", new OppilaitosServlet(application))
     mount("/api/organisaatio", new OrganisaatioServlet(application))
+    mount("/api/preferences", new PreferencesServlet(application))
     mount("/api/tiedonsiirrot", new TiedonsiirtoServlet(application))
     mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet(application.tutkintoRepository))
     mount("/healthcheck", new HealthCheckHtmlServlet(application))

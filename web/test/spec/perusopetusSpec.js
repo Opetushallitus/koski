@@ -1011,9 +1011,9 @@ describe('Perusopetus', function() {
                 var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
                 before(tilaJaVahvistus.merkitseValmiiksi,
                   dialogEditor.property('päivä').setValue('11.4.2017'),
-                  myöntäjät.itemEditor(0).property('nimi').setValue('Reijo Reksi'),
-                  myöntäjät.itemEditor(0).property('titteli').setValue('rehtori'),
-                  myöntäjät.organisaatioValitsin().select('Jyväskylän normaalikoulu, alakoulu'),
+                  myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+                  myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+                  myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
                   dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
                   dialog.merkitseValmiiksi
                 )
@@ -1061,6 +1061,22 @@ describe('Perusopetus', function() {
                   expect(editor.property('luokka').getValue()).to.equal('2a')
                 })
 
+                describe('Kun merkitään valmiksi', function() {
+                  var tilaJaVahvistus = opinnot.tilaJaVahvistus()
+                  var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+                  var dialogEditor = dialog.editor
+                  var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
+                  before(tilaJaVahvistus.merkitseValmiiksi,
+                    dialogEditor.property('päivä').setValue('11.4.2017'),
+                    myöntäjät.itemEditor(0).setValue('Reijo Reksi, rehtori')
+                  )
+
+                  it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
+
+                  })
+
+                })
+
                 describe('Kun kaikki luokka-asteet on lisätty', function() {
                   for (var i = 3; i <= 9; i++) {
                     before(opinnot.lisääSuoritus, dialog.property('luokka').setValue(i + 'a'), dialog.lisääSuoritus)
@@ -1071,6 +1087,7 @@ describe('Perusopetus', function() {
                   })
                 })
               })
+
             })
             describe('Kun tallennetaan', function() {
               before(editor.doneEditing, wait.until(page.isSavedLabelShown))

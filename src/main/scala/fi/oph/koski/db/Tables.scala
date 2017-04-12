@@ -97,6 +97,15 @@ object Tables {
     def * = (tallentajaOrganisaatio, oppilaitos, kayttaja, viimeisin, siirretyt, virheelliset, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
   }
 
+  class PreferencesTable(tag: Tag) extends Table[PreferenceRow] (tag, "preferences") {
+    val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey)
+    val `type` = column[String]("type", O.PrimaryKey)
+    val key = column[String]("key", O.PrimaryKey)
+    val value = column[JValue]("value")
+
+    def * = (organisaatioOid, `type`, key, value) <> (PreferenceRow.tupled, PreferenceRow.unapply)
+  }
+
   class SchedulerTable(tag: Tag) extends Table[SchedulerRow](tag, "scheduler") {
     val name = column[String]("name", O.PrimaryKey)
     val nextFireTime = column[Timestamp]("nextfiretime")
@@ -112,6 +121,8 @@ object Tables {
 
     def * = (username, ip) <> (OppilaitosIPOsoiteRow.tupled, OppilaitosIPOsoiteRow.unapply)
   }
+
+  val Preferences = TableQuery[PreferencesTable]
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
 
@@ -194,3 +205,5 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
 }
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
+
+case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)

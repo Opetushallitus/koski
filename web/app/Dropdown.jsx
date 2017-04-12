@@ -5,8 +5,7 @@ import R from 'ramda'
 export default BaconComponent({
   render() {
     let {open, selectionIndex, query} = this.state
-    let {options, keyValue, displayValue, selected, onFilter, selectionText = 'valitse'} = this.props
-
+    let {options, keyValue, displayValue, selected, onFilter, selectionText = 'valitse', newItem} = this.props
     return (
       <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} onBlur={this.handleOnBlur} ref={el => this.dropdown = el} onKeyDown={this.onKeyDown}>
         {
@@ -25,11 +24,14 @@ export default BaconComponent({
                  onClick={this.toggleOpen}>{selected ? displayValue(selected) : selectionText}
             </div>
         }
-        {options.length > 0 && <ul className={open ? 'options open' : 'options'}>
+        {(options.length > 0 || newItem) && <ul className={open ? 'options open' : 'options'}>
           {
             options.map((o,i) =>
               <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onMouseDown={(e) => {this.selectOption(e, o)}} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
             )
+          }
+          {
+            newItem &&  <li key="_new" className="option new-item" onMouseDown={(e) => {this.selectOption(e, newItem)}} onMouseOver={() => this.handleMouseOver(newItem)}>{displayValue(newItem)}</li>
           }
         </ul>}
       </div>
@@ -65,7 +67,7 @@ export default BaconComponent({
   },
   getDefaultProps() {
     return {
-      keyValue: option => option.key,
+      keyValue: option => option == (this.props || {}).newItem ? '_new' : option.key,
       displayValue: option => option.value
     }
   },
