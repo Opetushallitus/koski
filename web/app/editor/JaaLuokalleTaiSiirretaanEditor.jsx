@@ -13,12 +13,12 @@ export const JääLuokalleTaiSiirretäänEditor = ({model}) => {
     if (model.context.edit) {
       let invertModelValue = m => modelSetData(m, !modelData(m))
       let invert = L.iso(invertModelValue, invertModelValue)
-      return <div><Editor model={lensedModel(jääLuokalleModel, invert)} /> Siirretään seuraavalle luokalle</div>
+      return <div className="jaa-tai-siirretaan"><Editor model={lensedModel(jääLuokalleModel, invert)} /> Siirretään seuraavalle luokalle</div>
     } else {
       if (jääLuokalle === true) {
-        return <div>Ei siirretä seuraavalle luokalle</div>
+        return <div className="jaa-tai-siirretaan">Ei siirretä seuraavalle luokalle</div>
       } else if (jääLuokalle === false && luokka !== '9') {
-        return <div>Siirretään seuraavalle luokalle</div>
+        return <div className="jaa-tai-siirretaan">Siirretään seuraavalle luokalle</div>
       }
     }
   }

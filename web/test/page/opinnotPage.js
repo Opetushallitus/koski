@@ -155,6 +155,7 @@ function MerkitseValmiiksiDialog() {
   function buttonElem() { return findSingle('button', elem())}
   return {
     merkitseValmiiksi: function( ) {
+      if (buttonElem().is(':disabled')) throw new Error('disabled button')
       triggerEvent(buttonElem(), 'click')
       return wait.forAjax()
     },
