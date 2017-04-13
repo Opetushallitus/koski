@@ -1,4 +1,4 @@
-import {modelData, modelItems, modelLookup, pushModel} from './EditorModel'
+import {modelData, modelItems, modelLookup, pushModel, addContext} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
@@ -72,7 +72,7 @@ const TilaJaVahvistus = ({model}) => {
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
         }
-        <JääLuokalleTaiSiirretäänEditor model={model}/>
+        <JääLuokalleTaiSiirretäänEditor model={addContext(model, {edit:false})}/>
       </span>
       <span className="controls">
         {

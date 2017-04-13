@@ -8,12 +8,14 @@ import {
   modelData,
   addContext
 } from './EditorModel'
+import R from 'ramda'
 import React from 'baret'
 import Bacon from 'baconjs'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
 import Http from '../http'
+import {JääLuokalleTaiSiirretäänEditor} from './JääLuokalleTaiSiirretäänEditor.jsx'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
   let submitBus = Bacon.Bus()
@@ -39,6 +41,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
   return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
     <h2>Suoritus valmis</h2>
     <PropertiesEditor baret-lift model={modelP.map(s => setOrgToContext(modelLookup(s, 'vahvistus')))}  />
+    <JääLuokalleTaiSiirretäänEditor baret-lift model={modelP}/>
     <button disabled={validP.not()} onClick={() => submitBus.push()}>Merkitse valmiiksi</button>
   </ModalDialog>)
 }
