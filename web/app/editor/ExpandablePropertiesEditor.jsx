@@ -15,7 +15,7 @@ export const ExpandablePropertiesEditor = React.createClass({
     return modelData(model, propertyName) || wrappedModel.context.edit ?
       <div className={'expandable-container ' + propertyName}>
         <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{modelProperty(model, propertyName).title}</a>
-        { open || edit ?
+        { open ?
           <div className="value">
             <PropertiesEditor model={wrappedModel} />
           </div> : null
