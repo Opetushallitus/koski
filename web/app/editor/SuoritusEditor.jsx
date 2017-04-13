@@ -9,8 +9,8 @@ import {LuvaEditor} from './LuvaEditor.jsx'
 import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
-import {suoritusValmis} from './Suoritus'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
+import {JääLuokalleTaiSiirretäänEditor} from './JääLuokalleTaiSiirretäänEditor.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -72,7 +72,7 @@ const TilaJaVahvistus = ({model}) => {
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
         }
-        <JääLuokalleTaiSiirretään model={model}/>
+        <JääLuokalleTaiSiirretäänEditor model={model}/>
       </span>
       <span className="controls">
         {
@@ -84,19 +84,6 @@ const TilaJaVahvistus = ({model}) => {
       }
     </div>
   )
-}
-
-const JääLuokalleTaiSiirretään = ({model}) => {
-  let jääLuokalle = modelData(model, 'jääLuokalle')
-  let luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
-  if (luokka && suoritusValmis(model)) {
-    if (jääLuokalle === true) {
-      return <div>Ei siirretä seuraavalle luokalle</div>
-    } else if (jääLuokalle === false && luokka !== '9') {
-      return <div>Siirretään seuraavalle luokalle</div>
-    }
-  }
-  return null
 }
 
 const TodistusLink = React.createClass({
