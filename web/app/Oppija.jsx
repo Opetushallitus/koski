@@ -94,8 +94,8 @@ const createState = (oppijaOid) => {
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
-    return Http.put('/koski/api/oppija', oppijaUpdate)
-      .flatMap(() => Http.cachedGet(oppijaEditorUri, { force: true }))
+    return Http.put('/koski/api/oppija', oppijaUpdate, { invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})
+      .flatMap(() => Http.cachedGet(oppijaEditorUri))
       .map( oppija => R.merge(oppija, { event: 'save' }))
       .doAction(onAfterLoad)
   })

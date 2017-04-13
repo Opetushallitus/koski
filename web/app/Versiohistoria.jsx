@@ -42,7 +42,7 @@ export default BaconComponent({
     })
   },
   fetchHistory(opiskeluoikeusId) {
-    Http.get(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`).doError(showInternalError)
+    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`).doError(showInternalError)
       .takeUntil(this.unmountE)
       .onValue(h => this.setState({history: h}))
   },

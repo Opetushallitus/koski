@@ -30,7 +30,8 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
       let data = modelData(h)
       let key = data.nimi
       let organisaatioOid = modelData(updatedSuoritus, 'toimipiste').oid
-      return Http.put(`/koski/api/preferences/${organisaatioOid}/myöntäjät`, { key, value: data})
+      var path = `/koski/api/preferences/${organisaatioOid}/myöntäjät`
+      return Http.put(path, { key, value: data}, { invalidateCache: [path] })
     })
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })

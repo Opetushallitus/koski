@@ -20,7 +20,7 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
   var newItemLens = L.compose('value', 'newItem')
   let newItem = modelSetValue(setData({}, true), myöntäjäOrganisaatio.value, 'organisaatio')
   let isNewItem = (o) => L.get(newItemLens, o)
-  let kaikkiMyöntäjätP = Http.get(`/koski/api/preferences/${organisaatioOid}/myöntäjät`) // TODO: cache+invalidate
+  let kaikkiMyöntäjätP = Http.cachedGet(`/koski/api/preferences/${organisaatioOid}/myöntäjät`)
     .map(myöntäjät => myöntäjät.map(d => setData({ nimi: d.nimi, titteli: d.titteli.fi}, false)))
   let myöntäjätP = Bacon.combineWith(kaikkiMyöntäjätP, query, (xs, q) => !q ? xs : xs.filter(queryFilter(q)))
     .startWith([])
