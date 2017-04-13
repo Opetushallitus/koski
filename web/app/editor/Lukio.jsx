@@ -1,5 +1,6 @@
 import React from 'react'
 import {modelData, modelTitle, modelItems} from './EditorModel.js'
+import {suorituksenTilaSymbol} from './Suoritustaulukko.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
@@ -9,12 +10,13 @@ export const LukionOppiaineetEditor = React.createClass({
       <table className="suoritukset">
         <thead>
         <tr>
+          <th className="suorituksentila"></th>
           <th className="oppiaine">Oppiaine</th>
           <th className="maara">Kurssien määrä</th>
           <th className="arvosana">Arvosana (keskiarvo)</th>
         </tr>
         <tr>
-          <th colSpan="3"><hr/></th>
+          <th colSpan="4"><hr/></th>
         </tr>
         </thead>
         <tbody>
@@ -42,6 +44,11 @@ const LukionOppiaineEditor = React.createClass({
 
     return (
       <tr>
+        <td className="suorituksentila" title={modelTitle(oppiaine, 'tila')}>
+          <div>
+          {suorituksenTilaSymbol(modelData(oppiaine, 'tila.koodiarvo'))}
+          </div>
+        </td>
         <td className="oppiaine">
           <div className="nimi">{modelTitle(oppiaine, 'koulutusmoduuli')}</div>
           <ul className="kurssit">

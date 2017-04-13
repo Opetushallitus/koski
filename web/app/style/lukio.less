@@ -4,6 +4,8 @@
     .kurssit {
       list-style: none;
       padding: 0;
+      width: 800px;
+      overflow: scroll;
       .kurssi {
         position: relative;
         display: table-cell;
@@ -103,7 +105,7 @@
           width: 100px;
           text-align: right;
         }
-        &.oppiaine {
+        &.oppiaine, &.suorituksentila {
           vertical-align: bottom;
         }
       }
@@ -114,8 +116,18 @@
 
       td {
         border-bottom: 5px solid white;
+        &.oppiaine {
+          padding-left: 6px;
+        }
         &.maara, &.arvosana {
           text-align: right;
+        }
+        &.suorituksentila {
+          padding-top: 14px;
+          font-family: FontAwesome;
+          div {
+            width: 0;
+          }
         }
       }
     }

@@ -74,7 +74,7 @@ const SuoritusEditor = React.createClass({
   }
 })
 
-let suorituksenTilaSymbol = (tila) => {
+export const suorituksenTilaSymbol = (tila) => {
   switch (tila) {
     case 'VALMIS': return ''
     case 'KESKEYTYNYT': return ''
