@@ -1,7 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {doActionWhileMounted} from '../util'
-import {parseBool} from '../util';
+import {doActionWhileMounted, parseBool} from '../util'
 
 export default ({className, onDismiss, onSubmit, children, submitOnEnterKey}) => {
   submitOnEnterKey = parseBool(submitOnEnterKey, true)

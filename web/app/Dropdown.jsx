@@ -29,11 +29,11 @@ export default BaconComponent({
           {
             allOptions.map((o,i) => {
               let isNew = this.isNewItem(o, i)
-              return <li key={keyValue(o) || displayValue(o)}
+              return (<li key={keyValue(o) || displayValue(o)}
                   className={'option' + (i == selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : '')}
                   onMouseDown={(e) => {this.selectOption(e, o)}} onMouseOver={() => this.handleMouseOver(o)}>
                 { isNew ? <span><span className="plus"></span>{displayValue(newItem)}</span> : displayValue(o)}
-              </li>
+              </li>)
             })
           }
         </ul>}
