@@ -10,7 +10,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
-import {JääLuokalleTaiSiirretäänEditor} from './JääLuokalleTaiSiirretäänEditor.jsx'
+import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {

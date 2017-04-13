@@ -15,7 +15,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
 import Http from '../http'
-import {JääLuokalleTaiSiirretäänEditor} from './JääLuokalleTaiSiirretäänEditor.jsx'
+import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
   let submitBus = Bacon.Bus()
