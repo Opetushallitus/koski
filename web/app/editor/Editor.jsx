@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from './EditorModel'
+import {parseBool} from '../util'
 
 /*
     model: required model object
@@ -37,12 +38,6 @@ export const Editor = ({ model, editorMapping, changeBus, doneEditingBus, path,
   return getModelEditor(model, rest)
 }
 
-const parseBool = (b) => {
-  if (typeof b === 'string') {
-    return b === 'true'
-  }
-  return b
-}
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }

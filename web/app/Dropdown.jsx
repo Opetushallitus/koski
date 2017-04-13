@@ -5,7 +5,8 @@ import R from 'ramda'
 export default BaconComponent({
   render() {
     let {open, selectionIndex, query} = this.state
-    let {options, keyValue, displayValue, selected, onFilter, selectionText = 'valitse', newItem} = this.props
+    let {keyValue, displayValue, selected, onFilter, selectionText = 'valitse', newItem} = this.props
+    let allOptions = this.optionsAndNewItem()
     return (
       <div id={this.props.id} className="dropdown" tabIndex={onFilter ? '' : '0'} onBlur={this.handleOnBlur} ref={el => this.dropdown = el} onKeyDown={this.onKeyDown}>
         {
@@ -24,18 +25,27 @@ export default BaconComponent({
                  onClick={this.toggleOpen}>{selected ? displayValue(selected) : selectionText}
             </div>
         }
-        {(options.length > 0 || newItem) && <ul className={open ? 'options open' : 'options'}>
+        {(allOptions.length > 0) && <ul className={open ? 'options open' : 'options'}>
           {
-            options.map((o,i) =>
-              <li key={keyValue(o) || displayValue(o)} className={i == selectionIndex ? 'option selected' : 'option'} onMouseDown={(e) => {this.selectOption(e, o)}} onMouseOver={() => this.handleMouseOver(o)}>{displayValue(o)}</li>
-            )
-          }
-          {
-            newItem &&  <li key="_new" className="option new-item" onMouseDown={(e) => {this.selectOption(e, newItem)}} onMouseOver={() => this.handleMouseOver(newItem)}>{displayValue(newItem)}</li>
+            allOptions.map((o,i) => {
+              let isNew = this.isNewItem(o, i)
+              return <li key={keyValue(o) || displayValue(o)}
+                  className={'option' + (i == selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : '')}
+                  onMouseDown={(e) => {this.selectOption(e, o)}} onMouseOver={() => this.handleMouseOver(o)}>
+                { isNew ? <span><span className="plus"></span>{displayValue(newItem)}</span> : displayValue(o)}
+              </li>
+            })
           }
         </ul>}
       </div>
     )
+  },
+  isNewItem(o, i) {
+    return i == this.props.options.length
+  },
+  optionsAndNewItem() {
+    let {options, newItem} = this.props
+    return options.concat(newItem ? [newItem] : [])
   },
   handleInput(e) {
     let {onFilter} = this.props
@@ -43,7 +53,8 @@ export default BaconComponent({
     this.setState({query: query, open: true}, onFilter(query))
   },
   handleInputBlur(e) {
-    let {selected, displayValue, options} = this.props
+    let {selected, displayValue} = this.props
+    let options = this.optionsAndNewItem()
     let matchingOption = options.find(o => this.input.value && displayValue(o).toLowerCase() == this.input.value.toLowerCase())
     if (matchingOption && !R.equals(matchingOption,selected)) {
       this.selectOption(e, matchingOption)
@@ -72,7 +83,7 @@ export default BaconComponent({
     }
   },
   handleMouseOver(o) {
-    let {options} = this.props
+    let options = this.optionsAndNewItem()
     let index = options.findIndex(option => this.props.keyValue(option) == this.props.keyValue(o))
     this.setState({selectionIndex: index})
   },
@@ -100,7 +111,7 @@ export default BaconComponent({
       e.stopPropagation()
       if (this.state.open) {
         let {selectionIndex} = this.state
-        let {options} = this.props
+        let options = this.optionsAndNewItem()
         selectionIndex = (selectionIndex === options.length - 1) ? selectionIndex : selectionIndex + 1
         this.setState({selectionIndex: selectionIndex})
       } else {
@@ -114,7 +125,7 @@ export default BaconComponent({
       e.preventDefault()
       let {selectionIndex, open} = this.state
       if (open) {
-        let {options} = this.props
+        let options = this.optionsAndNewItem()
         this.selectOption(e, options[selectionIndex])
       }
     }

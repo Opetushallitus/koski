@@ -29,6 +29,7 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
   return (<span className="organisaatiohenkilo">
     <Dropdown baret-lift
       displayValue={o => isNewItem(o) ? 'Lisää henkilö' : nimiJaTitteli(o)}
+      keyValue={o => isNewItem(o) ? '_new' : nimi(o)}
       options={myöntäjätP}
       onFilter={q => query.set(q)}
       selected={model}
