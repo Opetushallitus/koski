@@ -170,7 +170,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd")))
       case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
-    } ++ (if (session.hasGlobalReadAccess) { Nil } else { List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))})
+    } ++ oppilaitosFilter(session)
 
     val elasticQuery = elasticFilters match {
       case Nil => Map.empty
@@ -210,7 +210,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       .flatMap(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption)
   }
 
-  def findOids(hakusana: String): List[Oid] = {
+  def findOids(hakusana: String)(implicit session: KoskiSession): List[Oid] = {
     if (hakusana == "") {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
     }
@@ -218,9 +218,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       throw new TestingException("Testing error handling")
     }
 
+    val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session)
     val doc = Json.toJValue(Map(
       "_source" -> "henkilö.oid",
-      "query" -> Map("bool" -> Map("must" -> List(nameFilter(hakusana)))),
+      "query" -> Map("bool" -> Map("must" -> filters)),
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
@@ -292,6 +293,13 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
   }
+
+  private def oppilaitosFilter(session: KoskiSession): List[Any] =
+    if (session.hasGlobalReadAccess) {
+      Nil
+    } else {
+      List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))
+    }
 
   private def runSearch(doc: JValue): Option[JValue] = try {
     Some(Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
