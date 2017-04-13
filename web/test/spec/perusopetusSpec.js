@@ -1093,6 +1093,7 @@ describe('Perusopetus', function() {
                       var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
                       var dialogEditor = dialog.editor
                       var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
+                      merkitseOppiaineetValmiiksi()
                       before(
                         tilaJaVahvistus.merkitseValmiiksi,
                         dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
@@ -1130,13 +1131,6 @@ describe('Perusopetus', function() {
 
                   })
                 })
-              })
-            })
-
-            describe('Kun tallennetaan', function() {
-              before(editor.doneEditing, wait.until(page.isSavedLabelShown))
-              it('Tallennus onnistuu', function() {
-
               })
             })
           })
