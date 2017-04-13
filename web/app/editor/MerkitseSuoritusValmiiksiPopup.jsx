@@ -29,7 +29,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
 
   modelP.sampledBy(submitBus).onValue(updatedSuoritus => {
     let saveResults = modelItems(updatedSuoritus, 'vahvistus.myöntäjäHenkilöt').filter(h => h.value.newItem).map(h => {
-      let data = modelData(h)
+      let data = R.dissoc('organisaatio', modelData(h))
       let key = data.nimi
       let organisaatioOid = modelData(updatedSuoritus, 'toimipiste').oid
       var path = `/koski/api/preferences/${organisaatioOid}/myöntäjät`

@@ -16,12 +16,13 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
   let nimi = h => modelData(h, 'nimi')
   let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + modelData(h, 'titteli.fi'))
   let queryFilter = q => o => nimi(o).toLowerCase().indexOf(q.toLowerCase()) >= 0
-  let setData = (data, isNew) => L.set(newItemLens, isNew, modelSetData(modelSetData(model, data.titteli, 'titteli.fi'), data.nimi, 'nimi'))
+  let setData = (data, isNew) => modelSetValue(L.set(newItemLens, isNew, modelSetData(modelSetData(model, data.titteli, 'titteli.fi'), data.nimi, 'nimi')), myöntäjäOrganisaatio.value, 'organisaatio')
   var newItemLens = L.compose('value', 'newItem')
-  let newItem = modelSetValue(setData({}, true), myöntäjäOrganisaatio.value, 'organisaatio')
+  let newItem = setData({}, true)
   let isNewItem = (o) => L.get(newItemLens, o)
   let kaikkiMyöntäjätP = Http.cachedGet(`/koski/api/preferences/${organisaatioOid}/myöntäjät`)
     .map(myöntäjät => myöntäjät.map(d => setData({ nimi: d.nimi, titteli: d.titteli.fi}, false)))
+
   let myöntäjätP = Bacon.combineWith(kaikkiMyöntäjätP, query, (xs, q) => !q ? xs : xs.filter(queryFilter(q)))
     .startWith([])
 
