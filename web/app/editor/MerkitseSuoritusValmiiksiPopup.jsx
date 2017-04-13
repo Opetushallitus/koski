@@ -38,7 +38,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })
 
-  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false">
     <h2>Suoritus valmis</h2>
     <PropertiesEditor baret-lift model={modelP.map(s => setOrgToContext(modelLookup(s, 'vahvistus')))}  />
     <JääLuokalleTaiSiirretäänEditor baret-lift model={modelP}/>
