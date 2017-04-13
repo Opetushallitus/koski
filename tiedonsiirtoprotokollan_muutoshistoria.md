@@ -1,3 +1,7 @@
+## 12.4.2017
+
+- Lisätty perusteenDiaarinumero lukion oppiaineeseen
+
 ## 4.4.2017
 
  - Lisätty ulkomaanjaksot LUVA-koulutuksen lisätietoihin
