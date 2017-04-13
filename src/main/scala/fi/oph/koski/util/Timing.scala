@@ -1,7 +1,7 @@
 package fi.oph.koski.util
 
 import fi.oph.koski.log.Logging
-import io.prometheus.client.Summary
+import io.prometheus.client.Histogram
 import org.log4s.getLogger
 import rx.lang.scala.Observable
 
@@ -47,10 +47,15 @@ class Timer(blockname: String, thresholdMs: Int, clazz: Class[_]) {
 }
 
 object TimerMonitoring {
-  private val durationDummary = Summary.build().name("fi_oph_koski_util_Timing_duration").help("Koski timed block duration").labelNames("classname", "blockname").register()
+  private val durations = Histogram.build()
+    .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 1.5, 2.5, 5)
+    .name("fi_oph_koski_util_Timing_duration")
+    .help("Koski timed block duration in seconds.")
+    .labelNames("classname", "blockname")
+    .register()
 
-  def record[T](className: String, blockname: String, time: Long): Any = {
-    durationDummary.labels(className, blockname).observe(time.toDouble / 1000)
+  def record[T](className: String, blockname: String, timeInMS: Long): Any = {
+    durations.labels(className, blockname).observe(timeInMS.toDouble / 1000)
   }
 }
 
