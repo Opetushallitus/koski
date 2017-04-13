@@ -13,7 +13,7 @@ export const JääLuokalleTaiSiirretäänEditor = ({model}) => {
     if (model.context.edit) {
       let invertModelValue = m => modelSetData(m, !modelData(m))
       let invert = L.iso(invertModelValue, invertModelValue)
-      return <div className="jaa-tai-siirretaan"><Editor model={lensedModel(jääLuokalleModel, invert)} /> Siirretään seuraavalle luokalle</div>
+      return <label className="jaa-tai-siirretaan"><Editor model={lensedModel(jääLuokalleModel, invert)} /> Siirretään seuraavalle luokalle</label>
     } else {
       if (jääLuokalle === true) {
         return <div className="jaa-tai-siirretaan">Ei siirretä seuraavalle luokalle</div>
