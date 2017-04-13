@@ -80,7 +80,7 @@ const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
       </tr>
       </thead>
       {
-        suoritukset.map((suoritus, i) => (<OppiaineEditor key={i} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+        suoritukset.map((suoritus, i) => (<OppiaineEditor key={i + '-' + modelData(suoritus, 'koulutusmoduuli.tunniste').koodiarvo} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
       }
       {
         model.context.edit && <NewOppiaine osasuoritukset={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} />
