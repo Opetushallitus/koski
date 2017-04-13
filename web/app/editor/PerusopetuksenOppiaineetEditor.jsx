@@ -209,7 +209,7 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
     .oneOfPrototypes.filter(p => p.key !== 'perusopetuksenpaikallinenvalinnainenoppiaine')
     .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
     .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
-  
+
   selectionBus.onValue(resultCallback)
 
   return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
