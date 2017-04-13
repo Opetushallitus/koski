@@ -209,9 +209,7 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
     .oneOfPrototypes.filter(p => p.key !== 'perusopetuksenpaikallinenvalinnainenoppiaine')
     .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
     .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
-
-  let emptyAlternatives = alts => !alts.some(a => a === undefined || a.length === 0)
-
+  
   selectionBus.onValue(resultCallback)
 
   return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
@@ -219,7 +217,7 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
     <td>
       {
         <DropDown baret-lift
-          options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).filter(emptyAlternatives).map(x => x.flatten())}
+          options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())}
           keyValue={([,tunniste]) => tunniste.value}
           displayValue={([,tunniste]) => tunniste.title}
           onSelectionChanged={([oppiaineModel, tunniste]) => {
