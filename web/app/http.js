@@ -26,6 +26,7 @@ const http = (url, optionsForFetch, options) => {
   if (options.invalidateCache){
     for (var cachedPath in http.cache) {
       if (options.invalidateCache.some(pathToInvalidate => cachedPath.startsWith(pathToInvalidate))) {
+        //console.log('clear cache', cachedPath)
         delete http.cache[cachedPath]
       }
     }
@@ -41,9 +42,18 @@ http.post = (url, entity, options = {}) => http(url, { credentials: 'include', m
 http.put = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} }, options)
 http.mock = (url, result) => mocks[url] = result
 http.cache = {}
-http.cachedGet = (url, options = {}) => (http.cache[url] && !options.force)
-  ? Bacon.constant(http.cache[url])
-  : http.get(url, options).doAction((value) => http.cache[url] = value)
+http.cachedGet = (url, options = {}) => {
+  //console.log('cachedGet', url)
+  if (!http.cache[url] || options.force) {
+    //console.log('not found in cache')
+    http.cache[url] = http.get(url, options)
+      .doError(() => {
+        //console.log('error occurred, clearing cache', url)
+        delete http.cache[url]
+      })
+  }
+  return http.cache[url]
+}
 window.http = http
 export default http
 
