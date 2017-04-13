@@ -73,7 +73,7 @@ wait = {
     }
   },
   forAjax: function() {
-    return wait.forMilliseconds(1)().then(wait.until(isNotLoading))
+    return wait.forMilliseconds(1)().then(wait.until(isNotLoading)).then(wait.forMilliseconds(1))
   }
 }
 
