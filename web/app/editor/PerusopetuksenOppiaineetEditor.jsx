@@ -216,7 +216,7 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
   <tr>
     <td>
       {
-        <DropDown baret-lift
+        <DropDown
           options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())}
           keyValue={([,tunniste]) => tunniste.value}
           displayValue={([,tunniste]) => tunniste.title}

@@ -15,7 +15,6 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
     createEmpty: (protomodel) => modelSetValue(protomodel, zeroValue)
   })
 
-  let query = Atom()
   let alternativesP = EnumEditor.fetchAlternatives(wrappedModel, sortBy)
   let valid = modelValid(model)
   let classNameP = alternativesP.map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
@@ -23,10 +22,6 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
   let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
 
   let defaultValue = wrappedModel.value || zeroValue
-
-  let filteredAlternativesP = Bacon.combineWith(alternativesWithZeroValueP, query, (xs, q) => {
-    return q ? xs.filter(a => a.title.toLowerCase().startsWith(q.toLowerCase())) : xs
-  })
 
   let onChange = (option) => {
     pushModel(modelSetValue(wrappedModel, option))
@@ -52,13 +47,13 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
         )
       : (
            <span className={classNameP.map(n => 'dropdown-wrapper ' + n)}>
-             <DropDown baret-lift
-               options={filteredAlternativesP}
+             <DropDown
+               options={alternativesWithZeroValueP}
                keyValue={option => option.value}
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
                selected={defaultValue}
-               onFilter={q => query.set(q)}
+               enableFilter={true}
              />
            </span>
         )

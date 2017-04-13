@@ -27,11 +27,11 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
     .startWith([])
 
   return (<span className="organisaatiohenkilo">
-    <Dropdown baret-lift
+    <Dropdown
       displayValue={o => isNewItem(o) ? 'Lisää henkilö' : nimiJaTitteli(o)}
       keyValue={o => isNewItem(o) ? '_new' : nimi(o)}
       options={myöntäjätP}
-      onFilter={q => query.set(q)}
+      enableFilter={true}
       selected={model}
       onSelectionChanged={h => pushModelValue(model, h.value)}
       newItem={newItem}

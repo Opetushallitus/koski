@@ -228,7 +228,7 @@ export const applyChanges = (modelBeforeChange, changes) => {
   }
   let basePath = toPath(modelBeforeChange.path)
   var withAppliedChanges = changes.reduce((acc, change) => {
-    //console.log('apply', model, 'to', context.path)
+    //console.log('apply', change, 'to', acc)
 
     let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
     let actualLens = modelLens(subPath)
