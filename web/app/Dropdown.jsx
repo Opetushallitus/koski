@@ -13,11 +13,9 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
   let selectionIndexAtom = Atom(0)
   let queryAtom = Atom(undefined)
   let openAtom = Atom(false)
-  let allOptionsP = optionsP.map(opts => opts.concat(newItem ? [newItem] : []))
-
+  let filteredOptionsP = Bacon.combineWith(optionsP, queryAtom, Bacon.constant(displayValue), queryFilter)
+  let allOptionsP = filteredOptionsP.map(opts => opts.concat(newItem ? [newItem] : []))
   var inputElem = null
-
-  // TODO: implement filtering
 
   let handleOnBlur = () => openAtom.set(false)
 
@@ -115,4 +113,10 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
       )
     )
   }</span>)
+}
+
+let queryFilter = (options, query, displayValue) => {
+  if (!query) return options
+  query = query.toLowerCase()
+  return options.filter(o => displayValue(o).toLowerCase().startsWith(query))
 }
