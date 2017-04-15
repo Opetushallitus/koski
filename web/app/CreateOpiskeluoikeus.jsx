@@ -43,18 +43,15 @@ const Tutkinto = ({tutkintoAtom, opiskeluoikeudenTyyppiP, oppilaitosP}) =>{
   </div> )
 }
 
-const Oppimäärä = ({oppimääräAtom, opiskeluoikeudenTyyppiP, oppimäärätP}) =>{
+const Oppimäärä = ({oppimääräAtom, opiskeluoikeudenTyyppiP, oppimäärätP}) => {
+  let shouldShowP = opiskeluoikeudenTyyppiP.map(tyyppi => tyyppi && tyyppi.koodiarvo == 'perusopetus').skipDuplicates()
   return (<div>
     {
-      Bacon.combineWith(opiskeluoikeudenTyyppiP, (tyyppi) =>
-        tyyppi && tyyppi.koodiarvo == 'perusopetus' && (
-          <KoodistoDropdown
+      shouldShowP.map(show => show && <KoodistoDropdown
             className="oppimaara"
             title="Oppimäärä"
             optionsP = { oppimäärätP }
-            atom = {oppimääräAtom}
-          />
-        )
+            atom = {oppimääräAtom} />
       )
     }
   </div> )
@@ -62,29 +59,25 @@ const Oppimäärä = ({oppimääräAtom, opiskeluoikeudenTyyppiP, oppimäärätP
 
 const KoodistoDropdown = ({ className, title, optionsP, atom}) => {
   let onChange = (value) => { atom.set(value) }
+  let optionCountP = Bacon.combineWith(optionsP, atom, (options, selected) => !!selected && options.length).skipDuplicates()
+
 
   return (<div>{
-      Bacon.combineWith(optionsP, atom, (options, selected) => selected && options.length &&
-        (<label className={className}>{title}
-          {
-            options.length == 1
-              ? <input type="text" className={className} disabled value={selected.nimi.fi}></input>
-              : (<Dropdown
-              options={options}
-              keyValue={option => option.koodiarvo}
-              displayValue={option => option.nimi.fi}
-              onSelectionChanged={option => onChange(option)}
-              selected={selected}/>)
-          }
-
-        </label>)
-      )
+    optionCountP.map(count =>
+    {
+      if (!count) return null
+      if (count == 1) return <label className={className}>{title}<input type="text" className={className} disabled value={atom.map('.nimi.fi')}></input></label>
+      return (<label className={className}>{title}<Dropdown
+        options={optionsP}
+        keyValue={option => option.koodiarvo}
+        displayValue={option => option.nimi.fi}
+        onSelectionChanged={option => onChange(option)}
+        selected={atom}/></label>)
+    })
   }</div>)
 }
 
-const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => {
-  return <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
-}
+const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
 
 const Aloituspäivä = ({dateAtom}) => {
   return (<label className='aloituspaiva'>Aloituspäivä

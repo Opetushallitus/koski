@@ -51,5 +51,5 @@ export default ({ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) =
 }
 
 const InputOrValue = ({ existing, atom }) => existing
-  ? <input type="text" disabled value={ atom }></input>
+  ? <input type="text" disabled value={ atom.or('') }></input>
   : <input type="text" onChange={ (e) => atom.set(e.target.value) }></input>

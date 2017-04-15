@@ -9,6 +9,8 @@ const isObs = x => x instanceof Bacon.Observable
 export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'valitse', enableFilter = false, newItem}) => {
   let optionsP = isObs(options) ? options : Bacon.constant(options)
 
+  let selectedP = isObs(selected) ? selected : Bacon.constant(selected)
+
   enableFilter = parseBool(enableFilter)
   let selectionIndexAtom = Atom(0)
   let queryAtom = Atom(undefined)
@@ -56,9 +58,9 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
     queryAtom.set(e.target.value)
     openAtom.set(true)
   }
-  let handleInputBlur = (allOptions) => (e) => {
+  let handleInputBlur = (allOptions, s) => (e) => {
     let matchingOption = allOptions.find(o => inputElem.value && displayValue(o).toLowerCase() == inputElem.value.toLowerCase())
-    if (matchingOption && !R.equals(matchingOption,selected)) {
+    if (matchingOption && !R.equals(matchingOption,s)) {
       selectOption(e, matchingOption)
     } else {
       openAtom.set(false)
@@ -85,13 +87,15 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                   type="text"
                   ref={(input => inputElem = input)}
                   onChange={handleInput}
-                  onBlur={handleInputBlur(allOptions)}
-                  value={queryAtom.map(query => query != undefined ? query : selected ? displayValue(selected) : selectionText)}
-                  className={selected ? 'select' : 'select no-selection'}
+                  onBlur={selectedP.map(s => handleInputBlur(allOptions, s))}
+                  value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
+                    return q != undefined ? q : s ? displayValue(s) : selectionText
+                  })}
+                  className={selectedP.map(s => s ? 'select' : 'select no-selection')}
                 />
               </div> :
-              <div className={selected ? 'select' : 'select no-selection'}
-                   onClick={toggleOpen}>{selected ? displayValue(selected) : selectionText}
+              <div className={selectedP.map(s => s ? 'select' : 'select no-selection')}
+                   onClick={toggleOpen}>{selectedP.map(s => s ? displayValue(s) : selectionText)}
               </div>
           }
           {
