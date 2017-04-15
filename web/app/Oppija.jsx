@@ -135,8 +135,9 @@ export const ExistingOppija = React.createClass({
             <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
           </h2>
           {
+            // Set location as key to ensure full re-render when context changes
             oppija
-              ? <Editor model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
+              ? <Editor key={document.location.toString()} model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
               : null
           }
         </div>

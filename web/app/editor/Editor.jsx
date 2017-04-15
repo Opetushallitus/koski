@@ -4,39 +4,64 @@ import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from
 import {parseBool} from '../util'
 
 /*
-    model: required model object
-    path: optional path to actually used model. It's ok if the model cannot be found by path: a NullEditor will be used
+ model: required model object
+ path: optional path to actually used model. It's ok if the model cannot be found by path: a NullEditor will be used
  */
-export const Editor = ({ model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest }) => {
-  if (!model) {
-    throw new Error('model missing')
-  }
-  if (!model.context) {
-    if (!editorMapping) {
-      console.error('editorMapping required for root editor', model)
-      throw new Error('editorMapping required for root editor')
+export const Editor = React.createClass({
+  render() {
+    let { model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest } = this.props
+    if (!model) {
+      throw new Error('model missing')
     }
-    R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
-    model = contextualizeModel(model, {
-      changeBus, doneEditingBus,
-      path: '',
-      prototypes: model.prototypes,
-      editorMapping
-    })
-  } else {
-    if (editorMapping) model = addContext(model, {editorMapping})
-    if (changeBus) model = addContext(model, {changeBus})
-    if (doneEditingBus) model = addContext(model, {doneEditingBus})
-  }
-  edit = parseBool(edit)
+    if (!model.context) {
+      if (!editorMapping) {
+        console.error('editorMapping required for root editor', model)
+        throw new Error('editorMapping required for root editor')
+      }
+      R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
+      model = contextualizeModel(model, {
+        changeBus, doneEditingBus,
+        path: '',
+        prototypes: model.prototypes,
+        editorMapping
+      })
+    } else {
+      if (editorMapping) model = addContext(model, {editorMapping})
+      if (changeBus) model = addContext(model, {changeBus})
+      if (doneEditingBus) model = addContext(model, {doneEditingBus})
+    }
+    edit = parseBool(edit)
     if (edit !== model.context.edit) {
-    model = addContext(model, { edit })
+      model = addContext(model, { edit })
+    }
+    if (path) {
+      model = modelLookup(model, path)
+    }
+    return getModelEditor(model, rest)
+  },
+
+  shouldComponentUpdate(nextProps) {
+    // TODO: doesn't detect all updates yet
+    // - "valmis" tilan lisäys ei päivitä opiskeluoikeuden tilaa
+    // - uuden suorituksen näyttäminen muuttaa urlia -> edit-moodi hävii
+    //    ks http://localhost:7021/koski/test/runner.html?grep=Perusopetus%20Vuosiluokan%20suorituksen%20lis%C3%A4%C3%A4minen
+
+    var next = nextProps.model
+    var current = this.props.model
+
+    var currentContext = current.context || {}
+    var nextContext = next.context || {}
+    if (nextContext.edit != currentContext.edit) return true
+    var nextId = next.modelId
+    var currentId = current.modelId
+    //console.log(currentId, nextId)
+    var result = nextId != currentId
+    if (result) {
+      //console.log('update', current.path)
+    }
+    return result
   }
-  if (path) {
-    model = modelLookup(model, path)
-  }
-  return getModelEditor(model, rest)
-}
+})
 
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired

@@ -37,10 +37,27 @@ export const modelLens = (path) => {
         ? modelPropertyValueLens(key)
         : key // an actual lens TODO might be dangerous way to recognize this
 
-    return l1
+    return L.compose(l1, manageModelIdLens)
   })
-  return L.compose(...pathLenses)
+  return L.compose(manageModelIdLens, ...pathLenses)
 }
+
+let modelIdCounter = 0
+let ensureModelId = (model, force) => {
+  if (model && (force || !model.modelId)) {
+    model.modelId = ++modelIdCounter
+  }
+  return model
+}
+
+const manageModelIdLens = L.lens(
+  (m) => {
+    return ensureModelId(m)
+  },
+  (m1, ) => {
+    return ensureModelId(m1, true) // forces new model id on the result
+  }
+)
 
 export const modelData = (mainModel, path) => {
   if (!mainModel || !mainModel.value) return
@@ -270,14 +287,6 @@ let contextualizeProperty = (mainModel) => (property) => {
   return R.merge(property, { model })
 }
 
-let arrayKeyCounter = 0
-let ensureArrayKey = (v) => {
-  if (v && v.value && !v.arrayKey) {
-    v.arrayKey = ++arrayKeyCounter
-  }
-  return v
-}
-
 let modelItemLens = (index) => {
   let valueIndexLens = L.compose('value', indexL(index))
   let baseLens = L.lens(
@@ -290,13 +299,13 @@ let modelItemLens = (index) => {
       if (m && m.value && index >= m.value.length && m.arrayPrototype) {
         if (index >= (m.minItems || 0)) {
           // Index out of bounds -> create optional value using array prototype
-          return { optional: true, optionalPrototype: m.arrayPrototype} // TODO: move arrayKey construction here
+          return { optional: true, optionalPrototype: m.arrayPrototype}
         } else {
           // Index out of bounds within required number of items -> create required value using array prototype
           return m.arrayPrototype
         }
       }
-      return ensureArrayKey(L.get(valueIndexLens, m))
+      return L.get(valueIndexLens, m)
     },
     (v, m) => {
       if (m && m.optional && !m.value && m.optionalPrototype) {
