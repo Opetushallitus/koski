@@ -51,7 +51,7 @@ var DateInput = React.createClass({
 
     return (
       <div className="calendar-input" ref={input => this.calendarInput = input}>
-        <input type="text" value={this.state.value} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} />
+        <input type="text" value={this.state.value || ''} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} />
         <a className="toggle-calendar" onClick={toggleCalendarOpen}></a>
         { this.state.calendarOpen &&
         <div className="date-picker-wrapper">

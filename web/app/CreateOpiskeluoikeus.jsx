@@ -66,7 +66,7 @@ const KoodistoDropdown = ({ className, title, optionsP, atom}) => {
     optionCountP.map(count =>
     {
       if (!count) return null
-      if (count == 1) return <label className={className}>{title}<input type="text" className={className} disabled value={atom.map('.nimi.fi')}></input></label>
+      if (count == 1) return <label className={className}>{title}<input type="text" className={className} disabled value={atom.map('.nimi.fi').map(x => x || '')}></input></label>
       return (<label className={className}>{title}<Dropdown
         options={optionsP}
         keyValue={option => option.koodiarvo}
