@@ -13,16 +13,16 @@ function OpinnotPage() {
       index = typeof index !== 'undefined' ? index : 0
       return S(S('.opiskeluoikeus > h3 > .oppilaitos')[index]).text().slice(0, -1)
     },
-    valitseSuoritus: function(nimi) {
+    valitseSuoritus: function(opiskeluoikeusIndex, nimi) {
       return function() {
-        var tab = findSingle('.suoritus-tabs li:contains(' + nimi + ')')
+        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')
         if (!tab.hasClass('selected')) {
           triggerEvent(findSingle('a', tab), 'click')
         }
       }
     },
-    suoritusTabs: function() {
-      return textsOf(S('.suoritus-tabs > li:not(.add-suoritus)'))
+    suoritusTabs: function(opiskeluoikeusIndex) {
+      return textsOf(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs > li:not(.add-suoritus)'))
     },
     onTallennettavissa: function() {
       return S('.toggle-edit.editing').is(':visible')
@@ -176,7 +176,7 @@ function LisääSuoritusDialog() {
     },
     lisääSuoritus: function() {
       if (!api.isEnabled()) throw new Error('button not enabled')
-      function count() { return OpinnotPage().suoritusTabs().length }
+      function count() { return OpinnotPage().suoritusTabs(1).length }
       var prevCount = count()
       triggerEvent(buttonElem(), 'click')
       return wait.until(function() { return count() == prevCount + 1 })()

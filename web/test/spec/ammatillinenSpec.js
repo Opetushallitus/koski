@@ -503,7 +503,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Näyttötutkinnot', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus('Näyttötutkintoon valmistava koulutus'))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus(1, 'Näyttötutkintoon valmistava koulutus'))
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
@@ -543,7 +543,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Erikoisammattitutkinto', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus('Autoalan työnjohdon erikoisammattitutkinto'))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus(1, 'Autoalan työnjohdon erikoisammattitutkinto'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {

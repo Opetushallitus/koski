@@ -22,7 +22,7 @@ describe('IB-tutkinto', function( ) {
   })
 
   describe('IB-tutkintotodistus', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus('IB-tutkinto'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(1, 'IB-tutkinto'))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
         expect(opinnot.getTutkinto(0)).to.equal("IB-tutkinto (International Baccalaureate)")
