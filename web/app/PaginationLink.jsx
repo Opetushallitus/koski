@@ -1,7 +1,8 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
-import { addClass } from './classnames'
+import {addClass} from './classnames'
+import delays from './delays'
 
 export default BaconComponent({
   render() {
@@ -13,7 +14,7 @@ export default BaconComponent({
 
   componentDidMount() {
     Bacon.fromEvent(window, 'scroll')
-      .throttle(100)
+      .throttle(delays().delay(100))
       .filter(() => this.paginationMarker && isElementInViewport(this.paginationMarker))
       .takeUntil(this.unmountE)
       .onValue(() => {

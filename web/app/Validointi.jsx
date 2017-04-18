@@ -2,6 +2,7 @@ import React from 'react'
 import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
+import delays from './delays'
 
 const ValidointiTaulukko = React.createClass({
   render() {
@@ -81,7 +82,6 @@ const ValidointiTaulukko = React.createClass({
 })
 
 export const validointiContentP = (query) => {
-
   let oboeBus = Bacon.Bus()
   Oboe('/koski/api/opiskeluoikeus/validate' + query)
     .node('{errors opiskeluoikeusId}', (x) => oboeBus.push(x))
@@ -103,7 +103,7 @@ export const validointiContentP = (query) => {
       ids: [validationResult.opiskeluoikeusId]
     })
     return grouped
-  }).throttle(1000).map(R.sortBy((row) => -row.oids.length))
+  }).throttle(delays().delay(1000)).map(R.sortBy((row) => -row.oids.length))
 
   let validationFinishedP = validationStatusP.filter(false).mapEnd(true).startWith(false)
 

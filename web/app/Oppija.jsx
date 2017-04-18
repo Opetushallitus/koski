@@ -16,7 +16,7 @@ import {currentLocation} from './location.js'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
-import {delays} from './delays'
+import delays from './delays'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed

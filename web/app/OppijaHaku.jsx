@@ -2,15 +2,14 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from './http'
-import {navigateToOppija, navigateTo} from './location'
-import {showError} from './location'
-
+import {navigateToOppija, navigateTo, showError} from './location'
+import delays from './delays'
 const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
 
 const acceptableQuery = (q) => q.length >= 3
 
-const hakuTulosE = oppijaHakuE.debounce(500)
+const hakuTulosE = oppijaHakuE.debounce(delays().delay(500))
   .flatMapLatest(query => (acceptableQuery(query) ? Http.get(`/koski/api/henkilo/search?query=${query}`) : Bacon.once({henkilöt: []})).map((response) => ({ response, query })))
 
 hakuTulosE.onError(showError)
@@ -20,7 +19,7 @@ const oppijatP = Bacon.update(
   hakuTulosE.skipErrors(), ((current, hakutulos) => hakutulos)
 )
 
-const searchInProgressP = oppijaHakuE.awaiting(hakuTulosE.mapError()).throttle(200)
+const searchInProgressP = oppijaHakuE.awaiting(hakuTulosE.mapError()).throttle(delays().delay(200))
 
 export const OppijaHaku = () => (
   <div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>

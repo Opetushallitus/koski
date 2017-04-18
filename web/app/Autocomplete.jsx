@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
+import delays from './delays'
 
 export default BaconComponent({
   render() {
@@ -54,7 +55,7 @@ export default BaconComponent({
 
   componentDidMount() {
     this.state.inputBus
-      .throttle(200)
+      .throttle(delays().delay(200))
       .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
       .takeUntil(this.unmountE)
       .onValue((items) => this.setState({ items: items, selectionIndex: 0 }))

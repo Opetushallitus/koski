@@ -12,6 +12,7 @@ import Dropdown from './Dropdown.jsx'
 import Http from './http'
 import { showInternalError } from './location.js'
 import SortingTableHeader from './SortingTableHeader.jsx'
+import delays from './delays'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -156,7 +157,7 @@ export const Oppijataulukko = React.createClass({
         .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
-    this.filterBus.merge(this.textFilterBus.throttle(500)).onValue(navigateWithQueryParams)
+    this.filterBus.merge(this.textFilterBus.throttle(delays().delay(500))).onValue(navigateWithQueryParams)
   },
   getInitialState() {
     return {
