@@ -3,29 +3,26 @@ import {modelData, modelLookup} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {modelProperty} from './EditorModel'
+import {navigateWithQueryParams, currentLocation} from '../location'
+import {parseBool} from '../util'
 
-export const ExpandablePropertiesEditor = React.createClass({
-  render() {
-    let {model, propertyName} = this.props
-    let {open} = this.state
-    let propertyModel = modelLookup(model, propertyName)
-    let edit = model.context.edit
-    let wrappedModel = edit ? wrapOptional({model: propertyModel}) : propertyModel
-
-    return modelData(model, propertyName) || wrappedModel.context.edit ?
-      <div className={'expandable-container ' + propertyName}>
-        <a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{modelProperty(model, propertyName).title}</a>
-        { open ?
-          <div className="value">
-            <PropertiesEditor model={wrappedModel} />
-          </div> : null
-        }
-      </div> : null
-  },
-  toggleOpen() {
-    this.setState({open: !this.state.open})
-  },
-  getInitialState() {
-    return {open: false}
+export const ExpandablePropertiesEditor = ({model, propertyName}) => {
+  let propertyModel = modelLookup(model, propertyName)
+  let edit = model.context.edit
+  let paramName = propertyName + '-expanded'
+  let expanded = parseBool(currentLocation().params[paramName])
+  let wrappedModel = edit ? wrapOptional({model: propertyModel}) : propertyModel
+  let toggleOpen = () => {
+    navigateWithQueryParams({[paramName]: !expanded ? 'true' : undefined})
   }
-})
+
+  return modelData(model, propertyName) || wrappedModel.context.edit ?
+    <div className={'expandable-container ' + propertyName}>
+      <a className={expanded ? 'open expandable' : 'expandable'} onClick={toggleOpen}>{modelProperty(model, propertyName).title}</a>
+      { expanded ?
+        <div className="value">
+          <PropertiesEditor model={wrappedModel} />
+        </div> : null
+      }
+    </div> : null
+}

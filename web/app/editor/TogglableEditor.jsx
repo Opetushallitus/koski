@@ -2,18 +2,21 @@ import React from 'react'
 import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {modelValid} from './EditorModel'
+import {navigateWithQueryParams, currentLocation} from '../location'
+import {parseBool} from '../util'
 
 export const TogglableEditor = React.createClass({
   render() {
     let { model, renderChild } = this.props
     let context = model.context
     let hasErrors = !modelValid(model)
-    let edit = context.edit || (this.state && this.state.edit)
+    let edit = context.edit || parseBool(currentLocation().params.edit)
+
     let toggleEdit = () => {
       if (edit) {
         context.doneEditingBus.push()
       }
-      this.setState({edit: !edit})
+      navigateWithQueryParams({edit: !edit ? 'true' : undefined})
     }
     let showToggleEdit = model.editable && !context.edit && !context.hasToggleEdit
     let modifiedContext = R.merge(context, {
