@@ -21,6 +21,10 @@ function OpinnotPage() {
         }
       }
     },
+    suoritusOnValittu: function(opiskeluoikeusIndex, nimi) {
+      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')
+      return tab.hasClass('selected')
+    },
     suoritusTabs: function(opiskeluoikeusIndex) {
       return textsOf(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs > li:not(.add-suoritus)'))
     },

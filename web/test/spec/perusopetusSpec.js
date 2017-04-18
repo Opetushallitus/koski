@@ -821,6 +821,34 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Useita opiskeluoikeuksia', function() {
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('180497-112F'))
+    describe('Alussa', function() {
+      it('Uusimpien suoritusten välilehti valittu', function() {
+        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
+      })
+    })
+    describe('Kun valitaan, ensimmäisestä opiskeluoikeudesta', function() {
+      before(opinnot.valitseSuoritus(1, '8. vuosiluokka'))
+      it('Toimii', function() {
+        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(false)
+        expect(opinnot.suoritusOnValittu(1, '8. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
+      })
+
+      describe('Kun valitaan, molemmista opiskeluoikeuksista', function() {
+        before(opinnot.valitseSuoritus(2, '6. vuosiluokka'), opinnot.valitseSuoritus(1, '9. vuosiluokka'))
+        it('Toimii', function() {
+          expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(true)
+          expect(opinnot.suoritusOnValittu(1, '8. vuosiluokka')).to.equal(false)
+          expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(false)
+          expect(opinnot.suoritusOnValittu(2, '6. vuosiluokka')).to.equal(true)
+        })
+      })
+    })
+  })
+
   describe('Opiskeluoikeuden lisääminen', function() {
     describe('Uudelle henkilölle', function() {
       before(prepareForNewOppija('kalle', '230872-7258'))
