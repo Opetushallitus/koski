@@ -1,3 +1,7 @@
+## 18.4.2017
+
+- Lisätty kenttä muutSuorituskielet esiopetuksen ja perusopetuksen päätason suorituksiin
+
 ## 12.4.2017
 
 - Lisätty perusteenDiaarinumero lukion oppiaineeseen
