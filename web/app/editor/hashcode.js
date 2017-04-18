@@ -1,4 +1,4 @@
-let hashCode = (x) => {
+export const hashCode = (x) => {
   if (!x) return 0
   let hash = 0
   if (typeof x == 'string') {
@@ -32,9 +32,7 @@ let hashCode = (x) => {
   return x
 }
 
-export default hashCode
-
-let hashAdd = (hash, y) => {
+export const hashAdd = (hash, y) => {
   hash = ((hash<<5)-hash)+y
   return hash & hash // Convert to 32bit integer
 }

@@ -1,7 +1,7 @@
 import R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import hashCode from './hashcode'
+import {hashCode, hashAdd} from './hashcode'
 
 // Find submodel with given path
 export const modelLookupRequired = (mainModel, path) => {
@@ -51,8 +51,26 @@ let ensureModelId = (model, force) => {
   return model
 }
 
+let getModelId = (model) => {
+  return ensureModelId(model).modelId
+}
+
 let calculateModelId = (m) => {
-  return hashCode(modelData(m))
+  let id = 0
+  if (m.value && m.value.properties) {
+    for (var i in m.value.properties) {
+      id = hashAdd(id, getModelId(m.value.properties[i].model))
+    }
+  }
+  if (m.type === 'array' && m.value) {
+    for (var i in m.value) {
+      id = hashAdd(id, getModelId(m.value[i]))
+    }
+  }
+  if (m.value && m.value.data) {
+    id = hashAdd(id, hashCode(m.value.data))
+  }
+  return id
 }
 
 const manageModelIdLens = L.lens(

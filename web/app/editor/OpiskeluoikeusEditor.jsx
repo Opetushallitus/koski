@@ -66,11 +66,6 @@ export const OpiskeluoikeusEditor = ({model}) => {
             }
           </div>
 
-          <div className="suoritukset">
-            <h4>Suoritukset</h4>
-            <SuoritusTabs model={mdl}/>
-            <SuoritusEditor key={tabName(valittuSuoritus)} model={valittuSuoritus} />
-          </div>
 
         </div>
       </div>)
