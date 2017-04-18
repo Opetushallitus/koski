@@ -19,5 +19,5 @@ PäivämääräväliEditor.validateModel = (model) => {
   let alkuData = modelData(model, 'alku')
   let loppuData = modelData(model, 'loppu')
   if (!alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)) return
-  return ['invalid range']
+  return [{key: 'invalid.daterange'}]
 }

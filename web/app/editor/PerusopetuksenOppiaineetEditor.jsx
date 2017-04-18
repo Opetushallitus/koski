@@ -13,7 +13,7 @@ import {
   createOptionalEmpty,
   lensedModel,
   modelData,
-  modelErrors,
+  modelErrorMessages,
   modelItems,
   modelLens,
   modelLookup,
@@ -125,7 +125,7 @@ export const OppiaineEditor = React.createClass({
     let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
     let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
-    let errors = modelErrors(model)
+    let errors = modelErrorMessages(model)
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
 
     let oppiaineTitle = (aine) => {

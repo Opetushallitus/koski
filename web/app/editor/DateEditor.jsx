@@ -24,7 +24,7 @@ DateEditor.validateModel = (model) => {
   let data = modelData(model)
   let empty = !data
   if (empty && model.optional) return
-  if (!data) return ['empty date']
+  if (!data) return [{key: 'missing'}]
   var dateValue = data && parseISODate(data)
-  if (!dateValue) return ['invalid date: ' + data]
+  if (!dateValue) return [{key: 'invalid.date'}]
 }

@@ -29,10 +29,10 @@ LaajuusEditor.validateModel = (model) => {
   let arvo = modelData(model, 'arvo')
 
   if (arvo && isNaN(arvo) || arvo <= 0) {
-    return ['invalid value']
+    return [{key: 'invalid.laajuus'}]
   }
   if (!model.optional && !arvo) {
-    return ['required value']
+    return [{key: 'missing'}]
   }
   return []
 }

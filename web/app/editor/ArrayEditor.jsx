@@ -46,9 +46,9 @@ export const ArrayEditor = ({model, reverse}) => {
 
 ArrayEditor.validateModel = (model) => {
   if (model.optional && !model.value) return
-  if (!model.value) return ['Arvo puuttuu']
-  if (model.minItems && model.value.length < model.minItems) return [`Tarvitaan vähintään ${model.minItems} alkiota`]
-  if (model.maxItems && model.value.length > model.maxItems) return [`Hyväksytään korkeintaan ${model.minItems} alkiota`]
+  if (!model.value) return [{key: 'missing'}]
+  if (model.minItems && model.value.length < model.minItems) return [{key: 'array.minItems'}]
+  if (model.maxItems && model.value.length > model.maxItems) return [{key: 'array.maxItems'}]
 }
 ArrayEditor.canShowInline = (model) => {
   let items = modelItems(model)

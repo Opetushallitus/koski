@@ -259,9 +259,9 @@ export const modelValid = (model, context) => {
   return valid
 }
 
-export const modelErrors = (model, context) => {
+export const modelErrorMessages = (model, context) => {
   var errors = validateModel(model, context)
-  return R.values(errors).flatten()
+  return R.values(errors).flatten().filter(e => e.message).map(e => e.message)
 }
 
 export const applyChanges = (modelBeforeChange, changes) => {

@@ -14,5 +14,5 @@ export const OrganisaatioEditor = ({model, organisaatioTyypit}) => {
     : <span>{modelData(model, 'nimi.fi')}</span>
 }
 OrganisaatioEditor.validateModel = (model) => {
-  if(!modelData(model, 'oid')) return ['Organisaatio puuttuu']
+  if(!modelData(model, 'oid')) return [{key: 'missing.oid'}]
 }

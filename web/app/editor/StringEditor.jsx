@@ -16,5 +16,5 @@ export const StringEditor = ({model, placeholder}) => {
 StringEditor.handlesOptional = true
 StringEditor.canShowInline = () => true
 StringEditor.validateModel = (model) => {
-  return !model.optional && !modelData(model) ? ['empty string'] : []
+  return !model.optional && !modelData(model) ? [{key: 'missing'}] : []
 }

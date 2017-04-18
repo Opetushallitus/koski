@@ -85,6 +85,6 @@ EnumEditor.canShowInline = () => true
 EnumEditor.handlesOptional = true
 EnumEditor.validateModel = (model) => {
   if (!model.value && !model.optional) {
-    return ['Arvo puuttuu']
+    return [{key: 'missing'}]
   }
 }
