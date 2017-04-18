@@ -110,10 +110,10 @@ const SuoritusTabs = ({ model }) => {
   </ul>
 )}
 
-SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam]: i}).toString()
-SuoritusTabs.suoritusQueryParam = 'suoritus'
+SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
+SuoritusTabs.suoritusQueryParam = context => context.opiskeluoikeusId + '.suoritus'
 SuoritusTabs.suoritusIndex = (model) => {
-  var paramName = SuoritusTabs.suoritusQueryParam
+  var paramName = SuoritusTabs.suoritusQueryParam(model.context)
   let index = currentLocation().params[paramName] || 0
   if (!isNaN(index)) return index // numeric index
   return modelItems(model, 'suoritukset').map(tabName).indexOf(index)
