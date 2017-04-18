@@ -27,7 +27,7 @@ export const ArrayEditor = ({model, reverse}) => {
     <ul className={className}>
       {
         items.map((item, i) => {
-          return (<li key={item.modelId || i}>
+          return (<li key={i + item.modelId}>
             <Editor model = {item} />
             {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}></a>}
           </li>)

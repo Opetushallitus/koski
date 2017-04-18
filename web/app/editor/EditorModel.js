@@ -45,9 +45,31 @@ export const modelLens = (path) => {
 let modelIdCounter = 0
 let ensureModelId = (model, force) => {
   if (model && (force || !model.modelId)) {
-    model.modelId = ++modelIdCounter
+    model.modelId = calculateModelId(model)
   }
   return model
+}
+
+let getModelId = (m, force) => {
+  return ensureModelId(m, force).modelId
+}
+
+let calculateModelId = (m) => {
+  let id = 0 // TODO: use hashing instead of addition
+  if (m.value && m.value.properties) {
+    for (var i in m.value.properties) {
+      id += getModelId(m.value.properties[i].model)
+    }
+  }
+  if (m.type === 'array' && m.value) {
+    for (var i in m.value) {
+      id += getModelId(m.value[i])
+    }
+  }
+  if (m.value && m.value.data) {
+    id += m.value.data
+  }
+  return id
 }
 
 const manageModelIdLens = L.lens(
