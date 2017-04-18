@@ -73,7 +73,6 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
     selectionIndexAtom.set(index)
   }
   let isNewItem = (allOptions, o, i) => newItem && i == allOptions.length - 1
-  
   let selectOption = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
