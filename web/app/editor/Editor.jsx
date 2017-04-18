@@ -41,23 +41,16 @@ export const Editor = React.createClass({
   },
 
   shouldComponentUpdate(nextProps) {
-    var next = nextProps.model
-    var current = this.props.model
-
-    var currentContext = current.context || {}
-    var nextContext = next.context || {}
-    if (nextContext.edit != currentContext.edit) return true
-    var nextId = next.modelId
-    var currentId = current.modelId
-    //console.log(currentId, nextId)
-    var result = nextId != currentId
-    if (result) {
-      //console.log('update', current.path)
-    }
-    return result
+    return Editor.shouldComponentUpdate.call(this, nextProps)
   }
 })
-
+Editor.shouldComponentUpdate = function(nextProps) {
+  var result = nextProps.model.modelId != this.props.model.modelId
+  if (result) {
+    //console.log('update', this.props.model.path)
+  }
+  return result
+}
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }

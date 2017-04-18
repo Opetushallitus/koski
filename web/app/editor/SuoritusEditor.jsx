@@ -50,6 +50,9 @@ export const SuoritusEditor = React.createClass({
       <TilaJaVahvistus model={model} />
       <div className="osasuoritukset">{resolveEditor(model)}</div>
     </div>)
+  },
+  shouldComponentUpdate(nextProps) {
+    return Editor.shouldComponentUpdate.call(this, nextProps)
   }
 })
 SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
