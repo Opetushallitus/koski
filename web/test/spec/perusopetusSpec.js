@@ -732,16 +732,30 @@ describe('Perusopetus', function() {
 
       describe('Valinnainen oppiaine', function() {
         var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.valinnainen')
-        var historia = editor.subEditor('.valinnainen.HI')
-        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
-        it('Lisääminen', function () {
-          expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
+        describe('Valtakunnallisen oppiaineen lisääminen', function() {
+          var historia = editor.subEditor('.valinnainen.HI')
+          before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('Toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
+          })
+
+          describe('Poistaminen', function () {
+            before(editor.edit, historia.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+            it('toimii', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.not.contain('Valinnainen historia 9')
+            })
+          })
         })
 
-        describe('Poistaminen', function () {
-          before(editor.edit, historia.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
-          it('toimii', function () {
-            expect(extractAsText(S('.oppiaineet'))).to.not.contain('Valinnainen historia 9')
+        describe('Uuden paikallisen oppiaineen lisääminen', function() {
+          var uusiPaikallinen = editor.subEditor('.valinnainen:nth-of-type(6)')
+          before(editor.edit, uusiOppiaine.selectValue('Lisää'),
+            uusiPaikallinen.propertyBySelector('.arvosana').selectValue('7'),
+            uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
+            uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
+            editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('Toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
           })
         })
       })

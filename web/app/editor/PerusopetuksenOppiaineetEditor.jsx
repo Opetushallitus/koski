@@ -17,7 +17,6 @@ import {
   modelItems,
   modelLens,
   modelLookup,
-  modelLookupRequired,
   modelSet,
   modelSetData,
   modelSetValue,
@@ -118,8 +117,6 @@ export const OppiaineEditor = React.createClass({
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let tunniste = modelData(oppiaine, 'tunniste')
     let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
-    let kielenOppiaine = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
-    let äidinkieli = modelLookupRequired(model, 'koulutusmoduuli').value.classes.includes('peruskoulunaidinkielijakirjallisuus')
     let editing = model.context.edit
     let tila = modelData(model, 'tila.koodiarvo')
     let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
@@ -127,25 +124,17 @@ export const OppiaineEditor = React.createClass({
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
     let errors = modelErrorMessages(model)
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
-
-    let oppiaineTitle = (aine) => {
-      let title = modelTitle(aine, 'tunniste') + (kielenOppiaine || äidinkieli ? ', ' : '')
-      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
-    }
-
     let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
     let className = 'oppiaine ' + pakollisuus + ' ' + tunniste.koodiarvo + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
 
     return (<tbody className={className}>
     <tr>
       <td className="oppiaine">
-        { showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a> }
-        {
-          showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+        { // expansion link
+          showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
         }
-        {
-          (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={model} path="koulutusmoduuli.kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
-        }
+        <OppiaineTitleEditor {...{oppiaine, showExpand, toggleExpand}}/>
+
       </td>
       <td className="arvosana">
         <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={sortGrades}/></span>
@@ -192,12 +181,45 @@ export const OppiaineEditor = React.createClass({
 
 OppiaineEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
-    return ['Suoritus valmis, mutta arvosana puuttuu']
+    return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
   }
 }
 
+let fixKuvaus = (oppiaine) => {
+  return lensedModel(oppiaine, L.rewrite(m => {
+    let nimi = modelLookup(m, 'tunniste.nimi').value
+    return modelSetValue(m, nimi, 'kuvaus')
+  }))
+}
+
+let OppiaineTitleEditor = ({oppiaine, showExpand, toggleExpand}) => {
+  let oppiaineTitle = (aine) => {
+    let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
+    return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
+  }
+  let pakollinen = modelData(oppiaine, 'pakollinen')
+  let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
+  let äidinkieli = oppiaine.value.classes.includes('peruskoulunaidinkielijakirjallisuus')
+
+
+  return (<span>
+    {
+      oppiaine.context.edit && isPaikallinen(oppiaine)
+        ? <span className="koodi-ja-nimi">
+              <span className="koodi"><Editor model={oppiaine} path="tunniste.koodiarvo" placeholder="Koodi"/></span>
+              <span className="nimi"><Editor model={fixKuvaus(oppiaine)} path="tunniste.nimi" placeholder="Oppiaineen nimi"/></span>
+          </span>
+        : showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+    }
+    {
+      // kielivalinta
+      (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
+    }
+
+  </span>)
+}
+
 const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
-  let selectionBus = Bacon.Bus()
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(wrappedOsasuoritukset).length
@@ -205,12 +227,13 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
   let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, wrappedOsasuoritukset, newItemIndex)
   oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
 
-  let oppiaineModels = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
-    .oneOfPrototypes.filter(p => p.key !== 'perusopetuksenpaikallinenvalinnainenoppiaine')
+  var oneOfPrototypes = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli').oneOfPrototypes
     .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
-    .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
 
-  selectionBus.onValue(resultCallback)
+  let paikallinenOppiainePrototype = oneOfPrototypes.find(isPaikallinen)
+
+  let oppiaineModels = oneOfPrototypes.filter(R.complement(isPaikallinen))
+    .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
 
   return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
   <tr>
@@ -218,13 +241,13 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
       {
         <DropDown
           options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())}
-          keyValue={([,tunniste]) => tunniste.value}
-          displayValue={([,tunniste]) => tunniste.title}
-          onSelectionChanged={([oppiaineModel, tunniste]) => {
-            oppiaineModel = modelSetValue(oppiaineModel, tunniste, 'tunniste')
-            selectionBus.push(modelSet(oppiaineenSuoritusModel, oppiaineModel, 'koulutusmoduuli'))
+          keyValue={oppiaine => isPaikallinen(oppiaine) ? 'uusi' : modelLookup(oppiaine, 'tunniste').value.value}
+          displayValue={oppiaine => isPaikallinen(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
+          onSelectionChanged={oppiaine => {
+            resultCallback(modelSet(oppiaineenSuoritusModel, oppiaine, 'koulutusmoduuli'))
           }}
           selectionText={`Lisää ${pakollisuus} oppiaine`}
+          newItem={!pakollinen && paikallinenOppiainePrototype}
         />
       }
     </td>
@@ -234,6 +257,8 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
 
 // oppiaineModel -> Prop [(oppiainemodel, tunniste)]
 const oppiaineAlternativesP = oppiaineModel => {
-  let tunniste = modelLookup(oppiaineModel, 'tunniste')
-  return EnumEditor.fetchAlternatives(tunniste).map(alt => alt.map(a => [oppiaineModel, a]))
+  return EnumEditor.fetchAlternatives(modelLookup(oppiaineModel, 'tunniste'))
+    .map(alternatives => alternatives.map(enumValue => modelSetValue(oppiaineModel, enumValue, 'tunniste')))
 }
+
+let isPaikallinen = (m) => m.value.classes.includes('paikallinenkoulutusmoduuli')
