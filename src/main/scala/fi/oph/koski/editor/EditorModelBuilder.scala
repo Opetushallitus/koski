@@ -332,6 +332,10 @@ object Prototypes {
   def getPrototypePlaceholder(schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
     schema match {
       case s: SchemaWithClassName =>
+        val clazz = Class.forName(s.fullClassName)
+        if (classOf[Opiskeluoikeus].isAssignableFrom(clazz)) {
+          return None // Cuts model build time and size by half
+        }
         val classRefSchema = resolveSchema(s)
         context.prototypesRequested += classRefSchema
         Some(modelBuilderForClass(s).buildPrototypePlaceholder(metadata))
