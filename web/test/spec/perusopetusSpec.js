@@ -748,7 +748,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Uuden paikallisen oppiaineen lisääminen', function() {
-          var uusiPaikallinen = editor.subEditor('.valinnainen:nth-of-type(6)')
+          var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),
             uusiPaikallinen.propertyBySelector('.arvosana').selectValue('7'),
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),

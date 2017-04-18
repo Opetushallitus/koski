@@ -125,7 +125,7 @@ export const OppiaineEditor = React.createClass({
     let errors = modelErrorMessages(model)
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
     let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
-    let className = 'oppiaine ' + pakollisuus + ' ' + tunniste.koodiarvo + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '')
+    let className = 'oppiaine ' + pakollisuus + ' ' + tunniste.koodiarvo + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '') + (isPaikallinen(oppiaine) ? ' paikallinen' : '')
 
     return (<tbody className={className}>
     <tr>
