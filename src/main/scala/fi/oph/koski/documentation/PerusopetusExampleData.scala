@@ -96,6 +96,7 @@ object PerusopetusExampleData {
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
+    muutSuorituskielet = Some(List(sloveeni.get)),
     kielikylpykieli = ruotsinKieli,
     osasuoritukset = kaikkiAineet,
     käyttäytymisenArvio = Some(PerusopetuksenKäyttäytymisenArviointi(kuvaus = Some("Esimerkillistä käyttäytymistä koko vuoden ajan"))),
