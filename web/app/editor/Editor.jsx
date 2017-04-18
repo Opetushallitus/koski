@@ -41,11 +41,6 @@ export const Editor = React.createClass({
   },
 
   shouldComponentUpdate(nextProps) {
-    // TODO: doesn't detect all updates yet
-    // - "valmis" tilan lisäys ei päivitä opiskeluoikeuden tilaa
-    // - uuden suorituksen näyttäminen muuttaa urlia -> edit-moodi hävii
-    //    ks http://localhost:7021/koski/test/runner.html?grep=Perusopetus%20Vuosiluokan%20suorituksen%20lis%C3%A4%C3%A4minen
-
     var next = nextProps.model
     var current = this.props.model
 
