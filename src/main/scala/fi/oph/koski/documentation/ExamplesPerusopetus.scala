@@ -40,6 +40,20 @@ object ExamplesPerusopetus {
     )
   )
 
+  lazy val seiskaTuplattuOpiskeluoikeus: PerusopetuksenOpiskeluoikeus = ysiluokkalaisenOpiskeluoikeus.copy(
+    alkamispäivä = Some(date(2012, 6, 15)),
+    oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
+    suoritukset = List(
+      kuudennenLuokanSuoritus,
+      seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
+    ),
+    tila = PerusopetuksenOpiskeluoikeudenTila(
+      List(
+        PerusopetuksenOpiskeluoikeusjakso(date(2012, 6, 15), opiskeluoikeusLäsnä),
+        PerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
+  )
 
   val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
 

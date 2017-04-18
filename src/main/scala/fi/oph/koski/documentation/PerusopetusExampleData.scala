@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -110,6 +110,15 @@ object PerusopetusExampleData {
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet.map(_.map(_.copy(arviointi = arviointi(4), yksilöllistettyOppimäärä = false)).filter(_.koulutusmoduuli.pakollinen)),
     vahvistus = vahvistusPaikkakunnalla(date(2014, 5, 30))
+  )
+
+  val kuudennenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(6), luokka = "6A", alkamispäivä = Some(date(2012, 6, 15)),
+    tila = tilaValmis,
+    toimipiste = kulosaarenAlaAste,
+    suorituskieli = suomenKieli,
+    osasuoritukset = kaikkiAineet,
+    vahvistus = vahvistusPaikkakunnalla(date(2013, 5, 30))
   )
 
   val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(

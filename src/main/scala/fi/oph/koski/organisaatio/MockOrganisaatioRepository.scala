@@ -19,6 +19,7 @@ object MockOrganisaatiot {
   val winnova = "1.2.246.562.10.93135224694"
   val lehtikuusentienToimipiste = "1.2.246.562.10.42456023292"
   val jyväskylänNormaalikoulu = "1.2.246.562.10.14613773812"
+  val kulosaarenAlaAste = "1.2.246.562.10.64353470871"
   val ressunLukio = "1.2.246.562.10.62858797335"
   val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val ylioppilastutkintolautakunta = "1.2.246.562.10.43628088406"
@@ -28,6 +29,7 @@ object MockOrganisaatiot {
     omnia,
     winnova,
     jyväskylänNormaalikoulu,
+    kulosaarenAlaAste,
     helsinginMedialukio,
     helsinginYliopisto,
     aaltoYliopisto,
