@@ -72,7 +72,8 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
     let index = allOptions.findIndex(option => keyValue(option) == keyValue(o))
     selectionIndexAtom.set(index)
   }
-  let isNewItem = (o, i) => i == options.length
+  let isNewItem = (allOptions, o, i) => newItem && i == allOptions.length - 1
+  
   let selectOption = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
@@ -102,7 +103,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
             (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')}>
               {
                 allOptions.map((o,i) => {
-                  let isNew = isNewItem(o, i)
+                  let isNew = isNewItem(allOptions, o, i)
                   return (<li key={keyValue(o) || displayValue(o)}
                               className={selectionIndexAtom.map(selectionIndex => 'option' + (i == selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : ''))}
                               onMouseDown={(e) => {selectOption(e, o)}}
