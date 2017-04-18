@@ -40,13 +40,14 @@ case class EsiopetuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Title("Koulutus")
   koulutusmoduuli: Esiopetus = Esiopetus(),
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None
-) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton
+) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton with MonikielinenSuoritus
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(

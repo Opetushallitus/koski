@@ -67,3 +67,10 @@ trait VahvistuksetonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = false
   override def vahvistus: Option[Vahvistus] = None
 }
+
+trait MonikielinenSuoritus {
+  @Description("Opintojen muut suorituskielet. Ne muut (kuin koulun opetuskielet) kielet joilla on opetettu vähintään 25% oppilaan oppitunneista lukuvuoden aikana")
+  @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID308", "koulutusorganisaation opetuskieli")
+  def muutSuorituskielet: Option[List[Koodistokoodiviite]]
+}
