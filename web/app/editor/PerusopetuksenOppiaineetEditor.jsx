@@ -248,6 +248,7 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
           }}
           selectionText={`Lisää ${pakollisuus} oppiaine`}
           newItem={!pakollinen && paikallinenOppiainePrototype}
+          enableFilter={true}
         />
       }
     </td>
