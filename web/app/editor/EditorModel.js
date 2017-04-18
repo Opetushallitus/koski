@@ -46,6 +46,7 @@ export const modelLens = (path) => {
 let ensureModelId = (model, force) => {
   if (model && (force || !model.modelId)) {
     model.modelId = calculateModelId(model)
+    model.data = null // reset modelData caching
   }
   return model
 }
@@ -66,6 +67,7 @@ const manageModelIdLens = L.lens(
 export const modelData = (mainModel, path) => {
   if (!mainModel || !mainModel.value) return
   if (mainModel.value.data) {
+    if (!path) return mainModel.value.data
     return L.get(objectLens(path), mainModel.value.data)
   }
 
@@ -76,13 +78,14 @@ export const modelData = (mainModel, path) => {
     return modelData(model, tail)
   } else {
     let model = mainModel
+    if (model.data) return model.data
     if (!model || !model.value) return
     if (model.value.properties) {
-      return R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
+      return model.data = R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
     } else if (model.value instanceof Array) {
-      return model.value.map(item => modelData(item))
+      return model.data =  model.value.map(item => modelData(item))
     } else {
-      return model.value.data
+      return model.data =  model.value.data
     }
   }
 }
