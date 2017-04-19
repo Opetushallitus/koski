@@ -222,7 +222,7 @@ case class PerusopetuksenKäyttäytymisenArviointi(
   kuvaus: Option[LocalizedString] = None,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
-) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
+) extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
 }
 

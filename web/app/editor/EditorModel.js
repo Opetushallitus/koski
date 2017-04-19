@@ -230,6 +230,11 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
   return props.map(contextualizeProperty(mainModel))
 }
 
+
+export const oneOfPrototypes = (model) => {
+  return model.oneOfPrototypes.map(proto => contextualizeSubModel(proto, model))
+}
+
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
 export const contextualizeModel = (model, context, path) => {

@@ -2,6 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertyEditor} from './PropertyEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import DropDown from '../Dropdown.jsx'
@@ -22,10 +23,11 @@ import {
   modelSetValue,
   modelTitle,
   pushModel,
-  pushRemoval
+  pushRemoval,
+  oneOfPrototypes
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
-import {suoritusValmis, hasArvosana, arvosanaLens, setTila} from './Suoritus'
+import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
 import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 
@@ -139,7 +141,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
 
       </td>
       <td className="arvosana">
-        <span className="value"><Editor model={ lensedModel(fixTila(model), arvosanaLens) } sortBy={sortGrades}/></span>
+        <span className="value"><ArvosanaEditor model={ lensedModel(fixTila(model), lastArviointiLens) } /></span>
       </td>
       {
         showLaajuus && (<td className="laajuus">
@@ -166,7 +168,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
       }
     </tr>
     {
-      !!sanallinenArviointi && expanded && <tr key='sanallinen-arviointi'><td className="details"><span className="sanallinen-arviointi">{sanallinenArviointi}</span></td></tr>
+      expanded && <tr key='sanallinen-arviointi'><td className="details"><PropertyEditor model={modelLookup(model, 'arviointi.-1')} propertyName="kuvaus" /></td></tr>
     }
     {
       editing && expanded && <tr key='details'><td className="details"><PropertiesEditor model={fixArvosana(model)} propertyFilter={extraPropertiesFilter} /></td></tr>
@@ -185,6 +187,28 @@ OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
     return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
   }
+}
+
+const ArvosanaEditor = ({model}) => {
+  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model})), 'arvosana').startWith([])
+  let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
+  return (<span>{
+    alternativesP.map(alternatives => {
+      let arvosanaLens = modelLens('arvosana')
+      let coolLens = L.lens(
+        (m) => L.get(arvosanaLens, m),
+        (v, m) => {
+          let found = alternatives.find(alt => {
+            return modelData(alt, 'arvosana').koodiarvo == modelData(v).koodiarvo
+          })
+          return modelSetValue(m, found.value)
+        }
+      )
+      let arvosanaModel = lensedModel(model, coolLens)
+      // Use key to ensure re-render when alternatives are supplied
+      return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP}/>
+    })
+  }</span>)
 }
 
 let fixKuvaus = (oppiaine) => {
@@ -238,7 +262,6 @@ let OppiaineEditor = React.createClass({
   }
 })
 
-
 const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallback}) => {
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
@@ -249,16 +272,17 @@ const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallbac
 
   let paikallisetOppiaineet = getOrganizationalPreferences(organisaatioOid, 'perusopetuksenoppiaineet').startWith([])
 
+  var koulutusmoduuli = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
 
-  var oneOfPrototypes = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli').oneOfPrototypes
-    .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
+  var oneOfProtos = oneOfPrototypes(koulutusmoduuli)
 
-  let paikallinenOppiainePrototype = oneOfPrototypes.find(isPaikallinen)
+  let paikallinenOppiainePrototype = oneOfProtos.find(isPaikallinen)
 
-  let oppiaineModels = oneOfPrototypes.filter(R.complement(isPaikallinen))
+  let oppiaineModels = oneOfProtos
+    .filter(R.complement(isPaikallinen))
     .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
 
-  let valtakunnallisetOppiaineet = Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())
+  let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
 
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
 
@@ -287,10 +311,11 @@ let isUusi = (oppiaine) => {
   return !modelData(oppiaine, 'tunniste').koodiarvo
 }
 
-// oppiaineModel -> Prop [(oppiainemodel, tunniste)]
-const oppiaineAlternativesP = oppiaineModel => {
-  return EnumEditor.fetchAlternatives(modelLookup(oppiaineModel, 'tunniste'))
-    .map(alternatives => alternatives.map(enumValue => modelSetValue(oppiaineModel, enumValue, 'tunniste')))
+const completeWithFieldAlternatives = (models, path) => {
+  const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, path))
+    .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, path)))
+  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten()).startWith([])
 }
+
 
 let isPaikallinen = (m) => m.value.classes.includes('paikallinenkoulutusmoduuli')

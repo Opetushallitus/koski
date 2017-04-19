@@ -8,13 +8,14 @@ import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
 
-export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefined }) => {
+export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives }) => {
+  if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional({
     model,
     createEmpty: (protomodel) => modelSetValue(protomodel, zeroValue)
   })
 
-  let alternativesP = EnumEditor.fetchAlternatives(wrappedModel, sortBy)
+  let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
   let classNameP = alternativesP.map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
 
@@ -61,16 +62,13 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy = undefin
 
 let zeroValue = {title: 'Ei valintaa', value: 'eivalintaa'}
 
-EnumEditor.fetchAlternatives = (model, sortBy) => {
+EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath
   let edit = model.context.edit
   if (edit && alternativesPath) {
     let alternativesP = alternativesCache[alternativesPath]
     if (!alternativesP) {
-      alternativesP = Http.cachedGet(alternativesPath).map(alts => {
-          return !sortBy ? alts : sortBy(alts)
-        }
-      ).doError(showInternalError).startWith([])
+      alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
       alternativesCache[alternativesPath] = alternativesP
     }
     return alternativesP

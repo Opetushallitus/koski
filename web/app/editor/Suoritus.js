@@ -4,6 +4,7 @@ import * as L from 'partial.lenses'
 export const suoritusValmis = (suoritus) => modelData(suoritus, 'tila').koodiarvo === 'VALMIS'
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arvosanaLens = modelLens('arviointi.-1.arvosana')
+export const lastArviointiLens = modelLens('arviointi.-1')
 export const tilaLens = modelLens('tila')
 export const setTila = (suoritus, koodiarvo) => {
   let t = modelSetValue(L.get(tilaLens, suoritus), createTila(koodiarvo))
