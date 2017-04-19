@@ -4,7 +4,7 @@ import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
 import {Editor} from './Editor.jsx'
 import Dropdown from '../Dropdown.jsx'
-import {pushModelValue, modelData, modelSetData, modelSetValue} from './EditorModel'
+import {pushModelValue, modelData, modelSetValue} from './EditorModel'
 import {getOrganizationalPreferences} from '../organizationalPreferences'
 
 export const OrganisaatioHenkilöEditor = ({model}) => {

@@ -8,13 +8,11 @@ import {
   modelData,
   addContext
 } from './EditorModel'
-import R from 'ramda'
 import React from 'baret'
 import Bacon from 'baconjs'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
-import Http from '../http'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
 
