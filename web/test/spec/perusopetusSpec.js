@@ -616,16 +616,43 @@ describe('Perusopetus', function() {
         })
       })
       describe('Oppiaineen arvosanan muutos', function() {
-        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0) tr:eq(0)')
+        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
-        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, arvosana.selectValue('5'), editor.doneEditing)
-        it('muutettu arvosana näytetään', function() {
-          expect(arvosana.getValue()).to.equal('5')
+        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
+
+        describe('Kun annetaan numeerinen arvosana', function() {
+          before(editor.edit, arvosana.selectValue('5'), editor.doneEditing)
+
+          it('muutettu arvosana näytetään', function() {
+            expect(arvosana.getValue()).to.equal('5')
+          })
         })
-        after(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, arvosana.selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+
+        describe('Kun annetaan arvosana S', function() {
+          before(editor.edit, arvosana.selectValue('S'), opinnot.expandAll)
+
+          describe('Sanallinen arviointi', function() {
+            var sanallinenArviointi = äidinkieli.propertyBySelector('.kuvaus')
+            before(editor.edit, sanallinenArviointi.setValue('Hienoa työtä'), editor.doneEditing, opinnot.expandAll)
+            it('Voidaan syöttää ja näytetään', function() {
+              expect(sanallinenArviointi.isVisible()).to.equal(true)
+              expect(sanallinenArviointi.getValue()).to.equal('Hienoa työtä')
+            })
+
+            describe('Kun vaihdetaan numeeriseen arvosanaan', function() {
+              before(editor.edit, arvosana.selectValue(8), opinnot.expandAll)
+
+              it('Sanallinen arviointi piilotetaan', function() {
+                expect(sanallinenArviointi.isVisible()).to.equal(false)
+              })
+            })
+          })
+        })
+
+        //after(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, arvosana.selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
       describe('Yksilöllistäminen', function() {
-        before(editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.doneEditing)
+        before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),  editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.doneEditing)
         it('toimii', function() {
           expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 *')
         })
