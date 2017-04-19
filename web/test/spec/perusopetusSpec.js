@@ -210,7 +210,7 @@ describe('Perusopetus', function() {
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Oppiaine Arvosana\n' +
             'motoriset taidot S\n' +
-            'Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
+            'Sanallinen arviointi : Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
             'kieli ja kommunikaatio S\n' +
             'sosiaaliset taidot S\n' +
             'päivittäisten toimintojen taidot S\n' +
@@ -1308,7 +1308,7 @@ describe('Perusopetus', function() {
           'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Oppiaine Arvosana Laajuus\n' +
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
-          'Keskustelee sujuvasti suomeksi')
+          'Sanallinen arviointi : Keskustelee sujuvasti suomeksi')
       })
     })
     describe('Tulostettava todistus', function() {
