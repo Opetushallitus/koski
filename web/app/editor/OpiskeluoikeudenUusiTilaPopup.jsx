@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {contextualizeSubModel, modelItems, accumulateModelState, modelLookupRequired} from './EditorModel'
+import {contextualizeSubModel, modelItems, accumulateModelStateAndValidity, modelLookupRequired} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
@@ -9,7 +9,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
   let submitBus = Bacon.Bus()
   let initialModel = contextualizeSubModel(tilaListModel.arrayPrototype, tilaListModel, modelItems(tilaListModel).length)
 
-  let { modelP, errorP } = accumulateModelState(initialModel)
+  let { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
 
   let isAllowedDate = d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true
 

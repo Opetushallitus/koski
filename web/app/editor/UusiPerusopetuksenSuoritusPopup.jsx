@@ -8,7 +8,7 @@ import {
   contextualizeSubModel,
   modelItems,
   modelLookup,
-  accumulateModelState,
+  accumulateModelStateAndValidity,
   modelSet,
   addContext,
   modelData,
@@ -43,7 +43,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
         initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
 
-        let { modelP, errorP } = accumulateModelState(initialModel)
+        let { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
 
         let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
         let validP = errorP.not().and(hasToimipisteP)

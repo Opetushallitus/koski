@@ -1,6 +1,6 @@
 import {
   modelLookup,
-  accumulateModelState,
+  accumulateModelStateAndValidity,
   optionalPrototypeModel,
   modelSet,
   modelSetValue,
@@ -25,7 +25,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
   let toimipiste = suoritus.context.toimipiste
   suoritus = modelSetValue(suoritus, toimipiste.value, 'vahvistus.myöntäjäOrganisaatio')
   suoritus = setTila(suoritus, 'VALMIS')
-  let { modelP, errorP } = accumulateModelState(suoritus)
+  let { modelP, errorP } = accumulateModelStateAndValidity(suoritus)
   let validP = errorP.not()
 
   modelP.sampledBy(submitBus).onValue(updatedSuoritus => {

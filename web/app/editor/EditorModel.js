@@ -289,15 +289,19 @@ export const getModelFromChange = (change) => {
   return change._remove ? undefined : change
 }
 
-export const accumulateModelState = (model) => {
-  let changeBus = Bacon.Bus()
-  let modelP = changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
+export const accumulateModelStateAndValidity = (model) => {
+  let modelP = accumulateModelState(model)
   let errorP = modelP.map(modelValid).not()
   return {
     modelP,
     errorP
   }
 }
+
+export const accumulateModelState = (model, changeBus = Bacon.Bus()) => {
+  return changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
+}
+
 
 export const pushModelValue = (model, value, path) => pushModel(modelSetValue(model, value, path))
 export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
