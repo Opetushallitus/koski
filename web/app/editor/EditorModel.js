@@ -233,7 +233,9 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
 
 
 export const oneOfPrototypes = (model) => {
-  return (model.oneOfPrototypes || []).map(proto => contextualizeSubModel(proto, model))
+  return model.oneOfPrototypes
+    ? model.oneOfPrototypes.map(proto => contextualizeSubModel(proto, model))
+    : [model]
 }
 
 // Add the given context to the model and all submodels. Submodels get a copy where their full path is included,

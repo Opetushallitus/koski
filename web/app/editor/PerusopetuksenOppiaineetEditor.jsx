@@ -266,7 +266,11 @@ const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallbac
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(wrappedOsasuoritukset).length
-  let oppiaineenSuoritusProto = contextualizeSubModel(wrappedOsasuoritukset.arrayPrototype, wrappedOsasuoritukset, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
+
+
+  let oppiaineenSuoritusProto = contextualizeSubModel(wrappedOsasuoritukset.arrayPrototype, wrappedOsasuoritukset, newItemIndex)
+  oppiaineenSuoritusProto = oneOfPrototypes(oppiaineenSuoritusProto)[0]
+
   let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, wrappedOsasuoritukset, newItemIndex)
   oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
 

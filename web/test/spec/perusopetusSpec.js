@@ -1311,6 +1311,18 @@ describe('Perusopetus', function() {
           'Sanallinen arviointi : Keskustelee sujuvasti suomeksi')
       })
     })
+    describe('Tietojen muuttaminen', function() {
+      var editor = opinnot.opiskeluoikeusEditor()
+      describe('Oppiaineen arvosanan muutos', function() {
+        var äidinkieli = editor.subEditor('.oppiaineet tbody.ai tr:eq(0)')
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
+        before(editor.edit, arvosana.selectValue('H'), editor.doneEditing)
+        it('muutettu arvosana näytetään', function() {
+          expect(arvosana.getValue()).to.equal('H')
+        })
+        after(editor.edit, arvosana.selectValue('S'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+      })
+    })
     describe('Tulostettava todistus', function() {
       before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
