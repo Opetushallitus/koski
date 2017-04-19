@@ -1,7 +1,7 @@
 import {JaksoEditor} from './JaksoEditor.jsx'
-import {OppiaineEditor} from './PerusopetuksenOppiaineetEditor.jsx'
+import {OppiaineenSuoritusEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 
 export const editorMapping = {
   'erityisentuenpaatos': JaksoEditor,
-  'oppiaineensuoritus': OppiaineEditor
+  'oppiaineensuoritus': OppiaineenSuoritusEditor
 }

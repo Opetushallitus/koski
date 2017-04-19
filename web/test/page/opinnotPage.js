@@ -332,6 +332,9 @@ function Property(elem) {
     },
     organisaatioValitsin: function() {
       return OrganisaatioHaku(elem)
+    },
+    getOptions: function() {
+      return Page(elem).getInputOptions('.dropdown')
     }
   }, Editor(elem))
 }

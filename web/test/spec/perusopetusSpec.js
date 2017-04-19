@@ -731,10 +731,11 @@ describe('Perusopetus', function() {
       })
 
       describe('Valinnainen oppiaine', function() {
+        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
         var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.valinnainen')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
           var historia = editor.subEditor('.valinnainen.HI')
-          before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
           it('Toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
           })
@@ -754,8 +755,26 @@ describe('Perusopetus', function() {
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
             uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
             editor.doneEditing, wait.until(page.isSavedLabelShown))
+
           it('Toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+          })
+
+          describe('Lisäyksen jälkeen', function() {
+            before(editor.edit)
+            it('Uusi oppiaine löytyy listalta', function() {
+              expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi')
+            })
+
+            describe('Muutettaessa lisätyn oppiaineen kuvausta', function() {
+              var tanssi = editor.subEditor('.valinnainen.TNS')
+              before(tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
+
+              it('Muutettu oppiaine löytyy listalta', function() {
+                expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+              })
+
+            })
           })
         })
       })

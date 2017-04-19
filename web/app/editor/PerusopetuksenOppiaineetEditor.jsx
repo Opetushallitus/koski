@@ -26,6 +26,8 @@ import {
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, arvosanaLens, setTila} from './Suoritus'
+import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
+import {doActionWhileMounted} from '../util'
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -79,10 +81,10 @@ const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
       </tr>
       </thead>
       {
-        suoritukset.map((suoritus) => (<OppiaineEditor key={suoritus.arrayKey} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+        suoritukset.map((suoritus) => (<OppiaineenSuoritusEditor key={suoritus.arrayKey} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
       }
       {
-        model.context.edit && <NewOppiaine osasuoritukset={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} />
+        model.context.edit && <NewOppiaine osasuoritukset={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
       }
     </table>
   )
@@ -109,7 +111,7 @@ let fixArvosana = (model) => {
   }))
 }
 
-export const OppiaineEditor = React.createClass({
+export const OppiaineenSuoritusEditor = React.createClass({
   render() {
     let {model, showLaajuus, showFootnotes} = this.props
     let {expanded} = this.state
@@ -133,7 +135,7 @@ export const OppiaineEditor = React.createClass({
         { // expansion link
           showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
         }
-        <OppiaineTitleEditor {...{oppiaine, showExpand, toggleExpand}}/>
+        <OppiaineEditor {...{oppiaine, showExpand, toggleExpand}}/>
 
       </td>
       <td className="arvosana">
@@ -179,7 +181,7 @@ export const OppiaineEditor = React.createClass({
   }
 })
 
-OppiaineEditor.validateModel = (m) => {
+OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
     return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
   }
@@ -192,7 +194,7 @@ let fixKuvaus = (oppiaine) => {
   }))
 }
 
-let OppiaineTitleEditor = ({oppiaine, showExpand, toggleExpand}) => {
+let OppiaineEditor = ({oppiaine, showExpand, toggleExpand}) => {
   let oppiaineTitle = (aine) => {
     let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
     return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
@@ -200,7 +202,6 @@ let OppiaineTitleEditor = ({oppiaine, showExpand, toggleExpand}) => {
   let pakollinen = modelData(oppiaine, 'pakollinen')
   let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
   let äidinkieli = oppiaine.value.classes.includes('peruskoulunaidinkielijakirjallisuus')
-
 
   return (<span>
     {
@@ -215,17 +216,27 @@ let OppiaineTitleEditor = ({oppiaine, showExpand, toggleExpand}) => {
       // kielivalinta
       (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
     }
-
+    {
+      isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.doneEditingBus, () => {
+        let data = modelData(oppiaine)
+        let organisaatioOid = modelData(oppiaine.context.toimipiste).oid
+        let key = data.tunniste.koodiarvo
+        saveOrganizationalPreference(organisaatioOid, 'perusopetuksenoppiaineet', key, data)
+      })
+    }
   </span>)
 }
 
-const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
+const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallback}) => {
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(wrappedOsasuoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(wrappedOsasuoritukset.arrayPrototype, wrappedOsasuoritukset, newItemIndex).oneOfPrototypes.find(p => p.key === 'perusopetuksenoppiaineensuoritus')
   let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, wrappedOsasuoritukset, newItemIndex)
   oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
+
+  let paikallisetOppiaineet = getOrganizationalPreferences(organisaatioOid, 'perusopetuksenoppiaineet').startWith([])
+
 
   var oneOfPrototypes = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli').oneOfPrototypes
     .map(proto => contextualizeSubModel(proto, oppiaineenSuoritusModel, 'koulutusmoduuli'))
@@ -235,14 +246,18 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
   let oppiaineModels = oneOfPrototypes.filter(R.complement(isPaikallinen))
     .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
 
+  let valtakunnallisetOppiaineet = Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())
+
+  let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
+
   return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
   <tr>
     <td>
       {
         <DropDown
-          options={Bacon.combineAsArray(oppiaineModels.map(oppiaineAlternativesP)).last().map(x => x.flatten())}
-          keyValue={oppiaine => isPaikallinen(oppiaine) ? 'uusi' : modelLookup(oppiaine, 'tunniste').value.value}
-          displayValue={oppiaine => isPaikallinen(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
+          options={oppiaineet}
+          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelLookup(oppiaine, 'tunniste').value.value}
+          displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={oppiaine => {
             resultCallback(modelSet(oppiaineenSuoritusModel, oppiaine, 'koulutusmoduuli'))
           }}
@@ -254,6 +269,10 @@ const NewOppiaine = ({osasuoritukset, pakollinen, resultCallback}) => {
     </td>
   </tr>
   </tbody>)
+}
+
+let isUusi = (oppiaine) => {
+  return !modelData(oppiaine, 'tunniste').koodiarvo
 }
 
 // oppiaineModel -> Prop [(oppiainemodel, tunniste)]
