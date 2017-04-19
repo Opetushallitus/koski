@@ -5,7 +5,7 @@ describe('Perusopetus', function() {
   var opinnot = OpinnotPage()
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
-
+  var editor = opinnot.opiskeluoikeusEditor()
   var currentDate = new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + new Date().getFullYear()
 
   before(Authentication().login(), resetFixtures)
@@ -242,7 +242,6 @@ describe('Perusopetus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    var editor = opinnot.opiskeluoikeusEditor()
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
     describe('Opiskeluoikeuden tiedot', function() {
@@ -648,8 +647,6 @@ describe('Perusopetus', function() {
             })
           })
         })
-
-        //after(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, arvosana.selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
       describe('Yksilöllistäminen', function() {
         before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),  editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.doneEditing)
@@ -848,7 +845,6 @@ describe('Perusopetus', function() {
   })
 
   describe('Opiskeluoikeuden versiot', function() {
-    var editor = opinnot.opiskeluoikeusEditor()
     var versiohistoria = opinnot.versiohistoria()
 
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), versiohistoria.avaa)
@@ -1015,7 +1011,6 @@ describe('Perusopetus', function() {
   })
 
   describe('Vuosiluokan suorituksen lisääminen', function() {
-    var editor = opinnot.opiskeluoikeusEditor()
     var lisääSuoritus = opinnot.lisääSuoritusDialog()
 
     before(
@@ -1311,6 +1306,35 @@ describe('Perusopetus', function() {
         // See more detailed content specification in PerusopetusSpec.scala
       })
     })
+    describe('Tietojen muuttaminen', function() {
+      describe('Oppiaineen arvosanan muutos', function() {
+        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
+        describe('Kun annetaan numeerinen arvosana', function() {
+          before(editor.edit, arvosana.selectValue('5'), editor.doneEditing)
+
+          it('muutettu arvosana näytetään', function() {
+            expect(arvosana.getValue()).to.equal('5')
+          })
+        })
+      })
+
+      describe('Pakollinen oppiaine', function() {
+        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.pakollinen')
+        var filosofia = editor.subEditor('.pakollinen.FI')
+        before(editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+        it('Lisääminen', function () {
+          expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+        })
+
+        describe('Poistaminen', function () {
+          before(editor.edit, filosofia.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+          it('toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
+          })
+        })
+      })
+    })
   })
 
   describe('Perusopetukseen valmistava opetus', function() {
@@ -1339,7 +1363,6 @@ describe('Perusopetus', function() {
       })
     })
     describe('Tietojen muuttaminen', function() {
-      var editor = opinnot.opiskeluoikeusEditor()
       describe('Oppiaineen arvosanan muutos', function() {
         var äidinkieli = editor.subEditor('.oppiaineet tbody.ai tr:eq(0)')
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
