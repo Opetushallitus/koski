@@ -5,7 +5,7 @@ import * as L from 'partial.lenses'
 import {Editor} from './Editor.jsx'
 import Dropdown from '../Dropdown.jsx'
 import {pushModelValue, modelData, modelSetData, modelSetValue} from './EditorModel'
-import Http from '../http'
+import {getOrganizationalPreferences} from '../organizationalPreferences'
 
 export const OrganisaatioHenkilöEditor = ({model}) => {
   let query = Atom('')
@@ -16,12 +16,11 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
   let nimi = h => modelData(h, 'nimi')
   let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + modelData(h, 'titteli.fi'))
   let queryFilter = q => o => nimi(o).toLowerCase().indexOf(q.toLowerCase()) >= 0
-  let setData = (data, isNew) => modelSetValue(L.set(newItemLens, isNew, modelSetData(modelSetData(model, data.titteli, 'titteli.fi'), data.nimi, 'nimi')), myöntäjäOrganisaatio.value, 'organisaatio')
   var newItemLens = L.compose('value', 'newItem')
-  let newItem = setData({}, true)
+  let newItem = modelSetValue(L.set(newItemLens, true, model), myöntäjäOrganisaatio.value, 'organisaatio')
   let isNewItem = (o) => L.get(newItemLens, o)
-  let kaikkiMyöntäjätP = Http.cachedGet(`/koski/api/preferences/${organisaatioOid}/myöntäjät`)
-    .map(myöntäjät => myöntäjät.map(d => setData({ nimi: d.nimi, titteli: d.titteli.fi}, false)))
+  let kaikkiMyöntäjätP = getOrganizationalPreferences(organisaatioOid, 'myöntäjät')
+    .map(myöntäjät => myöntäjät.map(m => modelSetValue(model, m.value)))
 
   let myöntäjätP = Bacon.combineWith(kaikkiMyöntäjätP, query, (xs, q) => !q ? xs : xs.filter(queryFilter(q)))
     .startWith([])

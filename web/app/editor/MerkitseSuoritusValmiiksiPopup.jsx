@@ -16,12 +16,13 @@ import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
 import Http from '../http'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
+import {saveOrganizationalPreference} from '../organizationalPreferences'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
   let submitBus = Bacon.Bus()
   let vahvistus = optionalPrototypeModel(modelLookup(suoritus, 'vahvistus'))
   suoritus = modelSet(suoritus, vahvistus, 'vahvistus')
-  let toimipiste = modelLookup(suoritus, 'toimipiste')
+  let toimipiste = suoritus.context.toimipiste
   suoritus = modelSetValue(suoritus, toimipiste.value, 'vahvistus.myöntäjäOrganisaatio')
   suoritus = setTila(suoritus, 'VALMIS')
   let { modelP, errorP } = accumulateModelState(suoritus)
@@ -29,11 +30,10 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
 
   modelP.sampledBy(submitBus).onValue(updatedSuoritus => {
     let saveResults = modelItems(updatedSuoritus, 'vahvistus.myöntäjäHenkilöt').filter(h => h.value.newItem).map(h => {
-      let data = R.dissoc('organisaatio', modelData(h))
+      let data = modelData(h)
       let key = data.nimi
       let organisaatioOid = modelData(updatedSuoritus, 'toimipiste').oid
-      var path = `/koski/api/preferences/${organisaatioOid}/myöntäjät`
-      return Http.put(path, { key, value: data}, { invalidateCache: [path] })
+      return saveOrganizationalPreference(organisaatioOid, 'myöntäjät', key, data)
     })
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })

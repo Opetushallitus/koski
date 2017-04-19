@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
+import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
@@ -16,6 +17,7 @@ import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
   *  Endpoints for the Koski UI
   */
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+  private val preferencesService = PreferencesService(application.database.db)
   private def localization = LocalizedHtml.get(koskiSession)
   get("/:oid") {
     renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
@@ -53,11 +55,21 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     if (params("koodistoUri") == "perusopetuksenluokkaaste") {
       val oppiaine = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"))
       val suoritukset = PakollisetOppiaineet.pakollistenOppiaineidenSuoritukset(application.koodistoViitePalvelu)
-      val models = suoritukset.map { suoritus => EditorModelBuilder.buildModel(EditorSchema.deserializationContext, suoritus, true)(koskiSession, application.koodistoViitePalvelu)}
+      val models = suoritukset.map { suoritus => buildModel(suoritus, true)}
       ListModel(models, None, Map.empty)
     } else {
       haltWithStatus(KoskiErrorCategory.notFound())
     }
+  }
+
+  def buildModel(obj: AnyRef, editable: Boolean): EditorModel = {
+    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu)
+  }
+
+  get("/preferences/:organisaatioOid/:type") {
+    val organisaatioOid = params("organisaatioOid")
+    val `type` = params("type")
+    renderEither(preferencesService.get(organisaatioOid, `type`)(koskiSession).right.map(_.map(buildModel(_, true))))
   }
 
   private def getKoodit() = {
@@ -112,7 +124,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
       }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-      EditorModelBuilder.buildModel(EditorSchema.deserializationContext, editorView, editable)(koskiSession, application.koodistoViitePalvelu)
+      buildModel(editorView, editable)
     }
   }
 }

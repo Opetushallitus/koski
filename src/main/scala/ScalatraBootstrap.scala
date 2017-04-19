@@ -6,7 +6,7 @@ import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationServlet, KoodistoServlet}
-import fi.oph.koski.editor.{EditorServlet, PreferencesServlet}
+import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
@@ -18,6 +18,7 @@ import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedotServlet, Opiskelu
 import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.organisaatio.OrganisaatioServlet
+import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet

@@ -15,6 +15,7 @@ import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEdit
 export const SuoritusEditor = React.createClass({
   render() {
     let {model} = this.props
+    model = addContext(model, { toimipiste: modelLookup(model, 'toimipiste')})
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
     let resolveEditor = (mdl) => {
