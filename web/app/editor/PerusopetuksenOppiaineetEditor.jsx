@@ -194,16 +194,18 @@ let fixKuvaus = (oppiaine) => {
   }))
 }
 
-let OppiaineEditor = ({oppiaine, showExpand, toggleExpand}) => {
-  let oppiaineTitle = (aine) => {
-    let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
-    return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
-  }
-  let pakollinen = modelData(oppiaine, 'pakollinen')
-  let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
-  let äidinkieli = oppiaine.value.classes.includes('peruskoulunaidinkielijakirjallisuus')
+let OppiaineEditor = React.createClass({
+  render() {
+    let { oppiaine, showExpand, toggleExpand } = this.props
+    let oppiaineTitle = (aine) => {
+      let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
+      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
+    }
+    let pakollinen = modelData(oppiaine, 'pakollinen')
+    let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
+    let äidinkieli = oppiaine.value.classes.includes('peruskoulunaidinkielijakirjallisuus')
 
-  return (<span>
+    return (<span>
     {
       oppiaine.context.edit && isPaikallinen(oppiaine)
         ? <span className="koodi-ja-nimi">
@@ -212,20 +214,30 @@ let OppiaineEditor = ({oppiaine, showExpand, toggleExpand}) => {
           </span>
         : showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
     }
-    {
-      // kielivalinta
-      (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
-    }
-    {
-      isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.doneEditingBus, () => {
-        let data = modelData(oppiaine)
-        let organisaatioOid = modelData(oppiaine.context.toimipiste).oid
-        let key = data.tunniste.koodiarvo
-        saveOrganizationalPreference(organisaatioOid, 'perusopetuksenoppiaineet', key, data)
-      })
-    }
+      {
+        // kielivalinta
+        (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
+      }
+      {
+        this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.doneEditingBus, () => {
+          let data = modelData(oppiaine)
+          let organisaatioOid = modelData(oppiaine.context.toimipiste).oid
+          let key = data.tunniste.koodiarvo
+          saveOrganizationalPreference(organisaatioOid, 'perusopetuksenoppiaineet', key, data)
+        })
+      }
   </span>)
-}
+  },
+
+  componentWillReceiveProps(newProps) {
+    let currentData = modelData(this.props.oppiaine)
+    let newData = modelData(newProps.oppiaine)
+    if (!R.equals(currentData, newData)) {
+      this.setState({ changed: true})
+    }
+  }
+})
+
 
 const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallback}) => {
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'

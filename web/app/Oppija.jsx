@@ -90,11 +90,11 @@ const createState = (oppijaOid) => {
     let opiskeluoikeus = opiskeluoikeudet.find(x => x.id == opiskeluoikeusId)
 
     let oppijaUpdate = {
-      henkilö: {oid: oppijaData.henkilö.oid},
+      henkilö: {oid: oppijaOid},
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
-    return Http.put('/koski/api/oppija', oppijaUpdate, { invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})
+    return Http.put('/koski/api/oppija', oppijaUpdate, { invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
       .flatMap(() => Http.cachedGet(oppijaEditorUri))
       .map( oppija => R.merge(oppija, { event: 'save' }))
       .doAction(onAfterLoad)
