@@ -45,6 +45,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
           if (request.isBasicAuth && request.providesAuth) {
             tryLogin(request.username, request.password)
           } else {
+            // TODO: hanskaa brute force
             Left(KoskiErrorCategory.unauthorized.notAuthenticated())
           }
         }

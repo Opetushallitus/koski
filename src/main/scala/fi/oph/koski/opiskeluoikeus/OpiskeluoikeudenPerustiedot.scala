@@ -233,6 +233,43 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   def refreshIndex =
     Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
 
+  def statistics = {
+    implicit val formats = GenericJsonFormats.genericFormats
+    val result = runSearch(Json.parse(
+      """
+        |{
+        |  "size": 0,
+        |  "aggs": {
+        |    "tila": {
+        |      "terms": {
+        |        "field": "tila.koodiarvo.keyword"
+        |      }
+        |    },
+        |    "tyyppi": {
+        |      "terms": {
+        |        "field": "tyyppi.koodiarvo.keyword"
+        |      },
+        |      "aggs": {
+        |        "tila": {
+        |          "terms": {
+        |            "field": "tila.koodiarvo.keyword"
+        |          }
+        |        }
+        |      }
+        |    }
+        |  }
+        |}
+        |
+      """.stripMargin))
+
+    result.map { r =>
+      val total = (r \ "hits" \ "total").extract[Int]
+      val xs = (r \ "aggregations" \ "tyyppi" \ "buckets").extract[List[Any]]
+      OpiskeluoikeudetTyypeittäin(total, xs)
+    }.getOrElse(Nil)
+  }
+  case class OpiskeluoikeudetTyypeittäin(total: Int, opiskeluoikeusTyypit: List[Any])
+  case class GroupByOpiskeluoikeusTyyppi(key: String, doc_count: Int)
   /**
     * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
     */
