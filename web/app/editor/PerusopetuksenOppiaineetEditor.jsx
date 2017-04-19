@@ -268,7 +268,7 @@ const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallbac
       {
         <DropDown
           options={oppiaineet}
-          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelLookup(oppiaine, 'tunniste').value.value}
+          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
           displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={oppiaine => {
             resultCallback(modelSet(oppiaineenSuoritusModel, oppiaine, 'koulutusmoduuli'))
