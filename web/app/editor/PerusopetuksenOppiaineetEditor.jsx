@@ -87,7 +87,7 @@ let SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   return (<span>
     <section>
       <Oppiainetaulukko model={model} suoritukset={modelItems(model, 'osasuoritukset')} pakolliset={false} />
-      <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
+      <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
     </section>
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)
@@ -306,7 +306,7 @@ let OppiaineEditor = React.createClass({
 
 const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCallback}) => {
   if (!oppiaineenSuoritus.context.edit) return null
-  let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
+  let pakollisuus = pakollinen == undefined ? '' : pakollinen ? ' pakollinen' : ' valinnainen'
   oppiaineenSuoritus = addContext(oppiaineenSuoritus, { editAll: true })
   var koulutusmoduuliProtos = oneOfPrototypes(modelLookup(oppiaineenSuoritus, 'koulutusmoduuli'))
   let oppiaineModels = koulutusmoduuliProtos
@@ -317,7 +317,7 @@ const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCal
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
   let paikallinenOppiainePrototype = koulutusmoduuliProtos.find(isPaikallinen)
 
-  return (<div className={'uusi-oppiaine ' + pakollisuus}>
+  return (<div className={'uusi-oppiaine' + pakollisuus}>
     <DropDown
       options={oppiaineet}
       keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
@@ -325,7 +325,7 @@ const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCal
       onSelectionChanged={oppiaine => {
               resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
             }}
-      selectionText={`Lisää ${pakollisuus} oppiaine`}
+      selectionText={`Lisää${pakollisuus} oppiaine`}
       newItem={!pakollinen && paikallinenOppiainePrototype}
       enableFilter={true}
     />
