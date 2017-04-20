@@ -221,6 +221,7 @@ case class PerusopetuksenKäyttäytymisenArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString] = None,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  @Hidden
   päivä: Option[LocalDate] = None
 ) extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
