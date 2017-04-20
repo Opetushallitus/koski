@@ -19,7 +19,7 @@ export const PropertiesEditor = React.createClass({
     let edit = context.edit
     let shouldShow = (property) => shouldShowProperty(context)(property) && propertyFilter(property)
 
-    let munch = (prefix) => (property) => { // TODO: just index passing is enough, no context needed
+    let munch = (prefix) => (property, i) => { // TODO: just index passing is enough, no context needed
       if (!edit && property.flatten && property.model.value && property.model.value.properties) {
         return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
       } else if (!edit && property.flatten && (property.model.type === 'array')) {
@@ -27,7 +27,7 @@ export const PropertiesEditor = React.createClass({
           return modelProperties(item, shouldShow).flatMap(munch(prefix + j + '.'))
         })
       } else {
-        let key = prefix + property.key
+        let key = prefix + property.key + i
         let propertyClassName = 'property ' + property.key
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />

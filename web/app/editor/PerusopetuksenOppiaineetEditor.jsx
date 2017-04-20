@@ -1,8 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {PropertyEditor} from './PropertyEditor.jsx'
+import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import DropDown from '../Dropdown.jsx'
@@ -21,11 +20,11 @@ import {
   modelSet,
   modelSetData,
   modelSetValue,
-  modelTitle,
   pushModel,
   pushRemoval,
   oneOfPrototypes,
-  findModelProperty
+  findModelProperty,
+  modelProperties
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
@@ -37,7 +36,6 @@ var valinnaisetTitle = 'Valinnaiset oppiaineet'
 let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
-  // TODO: perusopetukseen valmistavassa: koulutusmoduulin opetuksenSisältö (ehkä geneerisesti kaikki koulutusmoduulin ja arvioinnin extra attribuutit)
   let toimintaAlueittain = modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
   let osasuoritukset = modelItems(model, 'osasuoritukset')
 
@@ -61,7 +59,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
-let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
+const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]
   let groupedSuoritukset = R.groupBy(groupTitleForSuoritus, modelItems(model, 'osasuoritukset'))
   return (<span>{groups.map(pakollisuus => {
@@ -82,7 +80,7 @@ let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   })}</span>)
 }
 
-let SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
+const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
   return (<span>
     <section>
@@ -161,23 +159,33 @@ export const OppiaineenSuoritusEditor = React.createClass({
     let {expanded} = this.state
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
-    let tunniste = modelData(oppiaine, 'tunniste')
-    let sanallinenArviointi = modelTitle(model, 'arviointi.-1.kuvaus')
-    let editing = model.context.edit
-    let tila = modelData(model, 'tila.koodiarvo')
-    let extraPropertiesFilter = p => !['koulutusmoduuli', 'arviointi'].includes(p.key)
-    let showExpand = sanallinenArviointi || editing && model.value.properties.some(extraPropertiesFilter)
+    let edit = model.context.edit
+    let className = 'oppiaine'
+      + ' ' + (modelData(model, 'koulutusmoduuli.pakollinen') ? 'pakollinen' : 'valinnainen')
+      + ' ' + modelData(oppiaine, 'tunniste').koodiarvo
+      + ' ' + modelData(model, 'tila.koodiarvo').toLowerCase()
+      + (expanded ? ' expanded' : '')
+      + (isPaikallinen(oppiaine) ? ' paikallinen' : '')
+
+    let extraPropertiesFilter = p => {
+      if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'tila', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
+      if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä'].includes(p.key)) return false // these are never shown
+      return shouldShowProperty(model.context)(p)
+    }
+
+    let extraProperties = modelProperties(modelLookup(model, 'arviointi.-1'))
+      .concat(modelProperties(oppiaine))
+      .concat(modelProperties(fixArvosana(model)))
+      .filter(extraPropertiesFilter)
+
+    let showExpand = extraProperties.length > 0
     let toggleExpand = () => { this.setState({expanded : !expanded}) }
-    let errors = modelErrorMessages(model)
-    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
-    let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
-    let className = 'oppiaine ' + pakollisuus + ' ' + tunniste.koodiarvo + (' ' + tila.toLowerCase()) + (expanded ? ' expanded' : '') + (isPaikallinen(oppiaine) ? ' paikallinen' : '')
 
     return (<tbody className={className}>
     <tr>
       <td className="oppiaine">
         { // expansion link
-          showExpand && <a className={ sanallinenArviointi || editing ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
+          showExpand && <a className="toggle-expand" onClick={toggleExpand}>{ expanded ? '' : ''}</a>
         }
         <OppiaineEditor {...{oppiaine, showExpand, toggleExpand}}/>
 
@@ -210,13 +218,10 @@ export const OppiaineenSuoritusEditor = React.createClass({
       }
     </tr>
     {
-      expanded && <tr key='sanallinen-arviointi'><td className="details"><PropertyEditor model={modelLookup(model, 'arviointi.-1')} propertyName="kuvaus" /></td></tr>
+      expanded && <tr key='details'><td className="details"><PropertiesEditor context={model.context} properties={extraProperties} /></td></tr>
     }
     {
-      editing && expanded && <tr key='details'><td className="details"><PropertiesEditor model={fixArvosana(model)} propertyFilter={extraPropertiesFilter} /></td></tr>
-    }
-    {
-      errors.map((error, i) => <tr key={'error-' + i} className="error"><td className="error">{error}</td></tr>)
+      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td className="error">{error}</td></tr>)
     }
     </tbody>)
   },

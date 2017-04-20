@@ -59,6 +59,7 @@ describe('Perusopetus', function() {
             'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
+            'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
@@ -122,6 +123,7 @@ describe('Perusopetus', function() {
             'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
+            'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
             'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
@@ -210,7 +212,7 @@ describe('Perusopetus', function() {
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Oppiaine Arvosana\n' +
             'motoriset taidot S\n' +
-            'Sanallinen arviointi : Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
+            'Sanallinen arviointi Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
             'kieli ja kommunikaatio S\n' +
             'sosiaaliset taidot S\n' +
             'päivittäisten toimintojen taidot S\n' +
@@ -1296,6 +1298,7 @@ describe('Perusopetus', function() {
           'Valinnaiset oppiaineet\n' +
           'Oppiaine Arvosana\n' +
           'Monialainen oppimiskokonaisuus S\n' +
+          'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
           '† = perusopetuksen päättötodistuksen arvosanan korotus, * = yksilöllistetty oppimäärä')
       })
     })
@@ -1360,7 +1363,8 @@ describe('Perusopetus', function() {
           'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Oppiaine Arvosana Laajuus\n' +
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
-          'Sanallinen arviointi : Keskustelee sujuvasti suomeksi')
+          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
+          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen')
       })
     })
     describe('Tietojen muuttaminen', function() {
