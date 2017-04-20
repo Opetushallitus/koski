@@ -19,6 +19,7 @@ import {
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
+import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -39,7 +40,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let luokkaAsteP = valittuLuokkaAsteP(initialModel)
   return (<div>
     {
-      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialModel, luokkaAsteP).last(), (valittuLuokkaAste, osasuoritukset) => {
+      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialModel, luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
         initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
         initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
 
@@ -72,10 +73,10 @@ let valittuLuokkaAsteP = (model) => {
   return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
 }
 
-let osasuorituksetP = (model, luokkaAsteP) =>
+let osasuorituksetP = (model, luokkaAsteP, toimintaAlueittain) =>
   luokkaAsteP.map('.data').flatMapLatest(data => {
     if (!data) return []
-    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${data.koodistoUri}/${data.koodiarvo}`)
+    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${data.koodistoUri}/${data.koodiarvo}?toimintaAlueittain=${toimintaAlueittain}`)
   }).toProperty()
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {

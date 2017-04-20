@@ -239,6 +239,22 @@ describe('Perusopetus', function() {
             })
           })
         })
+
+        describe('Vuosiluokan suorituksen lisäys', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog()
+          before(editor.edit, editor.property('tila').removeItem(0),
+            opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue('1a'), lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+            lisääSuoritus.lisääSuoritus, editor.doneEditing
+          )
+          it('Esitäyttää toiminta-alueet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['motoriset taidot',
+              'kieli ja kommunikaatio',
+              'sosiaaliset taidot',
+              'päivittäisten toimintojen taidot',
+              'kognitiiviset taidot'])
+          })
+
+        })
       })
 
       describe('Tulostettava todistus', function() {

@@ -359,19 +359,23 @@ case class PerusopetuksenOpiskeluoikeusjakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 object PakollisetOppiaineet {
-  def pakollistenOppiaineidenSuoritukset(koodistoViitePalvelu: KoodistoViitePalvelu) = {
+  def pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(koodistoViitePalvelu: KoodistoViitePalvelu, toimintaAlueittain: Boolean) = {
     def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
     val kesken = koodi("suorituksentila", "KESKEN")
     def aine(koodiarvo: String) = koodi("koskioppiaineetyleissivistava", koodiarvo)
     def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine, tila = kesken)
 
-    List(
-      PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus")),
-      MuuPeruskoulunOppiaine(aine("MA")),
-      MuuPeruskoulunOppiaine(aine("MU")),
-      MuuPeruskoulunOppiaine(aine("KU")),
-      MuuPeruskoulunOppiaine(aine("MU")),
-      MuuPeruskoulunOppiaine(aine("LI"))
-    ).map(suoritus)
+    if (toimintaAlueittain) {
+      (1 to 5).map(n => PerusopetuksenToiminta_Alue(koodi("perusopetuksentoimintaalue", n.toString))).map(ta => PerusopetuksenToiminta_AlueenSuoritus(ta, tila = kesken)).toList
+    } else {
+      List(
+        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus")),
+        MuuPeruskoulunOppiaine(aine("MA")),
+        MuuPeruskoulunOppiaine(aine("MU")),
+        MuuPeruskoulunOppiaine(aine("KU")),
+        MuuPeruskoulunOppiaine(aine("MU")),
+        MuuPeruskoulunOppiaine(aine("LI"))
+      ).map(suoritus)
+    }
   }
 }

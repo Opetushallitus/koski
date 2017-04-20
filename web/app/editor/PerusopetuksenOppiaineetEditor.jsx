@@ -59,7 +59,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
-let isToimintaAlueittain = (model) => modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
+export const isToimintaAlueittain = (model) => !!modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
 
 const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]

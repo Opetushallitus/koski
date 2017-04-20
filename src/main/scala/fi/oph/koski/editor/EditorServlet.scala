@@ -53,8 +53,10 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   get("/suoritukset/prefill/:koodistoUri/:koodiarvo") {
     if (params("koodistoUri") == "perusopetuksenluokkaaste") {
-      val oppiaine = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"))
-      val suoritukset = PakollisetOppiaineet.pakollistenOppiaineidenSuoritukset(application.koodistoViitePalvelu)
+      val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
+
+      val suoritukset = PakollisetOppiaineet.pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(application.koodistoViitePalvelu, toimintaAlueittain)
+
       val models = suoritukset.map { suoritus => buildModel(suoritus, true)}
       ListModel(models, None, Map.empty)
     } else {
