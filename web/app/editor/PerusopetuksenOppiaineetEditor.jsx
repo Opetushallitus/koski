@@ -72,9 +72,7 @@ let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
       {(suoritukset.length > 0 || model.context.edit) && (<section>
         {groups.length > 1 && <h5>{pakollisuus}</h5>}
         <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={onPakolliset} />
-        {
-          model.context.edit ? <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} /> : null
-        }
+        <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
       </section>)
       }
       {
@@ -89,9 +87,7 @@ let SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   return (<span>
     <section>
       <Oppiainetaulukko model={model} suoritukset={modelItems(model, 'osasuoritukset')} pakolliset={false} />
-      {
-        model.context.edit && <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
-      }
+      <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
     </section>
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)
@@ -309,6 +305,7 @@ let OppiaineEditor = React.createClass({
 })
 
 const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCallback}) => {
+  if (!oppiaineenSuoritus.context.edit) return null
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
   oppiaineenSuoritus = addContext(oppiaineenSuoritus, { editAll: true })
   var koulutusmoduuliProtos = oneOfPrototypes(modelLookup(oppiaineenSuoritus, 'koulutusmoduuli'))
