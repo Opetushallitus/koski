@@ -8,9 +8,6 @@ export const LaajuusEditor = React.createClass({
   render() {
     let { model } = this.props
     let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo'), createEmpty: m => modelSetValue(m, undefined, 'arvo')})
-
-
-
     return (
       <span className="property laajuus">
         <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>

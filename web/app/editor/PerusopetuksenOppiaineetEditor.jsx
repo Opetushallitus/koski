@@ -23,13 +23,13 @@ import {
   pushRemoval,
   oneOfPrototypes,
   findModelProperty,
-  modelProperties
+  modelProperties,
+  hasModelProperty
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
 import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
-import {hasModelProperty} from './EditorModel';
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
@@ -45,8 +45,6 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
   let hasPakollisuus = !isToimintaAlueittain(model) && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
-  
-
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
     <p>Arvostelu 4-10, S (suoritettu) tai H (hylätty)</p>
