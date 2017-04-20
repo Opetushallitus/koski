@@ -2,13 +2,13 @@ import './polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './http'
-import Bacon from 'baconjs'
 import './style/pulssi.less'
 
 const Pulssi = React.createClass({
   render() {
     let {stats} = this.state
-    let valmiidenTutkintojenMäärä =  stats.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
+    let opiskeluoikeudet = stats.opiskeluoikeudet
+    let valmiidenTutkintojenMäärä =  opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
       acc + koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä, 0
     )
 
@@ -17,7 +17,7 @@ const Pulssi = React.createClass({
         <div className="top-row three-columns">
           <section className="primary-metric opiskeluoikeudet-total">
             <h3>Opiskeluoikeuksien määrä</h3>
-            <div className="metric-large">{stats.opiskeluoikeuksienMäärä}</div>
+            <div className="metric-large">{opiskeluoikeudet.opiskeluoikeuksienMäärä}</div>
           </section>
           <section className="primary-metric kattavuus">
             <h3>Kattavuus</h3>
@@ -27,7 +27,7 @@ const Pulssi = React.createClass({
           <section className="primary-metric valmiit-tutkinnot">
             <h3>Valmiiden tutkintojen määrä</h3>
             <div className="metric-large">{valmiidenTutkintojenMäärä}</div>
-            {toPercent(valmiidenTutkintojenMäärä / stats.opiskeluoikeuksienMäärä)} %
+            {toPercent(valmiidenTutkintojenMäärä / opiskeluoikeudet.opiskeluoikeuksienMäärä)} %
           </section>
         </div>
         <div className="expanding three-columns">
@@ -36,7 +36,7 @@ const Pulssi = React.createClass({
               <section className="opiskeluoikeudet-total">
                 <ul>
                   {
-                    stats.määrätKoulutusmuodoittain && stats.määrätKoulutusmuodoittain.map(stat =>
+                    opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map(stat =>
                       <li>
                         <span>{stat.nimi}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
                       </li>
@@ -60,7 +60,7 @@ const Pulssi = React.createClass({
           <section className="valmiit-tutkinnot">
             <ul>
               {
-                stats.määrätKoulutusmuodoittain && stats.määrätKoulutusmuodoittain.map(koulutusmuoto =>
+                opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map(koulutusmuoto =>
                   <KoulutusmuotoTilasto koulutusmuoto={koulutusmuoto} />
                 )
               }
@@ -74,7 +74,7 @@ const Pulssi = React.createClass({
     Http.cachedGet('/koski/api/pulssi').onValue(stats => this.setState({stats}))
   },
   getInitialState() {
-    return {stats: { määrätKoulutusmuodoittain: [] } }
+    return {stats: { opiskeluoikeudet: { määrätKoulutusmuodoittain: [] } } }
   }
 })
 
