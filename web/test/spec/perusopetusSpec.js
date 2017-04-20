@@ -1323,6 +1323,20 @@ describe('Perusopetus', function() {
         })
       })
 
+
+      describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
+        var kurssi = editor.subEditor('.oppiaineet tbody.xxx')
+        var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:nth-child(1)')
+        var kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:nth-child(2)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
+
+        before(editor.edit, opinnot.expandAll, sanallinenArviointi.setValue('Uusi arviointi'), kurssinKuvaus.setValue('Uusi kuvaus'), editor.doneEditing, opinnot.expandAll)
+        it('Toimii', function() {
+          expect(sanallinenArviointi.getValue()).to.equal('Uusi arviointi')
+          expect(kurssinKuvaus.getValue()).to.equal('Uusi kuvaus')
+        })
+      })
+
+
       describe('Pakollinen oppiaine', function() {
         var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.pakollinen')
         var filosofia = editor.subEditor('.pakollinen.FI')
