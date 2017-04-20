@@ -24,56 +24,109 @@ import {
   modelTitle,
   pushModel,
   pushRemoval,
-  oneOfPrototypes
+  oneOfPrototypes,
+  findModelProperty
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
 import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 
+var pakollisetTitle = 'Pakolliset oppiaineet'
+var valinnaisetTitle = 'Valinnaiset oppiaineet'
+let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
+
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
-  let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
-  let oppiaineSuoritukset = R.groupBy((o => modelData(o).koulutusmoduuli.pakollinen ? 'Pakolliset oppiaineet' : 'Valinnaiset oppiaineet'), modelItems(model, 'osasuoritukset'))
+  // TODO: perusopetukseen valmistavassa: koulutusmoduulin opetuksenSisältö (ehkä geneerisesti kaikki koulutusmoduulin ja arvioinnin extra attribuutit)
+
   let osasuoritukset = modelItems(model, 'osasuoritukset')
+
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
   let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
-
-  let groups = ['Pakolliset oppiaineet', 'Valinnaiset oppiaineet']
-  groups = oppiaineSuoritukset['Pakolliset oppiaineet'] || model.context.edit ? groups : groups.slice(1) // shove valinnaiset to left if there are no pakolliset
+  let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
+  let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
+  let hasPakollisuus = koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
 
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
     <p>Arvostelu 4-10, S (suoritettu) tai H (hylätty)</p>
-    {groups.map(pakollisuus => {
-    let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
-    let suoritukset = oppiaineSuoritukset[pakollisuus] || []
-    return (<section className={onPakolliset ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
-      {(suoritukset.length > 0 || model.context.edit) && (<section>
-        {groups.length > 1 && <h5>{pakollisuus}</h5>}
-        <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={onPakolliset} />
-        </section>)
-      }
-      {
-        käyttäytymisenArvioModel && (model.context.edit || modelData(käyttäytymisenArvioModel)) && !onPakolliset && (<div className="kayttaytyminen">
-        <h5>Käyttäytymisen arviointi</h5>
-        {
-          <Editor model={model} path="käyttäytymisenArvio"/>
-        }
-        </div>)
-      }
-      </section>)
-    })
-  }
-  {selitteet && <p className="selitteet">{selitteet}</p>}
+    {
+      hasPakollisuus
+        ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+        : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+    }
+    {selitteet && <p className="selitteet">{selitteet}</p>}
   </div>)
 }
 
-const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
-  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || model.context.edit && !pakolliset
-  let showFootnotes = !model.context.edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
+  let groups = [pakollisetTitle, valinnaisetTitle]
+  let osasuoritukset = modelItems(model, 'osasuoritukset')
+  let groupedSuoritukset = R.groupBy(groupTitleForSuoritus, osasuoritukset)
+  let edit = model.context.edit
+  return (<span>{groups.map(pakollisuus => {
+    let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
+    let suoritukset = groupedSuoritukset[pakollisuus] || []
+    let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
+    return (<section className={onPakolliset ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
+      {(suoritukset.length > 0 || edit) && (<section>
+        {groups.length > 1 && <h5>{pakollisuus}</h5>}
+        <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={onPakolliset} />
+        {
+          edit ? <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} /> : null
+        }
+      </section>)
+      }
+      {
+        onPakolliset ? null : <KäyttäytymisenArvioEditor model={model} />
+      }
+    </section>)
+  })}</span>)
+}
+
+let SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
+  let suoritukset = modelItems(model, 'osasuoritukset')
+  let edit = model.context.edit
   let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
+  return (<span>
+    <section>
+      <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={false} />
+      {
+        edit && <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
+      }
+    </section>
+    <KäyttäytymisenArvioEditor model={model}/>
+  </span>)
+}
+
+const KäyttäytymisenArvioEditor = ({model}) => {
+  let edit = model.context.edit
+  let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
+  return (käyttäytymisenArvioModel && (edit || modelData(käyttäytymisenArvioModel)))? (<div className="kayttaytyminen">
+    <h5>Käyttäytymisen arviointi</h5>
+    {
+      <Editor model={model} path="käyttäytymisenArvio"/>
+    }
+  </div>) : null
+
+}
+
+let createOppiaineenSuoritus = (osasuoritukset) => {
+  osasuoritukset = wrapOptional({model: osasuoritukset})
+  let newItemIndex = modelItems(osasuoritukset).length
+  let oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
+  let sortValue = (suoritusProto) => suoritusProto.value.classes.includes('oppiaineensuoritus') ? 0 : 1
+  oppiaineenSuoritusProto = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
+  return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
+}
+
+const Oppiainetaulukko = ({suoritukset, pakolliset}) => {
+  if (!suoritukset.length) return null
+  let edit = suoritukset[0].context.edit
+  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || edit && !pakolliset
+  let showFootnotes = !edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
   return (<table>
       <thead>
       <tr>
@@ -84,9 +137,6 @@ const Oppiainetaulukko = ({suoritukset, model, pakolliset}) => {
       </thead>
       {
         suoritukset.map((suoritus) => (<OppiaineenSuoritusEditor key={suoritus.arrayKey} model={suoritus} showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
-      }
-      {
-        model.context.edit && <NewOppiaine osasuoritukset={modelLookup(model, 'osasuoritukset')} pakollinen={pakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
       }
     </table>
   )
@@ -262,52 +312,31 @@ let OppiaineEditor = React.createClass({
   }
 })
 
-const NewOppiaine = ({organisaatioOid, osasuoritukset, pakollinen, resultCallback}) => {
+const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCallback}) => {
   let pakollisuus = pakollinen ? 'pakollinen' : 'valinnainen'
-  let wrappedOsasuoritukset = wrapOptional({model: osasuoritukset})
-  let newItemIndex = modelItems(wrappedOsasuoritukset).length
-  let oppiaineenSuoritusProto = contextualizeSubModel(wrappedOsasuoritukset.arrayPrototype, wrappedOsasuoritukset, newItemIndex)
-  let sortValue = (suoritusProto) => suoritusProto.value.classes.includes('oppiaineensuoritus') ? 0 : 1
-  oppiaineenSuoritusProto = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
-
-  let oppiaineenSuoritusModel = contextualizeSubModel(oppiaineenSuoritusProto, wrappedOsasuoritukset, newItemIndex)
-  oppiaineenSuoritusModel = addContext(oppiaineenSuoritusModel, { editAll: true })
-
-  let paikallisetOppiaineet = getOrganizationalPreferences(organisaatioOid, 'perusopetuksenoppiaineet').startWith([])
-
-  var koulutusmoduuli = modelLookup(oppiaineenSuoritusModel, 'koulutusmoduuli')
-
-  var oneOfProtos = oneOfPrototypes(koulutusmoduuli)
-
-  let paikallinenOppiainePrototype = oneOfProtos.find(isPaikallinen)
-
-  let oppiaineModels = oneOfProtos
+  oppiaineenSuoritus = addContext(oppiaineenSuoritus, { editAll: true })
+  var koulutusmoduuliProtos = oneOfPrototypes(modelLookup(oppiaineenSuoritus, 'koulutusmoduuli'))
+  let oppiaineModels = koulutusmoduuliProtos
     .filter(R.complement(isPaikallinen))
     .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
-
   let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
-
+  let paikallisetOppiaineet = getOrganizationalPreferences(organisaatioOid, 'perusopetuksenoppiaineet').startWith([])
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
+  let paikallinenOppiainePrototype = koulutusmoduuliProtos.find(isPaikallinen)
 
-  return (<tbody className={'uusi-oppiaine ' + pakollisuus}>
-  <tr>
-    <td>
-      {
-        <DropDown
-          options={oppiaineet}
-          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
-          displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
-          onSelectionChanged={oppiaine => {
-            resultCallback(modelSet(oppiaineenSuoritusModel, oppiaine, 'koulutusmoduuli'))
-          }}
-          selectionText={`Lisää ${pakollisuus} oppiaine`}
-          newItem={!pakollinen && paikallinenOppiainePrototype}
-          enableFilter={true}
-        />
-      }
-    </td>
-  </tr>
-  </tbody>)
+  return (<div className={'uusi-oppiaine ' + pakollisuus}>
+    <DropDown
+      options={oppiaineet}
+      keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
+      displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
+      onSelectionChanged={oppiaine => {
+              resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
+            }}
+      selectionText={`Lisää ${pakollisuus} oppiaine`}
+      newItem={!pakollinen && paikallinenOppiainePrototype}
+      enableFilter={true}
+    />
+  </div>)
 }
 
 let isUusi = (oppiaine) => {
