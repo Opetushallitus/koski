@@ -29,13 +29,13 @@ import {sortGrades, sortLanguages} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
 import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
+import {hasModelProperty} from './EditorModel';
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
 let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
-  let toimintaAlueittain = modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
   let osasuoritukset = modelItems(model, 'osasuoritukset')
 
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
@@ -44,7 +44,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
-  let hasPakollisuus = !toimintaAlueittain && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
+  let hasPakollisuus = !isToimintaAlueittain(model) && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
   
 
   return (<div className="oppiaineet">
@@ -58,6 +58,8 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
     {selitteet && <p className="selitteet">{selitteet}</p>}
   </div>)
 }
+
+let isToimintaAlueittain = (model) => modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
 
 const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]
@@ -107,7 +109,8 @@ let createOppiaineenSuoritus = (osasuoritukset) => {
   osasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(osasuoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let sortValue = (suoritusProto) => suoritusProto.value.classes.includes('oppiaineensuoritus') ? 0 : 1
+  let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'perusopetuksentoiminta_alueensuoritus' : 'oppiaineensuoritus'
+  let sortValue = (suoritusProto) => suoritusProto.value.classes.includes(preferredClass) ? 0 : 1
   oppiaineenSuoritusProto = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
   return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
 }
@@ -261,7 +264,7 @@ const ArvosanaEditor = ({model}) => {
 let fixKuvaus = (oppiaine) => {
   return lensedModel(oppiaine, L.rewrite(m => {
     let nimi = modelLookup(m, 'tunniste.nimi').value
-    return findModelProperty(m, (p) => p.key == 'kuvaus') ? modelSetValue(m, nimi, 'kuvaus') : m
+    return hasModelProperty(m, 'kuvaus') ? modelSetValue(m, nimi, 'kuvaus') : m
   }))
 }
 
@@ -317,10 +320,10 @@ const NewOppiaine = ({organisaatioOid, oppiaineenSuoritus, pakollinen, resultCal
   let pakollisuus = pakollinen == undefined ? '' : pakollinen ? ' pakollinen' : ' valinnainen'
   let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
     .filter(R.complement(isPaikallinen))
-    .map(oppiaineModel => modelSetData(oppiaineModel, pakollinen, 'pakollinen'))
+    .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
   let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
   let paikallinenProto = paikallinenOppiainePrototype(oppiaineenSuoritus)
-  let paikallisetOppiaineet = pakollinen ? Bacon.constant([]) : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
+  let paikallisetOppiaineet = pakollinen || !paikallinenProto ? Bacon.constant([]) : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
 
   return (<div className={'uusi-oppiaine' + pakollisuus}>

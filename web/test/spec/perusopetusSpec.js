@@ -219,6 +219,28 @@ describe('Perusopetus', function() {
             'kognitiiviset taidot S')
         })
       })
+
+      describe('Tietojen muuttaminen', function() {
+        describe('Oppiaineet', function() {
+          var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+          var sosiaalisetTaidot = editor.subEditor('.3')
+
+          describe('Poistaminen', function () {
+            before(editor.edit, sosiaalisetTaidot.propertyBySelector('tr').removeValue, editor.doneEditing, wait.until(page.isSavedLabelShown))
+            it('toimii', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
+            })
+
+            describe('Lisääminen', function() {
+              before(editor.edit, uusiOppiaine.selectValue('sosiaaliset taidot'), sosiaalisetTaidot.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('sosiaaliset taidot 8')
+              })
+            })
+          })
+        })
+      })
+
       describe('Tulostettava todistus', function() {
         before(opinnot.avaaTodistus(0))
         it('näytetään', function() {

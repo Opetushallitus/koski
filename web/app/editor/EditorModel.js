@@ -204,6 +204,10 @@ export const modelItems = (mainModel, path) => {
   })
 }
 
+export const hasModelProperty = (mainModel, key) => {
+  return !!findModelProperty(mainModel, p => p.key == key)
+}
+
 export const findModelProperty = (mainModel, filter) => {
   if (!mainModel.value) return undefined
   var found = mainModel.value.properties.find(filter)
