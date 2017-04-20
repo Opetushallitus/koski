@@ -38,7 +38,7 @@ let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pako
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   // TODO: perusopetukseen valmistavassa: koulutusmoduulin opetuksenSisältö (ehkä geneerisesti kaikki koulutusmoduulin ja arvioinnin extra attribuutit)
-
+  let toimintaAlueittain = modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
   let osasuoritukset = modelItems(model, 'osasuoritukset')
 
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
@@ -47,7 +47,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
-  let hasPakollisuus = koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
+  let hasPakollisuus = !toimintaAlueittain && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
 
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
@@ -63,19 +63,17 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 
 let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]
-  let osasuoritukset = modelItems(model, 'osasuoritukset')
-  let groupedSuoritukset = R.groupBy(groupTitleForSuoritus, osasuoritukset)
-  let edit = model.context.edit
+  let groupedSuoritukset = R.groupBy(groupTitleForSuoritus, modelItems(model, 'osasuoritukset'))
   return (<span>{groups.map(pakollisuus => {
     let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
     let suoritukset = groupedSuoritukset[pakollisuus] || []
     let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
     return (<section className={onPakolliset ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
-      {(suoritukset.length > 0 || edit) && (<section>
+      {(suoritukset.length > 0 || model.context.edit) && (<section>
         {groups.length > 1 && <h5>{pakollisuus}</h5>}
         <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={onPakolliset} />
         {
-          edit ? <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} /> : null
+          model.context.edit ? <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} /> : null
         }
       </section>)
       }
@@ -87,14 +85,12 @@ let GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
 }
 
 let SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
-  let suoritukset = modelItems(model, 'osasuoritukset')
-  let edit = model.context.edit
   let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
   return (<span>
     <section>
-      <Oppiainetaulukko model={model} suoritukset={suoritukset} pakolliset={false} />
+      <Oppiainetaulukko model={model} suoritukset={modelItems(model, 'osasuoritukset')} pakolliset={false} />
       {
-        edit && <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
+        model.context.edit && <NewOppiaine oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={false} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
       }
     </section>
     <KäyttäytymisenArvioEditor model={model}/>

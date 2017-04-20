@@ -20,7 +20,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
     let context = mdl.context
     let id = modelData(mdl, 'id')
-    mdl = addContext(mdl, {opiskeluoikeusId: id})
+    mdl = addContext(mdl, {opiskeluoikeusId: id, opiskeluoikeus: mdl})
     let suoritukset = modelItems(mdl, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
