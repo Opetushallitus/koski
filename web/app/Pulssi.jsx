@@ -13,8 +13,8 @@ const Pulssi = React.createClass({
     )
 
     return (
-      <div>
-        <div className="top-row">
+      <div className="statistics column">
+        <div className="top-row three-columns">
           <section className="primary-metric opiskeluoikeudet-total">
             <h3>Opiskeluoikeuksien määrä</h3>
             <div className="metric-large">{stats.opiskeluoikeuksienMäärä}</div>
@@ -30,20 +30,33 @@ const Pulssi = React.createClass({
             {toPercent(valmiidenTutkintojenMäärä / stats.opiskeluoikeuksienMäärä)} %
           </section>
         </div>
-        <div className="bottom-block">
-          <section className="opiskeluoikeudet-total">
-            <ul>
-              {
-                stats.määrätKoulutusmuodoittain && stats.määrätKoulutusmuodoittain.map(stat =>
-                  <li>
-                    <span>{stat.nimi}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
-                  </li>
-                )
-              }
-            </ul>
-          </section>
-          <section className="kattavuus">
-          </section>
+        <div className="expanding three-columns">
+          <div className="lower-left-container column">
+            <div className="two-columns">
+              <section className="opiskeluoikeudet-total">
+                <ul>
+                  {
+                    stats.määrätKoulutusmuodoittain && stats.määrätKoulutusmuodoittain.map(stat =>
+                      <li>
+                        <span>{stat.nimi}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
+                      </li>
+                    )
+                  }
+                </ul>
+              </section>
+              <section className="kattavuus">kattavuus</section>
+            </div>
+            <div className="extra-metrics expanding column">
+              <div className="two-columns">
+                <section>a</section>
+                <section>b</section>
+              </div>
+              <div className="two-columns expanding">
+                <section>c</section>
+                <section>d</section>
+              </div>
+            </div>
+          </div>
           <section className="valmiit-tutkinnot">
             <ul>
               {
@@ -80,7 +93,7 @@ const KoulutusmuotoTilasto = ({koulutusmuoto}) => {
       </div>
       <div className="metric-tiny">
         <span>{opiskeluoikeusMääräValmiit} ({valmiitPercent} %)</span>
-        <span className="ei-valmiit">{opiskeluoikeusMääräEiValmiit} ({100 - valmiitPercent} %)</span>
+        <span className="metric-value">{opiskeluoikeusMääräEiValmiit} ({100 - valmiitPercent} %)</span>
       </div>
 
     </li>
