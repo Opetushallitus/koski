@@ -46,6 +46,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
   let hasPakollisuus = !toimintaAlueittain && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
+  
 
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
@@ -261,7 +262,7 @@ const ArvosanaEditor = ({model}) => {
 let fixKuvaus = (oppiaine) => {
   return lensedModel(oppiaine, L.rewrite(m => {
     let nimi = modelLookup(m, 'tunniste.nimi').value
-    return modelSetValue(m, nimi, 'kuvaus')
+    return findModelProperty(m, (p) => p.key == 'kuvaus') ? modelSetValue(m, nimi, 'kuvaus') : m
   }))
 }
 

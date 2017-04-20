@@ -131,7 +131,12 @@ export const modelSetValue = (model, value, path) => {
 }
 
 let modelValueLens = ({model, createEmpty} = {}) => L.lens(
-  (m) => m.value,
+  (m) => {
+    if (!m) {
+      throw new Error('model missing')
+    }
+    return m.value
+  },
   (v, m) => {
     let usedModel = m.optional ? getUsedModelForOptionalModel(m, {model, createEmpty}) : m
     return L.set('value', v, usedModel)
