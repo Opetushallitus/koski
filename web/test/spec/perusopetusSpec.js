@@ -1391,6 +1391,40 @@ describe('Perusopetus', function() {
         })
         after(editor.edit, arvosana.selectValue('S'), editor.doneEditing, wait.until(page.isSavedLabelShown))
       })
+      describe('Oppiaine', function() {
+        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+        describe('Uuden oppiaineen lisääminen', function() {
+          var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen:nth-child(3)')
+          before(editor.edit, uusiOppiaine.selectValue('Lisää'),
+            uusiPaikallinen.propertyBySelector('.arvosana').selectValue('S'),
+            uusiPaikallinen.propertyBySelector('.property.laajuus').setValue('1'),
+            uusiPaikallinen.propertyBySelector('.property.laajuus .yksikko').setValue('vuosiviikkotuntia'),
+            uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
+            uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
+            editor.doneEditing, wait.until(page.isSavedLabelShown))
+
+          it('Toimii', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi S')
+          })
+
+          describe('Lisäyksen jälkeen', function() {
+            before(editor.edit)
+            it('Uusi oppiaine löytyy listalta', function() {
+              expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi')
+            })
+
+            describe('Muutettaessa lisätyn oppiaineen kuvausta', function() {
+              var tanssi = editor.subEditor('.valinnainen.TNS')
+              before(tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
+
+              it('Muutettu oppiaine löytyy listalta', function() {
+                expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+              })
+
+            })
+          })
+        })
+      })
     })
     describe('Tulostettava todistus', function() {
       before(opinnot.avaaTodistus(0))

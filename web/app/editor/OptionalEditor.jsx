@@ -34,6 +34,7 @@ export const OptionalEditor = React.createClass({
 OptionalEditor.canShowInline = () => true
 
 export const wrapOptional = ({model, isEmpty, createEmpty}) => {
+  if (!model) throw new Error('model missing. remember to wrap model like { model }')
   if (!model.optional) return model
   if (!model.context) throw new Error('cannot wrap without context')
 

@@ -5,7 +5,7 @@ import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{KoskiSchema, Organisaatiohenkilö, PerusopetuksenPaikallinenValinnainenOppiaine}
+import fi.oph.koski.schema.{KoskiSchema, Organisaatiohenkilö, PerusopetukseenValmistavanOpetuksenOppiaine, PerusopetuksenPaikallinenValinnainenOppiaine}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import fi.oph.scalaschema.extraction.ValidationError
@@ -17,7 +17,8 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
 
   val prefTypes: Map[String, Class[_]] = Map(
     "myöntäjät" -> classOf[Organisaatiohenkilö],
-    "perusopetuksenoppiaineet" -> classOf[PerusopetuksenPaikallinenValinnainenOppiaine]
+    "perusopetuksenpaikallinenvalinnainenoppiaine" -> classOf[PerusopetuksenPaikallinenValinnainenOppiaine],
+    "perusopetukseenvalmistavanopetuksenoppiaine" -> classOf[PerusopetukseenValmistavanOpetuksenOppiaine]
   )
 
 

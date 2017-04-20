@@ -79,6 +79,8 @@ EnumEditor.fetchAlternatives = (model) => {
 
 let alternativesCache = {}
 
+EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || "").split(',').filter(R.identity)
+
 EnumEditor.canShowInline = () => true
 EnumEditor.handlesOptional = true
 EnumEditor.validateModel = (model) => {
