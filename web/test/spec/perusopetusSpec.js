@@ -1307,6 +1307,7 @@ describe('Perusopetus', function() {
       })
     })
     describe('Tietojen muuttaminen', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
       describe('Oppiaineen arvosanan muutos', function() {
         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
