@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     main: './app/Koski.jsx',
     login: './app/Login.jsx',
+    pulssi: './app/Pulssi.jsx',
     documentation: './app/documentation/documentation.js'
   },
   output: {
