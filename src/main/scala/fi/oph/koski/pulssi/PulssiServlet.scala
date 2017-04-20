@@ -6,6 +6,11 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class PulssiServlet(application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
   get("/") {
-    application.perustiedotRepository.statistics
+    // TODO: stuff from prometheus
+    // TODO: caching
+    Map(
+      "opiskeluoikeudet" -> application.perustiedotRepository.statistics,
+      "operaatiot" -> application.prometheusRepository.auditLogMetrics
+    )
   }
 }

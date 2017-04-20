@@ -16,13 +16,14 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.pulssi.PrometheusRepository
 import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YtrClient, YtrAccessChecker, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   lazy val defaultConfig = ConfigFactory.load
@@ -66,4 +67,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(database.db)
+  lazy val prometheusRepository = PrometheusRepository(config)
 }

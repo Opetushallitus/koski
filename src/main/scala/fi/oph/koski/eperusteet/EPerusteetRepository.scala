@@ -11,7 +11,7 @@ trait EPerusteetRepository {
 }
 
 object EPerusteetRepository {
-  def apply(config: Config) = {
+  def apply(config: Config): EPerusteetRepository = {
     config.getString("eperusteet.url") match {
       case "mock" =>
         MockEPerusteetRepository
