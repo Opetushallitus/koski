@@ -1,6 +1,7 @@
-import {modelData, pushModel, addContext, modelSetValue} from './EditorModel'
+import {modelData, pushModel, addContext, modelSetValue, modelLens} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
+import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
@@ -19,6 +20,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
       </span>
       <span className="controls">
         <MerkitseValmiiksiButton model={model}/>
+        <MerkitseKeskeytyneeksiButton model={model}/>
         <MerkitseKeskeneräiseksiButton model={model}/>
       </span>
     </div>
@@ -31,6 +33,21 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
     pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
   }
   return <button className="merkitse-kesken" onClick={merkitseKeskeneräiseksi}>Merkitse keskeneräiseksi</button>
+}
+
+const MerkitseKeskeytyneeksiButton = ({model}) => {
+  if (!model.context.edit || !suoritusKesken(model)) return null
+
+  let merkitseKeskeytyneeksiJosKesken = (suoritus) => {
+    if (!suoritusKesken(suoritus)) return suoritus
+    let osasuorituksetKeskeytetty = L.modify([modelLens('osasuoritukset'), 'value', L.elems], merkitseKeskeytyneeksiJosKesken, suoritus)
+    return setTila(osasuorituksetKeskeytetty, 'KESKEYTYNYT')
+  }
+
+  let merkitseKeskeytyneeksi = () => {
+    pushModel(merkitseKeskeytyneeksiJosKesken(model))
+  }
+  return <button className="merkitse-keskeytyneeksi" onClick={merkitseKeskeytyneeksi}>Merkitse keskeytyneeksi</button>
 }
 
 const MerkitseValmiiksiButton = ({model}) => {

@@ -1207,6 +1207,21 @@ describe('Perusopetus', function() {
                     it('Tila on "kesken" ja vahvistus on poistettu', function() {
                       expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEN')
                     })
+
+                    describe('Kun merkitään keskeytyneeksi', function() {
+                      var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+
+                      before(opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), tilaJaVahvistus.merkitseKeskeytyneeksi)
+
+
+                      it('Tila on "keskeytynyt"', function() {
+                        expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEYTYNYT')
+                      })
+
+                      it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
+                        expect(äidinkieli.property('tila').getValue()).to.equal('Suoritus keskeytynyt')
+                      })
+                    })
                   })
 
                   describe('Lisättäessä toinen', function() {

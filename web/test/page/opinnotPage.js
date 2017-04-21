@@ -139,6 +139,8 @@ function TilaJaVahvistus() {
   function elem() { return findSingle('.tila-vahvistus') }
   function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
   function merkitseKeskeneräiseksiButton() { return elem().find('button.merkitse-kesken') }
+  function merkitseKeskeytyneeksiButton() { return elem().find('button.merkitse-keskeytyneeksi') }
+  
   var api = {
     merkitseValmiiksiEnabled: function() {
       return merkitseValmiiksiButton().is(':visible') && !merkitseValmiiksiButton().is(':disabled')
@@ -149,6 +151,9 @@ function TilaJaVahvistus() {
     },
     merkitseKeskeneräiseksi: function() {
       triggerEvent(merkitseKeskeneräiseksiButton(), 'click')
+    },
+    merkitseKeskeytyneeksi: function() {
+      triggerEvent(merkitseKeskeytyneeksiButton(), 'click')
     },
     text: function( ){
       return extractAsText(findSingle('.tiedot', elem()))
