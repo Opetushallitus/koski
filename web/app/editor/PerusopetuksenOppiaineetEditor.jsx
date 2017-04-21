@@ -24,10 +24,11 @@ import {
   oneOfPrototypes,
   findModelProperty,
   modelProperties,
-  hasModelProperty
+  hasModelProperty,
+  addContext
 } from './EditorModel'
 import {sortGrades, sortLanguages} from '../sorting'
-import {suoritusValmis, hasArvosana, setTila, lastArviointiLens} from './Suoritus'
+import {suoritusValmis, hasArvosana, setTila, lastArviointiLens, suoritusKesken} from './Suoritus'
 import {saveOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 
@@ -36,6 +37,7 @@ var valinnaisetTitle = 'Valinnaiset oppiaineet'
 let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
+  model = addContext(model, { suoritus: model })
   let osasuoritukset = modelItems(model, 'osasuoritukset')
 
   let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
@@ -235,6 +237,9 @@ export const OppiaineenSuoritusEditor = React.createClass({
 OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
     return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
+  }
+  if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
+    return [{key: 'osasuorituksenTilla', message: 'Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'}]
   }
 }
 

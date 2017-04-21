@@ -1311,11 +1311,8 @@ describe('Perusopetus', function() {
 
                       })
                     })
-
                   })
-
                 })
-
               })
             })
           })
