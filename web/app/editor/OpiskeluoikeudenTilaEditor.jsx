@@ -7,13 +7,14 @@ import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
 import {modelSetValue, lensedModel, pushModel, pushRemoval} from './EditorModel'
+import {suoritusKesken} from './Suoritus'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
-  let suorituksiaKesken = wrappedModel.context.edit && R.any(s => s.tila && s.tila.koodiarvo == 'KESKEN')(modelData(wrappedModel, 'suoritukset') || [])
+  let suorituksiaKesken = wrappedModel.context.edit && R.any(suoritusKesken)(modelItems(wrappedModel, 'suoritukset'))
   let showAddDialog = () => addingNew.modify(x => !x)
 
   let lisääJakso = (uusiJakso) => {
