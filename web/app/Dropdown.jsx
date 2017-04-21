@@ -41,7 +41,9 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
       Enter: () => {
         e.preventDefault()
         if (openAtom.get()) {
-          selectOption(e, allOptions[selectionIndexAtom.get()])
+          var selectionIndex = selectionIndexAtom.get()
+          var selectedOption = allOptions[selectionIndex]
+          selectedOption && selectOption(e, selectedOption)
         }
       }
     }
