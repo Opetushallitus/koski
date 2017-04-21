@@ -46,7 +46,29 @@ const Pulssi = React.createClass({
                     }
                   </ul>
                 </section>
-                <section className="kattavuus">kattavuus</section>
+                <section className="kattavuus">
+                  <ul>
+                    <li>
+                      <h3>Perusopetus</h3>
+                      <div className="progress-bar">
+                        <div style={{width: '30%'}}></div>
+                      </div>
+                    </li>
+                    <li>
+                      <h3>Ammatillinen koulutus</h3>
+                      <div className="progress-bar">
+                        <div style={{width: '45%'}}></div>
+                      </div>
+                    </li>
+                    <li>
+                      <h3>Lukiokoulutus</h3>
+                      <div className="progress-bar">
+                        <div style={{width: '20%'}}></div>
+                      </div>
+                    </li>
+                  </ul>
+
+                </section>
               </div>
               <div className="two-columns expanding">
                 <section className="metric saavutettavuus">

@@ -29,9 +29,6 @@ h1 {
 ul {
   list-style: none;
   padding: 0;
-  li {
-    line-height: 30px;
-  }
 }
 
 .statistics {
@@ -94,10 +91,21 @@ section {
 
 .progress-bar {
   width: 100%;
-  background: #555555;
+  background: #4b4b4b;
   height: 5px;
+  margin: 5px 0 5px 0;
   div {
-    height: 5px;
+    height: 100%;
+    background: white;
+  }
+}
+
+.kattavuus .progress-bar {
+  width: 100%;
+  background: #329e0e;
+  height: 20px;
+  div {
+    height: 100%;
     background: white;
   }
 }
@@ -114,6 +122,9 @@ section {
 .kattavuus {
   background: #37CB15;
   border-right: 1px solid white;
+  li {
+    margin-bottom: 20px;
+  }
 }
 
 .saavutettavuus {
@@ -126,4 +137,7 @@ section {
 
 .valmiit-tutkinnot {
   background: #585858;
+  li {
+    margin-bottom: 20px;
+  }
 }
