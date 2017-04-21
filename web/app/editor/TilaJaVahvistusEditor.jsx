@@ -1,4 +1,4 @@
-import {modelData, pushModel, addContext, modelSetValue, modelLens, modelLookup} from './EditorModel'
+import {modelData, pushModel, addContext, modelSetValue, modelLens} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
