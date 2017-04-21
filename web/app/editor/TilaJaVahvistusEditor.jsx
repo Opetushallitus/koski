@@ -1,4 +1,4 @@
-import {modelData, pushModel, addContext, modelSetValue, modelLens} from './EditorModel'
+import {modelData, pushModel, addContext, modelSetValue, modelLens, modelLookup} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
@@ -29,10 +29,11 @@ export const TilaJaVahvistusEditor = ({model}) => {
 
 const MerkitseKeskeneräiseksiButton = ({model}) => {
   if (!model.context.edit || suoritusKesken(model)) return null
+  var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').koodiarvo
   let merkitseKeskeneräiseksi = () => {
     pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
   }
-  return <button className="merkitse-kesken" onClick={merkitseKeskeneräiseksi}>Merkitse keskeneräiseksi</button>
+  return <button className="merkitse-kesken" disabled={opiskeluoikeudenTila == 'valmistunut'} onClick={merkitseKeskeneräiseksi}>Merkitse keskeneräiseksi</button>
 }
 
 const MerkitseKeskeytyneeksiButton = ({model}) => {
