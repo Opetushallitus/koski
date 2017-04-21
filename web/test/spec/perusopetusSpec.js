@@ -258,7 +258,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Tulostettava todistus', function() {
-        before(opinnot.avaaTodistus(0))
+        before(opinnot.valitseSuoritus(1, 'Peruskoulu'), opinnot.avaaTodistus(0))
         it('näytetään', function() {
           // See more detailed content specification in PerusopetusSpec.scala
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
@@ -689,7 +689,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Kun poistetaan ensimmäinen oppiaine ja annetaan toiselle arvosana (bug fix)', function() {
-          before(editor.edit, äidinkieli.propertyBySelector('tr').removeValue, arvosana.selectValue('9'), editor.doneEditing)
+          before(opinnot.collapseAll, editor.edit, äidinkieli.propertyBySelector('tr').removeValue, arvosana.selectValue('9'), editor.doneEditing)
           it('Toimii', function() {
             expect(arvosana.getValue()).to.equal('9')
           })
