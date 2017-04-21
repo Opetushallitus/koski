@@ -2,12 +2,8 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.tiedonsiirto.TiedonsiirtoYhteenveto
-import fi.oph.koski.util.SortOrder.Ascending
 
 class PulssiServlet(pulssi: KoskiPulssi) extends ApiServlet with NoCache with Unauthenticated {
   get("/") {

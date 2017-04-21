@@ -3,101 +3,56 @@
         "result": [
             {
                 "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
+                    "operation": "LOGIN"
+                },
+                "value": [
+                    1492771884.719,
+                    "15.002568053415512"
+                ]
+            },
+            {
+                "metric": {
                     "operation": "OPISKELUOIKEUS_MUUTOS"
                 },
                 "value": [
-                    1492688828.804,
+                    1492771884.719,
                     "4.007905138339921"
                 ]
             },
             {
                 "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
-                    "operation": "OPPIJA_HAKU"
+                    "operation": "OPISKELUOIKEUS_KATSOMINEN"
                 },
                 "value": [
-                    1492688828.804,
-                    "12.00667779632721"
+                    1492771884.719,
+                    "788.0077807563097"
                 ]
             },
             {
                 "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
-                    "operation": "OPISKELUOIKEUS_LISAYS"
-                },
-                "value": [
-                    1492688828.804,
-                    "668.010292282329"
-                ]
-            },
-            {
-                "metric": {
-                    "instance": "koski-app2",
-                    "job": "jetty",
-                    "operation": "OPISKELUOIKEUS_LISAYS"
-                },
-                "value": [
-                    1492688828.804,
-                    "658.010399873558"
-                ]
-            },
-            {
-                "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
-                    "operation": "LOGIN"
-                },
-                "value": [
-                    1492688828.804,
-                    "15.002341920374707"
-                ]
-            },
-            {
-                "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
                     "operation": "MUUTOSHISTORIA_KATSOMINEN"
                 },
                 "value": [
-                    1492688828.804,
+                    1492771884.719,
                     "4.011049723756906"
                 ]
             },
             {
                 "metric": {
-                    "instance": "koski-app1",
-                    "job": "jetty",
-                    "operation": "OPISKELUOIKEUS_KATSOMINEN"
-                },
-                "value": [
-                    1492688828.804,
-                    "303.00390876957607"
-                ]
-            },
-            {
-                "metric": {
-                    "instance": "koski-app2",
-                    "job": "jetty",
                     "operation": "OPPIJA_HAKU"
                 },
                 "value": [
-                    1492688828.804,
-                    "24.000269184752476"
+                    1492771884.719,
+                    "32.00758485609282"
                 ]
             },
             {
                 "metric": {
-                    "instance": "koski-app2",
-                    "job": "jetty",
-                    "operation": "OPISKELUOIKEUS_KATSOMINEN"
+                    "operation": "OPISKELUOIKEUS_LISAYS"
                 },
                 "value": [
-                    1492688828.804,
-                    "488.0054321966167"
+                    1492771884.719,
+                    "1323.0202989393574"
                 ]
             }
         ],
