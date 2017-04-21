@@ -76,7 +76,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
 
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {
     search(numero).flatMap {
-      case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _) if koodiarvo == numero => Some(o)
+      case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)
       case _ => None
     }.headOption
   }
