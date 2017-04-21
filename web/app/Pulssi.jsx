@@ -48,11 +48,11 @@ const Pulssi = React.createClass({
                 </section>
                 <section className="kattavuus">kattavuus</section>
               </div>
-              <div className="two-columns expanding extra-metrics">
-                <section className="metric">
+              <div className="two-columns expanding">
+                <section className="metric saavutettavuus">
                   <h3>Saavutettavuus</h3>
                 </section>
-                <section className="metric">
+                <section className="metric operaatiot">
                   <h3>Operaatiot / kk</h3>
                 </section>
               </div>
