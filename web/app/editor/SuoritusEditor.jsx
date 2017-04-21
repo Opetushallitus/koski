@@ -1,6 +1,5 @@
-import {modelData, modelItems, modelLookup, pushModel, addContext} from './EditorModel'
+import {modelData, modelItems, modelLookup, addContext} from './EditorModel'
 import React from 'baret'
-import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import * as Lukio from './Lukio.jsx'
@@ -9,8 +8,7 @@ import {LuvaEditor} from './LuvaEditor.jsx'
 import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
-import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
-import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
+import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -48,7 +46,7 @@ export const SuoritusEditor = React.createClass({
           ? <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
           : getDefault() }
       />
-      <TilaJaVahvistus model={model} />
+      <TilaJaVahvistusEditor model={model} />
       <div className="osasuoritukset">{resolveEditor(model)}</div>
     </div>)
   },
@@ -57,38 +55,6 @@ export const SuoritusEditor = React.createClass({
   }
 })
 SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
-
-const TilaJaVahvistus = ({model}) => {
-  let addingAtom = Atom(false)
-  let merkitseValmiiksiCallback = (suoritusModel) => {
-    if (suoritusModel) {
-      pushModel(suoritusModel, model.context.changeBus)
-    } else {
-      addingAtom.set(false)
-    }
-  }
-  let tila = modelData(model).tila.koodiarvo
-  return (<div className="tila-vahvistus">
-      <span className="tiedot">
-        <span className="tila">
-          Suoritus: <span className={ tila === 'VALMIS' ? 'valmis' : ''}>{ modelData(model).tila.koodiarvo }</span> { /* TODO: i18n */ }
-        </span>
-        {
-          modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
-        }
-        <JääLuokalleTaiSiirretäänEditor model={addContext(model, {edit:false})}/>
-      </span>
-      <span className="controls">
-        {
-          model.context.edit && tila === 'KESKEN' && <button className="merkitse-valmiiksi" onClick={() => addingAtom.modify(x => !x)}>Merkitse valmiiksi</button>
-        }
-      </span>
-      {
-        addingAtom.map(adding => adding && <MerkitseSuoritusValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
-      }
-    </div>
-  )
-}
 
 const TodistusLink = React.createClass({
   render() {

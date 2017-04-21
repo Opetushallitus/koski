@@ -140,7 +140,7 @@ function TilaJaVahvistus() {
   function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
   var api = {
     merkitseValmiiksiEnabled: function() {
-      return merkitseValmiiksiButton().is(':visible')
+      return merkitseValmiiksiButton().is(':visible') && !merkitseValmiiksiButton().is(':disabled')
     },
     merkitseValmiiksi: function( ) {
       triggerEvent(merkitseValmiiksiButton(), 'click')
