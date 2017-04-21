@@ -91,8 +91,9 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                   onChange={handleInput}
                   onBlur={selectedP.map(s => handleInputBlur(allOptions, s))}
                   value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
-                    return q != undefined ? q : s ? displayValue(s) : selectionText
+                    return q != undefined ? q : s ? displayValue(s) : ''
                   })}
+                  placeholder={selectionText}
                   className={selectedP.map(s => s ? 'select' : 'select no-selection')}
                 />
               </div> :
