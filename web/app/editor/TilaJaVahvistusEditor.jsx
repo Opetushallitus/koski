@@ -1,17 +1,16 @@
-import {modelData, pushModel, addContext} from './EditorModel'
+import {modelData, pushModel, addContext, modelSetValue} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {onKeskeneräisiäOsasuorituksia} from './Suoritus'
+import {onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis, suorituksenTila, setTila} from './Suoritus'
 
 export const TilaJaVahvistusEditor = ({model}) => {
-  let tila = modelData(model).tila.koodiarvo
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          Suoritus: <span className={ tila === 'VALMIS' ? 'valmis' : ''}>{ modelData(model).tila.koodiarvo }</span> { /* TODO: i18n */ }
+          Suoritus: <span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span> { /* TODO: i18n */ }
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
@@ -20,14 +19,22 @@ export const TilaJaVahvistusEditor = ({model}) => {
       </span>
       <span className="controls">
         <MerkitseValmiiksiButton model={model}/>
+        <MerkitseKeskeneräiseksiButton model={model}/>
       </span>
     </div>
   )
 }
 
+const MerkitseKeskeneräiseksiButton = ({model}) => {
+  if (!model.context.edit || suoritusKesken(model)) return null
+  let merkitseKeskeneräiseksi = () => {
+    pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
+  }
+  return <button className="merkitse-kesken" onClick={merkitseKeskeneräiseksi}>Merkitse keskeneräiseksi</button>
+}
+
 const MerkitseValmiiksiButton = ({model}) => {
-  let tila = modelData(model).tila.koodiarvo
-  if (!model.context.edit || tila != 'KESKEN') return null
+  if (!model.context.edit || !suoritusKesken(model)) return null
   let addingAtom = Atom(false)
   let merkitseValmiiksiCallback = (suoritusModel) => {
     if (suoritusModel) {

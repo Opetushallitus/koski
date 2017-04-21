@@ -1,9 +1,9 @@
 import {modelData, modelLens, modelSetValue, modelItems} from './EditorModel'
 import * as L from 'partial.lenses'
 
-export const suoritusValmis = (suoritus) => tilanKoodiarvo(suoritus) === 'VALMIS'
-export const suoritusKesken = (suoritus) => tilanKoodiarvo(suoritus) === 'KESKEN'
-const tilanKoodiarvo = (suoritus) => modelData(suoritus, 'tila').koodiarvo
+export const suoritusValmis = (suoritus) => suorituksenTila(suoritus) === 'VALMIS'
+export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKEN'
+export const suorituksenTila = (suoritus) => modelData(suoritus, 'tila').koodiarvo
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arvosanaLens = modelLens('arviointi.-1.arvosana')
 export const lastArviointiLens = modelLens('arviointi.-1')
@@ -22,5 +22,7 @@ const createTila = (koodiarvo) => {
 }
 
 const tilat = {
-  VALMIS: { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' }
+  VALMIS: { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' },
+  KESKEN: { data: { koodiarvo: 'KESKEN', koodistoUri: 'suorituksentila' }, title: 'Suoritus kesken' },
+  KESKEYTYNYT: { data: { koodiarvo: 'KESKEYTYNYT', koodistoUri: 'suorituksentila' }, title: 'Suoritus keskeytynyt' }
 }

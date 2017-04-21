@@ -138,6 +138,7 @@ function Versiohistoria() {
 function TilaJaVahvistus() {
   function elem() { return findSingle('.tila-vahvistus') }
   function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
+  function merkitseKeskeneräiseksiButton() { return elem().find('button.merkitse-kesken') }
   var api = {
     merkitseValmiiksiEnabled: function() {
       return merkitseValmiiksiButton().is(':visible') && !merkitseValmiiksiButton().is(':disabled')
@@ -145,6 +146,9 @@ function TilaJaVahvistus() {
     merkitseValmiiksi: function( ) {
       triggerEvent(merkitseValmiiksiButton(), 'click')
       return wait.forAjax()
+    },
+    merkitseKeskeneräiseksi: function() {
+      triggerEvent(merkitseKeskeneräiseksiButton(), 'click')
     },
     text: function( ){
       return extractAsText(findSingle('.tiedot', elem()))

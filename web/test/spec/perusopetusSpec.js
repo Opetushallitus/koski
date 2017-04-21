@@ -1202,6 +1202,13 @@ describe('Perusopetus', function() {
                     })
                   })
 
+                  describe('Kun muutetaan takaisin keskeneräiseksi', function() {
+                    before(tilaJaVahvistus.merkitseKeskeneräiseksi)
+                    it('Tila on "kesken" ja vahvistus on poistettu', function() {
+                      expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEN')
+                    })
+                  })
+
                   describe('Lisättäessä toinen', function() {
                     before(editor.edit, opinnot.lisääSuoritus)
                     describe('Aluksi', function() {
