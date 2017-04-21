@@ -242,7 +242,13 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
           val määrätTiloittain = tyyppi.tila.buckets.map { bucket =>
             Map("nimi" -> bucket.key, "opiskeluoikeuksienMäärä" -> bucket.doc_count)
           }
-          Map("nimi" -> tyyppi.key, "opiskeluoikeuksienMäärä" -> tyyppi.doc_count, "määrätTiloittain" -> määrätTiloittain)
+
+          Map(
+            "nimi" -> tyyppi.key,
+            "opiskeluoikeuksienMäärä" -> tyyppi.doc_count,
+            "määrätTiloittain" -> määrätTiloittain,
+            "siirtäneitäOppilaitoksia" -> tyyppi.toimipiste.buckets.size
+          )
         }
       )
     }.getOrElse(Map())
@@ -269,14 +275,18 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
           |          "terms": {
           |            "field": "tila.koodiarvo.keyword"
           |          }
+          |        },
+          |        "toimipiste": {
+          |          "terms": {
+          |            "field": "suoritukset.toimipiste.oid.keyword"
+          |          }
           |        }
           |      }
           |    }
           |  }
           |}
           |
-      """.
-          stripMargin)
+      """.stripMargin)
     )
 
     result.map { r =>
@@ -450,8 +460,8 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
 }
 
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
-case class Tyyppi(key: String, doc_count: Int, tila: Tila)
-case class Tila(buckets: List[Bucket])
+case class Tyyppi(key: String, doc_count: Int, tila: Buckets, toimipiste: Buckets)
+case class Buckets(buckets: List[Bucket])
 case class Bucket(key: String, doc_count: Int)
 
 private object OpiskeluoikeudenPerustiedotRepository
