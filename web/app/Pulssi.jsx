@@ -14,7 +14,7 @@ const Pulssi = React.createClass({
 
     return (
         <div className="statistics column">
-          <h1>Koski Pulssi</h1>
+          <h1><span>Koski</span><img src="images/pulssi.png"/><span>Pulssi</span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
           <div className="top-row three-columns">
             <section className="primary-metric opiskeluoikeudet-total">
               <h3>Opiskeluoikeuksien määrä</h3>
