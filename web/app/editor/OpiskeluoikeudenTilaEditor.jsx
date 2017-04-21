@@ -39,7 +39,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
             items.map((item, i) => {
               return (<li key={i}>
                 <OpiskeluoikeusjaksoEditor model={item}/>
-                {i === 0 && <a className="remove-item" onClick={removeItem}></a>}
+                {i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}></a>}
               </li>)
             })
           }
