@@ -832,19 +832,26 @@ describe('Perusopetus', function() {
           })
 
           describe('Lisäyksen jälkeen', function() {
+            var tanssi = editor.subEditor('.valinnainen.TNS')
             before(editor.edit)
-            it('Uusi oppiaine löytyy listalta', function() {
-              expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi')
+            it('Uusi oppiaine ei löydy listalta (koska on jo suorituksissa)', function() {
+              expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
             })
 
-            describe('Muutettaessa lisätyn oppiaineen kuvausta', function() {
-              var tanssi = editor.subEditor('.valinnainen.TNS')
-              before(tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
-
-              it('Muutettu oppiaine löytyy listalta', function() {
-                expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+            describe('Poistettaessa suoritus', function() {
+              before(tanssi.propertyBySelector('tr').removeValue)
+              it('Uusi oppiaine löytyy listalta', function() {
+                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
               })
 
+              describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
+                before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('7'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
+                before(tanssi.propertyBySelector('tr').removeValue)
+
+                it('Muutettu oppiaine löytyy listalta', function() {
+                  expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+                })
+              })
             })
           })
         })
@@ -1500,19 +1507,26 @@ describe('Perusopetus', function() {
           })
 
           describe('Lisäyksen jälkeen', function() {
+            var tanssi = editor.subEditor('.valinnainen.TNS')
             before(editor.edit)
-            it('Uusi oppiaine löytyy listalta', function() {
-              expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi')
+            it('Uusi oppiaine ei löydy listalta (koska on jo suorituksissa)', function() {
+              expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
             })
 
-            describe('Muutettaessa lisätyn oppiaineen kuvausta', function() {
-              var tanssi = editor.subEditor('.valinnainen.TNS')
-              before(tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
-
-              it('Muutettu oppiaine löytyy listalta', function() {
-                expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+            describe('Poistettaessa suoritus', function() {
+              before(tanssi.propertyBySelector('tr').removeValue)
+              it('Uusi oppiaine löytyy listalta', function() {
+                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
               })
 
+              describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
+                before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('H'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.doneEditing, editor.edit)
+                before(tanssi.propertyBySelector('tr').removeValue)
+
+                it('Muutettu oppiaine löytyy listalta', function() {
+                  expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+                })
+              })
             })
           })
         })
