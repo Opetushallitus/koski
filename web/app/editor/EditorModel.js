@@ -78,7 +78,7 @@ const manageModelIdLens = L.lens(
     return ensureModelId(m)
   },
   (m1, ) => {
-    return ensureModelId(m1, true) // forces new model id on the result
+    return ensureModelId(m1, true) // forces calculation model id on the result
   }
 )
 

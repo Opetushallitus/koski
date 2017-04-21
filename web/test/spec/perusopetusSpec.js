@@ -687,6 +687,13 @@ describe('Perusopetus', function() {
             })
           })
         })
+
+        describe('Kun poistetaan ensimmäinen oppiaine ja annetaan toiselle arvosana (bug fix)', function() {
+          before(editor.edit, äidinkieli.propertyBySelector('tr').removeValue, arvosana.selectValue('9'), editor.doneEditing)
+          it('Toimii', function() {
+            expect(arvosana.getValue()).to.equal('9')
+          })
+        })
       })
       describe('Yksilöllistäminen', function() {
         before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),  editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.doneEditing)

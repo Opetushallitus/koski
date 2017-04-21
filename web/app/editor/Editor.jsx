@@ -45,11 +45,25 @@ export const Editor = React.createClass({
   }
 })
 Editor.shouldComponentUpdate = function(nextProps) {
-  var result = nextProps.model.modelId != this.props.model.modelId
+  var next = nextProps.model
+  var current = this.props.model
+  var result = next.modelId != current.modelId
+  if (pathHash(next) !== pathHash(current)) {
+    result = true
+  }
   if (result) {
     //console.log('update', this.props.model.path)
   }
   return result
+}
+let pathHash = (m) => {
+  let hash = 0
+  for (var i in (m.path || [])) {
+    if (typeof m.path[i] == 'number') {
+      hash += m.path[i]
+    }
+  }
+  return hash
 }
 Editor.propTypes = {
   model: React.PropTypes.object.isRequired
