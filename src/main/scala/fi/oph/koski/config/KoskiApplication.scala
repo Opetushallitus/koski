@@ -16,7 +16,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.pulssi.PrometheusRepository
+import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
@@ -68,4 +68,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(database.db)
   lazy val prometheusRepository = PrometheusRepository(config)
+  lazy val koskiPulssi = KoskiPulssi(this)
 }
