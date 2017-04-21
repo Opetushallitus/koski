@@ -1183,115 +1183,130 @@ describe('Perusopetus', function() {
                 describe('Kun merkitään valmiksi', function() {
                   var dialogEditor = dialog.editor
                   var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
-                  before(tilaJaVahvistus.merkitseValmiiksi,
+                  before(
+                    tilaJaVahvistus.merkitseValmiiksi,
                     dialogEditor.property('päivä').setValue('11.4.2017'),
                     myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
                     myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
-                    myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
-                    dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
-                    dialog.merkitseValmiiksi
+                    myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori')
                   )
 
-                  describe('Käyttöliittymän tila', function() {
-                    it('Tila on "valmis" ja vahvistus näytetään', function() {
-                      expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi\nSiirretään seuraavalle luokalle')
-                    })
-
-                    it('Merkitse valmiiksi -nappia ei näytetä', function() {
-                      expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+                  describe('Merkitse valmiiksi -dialogi', function (){
+                    it('Esitäyttää paikkakunnan valitun organisaation mukaan', function() {
+                      expect(dialogEditor.property('paikkakunta').getValue()).to.equal('Jyväskylä')
                     })
                   })
 
-                  describe('Kun muutetaan takaisin keskeneräiseksi', function() {
-                    before(tilaJaVahvistus.merkitseKeskeneräiseksi)
-                    it('Tila on "kesken" ja vahvistus on poistettu', function() {
-                      expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEN')
-                    })
-
-                    describe('Kun merkitään keskeytyneeksi', function() {
-                      var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
-
-                      before(opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), tilaJaVahvistus.merkitseKeskeytyneeksi)
+                  describe('Kun painetaan Merkitse valmiiksi -nappia', function() {
+                    before(
+                      dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
+                      dialog.merkitseValmiiksi
+                    )
 
 
-                      it('Tila on "keskeytynyt"', function() {
-                        expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEYTYNYT')
+                    describe('Käyttöliittymän tila', function() {
+                      it('Tila on "valmis" ja vahvistus näytetään', function() {
+                        expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi\nSiirretään seuraavalle luokalle')
                       })
 
-                      it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
-                        expect(äidinkieli.property('tila').getValue()).to.equal('Suoritus keskeytynyt')
+                      it('Merkitse valmiiksi -nappia ei näytetä', function() {
+                        expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
                       })
                     })
-                  })
 
-                  describe('Lisättäessä toinen', function() {
-                    before(editor.edit, opinnot.lisääSuoritus)
-                    describe('Aluksi', function() {
-                      it('Lisää-nappi on disabloitu', function() {
-                        expect(lisääSuoritus.isEnabled()).to.equal(false)
-                      })
-                      it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
-                        expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
-                      })
-                      it('Käytetään oletusarvona edellisen luokan toimipistettä', function() {
-                        expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
-                      })
-                    })
-                    describe('Lisäyksen jälkeen', function() {
-                      before(lisääSuoritus.property('luokka').setValue('2a'), lisääSuoritus.lisääSuoritus)
-
-                      it('Uusin suoritus näytetään täbeissä viimeisenä', function() {
-                        expect(opinnot.suoritusTabs(1)).to.deep.equal(['Peruskoulu', '1. vuosiluokka', '2. vuosiluokka'])
+                    describe('Kun muutetaan takaisin keskeneräiseksi', function() {
+                      before(tilaJaVahvistus.merkitseKeskeneräiseksi)
+                      it('Tila on "kesken" ja vahvistus on poistettu', function() {
+                        expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEN')
                       })
 
-                      it('Uusi suoritus on valittuna', function() {
-                        expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
-                        expect(editor.property('luokka').getValue()).to.equal('2a')
-                      })
+                      describe('Kun merkitään keskeytyneeksi', function() {
+                        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
 
-                      describe('Kun merkitään valmiiksi, jää luokalle', function() {
-                        var tilaJaVahvistus = opinnot.tilaJaVahvistus()
-                        var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
-                        var dialogEditor = dialog.editor
-                        var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
-                        merkitseOppiaineetValmiiksi()
-                        before(
-                          tilaJaVahvistus.merkitseValmiiksi,
-                          dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
-                          myöntäjät.itemEditor(0).setValue('Reijo Reksi, rehtori'),
-                          dialogEditor.property('päivä').setValue('11.4.2017'),
-                          dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
-                          dialog.merkitseValmiiksi
-                        )
+                        before(opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), tilaJaVahvistus.merkitseKeskeytyneeksi)
 
-                        it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
-                          // implicitly tested
+
+                        it('Tila on "keskeytynyt"', function() {
+                          expect(tilaJaVahvistus.text()).to.equal('Suoritus: KESKEYTYNYT')
                         })
 
-                        it('Tila on "valmis" ja vahvistus näytetään', function() {
-                          expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi\nEi siirretä seuraavalle luokalle')
-                        })
-                      })
-
-                      describe('Kun kaikki luokka-asteet on lisätty', function() {
-                        for (var i = 3; i <= 9; i++) {
-                          before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
-                        }
-
-                        it('Suorituksia ei voi enää lisätä', function() {
-                          expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                        it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
+                          expect(äidinkieli.property('tila').getValue()).to.equal('Suoritus keskeytynyt')
                         })
                       })
                     })
 
-                  })
+                    describe('Lisättäessä toinen', function() {
+                      before(editor.edit, opinnot.lisääSuoritus)
+                      describe('Aluksi', function() {
+                        it('Lisää-nappi on disabloitu', function() {
+                          expect(lisääSuoritus.isEnabled()).to.equal(false)
+                        })
+                        it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function( ){
+                          expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
+                        })
+                        it('Käytetään oletusarvona edellisen luokan toimipistettä', function() {
+                          expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
+                        })
+                      })
+                      describe('Lisäyksen jälkeen', function() {
+                        before(lisääSuoritus.property('luokka').setValue('2a'), lisääSuoritus.lisääSuoritus)
 
-                  describe('Kun tallennetaan', function() {
-                    before(editor.doneEditing)
-                    it('Toimii', function() {
+                        it('Uusin suoritus näytetään täbeissä viimeisenä', function() {
+                          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Peruskoulu', '1. vuosiluokka', '2. vuosiluokka'])
+                        })
+
+                        it('Uusi suoritus on valittuna', function() {
+                          expect(opinnot.getTutkinto()).to.equal('2. vuosiluokka')
+                          expect(editor.property('luokka').getValue()).to.equal('2a')
+                        })
+
+                        describe('Kun merkitään valmiiksi, jää luokalle', function() {
+                          var tilaJaVahvistus = opinnot.tilaJaVahvistus()
+                          var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+                          var dialogEditor = dialog.editor
+                          var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
+                          merkitseOppiaineetValmiiksi()
+                          before(
+                            tilaJaVahvistus.merkitseValmiiksi,
+                            dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
+                            myöntäjät.itemEditor(0).setValue('Reijo Reksi, rehtori'),
+                            dialogEditor.property('päivä').setValue('11.4.2017'),
+                            dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
+                            dialog.merkitseValmiiksi
+                          )
+
+                          it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
+                            // implicitly tested
+                          })
+
+                          it('Tila on "valmis" ja vahvistus näytetään', function() {
+                            expect(tilaJaVahvistus.text()).to.equal('Suoritus: VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi\nEi siirretä seuraavalle luokalle')
+                          })
+                        })
+
+                        describe('Kun kaikki luokka-asteet on lisätty', function() {
+                          for (var i = 3; i <= 9; i++) {
+                            before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
+                          }
+
+                          it('Suorituksia ei voi enää lisätä', function() {
+                            expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                          })
+                        })
+                      })
 
                     })
+
+                    describe('Kun tallennetaan', function() {
+                      before(editor.doneEditing)
+                      it('Toimii', function() {
+
+                      })
+                    })
+
                   })
+
                 })
 
               })

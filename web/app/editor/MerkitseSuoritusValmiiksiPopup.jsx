@@ -6,10 +6,13 @@ import {
   modelSetValue,
   modelItems,
   modelData,
-  addContext
+  addContext,
+  pushModel
 } from './EditorModel'
 import React from 'baret'
+import Http from '../http'
 import Bacon from 'baconjs'
+import R from 'ramda'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
@@ -34,6 +37,12 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
       return saveOrganizationalPreference(organisaatioOid, 'myöntäjät', key, data)
     })
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
+  })
+
+  let kotipaikkaE = modelP.map(m => modelData(m, 'vahvistus.myöntäjäOrganisaatio').oid).skipDuplicates().flatMapLatest(oid => Http.cachedGet(`/koski/api/editor/organisaatio/${oid}/kotipaikka`)).filter(R.identity)
+
+  modelP.sampledBy(kotipaikkaE, (model, kotipaikka) => [model, kotipaikka]).onValue(([model, kotipaikka]) => {
+    pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
   })
 
   return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false">

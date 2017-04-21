@@ -87,11 +87,13 @@
       "oppilaitosKoodi" : "00204",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_19#1",
+      "kotipaikkaUri":"kunta_179",
       "children" : [ {
         "oid" : "1.2.246.562.10.13635400305",
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu, alakoulu"
         },
+        "kotipaikkaUri":"kunta_179",
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {

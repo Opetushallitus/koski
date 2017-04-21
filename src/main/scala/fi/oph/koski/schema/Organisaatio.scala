@@ -27,7 +27,8 @@ object OrganisaatioOid {
 @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio.")
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
-  nimi: Option[LocalizedString] = None
+  nimi: Option[LocalizedString] = None,
+  kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
@@ -38,7 +39,8 @@ case class Koulutustoimija(
   nimi: Option[LocalizedString] = None,
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
-  yTunnus: Option[String] = None
+  yTunnus: Option[String] = None,
+  kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
@@ -51,7 +53,8 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
-  nimi: Option[LocalizedString] = None
+  nimi: Option[LocalizedString] = None,
+  kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = Some(this)
 }
@@ -60,7 +63,8 @@ case class Oppilaitos(
 @IgnoreInAnyOfDeserialization
 case class Toimipiste(
   oid: String,
-  nimi: Option[LocalizedString] = None
+  nimi: Option[LocalizedString] = None,
+  kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
@@ -96,6 +100,8 @@ trait OrganisaatioWithOid extends Organisaatio {
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
   def toOidOrganisaatio = OidOrganisaatio(oid, nimi)
+  @KoodistoUri("kunta")
+  def kotipaikka: Option[Koodistokoodiviite]
 }
 
 trait DefaultDescription extends OrganisaatioWithOid {

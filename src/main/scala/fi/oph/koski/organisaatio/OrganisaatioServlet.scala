@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{AccessType, KäyttöoikeusOrg, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, RequiresAuthentication}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OrganisaatioServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {

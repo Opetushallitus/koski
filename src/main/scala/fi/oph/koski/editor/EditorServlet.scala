@@ -51,6 +51,15 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
+  get("/organisaatio/:oid/kotipaikka") {
+    renderEither(OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
+      application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
+        case None => Left(KoskiErrorCategory.notFound())
+        case Some(kotipaikka) => Right(EditorModelBuilder.koodistoEnumValue(localization)(kotipaikka))
+      }
+    })
+  }
+
   get("/suoritukset/prefill/:koodistoUri/:koodiarvo") {
     if (params("koodistoUri") == "perusopetuksenluokkaaste") {
       val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)

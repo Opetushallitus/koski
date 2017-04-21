@@ -3,7 +3,7 @@ package fi.oph.koski.organisaatio
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 
-case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioHierarkia]) {
+case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioHierarkia]) {
   def find(oid: String): Option[OrganisaatioHierarkia] = {
     if (oid == this.oid) {
       Some(this)
@@ -17,13 +17,13 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
 
   def toOrganisaatio: OrganisaatioWithOid =
     if (organisaatiotyypit.contains("OPPILAITOS")) {
-      Oppilaitos(oid, oppilaitosnumero, Some(nimi))
+      Oppilaitos(oid, oppilaitosnumero, Some(nimi), kotipaikka)
     } else if (organisaatiotyypit.contains("KOULUTUSTOIMIJA")) {
-      Koulutustoimija(oid, Some(nimi), yTunnus)
+      Koulutustoimija(oid, Some(nimi), yTunnus, kotipaikka)
     } else if (organisaatiotyypit.contains("TOIMIPISTE")) {
-      Toimipiste(oid, Some(nimi))
+      Toimipiste(oid, Some(nimi), kotipaikka)
     } else {
-      OidOrganisaatio(oid, Some(nimi))
+      OidOrganisaatio(oid, Some(nimi), kotipaikka)
     }
 
   def toKoulutustoimija: Option[Koulutustoimija] = toOrganisaatio match {
