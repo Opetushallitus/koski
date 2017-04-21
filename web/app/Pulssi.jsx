@@ -39,8 +39,7 @@ const Pulssi = React.createClass({
                     {
                       opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((stat, i) =>
                           <li key={i}>
-                            <span>{opiskeluoikeusTyypit[stat.nimi]}</span><span
-                              className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
+                            <span>{opiskeluoikeusTyypit[stat.nimi]}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
                           </li>
                       )
                     }
@@ -49,19 +48,19 @@ const Pulssi = React.createClass({
                 <section className="kattavuus">
                   <ul>
                     <li>
-                      <h3>Perusopetus</h3>
+                      <h4>Perusopetus</h4>
                       <div className="progress-bar">
                         <div style={{width: '30%'}}></div>
                       </div>
                     </li>
                     <li>
-                      <h3>Ammatillinen koulutus</h3>
+                      <h4>Ammatillinen koulutus</h4>
                       <div className="progress-bar">
                         <div style={{width: '45%'}}></div>
                       </div>
                     </li>
                     <li>
-                      <h3>Lukiokoulutus</h3>
+                      <h4>Lukiokoulutus</h4>
                       <div className="progress-bar">
                         <div style={{width: '20%'}}></div>
                       </div>
@@ -76,6 +75,18 @@ const Pulssi = React.createClass({
                 </section>
                 <section className="metric operaatiot">
                   <h3>Operaatiot / kk</h3>
+                  <div className="metric-medium">{stats.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
+                  <ul className="metric-details">
+                    {
+                      stats.operaatiot.sort((x , y) => y.määrä - x.määrä).map((op, i) => {
+                        return (
+                            <li key={i}>
+                              <span>{op.nimi}</span><span className="metric-value">{op.määrä}</span>
+                            </li>
+                        )
+                      })
+                    }
+                  </ul>
                 </section>
               </div>
             </div>
@@ -108,7 +119,8 @@ const Pulssi = React.createClass({
       stats: {
         opiskeluoikeudet: {
           määrätKoulutusmuodoittain: []
-        }
+        },
+        operaatiot: []
       },
       opiskeluoikeusTyypit: {}
     }
@@ -124,7 +136,7 @@ const KoulutusmuotoTilasto = ({koulutusmuoto, opiskeluoikeusTyypit}) => {
   let valmiitPercent = toPercent(opiskeluoikeusMääräValmiit / opiskeluoikeusMääräKaikki)
   return (
       <li>
-        <h3>{opiskeluoikeusTyypit[koulutusmuoto.nimi]}</h3>
+        <h4>{opiskeluoikeusTyypit[koulutusmuoto.nimi]}</h4>
         <div className="progress-bar">
           <div style={{width: valmiitPercent + '%'}}></div>
         </div>
