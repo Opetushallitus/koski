@@ -37,8 +37,8 @@ const Pulssi = React.createClass({
                 <section className="opiskeluoikeudet-total">
                   <ul>
                     {
-                      opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map(stat =>
-                          <li>
+                      opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((stat, i) =>
+                          <li key={i}>
                             <span>{stat.nimi}</span><span
                               className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
                           </li>
@@ -60,8 +60,8 @@ const Pulssi = React.createClass({
             <section className="valmiit-tutkinnot">
               <ul>
                 {
-                  opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map(koulutusmuoto =>
-                      <KoulutusmuotoTilasto koulutusmuoto={koulutusmuoto}/>
+                  opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((koulutusmuoto,i) =>
+                      <KoulutusmuotoTilasto key={i} koulutusmuoto={koulutusmuoto}/>
                   )
                 }
               </ul>
