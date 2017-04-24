@@ -35,7 +35,7 @@ const Pulssi = React.createClass({
             <div className="lower-left-container column">
               <div className="two-columns">
                 <section className="opiskeluoikeudet-total">
-                  <ul>
+                  <ul className="metric-details">
                     {
                       opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((stat, i) =>
                           <li key={i}>
