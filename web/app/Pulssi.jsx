@@ -36,7 +36,7 @@ const Pulssi = React.createClass({
               {toPercent(valmiidenTutkintojenMäärä / opiskeluoikeudet.opiskeluoikeuksienMäärä)} %
             </section>
           </div>
-          <div className="expanding three-columns">
+          <div className="three-columns">
             <div className="lower-left-container column">
               <div className="two-columns">
                 <section className="opiskeluoikeudet-total">
@@ -64,7 +64,7 @@ const Pulssi = React.createClass({
                   </ul>
                 </section>
               </div>
-              <div className="two-columns expanding">
+              <div className="two-columns">
                 <section className="metric saavutettavuus">
                   <h3>Saavutettavuus</h3>
                   <div className="metric-medium">99.999%</div>
