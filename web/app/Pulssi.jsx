@@ -48,25 +48,13 @@ const Pulssi = React.createClass({
                 <section className="kattavuus">
                   <ul>
                     <li>
-                      <span>Perusopetus</span>
-                      <span className="metric-value">30,0 %  (823 / 6320)</span>
-                      <div className="progress-bar">
-                        <div style={{width: '30%'}}></div>
-                      </div>
+                      <Kattavuus title="Perusopetus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="perusopetus"/>
                     </li>
                     <li>
-                      <span>Ammatillinen koulutus</span>
-                      <span className="metric-value">45,0 %  (823 / 6320)</span>
-                      <div className="progress-bar">
-                        <div style={{width: '45%'}}></div>
-                      </div>
+                      <Kattavuus title="Ammatillinen koulutus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="ammatillinenkoulutus"/>
                     </li>
                     <li>
-                      <span>Lukiokoulutus</span>
-                      <span className="metric-value">20,0 %  (823 / 6320)</span>
-                      <div className="progress-bar">
-                        <div style={{width: '20%'}}></div>
-                      </div>
+                      <Kattavuus title="Lukiokoulutus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="lukiokoulutus"/>
                     </li>
                   </ul>
                 </section>
@@ -133,6 +121,23 @@ const Pulssi = React.createClass({
 
 const toPercent = x => Math.round(x * 100 * 10) / 10
 
+const Kattavuus = ({title, opiskeluoikeudet, koulutusmuoto}) => {
+
+  let kmuoto = opiskeluoikeudet.määrätKoulutusmuodoittain.find(o => o.nimi === koulutusmuoto)
+  let count =  kmuoto && kmuoto.siirtäneitäOppilaitoksia
+  let total = 1000 // hardcoded for now
+  let percentage = count && toPercent(count / total)
+  return (
+      <div>
+        <span>{title}</span>
+        <span className="metric-value">{percentage} %  ({count} / {total})</span>
+        <div className="progress-bar">
+          <div style={{width: percentage + '%'}} />
+        </div>
+      </div>
+  )
+}
+
 const KoulutusmuotoTilasto = ({koulutusmuoto, opiskeluoikeusTyypit}) => {
   let opiskeluoikeusMääräValmiit = koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä
   let opiskeluoikeusMääräKaikki = koulutusmuoto.määrätTiloittain.reduce((acc, n) => acc + n.opiskeluoikeuksienMäärä, 0)
@@ -142,7 +147,7 @@ const KoulutusmuotoTilasto = ({koulutusmuoto, opiskeluoikeusTyypit}) => {
       <li>
         <h4>{opiskeluoikeusTyypit[koulutusmuoto.nimi]}</h4>
         <div className="progress-bar">
-          <div style={{width: valmiitPercent + '%'}}></div>
+          <div style={{width: valmiitPercent + '%'}} />
         </div>
         <div className="metric-tiny">
           <span>{opiskeluoikeusMääräValmiit} ({valmiitPercent} %)</span>
