@@ -48,25 +48,27 @@ const Pulssi = React.createClass({
                 <section className="kattavuus">
                   <ul>
                     <li>
-                      <h4>Perusopetus</h4>
+                      <span>Perusopetus</span>
+                      <span className="metric-value">30,0 %  (823 / 6320)</span>
                       <div className="progress-bar">
                         <div style={{width: '30%'}}></div>
                       </div>
                     </li>
                     <li>
-                      <h4>Ammatillinen koulutus</h4>
+                      <span>Ammatillinen koulutus</span>
+                      <span className="metric-value">45,0 %  (823 / 6320)</span>
                       <div className="progress-bar">
                         <div style={{width: '45%'}}></div>
                       </div>
                     </li>
                     <li>
-                      <h4>Lukiokoulutus</h4>
+                      <span>Lukiokoulutus</span>
+                      <span className="metric-value">20,0 %  (823 / 6320)</span>
                       <div className="progress-bar">
                         <div style={{width: '20%'}}></div>
                       </div>
                     </li>
                   </ul>
-
                 </section>
               </div>
               <div className="two-columns expanding">
