@@ -12,6 +12,11 @@ const Pulssi = React.createClass({
         acc + koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä, 0
     )
 
+    let schoolsTotal = 8582 //hardcoded
+    let schoolsWhoHaveTransferredData = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) => {
+      return acc + koulutusmuoto.siirtäneitäOppilaitoksia
+    }, 0)
+
     return (
         <div className="statistics column">
           <h1><span>Koski</span><img src="images/pulssi.png"/><span>Pulssi</span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
@@ -22,8 +27,8 @@ const Pulssi = React.createClass({
             </section>
             <section className="primary-metric kattavuus">
               <h3>Kattavuus</h3>
-              <div className="metric-large">N/A</div>
-              1102 / 8582
+              <div className="metric-large">{toPercent(schoolsWhoHaveTransferredData / schoolsTotal)} %</div>
+              {schoolsWhoHaveTransferredData} / {schoolsTotal}
             </section>
             <section className="primary-metric valmiit-tutkinnot">
               <h3>Valmiiden tutkintojen määrä</h3>
