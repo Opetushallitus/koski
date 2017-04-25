@@ -6,6 +6,7 @@ export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKE
 export const suorituksenTila = (suoritus) => modelData(suoritus, 'tila').koodiarvo
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arvosanaLens = modelLens('arviointi.-1.arvosana')
+export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
 export const lastArviointiLens = modelLens('arviointi.-1')
 export const tilaLens = modelLens('tila')
 export const setTila = (suoritus, koodiarvo) => {

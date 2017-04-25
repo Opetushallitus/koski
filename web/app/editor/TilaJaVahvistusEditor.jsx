@@ -5,7 +5,14 @@ import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis, suorituksenTila, setTila} from './Suoritus'
+import {
+  onKeskeneräisiäOsasuorituksia,
+  suoritusKesken,
+  suoritusValmis,
+  suorituksenTila,
+  setTila,
+  arviointiPuuttuu
+} from './Suoritus'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
@@ -61,7 +68,7 @@ const MerkitseValmiiksiButton = ({model}) => {
       addingAtom.set(false)
     }
   }
-  let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model)
+  let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
   return (<span>
     <button className="merkitse-valmiiksi" disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>Merkitse valmiiksi</button>
     {

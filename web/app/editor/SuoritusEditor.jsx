@@ -9,6 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
+import {suoritusValmis, arviointiPuuttuu} from './Suoritus'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -55,6 +56,11 @@ export const SuoritusEditor = React.createClass({
   }
 })
 SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
+SuoritusEditor.validateModel = (m) => {
+  if (suoritusValmis(m) && arviointiPuuttuu(m)) {
+    return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
+  }
+}
 
 const TodistusLink = React.createClass({
   render() {

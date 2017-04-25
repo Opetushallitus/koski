@@ -20,6 +20,7 @@ import * as Ammatillinen from './Ammatillinen.jsx'
 import * as Perusopetus from './Perusopetus.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 import {OrganisaatioHenkilöEditor} from './OrganisaatioHenkiloEditor.jsx'
+import {SuoritusEditor} from './SuoritusEditor.jsx'
 
 export const editorMapping = R.mergeAll([{
   'optional': OptionalEditor,
@@ -32,6 +33,7 @@ export const editorMapping = R.mergeAll([{
   'boolean': BooleanEditor,
   'enum': EnumEditor,
   'oppijaeditorview': OppijaEditor,
+  'paatasonsuoritus': SuoritusEditor,
   'opiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'vahvistus': VahvistusEditor,
   'laajuus' : LaajuusEditor,
