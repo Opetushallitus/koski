@@ -6,7 +6,7 @@ import './style/pulssi.less'
 
 const Pulssi = React.createClass({
   render() {
-    let {stats, opiskeluoikeusTyypit} = this.state
+    let {stats} = this.state
     let opiskeluoikeudet = stats.opiskeluoikeudet
     let valmiidenTutkintojenMäärä = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
         acc + koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä, 0
@@ -44,7 +44,7 @@ const Pulssi = React.createClass({
                     {
                       opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((stat, i) =>
                           <li key={i}>
-                            <span>{opiskeluoikeusTyypit[stat.nimi]}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
+                            <span>{stat.nimi}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
                           </li>
                       )
                     }
@@ -91,7 +91,7 @@ const Pulssi = React.createClass({
               <ul>
                 {
                   opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((koulutusmuoto,i) =>
-                      <KoulutusmuotoTilasto key={i} koulutusmuoto={koulutusmuoto} opiskeluoikeusTyypit={opiskeluoikeusTyypit}/>
+                      <KoulutusmuotoTilasto key={i} koulutusmuoto={koulutusmuoto} />
                   )
                 }
               </ul>
@@ -102,14 +102,6 @@ const Pulssi = React.createClass({
   },
   componentDidMount() {
     Http.cachedGet('/koski/api/pulssi').onValue(stats => this.setState({stats}))
-    Http.cachedGet('/koski/api/koodisto/opiskeluoikeudentyyppi/latest')
-        .map(tyypit => {
-          return tyypit.reduce((acc, t) => {
-            acc[t.koodiArvo] = t.metadata.find(m => m.kieli === 'FI').nimi
-            return acc
-          }, {})
-        })
-        .onValue(opiskeluoikeusTyypit => this.setState({opiskeluoikeusTyypit}))
   },
   getInitialState() {
     return {
@@ -121,8 +113,7 @@ const Pulssi = React.createClass({
           saavutettavuus: 0,
           operaatiot: []
         }
-      },
-      opiskeluoikeusTyypit: {}
+      }
     }
   }
 })
@@ -146,14 +137,14 @@ const Kattavuus = ({title, opiskeluoikeudet, koulutusmuoto}) => {
   )
 }
 
-const KoulutusmuotoTilasto = ({koulutusmuoto, opiskeluoikeusTyypit}) => {
+const KoulutusmuotoTilasto = ({koulutusmuoto}) => {
   let opiskeluoikeusMääräValmiit = koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä
   let opiskeluoikeusMääräKaikki = koulutusmuoto.määrätTiloittain.reduce((acc, n) => acc + n.opiskeluoikeuksienMäärä, 0)
   let opiskeluoikeusMääräEiValmiit = opiskeluoikeusMääräKaikki - opiskeluoikeusMääräValmiit
   let valmiitPercent = toPercent(opiskeluoikeusMääräValmiit / opiskeluoikeusMääräKaikki)
   return (
       <li>
-        <h4>{opiskeluoikeusTyypit[koulutusmuoto.nimi]}</h4>
+        <h4>{koulutusmuoto.nimi}</h4>
         <div className="progress-bar">
           <div style={{width: valmiitPercent + '%'}} />
         </div>

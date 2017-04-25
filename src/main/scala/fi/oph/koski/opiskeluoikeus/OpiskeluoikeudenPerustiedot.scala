@@ -268,7 +268,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
           |    },
           |    "tyyppi": {
           |      "terms": {
-          |        "field": "tyyppi.koodiarvo.keyword"
+          |        "field": "tyyppi.nimi.fi.keyword"
           |      },
           |      "aggs": {
           |        "tila": {
