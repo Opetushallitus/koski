@@ -67,7 +67,7 @@ const Pulssi = React.createClass({
               <div className="two-columns">
                 <section className="metric saavutettavuus">
                   <h3>Saavutettavuus</h3>
-                  <div className="metric-medium">99.999%</div>
+                  <div className="metric-medium">{stats.metriikka.saavutettavuus}%</div>
                   <div className="description">Kuinka suuren osan ajasta palvelu on ollut saatavilla</div>
                 </section>
                 <section className="metric operaatiot">

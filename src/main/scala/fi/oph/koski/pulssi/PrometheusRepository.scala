@@ -6,6 +6,8 @@ import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
 import fi.oph.koski.json.GenericJsonFormats
 import org.json4s.JValue
 
+import scala.math.BigDecimal.RoundingMode.HALF_UP
+
 object PrometheusRepository {
   def apply(config: Config) = {
     if (config.getString("prometheus.url") == "mock") {
@@ -38,7 +40,7 @@ trait PrometheusRepository {
 
   def koskiAvailability: Double =
     metric("/prometheus/api/v1/query?query=koski_available_percent")
-      .headOption.flatMap(value).map(_.toDouble).getOrElse(100)
+      .headOption.flatMap(value).map(_.toDouble).map(round(3)).getOrElse(100)
 
   def doQuery(query: String): JValue
 
@@ -47,5 +49,7 @@ trait PrometheusRepository {
 
   private def value(metric: JValue): Option[String] =
     (metric \ "value").extract[List[String]].lastOption
+
+  private def round(precisison: Int) = (double: Double) => BigDecimal(double).setScale(precisison, HALF_UP).toDouble
 }
 
