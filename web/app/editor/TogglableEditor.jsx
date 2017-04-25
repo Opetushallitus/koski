@@ -10,13 +10,14 @@ export const TogglableEditor = React.createClass({
     let { model, renderChild } = this.props
     let context = model.context
     let hasErrors = !modelValid(model)
-    let edit = context.edit || parseBool(currentLocation().params.edit)
+    let opiskeluoikeusId = model.context.opiskeluoikeusId
+    let edit = context.edit || (opiskeluoikeusId && currentLocation().params.edit == opiskeluoikeusId)
 
     let toggleEdit = () => {
       if (edit) {
         context.doneEditingBus.push()
       }
-      navigateWithQueryParams({edit: !edit ? 'true' : undefined})
+      navigateWithQueryParams({edit: !edit ? opiskeluoikeusId : undefined})
     }
     let showToggleEdit = model.editable && !context.edit && !context.hasToggleEdit
     let modifiedContext = R.merge(context, {

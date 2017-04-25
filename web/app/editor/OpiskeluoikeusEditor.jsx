@@ -17,10 +17,11 @@ import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 
 export const OpiskeluoikeusEditor = ({model}) => {
+  let id = modelData(model, 'id')
+  model = addContext(model, {opiskeluoikeusId: id})
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
+    mdl = addContext(mdl, {opiskeluoikeus: mdl})
     let context = mdl.context
-    let id = modelData(mdl, 'id')
-    mdl = addContext(mdl, {opiskeluoikeusId: id, opiskeluoikeus: mdl})
     let suoritukset = modelItems(mdl, 'suoritukset')
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
