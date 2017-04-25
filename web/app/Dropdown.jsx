@@ -15,6 +15,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
   let selectionIndexAtom = Atom(0)
   let queryAtom = Atom(undefined)
   let openAtom = Atom(false)
+  selectedP.changes().onValue(() => openAtom.set(false))
   let filteredOptionsP = Bacon.combineWith(optionsP, queryAtom, Bacon.constant(displayValue), queryFilter)
   let allOptionsP = filteredOptionsP.map(opts => opts.concat(newItem ? [newItem] : []))
   var inputElem = null

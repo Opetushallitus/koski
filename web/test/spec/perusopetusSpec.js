@@ -961,7 +961,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Opiskeluoikeuden lisääminen', function() {
-    describe('Uudelle henkilölle', function() {
+    describe('Perusopetuksen oppimäärä', function() {
       before(prepareForNewOppija('kalle', '230872-7258'))
 
       describe('Aluksi', function() {
@@ -1011,28 +1011,26 @@ describe('Perusopetus', function() {
           it('lisätty oppija näytetään', function() {})
         })
       })
+    })
 
-      /*
-      describe('Oppimäärän valinta', function() {
-        before(
-          resetFixtures,
-          prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataPerusopetus(),
-          addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä')
-        )
-        describe('Käyttöliittymän tila', function() {
-          it('Näytetään oppimäärävaihtoehdot (Perusopetuksen oppiaineen oppimäärä, Perusopetuksen oppimäärä)', function() {
-            expect(addOppija.oppimäärät()).to.deep.equal(['Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
-          })
-        })
-        describe('Kun valitaan oppiaineen oppimäärä', function() {
-          before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
-          it('Valittu oppimäärä päätyy suoritukseen', function() {
-            expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
-          })
+    describe('Perusopetuksen oppiaineen oppimäärä', function() {
+      before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataPerusopetus())
+
+      describe('Käyttöliittymän tila', function() {
+        it('Näytetään oppimäärävaihtoehdot (Perusopetuksen oppiaineen oppimäärä, Perusopetuksen oppimäärä)', function() {
+          expect(addOppija.oppimäärät()).to.deep.equal(['Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
         })
       })
-      */
+
+      describe('Kun valitaan oppiaineen oppimäärä ja oppiaine', function() {
+        before(
+          addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
+          addOppija.selectOppiaine('Fysiikka'),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka'))
+        it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
+
+        })
+      })
     })
 
     describe('Back-nappi', function() {

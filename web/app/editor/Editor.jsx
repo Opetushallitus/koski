@@ -9,34 +9,11 @@ import {parseBool} from '../util'
  */
 export const Editor = React.createClass({
   render() {
-    let { model, editorMapping, changeBus, doneEditingBus, path, edit, ...rest } = this.props
+    let { model, ...rest } = this.props
     if (!model) {
       throw new Error('model missing')
     }
-    if (!model.context) {
-      if (!editorMapping) {
-        console.error('editorMapping required for root editor', model)
-        throw new Error('editorMapping required for root editor')
-      }
-      R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
-      model = contextualizeModel(model, {
-        changeBus, doneEditingBus,
-        path: '',
-        prototypes: model.prototypes,
-        editorMapping
-      })
-    } else {
-      if (editorMapping) model = addContext(model, {editorMapping})
-      if (changeBus) model = addContext(model, {changeBus})
-      if (doneEditingBus) model = addContext(model, {doneEditingBus})
-    }
-    edit = parseBool(edit)
-    if (edit !== model.context.edit) {
-      model = addContext(model, { edit })
-    }
-    if (path) {
-      model = modelLookup(model, path)
-    }
+    model = Editor.setupContext(model, this.props)
     return getModelEditor(model, rest)
   },
 
@@ -44,6 +21,36 @@ export const Editor = React.createClass({
     return Editor.shouldComponentUpdate.call(this, nextProps)
   }
 })
+
+Editor.setupContext = (model, {editorMapping, changeBus, doneEditingBus, edit, path}) => {
+  if (!model.context) {
+    if (!editorMapping) {
+      console.error('editorMapping required for root editor', model)
+      throw new Error('editorMapping required for root editor')
+    }
+    R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
+    model = contextualizeModel(model, {
+      changeBus, doneEditingBus,
+      path: '',
+      prototypes: model.prototypes,
+      editorMapping
+    })
+  } else {
+    if (!model.context.prototypes) model = addContext(model, { prototypes: model.prototypes })
+    if (editorMapping) model = addContext(model, {editorMapping})
+    if (changeBus) model = addContext(model, {changeBus})
+    if (doneEditingBus) model = addContext(model, {doneEditingBus})
+  }
+  edit = parseBool(edit)
+  if (edit !== model.context.edit) {
+    model = addContext(model, { edit })
+  }
+  if (path) {
+    model = modelLookup(model, path)
+  }
+  return model
+}
+
 Editor.shouldComponentUpdate = function(nextProps) {
   var next = nextProps.model
   var current = this.props.model

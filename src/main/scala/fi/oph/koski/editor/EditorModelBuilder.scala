@@ -21,6 +21,10 @@ object EditorModelBuilder {
     }
   }
 
+  def buildPrototype(className: String)(implicit context: ModelBuilderContext) = {
+    context.mainSchema.getSchema(className).map(builder(_).buildPrototype(Nil))
+  }
+
   def builder(schema: Schema)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
     case t: SchemaWithClassName => modelBuilderForClass(t)
     case t: ListSchema => ListModelBuilder(t)
@@ -220,12 +224,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case _ => None
     }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested
-    val includedPrototypes: Map[String, EditorModel] = if (context.root) {
-      createRequestedPrototypes
-    } else {
-      Map.empty
-    }
-    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, includedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
+    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, createRequestedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
   }
 
   def buildPrototype(metadata: List[Metadata]) = {
@@ -233,7 +232,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       val propertyPrototype = Prototypes.getPrototypePlaceholder(property.schema, property.metadata).get
       createModelProperty(property, propertyPrototype)
     }
-    ObjectModel(classes(schema.fullClassName), properties, title = None, true, Map.empty, propsFromMetadata(metadata ++ schema.metadata))
+    ObjectModel(classes(schema.fullClassName), properties, title = None, true, createRequestedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
   }
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
@@ -266,6 +265,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
+    if (!context.root) return Map.empty
     var newRequests: Set[SchemaWithClassName] = context.prototypesRequested
     var prototypesCreated: Map[String, EditorModel] = Map.empty
     do {

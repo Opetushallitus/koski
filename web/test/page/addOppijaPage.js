@@ -79,7 +79,7 @@ function AddOppijaPage() {
         api.submit()
         return wait.until(function() {
           return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-                 OpinnotPage().getTutkinto().indexOf(tutkinto) >= 0
+                 OpinnotPage().suoritusOnValittu(1, tutkinto)
         })()
       }
     },
@@ -105,6 +105,13 @@ function AddOppijaPage() {
       return function () {
         return wait.until(pageApi.getInput('.oppimaara').isVisible)().then(
           pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
+        )
+      }
+    },
+    selectOppiaine: function(oppiaine) {
+      return function () {
+        return wait.until(pageApi.getInput('.oppiaine').isVisible)().then(
+          pageApi.setInputValue('.oppiaine .dropdown', oppiaine)
         )
       }
     },

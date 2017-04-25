@@ -99,9 +99,9 @@ export const modelData = (mainModel, path) => {
     if (model.data) return model.data
     if (!model || !model.value) return
     if (model.value.properties) {
-      return model.data = R.fromPairs(model.value.properties.map(p => [p.key, modelData(p.model)]))
+      return model.data = R.fromPairs(modelProperties(model).map(p => [p.key, modelData(p.model)]))
     } else if (model.value instanceof Array) {
-      return model.data =  model.value.map(item => modelData(item))
+      return model.data =  modelItems(model).map(item => modelData(item))
     } else {
       return model.data =  model.value.data
     }
@@ -265,8 +265,9 @@ export const contextualizeSubModel = (subModel, parentModel, path) => {
 
 // Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => {
-  if (!model.context) throw new Error('context missing')
-  return contextualizeModel(model, R.merge(model.context, removeUndefinedValues(additionalContext)))
+  additionalContext = removeUndefinedValues(additionalContext)
+  if (!model.context) return contextualizeModel(model, additionalContext)
+  return contextualizeModel(model, R.merge(model.context, additionalContext))
 }
 
 export const modelValid = (model, context) => {

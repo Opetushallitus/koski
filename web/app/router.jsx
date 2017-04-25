@@ -15,7 +15,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   if (oppijaId) {
     return oppijaContentP(oppijaId)
   } else if (path === '/koski/uusioppija' && uusiOppijaHetu) {
-    return { content: (<CreateOppija hetu={uusiOppijaHetu}/>) }
+    return { content: (<CreateOppija hetu={uusiOppijaHetu}/>), title: 'Uuden opiskelijan lisäys' }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {

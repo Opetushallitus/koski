@@ -3,5 +3,6 @@ import {OppiaineenSuoritusEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 
 export const editorMapping = {
   'erityisentuenpaatos': JaksoEditor,
-  'oppiaineensuoritus': OppiaineenSuoritusEditor
+  'perusopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor,
+  'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor
 }
