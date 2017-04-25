@@ -56,11 +56,13 @@ export default BaconComponent({
           {
             clearText && <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
           }
-          <div className="scroll-container">
-            <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
-              { renderTree(organisaatiot) }
-            </ul>
-          </div>
+          {
+            organisaatiot.length > 0 && <div className="scroll-container">
+              <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
+                { renderTree(organisaatiot) }
+              </ul>
+            </div>
+          }
         </div>
         }
       </div>
