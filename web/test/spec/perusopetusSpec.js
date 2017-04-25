@@ -841,7 +841,7 @@ describe('Perusopetus', function() {
             describe('Poistettaessa suoritus', function() {
               before(tanssi.propertyBySelector('tr').removeValue)
               it('Uusi oppiaine löytyy listalta', function() {
-                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
+                expect(uusiOppiaine.getOptions()).to.include('Tanssi')
               })
 
               describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
@@ -1511,7 +1511,7 @@ describe('Perusopetus', function() {
             describe('Poistettaessa suoritus', function() {
               before(tanssi.propertyBySelector('tr').removeValue)
               it('Uusi oppiaine löytyy listalta', function() {
-                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
+                expect(uusiOppiaine.getOptions()).to.include('Tanssi')
               })
 
               describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
