@@ -70,7 +70,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <div className="suoritukset">
             <h4>Suoritukset</h4>
             <SuoritusTabs model={mdl}/>
-            <Editor key={tabName(valittuSuoritus)} model={valittuSuoritus} />
+            <Editor key={tabName(valittuSuoritus)} model={valittuSuoritus} alwaysUpdate="true" />
           </div>
 
         </div>

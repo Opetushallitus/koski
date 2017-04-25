@@ -52,6 +52,7 @@ Editor.setupContext = (model, {editorMapping, changeBus, doneEditingBus, edit, p
 }
 
 Editor.shouldComponentUpdate = function(nextProps) {
+  if (parseBool(nextProps.alwaysUpdate)) return true
   var next = nextProps.model
   var current = this.props.model
   var result = next.modelId != current.modelId

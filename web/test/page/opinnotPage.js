@@ -173,7 +173,8 @@ function MerkitseValmiiksiDialog() {
       return wait.forAjax()
     },
     organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
-    editor: Editor(elem)
+    editor: Editor(elem),
+    myöntäjät: Editor(elem).property('myöntäjäHenkilöt')
   }
 }
 

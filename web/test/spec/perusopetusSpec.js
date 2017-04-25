@@ -3,6 +3,7 @@ describe('Perusopetus', function() {
   var login = LoginPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus()
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
@@ -1165,7 +1166,6 @@ describe('Perusopetus', function() {
                   )
                 }
               }
-              var tilaJaVahvistus = opinnot.tilaJaVahvistus()
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
                 it('Tila on "kesken"', function() {
@@ -1186,25 +1186,23 @@ describe('Perusopetus', function() {
                   })
                 })
                 describe('Kun merkitään valmiksi', function() {
-                  var dialogEditor = dialog.editor
-                  var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
                   before(
                     tilaJaVahvistus.merkitseValmiiksi,
-                    dialogEditor.property('päivä').setValue('11.4.2017'),
-                    myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
-                    myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
-                    myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori')
+                    dialog.editor.property('päivä').setValue('11.4.2017'),
+                    dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+                    dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+                    dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori')
                   )
 
                   describe('Merkitse valmiiksi -dialogi', function (){
                     it('Esitäyttää paikkakunnan valitun organisaation mukaan', function() {
-                      expect(dialogEditor.property('paikkakunta').getValue()).to.equal('Jyväskylä')
+                      expect(dialog.editor.property('paikkakunta').getValue()).to.equal('Jyväskylä')
                     })
                   })
 
                   describe('Kun painetaan Merkitse valmiiksi -nappia', function() {
                     before(
-                      dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
+                      dialog.editor.property('paikkakunta').setValue('Jyväskylä mlk'),
                       dialog.merkitseValmiiksi
                     )
 
@@ -1352,9 +1350,38 @@ describe('Perusopetus', function() {
     })
 
     describe('Tietojen muuttaminen', function() {
+      var arvosana = editor.property('arviointi')
+
       before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
-      it('Toimii', function() {
-        
+      before(editor.edit, editor.property('tila').removeItem(0)) // opiskeluoikeus: läsnä
+      before(arvosana.removeItem(0)) // poistetaan arviointi
+      // TODO: muuta keskeneräiseksi, poista arvosana, tsek: ei voi muuttaa valmiiksi, seivaa, anna arvosana, merkkaa valmiiksi, seivaa
+
+      describe('Kun suoritus on valmis, mutta arvosana puuttuu', function() {
+        it('Tallennus on estetty', function() {
+          expect(opinnot.onTallennettavissa()).to.equal(false)
+        })
+      })
+      describe('Kun merkitään keskeneräiseksi', function() {
+        before(tilaJaVahvistus.merkitseKeskeneräiseksi, editor.doneEditing, editor.edit)
+        it('Tallennus onnistuu', function() {
+        })
+
+        it('Valmiiksi merkintä on estetty', function() {
+          expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+        })
+
+        describe('Kun lisätään arvosana', function() {
+          before(arvosana.addItem,
+            tilaJaVahvistus.merkitseValmiiksi,
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,  editor.doneEditing)
+          it('Valmiiksi merkintä on mahdollista', function() {
+
+          })
+        })
       })
     })
   })
