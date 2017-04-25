@@ -6,13 +6,13 @@ import './style/pulssi.less'
 
 const Pulssi = React.createClass({
   render() {
-    let {stats} = this.state
-    let opiskeluoikeudet = stats.opiskeluoikeudet
+    let {pulssi} = this.state
+    let opiskeluoikeudet = pulssi.opiskeluoikeudet
     let valmiidenTutkintojenMäärä = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
         acc + koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä, 0
     )
 
-    let schoolsTotal = 8582 //hardcoded
+    let schoolsTotal = pulssi.oppilaitosMäärätTyypeittäin.reduce((acc, k) => acc + k.määrä, 0)
     let schoolsWhoHaveTransferredData = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) => {
       return acc + koulutusmuoto.siirtäneitäOppilaitoksia
     }, 0)
@@ -53,13 +53,13 @@ const Pulssi = React.createClass({
                 <section className="kattavuus">
                   <ul>
                     <li>
-                      <Kattavuus title="Perusopetus" opiskeluoikeudet={opiskeluoikeudet} />
+                      <Kattavuus koulutusmuoto="Perusopetus" pulssi={pulssi} />
                     </li>
                     <li>
-                      <Kattavuus title="Ammatillinen koulutus" opiskeluoikeudet={opiskeluoikeudet} />
+                      <Kattavuus koulutusmuoto="Ammatillinen koulutus" pulssi={pulssi} />
                     </li>
                     <li>
-                      <Kattavuus title="Lukiokoulutus" opiskeluoikeudet={opiskeluoikeudet} />
+                      <Kattavuus koulutusmuoto="Lukiokoulutus" pulssi={pulssi} />
                     </li>
                   </ul>
                 </section>
@@ -72,10 +72,10 @@ const Pulssi = React.createClass({
                 </section>
                 <section className="metric operaatiot">
                   <h3>Operaatiot / kk</h3>
-                  <div className="metric-medium">{stats.metriikka.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
+                  <div className="metric-medium">{pulssi.metriikka.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
                   <ul className="metric-details">
                     {
-                      stats.metriikka.operaatiot.sort((x , y) => y.määrä - x.määrä).map((op, i) => {
+                      pulssi.metriikka.operaatiot.sort((x , y) => y.määrä - x.määrä).map((op, i) => {
                         return (
                             <li key={i}>
                               <span>{op.nimi}</span><span className="metric-value">{op.määrä}</span>
@@ -101,18 +101,19 @@ const Pulssi = React.createClass({
     )
   },
   componentDidMount() {
-    Http.cachedGet('/koski/api/pulssi').onValue(stats => this.setState({stats}))
+    Http.cachedGet('/koski/api/pulssi').onValue(pulssi => this.setState({pulssi}))
   },
   getInitialState() {
     return {
-      stats: {
+      pulssi: {
         opiskeluoikeudet: {
           määrätKoulutusmuodoittain: []
         },
         metriikka: {
           saavutettavuus: 0,
           operaatiot: []
-        }
+        },
+        oppilaitosMäärätTyypeittäin: []
       }
     }
   }
@@ -120,16 +121,16 @@ const Pulssi = React.createClass({
 
 const toPercent = x => Math.round(x * 100 * 10) / 10
 
-const Kattavuus = ({title, opiskeluoikeudet}) => {
-  let kmuoto = opiskeluoikeudet.määrätKoulutusmuodoittain.find(o => o.nimi === title)
+const Kattavuus = ({koulutusmuoto, pulssi}) => {
+  let kmuoto = pulssi.opiskeluoikeudet.määrätKoulutusmuodoittain.find(o => o.nimi === koulutusmuoto)
   let count =  kmuoto && kmuoto.siirtäneitäOppilaitoksia
-  let total = 1000 // hardcoded for now
-  let percentage = count && toPercent(count / total)
+  let total = pulssi.oppilaitosMäärätTyypeittäin.find(ol => ol.koulutusmuoto === koulutusmuoto)
+  let percentage = count && total && toPercent(count / total.määrä)
 
   return (
       <div>
-        <span>{title}</span>
-        <span className="metric-value">{percentage} %  ({count} / {total})</span>
+        <span>{koulutusmuoto}</span>
+        <span className="metric-value">{percentage} %  ({count} / {total && total.määrä})</span>
         <div className="progress-bar">
           <div style={{width: percentage + '%'}} />
         </div>

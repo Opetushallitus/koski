@@ -9,7 +9,8 @@ class PulssiServlet(pulssi: KoskiPulssi) extends ApiServlet with NoCache with Un
   get("/") {
     Map(
       "opiskeluoikeudet" -> pulssi.opiskeluoikeudet,
-      "metriikka" -> pulssi.metriikka
+      "metriikka" -> pulssi.metriikka,
+      "oppilaitosMäärätTyypeittäin" -> pulssi.oppilaitosMäärätTyypeittäin
     )
   }
 }
@@ -17,6 +18,7 @@ class PulssiServlet(pulssi: KoskiPulssi) extends ApiServlet with NoCache with Un
 trait KoskiPulssi {
   def opiskeluoikeudet: Map[String, Any]
   def metriikka: Map[String, Any]
+  def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]]
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
@@ -27,6 +29,12 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
       "operaatiot" -> application.prometheusRepository.koskiMonthlyOperations
     )
   }
+
+  def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]] = List(
+    Map("koulutusmuoto" -> "Perusopetus", "määrä" -> 2941),
+    Map("koulutusmuoto" -> "Lukiokoulutus", "määrä" -> 396),
+    Map("koulutusmuoto" -> "Ammatillinen koulutus", "määrä" -> 200)
+  )
 }
 
 object KoskiPulssi {
