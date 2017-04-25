@@ -19,7 +19,7 @@ trait KoskiPulssi {
   def metriikka: Map[String, Any]
 }
 
-class KoskiPulse(application: KoskiApplication) extends KoskiPulssi {
+class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def opiskeluoikeudet: Map[String, Any] = application.perustiedotRepository.statistics
   def metriikka: Map[String, Any] = {
     Map(
@@ -33,7 +33,7 @@ object KoskiPulssi {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): KoskiPulssi with Cached = {
     CachingProxy[KoskiPulssi](
       Cache.cacheAllNoRefresh("KoskiPulssi", durationSeconds = 10, maxSize = 5),
-      new KoskiPulse(application)
+      new KoskiStats(application)
     )
   }
 }
