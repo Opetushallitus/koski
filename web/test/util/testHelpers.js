@@ -160,7 +160,7 @@ function openPage(path, predicate) {
     $(w).contents().find("head")[0].appendChild(jquery)
   }
   return function() {
-    var newTestFrame = $('<iframe>').attr({src: path, width: 1280, height: 800, id: "testframe"}).load(function() {
+    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).load(function() {
       addScriptToDocument(this, "/koski/test/lib/jquery.js")
       testFrame().delays = {
         stringInput: 0,
