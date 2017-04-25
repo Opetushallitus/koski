@@ -50,7 +50,7 @@ const SuoritusEditor = React.createClass({
 
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
-      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" /></td>
+      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" /></td>
       <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
     </tr>
     {

@@ -196,7 +196,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
       </td>
       {
         showLaajuus && (<td className="laajuus">
-          <Editor model={model} path="koulutusmoduuli.laajuus"/>
+          <Editor model={model} path="koulutusmoduuli.laajuus" compact="true"/>
         </td>)
       }
       {

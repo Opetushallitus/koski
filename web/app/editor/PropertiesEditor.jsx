@@ -20,7 +20,7 @@ export const PropertiesEditor = React.createClass({
     let shouldShow = (property) => shouldShowProperty(context)(property) && propertyFilter(property)
 
     let munch = (prefix) => (property, i) => { // TODO: just index passing is enough, no context needed
-      if (!edit && property.flatten && property.model.value && property.model.value.properties) {
+      if (property.flatten && property.model.value && property.model.value.properties) {
         return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
       } else if (!edit && property.flatten && (property.model.type === 'array')) {
         return modelItems(property.model).flatMap((item, j) => {

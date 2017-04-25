@@ -303,26 +303,32 @@
         }
       }
 
+      .suoritus > .properties {
+        .koulutusmoduuli {
+          .tunniste {
+            display: inline-block;
+          }
+          .diaarinumero {
+            margin-left: 1em;
+            color: @color-label;
+            label {
+              margin-right: 10px;
+            }
+            input {
+              width: 140px;
+            }
+          }
+        }
+
+        .property.laajuus > .value input{
+          width: 50px;
+          margin-right: 10px;
+        }
+      }
+
       .osasuoritukset {
         margin-top: 20px;
       }
-
-      .koulutusmoduuli {
-        .tunniste {
-          display: inline-block;
-        }
-        .diaarinumero {
-          margin-left: 1em;
-          color: @color-label;
-          label {
-            margin-right: 10px;
-          }
-          input {
-            width: 140px;
-          }
-        }
-      }
-
     }
 
     a.opintosuoritusote {

@@ -1350,6 +1350,13 @@ describe('Perusopetus', function() {
         expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
       })
     })
+
+    describe('Tietojen muuttaminen', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
+      it('Toimii', function() {
+        
+      })
+    })
   })
 
   describe('Perusopetuksen lisäopetus', function() {
@@ -1490,11 +1497,11 @@ describe('Perusopetus', function() {
         describe('Uuden oppiaineen lisääminen', function() {
           var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen:nth-child(3)')
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),
-            uusiPaikallinen.propertyBySelector('.arvosana').selectValue('S'),
-            uusiPaikallinen.propertyBySelector('.property.laajuus').setValue('1'),
-            uusiPaikallinen.propertyBySelector('.property.laajuus .yksikko').setValue('vuosiviikkotuntia'),
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
             uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
+            uusiPaikallinen.propertyBySelector('.arvosana').selectValue('S'),
+            uusiPaikallinen.propertyBySelector('.property.laajuus .value').setValue('1'),
+            uusiPaikallinen.propertyBySelector('.property.laajuus .yksikko').setValue('vuosiviikkotuntia'),
             editor.doneEditing, wait.until(page.isSavedLabelShown))
 
           it('Toimii', function () {

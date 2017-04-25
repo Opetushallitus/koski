@@ -3,7 +3,6 @@ import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {modelValid} from './EditorModel'
 import {navigateWithQueryParams, currentLocation} from '../location'
-import {parseBool} from '../util'
 
 export const TogglableEditor = React.createClass({
   render() {

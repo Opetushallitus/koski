@@ -3,17 +3,18 @@ import {Editor} from './Editor.jsx'
 import {modelData, modelEmpty, modelSetValue, modelValid, modelLookup} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
+import {parseBool} from '../util'
 
 export const LaajuusEditor = React.createClass({
   render() {
-    let { model } = this.props
+    let { model, compact } = this.props
     let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo'), createEmpty: m => modelSetValue(m, undefined, 'arvo')})
     return (
       <span className="property laajuus">
         <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
           <Editor model={wrappedModel} path="arvo"/>
         </span>
-        <LaajuudenYksikköEditor model={model}/>
+        <LaajuudenYksikköEditor { ... {model, compact}}/>
       </span>
     )
   }
@@ -33,7 +34,7 @@ LaajuusEditor.validateModel = (model) => {
   return []
 }
 
-const LaajuudenYksikköEditor = ({model}) => {
+const LaajuudenYksikköEditor = ({model, compact}) => {
   let arvoData = modelData(model, 'arvo')
   let yksikköModel = modelLookup(model, 'yksikkö')
   let yksikköData = modelData(yksikköModel)
@@ -41,9 +42,8 @@ const LaajuudenYksikköEditor = ({model}) => {
   let alternatives = EnumEditor.knownAlternatives(yksikköModel)
 
   return model.context.edit
-    ? !yksikköModel || !alternatives || alternatives.length == 1
+    ? !yksikköModel || !alternatives || (alternatives.length == 1 && parseBool(compact))
       ? null
-      : <span className="yksikko"><Editor model={wrapOptional({model:yksikköModel})}/></span>
+      : <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
     : <span className={'yksikko ' + yksikkö.toLowerCase()}> {yksikkö}</span>
-
 }
