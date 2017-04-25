@@ -36,7 +36,7 @@ export const modelLens = (path) => {
       ? modelItemLens(parseInt(key))
       : string
         ? modelPropertyValueLens(key)
-        : key // an actual lens TODO might be dangerous way to recognize this
+        : key // an actual lens then
 
     return L.compose(l1, manageModelIdLens)
   })
