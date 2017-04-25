@@ -1,6 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
+import R from 'ramda'
 import Http from './http'
 import {navigateToOppija, showError} from './location'
 import Opiskeluoikeus from './CreateOpiskeluoikeus.jsx'
@@ -11,6 +12,8 @@ export const CreateOppija = ({hetu}) => {
   const submitBus = Bacon.Bus()
   const opiskeluoikeusValidP = opiskeluoikeusAtom.map(oos => !!oos).skipDuplicates()
   const henkilöAtom = Atom({ hetu })
+  const existingHenkilöP = Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0')
+  existingHenkilöP.filter(R.identity).onValue((henkilö) => henkilöAtom.set(henkilö))
   const henkilöValidAtom = Atom(false)
   const henkilöErrorsAtom = Atom([])
   const createOppijaP = Bacon.combineWith(henkilöAtom, opiskeluoikeusAtom, toCreateOppija)
