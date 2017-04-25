@@ -17,7 +17,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
     .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
   let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
   let paikallinenProto = paikallinenOppiainePrototype(oppiaineenSuoritus)
-  let paikallisetOppiaineet = pakollinen != false || !paikallinenProto ? Bacon.constant([]) : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
+  let paikallisetOppiaineet = pakollinen || !paikallinenProto ? Bacon.constant([]) : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
 
