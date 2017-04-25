@@ -17,17 +17,16 @@ object PrometheusRepository {
 }
 
 class RemotePrometheusRepository(http: Http) extends PrometheusRepository {
-  override def doQuery(query: ParameterizedUriWrapper): JValue =
-    runTask(http.get(query)(Http.parseJson[JValue]))
+  override def doQuery(query: String): JValue =
+    runTask(http.get(ParameterizedUriWrapper(uriFromString(query), query))(Http.parseJson[JValue]))
 }
 
 trait PrometheusRepository {
   implicit val formats = GenericJsonFormats.genericFormats
-  def auditLogMetrics: Seq[Map[String, Any]] = {
-    val json = doQuery(uri"/prometheus/api/v1/query?query=sum+by+(operation)+(increase(fi_oph_koski_log_AuditLog${"[30d]"}))")
-    (json \ "data" \ "result").extract[List[JValue]].map { metric =>
+  def koskiMonthlyOperations: Seq[Map[String, Any]] = {
+    metric("/prometheus/api/v1/query?query=koski_monthly_operations").map { metric =>
       val operation = (metric \ "metric" \ "operation").extract[String]
-      val count = (metric \ "value").extract[List[String]].lastOption.map(_.toDouble.toInt).getOrElse(0)
+      val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
       (operation, Math.max(0, count))
     }.map { case(operation, count) =>
       Map(
@@ -37,5 +36,16 @@ trait PrometheusRepository {
     }
   }.sortBy(_("nimi").toString)
 
-  def doQuery(query: ParameterizedUriWrapper): JValue
+  def koskiAvailability: Double =
+    metric("/prometheus/api/v1/query?query=koski_available_percent")
+      .headOption.flatMap(value).map(_.toDouble).getOrElse(100)
+
+  def doQuery(query: String): JValue
+
+  private def metric(query: String) =
+    (doQuery(query) \ "data" \ "result").extract[List[JValue]]
+
+  private def value(metric: JValue): Option[String] =
+    (metric \ "value").extract[List[String]].lastOption
 }
+

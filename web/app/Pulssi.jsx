@@ -72,10 +72,10 @@ const Pulssi = React.createClass({
                 </section>
                 <section className="metric operaatiot">
                   <h3>Operaatiot / kk</h3>
-                  <div className="metric-medium">{stats.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
+                  <div className="metric-medium">{stats.metriikka.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
                   <ul className="metric-details">
                     {
-                      stats.operaatiot.sort((x , y) => y.määrä - x.määrä).map((op, i) => {
+                      stats.metriikka.operaatiot.sort((x , y) => y.määrä - x.määrä).map((op, i) => {
                         return (
                             <li key={i}>
                               <span>{op.nimi}</span><span className="metric-value">{op.määrä}</span>
@@ -117,7 +117,10 @@ const Pulssi = React.createClass({
         opiskeluoikeudet: {
           määrätKoulutusmuodoittain: []
         },
-        operaatiot: []
+        metriikka: {
+          saavutettavuus: 0,
+          operaatiot: []
+        }
       },
       opiskeluoikeusTyypit: {}
     }

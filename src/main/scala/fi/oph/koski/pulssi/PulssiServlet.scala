@@ -7,22 +7,26 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class PulssiServlet(pulssi: KoskiPulssi) extends ApiServlet with NoCache with Unauthenticated {
   get("/") {
-    // TODO: get stuff from prometheus
     Map(
       "opiskeluoikeudet" -> pulssi.opiskeluoikeudet,
-      "operaatiot" -> pulssi.operaatiot
+      "metriikka" -> pulssi.metriikka
     )
   }
 }
 
 trait KoskiPulssi {
   def opiskeluoikeudet: Map[String, Any]
-  def operaatiot: Seq[Map[String, Any]]
+  def metriikka: Map[String, Any]
 }
 
 class KoskiPulse(application: KoskiApplication) extends KoskiPulssi {
   def opiskeluoikeudet: Map[String, Any] = application.perustiedotRepository.statistics
-  def operaatiot: Seq[Map[String, Any]] = application.prometheusRepository.auditLogMetrics
+  def metriikka: Map[String, Any] = {
+    Map(
+      "saavutettavuus" -> application.prometheusRepository.koskiAvailability,
+      "operaatiot" -> application.prometheusRepository.koskiMonthlyOperations
+    )
+  }
 }
 
 object KoskiPulssi {
