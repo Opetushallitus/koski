@@ -53,13 +53,13 @@ const Pulssi = React.createClass({
                 <section className="kattavuus">
                   <ul>
                     <li>
-                      <Kattavuus title="Perusopetus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="perusopetus"/>
+                      <Kattavuus title="Perusopetus" opiskeluoikeudet={opiskeluoikeudet} />
                     </li>
                     <li>
-                      <Kattavuus title="Ammatillinen koulutus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="ammatillinenkoulutus"/>
+                      <Kattavuus title="Ammatillinen koulutus" opiskeluoikeudet={opiskeluoikeudet} />
                     </li>
                     <li>
-                      <Kattavuus title="Lukiokoulutus" opiskeluoikeudet={opiskeluoikeudet} koulutusmuoto="lukiokoulutus"/>
+                      <Kattavuus title="Lukiokoulutus" opiskeluoikeudet={opiskeluoikeudet} />
                     </li>
                   </ul>
                 </section>
@@ -120,12 +120,12 @@ const Pulssi = React.createClass({
 
 const toPercent = x => Math.round(x * 100 * 10) / 10
 
-const Kattavuus = ({title, opiskeluoikeudet, koulutusmuoto}) => {
-
-  let kmuoto = opiskeluoikeudet.määrätKoulutusmuodoittain.find(o => o.nimi === koulutusmuoto)
+const Kattavuus = ({title, opiskeluoikeudet}) => {
+  let kmuoto = opiskeluoikeudet.määrätKoulutusmuodoittain.find(o => o.nimi === title)
   let count =  kmuoto && kmuoto.siirtäneitäOppilaitoksia
   let total = 1000 // hardcoded for now
   let percentage = count && toPercent(count / total)
+
   return (
       <div>
         <span>{title}</span>
