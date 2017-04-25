@@ -75,7 +75,6 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   get("/prototype/:key") {
     val c = ModelBuilderContext(EditorSchema.deserializationContext.rootSchema, EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu)
-    println(c)
     val className = params("key")
     val prototype = EditorModelBuilder.buildPrototype(className)(c)
     renderOption(KoskiErrorCategory.notFound)(prototype)
