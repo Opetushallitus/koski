@@ -1,0 +1,19 @@
+{
+  "data": {
+    "result": [
+      {
+        "metric": {
+          "__name__": "koski_available_percent",
+          "instance": "https://dev.koski.opintopolku.fi/koski/api/healthcheck",
+          "job": "healthcheck"
+        },
+        "value": [
+          1493110024.436,
+          "99.99947916666667"
+        ]
+      }
+    ],
+    "resultType": "vector"
+  },
+  "status": "success"
+}
