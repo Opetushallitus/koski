@@ -33,7 +33,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]] = List(
     Map("koulutusmuoto" -> "Perusopetus", "määrä" -> 2941),
     Map("koulutusmuoto" -> "Lukiokoulutus", "määrä" -> 396),
-    Map("koulutusmuoto" -> "Ammatillinen koulutus", "määrä" -> 200)
+    Map("koulutusmuoto" -> "Ammatillinen koulutus", "määrä" -> 208)
   )
 }
 
