@@ -66,18 +66,11 @@ EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath
   let edit = model.context.edit
   if (edit && alternativesPath) {
-    let alternativesP = alternativesCache[alternativesPath]
-    if (!alternativesP) {
-      alternativesP = Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
-      alternativesCache[alternativesPath] = alternativesP
-    }
-    return alternativesP
+    return Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
   } else {
     return Bacon.constant([])
   }
 }
-
-let alternativesCache = {}
 
 EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
 
