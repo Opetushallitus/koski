@@ -33,7 +33,6 @@ const Pulssi = React.createClass({
             <section className="primary-metric valmiit-tutkinnot">
               <h3>Suoritettujen koulutusten määrä</h3>
               <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
-              {toPercent(suoritettujenKoulutustenMäärä / opiskeluoikeudet.opiskeluoikeuksienMäärä)} %
             </section>
           </div>
           <div className="three-columns">
@@ -150,8 +149,7 @@ const KoulutusmuotoTilasto = ({koulutusmuoto}) => {
           <div style={{width: valmiitPercent + '%'}} />
         </div>
         <div className="metric-tiny">
-          <span>{opiskeluoikeusMääräValmiit} ({valmiitPercent} %)</span>
-          <span className="metric-value">{opiskeluoikeusMääräEiValmiit} ({100 - valmiitPercent} %)</span>
+          <span>{opiskeluoikeusMääräValmiit}</span>
         </div>
 
       </li>
