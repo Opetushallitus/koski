@@ -15,14 +15,16 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
     .filter(R.complement(isPaikallinen))
     .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
   let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
-  let paikallinenProto = paikallinenOppiainePrototype(oppiaineenSuoritus)
-  let paikallisetOppiaineet = pakollinen || !paikallinenProto ? Bacon.constant([]) : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
+  let paikallinenProto = !pakollinen && paikallinenOppiainePrototype(oppiaineenSuoritus)
+  let paikallisetOppiaineet = !paikallinenProto
+    ? Bacon.constant([])
+    : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
 
   return (<div className={'uusi-oppiaine'}>
     {
-      oppiaineet.map('.length').map(length => length
+      oppiaineet.map('.length').map(length => length || paikallinenProto
         ? <DropDown
           options={oppiaineet}
           keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
@@ -31,7 +33,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
             resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
           }}
           selectionText={placeholder}
-          newItem={!pakollinen && paikallinenProto}
+          newItem={paikallinenProto}
           enableFilter={enableFilter}
           selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
         />
