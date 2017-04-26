@@ -21,17 +21,22 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
     .map(aineet => aineet.filter(oppiaine => !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
 
   return (<div className={'uusi-oppiaine'}>
-    <DropDown
-      options={oppiaineet}
-      keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
-      displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
-      onSelectionChanged={oppiaine => {
-        resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
-      }}
-      selectionText={placeholder}
-      newItem={!pakollinen && paikallinenProto}
-      enableFilter={enableFilter}
-      selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
-    />
+    {
+      oppiaineet.map('.length').map(length => length
+        ? <DropDown
+          options={oppiaineet}
+          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
+          displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
+          onSelectionChanged={oppiaine => {
+            resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
+          }}
+          selectionText={placeholder}
+          newItem={!pakollinen && paikallinenProto}
+          enableFilter={enableFilter}
+          selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
+        />
+        : null
+      )
+    }
   </div>)
 }
