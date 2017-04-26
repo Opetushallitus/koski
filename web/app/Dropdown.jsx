@@ -6,7 +6,7 @@ import {parseBool} from './util'
 
 const isObs = x => x instanceof Bacon.Observable
 
-export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'valitse', enableFilter = false, newItem}) => {
+export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => {
   let optionsP = isObs(options) ? options : Bacon.constant(options)
 
   let selectedP = isObs(selected) ? selected : Bacon.constant(selected)

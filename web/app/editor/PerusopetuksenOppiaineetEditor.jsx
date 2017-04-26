@@ -67,18 +67,18 @@ const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]
   let groupedSuoritukset = R.groupBy(groupTitleForSuoritus, modelItems(model, 'osasuoritukset'))
   return (<span>{groups.map(pakollisuus => {
-    let onPakolliset = pakollisuus === 'Pakolliset oppiaineet'
+    let pakollinen = pakollisuus === 'Pakolliset oppiaineet'
     let suoritukset = groupedSuoritukset[pakollisuus] || []
     let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
-    return (<section className={onPakolliset ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
+    return (<section className={pakollinen ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
       {(suoritukset.length > 0 || model.context.edit) && (<section>
         {groups.length > 1 && <h5>{pakollisuus}</h5>}
-        <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={onPakolliset} />
-        <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={onPakolliset} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
+        <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={pakollinen} />
+        <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={pakollinen} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää${pakollinen ? ' pakollinen' : ' valinnainen'} oppiaine`}/>
       </section>)
       }
       {
-        onPakolliset ? null : <KäyttäytymisenArvioEditor model={model} />
+        pakollinen ? null : <KäyttäytymisenArvioEditor model={model} />
       }
     </section>)
   })}</span>)
@@ -90,7 +90,7 @@ const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   return (<span>
     <section>
       <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={false} />
-      <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} />
+      <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää oppiaine`} />
     </section>
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)

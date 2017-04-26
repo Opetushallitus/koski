@@ -804,7 +804,7 @@ describe('Perusopetus', function() {
 
       describe('Valinnainen oppiaine', function() {
         before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
-        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.valinnainen')
+        var uusiOppiaine = editor.propertyBySelector('.valinnaiset .uusi-oppiaine')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
           var historia = editor.subEditor('.valinnainen.HI')
           before(editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.doneEditing, wait.until(page.isSavedLabelShown))
@@ -859,7 +859,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Pakollinen oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.pakollinen')
+        var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(opinnot.valitseSuoritus(1, 'Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Lisääminen', function () {

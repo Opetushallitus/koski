@@ -8,10 +8,9 @@ import {isPaikallinen, isUusi} from './Koulutusmoduuli'
 import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
 import {paikallinenOppiainePrototype, koulutusModuuliprototypes} from './PerusopetuksenOppiaineEditor.jsx'
 
-export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback}) => {
+export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder}) => {
   if (!oppiaineenSuoritus.context.edit) return null
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-  let pakollisuus = pakollinen == undefined ? '' : pakollinen ? ' pakollinen' : ' valinnainen'
   let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
     .filter(R.complement(isPaikallinen))
     .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
@@ -21,7 +20,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
 
-  return (<div className={'uusi-oppiaine' + pakollisuus}>
+  return (<div className={'uusi-oppiaine'}>
     <DropDown
       options={oppiaineet}
       keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
@@ -29,7 +28,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
       onSelectionChanged={oppiaine => {
         resultCallback(modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli'))
       }}
-      selectionText={`Lisää${pakollisuus} oppiaine`}
+      selectionText={placeholder}
       newItem={!pakollinen && paikallinenProto}
       enableFilter={true}
       selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
