@@ -9,7 +9,7 @@ import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.js
 import {paikallinenOppiainePrototype, koulutusModuuliprototypes} from './PerusopetuksenOppiaineEditor.jsx'
 
 export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
-  if (!oppiaineenSuoritus.context.edit) return null
+  if (!oppiaineenSuoritus || !oppiaineenSuoritus.context.edit) return null
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
     .filter(R.complement(isPaikallinen))
