@@ -112,9 +112,9 @@ const OppiaineEditor = ({suoritusPrototypeP, oppiaineenSuoritusAtom}) => { // Yl
 
         suoritusModelP.map(modelData).onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
         return (<span>
-          <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true}/></label>
+          <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
-            model && <PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/> )
+            model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
           }
         </span>)
       })

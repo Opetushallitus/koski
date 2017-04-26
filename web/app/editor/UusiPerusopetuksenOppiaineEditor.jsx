@@ -8,7 +8,7 @@ import {isPaikallinen, isUusi} from './Koulutusmoduuli'
 import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
 import {paikallinenOppiainePrototype, koulutusModuuliprototypes} from './PerusopetuksenOppiaineEditor.jsx'
 
-export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder}) => {
+export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   if (!oppiaineenSuoritus.context.edit) return null
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
@@ -30,7 +30,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
       }}
       selectionText={placeholder}
       newItem={!pakollinen && paikallinenProto}
-      enableFilter={true}
+      enableFilter={enableFilter}
       selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
     />
   </div>)
