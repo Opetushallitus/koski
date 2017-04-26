@@ -42,18 +42,23 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset'))
-  let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
-  let hasPakollisuus = !isToimintaAlueittain(model) && koulutusmoduuliProtos.some((km) => findModelProperty(km, p=>p.key=='pakollinen'))
+
   return (<div className="oppiaineet">
     <h5>Oppiaineiden arvosanat</h5>
     <p>Arvostelu 4-10, S (suoritettu) tai H (hylätty)</p>
     {
-      hasPakollisuus
+      hasPakollisuus(model, uusiOppiaineenSuoritus)
         ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
         : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
     }
     {selitteet && <p className="selitteet">{selitteet}</p>}
   </div>)
+}
+
+const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
+  let oppiaineHasPakollisuus = (oppiaine) => findModelProperty(oppiaine, p=>p.key=='pakollinen')
+  let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
+  return !isToimintaAlueittain(model) && (koulutusmoduuliProtos.some(oppiaineHasPakollisuus) || modelItems(model, 'osasuoritukset').map(m => modelLookup(m, 'koulutusmoduuli')).some(oppiaineHasPakollisuus))
 }
 
 export const isToimintaAlueittain = (model) => !!modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')

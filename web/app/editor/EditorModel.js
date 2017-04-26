@@ -242,6 +242,7 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
 
 
 export const oneOfPrototypes = (model) => {
+  if (!model) return []
   return model.oneOfPrototypes
     ? model.oneOfPrototypes.map(proto => contextualizeSubModel(proto, model))
     : [model]
