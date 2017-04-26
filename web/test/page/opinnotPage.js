@@ -104,7 +104,7 @@ function OpinnotPage() {
 }
 
 function Versiohistoria() {
-  function elem() { return findSingle('.versiohistoria') }
+  function elem() { return S('.versiohistoria') }
   function versiot() {
     return elem().find('td.versionumero')
   }
@@ -126,9 +126,13 @@ function Versiohistoria() {
     listaa: function() {
       return textsOf(versiot())
     },
+    valittuVersio: function() {
+      return elem().find('.selected').find('td.versionumero').text()
+    },
     valitse: function(versio) {
       return function() {
         triggerEvent(findSingle('td.versionumero:contains('+ versio +')', elem()).next('td.aikaleima').find('a'), 'click')
+        return wait.until(function() { return api.valittuVersio() == versio })()
       }
     }
   }

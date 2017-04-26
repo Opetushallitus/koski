@@ -924,10 +924,44 @@ describe('Perusopetus', function() {
         expect(liitetiedot.getItems().length).to.equal(1)
       })
 
-      describe('Vanhan version', function() {
+      describe('Valittaessa vanha versio', function() {
         before(versiohistoria.valitse('v1'))
-        it('Tarkastelu onnistuu', function() {
+        it('Näytetään vanha versio', function() {
           expect(liitetiedot.isVisible()).to.equal(false)
+        })
+
+        it('Näytetään oppiaineiden arvosanat', function() {
+          expect(extractAsText(S('.oppiaineet'))).to.equal(
+            'Oppiaineiden arvosanat\n' +
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+            'Pakolliset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9 **\n' +
+            'Valinnaiset oppiaineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+          )
         })
       })
     })
