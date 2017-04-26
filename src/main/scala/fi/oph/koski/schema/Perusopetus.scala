@@ -370,7 +370,7 @@ object PakollisetOppiaineet {
       (1 to 5).map(n => PerusopetuksenToiminta_Alue(koodi("perusopetuksentoimintaalue", n.toString))).map(ta => PerusopetuksenToiminta_AlueenSuoritus(ta, tila = kesken)).toList
     } else {
       List(
-        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus")),
+        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
         MuuPeruskoulunOppiaine(aine("MA")),
         MuuPeruskoulunOppiaine(aine("MU")),
         MuuPeruskoulunOppiaine(aine("KU")),

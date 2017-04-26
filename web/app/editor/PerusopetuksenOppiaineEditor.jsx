@@ -30,7 +30,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
     }
       {
         // kielivalinta
-        (kielenOppiaine || äidinkieli) && <span className="value"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
+        (kielenOppiaine || äidinkieli) && <span className="value kieli"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
       }
       {
         this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.doneEditingBus, () => {

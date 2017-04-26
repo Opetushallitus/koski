@@ -1154,6 +1154,7 @@ describe('Perusopetus', function() {
               })
               it('Esitäyttää pakolliset oppiaineet', function() {
                 expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Musiikki', 'Kuvataide', 'Musiikki', 'Liikunta'])
+                expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
               })
             })
             describe('Annettaessa oppiaineelle arvosana', function() {
