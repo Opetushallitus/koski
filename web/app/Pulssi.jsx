@@ -8,7 +8,7 @@ const Pulssi = React.createClass({
   render() {
     let {pulssi} = this.state
     let opiskeluoikeudet = pulssi.opiskeluoikeudet
-    let valmiidenTutkintojenMäärä = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
+    let suoritettujenKoulutustenMäärä = opiskeluoikeudet.määrätKoulutusmuodoittain.reduce((acc, koulutusmuoto) =>
         acc + koulutusmuoto.määrätTiloittain.find(tila => tila.nimi === 'valmistunut').opiskeluoikeuksienMäärä, 0
     )
 
@@ -31,9 +31,9 @@ const Pulssi = React.createClass({
               {schoolsWhoHaveTransferredData} / {schoolsTotal}
             </section>
             <section className="primary-metric valmiit-tutkinnot">
-              <h3>Valmiiden tutkintojen määrä</h3>
-              <div className="metric-large">{valmiidenTutkintojenMäärä}</div>
-              {toPercent(valmiidenTutkintojenMäärä / opiskeluoikeudet.opiskeluoikeuksienMäärä)} %
+              <h3>Suoritettujen koulutusten määrä</h3>
+              <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
+              {toPercent(suoritettujenKoulutustenMäärä / opiskeluoikeudet.opiskeluoikeuksienMäärä)} %
             </section>
           </div>
           <div className="three-columns">
