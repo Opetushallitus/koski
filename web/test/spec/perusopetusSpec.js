@@ -1500,7 +1500,7 @@ describe('Perusopetus', function() {
 
 
       describe('Pakollinen oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine.pakollinen')
+        var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('Lisääminen', function () {
