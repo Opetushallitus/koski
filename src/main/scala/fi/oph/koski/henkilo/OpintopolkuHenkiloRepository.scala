@@ -4,9 +4,10 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient.{OppijaHenkilö, QueryHe
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 
-case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid {
+case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid with Logging {
   def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
     henkilöPalveluClient.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, hetu, h.etunimet, h.kutsumanimi, h.sukunimi))
   }
@@ -27,7 +28,15 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
     case _ => henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
   }
 
-  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
+  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): Option[TäydellisetHenkilötiedot] = {
+    user.hetu match {
+      case Some(hetu) =>
+        Some(TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
+      case _ =>
+        logger.info(s"Hetu puuttuu oppijalta ${user.oidHenkilo}")
+        None
+    }
+  }
 
   private def toHenkilötiedot(user: QueryHenkilö) =  user.hetu.map(hetu => HenkilötiedotJaOid(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi))
 
