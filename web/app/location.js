@@ -3,7 +3,10 @@ import R from 'ramda'
 
 const locationBus = new Bacon.Bus()
 
+export const previousLocation = () => sessionStorage.previousLocation && parsePath(sessionStorage.previousLocation)
+
 export const navigateTo = function (path, event) {
+  sessionStorage.previousLocation = currentLocation().toString()
   history.pushState(null, null, path)
   locationBus.push(parsePath(path))
   if (event) event.preventDefault()

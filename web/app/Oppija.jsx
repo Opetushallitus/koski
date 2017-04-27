@@ -17,6 +17,7 @@ import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
+import {previousLocation} from './location'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -111,10 +112,15 @@ const createState = (oppijaOid) => {
   return { oppijaP, changeBus, doneEditingBus}
 }
 
+const listviewPath = () => {
+  let prev = previousLocation()
+  return (prev && prev.path == '/koski/') ? prev : '/koski/'
+}
+
 const stateToContent = ({ oppijaP, changeBus, doneEditingBus}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
-    <Link className="back-link" href="/koski/">Opiskelijat</Link>
+    <Link className="back-link" href={listviewPath()}>Opiskelijat</Link>
     <ExistingOppija {...{oppija, changeBus, doneEditingBus}}/>
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
