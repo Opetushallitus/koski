@@ -10,8 +10,10 @@ export const StringEditor = ({model, placeholder}) => {
   let error = !modelValid(model)
   return model.context.edit
     ? <input className={error ? 'editor-input error' : 'editor-input valid'} type="text" defaultValue={data} placeholder={placeholder} onChange={ onChange }></input>
-    : <span className="inline string">{!data ? '' : data.split('\n').map((line, k) => <span key={k}>{line}<br/></span>)}</span>
+    : <span className="inline string">{!data ? '' : splitToRows(data)}</span>
 }
+
+let splitToRows = (data) => data.split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
 StringEditor.handlesOptional = true
 StringEditor.canShowInline = () => true
