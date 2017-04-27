@@ -55,7 +55,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     renderEither(OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
-        case Some(kotipaikka) => Right(EditorModelBuilder.koodistoEnumValue(localization)(kotipaikka))
+        case Some(kotipaikka) => Right(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(kotipaikka))
       }
     })
   }
@@ -94,7 +94,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     val koodistoUri = params("koodistoUri")
     val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
 
-    koodit.map(EditorModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
+    koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
