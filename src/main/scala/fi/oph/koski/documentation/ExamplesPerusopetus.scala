@@ -23,6 +23,7 @@ object ExamplesPerusopetus {
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
       kahdeksannenLuokanSuoritus,
       yhdeksännenLuokanSuoritus
     ),
@@ -35,6 +36,7 @@ object ExamplesPerusopetus {
 
   lazy val ysinOpiskeluoikeusKesken: PerusopetuksenOpiskeluoikeus = ysiluokkalaisenOpiskeluoikeus.copy(
     suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
       kahdeksannenLuokanSuoritus,
       yhdeksännenLuokanSuoritus.copy(tila = tilaKesken, vahvistus = None)
     )
@@ -44,13 +46,14 @@ object ExamplesPerusopetus {
     alkamispäivä = Some(date(2012, 6, 15)),
     oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
     suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken.copy(tila = tilaKeskeytynyt),
       kuudennenLuokanSuoritus,
       seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
     tila = PerusopetuksenOpiskeluoikeudenTila(
       List(
         PerusopetuksenOpiskeluoikeusjakso(date(2012, 6, 15), opiskeluoikeusLäsnä),
-        PerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusValmistunut)
+        PerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusEronnut)
       )
     )
   )
@@ -175,4 +178,5 @@ object ExamplesPerusopetus {
 object PerusopetuksenExampleData {
   val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
 }
