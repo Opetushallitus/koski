@@ -103,14 +103,14 @@ function AddOppijaPage() {
     },
     selectOppimäärä: function(oppimäärä) {
       return function () {
-        return wait.until(pageApi.getInput('.oppimaara').isVisible)().then(
+        return wait.until(pageApi.getInput('.oppimaara .dropdown').isVisible)().then(
           pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
         )
       }
     },
     selectOppiaine: function(oppiaine) {
       return function () {
-        return wait.until(pageApi.getInput('.oppiaine').isVisible)().then(
+        return wait.until(pageApi.getInput('.oppiaine .dropdown').isVisible)().then(
           pageApi.setInputValue('.oppiaine .dropdown', oppiaine)
         )
       }
