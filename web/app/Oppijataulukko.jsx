@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
-import {navigateWithQueryParams, navigateToOppija, previousLocation, parsePath} from './location'
+import {navigateWithQueryParams, navigateToOppija} from './location'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
