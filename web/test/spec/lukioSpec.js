@@ -64,10 +64,10 @@ describe('Lukiokoulutus', function( ){
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Lukion oppimäärä 60/011/2015\n' +
           'Oppimäärä Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
-          'Toimipiste Jyväskylän normaalikoulu\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
-          'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi')
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {

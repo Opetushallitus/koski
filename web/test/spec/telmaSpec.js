@@ -19,8 +19,8 @@ describe('Telma', function() {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)\n' +
-          'Toimipiste Stadin ammattiopisto\n' +
-          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi'
+          'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
+          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
         )
       })
 
@@ -33,7 +33,7 @@ describe('Telma', function() {
           'Tieto- ja viestintätekniikka sekä sen hyödyntäminen ei 2 osp Hyväksytty\n' +
           'Tunnustettu\n' +
           'Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti\n' +
-          'Uimaliikunta ja vesiturvallisuus ei 5 osp hyvä\n' +
+          'Uimaliikunta ja vesiturvallisuus ei 5 osp 2\n' +
           'Tunnustettu\n' +
           'Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
           'Auton lisävarustetyöt ei 15 osp Hyväksytty'

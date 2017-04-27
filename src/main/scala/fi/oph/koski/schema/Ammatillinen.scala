@@ -149,6 +149,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   def tutkinto: Option[AmmatillinenTutkintoKoulutus]
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
   def tila: Koodistokoodiviite
   def arviointi: Option[List[AmmatillinenArviointi]]
