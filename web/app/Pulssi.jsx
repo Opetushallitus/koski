@@ -21,16 +21,16 @@ const Pulssi = React.createClass({
         <div className="statistics column">
           <h1><span>Koski</span><img src="images/pulssi.png"/><span>Pulssi</span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
           <div className="top-row three-columns">
-            <section className="primary-metric opiskeluoikeudet-total">
+            <section className="primary-metric opiskeluoikeudet-total opiskeluoikeudet-panel">
               <h3>Opiskeluoikeuksien määrä</h3>
               <div className="metric-large">{opiskeluoikeudet.opiskeluoikeuksienMäärä}</div>
             </section>
-            <section className="primary-metric kattavuus">
+            <section className="primary-metric kattavuus-total kattavuus-panel">
               <h3>Kattavuus</h3>
               <div className="metric-large">{toPercent(schoolsWhoHaveTransferredData / schoolsTotal)} %</div>
               {schoolsWhoHaveTransferredData} / {schoolsTotal}
             </section>
-            <section className="primary-metric valmiit-tutkinnot">
+            <section className="primary-metric valmiit-tutkinnot-total valmiit-tutkinnot-panel">
               <h3>Suoritettujen koulutusten määrä</h3>
               <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
             </section>
@@ -38,7 +38,7 @@ const Pulssi = React.createClass({
           <div className="three-columns">
             <div className="lower-left-container column">
               <div className="two-columns">
-                <section className="opiskeluoikeudet-total">
+                <section className="opiskeluoikeudet-koulutusmuodoittain opiskeluoikeudet-panel">
                   <ul className="metric-details">
                     {
                       opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((stat, i) =>
@@ -49,7 +49,7 @@ const Pulssi = React.createClass({
                     }
                   </ul>
                 </section>
-                <section className="kattavuus">
+                <section className="kattavuus-koulutusmuodoittain kattavuus-panel">
                   <ul>
                     <li>
                       <Kattavuus koulutusmuoto="Perusopetus" pulssi={pulssi} />
@@ -86,7 +86,7 @@ const Pulssi = React.createClass({
                 </section>
               </div>
             </div>
-            <section className="valmiit-tutkinnot">
+            <section className="valmiit-tutkinnot-koulutusmuodoittain valmiit-tutkinnot-panel">
               <ul>
                 {
                   opiskeluoikeudet.määrätKoulutusmuodoittain && opiskeluoikeudet.määrätKoulutusmuodoittain.map((koulutusmuoto,i) =>
