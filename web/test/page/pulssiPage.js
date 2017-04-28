@@ -2,7 +2,7 @@ function PulssiPage() {
 
   var api = {
     openPage: function() {
-      return openPage('/koski/pulssi', api.isVisible)()
+      return openPage('/koski/pulssi', api.isVisible)().then(wait.forAjax)
     },
     isVisible: function() {
       return isElementVisible(S('#content h1'))
