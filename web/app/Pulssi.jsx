@@ -101,6 +101,8 @@ const Pulssi = React.createClass({
   },
   componentDidMount() {
     Http.cachedGet('/koski/api/pulssi').onValue(pulssi => this.setState({pulssi}))
+    document.title = 'Koski - Pulssi'
+
   },
   getInitialState() {
     return {
