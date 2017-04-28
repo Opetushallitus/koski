@@ -79,6 +79,9 @@ function KoskiPage() {
     names: function() {
       return Oppijataulukko.data().map(function(row) { return row[0]})
     },
+    highlights: function() {
+      return textsOf(S('.highlight'))
+    },
     isReady: function() {
       return Oppijataulukko.isVisible() && !isLoading()
     },

@@ -128,6 +128,12 @@ describe('Oppijataulukko', function() {
         })
       })
     })
+  })
 
+  describe('Hakutekijän korostus', function() {
+    before(page.oppijataulukko.filterBy('nimi', 'kaisa'), page.oppijataulukko.filterBy('tutkinto', 'perus'), page.oppijataulukko.filterBy('luokka', '9'))
+    it('Toimii', function() {
+      expect(page.oppijataulukko.highlights()).to.deep.equal(["Kaisa", "Perus", "9"])
+    })
   })
 })

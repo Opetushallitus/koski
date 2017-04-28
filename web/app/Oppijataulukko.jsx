@@ -13,6 +13,7 @@ import Http from './http'
 import {showInternalError} from './location.js'
 import SortingTableHeader from './SortingTableHeader.jsx'
 import delays from './delays'
+import Highlight from 'react-highlighter'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -106,19 +107,21 @@ export const Oppijataulukko = React.createClass({
         <tbody className={rivit ? '' : 'loading'}>
           {
             näytettävätRivit.map( (opiskeluoikeus, i) => <tr className="alternating" key={i}>
-              <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
+              <td className="nimi">
+                <a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></a>
+              </td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
               <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>
               <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
                 <ul className="cell-listing" key={j}>
                   {
-                    <li className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</li>
+                    <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{suoritus.koulutusmoduuli.tunniste.nimi.fi}</Highlight></li>
                   }
                   {
-                    (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}>{osaamisala.nimi.fi}</li>)
+                    (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{osaamisala.nimi.fi}</Highlight></li>)
                   }
                   {
-                    (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}>{nimike.nimi.fi}</li>)
+                    (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{nimike.nimi.fi}</Highlight></li>)
                   }
                 </ul>
               )}
@@ -128,7 +131,7 @@ export const Oppijataulukko = React.createClass({
                 <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
               }</ul></td>
               <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
-              <td className="luokka">{ opiskeluoikeus.luokka }</td>
+              <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
             </tr>)
           }
           </tbody>
