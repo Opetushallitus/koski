@@ -7,14 +7,14 @@ import {parseBool} from '../util'
 
 export const LaajuusEditor = React.createClass({
   render() {
-    let { model, compact } = this.props
+    let { model, compact, showReadonlyScope = true } = this.props
     let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo'), createEmpty: m => modelSetValue(m, undefined, 'arvo')})
     return (
       <span className="property laajuus">
         <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
           <Editor model={wrappedModel} path="arvo"/>
         </span>
-        <LaajuudenYksikköEditor { ... {model, compact}}/>
+        <LaajuudenYksikköEditor { ... {model, compact, showReadonlyScope}}/>
       </span>
     )
   }
@@ -34,7 +34,7 @@ LaajuusEditor.validateModel = (model) => {
   return []
 }
 
-const LaajuudenYksikköEditor = ({model, compact}) => {
+const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
   let arvoData = modelData(model, 'arvo')
   let yksikköModel = modelLookup(model, 'yksikkö')
   let yksikköData = modelData(yksikköModel)
@@ -45,5 +45,7 @@ const LaajuudenYksikköEditor = ({model, compact}) => {
     ? !yksikköModel || !alternatives || (alternatives.length == 1 && parseBool(compact))
       ? null
       : <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
-    : <span className={'yksikko ' + yksikkö.toLowerCase()}> {yksikkö}</span>
+    : showReadonlyScope
+      ? <span className={'yksikko ' + yksikkö.toLowerCase()}> {yksikkö}</span>
+      : null
 }

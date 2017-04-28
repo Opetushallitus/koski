@@ -316,14 +316,14 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
-            'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
-            'Kestävällä tavalla toimiminen kyllä 40 osp 3\n' +
+            'Tutkinnon osa Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Kestävällä tavalla toimiminen kyllä 40 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
             'Laajuus 5 osp\n' +
-            'Ympäristön hoitaminen kyllä 35 osp 3\n' +
+            'Ympäristön hoitaminen kyllä 35 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
@@ -341,13 +341,13 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Työssäoppimisen yhteydessä ei\n' +
-            'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 osp 3\n' +
+            'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Ulkoilureittien rakentaminen ja hoitaminen kyllä 15 osp 3\n' +
+            'Ulkoilureittien rakentaminen ja hoitaminen kyllä 15 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Kulttuuriympäristöjen kunnostaminen ja hoitaminen kyllä 15 osp 3\n' +
+            'Kulttuuriympäristöjen kunnostaminen ja hoitaminen kyllä 15 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
@@ -365,7 +365,7 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Työssäoppimisen yhteydessä ei\n' +
-            'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 osp Hyväksytty\n' +
+            'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot Muutos arviointiasteikossa\n' +
@@ -387,23 +387,23 @@ describe('Ammatillinen koulutus', function() {
             'Työssäoppimisen yhteydessä ei\n' +
             'Kokonaisuus Laajuus Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
-            'Viestintä- ja vuorovaikutusosaaminen kyllä 11 osp 3\n' +
+            'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Osa-alue Pakollisuus Laajuus Arvosana\n' +
-            'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 osp 3\n' +
-            'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 osp 3\n' +
-            'Toinen kotimainen kieli, ruotsi kyllä 1 osp 3\n' +
-            'Vieraat kielet, englanti kyllä 2 osp 3\n' +
-            'Matemaattis-luonnontieteellinen osaaminen kyllä 9 osp 3\n' +
+            'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 3\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
+            'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
+            'Vieraat kielet, englanti kyllä 2 3\n' +
+            'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Osa-alue Pakollisuus Laajuus Arvosana\n' +
-            'Matematiikka kyllä 3 osp 3\n' +
-            'Fysiikka ja kemia kyllä 3 osp 3\n' +
-            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen kyllä 3 osp 3\n' +
+            'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Matematiikka kyllä 3 3\n' +
+            'Fysiikka ja kemia kyllä 3 3\n' +
+            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen kyllä 3 3\n' +
             'Alkamispäivä 1.1.2014\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
@@ -411,16 +411,16 @@ describe('Ammatillinen koulutus', function() {
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 osp 3\n' +
+            'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 osp 3\n' +
+            'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Matkailuenglanti ei 5 osp 3\n' +
+            'Matkailuenglanti ei 5 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Sosiaalinen ja kulttuurinen osaaminen ei 5 osp 3\n' +
+            'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
           )
@@ -459,8 +459,8 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää tutkinnon osat', function () {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
-          'Moottorin ja voimansiirron huolto ja korjaus ei 15 osp Hyväksytty\n' +
+          'Tutkinnon osa Pakollisuus Laajuus (osp) Arvosana\n' +
+          'Moottorin ja voimansiirron huolto ja korjaus ei 15 Hyväksytty\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2013 Reijo Reksi , rehtori\n' +
           'Tunnustettu\n' +
@@ -505,8 +505,8 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää tutkinnon osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-         'Tutkinnon osa Pakollisuus Laajuus Arvosana\n' +
-          'Ympäristön hoitaminen kyllä 35 osp 3\n' +
+         'Tutkinnon osa Pakollisuus Laajuus (osp) Arvosana\n' +
+          'Ympäristön hoitaminen kyllä 35 3\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
         )
@@ -631,12 +631,12 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää tutkinnon osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
-          'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 osp Hyväksytty\n' +
-          'Opiskeluvalmiuksien vahvistaminen ei 10 osp Hyväksytty\n' +
-          'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 osp Hyväksytty\n' +
-          'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 osp Hyväksytty\n' +
-          'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
+          'Koulutuksen osa Pakollisuus Laajuus (osp) Arvosana\n' +
+          'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
+          'Opiskeluvalmiuksien vahvistaminen ei 10 Hyväksytty\n' +
+          'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 Hyväksytty\n' +
+          'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 Hyväksytty\n' +
+          'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
           'Tunnustettu\n' +
           'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
           'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +

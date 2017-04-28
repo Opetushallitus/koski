@@ -8,17 +8,19 @@ export const Suoritustaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') != undefined) != undefined
+    let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
+    let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
     return suoritukset.length > 0 && (<div className="suoritus-taulukko">
         <table>
           <thead><tr>
             <th className="suoritus">{modelProperty(suoritukset[0], 'koulutusmoduuli').title}</th>
             {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
-            <th className="laajuus">Laajuus</th>
+            <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>
             <th className="arvosana">Arvosana</th>
           </tr></thead>
           {
             suoritukset.map((suoritus, i) =>
-              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} key={i}/>
+              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} key={i}/>
             )
           }
         </table>
@@ -28,7 +30,7 @@ export const Suoritustaulukko = React.createClass({
 
 const SuoritusEditor = React.createClass({
   render() {
-    let {model, showPakollisuus} = this.props
+    let {model, showPakollisuus, showScope} = this.props
     let context = model.context
     let {expanded} = this.state
     let arviointi = modelLookup(model, 'arviointi.-1')
@@ -54,7 +56,7 @@ const SuoritusEditor = React.createClass({
 
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
-      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" /></td>
+      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>
       <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>
     </tr>
     {
