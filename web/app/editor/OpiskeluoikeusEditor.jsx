@@ -1,5 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
+import R from 'ramda'
 import {modelData, modelLookup, modelTitle, modelItems, addContext} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
@@ -23,11 +24,12 @@ export const OpiskeluoikeusEditor = ({model}) => {
     mdl = addContext(mdl, {opiskeluoikeus: mdl})
     let context = mdl.context
     let suoritukset = modelItems(mdl, 'suoritukset')
+    assignTabNames(suoritukset)
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-    var suoritusIndex = SuoritusTabs.suoritusIndex(mdl)
+    var suoritusIndex = SuoritusTabs.suoritusIndex(mdl, suoritukset)
     if (suoritusIndex < 0 || suoritusIndex >= suoritukset.length) {
-      navigateTo(SuoritusTabs.urlForTab(mdl, tabName(suoritukset[0])))
+      navigateTo(SuoritusTabs.urlForTab(mdl, suoritukset[0].tabName))
       return null
     }
     let valittuSuoritus = suoritukset[suoritusIndex]
@@ -36,7 +38,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
       <div className="opiskeluoikeus">
         <h3>
           <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
-          <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
+          <span className="koulutus inline-text">{modelTitle(suoritukset.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
            { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">(
                     <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
@@ -69,8 +71,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
 
           <div className="suoritukset">
             <h4>Suoritukset</h4>
-            <SuoritusTabs model={mdl}/>
-            <Editor key={tabName(valittuSuoritus)} model={valittuSuoritus} alwaysUpdate="true" />
+            <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
+            <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
           </div>
 
         </div>
@@ -79,13 +81,36 @@ export const OpiskeluoikeusEditor = ({model}) => {
   } />)
 }
 
-const SuoritusTabs = ({ model }) => {
-  let suoritukset = modelItems(model, 'suoritukset')
+const assignTabNames = (suoritukset) => {
+  suoritukset = R.reverse(suoritukset) // they are in reverse chronological-ish order
+  let tabNamesInUse = {}
+  for (var i in suoritukset) {
+    let suoritus = suoritukset[i]
+    if (suoritus.tabName) {
+      tabNamesInUse[suoritus.tabName] = true
+    }
+  }
+  for (var i in suoritukset) {
+    let suoritus = suoritukset[i]
+    if (!suoritus.tabName) {
+      var tabName = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
+      while (tabNamesInUse[tabName]) {
+        tabName += '-2'
+      }
+      tabNamesInUse[tabName] = true
+      suoritus.tabName = tabName
+    }
+  }
+}
+
+const SuoritusTabs = ({ model, suoritukset }) => {
   let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
     if (suoritus) {
       pushModel(suoritus, model.context.changeBus)
-      navigateTo(SuoritusTabs.urlForTab(model, tabName(suoritus)))
+      let suoritukset2 = [suoritus].concat(suoritukset)
+      assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
+      navigateTo(SuoritusTabs.urlForTab(model, suoritus.tabName))
     } else {
       addingAtom.set(false)
     }
@@ -93,10 +118,10 @@ const SuoritusTabs = ({ model }) => {
   return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
-        let selected = i === SuoritusTabs.suoritusIndex(model)
+        let selected = i === SuoritusTabs.suoritusIndex(model, suoritukset)
         let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
         return (<li className={selected ? 'selected': null} key={i}>
-          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, tabName(suoritusModel)) }> {titleEditor} </Link>}
+          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, suoritusModel.tabName) }> {titleEditor} </Link>}
         </li>)
       })
     }
@@ -113,14 +138,12 @@ const SuoritusTabs = ({ model }) => {
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
 SuoritusTabs.suoritusQueryParam = context => context.opiskeluoikeusId + '.suoritus'
-SuoritusTabs.suoritusIndex = (model) => {
+SuoritusTabs.suoritusIndex = (model, suoritukset) => {
   var paramName = SuoritusTabs.suoritusQueryParam(model.context)
   let index = currentLocation().params[paramName] || 0
   if (!isNaN(index)) return index // numeric index
-  return modelItems(model, 'suoritukset').map(tabName).indexOf(index)
+  return suoritukset.map(s => s.tabName).indexOf(index)
 }
-
-const tabName = (suoritus) =>  modelTitle(suoritus, 'koulutusmoduuli.tunniste')
 
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {

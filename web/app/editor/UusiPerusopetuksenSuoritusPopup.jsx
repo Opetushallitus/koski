@@ -80,9 +80,11 @@ let osasuorituksetP = (model, luokkaAsteP, toimintaAlueittain) =>
   }).toProperty()
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
-  var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).map(suorituksenLuokkaAste)
+  var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).filter(siirretäänSeuraavalleLuokalle).map(suorituksenLuokkaAste)
   return [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(x => !olemassaOlevatLuokkaAsteet.includes(x))
 }
+
+let siirretäänSeuraavalleLuokalle = (suoritus) => !modelData(suoritus, 'jääLuokalle')
 
 let olemassaolevatLuokkaAsteenSuoritukset = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset')
   .filter(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenvuosiluokka')

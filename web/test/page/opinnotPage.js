@@ -17,7 +17,7 @@ function OpinnotPage() {
       return function() {
         var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')
         if (!tab.hasClass('selected')) {
-          triggerEvent(findSingle('a', tab), 'click')
+          triggerEvent(findSingle('a', tab.eq(0)), 'click')
         }
       }
     },
@@ -27,6 +27,13 @@ function OpinnotPage() {
     },
     suoritusTabs: function(opiskeluoikeusIndex) {
       return textsOf(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs > li:not(.add-suoritus)'))
+    },
+    suoritusTabIndex: function(opiskeluoikeusIndex){
+      var tabs = toArray(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li'))
+      for (var i in tabs) {
+        if (S(tabs[i]).hasClass('selected')) return parseInt(i)
+      }
+      return -1
     },
     onTallennettavissa: function() {
       return S('.toggle-edit.editing').is(':visible')
@@ -63,8 +70,10 @@ function OpinnotPage() {
       return S(".add-suoritus").is(":visible")
     },
     lisääSuoritus: function() {
-      triggerEvent(S(".add-suoritus a"), 'click')
-      return wait.until(api.lisääSuoritusDialog().isVisible)()
+      if (!api.lisääSuoritusDialog().isVisible()) {
+        triggerEvent(S(".add-suoritus a"), 'click')
+        return wait.until(api.lisääSuoritusDialog().isVisible)()
+      }
     },
     lisääSuoritusDialog: function() {
       return LisääSuoritusDialog()
