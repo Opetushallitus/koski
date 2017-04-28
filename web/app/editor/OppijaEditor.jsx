@@ -2,7 +2,7 @@ import React from 'react'
 import {modelData, modelTitle, addContext} from './EditorModel.js'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
-import {yearFromFinnishDateString} from '../date'
+import {yearFromIsoDateString} from '../date'
 import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {modelItems} from './EditorModel'
@@ -43,8 +43,8 @@ export const OppijaEditor = React.createClass({
                                   <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
                                     ? <span className="inline-text">
-                                        <span className="alku pvm">{yearFromFinnishDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
-                                        <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
+                                        <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
+                                        <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
                                       </span>
                                     : null
                                   }

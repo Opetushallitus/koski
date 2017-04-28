@@ -284,6 +284,18 @@ describe('Ammatillinen koulutus', function() {
     describe('Suoritus valmis, kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       describe('Tietojen näyttäminen', function() {
+
+        it('näyttää ammatillisenopiskeluoikeudentyypin tiedot', function() {
+          expect(extractAsText(S('.ammatillinenkoulutus'))).to.equal(
+              'Ammatillinen koulutus\n' +
+              'Stadin ammattiopisto\n' +
+              'Ammatillinen tutkinto 2012 - 2016 , Valmistunut')
+        })
+        it('näyttää opiskeluoikeuden otsikkotiedot', function() {
+          expect(extractAsText(S('.opiskeluoikeus h3'))).to.equal(
+              'Stadin ammattiopisto , Luonto- ja ympäristöalan perustutkinto ( 2012 - 2016 , valmistunut )\n' +
+              'versiohistoria')
+        })
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +

@@ -8,7 +8,7 @@ import {OpiskeluoikeudenTilaEditor, onLopputilassa} from './OpiskeluoikeudenTila
 import Versiohistoria from '../Versiohistoria.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
-import {yearFromFinnishDateString} from '../date'
+import {yearFromIsoDateString} from '../date'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor.jsx'
 import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.jsx'
@@ -39,8 +39,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <span className="koulutus inline-text">{modelTitle(modelLookup(mdl, 'suoritukset').value.find(SuoritusEditor.näytettäväPäätasonSuoritus), 'koulutusmoduuli')}</span>
            { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">(
-                    <span className="alku pvm">{yearFromFinnishDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
-                    <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
+                    <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
+                    <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
                 </span>
               : null
             }
