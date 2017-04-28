@@ -1366,14 +1366,6 @@ describe('Perusopetus', function() {
                           })
                         })
                       })
-
-                    })
-
-                    describe('Kun tallennetaan', function() {
-                      before(editor.doneEditing)
-                      it('Toimii', function() {
-
-                      })
                     })
                   })
                 })
