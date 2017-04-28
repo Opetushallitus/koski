@@ -31,12 +31,16 @@ const SuoritusEditor = React.createClass({
     let {model, showPakollisuus} = this.props
     let context = model.context
     let {expanded} = this.state
-    let propertyFilter = p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)) && shouldShowProperty(context)(p)
-    let properties = modelProperties(model, propertyFilter)
+    let arviointi = modelLookup(model, 'arviointi.-1')
+    let properties = modelProperties(model, p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)))
+      .concat(modelProperties(arviointi, p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
+      .filter(shouldShowProperty(context))
+    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key != 'osasuoritukset')
     let hasProperties = properties.length > 0
     let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
+
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
     <tr>
       <td className="suoritus">
@@ -51,12 +55,12 @@ const SuoritusEditor = React.createClass({
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" /></td>
-      <td className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</td>
+      <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>
     </tr>
     {
       expanded && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} propertyFilter={(p) => propertyFilter(p) && p.key != 'osasuoritukset'} />
+          <PropertiesEditor model={model} properties={propertiesWithoutOsasuoritukset} />
         </td>
       </tr>)
     }

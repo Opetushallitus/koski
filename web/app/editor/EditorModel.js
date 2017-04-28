@@ -326,7 +326,7 @@ export const pushModelValue = (model, value, path) => pushModel(modelSetValue(mo
 export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
 export const pushRemoval = (model, changeBus) => getChangeBus(model, changeBus).push([{_remove: model}])
 
-const modelPropertiesRaw = (mainModel) => ((mainModel.value && mainModel.value.properties) || [])
+const modelPropertiesRaw = (mainModel) => ((mainModel && mainModel.value && mainModel.value.properties) || [])
 const modelItemsRaw = (model) => ((model && model.type == 'array' && model.value) || [])
 
 let contextualizeProperty = (mainModel) => (property) => {
