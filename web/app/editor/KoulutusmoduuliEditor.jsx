@@ -9,8 +9,7 @@ export const KoulutusmoduuliEditor = React.createClass({
     return (<span className="koulutusmoduuli">
       <span className="tunniste"><Editor model={model} path="tunniste" edit={overrideEdit}/></span>
       <span className="diaarinumero">
-        { model.context.edit && <label>Perusteen diaarinumero</label> }
-        <Editor model={model} path="perusteenDiaarinumero"/>
+        <Editor model={model} path="perusteenDiaarinumero" placeholder="Perusteen diaarinumero"/>
       </span>
       <PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
     </span>)
