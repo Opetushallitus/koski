@@ -1,3 +1,7 @@
+## 12.4.2017
+
+- Lisätty perusteenDiaarinumero perusopetuksen oppiaineeseen
+
 ## 18.4.2017
 
 - Lisätty kenttä muutSuorituskielet esiopetuksen ja perusopetuksen päätason suorituksiin
