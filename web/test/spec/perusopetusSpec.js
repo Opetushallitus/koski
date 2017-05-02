@@ -1015,9 +1015,6 @@ describe('Perusopetus', function() {
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)
           })
-          it('Vain yksi opiskeluoikeuden tyypin valinta näytetään', function() {
-            expect(addOppija.opiskeluoikeudenTyyppi()).to.deep.equal('Perusopetus')
-          })
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
@@ -1654,6 +1651,15 @@ describe('Perusopetus', function() {
       it('näytetään', function() {
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
         // See more detailed content specification in PerusopetusSpec.scala
+      })
+    })
+    describe('Opiskeluoikeuden lisääminen', function() {
+      before(prepareForNewOppija('kalle', '230872-7258'))
+      before(addOppija.enterValidDataPerusopetus(), addOppija.selectOpiskeluoikeudenTyyppi('Perusopetukseen valmistava opetus'))
+      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Perusopetukseen valmistava opetus'))
+      it('Lisätty opiskeluoikeus näytetään', function() {
+        expect(opinnot.getTutkinto()).to.equal('Perusopetukseen valmistava opetus')
+        expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
       })
     })
   })

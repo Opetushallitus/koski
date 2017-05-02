@@ -122,7 +122,7 @@ const OppiaineEditor = ({suoritusPrototypeP, oppiaineenSuoritusAtom}) => { // Yl
   </span>)
 }
 
-var makeSuorituksetAmmatillinen = (oppilaitos, tutkinto) => {
+const makeSuorituksetAmmatillinen = (oppilaitos, tutkinto) => {
   if (tutkinto && oppilaitos) {
     return [{
       koulutusmoduuli: {
@@ -139,7 +139,7 @@ var makeSuorituksetAmmatillinen = (oppilaitos, tutkinto) => {
   }
 }
 
-var makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, oppiaineenSuoritus) => {
+const makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, oppiaineenSuoritus) => {
   if (oppilaitos && oppimäärä && oppimäärä.koodiarvo == 'perusopetuksenoppimaara') {
     return [{
       koulutusmoduuli: {
@@ -157,6 +157,22 @@ var makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, oppiaineenSuoritus) 
   } else if (oppilaitos && oppimäärä && oppimäärä.koodiarvo == 'perusopetuksenoppiaineenoppimaara' && oppiaineenSuoritus) {
     var suoritusTapaJaToimipiste = {toimipiste: oppilaitos, suoritustapa: {koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'}}
     return [R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)]
+  }
+}
+
+const makeSuorituksetPerusopetukseenValmistavaOpetus = (oppilaitos) => {
+  if (oppilaitos) {
+    return [{
+      koulutusmoduuli: {
+        tunniste: {
+          koodiarvo: '999905',
+          koodistoUri: 'koulutus'
+        }
+      },
+      toimipiste: oppilaitos,
+      tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
+      tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetukseenvalmistavaopetus'}
+    }]
   }
 }
 
@@ -195,7 +211,8 @@ export default ({opiskeluoikeusAtom}) => {
 
   const suorituksetP = tyyppiAtom.map('.koodiarvo').decode({
     'ammatillinenkoulutus': Bacon.combineWith(oppilaitosAtom, tutkintoAtom, makeSuorituksetAmmatillinen),
-    'perusopetus': Bacon.combineWith(oppilaitosAtom, oppimääräAtom, oppiaineenSuoritusAtom, makeSuorituksetPerusopetus)
+    'perusopetus': Bacon.combineWith(oppilaitosAtom, oppimääräAtom, oppiaineenSuoritusAtom, makeSuorituksetPerusopetus),
+    'perusopetukseenvalmistavaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetukseenValmistavaOpetus)
   })
 
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
