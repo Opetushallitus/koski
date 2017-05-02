@@ -23,7 +23,7 @@ export const OppijaEditor = ({model}) => {
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo)
       : 0
 
-    let canAddOpiskeluoikeusP = userP.doLog('user').map(u => !!u.hasWriteAccess)
+    let canAddOpiskeluoikeusP = userP.map(u => !!u.hasWriteAccess)
     let addOpiskeluoikeus = (opiskeluoikeus) => {
       if (!opiskeluoikeus) {
         addingAtom.set(false)
