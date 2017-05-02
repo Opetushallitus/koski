@@ -366,6 +366,14 @@ describe('Perusopetus', function() {
               after(editor.doneEditing)
             })
           })
+
+          describe('Kun suoritus on kesken', function() {
+            before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
+
+            it('Valmistunut-tilaa ei voi lisätä', function() {
+              expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+            })
+          })
         })
 
         describe('Katsotaan eronneeksi', function() {
@@ -875,14 +883,6 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Valmis tilaa ei voi lisätä kun suoritus on kesken', function() {
-      before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
-
-      it('Tallennus on estetty', function() {
-        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
-      })
-    })
-
     describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
       it('Muutokset estetty', function() {
@@ -895,6 +895,9 @@ describe('Perusopetus', function() {
       it('Muutokset estetty', function() {
         var suoritus = opinnot.opiskeluoikeusEditor()
         expect(suoritus.isEditable()).to.equal(false)
+      })
+      it('Uuden opiskeluoikeuden lisääminen estetty', function() {
+        expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
       })
     })
   })

@@ -27,6 +27,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasGlobalWriteAccess = globalAccess.contains(AccessType.write)
+  def hasAnyWriteAccess = hasGlobalWriteAccess || organisationOids(AccessType.write).nonEmpty
 
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
     val juuret = organisaatiot

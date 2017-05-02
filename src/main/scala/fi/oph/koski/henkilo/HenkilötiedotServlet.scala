@@ -21,7 +21,7 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
         if (Hetu.validFormat(query).isRight) {
           Hetu.validate(query) match {
             case Right(hetu) =>
-              val canAddNew = henkilöt.isEmpty && (koskiSession.hasGlobalWriteAccess || koskiSession.organisationOids(AccessType.write).nonEmpty)
+              val canAddNew = henkilöt.isEmpty && koskiSession.hasAnyWriteAccess
               HenkilötiedotSearchResponse(henkilöt, canAddNew, None)
             case Left(status) =>
               henkilöt match {

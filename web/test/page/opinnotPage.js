@@ -118,6 +118,9 @@ function Opiskeluoikeudet() {
     lisääOpiskeluoikeus: function() {
       triggerEvent(findSingle('.add-opiskeluoikeus a'), 'click')
       return wait.forAjax()
+    },
+    lisääOpiskeluoikeusEnabled: function() {
+      return S('.add-opiskeluoikeus').is(':visible')
     }
   }
 }

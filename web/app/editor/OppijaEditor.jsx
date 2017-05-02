@@ -10,19 +10,20 @@ import {modelItems} from './EditorModel'
 import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
 import {putOppija} from '../CreateOppija.jsx'
 import {reloadOppija} from '../Oppija.jsx'
+import {userP} from '../user'
 
 export const OppijaEditor = ({model}) => {
     let addingAtom = Atom(false)
     let toggleAdd = () => addingAtom.modify(x => !x)
     let oppijaOid = modelData(model, 'henkilö.oid')
     let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
-
     var opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
 
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo)
       : 0
 
+    let canAddOpiskeluoikeusP = userP.doLog('user').map(u => !!u.hasWriteAccess)
     let addOpiskeluoikeus = (opiskeluoikeus) => {
       if (!opiskeluoikeus) {
         addingAtom.set(false)
@@ -79,13 +80,16 @@ export const OppijaEditor = ({model}) => {
                   { selected ? content : <Link href={'?opiskeluoikeudenTyyppi=' + koodiarvo}>{content}</Link> }
                 </li>)
             })}
-          <li key="new" className="add-opiskeluoikeus">
-            <span className="plus" onClick={toggleAdd}></span>
-            <a onClick={toggleAdd}>Lisää opiskeluoikeus</a>
-            {
-              addingAtom.map(adding => adding && <UusiOpiskeluoikeusPopup resultCallback={addOpiskeluoikeus}/>)
-            }
-          </li>
+          {
+            canAddOpiskeluoikeusP.map( canAdd => canAdd && <li key="new" className="add-opiskeluoikeus">
+                <span className="plus" onClick={toggleAdd}></span>
+                <a onClick={toggleAdd}>Lisää opiskeluoikeus</a>
+                {
+                  addingAtom.map(adding => adding && <UusiOpiskeluoikeusPopup resultCallback={addOpiskeluoikeus}/>)
+                }
+              </li>
+            )
+          }
         </ul>
 
         <ul className="opiskeluoikeuksientiedot">
