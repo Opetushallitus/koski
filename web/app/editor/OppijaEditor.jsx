@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'baret'
+import Atom from 'bacon.atom'
 import {modelData, modelTitle, addContext} from './EditorModel.js'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
@@ -6,12 +7,14 @@ import {yearFromIsoDateString} from '../date'
 import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {modelItems} from './EditorModel'
+import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
+import {putOppija} from '../CreateOppija.jsx'
+import {reloadOppija} from '../Oppija.jsx'
 
-export const OppijaEditor = React.createClass({
-  render() {
-    let {model} = this.props
+export const OppijaEditor = ({model}) => {
+    let addingAtom = Atom(false)
+    let toggleAdd = () => addingAtom.modify(x => !x)
     let oppijaOid = modelData(model, 'henkilö.oid')
-
     let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
 
     var opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
@@ -19,6 +22,18 @@ export const OppijaEditor = React.createClass({
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo)
       : 0
+
+    let addOpiskeluoikeus = (opiskeluoikeus) => {
+      if (!opiskeluoikeus) {
+        addingAtom.set(false)
+      } else {
+        var oppija = {
+          henkilö: { oid: oppijaOid},
+          opiskeluoikeudet: [opiskeluoikeus]
+        }
+        putOppija(oppija).onValue(reloadOppija)
+      }
+    }
 
     return (
       <div>
@@ -64,8 +79,14 @@ export const OppijaEditor = React.createClass({
                   { selected ? content : <Link href={'?opiskeluoikeudenTyyppi=' + koodiarvo}>{content}</Link> }
                 </li>)
             })}
+          <li key="new" className="add-opiskeluoikeus">
+            <span className="plus" onClick={toggleAdd}></span>
+            <a onClick={toggleAdd}>Lisää opiskeluoikeus</a>
+            {
+              addingAtom.map(adding => adding && <UusiOpiskeluoikeusPopup resultCallback={addOpiskeluoikeus}/>)
+            }
+          </li>
         </ul>
-
 
         <ul className="opiskeluoikeuksientiedot">
           {
@@ -82,4 +103,3 @@ export const OppijaEditor = React.createClass({
         </ul>
       </div>)
   }
-})

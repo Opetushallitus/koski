@@ -57,12 +57,7 @@ function OpinnotPage() {
         return wait.forAjax()
       }
     },
-    valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
-      return function() {
-        triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
-        return wait.forAjax()
-      }
-    },
+    opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function() {
       return Editor(function() { return findSingle('.opiskeluoikeus-content') })
     },
@@ -78,8 +73,8 @@ function OpinnotPage() {
     lisääSuoritusDialog: function() {
       return LisääSuoritusDialog()
     },
-    tilaJaVahvistus: TilaJaVahvistus,
-    versiohistoria: Versiohistoria,
+    tilaJaVahvistus: TilaJaVahvistus(),
+    versiohistoria: Versiohistoria(),
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -110,6 +105,21 @@ function OpinnotPage() {
   }
 
   return api
+}
+
+function Opiskeluoikeudet() {
+  return {
+    valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
+      return function() {
+        triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
+        return wait.forAjax()
+      }
+    },
+    lisääOpiskeluoikeus: function() {
+      triggerEvent(findSingle('.add-opiskeluoikeus a'), 'click')
+      return wait.forAjax()
+    }
+  }
 }
 
 function Versiohistoria() {

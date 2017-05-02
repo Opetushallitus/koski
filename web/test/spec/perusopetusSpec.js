@@ -3,7 +3,7 @@ describe('Perusopetus', function() {
   var login = LoginPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
-  var tilaJaVahvistus = opinnot.tilaJaVahvistus()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
@@ -900,7 +900,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Opiskeluoikeuden versiot', function() {
-    var versiohistoria = opinnot.versiohistoria()
+    var versiohistoria = opinnot.versiohistoria
 
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), versiohistoria.avaa)
 
@@ -1026,6 +1026,19 @@ describe('Perusopetus', function() {
             expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
             expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
           })
+
+          describe('Toisen opiskeluoikeuden lisääminen', function() {
+            before(
+              opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
+              addOppija.selectOppilaitos('Kulosaaren ala-aste'),
+              addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
+              addOppija.selectOppiaine('Fysiikka'),
+              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka')
+            )
+            it('toimii', function( ){
+
+            })
+          })
         })
       })
 
@@ -1095,6 +1108,7 @@ describe('Perusopetus', function() {
         })
       })
     })
+
   })
 
   describe('Vuosiluokan suorituksen lisääminen', function() {
@@ -1300,7 +1314,7 @@ describe('Perusopetus', function() {
                         })
 
                         describe('Kun merkitään valmiiksi, jää luokalle', function() {
-                          var tilaJaVahvistus = opinnot.tilaJaVahvistus()
+                          var tilaJaVahvistus = opinnot.tilaJaVahvistus
                           var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
                           var dialogEditor = dialog.editor
                           var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
@@ -1544,7 +1558,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetukseen valmistava opetus', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {

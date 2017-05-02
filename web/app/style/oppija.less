@@ -9,7 +9,7 @@
     .opiskeluoikeustyyppi {
       font-size: 20px;
     }
-    > li {
+    > li:not(.add-opiskeluoikeus) {
       display: inline-block;
       list-style: none;
       padding: 16px 20px;
@@ -37,6 +37,12 @@
         }
       }
     }
+    > li.add-opiskeluoikeus {
+
+      > .plus, > a {
+        color: @color-link-blue;
+      }
+    }
     ul.oppilaitokset {
       font-size: 14px;
       margin-top: 5px;
@@ -59,6 +65,13 @@
     }
   }
 
+  .add-opiskeluoikeus {
+    .modal-content {
+      width: 630px;
+      z-index: 10;
+      margin-left: -216px;
+    }
+  }
   > .loading {
     .ajax-indicator-bg;
   }

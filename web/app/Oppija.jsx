@@ -17,7 +17,7 @@ import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
-import {previousLocation} from './location'
+import {previousLocation, navigateToOppija} from './location'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -29,6 +29,12 @@ Bacon.Observable.prototype.flatScan = function(seed, f) {
 export const saveBus = Bacon.Bus()
 
 let currentState = null
+
+export const reloadOppija = () => {
+  let oppijaOid = currentState.oppijaOid
+  currentState = null
+  navigateToOppija({oid: oppijaOid})
+}
 
 export const oppijaContentP = (oppijaOid) => {
   let version = currentLocation().params['versionumero']

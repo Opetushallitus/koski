@@ -1,5 +1,5 @@
 function AddOppijaPage() {
-  function form() { return S('form.oppija') }
+  function form() { return S('form.uusi-oppija') }
   function button() { return form().find('button') }
   function selectedOppilaitos() { return form().find('.oppilaitos .selected') }
   function selectedTutkinto() { return form().find('.tutkinto .selected') }
