@@ -4,8 +4,6 @@
     .kurssit {
       list-style: none;
       padding: 0;
-      width: 800px;
-      overflow: scroll;
       .kurssi {
         position: relative;
         display: table-cell;
@@ -93,7 +91,7 @@
 
       thead tr:last-child {
         th {
-          padding: 0 12px;
+          padding: 0;
           hr {
             margin: 0 0 20px 0
           }
@@ -112,18 +110,19 @@
 
       td, th {
         padding: 12px;
+        &.oppiaine {
+          padding-left: 6px;
+        }
       }
 
       td {
         border-bottom: 5px solid white;
-        &.oppiaine {
-          padding-left: 6px;
-        }
         &.maara, &.arvosana {
           text-align: right;
         }
         &.suorituksentila {
           padding-top: 14px;
+          width: 62px;
           font-family: FontAwesome;
           div {
             width: 0;
