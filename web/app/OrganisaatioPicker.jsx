@@ -46,7 +46,7 @@ export default BaconComponent({
       : noSelectionText
 
     return (
-      <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
+      <div className={loading ? 'organisaatio loading' : 'organisaatio'} tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
         <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectionStr }</div>
         { open &&
         <div className="organisaatio-popup">
@@ -58,7 +58,7 @@ export default BaconComponent({
           }
           {
             organisaatiot.length > 0 && <div className="scroll-container">
-              <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
+              <ul className="organisaatiot">
                 { renderTree(organisaatiot) }
               </ul>
             </div>
