@@ -14,4 +14,9 @@
         <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jdk8:.*$</gav>
         <cve>CVE-2016-3720</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[core, databind and annotations]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-.*:2\.8\..*$</gav>
+        <cve>CVE-2016-7051</cve>
+    </suppress>
 </suppressions>
