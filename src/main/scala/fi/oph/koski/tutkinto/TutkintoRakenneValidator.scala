@@ -26,6 +26,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       suoritus.koulutusmoduuli match {
         case d: PerusopetuksenDiaarinumerollinenKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
+        case d: PerusopetuksenOppiaine =>
+          HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
         case d: LukionOppimäärä =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
         case d: LukionOppiaine =>

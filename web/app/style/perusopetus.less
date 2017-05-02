@@ -122,56 +122,62 @@
 
 .oppija .opiskeluoikeus .editing {
 
-  .suoritukset .oppiaineet {
+  .suoritukset {
+    .perusteenDiaarinumero {
+      input {
+        width: 200px;
+      }
+    }
+    .oppiaineet {
+      .kayttaytyminen .arvosana .dropdown {
+        width: 65px;
+      }
 
-    .kayttaytyminen .arvosana .dropdown {
-      width: 65px;
+      .oppiaine, .details {
+        .dropdown {
+          margin-right: 15px;
+        }
+        .arvosana .dropdown {
+          margin-right: 0;
+        }
+      }
+      .details {
+        .dropdown {
+          max-width: 200px;
+        }
+      }
+      .oppiaine .oppiaine {
+        .dropdown {
+          float: right;
+          width: initial;
+          max-width: initial;
+        }
+      }
+      td {
+        line-height: 32px;
+      }
     }
 
-    .oppiaine, .details {
-      .dropdown {
-        margin-right: 15px;
+    .tukimuodot {
+      ul.array > li {
+        margin-bottom: 10px;
       }
-      .arvosana .dropdown {
-        margin-right: 0;
-      }
-    }
-    .details {
+
       .dropdown {
-        max-width: 200px;
-      }
-    }
-    .oppiaine .oppiaine {
-      .dropdown {
-        float: right;
-        width: initial;
         max-width: initial;
+        width: 247px;
       }
     }
-    td {
-      line-height: 32px;
-    }
-  }
 
-  .tukimuodot {
-    ul.array > li {
-      margin-bottom: 10px;
+    .luokka input {
+      width: 50px;
     }
 
-    .dropdown {
-      max-width: initial;
-      width: 247px;
-    }
-  }
-
-  .luokka input {
-    width: 50px;
-  }
-
-  .kayttaytyminen {
-    .arviointi {
-      width: 95%;
-      display: inline-block;
+    .kayttaytyminen {
+      .arviointi {
+        width: 95%;
+        display: inline-block;
+      }
     }
   }
 }

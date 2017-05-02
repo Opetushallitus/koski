@@ -175,7 +175,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
 
     let extraPropertiesFilter = p => {
       if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'tila', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
-      if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä'].includes(p.key)) return false // these are never shown
+      if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero'].includes(p.key)) return false // these are never shown
       return shouldShowProperty(model.context)(p)
     }
 
