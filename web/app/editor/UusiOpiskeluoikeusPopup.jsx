@@ -13,7 +13,7 @@ export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
     <ModalDialog className="lisaa-opiskeluoikeus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
       <h2>Opiskeluoikeuden lisäys</h2>
       <CreateOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
-      <button disabled={validP.not()} onClick={(e) => {e.preventDefault(); submitBus.push()}}>Lisää</button>
+      <button disabled={validP.not()} onClick={(e) => {e.preventDefault(); submitBus.push()}}>Lisää opiskeluoikeus</button>
     </ModalDialog>
   </form>)
 }
