@@ -1566,6 +1566,15 @@ describe('Perusopetus', function() {
         })
       })
     })
+    describe('Opiskeluoikeuden lisääminen', function() {
+      before(prepareForNewOppija('kalle', '230872-7258'))
+      before(addOppija.enterValidDataPerusopetus(), addOppija.selectOpiskeluoikeudenTyyppi('Perusopetuksen lisäopetus'))
+      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Perusopetuksen lisäopetus'))
+      it('Lisätty opiskeluoikeus näytetään', function() {
+        expect(opinnot.getTutkinto()).to.equal('Perusopetuksen lisäopetus')
+        expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+      })
+    })
   })
 
   describe('Perusopetukseen valmistava opetus', function() {

@@ -176,6 +176,23 @@ const makeSuorituksetPerusopetukseenValmistavaOpetus = (oppilaitos) => {
   }
 }
 
+const makeSuorituksetPerusopetuksenLisäopetus = (oppilaitos) => {
+  if (oppilaitos) {
+    return [{
+      koulutusmoduuli: {
+        tunniste: {
+          koodiarvo: '020075',
+          koodistoUri: 'koulutus'
+        }
+      },
+      toimipiste: oppilaitos,
+      tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
+      tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenlisaopetus'}
+    }]
+  }
+}
+
+
 var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritukset, tila) => {
   return date && oppilaitos && tyyppi && suoritukset && tila && {
       tyyppi: tyyppi,
@@ -212,7 +229,8 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituksetP = tyyppiAtom.map('.koodiarvo').decode({
     'ammatillinenkoulutus': Bacon.combineWith(oppilaitosAtom, tutkintoAtom, makeSuorituksetAmmatillinen),
     'perusopetus': Bacon.combineWith(oppilaitosAtom, oppimääräAtom, oppiaineenSuoritusAtom, makeSuorituksetPerusopetus),
-    'perusopetukseenvalmistavaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetukseenValmistavaOpetus)
+    'perusopetukseenvalmistavaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetukseenValmistavaOpetus),
+    'perusopetuksenlisaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetuksenLisäopetus)
   })
 
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
