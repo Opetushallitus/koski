@@ -377,7 +377,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Katsotaan eronneeksi', function() {
-          before(editor.edit)
+          before(page.oppijaHaku.searchAndSelect('220109-784L'), editor.edit)
           it('Alkutila', function() {
             expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
