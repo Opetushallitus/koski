@@ -34,7 +34,6 @@ export const OppijaEditor = ({model}) => {
           opiskeluoikeudet: [opiskeluoikeus]
         }
         var tyyppi = opiskeluoikeus.tyyppi.koodiarvo
-        console.log(tyyppi)
         putOppija(oppija).onValue(() => {
           reloadOppija()
           navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
