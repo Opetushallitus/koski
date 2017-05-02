@@ -38,7 +38,11 @@
       }
     }
     > li.add-opiskeluoikeus {
-
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      border: 1px dashed #D5D5D5;
+      padding: 15px;
       > .plus, > a {
         color: @color-link-blue;
       }
@@ -66,10 +70,11 @@
   }
 
   .add-opiskeluoikeus {
-    .modal-content {
-      width: 630px;
-      z-index: 10;
-      margin-left: -216px;
+    .modal {
+      left: ~"calc(50% - 315px)";
+      .modal-content {
+        width: 630px;
+      }
     }
   }
   > .loading {
