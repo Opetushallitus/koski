@@ -124,6 +124,15 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |ÄI9 Lukutaitojen syventäminen 1 9 4.6.2016""".stripMargin)
     }
 
+    "Opintosuoritusote kun oppiaineen suoritus on kesken" in {
+      opintosuoritusote(MockOppijat.lukioKesken) should equal(
+        """Opintosuoritukset
+          |Kurssia Arvosana Suor.pvm
+          |AI Äidinkieli ja kirjallisuus 3
+          |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
+          |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016""".stripMargin)
+    }
+
     "Päättötodistus" in {
       todistus(MockOppijat.lukiolainen.oid, "lukionoppimaara") should equal("""Lukion päättötodistus
                                                             |Jyväskylän yliopisto
@@ -159,10 +168,6 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
 
   def opintosuoritusote(henkilö: TäydellisetHenkilötiedot): String = {
     resetFixtures
-    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, lukionOpiskeluoikeus)
-  }
-
-  def lukionOpiskeluoikeus = {
-    getOpiskeluoikeus(MockOppijat.lukiolainen.oid, "lukiokoulutus").id.get
+    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, getOpiskeluoikeus(henkilö.oid, "lukiokoulutus").id.get)
   }
 }

@@ -145,10 +145,14 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession) extends LocalizedHt
 
   protected def suorituksetSyvyydellä(roots: List[Suoritus]): List[(Int, Suoritus)] = {
     def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
-      t :: t._2.osasuoritusLista.sortBy(s => s.koulutusmoduuli)(orderByTunniste).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
+      t :: t._2.osasuoritusLista.filter(suoritusTaiAlisuorituksiaValmisTilassa).sortBy(s => s.koulutusmoduuli)(orderByTunniste).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
     }
 
-    roots.filter(s => s.tila.koodiarvo == "VALMIS")
+    def suoritusTaiAlisuorituksiaValmisTilassa(s: Suoritus): Boolean = {
+      s.tila.koodiarvo == "VALMIS" || s.osasuoritusLista.exists(suoritusTaiAlisuorituksiaValmisTilassa)
+    }
+
+    roots.filter(suoritusTaiAlisuorituksiaValmisTilassa)
       .sortBy(s => (!s.koulutusmoduuli.isTutkinto, i(s.koulutusmoduuli.nimi)))
       .flatMap(suoritus => suoritusWithDepth((0, suoritus)))
   }

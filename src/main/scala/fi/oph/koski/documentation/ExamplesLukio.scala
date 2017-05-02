@@ -235,6 +235,38 @@ object ExamplesLukio {
       )
     )
 
+  val lukioKesken =
+    LukionOpiskeluoikeus(
+      id = None,
+      versionumero = None,
+      lähdejärjestelmänId = None,
+      alkamispäivä = Some(date(2012, 9, 1)),
+      päättymispäivä = None,
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen)
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(
+        LukionOppimääränSuoritus(
+          koulutusmoduuli = lukionOppimäärä,
+          oppimäärä = nuortenOpetussuunnitelma,
+          suorituskieli = suomenKieli,
+          tila = tilaKesken,
+          vahvistus = None,
+          toimipiste = jyväskylänNormaalikoulu,
+          todistuksellaNäkyvätLisätiedot = None,
+          osasuoritukset = Some(List(
+            suoritus(lukionÄidinkieli("AI1")).copy(tila = tilaKesken).copy(osasuoritukset = Some(List(
+              kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(tila = tilaKesken)
+            )))
+          ))
+        )
+      )
+    )
 
   val examples = List(
     Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", oppija(lukionOpiskeluoikeus())),
