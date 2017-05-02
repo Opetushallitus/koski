@@ -12,6 +12,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey}) =>
   }
 
   return (<div className={className + ' modal'}>
+    <div className="modal-shield" onClick={() => onDismiss()}/>
     <div className="modal-content">
       <a className="close-modal" onClick={() => onDismiss()}>&#10005;</a>
       { children }
