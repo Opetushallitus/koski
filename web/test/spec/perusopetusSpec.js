@@ -1030,16 +1030,27 @@ describe('Perusopetus', function() {
             expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
           })
 
-          describe('Toisen opiskeluoikeuden lisääminen', function() {
+          describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-              addOppija.selectOppilaitos('Kulosaaren ala-aste'),
-              addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
-              addOppija.selectOppiaine('Fysiikka'),
-              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka')
+              addOppija.selectOppilaitos('Omnian ammattiopisto'),
+              addOppija.selectTutkinto('Autoalan perustutkinto'),
+              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
-            it('toimii', function( ){
+            it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function( ){
+            })
 
+            describe('Kolmannen opiskeluoikeuden lisääminen (oppiaineen oppimäärä)', function() {
+              before(
+                opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
+                addOppija.selectOppilaitos('Kulosaaren ala-aste'),
+                addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
+                addOppija.selectOppiaine('Fysiikka'),
+                addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka')
+              )
+              it('toimii', function( ){
+
+              })
             })
           })
         })

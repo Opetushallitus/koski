@@ -11,6 +11,7 @@ import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
 import {putOppija} from '../CreateOppija.jsx'
 import {reloadOppija} from '../Oppija.jsx'
 import {userP} from '../user'
+import {navigateTo} from '../location'
 
 export const OppijaEditor = ({model}) => {
     let addingAtom = Atom(false)
@@ -32,7 +33,12 @@ export const OppijaEditor = ({model}) => {
           henkilö: { oid: oppijaOid},
           opiskeluoikeudet: [opiskeluoikeus]
         }
-        putOppija(oppija).onValue(reloadOppija)
+        var tyyppi = opiskeluoikeus.tyyppi.koodiarvo
+        console.log(tyyppi)
+        putOppija(oppija).onValue(() => {
+          reloadOppija()
+          navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
+        })
       }
     }
 
