@@ -3,54 +3,83 @@ import {modelData, modelTitle, modelLookup} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {shouldShowProperty, PropertiesEditor} from './PropertiesEditor.jsx'
 import {modelProperties, modelProperty, modelItems} from './EditorModel'
+import R from 'ramda'
 
 export const Suoritustaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
-    let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') != undefined) != undefined
+    let {allExpandedToggle} = this.state
+    let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
     let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
     let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
+    let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
     return suoritukset.length > 0 && (<div className="suoritus-taulukko">
         <table>
           <thead><tr>
-            <th className="suoritus">{modelProperty(suoritukset[0], 'koulutusmoduuli').title}</th>
+            <th className="suoritus">
+              {modelProperty(suoritukset[0], 'koulutusmoduuli').title} {showExpandAll && <a className="expand-all" onClick={this.toggleExpandAll}>{ allExpandedToggle ? 'Sulje kaikki' : 'Avaa kaikki' }</a>}
+            </th>
             {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
             <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>
             <th className="arvosana">Arvosana</th>
           </tr></thead>
           {
             suoritukset.map((suoritus, i) =>
-              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} key={i}/>
+              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded[i]} onExpand={this.toggleExpand(i)} key={i}/>
             )
           }
         </table>
       </div>)
+  },
+  toggleExpand(key) {
+    return (expanded) => {
+      let {suoritukset} = this.props
+      let newExpanded = R.clone(this.state.expanded)
+      newExpanded[key] = expanded
+
+      this.setState(
+          {
+            expanded: newExpanded,
+            allExpandedToggle: newExpanded.length === suoritukset.length && newExpanded.every(e => e === true)
+                ? true
+                : newExpanded.every(e => e === false)
+                    ? false
+                    : this.state.allExpandedToggle
+          }
+      )
+    }
+  },
+  toggleExpandAll() {
+    let {suoritukset} = this.props
+    let {allExpandedToggle} = this.state
+    this.setState({expanded: suoritukset.map(() => !allExpandedToggle), allExpandedToggle: !allExpandedToggle})
+  },
+  getInitialState() {
+    return {
+      expanded: [],
+      allExpandedToggle: false
+    }
   }
 })
 
 const SuoritusEditor = React.createClass({
   render() {
-    let {model, showPakollisuus, showScope} = this.props
-    let context = model.context
-    let {expanded} = this.state
+    let {model, showPakollisuus, showScope, onExpand, expanded} = this.props
     let arviointi = modelLookup(model, 'arviointi.-1')
-    let properties = modelProperties(model, p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)))
-      .concat(modelProperties(arviointi, p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
-      .filter(shouldShowProperty(context))
-    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key != 'osasuoritukset')
+    let properties = suoritusProperties(model)
+    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = properties.length > 0
-    let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
     <tr>
       <td className="suoritus">
-        <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
+        <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
         <span className="tila" title={modelTitle(model, 'tila')}>{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
         {
           hasProperties
-            ? <a className="nimi" onClick={toggleExpand}>{nimi}</a>
+            ? <a className="nimi" onClick={() => onExpand(!expanded)}>{nimi}</a>
             : <span className="nimi">{nimi}</span>
         }
 
@@ -74,11 +103,14 @@ const SuoritusEditor = React.createClass({
       </tr>)
     }
     </tbody>)
-  },
-  getInitialState() {
-    return { expanded: false }
   }
 })
+
+const suoritusProperties = suoritus => {
+  return modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)))
+      .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
+      .filter(shouldShowProperty(suoritus.context))
+}
 
 export const suorituksenTilaSymbol = (tila) => {
   switch (tila) {
