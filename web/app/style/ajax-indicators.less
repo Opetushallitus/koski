@@ -10,6 +10,18 @@
   background: url('/koski/images/loader-small.gif') no-repeat;
   background-position: right 5px center;
 }
+.ajax-indicator-after(@margin-left, @margin-top) {
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    background: url('/koski/images/loader-small.gif') no-repeat;
+    width: 16px;
+    height: 16px;
+    margin-left: @margin-left;
+    margin-top: @margin-top;
+  }
+}
 @keyframes fadein {
   0% { opacity: 0; }
   100% { opacity: 0.5;}

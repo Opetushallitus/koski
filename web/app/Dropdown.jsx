@@ -2,14 +2,11 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {parseBool} from './util'
-
-const isObs = x => x instanceof Bacon.Observable
+import {parseBool, toObservable} from './util'
 
 export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => {
-  let optionsP = isObs(options) ? options : Bacon.constant(options)
-
-  let selectedP = isObs(selected) ? selected : Bacon.constant(selected)
+  let optionsP = toObservable(options)
+  let selectedP = toObservable(selected)
 
   enableFilter = parseBool(enableFilter)
   let selectionIndexAtom = Atom(0)
