@@ -21,7 +21,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 
 
-  return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+  return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
     <h2>Opiskeluoikeuden tilan lisäys</h2>
     <div className="property alku">
       <label>Päivämäärä:</label>
@@ -31,6 +31,5 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
       <label>Tila:</label>
       <EnumEditor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
     </div>
-    <button disabled={validP.not()} className="opiskeluoikeuden-tila button" onClick={() => submitBus.push()}>Lisää</button>
   </ModalDialog>)
 }

@@ -50,10 +50,9 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         let validP = errorP.not().and(hasToimipisteP)
 
         return (<div>
-          <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()}>
+          <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
             <h2>Suorituksen lisäys</h2>
             <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
-            <button disabled={validP.not()} onClick={() => submitBus.push()}>Lisää</button>
           </ModalDialog>
           { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
         </div>)

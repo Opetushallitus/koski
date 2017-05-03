@@ -45,11 +45,10 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
     pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
   })
 
-  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false">
+  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false" okText="Merkitse valmiiksi" validP={validP}>
     <h2>Suoritus valmis</h2>
     <PropertiesEditor baret-lift model={modelP.map(s => setOrgToContext(modelLookup(s, 'vahvistus')))}  />
     <JääLuokalleTaiSiirretäänEditor baret-lift model={modelP}/>
-    <button disabled={validP.not()} onClick={() => submitBus.push()}>Merkitse valmiiksi</button>
   </ModalDialog>)
 }
 
