@@ -32,7 +32,6 @@ const http = (url, optionsForFetch, options = {}) => {
       }
     }
   }
-  
   increaseLoading()
   let promise = doHttp(url, optionsForFetch)
   promise.then(reqComplete, reqComplete)

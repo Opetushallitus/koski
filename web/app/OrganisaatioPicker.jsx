@@ -4,8 +4,7 @@ import R from 'ramda'
 import BaconComponent from './BaconComponent'
 import Http from './http'
 import Highlight from 'react-highlighter'
-import { showInternalError } from './location.js'
-import { buildClassNames } from './classnames.js'
+import {buildClassNames} from './classnames.js'
 
 let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {

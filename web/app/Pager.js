@@ -1,7 +1,7 @@
 import Http from './http'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import { appendQueryParams, showInternalError } from './location'
+import {appendQueryParams} from './location'
 
 let pageSize = 100
 let pagerCache = {} // URL -> pages
