@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 
 export default ({ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')

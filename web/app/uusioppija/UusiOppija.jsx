@@ -2,12 +2,12 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import Http from './http'
-import {navigateToOppija, showError} from './location'
-import Opiskeluoikeus from './CreateOpiskeluoikeus.jsx'
-import CreateHenkilö from './CreateHenkilo.jsx'
+import Http from '../http'
+import {navigateToOppija, showError} from '../location'
+import UusiOpiskeluoikeus from './UusiOpiskeluoikeus.jsx'
+import UusiHenkilö from './UusiHenkilo.jsx'
 
-export const CreateOppija = ({hetu}) => {
+export const UusiOppija = ({hetu}) => {
   const opiskeluoikeusAtom = Atom()
   const submitBus = Bacon.Bus()
   const opiskeluoikeusValidP = opiskeluoikeusAtom.map(oos => !!oos).skipDuplicates()
@@ -35,9 +35,9 @@ export const CreateOppija = ({hetu}) => {
     <div className='content-area'>
       <form className='main-content oppija uusi-oppija'>
         <h2>Uuden opiskelijan lisäys</h2>
-        <CreateHenkilö {...{ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
+        <UusiHenkilö {...{ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
         <hr/>
-        <Opiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
+        <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
         {
           // TODO: attribute lifting doesn't seem to work in phantom
           submitEnabledP.map((enabled) => <button className='button' disabled={!enabled} onClick={() => submitBus.push()}>{buttonTextP}</button>)
