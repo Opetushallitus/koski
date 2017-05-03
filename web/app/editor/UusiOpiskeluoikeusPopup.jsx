@@ -6,7 +6,6 @@ import CreateOpiskeluoikeus from '../CreateOpiskeluoikeus.jsx'
 
 export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
   let submitBus = Bacon.Bus()
-  
   let opiskeluoikeusAtom = Atom()
   let validP = opiskeluoikeusAtom.not().not()
   opiskeluoikeusAtom.sampledBy(submitBus).onValue((oo) => {
