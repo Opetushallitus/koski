@@ -25,7 +25,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Peruskoulu 104/011/2014\n' +
-            'Oppimäärä Perusopetus\n' +
+            'Opetussuunnitelma Perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
@@ -203,7 +203,7 @@ describe('Perusopetus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Peruskoulu 104/011/2014\n' +
-            'Oppimäärä Aikuisten perusopetus\n' +
+            'Opetussuunnitelma Aikuisten perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
@@ -1072,6 +1072,14 @@ describe('Perusopetus', function() {
       })
     })
 
+    describe('Aikuisten perusopetus', function() {
+      before(prepareForNewOppija('kalle', '230872-7258'))
+      before(addOppija.enterValidDataPerusopetus(), addOppija.selectOpetussuunnitelma('Aikuisten perusopetus'))
+      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
+      it('Näytetään oikein', function() {
+        expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
+      })
+    })
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
       before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataPerusopetus())
 

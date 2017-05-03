@@ -113,7 +113,9 @@ case class PerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: Perusopetus,
   @KoodistoUri("perusopetuksenoppimaara")
-  @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten oppimäärän mukaisesti")
+  @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten opetussuunnitelman mukaisesti")
+  @Title("Opetussuunnitelma")
+  @ReadOnly("Opetussuunnitelmaa ei saa muuttaa käyttöliittymän kautta suorituksen luonnin jälkeen")
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,

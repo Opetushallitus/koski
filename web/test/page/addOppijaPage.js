@@ -108,6 +108,13 @@ function AddOppijaPage() {
         )
       }
     },
+    selectOpetussuunnitelma: function(opetussuunnitelma) {
+      return function () {
+        return wait.until(pageApi.getInput('.opetussuunnitelma .dropdown').isVisible)().then(
+          pageApi.setInputValue('.opetussuunnitelma .dropdown', opetussuunnitelma)
+        )
+      }
+    },
     selectOppiaine: function(oppiaine) {
       return function () {
         return wait.until(pageApi.getInput('.oppiaine .dropdown').isVisible)().then(

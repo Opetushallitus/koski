@@ -33,7 +33,7 @@ const Tutkinto = ({tutkintoAtom, opiskeluoikeudenTyyppiP, oppilaitosP}) =>{
   return (<div>
     {
       Bacon.combineWith(oppilaitosP, opiskeluoikeudenTyyppiP, tutkintoAtom, (oppilaitos, tyyppi, tutkinto) =>
-        oppilaitos && tyyppi && tyyppi.koodiarvo == 'ammatillinenkoulutus' && (
+        oppilaitos && koodiarvoMatch('ammatillinenkoulutus')(tyyppi) && (
           <label className='tutkinto'>Tutkinto<Autocomplete
             resultAtom={tutkintoAtom}
             fetchItems={(value) => (value.length >= 3)
@@ -49,7 +49,7 @@ const Tutkinto = ({tutkintoAtom, opiskeluoikeudenTyyppiP, oppilaitosP}) =>{
 }
 
 const Oppimäärä = ({oppimääräAtom, opiskeluoikeudenTyyppiP, oppimäärätP}) => {
-  let shouldShowP = opiskeluoikeudenTyyppiP.map(tyyppi => tyyppi && tyyppi.koodiarvo == 'perusopetus').skipDuplicates()
+  let shouldShowP = opiskeluoikeudenTyyppiP.map(koodiarvoMatch('perusopetus')).skipDuplicates()
   return (<div>
     {
       shouldShowP.map(show => show && <KoodistoDropdown
@@ -61,6 +61,21 @@ const Oppimäärä = ({oppimääräAtom, opiskeluoikeudenTyyppiP, oppimäärätP
     }
   </div> )
 }
+
+const Opetussuunnitelma = ({opetussuunnitelmaAtom, opiskeluoikeudenTyyppiP, oppimääräP, opetussuunnitelmatP}) => {
+  let shouldShowP = opiskeluoikeudenTyyppiP.map(koodiarvoMatch('perusopetus')).and(oppimääräP.map(koodiarvoMatch('perusopetuksenoppimaara'))).skipDuplicates()
+  return (<div>
+    {
+      shouldShowP.map(show => show && <KoodistoDropdown
+        className="opetussuunnitelma"
+        title="Opetussuunnitelma"
+        optionsP = { opetussuunnitelmatP }
+        atom = { opetussuunnitelmaAtom } />
+      )
+    }
+  </div> )
+}
+
 
 const KoodistoDropdown = ({ className, title, optionsP, atom}) => {
   let onChange = (value) => { atom.set(value) }
@@ -121,6 +136,9 @@ const OppiaineEditor = ({suoritusPrototypeP, oppiaineenSuoritusAtom}) => { // Yl
   </span>)
 }
 
+const koodiarvoMatch = (koodiarvo) => (value) => value && value.koodiarvo == koodiarvo
+const koodistoValues = (koodistoUri) => Http.cachedGet(`/koski/api/editor/koodit/${koodistoUri}`).map(values => values.map(t => t.data))
+
 const makeSuorituksetAmmatillinen = (oppilaitos, tutkinto) => {
   if (tutkinto && oppilaitos) {
     return [{
@@ -138,8 +156,8 @@ const makeSuorituksetAmmatillinen = (oppilaitos, tutkinto) => {
   }
 }
 
-const makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, oppiaineenSuoritus) => {
-  if (oppilaitos && oppimäärä && oppimäärä.koodiarvo == 'perusopetuksenoppimaara') {
+const makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, opetussuunnitelma, oppiaineenSuoritus) => {
+  if (oppilaitos && opetussuunnitelma && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
     return [{
       koulutusmoduuli: {
         tunniste: {
@@ -149,11 +167,11 @@ const makeSuorituksetPerusopetus = (oppilaitos, oppimäärä, oppiaineenSuoritus
       },
       toimipiste: oppilaitos,
       tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-      oppimäärä: { koodistoUri: 'perusopetuksenoppimaara', koodiarvo: 'perusopetus'},
+      oppimäärä: opetussuunnitelma,
       suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
       tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'}
     }]
-  } else if (oppilaitos && oppimäärä && oppimäärä.koodiarvo == 'perusopetuksenoppiaineenoppimaara' && oppiaineenSuoritus) {
+  } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
     var suoritusTapaJaToimipiste = {toimipiste: oppilaitos, suoritustapa: {koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'}}
     return [R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)]
   }
@@ -212,6 +230,7 @@ export default ({opiskeluoikeusAtom}) => {
   const tilaAtom = Atom()
   const oppimääräAtom = Atom()
   const oppiaineenSuoritusAtom = Atom()
+  const opetussuunnitelmaAtom = Atom()
 
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
@@ -219,15 +238,18 @@ export default ({opiskeluoikeusAtom}) => {
 
   opiskeluoikeustyypitP.onValue(tyypit => tyyppiAtom.set(tyypit[0]))
 
-  const opiskeluoikeudenTilatP = Http.cachedGet('/koski/api/editor/koodit/koskiopiskeluoikeudentila').map(tilat => tilat.map(t => t.data))
-  opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(t => t.koodiarvo == 'lasna')))
+  const opiskeluoikeudenTilatP = koodistoValues('koskiopiskeluoikeudentila')
+  opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
-  const oppimäärätP = Http.cachedGet('/koski/api/editor/koodit/suorituksentyyppi/perusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara').map(tilat => tilat.map(t => t.data))
-  oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(o => o.koodiarvo == 'perusopetuksenoppimaara')))
+  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
+  oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
+
+  const opetussuunnitelmatP = koodistoValues('perusopetuksenoppimaara')
+  opetussuunnitelmatP.onValue(tilat => opetussuunnitelmaAtom.set(tilat.find(koodiarvoMatch('perusopetus'))))
 
   const suorituksetP = tyyppiAtom.map('.koodiarvo').decode({
     'ammatillinenkoulutus': Bacon.combineWith(oppilaitosAtom, tutkintoAtom, makeSuorituksetAmmatillinen),
-    'perusopetus': Bacon.combineWith(oppilaitosAtom, oppimääräAtom, oppiaineenSuoritusAtom, makeSuorituksetPerusopetus),
+    'perusopetus': Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, oppiaineenSuoritusAtom, makeSuorituksetPerusopetus),
     'perusopetukseenvalmistavaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetukseenValmistavaOpetus),
     'perusopetuksenlisaopetus': Bacon.combineWith(oppilaitosAtom, makeSuorituksetPerusopetuksenLisäopetus)
   })
@@ -248,6 +270,7 @@ export default ({opiskeluoikeusAtom}) => {
       <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP}/>
       <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} opiskeluoikeudenTyyppiP={tyyppiAtom}/>
       <Oppimäärä oppimääräAtom={oppimääräAtom} opiskeluoikeudenTyyppiP={tyyppiAtom} oppimäärätP={oppimäärätP}/>
+      <Opetussuunnitelma opetussuunnitelmaAtom={opetussuunnitelmaAtom} opetussuunnitelmatP={opetussuunnitelmatP} opiskeluoikeudenTyyppiP={tyyppiAtom} oppimääräP={oppimääräAtom}/>
       <OppiaineEditor suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom}/>
       <Aloituspäivä dateAtom={dateAtom} />
       <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />

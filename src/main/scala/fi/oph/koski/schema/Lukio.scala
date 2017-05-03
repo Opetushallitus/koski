@@ -62,6 +62,7 @@ case class LukionOppimääränSuoritus(
   koulutusmoduuli: LukionOppimäärä,
   @KoodistoUri("lukionoppimaara")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
+  @Title("Opetussuunnitelma")
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
