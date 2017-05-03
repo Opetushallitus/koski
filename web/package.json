@@ -10,7 +10,7 @@
   "dependencies": {
     "bacon.atom": "^4.0.5",
     "baconjs": "~0.7.93",
-    "baret": "^1.0.0",
+    "baret": "^1.0.3",
     "es6-promise": "^3",
     "fecha": "^2.2.0",
     "immutable": "^3.7.5",
