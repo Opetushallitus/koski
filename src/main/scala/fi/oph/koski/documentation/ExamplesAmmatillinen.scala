@@ -306,7 +306,8 @@ object AmmatillinenOldExamples {
           vahvistus = Some(HenkilövahvistusPaikkakunnalla(date(2016, 1, 9), helsinki, stadinAmmattiopisto, List(
             Organisaatiohenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
             Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)))),
-          osasuoritukset = Some(tutkinnonOsat)
+          osasuoritukset = Some(tutkinnonOsat),
+          ryhmä = Some("AUT12SN")
         )),
         tila = AmmatillinenOpiskeluoikeudenTila(
           List(

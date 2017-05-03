@@ -57,6 +57,11 @@ trait Toimipisteellinen extends OrganisaatioonLiittyvä {
   def omistajaOrganisaatio = Some(toimipiste)
 }
 
+trait Ryhmällinen {
+  @Description("Ryhmän tunniste")
+  def ryhmä: Option[String]
+}
+
 trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
 }
 

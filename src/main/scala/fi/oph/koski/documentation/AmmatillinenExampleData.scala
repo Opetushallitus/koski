@@ -236,6 +236,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = toimipiste,
       vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+      ryhmä = Some("YMP14SN"),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
           Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))

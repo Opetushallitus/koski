@@ -98,7 +98,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         val oo = opiskeluoikeus
 
         if (result.changed) {
-          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, oo.luokka, nimitiedotJaOid)
+          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, oo.luokka.orElse(oo.ryhmä), nimitiedotJaOid)
           perustiedotRepository.update(perustiedot)
         }
 

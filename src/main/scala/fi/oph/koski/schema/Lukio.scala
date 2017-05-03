@@ -73,8 +73,9 @@ case class LukionOppimääränSuoritus(
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi")
-) extends LukionPäätasonSuoritus with Todistus with Arvioinniton
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen
 
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
@@ -91,8 +92,9 @@ case class LukionOppiaineenOppimääränSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends LukionPäätasonSuoritus with Todistus
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen
 
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(

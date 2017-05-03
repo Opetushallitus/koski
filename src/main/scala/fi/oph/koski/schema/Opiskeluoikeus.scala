@@ -44,9 +44,10 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: OpiskeluoikeudenTila
   def luokka = {
-    val vuosiluokkasuoritukset = suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
+    val vuosiluokkasuoritukset = suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
     vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
+  def ryhmä = suoritukset.collect { case s: Ryhmällinen => s }.headOption.flatMap(_.ryhmä)
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def omistajaOrganisaatio = oppilaitos
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))

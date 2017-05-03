@@ -67,6 +67,7 @@ describe('Lukiokoulutus', function( ){
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
+          'Ryhmä 12A\n' +
           'Suoritus: VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 

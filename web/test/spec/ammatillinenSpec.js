@@ -311,6 +311,7 @@ describe('Ammatillinen koulutus', function() {
             'Suorituskieli suomi\n' +
             'Suoritustapa Opetussuunnitelman mukainen\n' +
             'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Ryhmä YMP14SN\n' +
             'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
