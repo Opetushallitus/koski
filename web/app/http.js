@@ -61,7 +61,7 @@ http.cachedGet = (url, options = {}) => {
         delete http.cache[url]
       })
   }
-  return http.cache[url]
+  return Bacon.later(1).flatMap(http.cache[url]).toProperty() // Ensure async behaviour
 }
 window.http = http
 export default http
