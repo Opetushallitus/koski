@@ -2,8 +2,8 @@ import React from 'react'
 import BaconComponent from './BaconComponent'
 import Http from './http'
 import Link from './Link.jsx'
-import {showInternalError, currentLocation, navigateTo} from './location.js'
-import { ISO2FinnishDateTime } from './date.js'
+import {currentLocation, navigateTo} from './location.js'
+import {ISO2FinnishDateTime} from './date.js'
 
 export default BaconComponent({
   render() {
@@ -42,7 +42,7 @@ export default BaconComponent({
     })
   },
   fetchHistory(opiskeluoikeusId) {
-    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`).doError(showInternalError)
+    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`)
       .takeUntil(this.unmountE)
       .onValue(h => this.setState({history: h}))
   },

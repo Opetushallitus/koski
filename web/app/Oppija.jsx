@@ -54,7 +54,7 @@ const createState = (oppijaOid) => {
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
-  const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri).map( oppija => R.merge(oppija, { event: 'load' })))
+  const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: 'load' })))
 
   let changeBuffer = null
 
@@ -101,8 +101,8 @@ const createState = (oppijaOid) => {
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
-    return Http.put('/koski/api/oppija', oppijaUpdate, { invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
-      .flatMap(() => Http.cachedGet(oppijaEditorUri))
+    return Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
+      .flatMap(() => Http.cachedGet(oppijaEditorUri), { willHandleErrors: true})
       .map( oppija => R.merge(oppija, { event: 'save' }))
   })
 

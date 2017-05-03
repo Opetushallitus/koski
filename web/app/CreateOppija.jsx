@@ -22,7 +22,6 @@ export const CreateOppija = ({hetu}) => {
     .map(oppija => ({oid: oppija.henkilö.oid}))
 
   createOppijaE.onValue(navigateToOppija)
-  createOppijaE.onError(showError)
 
   const inProgressP = submitBus.awaiting(createOppijaE.mapError())
 
@@ -58,4 +57,4 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
   }
 }
 
-export const putOppija = (oppija) => Http.put('/koski/api/oppija', oppija, { invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})
+export const putOppija = (oppija) => Http.put('/koski/api/oppija', oppija, { errorHandler: showError, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})

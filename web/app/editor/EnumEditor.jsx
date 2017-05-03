@@ -3,7 +3,6 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import {modelTitle} from './EditorModel.js'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {showInternalError} from '../location.js'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
@@ -66,7 +65,7 @@ EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath
   let edit = model.context.edit
   if (edit && alternativesPath) {
-    return Http.cachedGet(alternativesPath).doError(showInternalError).startWith([])
+    return Http.cachedGet(alternativesPath).startWith([])
   } else {
     return Bacon.constant([])
   }

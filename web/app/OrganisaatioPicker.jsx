@@ -85,8 +85,7 @@ export default BaconComponent({
     let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
       Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)
         .map((organisaatiot) => ({ organisaatiot, searchString }))
-    ).doError(showInternalError)
-     .takeUntil(this.unmountE)
+    ).takeUntil(this.unmountE)
     searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))
     if (this.props.preselectSingleOption) {
       this.searchStringBus.push('')

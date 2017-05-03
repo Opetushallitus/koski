@@ -1,6 +1,6 @@
 import Http from './http'
 
-export const userP = Http.get('/koski/user').mapError()
+export const userP = Http.get('/koski/user', { errorMapper: () => undefined })
   .toProperty()
 
 export const logout = () => {

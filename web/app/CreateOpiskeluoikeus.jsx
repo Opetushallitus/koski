@@ -4,7 +4,6 @@ import Atom from 'bacon.atom'
 import R from 'ramda'
 import Autocomplete from './Autocomplete.jsx'
 import Http from './http'
-import {showInternalError} from './location.js'
 import {formatISODate} from './date.js'
 import Dropdown from './Dropdown.jsx'
 import DateInput from './DateInput.jsx'
@@ -38,7 +37,7 @@ const Tutkinto = ({tutkintoAtom, opiskeluoikeudenTyyppiP, oppilaitosP}) =>{
           <label className='tutkinto'>Tutkinto<Autocomplete
             resultAtom={tutkintoAtom}
             fetchItems={(value) => (value.length >= 3)
-                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value).doError(showInternalError)
+                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value)
                 : Bacon.constant([])}
             disabled={!oppilaitos}
             selected={tutkinto}

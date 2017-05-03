@@ -10,7 +10,7 @@ const oppijaHakuE = searchStringAtom.changes()
 const acceptableQuery = (q) => q.length >= 3
 
 const hakuTulosE = oppijaHakuE.debounce(delays().delay(500))
-  .flatMapLatest(query => (acceptableQuery(query) ? Http.get(`/koski/api/henkilo/search?query=${query}`) : Bacon.once({henkilöt: []})).map((response) => ({ response, query })))
+  .flatMapLatest(query => (acceptableQuery(query) ? Http.get(`/koski/api/henkilo/search?query=${query}`, { willHandleErrors: true }) : Bacon.once({henkilöt: []})).map((response) => ({ response, query })))
 
 hakuTulosE.onError(showError)
 

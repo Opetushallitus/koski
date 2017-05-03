@@ -15,7 +15,7 @@ export default (baseUrl, rowsLens = L.identity) => {
 
   let pageDataE = pageNumberP.skip(cachedPages.length ? 1 : 0).flatMap((pageNumber) =>
     Http.get(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize}))
-  ).doError(showInternalError)
+  )
 
   let fetchingP = nextPageBus.awaiting(pageDataE)
   fetchingP.onValue()

@@ -1,63 +1,45 @@
 import './polyfills.js'
-import React from 'react'
+import React from 'baret'
 import ReactDOM from 'react-dom'
 import Http from './http'
 import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import './style/main.less'
 import {TopBar} from './TopBar.jsx'
 
-const loginE = new Bacon.Bus()
-const loginResultE = loginE
-  .flatMap((credentials) => Http.post('/koski/user/login', credentials))
+const Input = ({ id, type, disabled, value }) => <input type={type} disabled={disabled} value={ value.or('') } onChange={ (e) => value.set(e.target.value)} id={id}></input>
 
-const Login = React.createClass({
-  render() {
-    const {username, password, inProgress} = this.state
-
-    const usernameIsValid = username && username.length > 0
-    const passwordIsValid = password && password.length > 0
-
-    const buttonLabel = inProgress ? 'Kirjaudutaan...' : 'Kirjaudu sisään'
-    const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
-
-    return (
-      <form onInput={this.onInput} className={this.state.error ? 'login error': 'login'}>
-        <label>Tunnus
-          <input id='username' ref='username' disabled={inProgress}></input>
-        </label>
-        <label>Salasana
-          <input id='password' ref='password' type='password' disabled={inProgress}></input>
-        </label>
-        <button className='button blue' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
-      </form>
-    )
-  },
-
-  formState() {
-    return { username: this.refs.username.value, password: this.refs.password.value }
-  },
-
-  getInitialState() {
-    return {username: '', password: ''}
-  },
-
-  doLogin(e) {
+const Login = () => {
+  const state = Atom({username: '', password: ''})
+  const valid = state.map(({username, password}) => username.length > 0 && password.length > 0)
+  const inProgress = Atom(false)
+  const error = Atom(null)
+  const loginE = new Bacon.Bus()
+  const loginResultE = loginE
+    .map(state)
+    .flatMap((credentials) => Http.post('/koski/user/login', credentials, { errorHandler: (e) => {
+      inProgress.set(false)
+      error.set(e)
+    } }))
+  loginResultE.onValue(() => document.location='/koski')
+  const doLogin = (e) => {
     e.preventDefault()
-    this.setState({inProgress: true})
-    loginE.push(this.formState())
-  },
-
-  onInput() {
-    this.setState(this.formState())
-  },
-
-  componentDidMount() {
-    loginResultE.onError((e) => {this.setState({error: e, inProgress: false}); this.refs.username.focus()})
-    this.refs.username.focus()
+    inProgress.set(true)
+    loginE.push()
   }
-})
 
-loginResultE.onValue(() => document.location='/koski')
+  return (
+    <form className={error.map(e => e ? 'login error': 'login')}>
+      <label>Tunnus
+        <Input id='username' type='text' disabled={inProgress} value={state.view('username')}/>
+      </label>
+      <label>Salasana
+        <Input id='password' type='password' disabled={inProgress} value={state.view('password')}/>
+      </label>
+      <button className='button blue' onClick={doLogin} disabled={valid.not().or(inProgress)}>{inProgress.map(p => p ? 'Kirjaudutaan...' : 'Kirjaudu sisään')}</button>
+    </form>
+  )
+}
 
 ReactDOM.render(
   (<div>

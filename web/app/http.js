@@ -1,5 +1,6 @@
 import Bacon from 'baconjs'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
+import {showInternalError} from './location'
 
 const parseResponse = (result) => {
   if (result.status < 300) {
@@ -22,7 +23,7 @@ const serveMock = url => {
   return Bacon.once(mock.status ? mock : Bacon.Error('connection failed')).toPromise()
 }
 const doHttp = (url, optionsForFetch) => mocks[url] ? serveMock(url) : fetch(url, optionsForFetch)
-const http = (url, optionsForFetch, options) => {
+const http = (url, optionsForFetch, options = {}) => {
   if (options.invalidateCache){
     for (var cachedPath in http.cache) {
       if (options.invalidateCache.some(pathToInvalidate => cachedPath.startsWith(pathToInvalidate))) {
@@ -31,10 +32,19 @@ const http = (url, optionsForFetch, options) => {
       }
     }
   }
+  
   increaseLoading()
-  const promise = doHttp(url, optionsForFetch)
+  let promise = doHttp(url, optionsForFetch)
   promise.then(reqComplete, reqComplete)
-  return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse).toProperty()
+  let result = Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse).toProperty()
+  if (options.errorMapper) { // errors are mapped to values or other Error events and will be handled
+    result = result.flatMapError(options.errorMapper).toProperty()
+  } else if (options.errorHandler) { // explicit error handler given
+    result.onError(options.errorHandler)
+  } else if (!options.willHandleErrors) { // unless the user promises to handle errors by { willHandleErrors: true}, we'll default to showing the internal error div
+    result.onError(showInternalError)
+  }
+  return result
 }
 
 http.get = (url, options = {}) => http(url, { credentials: 'include' },  options)

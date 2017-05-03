@@ -5,7 +5,7 @@ import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import Link from './Link.jsx'
 import SortingTableHeader from './SortingTableHeader.jsx'
 
-const yhteenvetoP = (queryString) => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto' + queryString)
+const yhteenvetoP = (queryString) => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto' + queryString, { willHandleErrors: true})
 
 export const tiedonsiirtojenYhteenvetoContentP = (queryString) => tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoP(queryString).map((rivit) =>
   ({
