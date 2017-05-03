@@ -249,22 +249,28 @@ function Päivämääräväli(elem) {
 }
 
 function OpiskeluoikeusDialog() {
+  function elem() {
+    return findSingle('.lisaa-opiskeluoikeusjakso-modal')
+  }
+  function button() {
+    return findSingle('button', elem())
+  }
   return {
     tila: function() {
       return Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
     },
     alkuPaiva: function() {
-      return Property(function() {return S('.property.alku')})
+      return Property(function() {return findSingle('.property.alku', elem())})
     },
     tallenna: function() {
-      triggerEvent(findSingle('button.opiskeluoikeuden-tila'), 'click')
+      triggerEvent(button(), 'click')
       return wait.forAjax()
     },
     isEnabled: function() {
-      return !findSingle('button.opiskeluoikeuden-tila').is(':disabled')
+      return !button().is(':disabled')
     },
     radioEnabled: function(value) {
-      return !findSingle('input[value="' + value + '"]').is(':disabled')
+      return !findSingle('input[value="' + value + '"]', elem()).is(':disabled')
     }
   }
 }
