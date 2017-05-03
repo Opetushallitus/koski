@@ -1,5 +1,5 @@
 .modal {
-  z-index: 20;
+  z-index: @z-index-popup;
   .modal-shield {
     position: fixed;
     background: #aaaaaa;
@@ -14,7 +14,6 @@
   .modal-content {
     position: absolute;
     padding: 30px;
-    z-index: 2;
     background: #FFFFFF;
     box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
     border-radius: 2px;
@@ -59,7 +58,7 @@
     width: 27px;
     top: 7px;
     left: 68px;
-    z-index: 1;
+    z-index: @z-index-base + 1;
   }
   &:after {
     content: "";
@@ -70,6 +69,6 @@
     width: 27px;
     top: 7px;
     left: 68px;
-    z-index: 3;
+    z-index: @z-index-base + 3;
   }
 }

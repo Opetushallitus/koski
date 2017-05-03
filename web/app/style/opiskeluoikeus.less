@@ -28,7 +28,7 @@
       display: inline-block;
       float: right;
       position: relative;
-      z-index: 2;
+      z-index: @z-index-base + 2;
       > * {
         font-size: 0.8em;
       }
@@ -499,7 +499,7 @@
         position: absolute;
         top: 0;
         left: -30px;
-        z-index: 1;
+        z-index: @z-index-base + 1;
       }
 
       .expanded > a.toggle-expand {
@@ -534,7 +534,7 @@
     right: 0;
     font-size: 0.8em;
     text-decoration: underline;
-    z-index: 1;
+    z-index: @z-index-base + 1;
     top: 0;
   }
 }
