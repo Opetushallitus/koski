@@ -20,7 +20,7 @@ export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
     perusteAtom.set(option && option.koodiarvo)
   }
   diaarinumerotP.onValue(options => !perusteAtom.get() && selectOption(options[0]))
-  return <span>
+  return (<span>
     { diaarinumerotP.map(diaarinumerot => diaarinumerot.length
         ? <Dropdown
             options={diaarinumerotP}
@@ -30,5 +30,5 @@ export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
             selected={selectedOptionP}/>
         : <span>{ perusteAtom }</span>
     )}
-  </span>
+  </span>)
 }
