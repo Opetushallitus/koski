@@ -96,7 +96,7 @@ const SuoritusEditor = React.createClass({
       <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>
     </tr>
     {
-      expanded && (<tr className="details" key="details">
+      expanded && hasProperties && (<tr className="details" key="details">
         <td colSpan="4">
           <PropertiesEditor model={model} properties={propertiesWithoutOsasuoritukset} />
         </td>
