@@ -1,3 +1,7 @@
+## 4.5.2017
+
+- Perusopetuksen lisäopetuksessa samat opiskeluoikeuden lisätiedot kuin perusopetuksessa
+
 ## 12.4.2017
 
 - Lisätty perusteenDiaarinumero perusopetuksen oppiaineeseen
