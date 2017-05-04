@@ -1,0 +1,65 @@
+.uusi-oppija {
+  label {
+    display: block;
+  }
+
+  .hetu {
+    margin-bottom: 20px;
+    .value { margin-left: 1em; }
+  }
+
+  .etunimet, .kutsumanimi {
+    display: inline-block;
+  }
+
+  .kutsumanimi {
+    margin-left: 36px;
+    input {
+      width: 150px;
+    }
+  }
+
+  .etunimet input {
+    width: 215px;
+  }
+
+  .sukunimi input {
+    width: 400px;
+  }
+
+  .error-messages {
+    .kutsumanimi {
+      margin-left: 0;
+    }
+  }
+
+  hr {
+    margin: 40px 0 20px 0;
+  }
+
+  .oppilaitos {
+    width: 400px;
+    .organisaatio-selection {
+      line-height: 40px;
+    }
+  }
+
+  .opiskeluoikeudentyyppi, .opiskeluoikeudentila, .oppimaara, .oppiaine, .kieli, .opetussuunnitelma, .peruste {
+    width: 400px;
+    display: block;
+  }
+
+  .dropdown .select {
+    height: 40px;
+    line-height: 38px;
+  }
+
+  .tutkinto {
+    width: 400px;
+    .autocomplete();
+  }
+
+  button {
+    margin-top: 10px;
+  }
+}
