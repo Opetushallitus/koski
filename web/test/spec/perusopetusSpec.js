@@ -582,6 +582,13 @@ describe('Perusopetus', function() {
           })
         })
       })
+      describe('Tutkinnon perusteen diaarinumero', function() {
+        var diaarinumero = editor.propertyBySelector('.diaarinumero')
+        before(editor.edit, diaarinumero.setValue('1/011/2004 Perusopetuksen opetussuunitelman perusteet 2004'), editor.doneEditing)
+        it('toimii', function () {
+          expect(diaarinumero.getValue()).to.equal('1/011/2004')
+        })
+      })
       describe('Suorituskielen lisäys', function() {
         before(opinnot.valitseSuoritus(1, 'Peruskoulu'), editor.edit, editor.property('suorituskieli').selectValue('suomi'), editor.doneEditing, wait.until(page.isSavedLabelShown))
         it('muutettu suorituskieli näytetään', function() {
