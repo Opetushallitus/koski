@@ -33,8 +33,10 @@ case class PerusopetuksenOpiskeluoikeus(
 case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Perusopetuksen aloittamisesta lykkäys (true/false). Oppilas saa luvan  aloittaa perusopetuksen myöhemmin.""")
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
+  @DefaultValue(false)
   perusopetuksenAloittamistaLykätty: Boolean = false,
   @Description("""Perusopetuksen aikastaminen (true/false). Oppilas aloittaa ennen oppivelvollisuusikää.""")
+  @DefaultValue(false)
   aloittanutEnnenOppivelvollisuutta: Boolean = false,
   @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.""")
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
@@ -56,6 +58,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
+  @DefaultValue(false)
   vuosiluokkiinSitoutumatonOpetus: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 

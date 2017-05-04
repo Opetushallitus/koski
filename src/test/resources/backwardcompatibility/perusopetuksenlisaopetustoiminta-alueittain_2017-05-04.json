@@ -42,10 +42,13 @@
       } ]
     },
     "lisätiedot" : {
+      "perusopetuksenAloittamistaLykätty" : false,
+      "aloittanutEnnenOppivelvollisuutta" : false,
       "pidennettyOppivelvollisuus" : {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
-      }
+      },
+      "vuosiluokkiinSitoutumatonOpetus" : false
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
