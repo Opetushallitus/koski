@@ -25,7 +25,7 @@ export const PerusteDropdown = ({suoritusP, perusteAtom, prefill = false}) => {
         ? <Dropdown
             options={diaarinumerotP}
             keyValue={option => option.koodiarvo}
-            displayValue={option => option.nimi.fi}
+            displayValue={option => option.koodiarvo + ' ' + option.nimi.fi}
             onSelectionChanged={selectOption}
             selected={selectedOptionP}/>
         : <span>{ perusteAtom }</span>
