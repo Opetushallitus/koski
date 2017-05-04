@@ -1196,6 +1196,12 @@ describe('Perusopetus', function() {
                 expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Musiikki', 'Kuvataide', 'Musiikki', 'Liikunta'])
                 expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
               })
+              describe('Tutkinnon peruste', function() {
+                before(editor.doneEditing)
+                it('Esitäyttää perusteen diaarinumeron', function() {
+                  expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
+                })
+              })
             })
             describe('Annettaessa oppiaineelle arvosana', function() {
               var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')

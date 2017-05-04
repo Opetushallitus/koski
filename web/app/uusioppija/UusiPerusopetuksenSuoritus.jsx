@@ -99,7 +99,7 @@ const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelm
   )
 }
 
-const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom, prefill: true}}/></label>
+const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
 
 const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // Yleinen prototyyppi suoritukselle
   return (<span>

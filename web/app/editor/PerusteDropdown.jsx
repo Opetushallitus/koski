@@ -3,7 +3,7 @@ import Http from '../http'
 import Bacon from 'baconjs'
 import Dropdown from '../Dropdown.jsx'
 
-export const PerusteDropdown = ({suoritusP, perusteAtom, prefill = false}) => {
+export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
   let koulutustyyppiP = suoritusP.map(suoritus => {
     if (suoritus.tyyppi.koodiarvo == 'perusopetuksenoppimaara' || suoritus.tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
       if (suoritus.oppimäärä && suoritus.oppimäärä.koodiarvo == 'aikuistenperusopetus') return '17'
@@ -19,7 +19,7 @@ export const PerusteDropdown = ({suoritusP, perusteAtom, prefill = false}) => {
   let selectOption = (option) => {
     perusteAtom.set(option && option.koodiarvo)
   }
-  if (prefill) diaarinumerotP.onValue(options => selectOption(options[0]))
+  diaarinumerotP.onValue(options => !perusteAtom.get() && selectOption(options[0]))
   return <span>
     { diaarinumerotP.map(diaarinumerot => diaarinumerot.length
         ? <Dropdown
