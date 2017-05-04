@@ -1,8 +1,16 @@
 [ {
+  "koodiUri" : "koskikoulutustendiaarinumerot_1040112014",
+  "koodiArvo" : "104/011/2014",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen opetussuunitelman perusteet 2014",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+},{
   "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
   "koodiArvo" : "1/011/2004",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille tarkoitetun perusopetuksen opetussuunitelman perusteet 2004",
+    "nimi" : "Perusopetuksen opetussuunitelman perusteet 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -58,7 +66,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_190112015",
   "koodiArvo" : "19/011/2015",
   "metadata" : [ {
-    "nimi" : "aikuisten perusopetus (ml. Alkuvaihe)",
+    "nimi" : "Aikuisten perusopetus 2015",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -66,7 +74,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
   "koodiArvo" : "2/011/2004",
   "metadata" : [ {
-    "nimi" : "Perusopetukseen valmistavan opetuksen opetussuunitelman perusteet 2004",
+    "nimi" : "Perusopetukseen valmistavan opetus 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -218,7 +226,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_40112004",
   "koodiArvo" : "4/011/2004",
   "metadata" : [ {
-    "nimi" : "aikuisten perusopetus ja lukiokoulutus",
+    "nimi" : "Aikuisten perusopetus ja lukiokoulutus 2004",
     "kieli" : "FI"
   } ],
   "versio" : 1

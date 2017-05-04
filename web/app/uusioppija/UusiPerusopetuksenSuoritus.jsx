@@ -2,6 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
+import * as L from 'partial.lenses'
 import Http from '../http'
 import {UusiPerusopetuksenOppiaineEditor} from '../editor/UusiPerusopetuksenOppiaineEditor.jsx'
 import {accumulateModelState, modelLookup, modelData} from '../editor/EditorModel'
@@ -15,6 +16,7 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppimääräAtom = Atom()
   const oppiaineenSuoritusAtom = Atom()
   const opetussuunnitelmaAtom = Atom()
+  const perusteAtom = Atom()
   const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
   oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
 
@@ -27,14 +29,15 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     }
   })
 
-  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, oppiaineenSuoritus) => {
-    if (oppilaitos && opetussuunnitelma && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
+  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus) => {
+    if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
       return {
         koulutusmoduuli: {
           tunniste: {
             koodiarvo: '201101',
             koodistoUri: 'koulutus'
-          }
+          },
+          perusteenDiaarinumero: peruste.koodiarvo
         },
         toimipiste: oppilaitos,
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
@@ -43,18 +46,25 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'}
       }
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
-      var suoritusTapaJaToimipiste = {toimipiste: oppilaitos, suoritustapa: {koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'}}
+      var suoritusTapaJaToimipiste = {
+        toimipiste: oppilaitos,
+        suoritustapa: {koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'}
+      }
       return R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)
     }
   }
 
-  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, oppiaineenSuoritusAtom, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
     <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
-   <Opetussuunnitelma opetussuunnitelmaAtom={opetussuunnitelmaAtom} opetussuunnitelmatP={opetussuunnitelmatP} oppimääräP={oppimääräAtom}/>
-   <OppiaineEditor suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom}/>
+    {
+      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)
+        ? <Opetussuunnitelma opetussuunnitelmaAtom={opetussuunnitelmaAtom} opetussuunnitelmatP={opetussuunnitelmatP} perusteAtom={perusteAtom}/>
+        : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom}/>
+      )
+    }
   </span>)
 }
 
@@ -69,21 +79,37 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
-const Opetussuunnitelma = ({opetussuunnitelmaAtom, oppimääräP, opetussuunnitelmatP}) => {
-  let shouldShowP = oppimääräP.map(koodiarvoMatch('perusopetuksenoppimaara')).skipDuplicates()
+const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelmatP}) => {
+  var koulutustyyppiP = opetussuunnitelmaAtom.map('.koodiarvo').decode({
+    perusopetus: '16',
+    aikuistenperusopetus: '17'
+  })
   return (<div>
-    {
-      shouldShowP.map(show => show && <KoodistoDropdown
-        className="opetussuunnitelma"
-        title="Opetussuunnitelma"
-        optionsP = { opetussuunnitelmatP }
-        atom = { opetussuunnitelmaAtom } />
-      )
-    }
-  </div> )
+    <KoodistoDropdown
+      className="opetussuunnitelma"
+      title="Opetussuunnitelma"
+      optionsP = { opetussuunnitelmatP }
+      atom = { opetussuunnitelmaAtom }
+    />
+    <Peruste koulutustyyppiP={koulutustyyppiP} perusteAtom={perusteAtom} />
+  </div>
+  )
 }
 
-const OppiaineEditor = ({suoritusPrototypeP, oppiaineenSuoritusAtom}) => { // Yleinen prototyyppi suoritukselle
+const Peruste = ({koulutustyyppiP, perusteAtom}) => {
+  let diaarinumerotP = koulutustyyppiP.flatMapLatest(tyyppi => Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${tyyppi}`))
+    .toProperty()
+
+  diaarinumerotP.onValue(options => perusteAtom.set(options[0]))
+  return <KoodistoDropdown
+    className="peruste"
+    title="Peruste"
+    optionsP = { diaarinumerotP }
+    atom = { perusteAtom }
+  />
+}
+
+const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // Yleinen prototyyppi suoritukselle
   return (<span>
     {
       suoritusPrototypeP.map(oppiaineenSuoritus => {
@@ -95,8 +121,14 @@ const OppiaineEditor = ({suoritusPrototypeP, oppiaineenSuoritusAtom}) => { // Yl
           return oppiainePrototype && accumulateModelState(oppiainePrototype)
         }).toProperty()
 
-        suoritusModelP.map(modelData).onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
+        let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom.map('.koodiarvo'), (suoritus, diaarinumero) => {
+          if (suoritus) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
+        })
+
+        suoritusP.onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
+
         return (<span>
+          <Peruste koulutustyyppiP={Bacon.constant('17')} perusteAtom={perusteAtom} />
           <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
           model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )

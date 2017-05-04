@@ -10,6 +10,7 @@ import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
+import fi.oph.koski.tutkinto.Koulutustyyppi
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 
