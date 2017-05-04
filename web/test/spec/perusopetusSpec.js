@@ -1022,10 +1022,14 @@ describe('Perusopetus', function() {
 
           it('lisätty oppija näytetään', function() {})
 
-          it('Lisätty opiskeluoikeus näytetään', function() {
-            expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
-            expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+          describe('Käyttöliittymän tila', function() {
+            it('Lisätty opiskeluoikeus näytetään', function() {
+              expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
+              expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+              expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
+            })
           })
+
 
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
@@ -1080,6 +1084,7 @@ describe('Perusopetus', function() {
       before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'))
       it('Näytetään oikein', function() {
         expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
       })
     })
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
@@ -1097,7 +1102,7 @@ describe('Perusopetus', function() {
           addOppija.selectOppiaine('Fysiikka'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka'))
         it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
-
+          expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
         })
       })
     })
