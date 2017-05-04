@@ -19,7 +19,7 @@ case class NumberModel(value: ValueWithData[Number], props: Map[String, Any]) ex
 case class BooleanModel(value: ValueWithData[Boolean], props: Map[String, Any]) extends EditorModel
 case class DateModel(value: ValueWithData[LocalDate], props: Map[String, Any]) extends EditorModel
 case class StringModel(value: ValueWithData[String], props: Map[String, Any]) extends EditorModel
-case class ValueWithData[T](data: T)
+case class ValueWithData[T](data: T, classes: Option[List[String]])
 
 case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel], props: Map[String, Any]) extends EditorModel
 

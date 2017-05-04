@@ -12,6 +12,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema._
+import fi.oph.koski.util.OptionalLists
+import fi.oph.koski.util.OptionalLists.optionalList
 
 import scala.xml.Node
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
@@ -176,13 +178,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
     opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes)).isDefined
   }
-
-  private def list2Optional[A, B](list: List[A], f: List[A] => B): Option[B] = list match {
-    case Nil => None
-    case xs => Some(f(xs))
-  }
-
-  private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
 
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)

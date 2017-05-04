@@ -23,3 +23,5 @@ case class Tabular() extends RepresentationalMetadata
 case class ReadOnly(why: String) extends Metadata {
   override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = appendToDescription(obj, why)
 }
+
+case class ClassName(classname: String) extends RepresentationalMetadata

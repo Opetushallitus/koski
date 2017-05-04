@@ -27,24 +27,25 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   let indexForNewItem = modelItems(suoritukset).length
   let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
-  let initialModel = contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
+  let initialSuoritusModel = contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 
-  initialModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialModel)
+  initialSuoritusModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialSuoritusModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
   if (viimeisin) {
-    initialModel = modelSet(initialModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
+    initialSuoritusModel = modelSet(initialSuoritusModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
   }
 
-  initialModel = addContext(initialModel, { editAll: true })
+  initialSuoritusModel = addContext(initialSuoritusModel, { editAll: true })
 
-  let luokkaAsteP = valittuLuokkaAsteP(initialModel)
+  let luokkaAsteP = valittuLuokkaAsteP(initialSuoritusModel)
   return (<div>
     {
-      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialModel, luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
-        initialModel = modelSetValue(initialModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
-        initialModel = modelSetValue(initialModel, osasuoritukset.value, 'osasuoritukset')
+      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialSuoritusModel, luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
+        initialSuoritusModel = modelSetValue(initialSuoritusModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
+        initialSuoritusModel = modelSetValue(initialSuoritusModel, osasuoritukset.value, 'osasuoritukset')
+        initialSuoritusModel = addContext(initialSuoritusModel, { suoritus: initialSuoritusModel })
 
-        let { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
+        let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
 
         let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
         let validP = errorP.not().and(hasToimipisteP)
@@ -52,7 +53,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         return (<div>
           <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
             <h2>Suorituksen lisäys</h2>
-            <PropertiesEditor baret-lift context={initialModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
+            <PropertiesEditor baret-lift context={initialSuoritusModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
           </ModalDialog>
           { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
         </div>)

@@ -14,7 +14,7 @@ import {suoritusValmis, arviointiPuuttuu} from './Suoritus'
 export const SuoritusEditor = React.createClass({
   render() {
     let {model} = this.props
-    model = addContext(model, { toimipiste: modelLookup(model, 'toimipiste')})
+    model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
     let resolveEditor = (mdl) => {

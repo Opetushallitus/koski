@@ -11,6 +11,7 @@ import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
 import KoodistoDropdown from './KoodistoDropdown.jsx'
 import {koodistoValues, koodiarvoMatch} from './koodisto'
+import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppimääräAtom = Atom()
@@ -27,24 +28,11 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     if (oppimäärä == 'perusopetuksenoppiaineenoppimaara') {
       return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.PerusopetuksenOppiaineenOppimääränSuoritus')
     }
-  })
+  }).toProperty()
 
   const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus) => {
     if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
-      return {
-        koulutusmoduuli: {
-          tunniste: {
-            koodiarvo: '201101',
-            koodistoUri: 'koulutus'
-          },
-          perusteenDiaarinumero: peruste.koodiarvo
-        },
-        toimipiste: oppilaitos,
-        tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-        oppimäärä: opetussuunnitelma,
-        suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
-        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'}
-      }
+      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
       var suoritusTapaJaToimipiste = {
         toimipiste: oppilaitos,
@@ -79,11 +67,26 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
+let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste) => {
+  return {
+    koulutusmoduuli: {
+      tunniste: {
+        koodiarvo: '201101',
+        koodistoUri: 'koulutus'
+      },
+      perusteenDiaarinumero: peruste
+    },
+    toimipiste: oppilaitos,
+    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
+    oppimäärä: opetussuunnitelma,
+    suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
+    tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'}
+  }
+}
+
+
 const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelmatP}) => {
-  var koulutustyyppiP = opetussuunnitelmaAtom.map('.koodiarvo').decode({
-    perusopetus: '16',
-    aikuistenperusopetus: '17'
-  })
+  let suoritusP = opetussuunnitelmaAtom.map(opetussuunnitelma => makePerusopetuksenOppimääränSuoritus(null, opetussuunnitelma, null))
   return (<div>
     <KoodistoDropdown
       className="opetussuunnitelma"
@@ -91,23 +94,12 @@ const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelm
       optionsP = { opetussuunnitelmatP }
       atom = { opetussuunnitelmaAtom }
     />
-    <Peruste koulutustyyppiP={koulutustyyppiP} perusteAtom={perusteAtom} />
+    <Peruste {...{suoritusP, perusteAtom}} />
   </div>
   )
 }
 
-const Peruste = ({koulutustyyppiP, perusteAtom}) => {
-  let diaarinumerotP = koulutustyyppiP.flatMapLatest(tyyppi => Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${tyyppi}`))
-    .toProperty()
-
-  diaarinumerotP.onValue(options => perusteAtom.set(options[0]))
-  return <KoodistoDropdown
-    className="peruste"
-    title="Peruste"
-    optionsP = { diaarinumerotP }
-    atom = { perusteAtom }
-  />
-}
+const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom, prefill: true}}/></label>
 
 const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // Yleinen prototyyppi suoritukselle
   return (<span>
@@ -121,14 +113,14 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
           return oppiainePrototype && accumulateModelState(oppiainePrototype)
         }).toProperty()
 
-        let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom.map('.koodiarvo'), (suoritus, diaarinumero) => {
+        let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom, (suoritus, diaarinumero) => {
           if (suoritus) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
         })
 
         suoritusP.onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
 
         return (<span>
-          <Peruste koulutustyyppiP={Bacon.constant('17')} perusteAtom={perusteAtom} />
+          <Peruste suoritusP={Bacon.constant(modelData(oppiaineenSuoritus))} perusteAtom={perusteAtom} />
           <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
           model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )

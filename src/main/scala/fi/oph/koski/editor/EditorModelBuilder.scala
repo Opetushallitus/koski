@@ -3,12 +3,13 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.editor.EditorModelBuilder._
-import fi.oph.koski.editor.MetadataToModel.propsFromMetadata
+import fi.oph.koski.editor.MetadataToModel.{classesFromMetadata, propsFromMetadata}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
+import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 
@@ -75,22 +76,22 @@ case class ModelBuilderContext(
   prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
-  override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x), propsFromMetadata(metadata))
+  override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
   override def getPrototypeData = 0
 }
 
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {
-  override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x), propsFromMetadata(metadata))
+  override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
   override def getPrototypeData = false
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
-  override def buildModelForObject(x: String, metadata: List[Metadata]) = StringModel(ValueWithData(x), propsFromMetadata(metadata))
+  override def buildModelForObject(x: String, metadata: List[Metadata]) = StringModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
   override def getPrototypeData = ""
 }
 
 case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[LocalDate] {
-  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x), propsFromMetadata(metadata))
+  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
   override def getPrototypeData = LocalDate.now
 }
 
@@ -132,6 +133,10 @@ object MetadataToModel {
     metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
     props
   }
+
+  def classesFromMetadata(metadata: List[Metadata]): Option[List[String]] = OptionalLists.optionalList(metadata.collect {
+    case ClassName(c) => c
+  })
 }
 
 trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
@@ -167,7 +172,6 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   def defaultValue = KoodistoEnumModelBuilder.defaults.get(koodistoUri).filter(arvo => koodiarvot.isEmpty || koodiarvot.contains(arvo)).orElse(koodiarvot.headOption)
   def getPrototypeData = defaultValue.flatMap(value => MockKoodistoViitePalvelu.validate(Koodistokoodiviite(value, koodistoUri)))
   def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getPrototypeData, metadata)
-
 }
 
 trait EnumModelBuilder[A] extends ModelBuilderForClass {
