@@ -17,7 +17,14 @@ export const Suoritustaulukko = React.createClass({
         <table>
           <thead><tr>
             <th className="suoritus">
-              {modelProperty(suoritukset[0], 'koulutusmoduuli').title} {showExpandAll && <a className="expand-all" onClick={this.toggleExpandAll}>{ allExpandedToggle ? '' : '' }</a>}
+              {modelProperty(suoritukset[0], 'koulutusmoduuli').title}
+              { showExpandAll &&
+                <div>
+                  <a className={'expand-all button' + (allExpandedToggle ? ' expanded' : '')} onClick={this.toggleExpandAll}>
+                    { allExpandedToggle ? 'Sulje kaikki' : 'Avaa kaikki' }
+                  </a>
+                </div>
+              }
             </th>
             {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
             <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>

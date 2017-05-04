@@ -5,6 +5,10 @@
         > td, > th {
           padding: 5px 13px 7px 0;
         }
+        > th {
+          vertical-align: bottom;
+          font-weight: 600;
+        }
         > td.suoritus {
           padding-left: 13px;
           .tila {
@@ -45,7 +49,20 @@
       margin-top: 12px;
     }
     .expand-all {
-      margin-left: 10px;
+      margin: 8px 0;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 13px;
+      &:before {
+        display: inline-block;
+        content: '';
+        font-family: FontAwesome;
+        font-size: 12px;
+        margin-right: 8px;
+      }
+      &.expanded:before {
+        content: '';
+      }
     }
   }
 }
