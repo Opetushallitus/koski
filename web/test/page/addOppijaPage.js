@@ -71,16 +71,20 @@ function AddOppijaPage() {
       })
     },
     submit: function() {
+      if (!api.isEnabled) {
+        throw new Error('Button not enabled')
+      }
       triggerEvent(button(), 'click')
     },
     submitAndExpectSuccess: function(oppija, tutkinto) {
       tutkinto = tutkinto || "Autoalan perustutkinto"
       return function() {
-        api.submit()
-        return wait.until(function() {
-          return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-                 OpinnotPage().suoritusOnValittu(1, tutkinto)
-        })()
+        return wait.until(api.isEnabled)()
+          .then(api.submit)
+          .then(wait.until(function() {
+            return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+              OpinnotPage().suoritusOnValittu(1, tutkinto)
+          }))
       }
     },
     isErrorShown: function(field) {
