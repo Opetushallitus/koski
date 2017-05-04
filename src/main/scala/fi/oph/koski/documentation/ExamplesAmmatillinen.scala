@@ -271,7 +271,9 @@ object AmmatillinenOldExamples {
         )),
         lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
           hojks = Some(Hojks(
-            opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
+            opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma"),
+            alku = Some(date(2012, 10, 20)),
+            loppu = Some(date(2013, 8, 15))
           ))
         )),
         tila = AmmatillinenOpiskeluoikeudenTila(

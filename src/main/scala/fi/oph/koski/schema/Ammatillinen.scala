@@ -485,7 +485,11 @@ case class OppisopimuksellinenJärjestämismuoto(
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @KoodistoUri("opetusryhma")
-  opetusryhmä: Koodistokoodiviite
+  opetusryhmä: Koodistokoodiviite,
+  @Description("Alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate] = None,
+  @Description("Loppupäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate] = None
 )
 
 case class LaajuusOsaamispisteissä(
