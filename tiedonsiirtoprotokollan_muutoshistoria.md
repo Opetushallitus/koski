@@ -1,6 +1,7 @@
 ## 4.5.2017
 
 - Perusopetuksen lisäopetuksessa samat opiskeluoikeuden lisätiedot kuin perusopetuksessa
+- Lisätty valinnainen ryhmätieto lukion ja ammatillisen koulutuksen päätason suorituksiin
 
 ## 12.4.2017
 
