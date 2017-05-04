@@ -45,6 +45,8 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
   Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
+  opetussuunnitelmaAtom.changes().merge(oppimääräAtom.changes()).onValue(() => perusteAtom.set(undefined))
+
   return (<span>
     <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
     {
