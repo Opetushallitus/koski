@@ -1485,11 +1485,14 @@ describe('Perusopetus', function() {
       before(opinnot.expandAll)
 
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
-          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016')
+          'Perusopetuksen aloittamista lykätty ei\n' +
+          'Aloittanut ennen oppivelvollisuutta ei\n' +
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\nVuosiluokkiin sitoutumaton opetus ei')
       })
 
       it('näyttää suorituksen tiedot', function() {
