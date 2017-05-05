@@ -8,12 +8,14 @@ import org.scalatest.{FreeSpec, Matchers}
 import scala.sys.process._
 
 trait KoskiCommandLineSpec extends FreeSpec with Matchers with Logging {
-  def runTestCommand(command: Seq[String]): Unit = {
+  def runTestCommand(description: String, command: Seq[String]): Unit = {
+    logger.info(s"running $description")
+
     val io = new ProcessIO(_.close, pipeTo(System.out), pipeTo(System.err))
 
     val res: Process = command.run(io)
     if (res.exitValue() != 0) {
-      logger.info("JS unit tests failed")
+      logger.info(s"$description failed")
     }
     res.exitValue() should equal (0)
   }
