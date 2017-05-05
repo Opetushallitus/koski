@@ -49,14 +49,17 @@ describe('When sorting languages', () => {
   })
 })
 
-describe('When sorting grades', () => {
-  it('sorts character grades correctly', () => {
-    assert.deepEqual(sortGrades([{value: 'S'}, {value: 'H'}]), [{value: 'H'}, {value: 'S'}])
-  })
-  it('sorts numeric grades correctly', () => {
-    assert.deepEqual(sortGrades([{value: 6}, {value: 3}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}])
-  })
-  it('sorts mixed grades correctly', () => {
-    assert.deepEqual(sortGrades([{value: 6}, {value: 'H'}, {value: 3}, {value: 'S'}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}, {value: 'H'}, {value: 'S'}])
+describe('Sorting grades', () => {
+  describe('When sorting grades', () => {
+    it('sorts character grades correctly', () => {
+      assert.deepEqual(sortGrades([{value: 'S'}, {value: 'H'}]), [{value: 'H'}, {value: 'S'}])
+    })
+    it('sorts numeric grades correctly', () => {
+      assert.deepEqual(sortGrades([{value: 6}, {value: 3}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}])
+    })
+    it('sorts mixed grades correctly', () => {
+      assert.deepEqual(sortGrades([{value: 6}, {value: 'H'}, {value: 3}, {value: 'S'}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}, {value: 'H'}, {value: 'S'}])
+    })
   })
 })
+

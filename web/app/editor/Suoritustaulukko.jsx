@@ -32,34 +32,19 @@ export const Suoritustaulukko = React.createClass({
           </tr></thead>
           {
             suoritukset.map((suoritus, i) =>
-              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded[i]} onExpand={this.toggleExpand(i)} key={i}/>
+              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(i)} onExpand={this.toggleExpand(i)} key={i}/>
             )
           }
         </table>
       </div>)
   },
   toggleExpand(key) {
-    return (expanded) => {
-      let {suoritukset} = this.props
-      let newExpanded = R.clone(this.state.expanded)
-      newExpanded[key] = expanded
-
-      this.setState(
-          {
-            expanded: newExpanded,
-            allExpandedToggle: newExpanded.length === suoritukset.length && newExpanded.every(e => e === true)
-                ? true
-                : newExpanded.every(e => e === false)
-                    ? false
-                    : this.state.allExpandedToggle
-          }
-      )
+    return (expand) => {
+      this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpand(key, expand))
     }
   },
   toggleExpandAll() {
-    let {suoritukset} = this.props
-    let {allExpandedToggle} = this.state
-    this.setState({expanded: suoritukset.map(() => !allExpandedToggle), allExpandedToggle: !allExpandedToggle})
+    this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpandAll())
   },
   getInitialState() {
     return {
@@ -125,5 +110,26 @@ export const suorituksenTilaSymbol = (tila) => {
     case 'KESKEYTYNYT': return ''
     case 'KESKEN': return ''
     default: return ''
+  }
+}
+
+export const expandStateCalc = (currentState, suoritukset, filter = s => suoritusProperties(s).length > 0) => {
+  return {
+    toggleExpandAll() {
+      let {allExpandedToggle} = currentState
+      let newExpanded = !allExpandedToggle ? suoritukset.reduce((acc, s, i) => filter(s) ? acc.concat(i) : acc , []) : []
+      return {expanded: newExpanded, allExpandedToggle: !allExpandedToggle}
+    },
+    toggleExpand(key, expand) {
+      let {expanded, allExpandedToggle} = currentState
+      let newExpanded = expand ? expanded.concat(key) : R.without([key], expanded)
+
+      return {
+        expanded: newExpanded,
+        allExpandedToggle: suoritukset.filter(filter).length === newExpanded.length
+            ? true
+            : newExpanded.length === 0 ? false : allExpandedToggle
+      }
+    }
   }
 }
