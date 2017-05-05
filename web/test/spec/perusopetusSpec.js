@@ -584,7 +584,7 @@ describe('Perusopetus', function() {
       })
       describe('Tutkinnon perusteen diaarinumero', function() {
         var diaarinumero = editor.propertyBySelector('.diaarinumero')
-        before(editor.edit, diaarinumero.setValue('1/011/2004 Perusopetuksen opetussuunitelman perusteet 2004'), editor.doneEditing)
+        before(editor.edit, diaarinumero.setValue('1/011/2004 Perusopetuksen opetussuunnitelman perusteet 2004'), editor.doneEditing)
         it('toimii', function () {
           expect(diaarinumero.getValue()).to.equal('1/011/2004')
         })
