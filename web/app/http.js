@@ -61,7 +61,7 @@ http.cachedGet = (url, options = {}) => {
         delete http.cache[url]
       })
   }
-  return http.cache[url] // Ensure async behaviour
+  return http.cache[url]
 }
 window.http = http
 export default http
