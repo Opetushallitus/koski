@@ -2,7 +2,7 @@ import React from 'baret'
 import Http from '../http'
 import Bacon from 'baconjs'
 import Dropdown from '../Dropdown.jsx'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx';
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 
 export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
   let koulutustyyppiP = suoritusP.map(suoritus => {
@@ -13,7 +13,13 @@ export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
     if (suoritus.tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara') {
       return '17'
     }
-  })
+    if (suoritus.tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
+      return '6'
+    }
+    if (suoritus.tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
+      return '22'
+    }
+  }).skipDuplicates()
 
   let diaarinumerotP = koulutustyyppiP.flatMapLatest(tyyppi => tyyppi ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${tyyppi}`) : []).toProperty()
   let selectedOptionP = Bacon.combineWith(diaarinumerotP, perusteAtom, (options, selected) => options.find(o => o.koodiarvo == selected))

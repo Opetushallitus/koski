@@ -1604,6 +1604,7 @@ describe('Perusopetus', function() {
       it('Lisätty opiskeluoikeus näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal('Perusopetuksen lisäopetus')
         expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('105/011/2014')
       })
     })
   })
@@ -1700,6 +1701,7 @@ describe('Perusopetus', function() {
       it('Lisätty opiskeluoikeus näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal('Perusopetukseen valmistava opetus')
         expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('57/011/2015')
       })
     })
   })
