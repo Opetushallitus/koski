@@ -20,9 +20,13 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
 
   val secureHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
 
+  def updateKoodisto(koodisto: Koodisto): Unit = {
+    runTask(secureHttp.put(uri"/koodisto-service/rest/codes/save", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
+  }
   def createKoodisto(koodisto: Koodisto): Unit = {
     try {
       runTask(secureHttp.post(uri"/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
+      updateKoodisto(koodisto)
     } catch {
       case HttpStatusException(500, "error.codesgroup.not.found", _, _) =>
         createKoodistoRyhmä(KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
@@ -32,6 +36,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
 
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
     runTask(secureHttp.post(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
+    updateKoodi(koodistoUri, koodi)
   }
 
   def updateKoodi(koodistoUri: String, koodi: KoodistoKoodi) =
@@ -44,7 +49,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     }
 
   private def runUpdateKoodi(koodi: KoodistoKoodi) =
-    runTask(secureHttp.put(uri"/koodisto-service/rest/codeelement", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
+    runTask(secureHttp.put(uri"/koodisto-service/rest/codeelement/save", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
     runTask(secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder))

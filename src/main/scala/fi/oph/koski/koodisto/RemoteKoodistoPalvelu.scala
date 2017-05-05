@@ -16,7 +16,7 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
         val koodit: List[KoodistoKoodi] = Json.read[List[KoodistoKoodi]](text)
         Some(koodisto.koodistoUri match {
           case uri if Koodistot.koskiKoodistot.contains(uri) => // Vain koski-koodistoista haetaan kaikki lisätiedot
-            koodit.map(koodi => koodi.copy(metadata = getKoodiMetadata(koodi)))
+            koodit.map(koodi => koodi.withAdditionalInfo(getAdditionalInfo(koodi)))
           case _ =>
             koodit
         })
@@ -35,12 +35,10 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
 
   private def noCache = uri"?noCache=${System.currentTimeMillis()}"
 
-  private def getKoodiMetadata(koodi: KoodistoKoodi) = {
-    runTask(http.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}${noCache}")(Http.parseJson[KoodiLisätiedot])).metadata
+  private def getAdditionalInfo(koodi: KoodistoKoodi) = {
+    runTask(http.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}${noCache}")(Http.parseJson[CodeAdditionalInfo]))
   }
 }
 
 case class KoodistoWithLatestVersion(latestKoodistoVersio: LatestVersion)
 case class LatestVersion(versio: Int)
-case class KoodiLisätiedot(metadata: List[KoodistoKoodiMetadata])
-

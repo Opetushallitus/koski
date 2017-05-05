@@ -3,6 +3,7 @@ package fi.oph.koski.tutkinto
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
 class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends ApiServlet with Unauthenticated with Cached24Hours {
@@ -16,10 +17,6 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
 
   get("/diaarinumerot/koulutustyyppi/:koulutustyyppi") {
     val koulutusTyyppi = params("koulutustyyppi")
-    (koulutusTyyppi match {
-      case Koulutustyyppi.aikuistenPerusopetus.koodiarvo => List("19/011/2015", "4/011/2004")
-      case Koulutustyyppi.perusopetus.koodiarvo => List("104/011/2014", "1/011/2004")
-      case _ => List()
-    }).map(koodiarvo => koodistoViitePalvelu.validateRequired("koskikoulutustendiaarinumerot", koodiarvo))
+    koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
   }
 }

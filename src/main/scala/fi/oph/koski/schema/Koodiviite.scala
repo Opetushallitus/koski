@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.koski.localization.{Deserializer, Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}

@@ -7,7 +7,11 @@
     "kuvaus" : "Toinen kotimainen kieli, ruotsi",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101053",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ps",
   "koodiArvo" : "PS",
@@ -22,7 +26,11 @@
     "kuvaus" : "Psykologi",
     "kieli" : "SV"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101056",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ma",
   "koodiArvo" : "MA",
@@ -37,7 +45,11 @@
     "kuvaus" : "Matematik",
     "kieli" : "SV"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101054",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ai",
   "koodiArvo" : "AI",
@@ -47,7 +59,11 @@
     "kuvaus" : "Äidinkieli ",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101053",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_fk",
   "koodiArvo" : "FK",
@@ -57,7 +73,11 @@
     "kuvaus" : "Fysiikka ja kemia",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101054",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ykt",
   "koodiArvo" : "YKT",
@@ -67,7 +87,11 @@
     "kuvaus" : "Yhteiskuntataidot",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101055",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_tvt",
   "koodiArvo" : "TVT",
@@ -77,7 +101,11 @@
     "kuvaus" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101054",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vk",
   "koodiArvo" : "VK",
@@ -87,7 +115,11 @@
     "kuvaus" : "Vieraat kielet",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101053",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_yyt",
   "koodiArvo" : "YYT",
@@ -97,7 +129,11 @@
     "kuvaus" : "Yrittäjyys ja yritystoiminta",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101055",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_tak",
   "koodiArvo" : "TAK",
@@ -107,7 +143,11 @@
     "kuvaus" : "Taide ja kulttuuri",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101056",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ku",
   "koodiArvo" : "KU",
@@ -117,7 +157,11 @@
     "kuvaus" : "Kulttuurien tuntemus",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101056",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_tet",
   "koodiArvo" : "TET",
@@ -127,7 +171,11 @@
     "kuvaus" : "Työelämätaidot",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101055",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ym",
   "koodiArvo" : "YM",
@@ -137,7 +185,11 @@
     "kuvaus" : "Ympäristöosaaminen",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101056",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_etk",
   "koodiArvo" : "ETK",
@@ -147,7 +199,11 @@
     "kuvaus" : "Etiikka",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101056",
+    "codeElementVersion" : 1
+  } ]
 }, {
   "koodiUri" : "ammatillisenoppiaineet_tyt",
   "koodiArvo" : "TYT",
@@ -157,5 +213,9 @@
     "kuvaus" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "tutkinnonosat_101055",
+    "codeElementVersion" : 1
+  } ]
 } ]

@@ -7,5 +7,9 @@
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2017-03-23",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes": [{
+    "codesUri": "koulutustyyppi",
+    "codesVersion": 2
+  }]
 }

@@ -8,5 +8,10 @@
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
   "voimassaAlkuPvm" : "2015-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 1
+    }]
 }

@@ -9,20 +9,29 @@ import fi.oph.koski.servlet.InvalidRequestException
 case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(Cache.cacheAllRefresh("KoodistoViitePalvelu", 3600, 100), { koodisto: KoodistoViite =>
     val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
-    koodit.map { _.map { koodi => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))} }
+    koodit.map { _.map(toKoodiviite(koodisto)) }
   })
 
   def getKoodistoKoodiViitteet(koodisto: KoodistoViite): Option[List[Koodistokoodiviite]] = {
     koodiviiteCache(koodisto)
   }
+
+  def getSisältyvätKoodiViitteet(koodisto: KoodistoViite, parentViite: Koodistokoodiviite): Option[List[Koodistokoodiviite]] = {
+    val parentKoodisto = toKoodistoViite(parentViite).get
+    val parent = koodistoPalvelu.getKoodistoKoodit(parentKoodisto).get.find(_.koodiArvo == parentViite.koodiarvo).get // TODO: unsafe gets
+    val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
+    koodit.map {
+      _.filter(koodi => koodi.withinCodeElements.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined)
+       .map(toKoodiviite(koodisto))
+    }
+  }
+
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = koodistoPalvelu.getLatestVersion(koodistoUri)
 
   def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = getLatestVersion(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
 
   def validate(input: Koodistokoodiviite):Option[Koodistokoodiviite] = {
-    def toKoodistoViite(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _))
-
-    val koodistoViite = toKoodistoViite(input).orElse(getLatestVersion(input.koodistoUri))
+    val koodistoViite = toKoodistoViite(input)
 
     val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet).toList.flatten.find(_.koodiarvo == input.koodiarvo)
 
@@ -32,9 +41,13 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
     viite
   }
 
+  def toKoodistoViite(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersion(koodiviite.koodistoUri))
+
   def validateRequired(uri: String, koodi: String) = {
     validate(Koodistokoodiviite(koodi, uri)).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + Koodistokoodiviite(koodi, uri))))
   }
+
+  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) = Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }
 
 object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {

@@ -5,6 +5,9 @@
     "nimi" : "Perusopetuksen opetussuunitelman perusteet 2014",
     "kieli" : "FI"
   } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_16", "codeElementVersion": 2 }
+  ],
   "versio" : 1
 },{
   "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
@@ -13,6 +16,9 @@
     "nimi" : "Perusopetuksen opetussuunitelman perusteet 2004",
     "kieli" : "FI"
   } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_16", "codeElementVersion": 2 }
+  ],
   "versio" : 1
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_120112009",
@@ -69,6 +75,9 @@
     "nimi" : "Aikuisten perusopetus 2015",
     "kieli" : "FI"
   } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_17", "codeElementVersion": 2 }
+  ],
   "versio" : 1
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
@@ -229,6 +238,9 @@
     "nimi" : "Aikuisten perusopetus ja lukiokoulutus 2004",
     "kieli" : "FI"
   } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_17", "codeElementVersion": 2 }
+  ],
   "versio" : 1
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_410112006",

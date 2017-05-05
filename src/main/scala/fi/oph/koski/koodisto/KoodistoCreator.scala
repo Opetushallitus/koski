@@ -3,6 +3,7 @@ package fi.oph.koski.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 
 object KoodistoCreator extends Logging {
@@ -17,9 +18,25 @@ object KoodistoCreator extends Logging {
         case None =>
           throw new IllegalStateException("Mock not found: " + koodistoUri)
         case Some(koodisto) =>
-          logger.info("Luodaan koodisto " + koodisto.koodistoUri)
           kmp.createKoodisto(koodisto)
-          koodisto.koodistoViite
+      }
+    }
+
+    if (updateExisting) {
+      val olemassaOlevatKoodistot = koodistot.par.filter(!kp.getLatestVersion(_).isEmpty).toList
+      val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
+        val existing: Koodisto = kp.getLatestVersion(koodistoUri).flatMap(kp.getKoodisto).get
+        val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
+
+        if (existing.withinCodes != mock.withinCodes) {
+          logger.info("Päivitetään koodisto " + existing.koodistoUri + " diff " + objectDiff(existing, mock) + " original " + Json.write(existing))
+          Some(mock)
+        } else {
+          None
+        }
+      }
+      päivitettävätKoodistot.foreach { koodisto =>
+        kmp.updateKoodisto(koodisto)
       }
     }
 
@@ -34,26 +51,33 @@ object KoodistoCreator extends Logging {
         kmp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
       }
       if (updateExisting) {
-        val päivitettävätKoodit = olemassaOlevatKoodit.flatMap { koodi =>
-          mockKoodit.find(_.koodiArvo == koodi.koodiArvo).flatMap { uusiKoodi =>
-            val uusiKoodiSamallaKoodiUrilla = uusiKoodi.copy(koodiUri = koodi.koodiUri)
-            if (uusiKoodiSamallaKoodiUrilla != koodi) {
-              Some(koodi, uusiKoodi)
+        val päivitettävätKoodit = olemassaOlevatKoodit.flatMap { vanhaKoodi =>
+          mockKoodit.find(_.koodiArvo == vanhaKoodi.koodiArvo).flatMap { uusiKoodi =>
+            val uusiKoodiSamallaKoodiUrilla = uusiKoodi.copy(
+              koodiUri = vanhaKoodi.koodiUri
+            )
+
+            if (uusiKoodiSamallaKoodiUrilla != vanhaKoodi) {
+              Some(vanhaKoodi, uusiKoodi)
             } else {
               None
             }
           }
         }
 
-        päivitettävätKoodit.zipWithIndex.foreach { case ((vanhaKoodi, koodi), index) =>
-          logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + koodi.koodiUri)
-          kmp.updateKoodi(koodistoUri, koodi.copy(
+        päivitettävätKoodit.zipWithIndex.foreach { case ((vanhaKoodi, uusiKoodi), index) =>
+          logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + objectDiff(vanhaKoodi, uusiKoodi) + " original " + Json.write(vanhaKoodi))
+          kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
             voimassaAlkuPvm = Some(LocalDate.now),
-            tila = koodi.tila.orElse(vanhaKoodi.tila).orElse(Some("LUONNOS")),
-            version = koodi.version.orElse(vanhaKoodi.version).orElse(Some(0))
+            tila = uusiKoodi.tila.orElse(vanhaKoodi.tila).orElse(Some("LUONNOS")),
+            version = uusiKoodi.version.orElse(vanhaKoodi.version).orElse(Some(0))
           ))
         }
       }
     }
+  }
+
+  def objectDiff(a: AnyRef, b: AnyRef) = {
+    Json.write(Json.jsonDiff(Json.toJValue(a), Json.toJValue(b)))
   }
 }
