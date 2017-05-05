@@ -22,7 +22,7 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     }
   }
   let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, makeSuoritus)
-  suoritusP.onValue(suoritus => suoritusAtom.set(suoritus))
+  suoritusP.filter('.koulutusmoduuli.perusteenDiaarinumero').onValue(suoritus => suoritusAtom.set(suoritus))
   return <Peruste {...{suoritusP, perusteAtom}} />
 }
 

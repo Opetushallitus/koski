@@ -18,6 +18,7 @@ export default ({opiskeluoikeusAtom}) => {
   const tyyppiAtom = Atom()
   const tilaAtom = Atom()
   const suoritusAtom = Atom()
+  tyyppiAtom.changes().onValue(() => suoritusAtom.set(undefined))
 
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))

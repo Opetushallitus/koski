@@ -116,7 +116,7 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
         }).toProperty()
 
         let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom, (suoritus, diaarinumero) => {
-          if (suoritus) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
+          if (suoritus && diaarinumero) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
         })
 
         suoritusP.onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
@@ -125,7 +125,7 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
           <Peruste suoritusP={Bacon.constant(modelData(oppiaineenSuoritus))} perusteAtom={perusteAtom} />
           <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
-          model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
+            model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
           }
         </span>)
       })
