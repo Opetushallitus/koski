@@ -69,8 +69,8 @@ object KoodistoCreator extends Logging {
           logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + objectDiff(vanhaKoodi, uusiKoodi) + " original " + Json.write(vanhaKoodi))
           kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
             voimassaAlkuPvm = Some(LocalDate.now),
-            tila = uusiKoodi.tila.orElse(vanhaKoodi.tila).orElse(Some("LUONNOS")),
-            version = uusiKoodi.version.orElse(vanhaKoodi.version).orElse(Some(0))
+            tila = uusiKoodi.tila.orElse(vanhaKoodi.tila),
+            version = uusiKoodi.version.orElse(vanhaKoodi.version)
           ))
         }
       }

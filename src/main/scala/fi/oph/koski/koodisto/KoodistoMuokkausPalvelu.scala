@@ -41,7 +41,10 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
 
   def updateKoodi(koodistoUri: String, koodi: KoodistoKoodi) =
     try {
-      runUpdateKoodi(koodi)
+      runUpdateKoodi(koodi.copy(
+        tila = koodi.tila.orElse(Some("LUONNOS")),
+        version = koodi.version.orElse(Some(0))
+      ))
     }
     catch {
       case HttpStatusException(500, "error.codeelement.locking", _, _) =>
