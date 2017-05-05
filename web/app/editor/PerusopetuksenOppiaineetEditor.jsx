@@ -270,5 +270,5 @@ const ArvosanaEditor = ({model}) => {
 export const completeWithFieldAlternatives = (models, path) => {
   const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, path))
     .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, path)))
-  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten()).startWith([])
+  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten())
 }

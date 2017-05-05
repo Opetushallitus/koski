@@ -192,5 +192,6 @@ function prepareForNewOppija(username, hetu) {
       .then(page.oppijaHaku.search(hetu, page.oppijaHaku.isNoResultsLabelShown))
       .then(wait.until(page.oppijaHaku.canAddNewOppija))
       .then(page.oppijaHaku.addNewOppija)
+      .then(wait.forAjax)
   }
 }

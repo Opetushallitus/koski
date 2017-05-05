@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import {parseBool, toObservable} from './util'
+import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 
 export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => {
   let optionsP = toObservable(options)
@@ -79,7 +80,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
     onSelectionChanged(option)
   }
   return (<span>{
-    allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
+    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
             enableFilter ?
               <div className="input-container" onClick={toggleOpen}>
@@ -116,7 +117,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
           }
         </div>
       )
-    )
+    ))
   }</span>)
 }
 

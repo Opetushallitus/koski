@@ -16,7 +16,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
-  let classNameP = alternativesP.map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
+  let classNameP = alternativesP.startWith([]).map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
 
   let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
 
@@ -65,7 +65,7 @@ EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath
   let edit = model.context.edit
   if (edit && alternativesPath) {
-    return Http.cachedGet(alternativesPath).startWith([])
+    return Http.cachedGet(alternativesPath)
   } else {
     return Bacon.constant([])
   }

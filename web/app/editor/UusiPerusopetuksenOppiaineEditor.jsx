@@ -7,6 +7,7 @@ import {getOrganizationalPreferences} from '../organizationalPreferences'
 import {isPaikallinen, isUusi} from './Koulutusmoduuli'
 import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
 import {paikallinenOppiainePrototype, koulutusModuuliprototypes} from './PerusopetuksenOppiaineEditor.jsx'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 
 export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   if (!oppiaineenSuoritus || !oppiaineenSuoritus.context.edit) return null
@@ -18,13 +19,12 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
   let paikallinenProto = !pakollinen && paikallinenOppiainePrototype(oppiaineenSuoritus)
   let paikallisetOppiaineet = !paikallinenProto
     ? Bacon.constant([])
-    : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).startWith([])
+    : getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0])
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
-
   return (<div className={'uusi-oppiaine'}>
     {
-      oppiaineet.map('.length').map(length => length || paikallinenProto
+      elementWithLoadingIndicator(oppiaineet.map('.length').map(length => length || paikallinenProto
         ? <DropDown
           options={oppiaineet}
           keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
@@ -38,7 +38,7 @@ export const UusiPerusopetuksenOppiaineEditor = ({suoritukset = [], organisaatio
           selected={selected.map(suoritus => modelLookup(suoritus, 'koulutusmoduuli'))}
         />
         : null
-      )
+      ))
     }
   </div>)
 }

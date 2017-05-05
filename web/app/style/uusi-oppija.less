@@ -3,28 +3,34 @@
     display: block;
   }
 
-  .hetu {
-    margin-bottom: 20px;
-    .value { margin-left: 1em; }
-  }
-
-  .etunimet, .kutsumanimi {
-    display: inline-block;
-  }
-
-  .kutsumanimi {
-    margin-left: 36px;
-    input {
-      width: 150px;
+  .henkilo {
+    .ajax-loading-placeholder {
+      .ajax-indicator-bg;
     }
-  }
 
-  .etunimet input {
-    width: 215px;
-  }
+    .hetu {
+      margin-bottom: 20px;
+      .value { margin-left: 1em; }
+    }
 
-  .sukunimi input {
-    width: 400px;
+    .etunimet, .kutsumanimi {
+      display: inline-block;
+    }
+
+    .kutsumanimi {
+      margin-left: 36px;
+      input {
+        width: 150px;
+      }
+    }
+
+    .etunimet input {
+      width: 215px;
+    }
+
+    .sukunimi input {
+      width: 400px;
+    }
   }
 
   .error-messages {
@@ -44,9 +50,14 @@
     }
   }
 
-  .opiskeluoikeudentyyppi, .opiskeluoikeudentila, .oppimaara, .oppiaine, .kieli, .opetussuunnitelma, .peruste {
+  .opiskeluoikeudentyyppi, .opiskeluoikeudentila, .oppimaara, .oppiaine, .kieli, .opetussuunnitelma, .peruste, .loading-placeholder {
     width: 500px;
     display: block;
+  }
+
+  .ajax-loading-placeholder {
+    .ajax-indicator-left;
+    height: 40px;
   }
 
   .dropdown .select {

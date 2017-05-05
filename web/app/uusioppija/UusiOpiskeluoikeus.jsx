@@ -33,7 +33,9 @@ export default ({opiskeluoikeusAtom}) => {
 
   return (<div>
       <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
-      <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP}/>
+      {
+        oppilaitosAtom.map(o => !!o).and(<OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
+      }
       {
         tyyppiAtom.map('.koodiarvo').map(tyyppi => {
           if (tyyppi == 'perusopetus') return <UusiPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom}/>
