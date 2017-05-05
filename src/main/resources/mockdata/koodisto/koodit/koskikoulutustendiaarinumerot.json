@@ -2,7 +2,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_1040112014",
   "koodiArvo" : "104/011/2014",
   "metadata" : [ {
-    "nimi" : "Perusopetuksen opetussuunitelman perusteet 2014",
+    "nimi" : "Perusopetuksen opetussuunnitelman perusteet 2014",
     "kieli" : "FI"
   } ],
   "withinCodeElements": [
@@ -13,11 +13,44 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
   "koodiArvo" : "1/011/2004",
   "metadata" : [ {
-    "nimi" : "Perusopetuksen opetussuunitelman perusteet 2004",
+    "nimi" : "Perusopetuksen opetussuunnitelman perusteet 2004",
     "kieli" : "FI"
   } ],
   "withinCodeElements": [
     {"codeElementUri": "koulutustyyppi_16", "codeElementVersion": 2 }
+  ],
+  "versio" : 1
+},{
+  "koodiUri" : "koskikoulutustendiaarinumerot_570112015",
+  "koodiArvo" : "57/011/2015",
+  "metadata" : [ {
+    "nimi" : "Perusopetukseen valmistavan opetuksen opetussuunnitelman perusteet 2015",
+    "kieli" : "FI"
+  } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_22", "codeElementVersion": 2 }
+  ],
+  "versio" : 1
+},{
+  "koodiUri" : "koskikoulutustendiaarinumerot_1020112014",
+  "koodiArvo" : "102/011/2014",
+  "metadata" : [ {
+    "nimi" : "Esiopetuksen opetussuunnitelman perusteet 2014",
+    "kieli" : "FI"
+  } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_15", "codeElementVersion": 2 }
+  ],
+  "versio" : 1
+},{
+  "koodiUri" : "koskikoulutustendiaarinumerot_1050112014",
+  "koodiArvo" : "105/011/2014",
+  "metadata" : [ {
+    "nimi" : "Lisäopetuksen opetussuunnitelman perusteet 2014",
+    "kieli" : "FI"
+  } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_6", "codeElementVersion": 2 }
   ],
   "versio" : 1
 }, {
@@ -72,7 +105,7 @@
   "koodiUri" : "koskikoulutustendiaarinumerot_190112015",
   "koodiArvo" : "19/011/2015",
   "metadata" : [ {
-    "nimi" : "Aikuisten perusopetus 2015",
+    "nimi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet 2015",
     "kieli" : "FI"
   } ],
   "withinCodeElements": [
@@ -237,10 +270,7 @@
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetus ja lukiokoulutus 2004",
     "kieli" : "FI"
-  } ],
-  "withinCodeElements": [
-    {"codeElementUri": "koulutustyyppi_17", "codeElementVersion": 2 }
-  ],
+  }],
   "versio" : 1
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_410112006",
