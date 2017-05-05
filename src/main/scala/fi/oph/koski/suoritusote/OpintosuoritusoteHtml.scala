@@ -134,7 +134,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession) extends LocalizedHt
 
         <section class="henkilo">
           <div class="nimi">{ht.sukunimi} {ht.etunimet}</div>
-          <div class="opiskelija"><div class="hetu">{ht.hetu}</div></div>
+          <div class="opiskelija"><div class="hetu">{ht.hetuStr}</div></div>
         </section>
 
         { content }

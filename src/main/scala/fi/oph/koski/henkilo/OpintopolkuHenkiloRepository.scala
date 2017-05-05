@@ -9,7 +9,8 @@ import fi.oph.koski.schema._
 
 case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid with Logging {
   def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
-    henkilöPalveluClient.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, hetu, h.etunimet, h.kutsumanimi, h.sukunimi))
+    val opp = henkilöPalveluClient.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, Some(hetu), h.etunimet, h.kutsumanimi, h.sukunimi))
+    opp
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
@@ -21,24 +22,22 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
     }
   }
 
-  def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
+  def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = {
+    val retval = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
+    retval
+  }
 
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
     case _ => henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
   }
 
+  // TODO: muuta signature OppijaHenkilö -> TäydellisetHenkilötiedot
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): Option[TäydellisetHenkilötiedot] = {
-    user.hetu match {
-      case Some(hetu) =>
-        Some(TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
-      case _ =>
-        logger.info(s"Hetu puuttuu oppijalta ${user.oidHenkilo}")
-        None
-    }
+    Some(TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
   }
 
-  private def toHenkilötiedot(user: QueryHenkilö) =  user.hetu.map(hetu => HenkilötiedotJaOid(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi))
+  private def toHenkilötiedot(user: QueryHenkilö) =  HenkilötiedotJaOid(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
 
   private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))
 

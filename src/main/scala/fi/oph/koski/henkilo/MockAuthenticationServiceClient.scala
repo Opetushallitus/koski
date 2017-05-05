@@ -12,7 +12,7 @@ import fi.oph.koski.schema.{Henkilö, NimitiedotJaOid, TäydellisetHenkilötiedo
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      TäydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
+      TäydellisetHenkilötiedot(oid, Some(oid), oid, oid, oid, oppijat.äidinkieli, None)
     }
   }
 
@@ -40,14 +40,14 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     }
     val results = oppijat.getOppijat
       .filter(searchString(_).contains(query))
-      .map(henkilö => QueryHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu)))
+      .map(henkilö => QueryHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu))
     HenkilöQueryResult(results.size, results)
   }
 
   private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
-    } else if (oppijat.getOppijat.find { o => (Some(o.hetu) == createUserInfo.hetu) }.isDefined) {
+    } else if (oppijat.getOppijat.exists(_.hetu == createUserInfo.hetu)) {
       Left(KoskiErrorCategory.conflict.hetu("conflict"))
     } else {
       val newOppija = oppijat.oppija(createUserInfo.sukunimi, createUserInfo.etunimet, createUserInfo.hetu.getOrElse(throw new IllegalArgumentException("Hetu puuttuu")))
@@ -60,7 +60,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
-    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None, 0)
+    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, Some("FI"), None, 0)
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
@@ -111,7 +111,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   override def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] =
     MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
-  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
+  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu.contains(hetu)).map(toOppijaHenkilö)
 
   override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
 }

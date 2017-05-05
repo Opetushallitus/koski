@@ -153,15 +153,15 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
-          haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
+          haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
           putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
             verifyResponseStatus(200)
-            haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
+            haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
           }
         }
       }
       "opiskeluoikeus-id:tä käytettäessä muutos estetään" in {
-        val id = haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).id.get
+        val id = haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).id.get
         putOpiskeluoikeus(opiskeluoikeusOmnia.copy(id = Some(id)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi muuttaa."))
         }

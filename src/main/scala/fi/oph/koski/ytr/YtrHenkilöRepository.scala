@@ -12,7 +12,7 @@ case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHen
     try {
       ytr.oppijaByHetu(hetu).flatMap { ytrOppija =>
         val kutsumanimi = ytrOppija.firstnames.split(" ").toList.head
-        henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, ytrOppija.firstnames, kutsumanimi, ytrOppija.lastname)) match {
+        henkilöpalvelu.findOrCreate(UusiHenkilö(Some(hetu), ytrOppija.firstnames, kutsumanimi, ytrOppija.lastname)) match {
           case Right(henkilö) =>
             Some(henkilö)
           case Left(error) =>

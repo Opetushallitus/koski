@@ -21,7 +21,7 @@ class YlioppilastutkintotodistusHtml(implicit val user: KoskiSession) extends To
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
-            <span class="hetu">{oppijaHenkilö.hetu}</span>
+            <span class="hetu">{oppijaHenkilö.hetuStr}</span>
           </h3>
           <div></div>
           <table class="arvosanat">

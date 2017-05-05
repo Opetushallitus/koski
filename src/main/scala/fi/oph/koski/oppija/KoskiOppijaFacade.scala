@@ -28,12 +28,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
 
   def createOrUpdate(oppija: Oppija)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
-      case h:UusiHenkilö =>
-        Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
+      case h:UusiHenkilö if h.hetu.isDefined =>
+        Hetu.validate(h.hetu.get, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
       case h:NimitiedotJaOid if mockOids =>
-        Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, "010101-123N", h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
+        Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, Some("010101-123N"), h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
       case h:TäydellisetHenkilötiedot if mockOids =>
         Right(VerifiedHenkilöOid(h))
       case h:HenkilöWithOid =>

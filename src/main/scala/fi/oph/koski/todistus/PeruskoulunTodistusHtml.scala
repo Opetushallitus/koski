@@ -88,7 +88,7 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
 
   def oppijaHtml = <h3 class="oppija">
     <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
-    <span class="hetu">{oppijaHenkilö.hetu}</span>
+    <span class="hetu">{oppijaHenkilö.hetuStr}</span>
   </h3>
 
   def oppiaineetHeaderHtml: Elem =

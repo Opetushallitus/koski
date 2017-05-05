@@ -27,7 +27,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
       val opiskeluoikeudet = opiskeluoikeudetByHetu(hetu)
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
-        val oppija = Oppija(UusiHenkilö(hetu, "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
+        val oppija = Oppija(UusiHenkilö(Some(hetu), "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
         validator match {
           case Some(validator) =>
             validator.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read) match {
@@ -53,9 +53,11 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   }
   private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
   private def accessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.getOppilaitos.oid)))
+  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.map(h => accessCheck(cache(h)).filter(oo => user.hasReadAccess(oo.getOppilaitos.oid))).getOrElse(Nil)
 
   // Public methods
-  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty).toList)
+  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
+    accessCheck(oppijat.par.filter(oppija => oppija.hetu.exists(organizationsCache(_).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty)).toList)
+
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
 }

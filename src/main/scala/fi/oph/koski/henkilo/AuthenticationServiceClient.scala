@@ -55,7 +55,7 @@ object AuthenticationServiceClient {
 
   object UusiHenkilö {
     def palvelu(nimi: String) = UusiHenkilö(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
-    def oppija(hetu: String, sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
+    def oppija(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(hetu, sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
   }
 
   case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)

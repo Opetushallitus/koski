@@ -24,7 +24,7 @@ class LukionPaattoTodistusHtml(implicit val user: KoskiSession) extends Todistus
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
-            <span class="hetu">{oppijaHenkilö.hetu}</span>
+            <span class="hetu">{oppijaHenkilö.hetuStr}</span>
           </h3>
           <div>on suorittanut lukion koko oppimäärän ja saanut tiedoistaan ja taidoistaan seuraavat arvosanat:</div>
           <table class="arvosanat">

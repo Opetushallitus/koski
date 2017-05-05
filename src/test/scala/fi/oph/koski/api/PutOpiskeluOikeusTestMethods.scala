@@ -31,14 +31,14 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
   }
 
-  def createOrUpdate(oppija: Henkilö with Hetullinen, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
+  def createOrUpdate(oppija: Henkilö with Henkilötiedot, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
     putOppija(Json.toJValue(Oppija(oppija, List(opiskeluoikeus)))){
       check
       lastOpiskeluoikeusByHetu(oppija)
     }
   }
 
-  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Hetullinen, opiskeluoikeus: T) = {
+  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Henkilötiedot, opiskeluoikeus: T) = {
     resetFixtures
     createOrUpdate(oppija, opiskeluoikeus).asInstanceOf[T]
   }

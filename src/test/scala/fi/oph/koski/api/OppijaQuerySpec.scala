@@ -45,7 +45,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
         val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
         val oppijat = queryOppijat("?" + queryString)
         val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap {oppija =>
-          oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu, _))
+          oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu.get, _))
         }
         päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
         päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31"))}

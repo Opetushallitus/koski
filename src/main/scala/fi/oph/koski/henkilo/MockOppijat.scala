@@ -8,7 +8,7 @@ object MockOppijat {
   private val oppijat = new MockOppijat
 
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
-  val tyhjä = UusiHenkilö("230872-7258", "Tero", "Tero", "Tyhjä")
+  val tyhjä = UusiHenkilö(Some("230872-7258"), "Tero", "Tero", "Tyhjä")
 
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
@@ -57,7 +57,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
   def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot = {
-    val oppija = TäydellisetHenkilötiedot(oid, hetu, etu, etu, suku, äidinkieli, None)
+    val oppija = TäydellisetHenkilötiedot(oid, Some(hetu), etu, etu, suku, äidinkieli, None)
     oppijat = oppija :: oppijat
     oppija
   }

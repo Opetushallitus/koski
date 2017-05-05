@@ -6,7 +6,7 @@ object Henkilö {
   type Oid = String
   type Hetu = String
   def withOid(oid: String) = OidHenkilö(oid)
-  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = UusiHenkilö(Some(hetu), etunimet, kutsumanimi, sukunimi)
   def isHenkilöOid(s: String) = s.matches("""1\.2\.246\.562\.24\.\d{11}""")
 }
 
@@ -16,7 +16,7 @@ sealed trait Henkilö
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
 case class TäydellisetHenkilötiedot(
   oid: Henkilö.Oid,
-  hetu: Henkilö.Hetu,
+  hetu: Option[Henkilö.Hetu],
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String,
@@ -36,7 +36,7 @@ case class TäydellisetHenkilötiedot(
 @IgnoreInAnyOfDeserialization
 case class HenkilötiedotJaOid(
   oid: Henkilö.Oid,
-  hetu: Henkilö.Hetu,
+  hetu: Option[Henkilö.Hetu],
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String
@@ -44,7 +44,7 @@ case class HenkilötiedotJaOid(
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(
-  hetu: String,
+  hetu: Option[String],
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String
@@ -56,12 +56,10 @@ case class OidHenkilö(
   oid: String
 ) extends HenkilöWithOid
 
-trait Henkilötiedot extends NimellinenHenkilö with Hetullinen {
-}
-
-trait Hetullinen {
+trait Henkilötiedot extends NimellinenHenkilö {
   @Description("Suomalainen henkilötunnus")
-  def hetu: String
+  def hetu: Option[String]
+  def hetuStr: String = hetu.getOrElse("")
 }
 
 trait NimellinenHenkilö {

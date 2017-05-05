@@ -66,27 +66,27 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Hetun ollessa" - {
         "muodoltaan virheellinen" - {
-          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "010101-123123"))
+          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("010101-123123")))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 010101-123123"))))
         }
         "muodoltaan oikea, mutta väärä tarkistusmerkki" - {
-          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "010101-123P"))
+          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("010101-123P")))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 010101-123P"))))
         }
         "päivämäärältään tulevaisuudessa" - {
-          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "141299A903C"))
+          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("141299A903C")))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa"))))
         }
         "päivämäärältään virheellinen" - {
-          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "300215-123T"))
+          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("300215-123T")))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen syntymäpäivä hetulla: 300215-123T"))))
         }
         "keinotekoinen (yksilönumero on 9-alkuinen)" - {
-          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "091196-935L"))
+          "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("091196-935L")))
           (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Keinotekoinen henkilötunnus: 091196-935L"))))
         }
         "validi" - {
-          "palautetaan HTTP 200"  in (putHenkilö(defaultHenkilö.copy(hetu = "010101-123N"))
+          "palautetaan HTTP 200"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("010101-123N")))
             (verifyResponseStatus(200)))
         }
       }
@@ -111,7 +111,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
+          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", Some("010101-123N"), "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
         }
       }
     }

@@ -21,7 +21,7 @@ class NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(val koulutustoimija: 
           <h1>{title}</h1>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
-            <span class="hetu">{oppijaHenkilö.hetu}</span>
+            <span class="hetu">{oppijaHenkilö.hetuStr}</span>
           </h3>
           {
             val dates = (todistus.alkamispäivä.toList ++ todistus.päättymispäivä.toList).map(dateFormatter.format).mkString("-")

@@ -33,7 +33,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession) extends TodistusHtml
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
-            <span class="hetu">{oppijaHenkilö.hetu}</span>
+            <span class="hetu">{oppijaHenkilö.hetuStr}</span>
           </h3>
           <table class="arvosanat">
             <tr>

@@ -10,7 +10,7 @@ import fi.oph.koski.ytr.{YtrMock, YtrOppijaConverter}
 object ExamplesYlioppilastutkinto {
   private lazy val koodistoViitePalvelu = MockKoodistoViitePalvelu
   private lazy val oppilaitokset = OppilaitosRepository(MockOrganisaatioRepository)
-  val opiskeluoikeus = YtrMock.oppijaByHetu(MockOppijat.ylioppilas.hetu).flatMap(YtrOppijaConverter(oppilaitokset, koodistoViitePalvelu, MockOrganisaatioRepository).convert(_)).get
+  val opiskeluoikeus = YtrMock.oppijaByHetu(MockOppijat.ylioppilas.hetu.get).flatMap(YtrOppijaConverter(oppilaitokset, koodistoViitePalvelu, MockOrganisaatioRepository).convert(_)).get
   val oppija = Oppija(MockOppijat.ylioppilas.vainHenkilötiedot, List(opiskeluoikeus))
 
   val examples = List(Example("ylioppilastutkinto", "Oppija on suorittanut ylioppilastutkinnon", oppija, 501))
