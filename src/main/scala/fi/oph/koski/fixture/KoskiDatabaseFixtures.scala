@@ -63,6 +63,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.markkanen, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia)),
       (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.ysiluokkalainen, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
+      (MockOppijat.hetuton, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
       (MockOppijat.monessaKoulussaOllut, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
       (MockOppijat.monessaKoulussaOllut, ExamplesPerusopetus.seiskaTuplattuOpiskeluoikeus),
       (MockOppijat.koululainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),

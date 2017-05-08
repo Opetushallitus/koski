@@ -75,7 +75,7 @@ trait NimellinenHenkilö {
 
 case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
 
-case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö with HenkilöWithOid
+case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
 
 trait HenkilöWithOid extends Henkilö {
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
