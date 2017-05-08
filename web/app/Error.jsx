@@ -11,15 +11,15 @@ export const errorP = (stateP) => {
   if (window.koskiError) {
     return Bacon.constant(window.koskiError)
   } else {
-    const stateErrorP = stateP.changes().errors()
+    const stateErrorP = stateP.changes()
+      .map(undefined)
       .mapError(error => ({ httpStatus: error.httpStatus }))
-      .flatMap(e => Bacon.once(e).concat(errorTexts[e.httpStatus]
-          ? Bacon.fromEvent(document.body, 'click').map({}) // Retryable errors can be dismissed
-          : Bacon.never()
-      )).toProperty({})
+      .toProperty(undefined)
+      .skipDuplicates()
+      .map(error => error || {})
 
     return Bacon.combineWith(stateErrorP, routeErrorP, (error, routeError) =>
-        error.httpStatus ? error : routeError
+      error.httpStatus ? error : routeError
     )
   }
 }

@@ -6,6 +6,9 @@ export const increaseLoading = () => {
 }
 export const decreaseLoading = () => {
   window.reqCount--
+  if (window.reqCount < 0) {
+    console.error('reqCount', window.reqCount)
+  }
   if (window.reqCount == 0) {
     document.body.className = ''
   }

@@ -19,6 +19,7 @@ import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
 import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP} from './location'
+import {buildClassNames} from './classnames'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -27,7 +28,7 @@ Bacon.Observable.prototype.flatScan = function(seed, f) {
   ).toProperty(seed)
 }
 
-export const saveBus = Bacon.Bus()
+export const savedBus = Bacon.Bus()
 
 let currentState = null
 
@@ -53,12 +54,6 @@ const createState = (oppijaOid) => {
   const saveChangesBus = Bacon.Bus()
   const cancelChangesBus = Bacon.Bus()
   const editingP = locationP.map(loc => !!loc.params.edit)
-  const stateP = Bacon.update(currentLocation().params.edit ? 'editing' : 'viewing',
-    editingP.changes(), (prev, edit) => prev == 'saved' && !edit ? 'saved' : (edit ? 'editing' : 'viewing'),
-    saveChangesBus, (prev) => prev == 'dirty' ? 'saved' : 'viewing',
-    saveChangesBus.delay(5000), (prev) => prev == 'saved' ? 'viewing' : prev,
-    changeBus, () => 'dirty'
-  ).skipDuplicates()
 
   cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
   editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
@@ -67,7 +62,7 @@ const createState = (oppijaOid) => {
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
-  const loadOppijaE = Bacon.once().map(() => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: 'load' })))
+  const loadOppijaE = Bacon.once(!!currentLocation().params.edit).merge(cancelChangesBus.map(false)).map((edit) => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' })))
 
   let changeBuffer = null
 
@@ -82,7 +77,7 @@ const createState = (oppijaOid) => {
       changeBuffer = changeBuffer.concat(firstBatch)
       return Bacon.never()
     } else {
-      //console.log('start batch', firstContext)
+      //console.log('start batch', firstBatch)
       changeBuffer = firstBatch
       return Bacon.once(oppijaBeforeChange => {
         let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(saveChangesBus).take(1) : Bacon.once()
@@ -94,14 +89,14 @@ const createState = (oppijaOid) => {
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
-          return R.merge(locallyModifiedOppija, {event: 'modify', opiskeluoikeusId})
+          return R.merge(locallyModifiedOppija, {event: 'dirty', opiskeluoikeusId})
         })
       })
     }
   })
 
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
-    if (oppijaBeforeSave.event != 'modify') {
+    if (oppijaBeforeSave.event != 'dirty') {
       return Bacon.once(oppijaBeforeSave)
     }
     var oppijaData = modelData(oppijaBeforeSave)
@@ -114,23 +109,30 @@ const createState = (oppijaOid) => {
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
-    return Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
-      .flatMap(() => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}))
-      .map( oppija => R.merge(oppija, { event: 'save' }))
+    return Bacon.once(R.merge(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
+      Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
+        .flatMap(() => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}))
+        .map( oppija => R.merge(oppija, { event: 'saved' }))
+    )
   })
 
-  const cancelE = cancelChangesBus.map(() => () => {
-    return Http.cachedGet(oppijaEditorUri, { willHandleErrors: true})
-  })
+  const editE = editingP.skipDuplicates().changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, cancelE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
-    return updateF(currentOppija).doAction(decreaseLoading)
+    return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() })
   })
   oppijaP.onValue()
-  oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
+  oppijaP.map('.event').filter(event => event == 'saved').onValue(() => savedBus.push(true))
+
+  const stateP = oppijaP.map('.event').mapError('view').flatMapLatest(event => {
+    if (event == 'saved') {
+      return Bacon.once(event).concat(Bacon.later(5000, 'view'))
+    }
+    return event
+  }).toProperty()
 
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
@@ -160,16 +162,18 @@ export const ExistingOppija = React.createClass({
       ? <div className="loading"/>
       : (
         <div>
-          <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
-            className='hetu'>{hetu && '(' + hetu + ')'}</span>
-            <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
-          </h2>
-          {
-            // Set location as key to ensure full re-render when context changes
-            oppija
-              ? <Editor key={document.location.toString()} model={oppija}/>
-              : null
-          }
+          <div className={stateP.map(state => 'oppija-content ' + state)}>
+            <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
+              className='hetu'>{hetu && '(' + hetu + ')'}</span>
+              <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
+            </h2>
+            {
+              // Set location as key to ensure full re-render when context changes
+              oppija
+                ? <Editor key={document.location.toString()} model={oppija}/>
+                : null
+            }
+          </div>
           <EditBar {...{saveChangesBus, cancelChangesBus, stateP, oppija}}/>
         </div>
     )
@@ -186,12 +190,18 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let dirtyP = stateP.map(state => state == 'dirty')
   let validationErrorP = dirtyP.map(dirty => dirty && !modelValid(oppija))
   let canSaveP = dirtyP.and(validationErrorP.not())
-
-  let classNameP = stateP
+  let messageMap = {
+    saved: 'Kaikki muutokset tallennettu',
+    saving: 'Tallennetaan',
+    dirty: 'Tallentamattomia muutoksia',
+    edit: 'Ei tallentamattomia muutoksia'
+  }
+  let messageP = stateP.decode(messageMap)
+  let classNameP = Bacon.combineAsArray(stateP, messageP.map(msg => msg ? 'visible' : '')).map(buildClassNames)
 
   return (<div id="edit-bar" className={classNameP}>
-    <a className={stateP.map(state => ['editing', 'dirty'].includes(state) ? 'cancel' : 'cancel 179disabled')} onClick={ () => cancelChangesBus.push() }>Peruuta</a>
+    <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }>Peruuta</a>
     <button disabled={canSaveP.not()} onClick={saveChanges}>Tallenna</button>
-    <span className="state-indicator">{stateP.map(state => state == 'dirty' ? 'Tallentamattomia muutoksia' : (state == 'saved' ? 'Kaikki muutokset tallennettu' : ''))}</span>
+    <span className="state-indicator">{messageP}</span>
   </div>)
 }

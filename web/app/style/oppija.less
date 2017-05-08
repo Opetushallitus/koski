@@ -80,6 +80,14 @@
     .ajax-indicator-bg;
   }
 
+  .oppija-content {
+    transition: opacity 0.5s;
+    &.saving {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
   .inline-text {
     margin-right: 4px;
   }
@@ -127,6 +135,7 @@
   #edit-bar {
     position: fixed;
     bottom: -70px;
+    opacity: 0;
     left: 0;
     width: 100vw;
     padding-left: @page-border-width;
@@ -140,17 +149,11 @@
       transition: all 1s;
     }
     .state-indicator {
-      opacity: 0;
-      transition: opacity 1s;
     }
-    &.dirty, &.saved {
-      .state-indicator {
-        opacity: 1;
-      }
-    }
-    transition: bottom 1s;
-    &.editing, &.dirty, &.saved {
+    transition: bottom 1s, opacity 1s;
+    &.visible {
       bottom: 0;
+      opacity: 1;
     }
   }
 }

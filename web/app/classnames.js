@@ -5,6 +5,7 @@ const parseClassNames = (classNames) => typeof classNames == 'string'
   : (classNames instanceof Array
       ? classNames
       : [])
+
 export const buildClassNames = (classNames) => typeof classNames == 'string'
   ? classNames
   : classNames.filter(R.identity).join(' ')
