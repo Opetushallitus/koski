@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, NimitiedotJaOid, TäydellisetHenkilötiedot}
 
+
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
@@ -32,16 +33,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   def resetFixtures = {
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
-  }
-
-  def search(query: String): HenkilöQueryResult = {
-    if (query.toLowerCase.contains("error")) {
-      throw new TestingException("Testing error handling")
-    }
-    val results = oppijat.getOppijat
-      .filter(searchString(_).contains(query))
-      .map(henkilö => QueryHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu))
-    HenkilöQueryResult(results.size, results)
   }
 
   private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {

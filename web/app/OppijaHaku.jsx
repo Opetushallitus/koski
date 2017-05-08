@@ -35,7 +35,7 @@ export const OppijaHaku = () => (
             return (<ul>{
               response.henkilöt.map((o, i) =>
                   (<li key={i}>
-                    <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} ({o.hetu})</a>
+                    <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet}{o.hetu && ' (' + o.hetu + ')'}</a>
                   </li>))
               }
             </ul>)

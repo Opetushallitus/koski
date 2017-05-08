@@ -137,12 +137,13 @@ export const ExistingOppija = React.createClass({
   render() {
     let {oppija, changeBus, doneEditingBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
+    let hetu = modelTitle(henkilö, 'hetu')
     return oppija.loading
       ? <div className="loading"/>
       : (
         <div>
           <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
-            className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
+            className='hetu'>{hetu && '(' + hetu + ')'}</span>
             <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
           </h2>
           {
