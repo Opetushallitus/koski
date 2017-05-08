@@ -292,6 +292,10 @@ function Editor(elem) {
       triggerEvent(enabledSaveButton(), 'click')
       return KoskiPage().verifyNoError()
     },
+    saveChangesAndExpectError: function() {
+      triggerEvent(enabledSaveButton(), 'click')
+      return wait.until(KoskiPage().isErrorShown)
+    },
     cancelChanges: function() {
       triggerEvent(findSingle('#edit-bar .cancel'), 'click')
       return KoskiPage().verifyNoError()

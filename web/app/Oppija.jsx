@@ -96,9 +96,6 @@ const createState = (oppijaOid) => {
   })
 
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
-    if (oppijaBeforeSave.event != 'dirty') {
-      return Bacon.once(oppijaBeforeSave)
-    }
     var oppijaData = modelData(oppijaBeforeSave)
     let opiskeluoikeusId = oppijaBeforeSave.opiskeluoikeusId
     let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
@@ -120,14 +117,15 @@ const createState = (oppijaOid) => {
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE) // :: EventStream [Model -> EventStream[Model]]
 
+
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
-    return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() })
+    return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() }).doError(decreaseLoading)
   })
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'saved').onValue(() => savedBus.push(true))
 
-  const stateP = oppijaP.map('.event').mapError('view').flatMapLatest(event => {
+  const stateP = oppijaP.map('.event').mapError('dirty').flatMapLatest(event => {
     if (event == 'saved') {
       return Bacon.once(event).concat(Bacon.later(5000, 'view'))
     }

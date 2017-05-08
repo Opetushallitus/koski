@@ -908,6 +908,31 @@ describe('Perusopetus', function() {
       })
     })
 
+    describe('Kun tallennus epäonnistuu', function() {
+      before(
+        page.oppijaHaku.searchAndSelect('220109-784L'),
+        editor.edit,
+        mockHttp('/koski/api/oppija', { status: 500}),
+        editor.property('todistuksellaNäkyvätLisätiedot').setValue('blah'),
+        editor.saveChangesAndExpectError
+      )
+      describe('Käyttöliittymän tila', function(){
+        it('Näytetään virheilmoitus', function() {
+          expect(page.getErrorMessage()).to.equal('Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
+        })
+        it('Tallenna-nappi on jälleen enabloitu', function() {
+          expect(opinnot.onTallennettavissa()).to.equal(true)
+        })
+      })
+
+      describe('Kun tallennetaan uudestaan', function() {
+        before(editor.saveChanges)
+        it('Tallennus onnistuu', function() {
+          expect(editor.property('todistuksellaNäkyvätLisätiedot').getValue()).to.equal('blah')
+        })
+      })
+    })
+
     describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
       before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
       it('Muutokset estetty', function() {
