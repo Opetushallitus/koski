@@ -10,9 +10,9 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedotRepository
+import fi.oph.koski.opiskeluoikeus.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.NimitiedotJaOid
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
 import org.http4s._
 
@@ -45,6 +45,7 @@ object AuthenticationServiceClient {
   case class Kansalaisuus(kansalaisuusKoodi: String)
   case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long) {
     def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
+    def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oidHenkilo, etunimet, kutsumanimi, sukunimi)
     def toNimitiedotJaOid = NimitiedotJaOid(oidHenkilo, etunimet, kutsumanimi, sukunimi)
   }
 

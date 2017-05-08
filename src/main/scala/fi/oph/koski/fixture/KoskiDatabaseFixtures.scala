@@ -2,20 +2,21 @@ package fi.oph.koski.fixture
 
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation._
+import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedot.toNimitiedotJaOid
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeusRepository}
-import fi.oph.koski.henkilo.{HenkilöRepository, MockAuthenticationServiceClient, MockOppijat, VerifiedHenkilöOid}
-import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import slick.dbio.DBIO
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.validation.KoskiValidator
+import slick.dbio.DBIO
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
@@ -43,7 +44,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
 
     validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
       val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus).right.get.id
-      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö.nimitiedotJaOid))
+      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, toNimitiedotJaOid(henkilö)))
     }
   }
 

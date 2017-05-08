@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedot.toNimitiedotJaOid
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -32,8 +33,6 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         Hetu.validate(h.hetu.get, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:NimitiedotJaOid if mockOids =>
-        Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, Some("010101-123N"), h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
       case h:TäydellisetHenkilötiedot if mockOids =>
         Right(VerifiedHenkilöOid(h))
       case h:HenkilöWithOid =>
@@ -94,7 +93,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
-        val nimitiedotJaOid = oppijaOid.verified.map(_.nimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
+        val nimitiedotJaOid = oppijaOid.verified.map(toNimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
         val oo = opiskeluoikeus
 
         if (result.changed) {

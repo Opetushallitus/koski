@@ -13,6 +13,11 @@ object Henkilö {
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö
 
+object TäydellisetHenkilötiedot {
+  def apply(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String): TäydellisetHenkilötiedot =
+    TäydellisetHenkilötiedot(oid, None, etunimet, kutsumanimi, sukunimi, None, None)
+}
+
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
 case class TäydellisetHenkilötiedot(
   oid: Henkilö.Oid,
@@ -28,7 +33,6 @@ case class TäydellisetHenkilötiedot(
   kansalaisuus: Option[List[Koodistokoodiviite]]
 ) extends HenkilöWithOid with Henkilötiedot {
   def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
-  def nimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
 
@@ -74,8 +78,6 @@ trait NimellinenHenkilö {
 }
 
 case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
-
-case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
 
 trait HenkilöWithOid extends Henkilö {
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")

@@ -5,6 +5,7 @@ import java.sql.Timestamp
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.opiskeluoikeus.NimitiedotJaOid
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s._

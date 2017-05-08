@@ -36,7 +36,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
   private def runUpdate(oids: List[Oid], startMillis: Long, lastContext: HenkilöUpdateContext) = {
     val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(oids).sortBy(_.modified)
     val oppijatByOid: Map[Oid, OppijaHenkilö] = oppijat.groupBy(_.oidHenkilo).mapValues(_.head)
-    val foundFromKoski: List[Oid] = oppijat.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).map(_.oid)
+    val foundFromKoski: List[Oid] = oppijat.map(_.toTäydellisetHenkilötiedot).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).map(_.oid)
     val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)
 
     if (foundFromKoski.isEmpty) {

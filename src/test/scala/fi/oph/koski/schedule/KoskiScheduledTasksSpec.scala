@@ -5,14 +5,15 @@ import java.lang.System.currentTimeMillis
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.MockAuthenticationServiceClient
 import fi.oph.koski.henkilo.MockOppijat.eero
-import fi.oph.koski.schema.NimitiedotJaOid
+import fi.oph.koski.opiskeluoikeus.NimitiedotJaOid
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
 class KoskiScheduledTasksSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   lazy val application = KoskiApplicationForTests
   "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
-    authServiceClient.modify(NimitiedotJaOid(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"))
+    authServiceClient.modify(TäydellisetHenkilötiedot(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"))
     new UpdateHenkilot(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
     val päivitettytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedot(eero.oid).get
     päivitettytPerustiedot.sukunimi should equal("Uusisukunimi")

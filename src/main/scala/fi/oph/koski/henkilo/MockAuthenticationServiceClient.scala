@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, NimitiedotJaOid, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
@@ -85,7 +85,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modify(oppija: NimitiedotJaOid): Unit = {
+  def modify(oppija: TäydellisetHenkilötiedot): Unit = {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
         o.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi)

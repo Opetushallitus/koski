@@ -44,6 +44,7 @@ case class OpiskeluoikeudenPerustiedot(
   luokka: Option[String]
 ) extends WithId
 
+case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
 case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
 
 object OpiskeluoikeudenPerustiedot {
@@ -80,6 +81,9 @@ object OpiskeluoikeudenPerustiedot {
       ((data \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
       luokka)
   }
+
+  def toNimitiedotJaOid(henkilötiedot: TäydellisetHenkilötiedot): NimitiedotJaOid =
+    NimitiedotJaOid(henkilötiedot.oid, henkilötiedot.etunimet, henkilötiedot.kutsumanimi, henkilötiedot.sukunimi)
 }
 
 case class SuorituksenPerustiedot(
