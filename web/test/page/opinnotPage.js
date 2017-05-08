@@ -36,7 +36,7 @@ function OpinnotPage() {
       return -1
     },
     onTallennettavissa: function() {
-      return S('.toggle-edit.editing').is(':visible')
+      return S('#edit-bar button:not(:disabled)').is(':visible')
     },
     avaaOpintosuoritusote: function (index) {
       return function() {
@@ -276,18 +276,24 @@ function OpiskeluoikeusDialog() {
 }
 
 function Editor(elem) {
+  function editButton() { return findSingle('.toggle-edit', elem()) }
+  function enabledSaveButton() { return findSingle('#edit-bar button:not(:disabled)') }
   return {
     edit: function() {
-      var editLink = findSingle('.toggle-edit', elem())
-      if (!editLink.hasClass('editing'))
-        triggerEvent(editLink, 'click')
+      if (isVisibleBy(editButton)) {
+        triggerEvent(editButton(), 'click')
+      }
       return KoskiPage().verifyNoError()
     },
     canSave: function() {
-      return S('.toggle-edit.editing').is(':visible')
+      return isVisibleBy(enabledSaveButton)
     },
-    doneEditing: function() {
-      triggerEvent(findSingle('.toggle-edit.editing', elem()), 'click')
+    saveChanges: function() {
+      triggerEvent(enabledSaveButton(), 'click')
+      return KoskiPage().verifyNoError()
+    },
+    cancelChanges: function() {
+      triggerEvent(findSingle('#edit-bar .cancel'), 'click')
       return KoskiPage().verifyNoError()
     },
     isEditable: function() {

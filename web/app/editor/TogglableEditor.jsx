@@ -1,32 +1,18 @@
 import React from 'react'
 import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
-import {modelValid} from './EditorModel'
-import {navigateWithQueryParams, currentLocation} from '../location'
+import {currentLocation} from '../location'
 
 export const TogglableEditor = React.createClass({
   render() {
     let { model, renderChild } = this.props
     let context = model.context
-    let hasErrors = !modelValid(model)
     let opiskeluoikeusId = model.context.opiskeluoikeusId
-    let edit = context.edit || (opiskeluoikeusId && currentLocation().params.edit == opiskeluoikeusId)
-
-    let toggleEdit = () => {
-      if (edit) {
-        context.doneEditingBus.push()
-      }
-      navigateWithQueryParams({edit: !edit ? opiskeluoikeusId : undefined})
-    }
-    let showToggleEdit = model.editable && !context.edit && !context.hasToggleEdit
-    let modifiedContext = R.merge(context, {
-      edit: edit,
-      hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
-    })
-    let editLink = showToggleEdit
-      ? hasErrors && edit
-        ? <span className="toggle-edit disabled">valmis</span>
-        : <a className={edit ? 'toggle-edit editing' : 'toggle-edit'} onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a>
+    let edit = opiskeluoikeusId && currentLocation().params.edit == opiskeluoikeusId
+    let editingAny = !!currentLocation().params.edit
+    let modifiedContext = R.merge(context, { edit })
+    let editLink = model.editable && !editingAny
+      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusId)}>muokkaa</button>
       : null
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))

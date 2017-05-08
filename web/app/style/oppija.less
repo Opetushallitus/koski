@@ -123,4 +123,34 @@
     text-transform: uppercase;
     font-weight: normal;
   }
+
+  #edit-bar {
+    position: fixed;
+    bottom: -70px;
+    left: 0;
+    width: 100vw;
+    padding-left: @page-border-width;
+    padding-right: @page-border-width;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: white;
+    box-shadow: 0 -2px 5px #eeeeee;
+    button {
+      margin: 0 20px;
+      transition: all 1s;
+    }
+    .state-indicator {
+      opacity: 0;
+      transition: opacity 1s;
+    }
+    &.dirty, &.saved {
+      .state-indicator {
+        opacity: 1;
+      }
+    }
+    transition: bottom 1s;
+    &.editing, &.dirty, &.saved {
+      bottom: 0;
+    }
+  }
 }

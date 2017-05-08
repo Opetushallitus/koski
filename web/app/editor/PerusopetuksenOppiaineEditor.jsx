@@ -33,7 +33,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
         (kielenOppiaine || äidinkieli) && <span className="value kieli"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
       }
       {
-        this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.doneEditingBus, () => {
+        this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
           let data = modelData(oppiaine)
           let organisaatioOid = modelData(oppiaine.context.toimipiste).oid
           let key = data.tunniste.koodiarvo

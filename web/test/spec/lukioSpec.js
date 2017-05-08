@@ -133,7 +133,7 @@ describe('Lukiokoulutus', function( ){
         before(opiskeluoikeusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
           var kurssi = Kurssi('MAA16')
-          before(kurssi.showDetails, kurssi.editor().property('arvosana').selectValue('6'), kurssi.toggleDetails, opiskeluoikeusEditor.doneEditing, wait.until(page.isSavedLabelShown))
+          before(kurssi.showDetails, kurssi.editor().property('arvosana').selectValue('6'), kurssi.toggleDetails, opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
             expect(kurssi.arvosana()).to.equal('6')
           })

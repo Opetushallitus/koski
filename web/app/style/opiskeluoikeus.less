@@ -532,19 +532,19 @@
   }
 
   .toggle-edit {
-    .OverlayLink;
-    &.disabled {
-      text-decoration: none;
-      color: @color-disabled;
-    }
+    .OverlayElem;
   }
 
   .OverlayLink {
-    position: absolute;
-    right: 0;
+    .OverlayElem;
     font-size: 0.8em;
     text-decoration: underline;
-    z-index: @z-index-base + 1;
+  }
+
+  .OverlayElem {
+    position: absolute;
+    right: 0;
     top: 0;
+    z-index: @z-index-base + 1;
   }
 }

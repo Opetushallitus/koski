@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
 import Http from './http'
 import {
@@ -7,7 +7,8 @@ import {
   modelData,
   applyChanges,
   getModelFromChange,
-  getPathFromChange
+  getPathFromChange,
+  modelValid
 } from './editor/EditorModel'
 import {editorMapping} from './editor/Editors.jsx'
 import {Editor} from './editor/Editor.jsx'
@@ -17,7 +18,7 @@ import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
-import {previousLocation, navigateToOppija} from './location'
+import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP} from './location'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -48,7 +49,19 @@ export const oppijaContentP = (oppijaOid) => {
 
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
-  const doneEditingBus = Bacon.Bus()
+  const editBus = Bacon.Bus()
+  const saveChangesBus = Bacon.Bus()
+  const cancelChangesBus = Bacon.Bus()
+  const editingP = locationP.map(loc => !!loc.params.edit)
+  const stateP = Bacon.update(currentLocation().params.edit ? 'editing' : 'viewing',
+    editingP.changes(), (prev, edit) => prev == 'saved' && !edit ? 'saved' : (edit ? 'editing' : 'viewing'),
+    saveChangesBus, (prev) => prev == 'dirty' ? 'saved' : 'viewing',
+    saveChangesBus.delay(5000), (prev) => prev == 'saved' ? 'viewing' : prev,
+    changeBus, () => 'dirty'
+  ).skipDuplicates()
+
+  cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
+  editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
 
   const queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
 
@@ -72,7 +85,7 @@ const createState = (oppijaOid) => {
       //console.log('start batch', firstContext)
       changeBuffer = firstBatch
       return Bacon.once(oppijaBeforeChange => {
-        let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(doneEditingBus).take(1) : Bacon.once()
+        let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(saveChangesBus).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
           let opiskeluoikeusPath = getPathFromChange(firstBatch[0]).slice(0, 6).join('.')
           let opiskeluoikeusId = modelData(oppijaBeforeChange, opiskeluoikeusPath).id
@@ -87,7 +100,7 @@ const createState = (oppijaOid) => {
     }
   })
 
-  const saveOppijaE = doneEditingBus.map(() => oppijaBeforeSave => {
+  const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
     if (oppijaBeforeSave.event != 'modify') {
       return Bacon.once(oppijaBeforeSave)
     }
@@ -102,11 +115,15 @@ const createState = (oppijaOid) => {
     }
 
     return Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
-      .flatMap(() => Http.cachedGet(oppijaEditorUri), { willHandleErrors: true})
+      .flatMap(() => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}))
       .map( oppija => R.merge(oppija, { event: 'save' }))
   })
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE) // :: EventStream [Model -> EventStream[Model]]
+  const cancelE = cancelChangesBus.map(() => () => {
+    return Http.cachedGet(oppijaEditorUri, { willHandleErrors: true})
+  })
+
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, cancelE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
@@ -115,7 +132,7 @@ const createState = (oppijaOid) => {
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'save').onValue(() => saveBus.push(true))
 
-  return { oppijaP, changeBus, doneEditingBus}
+  return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
 
 const listviewPath = () => {
@@ -123,11 +140,11 @@ const listviewPath = () => {
   return (prev && prev.path == '/koski/') ? prev : '/koski/'
 }
 
-const stateToContent = ({ oppijaP, changeBus, doneEditingBus}) => oppijaP.map(oppija => ({
+const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
     <Link className="back-link" href={listviewPath()}>Opiskelijat</Link>
-    <ExistingOppija {...{oppija, changeBus, doneEditingBus}}/>
+    <ExistingOppija {...{oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}}/>
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
@@ -135,7 +152,8 @@ const stateToContent = ({ oppijaP, changeBus, doneEditingBus}) => oppijaP.map(op
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija, changeBus, doneEditingBus} = this.props
+    let {oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP} = this.props
+    oppija = Editor.setupContext(oppija, {saveChangesBus, editBus, changeBus, editorMapping})
     let henkilö = modelLookup(oppija, 'henkilö')
     let hetu = modelTitle(henkilö, 'hetu')
     return oppija.loading
@@ -149,10 +167,31 @@ export const ExistingOppija = React.createClass({
           {
             // Set location as key to ensure full re-render when context changes
             oppija
-              ? <Editor key={document.location.toString()} model={oppija} {... {doneEditingBus, changeBus, editorMapping}}/>
+              ? <Editor key={document.location.toString()} model={oppija}/>
               : null
           }
+          <EditBar {...{saveChangesBus, cancelChangesBus, stateP, oppija}}/>
         </div>
     )
   }
 })
+
+const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
+  let saveChanges = (e) => {
+    e.preventDefault()
+    saveChangesBus.push()
+    navigateWithQueryParams({edit: undefined})
+  }
+
+  let dirtyP = stateP.map(state => state == 'dirty')
+  let validationErrorP = dirtyP.map(dirty => dirty && !modelValid(oppija))
+  let canSaveP = dirtyP.and(validationErrorP.not())
+
+  let classNameP = stateP
+
+  return (<div id="edit-bar" className={classNameP}>
+    <a className={stateP.map(state => ['editing', 'dirty'].includes(state) ? 'cancel' : 'cancel 179disabled')} onClick={ () => cancelChangesBus.push() }>Peruuta</a>
+    <button disabled={canSaveP.not()} onClick={saveChanges}>Tallenna</button>
+    <span className="state-indicator">{stateP.map(state => state == 'dirty' ? 'Tallentamattomia muutoksia' : (state == 'saved' ? 'Kaikki muutokset tallennettu' : ''))}</span>
+  </div>)
+}

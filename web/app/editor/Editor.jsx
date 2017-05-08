@@ -22,7 +22,7 @@ export const Editor = React.createClass({
   }
 })
 
-Editor.setupContext = (model, {editorMapping, changeBus, doneEditingBus, edit, path}) => {
+Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus, edit, path}) => {
   if (!model.context) {
     if (!editorMapping) {
       console.error('editorMapping required for root editor', model)
@@ -30,7 +30,7 @@ Editor.setupContext = (model, {editorMapping, changeBus, doneEditingBus, edit, p
     }
     R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
     model = contextualizeModel(model, {
-      changeBus, doneEditingBus,
+      changeBus, saveChangesBus, editBus,
       path: '',
       prototypes: model.prototypes,
       editorMapping
@@ -39,7 +39,8 @@ Editor.setupContext = (model, {editorMapping, changeBus, doneEditingBus, edit, p
     if (!model.context.prototypes) model = addContext(model, { prototypes: model.prototypes })
     if (editorMapping) model = addContext(model, {editorMapping})
     if (changeBus) model = addContext(model, {changeBus})
-    if (doneEditingBus) model = addContext(model, {doneEditingBus})
+    if (saveChangesBus) model = addContext(model, {saveChangesBus})
+    if (editBus) model = addContext(model, {editBus})
   }
   edit = parseBool(edit)
   if (edit !== model.context.edit) {

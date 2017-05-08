@@ -11,7 +11,7 @@ export const PerusteEditor = ({model}) => {
   if (!model.context.edit) return <StringEditor model={model}/>
   model = wrapOptional({model})
   let perusteAtom = Atom(modelData(model))
-  perusteAtom.onValue(diaarinumero => pushModelValue(model, { data: diaarinumero }))
+  perusteAtom.changes().onValue(diaarinumero => pushModelValue(model, { data: diaarinumero }))
   return <PerusteDropdown {...{perusteAtom, suoritusP: Bacon.constant(modelData(model.context.suoritus))}}/>
 }
 PerusteEditor.handlesOptional=true

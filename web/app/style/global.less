@@ -10,6 +10,11 @@ a {
   color: @color-link-blue;
   text-decoration: none;
   cursor: pointer;
+  &.disabled {
+    color: @color-disabled;
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .button, button {
