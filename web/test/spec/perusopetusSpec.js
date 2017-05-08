@@ -282,6 +282,17 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Hetuton oppija', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('1.2.246.562.24.99999999123', 'Hetuton'))
+
+    it('näyttää opiskeluoikeuden tiedot', function() {
+      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+        'Alkamispäivä : 15.8.2008 — Päättymispäivä :\n' +
+        'Tila 15.8.2008 Läsnä'
+      )
+    })
+  })
+
   describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 

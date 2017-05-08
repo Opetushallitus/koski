@@ -14,6 +14,12 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
+      "with valid oid, hetuless oppija" in {
+        get("api/oppija/" + MockOppijat.hetuton.oid, headers = authHeaders()) {
+          verifyResponseStatus(200)
+          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
+        }
+      }
       "with invalid oid" in {
         get("api/oppija/blerg", headers = authHeaders()) {
           verifyResponseStatus(400)
