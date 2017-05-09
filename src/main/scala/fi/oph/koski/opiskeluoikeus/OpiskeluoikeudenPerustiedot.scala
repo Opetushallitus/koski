@@ -39,13 +39,19 @@ case class OpiskeluoikeudenPerustiedot(
   suoritukset: List[SuorituksenPerustiedot],
   @KoodistoUri("virtaopiskeluoikeudentila")
   @KoodistoUri("koskiopiskeluoikeudentila")
-  tila: Koodistokoodiviite,
+  tilat: List[OpiskeluoikeusJaksonPerustiedot],
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
 ) extends WithId
 
 case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
 case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
+
+case class OpiskeluoikeusJaksonPerustiedot(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  tila: Koodistokoodiviite
+)
 
 object OpiskeluoikeudenPerustiedot {
   implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer + KoodiViiteDeserializer
@@ -78,8 +84,14 @@ object OpiskeluoikeudenPerustiedot {
       (data \ "päättymispäivä").extract[Option[LocalDate]],
       (data \ "tyyppi").extract[Koodistokoodiviite],
       suoritukset,
-      ((data \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
+      fixTilat((data \ "tila" \ "opiskeluoikeusjaksot").extract[List[OpiskeluoikeusJaksonPerustiedot]]),
       luokka)
+  }
+
+  private def fixTilat(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
+    tilat.zip(tilat.drop(1)).map { case (tila, next) =>
+      tila.copy(loppu = Some(next.alku))
+    } ++ List(tilat.last)
   }
 
   def toNimitiedotJaOid(henkilötiedot: TäydellisetHenkilötiedot): NimitiedotJaOid =
@@ -118,6 +130,20 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   private val port = config.getInt("elasticsearch.port")
   private val url = s"http://$host:$port"
   private val elasticSearchHttp = Http(url)
+  lazy val init = OpiskeluoikeudenPerustiedotRepository.synchronized {
+    if (host == "localhost") {
+      new ElasticSearchRunner("./elasticsearch", port, port + 100).start
+    }
+    logger.info(s"Using elasticsearch at $host:$port")
+
+    val reIndexingNeeded = setupIndex
+
+    if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
+      Future {
+        reIndex() // Re-index on background
+      }
+    }
+  }
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
@@ -156,7 +182,35 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       }
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
-      case OpiskeluoikeudenTila(tila) => List(Map("term" -> Map("tila.koodiarvo" -> tila.koodiarvo)))
+      case OpiskeluoikeudenTila(tila) =>
+        List(
+          Map(
+            "nested" -> Map(
+              "path" -> "tilat",
+              "query" -> Map(
+                "bool" -> Map(
+                  "must" -> List(
+                    Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
+                    Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+                    Map("bool" -> Map(
+                      "should" -> List(
+                        Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+                        Map("bool" -> Map(
+                          "must_not" -> Map(
+                            "exists" -> Map(
+                              "field" -> "tilat.loppu"
+                            )
+                          )
+                        ))
+                      )
+                    ))
+                  )
+                )
+              )
+            )
+          )
+        )
+
       case Tutkintohaku(hakusana) =>
         analyzeString(hakusana).map { namePrefix =>
           Map("bool" -> Map("should" -> List(
@@ -195,8 +249,14 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     ))
 
     runSearch(doc)
-      .map(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]))
+      .map{ response =>
+        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]).map(pt => pt.copy(tilat = vainAktiivinen(pt.tilat)))
+      }
       .getOrElse(Nil)
+  }
+
+  private def vainAktiivinen(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
+    tilat.reverse.find(!_.alku.isAfter(LocalDate.now)).toList
   }
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
@@ -317,7 +377,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
     val errors = (response \ "errors").extract[Boolean]
     if (errors) {
-      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}"
+      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${Json.writePretty(response)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
@@ -394,21 +454,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
   }
 
-  val init = OpiskeluoikeudenPerustiedotRepository.synchronized {
-    if (host == "localhost") {
-      new ElasticSearchRunner("./elasticsearch", port, port + 100).start
-    }
-    logger.info(s"Using elasticsearch at $host:$port")
-
-    val reIndexingNeeded = setupIndex
-
-    if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
-      Future {
-        reIndex() // Re-index on background
-      }
-    }
-  }
-
   private def setupIndex: Boolean = {
     val settings = Json.parse("""
     {
@@ -428,8 +473,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         }
     }""").extract[Map[String, Any]]
 
+    val mappings = Map("perustiedot" -> Map("properties" -> Map("tilat" -> Map("type" -> "nested")) )) // TODO: check if mappings changed, force re-creation of index
+
     val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
-    if (indexExists) {
+    var reindexNeeded = if (indexExists) {
       val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
       val alreadyApplied = (serverSettings ++ settings) == serverSettings
       if (alreadyApplied) {
@@ -445,12 +492,14 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       }
     } else {
       logger.info("Creating Elasticsearch index")
-      Http.runTask(elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      Http.runTask(elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings, "mappings" -> mappings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
       logger.info("Creating Elasticsearch index alias")
       Http.runTask(elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
       logger.info("Created index and alias.")
       true
     }
+
+    reindexNeeded
   }
 
   private def indexExists = {

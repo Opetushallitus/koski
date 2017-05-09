@@ -1,12 +1,14 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 import fi.oph.koski.documentation.ExampleData.tilaKesken
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.opiskeluoikeus.{NimitiedotJaOid, OpiskeluoikeudenPerustiedot}
+import fi.oph.koski.opiskeluoikeus.{NimitiedotJaOid, OpiskeluoikeudenPerustiedot, OpiskeluoikeusJaksonPerustiedot}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
 import org.scalatest.{FreeSpec, Matchers}
@@ -51,7 +53,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
   private def generatePerustiedotIntoElastic(count: Int, name: String, oppilaitos: Oppilaitos): List[Oid] = {
     val tyyppi = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
     val tiedot = 0 to count map { i =>
-      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(s"1.2.246.562.24.000000000000$i", name, name, name), stadinAmmattiopisto, None, None, tyyppi, Nil, tilaKesken, None)
+      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(s"1.2.246.562.24.000000000000$i", name, name, name), stadinAmmattiopisto, None, None, tyyppi, Nil, List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, tilaKesken)), None)
     }
     KoskiApplicationForTests.perustiedotRepository.updateBulk(tiedot, insertMissing = true)
     KoskiApplicationForTests.perustiedotRepository.refreshIndex
