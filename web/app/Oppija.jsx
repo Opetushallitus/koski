@@ -18,10 +18,9 @@ import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
-import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP} from './location'
+import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP, showError} from './location'
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
-import {showError} from './location';
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed

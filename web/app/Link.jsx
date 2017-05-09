@@ -1,8 +1,8 @@
 import React from 'react'
-import {withExitHook, navigateWithExitHook} from './exitHook'
+import {navigateWithExitHook} from './exitHook'
 import {parseBool} from './util'
 
-// Link to a location _within_the_single_page_app_. Use just link the <a> tag. The benefit is that a full page
+// Link to a location _within_the_single_page_app_. Use just like the <a> tag, with the benefit that a full page
 // load is prevented.
 
 export default React.createClass({

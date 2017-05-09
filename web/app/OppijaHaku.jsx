@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from './http'
-import {navigateToOppija, showError} from './location'
+import {showError} from './location'
 import delays from './delays'
 import Link from './Link.jsx'
 
