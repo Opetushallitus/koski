@@ -14,9 +14,9 @@ export const removeExitHook = () => {
   }
 }
 
-export const navigateWithExitHook = (href, useExitHook = true) => (e) => {
+export const withExitHook = (f, useExitHook = true) => (e) => {
+  e.preventDefault()
   if (useExitHook) {
-    e.preventDefault()
     if (currentHook) {
       let result = confirm(currentHook({}))
       if (!result) {
@@ -25,8 +25,10 @@ export const navigateWithExitHook = (href, useExitHook = true) => (e) => {
     }
     removeExitHook()
   }
-  navigateTo(href, e)
+  f(e)
 }
+
+export const navigateWithExitHook = (href, useExitHook = true) => withExitHook(e => navigateTo(href, e), useExitHook)
 
 let makeExitHook = (msg) => (e) => {
   e.returnValue = msg     // Gecko and Trident
