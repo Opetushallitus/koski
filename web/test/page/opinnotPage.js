@@ -107,6 +107,9 @@ function OpinnotPage() {
       function collapsers() {
         return S('.foldable:not(.collapsed)>.toggle-expand:not(.disabled), tbody.expanded .toggle-expand:not(.disabled), a.expandable.open')
       }
+    },
+    backToList: function() {
+      triggerEvent(findSingle('.back-link'), 'click')
     }
   }
 

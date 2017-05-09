@@ -920,6 +920,43 @@ describe('Perusopetus', function() {
       })
     })
 
+    describe('Navigointi pois sivulta', function() {
+      describe('Kun ei ole tallentamattomia muutoksia', function() {
+        before(editor.edit, page.oppijaHaku.searchAndSelect('280618-402H'))
+
+        it('Onnistuu normaalisti', function() {})
+
+        after(page.oppijaHaku.searchAndSelect('220109-784L'))
+      })
+
+      describe('Kun on tallentamattomia muutoksia', function() {
+        before(
+          editor.edit,
+          editor.property('suoritustapa').setValue('Erityinen tutkinto')
+        )
+        describe('Kun käyttäjä valitsee Peruuta', function() {
+          before(
+            function() { testFrame().confirm = function(msg) { return false } },
+            opinnot.backToList
+          )
+          it('Pysytään muokkauksessa', function() {
+            expect(editor.canSave()).to.equal(true)
+          })
+        })
+
+        describe('Kun käyttäjä valitsee Jatka', function() {
+          before(
+            function() { testFrame().confirm = function(msg) { return true } },
+            opinnot.backToList
+          )
+          it('Navigointi toimii', function() {
+            expect(page.oppijataulukko.isVisible()).to.equal(true)
+          })
+
+          after(page.oppijaHaku.selectOppija('220109-784L'))
+        })
+      })
+    })
     describe('Virhetilanteet', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before(
