@@ -46,7 +46,7 @@ object ExamplesPerusopetus {
     alkamispäivä = Some(date(2012, 6, 15)),
     oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
     suoritukset = List(
-      perusopetuksenOppimääränSuoritusKesken.copy(tila = tilaKeskeytynyt),
+      perusopetuksenOppimääränSuoritusKesken.copy(tila = tilaKeskeytynyt).copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
       kuudennenLuokanSuoritus,
       seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
