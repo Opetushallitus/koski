@@ -3,6 +3,7 @@ package fi.oph.koski.pulssi
 import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotStatistics
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class PulssiServlet(pulssi: KoskiPulssi) extends ApiServlet with NoCache with Unauthenticated {
@@ -22,7 +23,7 @@ trait KoskiPulssi {
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
-  def opiskeluoikeudet: Map[String, Any] = application.perustiedotRepository.statistics
+  def opiskeluoikeudet: Map[String, Any] = OpiskeluoikeudenPerustiedotStatistics(application.perustiedotIndex).statistics
   def metriikka: Map[String, Any] = {
     Map(
       "saavutettavuus" -> application.prometheusRepository.koskiAvailability,

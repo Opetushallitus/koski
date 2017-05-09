@@ -14,10 +14,11 @@ import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedotServlet, OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.organisaatio.OrganisaatioServlet
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.suoritusote.SuoritusServlet
@@ -38,7 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
     val parallels = List(
       Future { KoskiJsonSchemaValidator.henkilöSchema },
-      Future { application.perustiedotRepository.init},
+      Future { application.perustiedotIndexer.init},
       Future { application.scheduledTasks.toString },
       Future { application.tiedonsiirtoService.toString }
     )

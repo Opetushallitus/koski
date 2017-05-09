@@ -9,16 +9,16 @@ import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedot.toNimitiedotJaOid
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeusRepository}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeudenPerustiedotIndexer}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.KoskiValidator
 import slick.dbio.DBIO
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotIndexer, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write
@@ -44,7 +44,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
 
     validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
       val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus).right.get.id
-      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, toNimitiedotJaOid(henkilö)))
+      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö))
     }
   }
 

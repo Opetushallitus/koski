@@ -5,7 +5,7 @@ import java.sql.Timestamp
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.opiskeluoikeus.NimitiedotJaOid
+import fi.oph.koski.perustiedot.NimitiedotJaOid
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s._
@@ -192,7 +192,7 @@ case class OpiskeluoikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, 
 }
 
 case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String) {
-  def toNimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
+  def toHenkilötiedot = TäydellisetHenkilötiedot(oid, etunimet, kutsumanimi, sukunimi)
 }
 
 case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)

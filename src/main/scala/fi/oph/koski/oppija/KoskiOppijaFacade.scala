@@ -9,12 +9,12 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedot.toNimitiedotJaOid
 import fi.oph.koski.opiskeluoikeus._
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeudenPerustiedotIndexer}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
@@ -93,12 +93,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
-        val nimitiedotJaOid = oppijaOid.verified.map(toNimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
+        val nimitiedotJaOid = oppijaOid.verified.getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
         val oo = opiskeluoikeus
 
         if (result.changed) {
           val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, oo.luokka.orElse(oo.ryhmä), nimitiedotJaOid)
-          perustiedotRepository.update(perustiedot)
+          perustiedotIndexer.update(perustiedot)
         }
 
         OpiskeluoikeusVersio(result.id, result.versionumero)
