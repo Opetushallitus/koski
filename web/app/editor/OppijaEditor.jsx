@@ -86,7 +86,7 @@ export const OppijaEditor = ({model}) => {
                 </li>)
             })}
           {
-            canAddOpiskeluoikeusP.map( canAdd => canAdd && <li key="new" className="add-opiskeluoikeus">
+            canAddOpiskeluoikeusP.map( canAdd => canAdd && <li key="new" className={'add-opiskeluoikeus' +  (!!currentLocation().params.edit ? ' disabled' : '')}>
                 <span className="plus" onClick={toggleAdd}></span>
                 <a onClick={toggleAdd}>Lisää opiskeluoikeus</a>
                 {
