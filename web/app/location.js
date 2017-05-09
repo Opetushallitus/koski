@@ -1,5 +1,6 @@
 import Bacon from 'baconjs'
 import R from 'ramda'
+import {removeExitHook} from './exitHook'
 
 const locationBus = new Bacon.Bus()
 
@@ -15,6 +16,8 @@ export const navigateTo = function (path, event) {
 window.onpopstate = function() {
   locationBus.push(currentLocation())
 }
+
+locationBus.mapError().onValue(removeExitHook)
 
 export const locationP = locationBus.toProperty(currentLocation())
 

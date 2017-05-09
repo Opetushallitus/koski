@@ -16,13 +16,24 @@ const reqComplete = () => {
   decreaseLoading()
 }
 
-const mocks = {}
-const serveMock = url => {
-  let mock = mocks[url]
-  delete mocks[url]
+const mocks = []
+const getMock = url => {
+  for (var key in mocks) {
+    if (url.startsWith(key)) {
+      let mock = mocks[key]
+      delete mocks[key]
+      return mock
+    }
+  }
+}
+const serveMock = mock => {
   return Bacon.once(mock.status ? mock : Bacon.Error('connection failed')).toPromise()
 }
-const doHttp = (url, optionsForFetch) => mocks[url] ? serveMock(url) : fetch(url, optionsForFetch)
+const doHttp = (url, optionsForFetch) => {
+  let mock = getMock(url)
+  return mock ? serveMock(mock) : fetch(url, optionsForFetch)
+}
+
 const http = (url, optionsForFetch, options = {}) => {
   if (options.invalidateCache){
     for (var cachedPath in http.cache) {

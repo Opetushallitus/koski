@@ -903,46 +903,65 @@ describe('Perusopetus', function() {
       })
     })
 
-    describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
-      before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
-      it('Muutokset estetty', function() {
-        expect(opinnot.anythingEditable()).to.equal(false)
-      })
-    })
-
-    describe('Kun tallennus epäonnistuu', function() {
-      before(
-        page.oppijaHaku.searchAndSelect('220109-784L'),
-        editor.edit,
-        mockHttp('/koski/api/oppija', { status: 500}),
-        editor.property('todistuksellaNäkyvätLisätiedot').setValue('blah'),
-        editor.saveChangesAndExpectError
-      )
-      describe('Käyttöliittymän tila', function(){
-        it('Näytetään virheilmoitus', function() {
-          expect(page.getErrorMessage()).to.equal('Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
+    describe('Virhetilanteet', function() {
+      describe('Kun tallennus epäonnistuu', function() {
+        before(
+          editor.edit,
+          editor.property('todistuksellaNäkyvätLisätiedot').setValue('blah'),
+          mockHttp('/koski/api/oppija', { status: 500}),
+          editor.saveChangesAndExpectError
+        )
+        describe('Käyttöliittymän tila', function(){
+          it('Näytetään virheilmoitus', function() {
+            expect(page.getErrorMessage()).to.equal('Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
+          })
+          it('Tallenna-nappi on jälleen enabloitu', function() {
+            expect(opinnot.onTallennettavissa()).to.equal(true)
+          })
+          it('Käyttöliittymä on edelleen muokkaustilassa', function() {
+            expect(opinnot.isEditing()).to.equal(true)
+          })
         })
-        it('Tallenna-nappi on jälleen enabloitu', function() {
-          expect(opinnot.onTallennettavissa()).to.equal(true)
-        })
-      })
 
-      describe('Kun tallennetaan uudestaan', function() {
-        before(editor.saveChanges)
-        it('Tallennus onnistuu', function() {
-          expect(editor.property('todistuksellaNäkyvätLisätiedot').getValue()).to.equal('blah')
+        describe('Kun tallennetaan uudestaan', function() {
+          before(editor.saveChanges)
+          it('Tallennus onnistuu', function() {
+            expect(editor.property('todistuksellaNäkyvätLisätiedot').getValue()).to.equal('blah')
+          })
         })
       })
-    })
 
-    describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
-      before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-      it('Muutokset estetty', function() {
-        var suoritus = opinnot.opiskeluoikeusEditor()
-        expect(suoritus.isEditable()).to.equal(false)
+      describe('Kun tallennuksen jälkeinen lataus epäonnistuu', function( ){
+        before(
+          editor.edit,
+          editor.property('todistuksellaNäkyvätLisätiedot').setValue('blerg'),
+          mockHttp('/koski/api/editor', { status: 500}),
+          editor.saveChangesAndExpectError,
+          wait.until(page.isTopLevelError)
+        )
+        describe('Käyttöliittymän tila', function(){
+          it('Näytetään koko ruudun virheilmoitus', function() {
+            expect(page.getErrorMessage()).to.equal('Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen. Yritä uudestaan.')
+          })
+        })
       })
-      it('Uuden opiskeluoikeuden lisääminen estetty', function() {
-        expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
+
+      describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
+        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
+        it('Muutokset estetty', function() {
+          expect(opinnot.anythingEditable()).to.equal(false)
+        })
+      })
+
+      describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+        it('Muutokset estetty', function() {
+          var suoritus = opinnot.opiskeluoikeusEditor()
+          expect(suoritus.isEditable()).to.equal(false)
+        })
+        it('Uuden opiskeluoikeuden lisääminen estetty', function() {
+          expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
+        })
       })
     })
   })

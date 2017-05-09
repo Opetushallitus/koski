@@ -21,6 +21,7 @@ import delays from './delays'
 import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP} from './location'
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
+import {showError} from './location';
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -109,7 +110,7 @@ const createState = (oppijaOid) => {
 
     return Bacon.once(R.merge(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
       Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
-        .flatMap(() => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}))
+        .flatMap(() => Http.cachedGet(oppijaEditorUri, { errorHandler: function(e) { e.topLevel=true; showError(e) }})) // loading after save fails -> rare, not easily recoverable error, show full screen
         .map( oppija => R.merge(oppija, { event: 'saved' }))
     )
   })
@@ -131,7 +132,10 @@ const createState = (oppijaOid) => {
       return Bacon.once(event).concat(Bacon.later(5000, 'view'))
     }
     return event
-  }).toProperty().doAction((state) => state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook()) // i18n
+  }).toProperty().doAction((state) => {
+    state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook()
+    if (state == 'saved') navigateWithQueryParams({edit: undefined})
+  }) // i18n
 
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
@@ -183,7 +187,6 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let saveChanges = (e) => {
     e.preventDefault()
     saveChangesBus.push()
-    navigateWithQueryParams({edit: undefined})
   }
 
   let dirtyP = stateP.map(state => state == 'dirty')

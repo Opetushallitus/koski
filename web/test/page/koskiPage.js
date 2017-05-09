@@ -155,10 +155,10 @@ function KoskiPage() {
       return wait.until(LoginPage().isVisible)()
     },
     isErrorShown: function() {
-      return isElementVisible(S("#error.error"))
+      return isElementVisible(S("#error.error")) || api.isTopLevelError()
     },
     getErrorMessage: function() {
-      return S("#error.error .error-text").text()
+      return S("#error.error .error-text, .error-message").text()
     },
     verifyNoError: function() { 
       function checkError() {
@@ -171,6 +171,12 @@ function KoskiPage() {
     },
     is404: function() {
       return isElementVisible(S(".http-status:contains(404)"))
+    },
+    is500: function() {
+      return isElementVisible(S(".http-status:contains(500)"))
+    },
+    isTopLevelError: function() {
+      return isElementVisible(S(".content-area.error"))
     },
     isSavedLabelShown: function() {
       return isElementVisible(S('.saved'))

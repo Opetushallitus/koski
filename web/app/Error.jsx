@@ -13,7 +13,7 @@ export const errorP = (stateP) => {
   } else {
     const stateErrorP = stateP.changes()
       .map(undefined)
-      .mapError(error => ({ httpStatus: error.httpStatus }))
+      .mapError(error => error)
       .toProperty(undefined)
       .skipDuplicates()
       .map(error => error || {})

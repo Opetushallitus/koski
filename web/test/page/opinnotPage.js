@@ -38,6 +38,12 @@ function OpinnotPage() {
     onTallennettavissa: function() {
       return S('#edit-bar button:not(:disabled)').is(':visible')
     },
+    isEditing: function() {
+      return api.isDirty() || S('.oppija-content.edit').is(':visible')
+    },
+    isDirty: function() {
+      return S('.oppija-content.dirty').is(':visible')
+    },
     avaaOpintosuoritusote: function (index) {
       return function() {
         triggerEvent(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote'), 'click')
