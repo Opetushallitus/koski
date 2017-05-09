@@ -478,6 +478,49 @@ describe('Perusopetus', function() {
             })
           })
         })
+
+        describe('Aktiivinen tila', function() {
+          var tila = opinnot.opiskeluoikeusEditor().property('tila')
+          it('Viimeinen tila kun päivämäärä ei ole tulevaisuudessa', function() {
+            expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[0].elem()).hasClass('active')).to.equal(true)
+          })
+
+          describe('Kun lisätään useita tähän päivään', function() {
+            before(editor.edit,
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
+              opiskeluoikeus.tallenna,
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().click('input[value="lasna"]'),
+              opiskeluoikeus.tallenna,
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
+              opiskeluoikeus.tallenna,
+              editor.saveChanges)
+
+            it('Viimeinen tila on aktiivinen', function() {
+              var jaksoElems = tila.elem().find('.opiskeluoikeusjakso')
+              toArray(jaksoElems).slice(1).forEach(function(e) {
+                expect(S(e).hasClass('active')).to.equal(false)
+              })
+              expect(S(jaksoElems[0]).hasClass('active')).to.equal(true)
+            })
+          })
+
+          describe('Kun lisätään tulevaisuuteen', function() {
+            before(editor.edit,
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
+              opiskeluoikeus.alkuPaiva().setValue('9.5.2117'),
+              opiskeluoikeus.tallenna,
+              editor.saveChanges)
+
+            it('Viimeinen menneisyydessä tai nykyisyydessä oleva tila', function() {
+              expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[1].elem()).hasClass('active')).to.equal(true)
+            })
+          })
+        })
+
       })
 
       describe('Opiskeluoikeuden lisätiedot', function() {
