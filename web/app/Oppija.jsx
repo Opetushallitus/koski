@@ -192,9 +192,9 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let validationErrorP = dirtyP.map(dirty => dirty && !modelValid(oppija))
   let canSaveP = dirtyP.and(validationErrorP.not())
   let messageMap = {
-    saved: 'Kaikki muutokset tallennettu',
-    saving: 'Tallennetaan',
-    dirty: 'Tallentamattomia muutoksia',
+    saved: 'Kaikki muutokset tallennettu.',
+    saving: 'Tallennetaan...',
+    dirty: validationErrorP.map(error => error ? 'Korjaa virheelliset tiedot.': 'Tallentamattomia muutoksia'),
     edit: 'Ei tallentamattomia muutoksia'
   }
   let messageP = stateP.decode(messageMap)

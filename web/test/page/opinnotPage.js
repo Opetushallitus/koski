@@ -294,6 +294,9 @@ function Editor(elem) {
     canSave: function() {
       return isVisibleBy(enabledSaveButton)
     },
+    getEditBarMessage: function() {
+      return findSingle('#edit-bar .state-indicator').text()
+    },
     saveChanges: function() {
       triggerEvent(enabledSaveButton(), 'click')
       return KoskiPage().verifyNoError()

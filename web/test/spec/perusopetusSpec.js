@@ -582,14 +582,31 @@ describe('Perusopetus', function() {
         before(opinnot.valitseSuoritus(1, '9. vuosiluokka'), editor.edit)
         describe('Tyhjäksi', function() {
           before(editor.property('luokka').setValue(''))
-          it('aiheuttaa validaatiovirheen', function() {
+          it('Näyttää validaatiovirheen', function() {
             expect(editor.property('luokka').isValid()).to.equal(false)
+          })
+          it('Tallennus on estetty', function() {
+            expect(editor.canSave()).to.equal(false)
+          })
+          it('Näytetään virheviesti myös tallennuspalkissa', function() {
+            expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
           })
         })
         describe('Ei tyhjäksi', function() {
-          before(editor.property('luokka').setValue('9C'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-          it('läpäisee validaation', function() {
+          before(editor.property('luokka').setValue('9C'))
+          it('Poistaa validaatiovirheen', function() {
             expect(editor.property('luokka').isValid()).to.equal(true)
+          })
+          it('Tallennus on sallittu', function() {
+            expect(editor.canSave()).to.equal(true)
+          })
+          it('Poistetaan virheviesti myös tallennuspalkista', function() {
+            expect(editor.getEditBarMessage()).to.equal('Tallentamattomia muutoksia')
+          })
+
+          describe('Tallennus', function() {
+            before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+            it('Onnistuu', function() {})
           })
         })
       })
@@ -1526,7 +1543,6 @@ describe('Perusopetus', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
       before(editor.edit, editor.property('tila').removeItem(0)) // opiskeluoikeus: läsnä
       before(arvosana.removeItem(0)) // poistetaan arviointi
-      // TODO: muuta keskeneräiseksi, poista arvosana, tsek: ei voi muuttaa valmiiksi, seivaa, anna arvosana, merkkaa valmiiksi, seivaa
 
       describe('Kun suoritus on valmis, mutta arvosana puuttuu', function() {
         it('Tallennus on estetty', function() {
