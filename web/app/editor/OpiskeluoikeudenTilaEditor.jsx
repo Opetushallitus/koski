@@ -3,17 +3,17 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
-import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
-import {modelSetValue, lensedModel, pushModel, pushRemoval} from './EditorModel'
+import {lensedModel, modelSetValue, modelTitle, pushModel, pushRemoval} from './EditorModel'
 import {suoritusKesken} from './Suoritus'
 import {parseISODate} from '../date.js'
+import {Editor} from './Editor.jsx'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
-  let items = setActive(modelItems(jaksotModel).slice(0).reverse())
+  let items = modelItems(jaksotModel).slice(0).reverse()
   let suorituksiaKesken = wrappedModel.context.edit && R.any(suoritusKesken)(modelItems(wrappedModel, 'suoritukset'))
   let showAddDialog = () => addingNew.modify(x => !x)
 
@@ -38,7 +38,10 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
           {
             items.map((item, i) => {
               return (<li key={i}>
-                <OpiskeluoikeusjaksoEditor model={item} />
+                <div className={'opiskeluoikeusjakso' + (i === getActiveIndex(items) ? ' active' : '')}>
+                  <label className="date"><Editor model={item} path="alku" edit={false}/></label>
+                  <label className="tila">{modelTitle(item, 'tila')}</label>
+                </div>
                 {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}></a>}
               </li>)
             })
@@ -65,11 +68,9 @@ export const onLopputilassa = (opiskeluoikeus) => {
   return onLopputila(modelLookup(jakso, 'tila'))
 }
 
-const setActive = (jaksot) => {
+const getActiveIndex = (jaksot) => {
   let today = new Date()
-  let active = jaksot.findIndex(j => parseISODate(modelData(j, 'alku')) < today)
-  jaksot[active] = R.assoc('active', true, jaksot[active])
-  return jaksot
+  return jaksot.findIndex(j => parseISODate(modelData(j, 'alku')) <= today)
 }
 
 const viimeinenJakso = (opiskeluoikeus) => modelItems(opiskeluoikeusjaksot(opiskeluoikeus)).last()
