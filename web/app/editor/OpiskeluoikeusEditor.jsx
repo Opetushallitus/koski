@@ -121,7 +121,7 @@ const SuoritusTabs = ({ model, suoritukset }) => {
         let selected = i === SuoritusTabs.suoritusIndex(model, suoritukset)
         let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
         return (<li className={selected ? 'selected': null} key={i}>
-          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, suoritusModel.tabName) }> {titleEditor} </Link>}
+          { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, suoritusModel.tabName) } exitHook={false}> {titleEditor} </Link>}
         </li>)
       })
     }

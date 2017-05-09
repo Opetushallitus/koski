@@ -878,6 +878,8 @@ describe('Perusopetus', function() {
                 it('Muutettu oppiaine löytyy listalta', function() {
                   expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
                 })
+
+                after(editor.cancelChanges)
               })
             })
           })
@@ -1718,6 +1720,8 @@ describe('Perusopetus', function() {
                 it('Muutettu oppiaine löytyy listalta', function() {
                   expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
                 })
+
+                after(editor.cancelChanges)
               })
             })
           })

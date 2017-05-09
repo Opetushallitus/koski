@@ -20,6 +20,7 @@ import {increaseLoading, decreaseLoading} from './loadingFlag'
 import delays from './delays'
 import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP} from './location'
 import {buildClassNames} from './classnames'
+import {addExitHook, removeExitHook} from './exitHook'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -130,7 +131,7 @@ const createState = (oppijaOid) => {
       return Bacon.once(event).concat(Bacon.later(5000, 'view'))
     }
     return event
-  }).toProperty()
+  }).toProperty().doAction((state) => state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook()) // i18n
 
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }

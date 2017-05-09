@@ -2,8 +2,10 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from './http'
-import {navigateToOppija, navigateTo, showError} from './location'
+import {navigateToOppija, showError} from './location'
 import delays from './delays'
+import Link from './Link.jsx'
+
 const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
 
@@ -35,7 +37,7 @@ export const OppijaHaku = () => (
             return (<ul>{
               response.henkilöt.map((o, i) =>
                   (<li key={i}>
-                    <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet}{o.hetu && ' (' + o.hetu + ')'}</a>
+                    <Link href={`/koski/oppija/${o.oid}`}>{o.sukunimi}, {o.etunimet}{o.hetu && ' (' + o.hetu + ')'}</Link>
                   </li>))
               }
             </ul>)
@@ -45,9 +47,9 @@ export const OppijaHaku = () => (
             return (<div className='no-results'>
               Ei hakutuloksia
               { response.canAddNew &&
-                (<a href={url} className="lisaa-oppija" onClick={(e) => navigateTo(url, e)}>
+                (<Link href={url} className="lisaa-oppija">
                   Lisää uusi opiskelija
-                </a>)
+                </Link>)
               }
               {
                 response.error &&
