@@ -3,17 +3,17 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
-import {ArrayEditor} from './ArrayEditor.jsx'
 import {OpiskeluoikeusjaksoEditor} from './OpiskeluoikeusjaksoEditor.jsx'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
 import {modelSetValue, lensedModel, pushModel, pushRemoval} from './EditorModel'
 import {suoritusKesken} from './Suoritus'
+import {parseISODate} from '../date.js'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
-  let items = modelItems(jaksotModel).slice(0).reverse()
+  let items = setActive(modelItems(jaksotModel).slice(0).reverse())
   let suorituksiaKesken = wrappedModel.context.edit && R.any(suoritusKesken)(modelItems(wrappedModel, 'suoritukset'))
   let showAddDialog = () => addingNew.modify(x => !x)
 
@@ -29,18 +29,17 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
     addingNew.set(false)
   }
 
-  let showLisaaTila = !onLopputilassa(wrappedModel)
+  let showLisaaTila = wrappedModel.context.edit && !onLopputilassa(wrappedModel)
   let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
 
   return (
-    wrappedModel.context.edit ?
       <div>
         <ul className="array">
           {
             items.map((item, i) => {
               return (<li key={i}>
-                <OpiskeluoikeusjaksoEditor model={item}/>
-                {i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}></a>}
+                <OpiskeluoikeusjaksoEditor model={item} />
+                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}></a>}
               </li>)
             })
           }
@@ -51,8 +50,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
         {
           addingNew.map(adding => adding && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => lisääJakso(uusiJakso)} />)
         }
-      </div> :
-      <div><ArrayEditor reverse={true} model={jaksotModel}/></div>
+      </div>
   )
 }
 
@@ -65,6 +63,13 @@ export const onLopputilassa = (opiskeluoikeus) => {
   let jakso = viimeinenJakso(opiskeluoikeus)
   if (!jakso) return false
   return onLopputila(modelLookup(jakso, 'tila'))
+}
+
+const setActive = (jaksot) => {
+  let today = new Date()
+  let active = jaksot.findIndex(j => parseISODate(modelData(j, 'alku')) < today)
+  jaksot[active] = R.assoc('active', true, jaksot[active])
+  return jaksot
 }
 
 const viimeinenJakso = (opiskeluoikeus) => modelItems(opiskeluoikeusjaksot(opiskeluoikeus)).last()
