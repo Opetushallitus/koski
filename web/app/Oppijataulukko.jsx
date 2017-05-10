@@ -108,7 +108,7 @@ export const Oppijataulukko = React.createClass({
         <tbody className={rivit ? '' : 'loading'}>
           {
             näytettävätRivit.map( (opiskeluoikeus, i) => {
-              return <tr className="alternating" key={i}>
+              return (<tr className="alternating" key={i}>
                 <td className="nimi">
                   <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
                 </td>
@@ -134,7 +134,7 @@ export const Oppijataulukko = React.createClass({
                 }</ul></td>
                 <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
                 <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
-              </tr>
+              </tr>)
             })
           }
           </tbody>
