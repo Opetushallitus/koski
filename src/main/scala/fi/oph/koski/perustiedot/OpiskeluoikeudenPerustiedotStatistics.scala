@@ -9,7 +9,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
       Map(
         "opiskeluoikeuksienMäärä" -> stats.total,
         "määrätKoulutusmuodoittain" -> stats.tyypit.map { tyyppi =>
-          val määrätTiloittain = tyyppi.tila.buckets.map { bucket =>
+          val määrätTiloittain = tyyppi.tila.tila.buckets.map { bucket =>
             Map("nimi" -> bucket.key, "opiskeluoikeuksienMäärä" -> bucket.doc_count)
           }
 
@@ -31,22 +31,25 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |{
           |  "size": 0,
           |  "aggs": {
-          |    "tila": {
-          |      "terms": {
-          |        "field": "tila.koodiarvo.keyword"
-          |      }
-          |    },
           |    "tyyppi": {
           |      "terms": {
           |        "field": "tyyppi.nimi.fi.keyword"
           |      },
           |      "aggs": {
-          |        "tila": {
-          |          "terms": {
-          |            "field": "tila.koodiarvo.keyword"
-          |          }
+          |      "tila": {
+          |        "nested": {
+          |          "path": "tilat"
           |        },
-          |        "toimipiste": {
+          |        "aggs": {
+          |          "tila": {
+          |            "terms": {
+          |              "field": "tilat.tila.koodiarvo.keyword",
+          |              "include" : "valmistunut"
+          |            }
+          |          }
+          |        }
+          |      },
+          |      "toimipiste": {
           |          "terms": {
           |            "field": "suoritukset.toimipiste.oid.keyword"
           |          }
@@ -55,7 +58,6 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |    }
           |  }
           |}
-          |
         """.stripMargin)
     )
 
@@ -67,6 +69,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
 }
 
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
-case class Tyyppi(key: String, doc_count: Int, tila: Buckets, toimipiste: Buckets)
+case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: Buckets)
+case class TilaNested(tila: Buckets)
 case class Buckets(buckets: List[Bucket])
 case class Bucket(key: String, doc_count: Int)
