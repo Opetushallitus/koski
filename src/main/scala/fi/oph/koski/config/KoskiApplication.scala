@@ -16,6 +16,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotRepository, PerustiedotSearchIndex, OpiskeluoikeudenPerustiedotIndexer, PerustiedotIndexUpdater}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.schema.Koodistokoodiviite
@@ -42,7 +43,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
-  lazy val authenticationServiceClient = AuthenticationServiceClient(config, database.db, perustiedotRepository)
+  lazy val authenticationServiceClient = AuthenticationServiceClient(config, database.db, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository, directoryClient)
   lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
   lazy val database = new KoskiDatabase(config)
@@ -59,8 +60,10 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(database.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
-  lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(config, opiskeluoikeusQueryRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, perustiedotRepository, config)
+  lazy val perustiedotIndex = new PerustiedotSearchIndex(config)
+  lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndex, opiskeluoikeusQueryRepository)
+  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, perustiedotIndex, opiskeluoikeusQueryRepository)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)

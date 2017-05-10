@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.AuthenticationServiceClient.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
-import fi.oph.koski.opiskeluoikeus.Henkilötiedot
+import fi.oph.koski.perustiedot.Henkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
@@ -43,7 +43,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
       HenkilöUpdateContext(lastModified)
     } else {
       val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(foundFromKoski).map(p => Henkilötiedot(p.id, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
-      application.perustiedotRepository.updateBulk(muuttuneidenHenkilötiedot, insertMissing = false) match {
+      application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, insertMissing = false) match {
         case Right(updatedCount) => updatedCount
           logger.info(s"Updated ${foundFromKoski.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)

@@ -5,6 +5,7 @@ import {navigateWithQueryParams} from './location'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
+import * as L from 'partial.lenses'
 import DatePicker from './DateRangeSelection.jsx'
 import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 import {formatISODate, ISO2FinnishDate} from './date'
@@ -106,33 +107,35 @@ export const Oppijataulukko = React.createClass({
         </thead>
         <tbody className={rivit ? '' : 'loading'}>
           {
-            näytettävätRivit.map( (opiskeluoikeus, i) => <tr className="alternating" key={i}>
-              <td className="nimi">
-                <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
-              </td>
-              <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
-              <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>
-              <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                <ul className="cell-listing" key={j}>
-                  {
-                    <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{suoritus.koulutusmoduuli.tunniste.nimi.fi}</Highlight></li>
-                  }
-                  {
-                    (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{osaamisala.nimi.fi}</Highlight></li>)
-                  }
-                  {
-                    (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{nimike.nimi.fi}</Highlight></li>)
-                  }
-                </ul>
-              )}
-              </td>
-              <td className="tila">{ opiskeluoikeus.tila.nimi.fi }</td>
-              <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
-              }</ul></td>
-              <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
-              <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
-            </tr>)
+            näytettävätRivit.map( (opiskeluoikeus, i) => {
+              return (<tr className="alternating" key={i}>
+                <td className="nimi">
+                  <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
+                </td>
+                <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
+                <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>
+                <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
+                  <ul className="cell-listing" key={j}>
+                    {
+                      <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{suoritus.koulutusmoduuli.tunniste.nimi.fi}</Highlight></li>
+                    }
+                    {
+                      (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{osaamisala.nimi.fi}</Highlight></li>)
+                    }
+                    {
+                      (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{nimike.nimi.fi}</Highlight></li>)
+                    }
+                  </ul>
+                )}
+                </td>
+                <td className="tila">{ L.get(['tilat', 0, 'tila', 'nimi', 'fi'], opiskeluoikeus) }</td>
+                <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
+                  <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
+                }</ul></td>
+                <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
+                <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
+              </tr>)
+            })
           }
           </tbody>
         </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }
