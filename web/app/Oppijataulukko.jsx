@@ -107,7 +107,6 @@ export const Oppijataulukko = React.createClass({
         <tbody className={rivit ? '' : 'loading'}>
           {
             näytettävätRivit.map( (opiskeluoikeus, i) => {
-              console.log(opiskeluoikeus)
               return <tr className="alternating" key={i}>
                 <td className="nimi">
                   <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
