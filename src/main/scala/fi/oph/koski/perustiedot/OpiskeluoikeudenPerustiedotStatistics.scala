@@ -17,7 +17,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
             "nimi" -> tyyppi.key,
             "opiskeluoikeuksienMäärä" -> tyyppi.doc_count,
             "määrätTiloittain" -> määrätTiloittain,
-            "siirtäneitäOppilaitoksia" -> tyyppi.toimipiste.buckets.size
+            "siirtäneitäOppilaitoksia" -> tyyppi.toimipiste.toimipiste.buckets.size
           )
         }
       )
@@ -49,15 +49,24 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |          }
           |        }
           |      },
-          |      "toimipiste": {
-          |          "terms": {
-          |            "field": "suoritukset.toimipiste.oid.keyword"
+          |        "toimipiste": {
+          |          "nested": {
+          |            "path": "suoritukset"
+          |          },
+          |          "aggs": {
+          |            "toimipiste": {
+          |            "terms": {
+          |              "field": "suoritukset.toimipiste.oid.keyword",
+          |              "size": 10000
+          |            }
+          |            }
           |          }
           |        }
           |      }
           |    }
           |  }
           |}
+          |
         """.stripMargin)
     )
 
@@ -69,7 +78,8 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
 }
 
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
-case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: Buckets)
+case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: ToimipisteNested)
 case class TilaNested(tila: Buckets)
+case class ToimipisteNested(toimipiste: Buckets)
 case class Buckets(buckets: List[Bucket])
 case class Bucket(key: String, doc_count: Int)
