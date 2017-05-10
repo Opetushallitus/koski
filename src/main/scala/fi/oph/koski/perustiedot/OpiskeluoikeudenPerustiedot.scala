@@ -26,7 +26,7 @@ case class OpiskeluoikeudenPerustiedot(
   suoritukset: List[SuorituksenPerustiedot],
   @KoodistoUri("virtaopiskeluoikeudentila")
   @KoodistoUri("koskiopiskeluoikeudentila")
-  tilat: List[OpiskeluoikeusJaksonPerustiedot],
+  tilat: Option[List[OpiskeluoikeusJaksonPerustiedot]], // Optionality can be removed after re-indexing
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
 ) extends WithId
@@ -71,7 +71,7 @@ object OpiskeluoikeudenPerustiedot {
       (data \ "päättymispäivä").extract[Option[LocalDate]],
       (data \ "tyyppi").extract[Koodistokoodiviite],
       suoritukset,
-      fixTilat((data \ "tila" \ "opiskeluoikeusjaksot").extract[List[OpiskeluoikeusJaksonPerustiedot]]),
+      Some(fixTilat((data \ "tila" \ "opiskeluoikeusjaksot").extract[List[OpiskeluoikeusJaksonPerustiedot]])),
       luokka)
   }
 

@@ -125,7 +125,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
 
     index.runSearch(doc)
       .map{ response =>
-        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]).map(pt => pt.copy(tilat = vainAktiivinen(pt.tilat)))
+        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
       }
       .getOrElse(Nil)
   }
