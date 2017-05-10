@@ -18,10 +18,10 @@ describe('Pulssi', function() {
       expect(page.metric('kattavuus-total').value() >= 0).to.equal(true)
     })
     it('Kattavuus koulutusmuodoittain näytetään', function() {
-      expect(page.metric('kattavuus-koulutusmuodoittain').sum() >= 0).to.equal(true)
+      expect(page.metric('kattavuus-koulutusmuodoittain').sum() > 0).to.equal(true)
     })
     it('Suoritettujen koulutusten määrä näytetään', function() {
-      expect(page.metric('valmiit-tutkinnot-total').value() >= 0).to.equal(true)
+      expect(page.metric('valmiit-tutkinnot-total').value() > 0).to.equal(true)
     })
     it('Suoritettujen koulutusten määrä tyypeittäin näytetään', function() {
       expect(page.metric('valmiit-tutkinnot-koulutusmuodoittain').sum()).to.equal(page.metric('valmiit-tutkinnot-total').value())
