@@ -39,10 +39,17 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
     )
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
-    def nestedQuery(path: String, query: Map[String, AnyRef]) = Map(
+    def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
       "nested" -> Map(
         "path" -> path,
         "query" -> query
+      )
+    )
+    def allFilter(queries: List[Map[String, Any]]) = Map(
+      "bool" -> Map(
+        "must" -> List(
+          queries
+        )
       )
     )
     val elasticSort = sorting match {
@@ -55,16 +62,36 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
       case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + sorting.field))
     }
 
-    val elasticFilters = filters.flatMap {
+    val suoritusFilters = filters.flatMap {
+      case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
+      case Tutkintohaku(hakusana) =>
+        analyzeString(hakusana).map { namePrefix =>
+          Map("bool" -> Map("should" -> List(
+            Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
+            Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
+            Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
+          )))
+        }
+      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
+        toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}
+      )))
+      case _ => Nil
+    }
+
+    val suoritusFilter = suoritusFilters match {
+      case Nil => Nil
+      case filters => List(nestedFilter("suoritukset", allFilter(filters)))
+    }
+
+    val elasticFilters: List[Map[String, Any]] = filters.flatMap {
       case Nimihaku(hakusana) => nameFilter(hakusana)
-      case Luokkahaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { prefix =>
+      case Luokkahaku(hakusana) => hakusana.trim.split(" ").toList.map(_.toLowerCase).map { prefix =>
         Map("prefix" -> Map("luokka" -> prefix))
       }
-      case SuorituksenTyyppi(tyyppi) => List(nestedQuery("suoritukset", Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo))))
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTila(tila) =>
         List(
-          nestedQuery("tilat", Map(
+          nestedFilter("tilat", Map(
             "bool" -> Map(
               "must" -> List(
                 Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
@@ -86,34 +113,18 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
           ))
         )
 
-      case Tutkintohaku(hakusana) =>
-        analyzeString(hakusana).map { namePrefix =>
-          nestedQuery("suoritukset", Map("bool" -> Map("should" -> List(
-            Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
-            Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
-            Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
-          ))))
-        }
-      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
-        toimipisteet.map{ toimipiste => nestedQuery("suoritukset", Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid)))}
-      )))
       case OpiskeluoikeusAlkanutAikaisintaan(day) =>
-        Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd")))
+        List(Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
       case OpiskeluoikeusAlkanutViimeistään(day) =>
-        Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd")))
+        List(Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd"))))
       case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
-    } ++ oppilaitosFilter(session)
+      case _ => Nil
+    } ++ oppilaitosFilter(session) ++ suoritusFilter
 
     val elasticQuery = elasticFilters match {
       case Nil => Map.empty
-      case _ => Map(
-        "bool" -> Map(
-          "must" -> List(
-            elasticFilters
-          )
-        )
-      )
+      case _ => allFilter(elasticFilters)
     }
 
     val doc = Json.toJValue(Map(
@@ -168,7 +179,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
       .getOrElse(Nil)
   }
 
-  private def oppilaitosFilter(session: KoskiSession): List[Any] =
+  private def oppilaitosFilter(session: KoskiSession): List[Map[String, Any]] =
     if (session.hasGlobalReadAccess) {
       Nil
     } else {
