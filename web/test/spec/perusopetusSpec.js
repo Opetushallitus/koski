@@ -546,6 +546,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Opiskeluoikeuden lisätiedot', function() {
+        before(page.oppijaHaku.selectOppija('220109-784L'))
         before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
         describe('Lisätietojen lisäys', function() {
           it('Toimii', function() {
