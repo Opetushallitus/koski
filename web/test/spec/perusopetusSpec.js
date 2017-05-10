@@ -493,9 +493,6 @@ describe('Perusopetus', function() {
               opinnot.avaaLisaysDialogi,
               opiskeluoikeus.tila().click('input[value="lasna"]'),
               opiskeluoikeus.tallenna,
-              opinnot.avaaLisaysDialogi,
-              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
-              opiskeluoikeus.tallenna,
               editor.saveChanges)
 
             it('Viimeinen tila on aktiivinen', function() {
