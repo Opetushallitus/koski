@@ -5,6 +5,7 @@ import {navigateWithQueryParams} from './location'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
+import * as L from 'partial.lenses'
 import DatePicker from './DateRangeSelection.jsx'
 import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 import {formatISODate, ISO2FinnishDate} from './date'
@@ -127,7 +128,7 @@ export const Oppijataulukko = React.createClass({
                   </ul>
                 )}
                 </td>
-                <td className="tila">{ opiskeluoikeus.tilat[0].tila.nimi.fi }</td>
+                <td className="tila">{ L.get(['tilat', 0, 'tila', 'nimi', 'fi'], opiskeluoikeus) }</td>
                 <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
                   <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
                 }</ul></td>
