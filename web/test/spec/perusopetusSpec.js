@@ -507,7 +507,7 @@ describe('Perusopetus', function() {
             })
           })
 
-          describe('Kun lisätään tulevaisuuteen', function() {
+          describe('Kun lisätään tulevaisuuteen "väliaikaisesti keskeytynyt"', function() {
             before(editor.edit,
               opinnot.avaaLisaysDialogi,
               opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
@@ -515,8 +515,30 @@ describe('Perusopetus', function() {
               opiskeluoikeus.tallenna,
               editor.saveChanges)
 
-            it('Viimeinen menneisyydessä tai nykyisyydessä oleva tila', function() {
-              expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[1].elem()).hasClass('active')).to.equal(true)
+            describe('Käyttöliittymän tila', function() {
+              it('Nykyinen tila "läsnä" on aktiivinen', function() {
+                expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[1].elem()).hasClass('active')).to.equal(true)
+              })
+            })
+
+            describe('Oppijataulukossa', function() {
+              before(
+                opinnot.backToList,
+                page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus')
+              )
+
+              it('Näytetään nykyinen tila "läsnä"', function() {
+                expect(page.oppijataulukko.isVisible()).to.equal(true)
+                expect(page.oppijataulukko.findOppija('Koululainen, Kaisa', 'Perusopetus')).to.deep.equal([ 'Koululainen, Kaisa',
+                  'Perusopetus',
+                  'Perusopetuksen oppimäärä',
+                  'Peruskoulu',
+                  'Läsnä',
+                  'Jyväskylän normaalikoulu',
+                  '15.8.2008',
+                  '9C' ])
+
+              })
             })
           })
         })
