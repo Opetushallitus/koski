@@ -120,7 +120,10 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
         }
     }""").extract[Map[String, Any]]
 
-    val mappings = Map("perustiedot" -> Map("properties" -> Map("tilat" -> Map("type" -> "nested")) )) // TODO: check if mappings changed, force re-creation of index
+    val mappings = Map("perustiedot" -> Map("properties" -> Map(
+      "tilat" -> Map("type" -> "nested"),
+      "suoritukset" -> Map("type" -> "nested")
+    ))) // TODO: check if mappings changed, force re-creation of index
 
     val statusCode = Http.runTask(index.elasticSearchHttp.get(uri"/koski")(Http.statusCode))
     var reindexNeeded = if (indexExists) {

@@ -39,7 +39,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
     )
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
-
+    def nestedQuery(path: String, query: Map[String, AnyRef]) = Map(
+      "nested" -> Map(
+        "path" -> path,
+        "query" -> query
+      )
+    )
     val elasticSort = sorting match {
       case Ascending("nimi") => nimi("asc")
       case Ascending("luokka") => luokka("asc")
@@ -55,47 +60,42 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
       case Luokkahaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { prefix =>
         Map("prefix" -> Map("luokka" -> prefix))
       }
-      case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
+      case SuorituksenTyyppi(tyyppi) => List(nestedQuery("suoritukset", Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo))))
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTila(tila) =>
         List(
-          Map(
-            "nested" -> Map(
-              "path" -> "tilat",
-              "query" -> Map(
-                "bool" -> Map(
-                  "must" -> List(
-                    Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
-                    Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+          nestedQuery("tilat", Map(
+            "bool" -> Map(
+              "must" -> List(
+                Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
+                Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+                Map("bool" -> Map(
+                  "should" -> List(
+                    Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
                     Map("bool" -> Map(
-                      "should" -> List(
-                        Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                        Map("bool" -> Map(
-                          "must_not" -> Map(
-                            "exists" -> Map(
-                              "field" -> "tilat.loppu"
-                            )
-                          )
-                        ))
+                      "must_not" -> Map(
+                        "exists" -> Map(
+                          "field" -> "tilat.loppu"
+                        )
                       )
                     ))
                   )
-                )
+                ))
               )
             )
-          )
+          ))
         )
 
       case Tutkintohaku(hakusana) =>
         analyzeString(hakusana).map { namePrefix =>
-          Map("bool" -> Map("should" -> List(
+          nestedQuery("suoritukset", Map("bool" -> Map("should" -> List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
-          )))
+          ))))
         }
       case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
-        toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}
+        toimipisteet.map{ toimipiste => nestedQuery("suoritukset", Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid)))}
       )))
       case OpiskeluoikeusAlkanutAikaisintaan(day) =>
         Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd")))
