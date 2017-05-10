@@ -59,7 +59,8 @@ object OpiskeluoikeudenPerustiedot {
           KoulutusmoduulinPerustiedot((suoritus \ "koulutusmoduuli" \ "tunniste").extract[Koodistokoodiviite]), // TODO: voi olla paikallinen koodi
           (suoritus \ "osaamisala").extract[Option[List[Koodistokoodiviite]]],
           (suoritus \ "tutkintonimike").extract[Option[List[Koodistokoodiviite]]],
-          (suoritus \ "toimipiste").extract[OidOrganisaatio]
+          (suoritus \ "toimipiste").extract[OidOrganisaatio],
+          Some((suoritus \ "tila").extract[Koodistokoodiviite])
         )
       }
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
@@ -99,7 +100,8 @@ case class SuorituksenPerustiedot(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  toimipiste: OidOrganisaatio
+  toimipiste: OidOrganisaatio,
+  tila: Option[Koodistokoodiviite] // Optionality can be removed after re-indexing
 )
 
 case class KoulutusmoduulinPerustiedot(
