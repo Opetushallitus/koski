@@ -73,4 +73,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ipService = new IPService(database.db)
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
+  lazy val basicAuthSecurity = new BasicAuthSecurity(database.db)
 }

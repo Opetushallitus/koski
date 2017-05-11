@@ -10,4 +10,5 @@ trait UserAuthenticationContext {
   def config: Config
   def koskiSessionRepository: KoskiSessionRepository
   def sessionTimeout: SessionTimeout
+  def basicAuthSecurity: BasicAuthSecurity
 }

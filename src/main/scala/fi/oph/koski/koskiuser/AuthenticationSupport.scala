@@ -67,9 +67,16 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
   }
 
   def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
+    val attemptAllowed = application.basicAuthSecurity.attemptAllowed(username)
+
+    if (!attemptAllowed) {
+      logger(LogUserContext(request)).warn(s"Login blocked for username ${username}")
+      return Left(KoskiErrorCategory.unauthorized.loginFail())
+    }
+
     val loginResult: Boolean = application.directoryClient.authenticate(username, password)
 
-    if(!loginResult) {
+    val result = if (!loginResult) {
       logger(LogUserContext(request)).info(s"Login failed with username ${username}")
       Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen käyttäjätunnuksella $username epäonnistui."))
     } else {
@@ -81,6 +88,11 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
           Left(KoskiErrorCategory.unauthorized.loginFail())
       }
     }
+
+    if (result.isLeft) {
+      application.basicAuthSecurity.attemptFailed(username)
+    }
+    result
   }
 
   def requireAuthentication = {
@@ -105,3 +117,4 @@ object DirectoryClientLogin extends Logging {
     }
   }
 }
+
