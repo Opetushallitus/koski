@@ -144,6 +144,11 @@ function KoskiPage() {
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))
     },
+    waitUntilAnyOppijaSelected: function() {
+      return wait.until(function() {
+        return api.getSelectedOppija().length > 0
+      })
+    },
     isOppijaSelected: function(oppija) {
       return function() {
         return api.getSelectedOppija().indexOf(oppija) >= 0 // || OppijaHaku.getSelectedSearchResult().indexOf(oppija) >= 0
