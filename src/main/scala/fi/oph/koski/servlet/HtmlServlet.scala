@@ -2,16 +2,15 @@ package fi.oph.koski.servlet
 
 import java.util.Properties
 
-import fi.oph.koski.IndexServlet
+import fi.oph.koski.html.HtmlNodes
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 
 import scala.xml.transform.RewriteRule
-import scala.xml.{Elem, Node}
+import scala.xml.{Elem, Node, NodeSeq}
 
-trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
-
-  lazy val buildversion = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
+trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
+  lazy val buildVersion: Option[String] = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
     val p = new Properties()
     p.load(i)
     p.getProperty("vcsRevision", null)
@@ -23,16 +22,19 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
   }
 
   def renderStatus(status: HttpStatus): Unit = {
-
-    val errorInjectionScript = <script>window.koskiError = {{ httpStatus: {status.statusCode}, text: '{status.errors(0).message.toString}', topLevel: true }}</script>
-
     val html = new RewriteRule {
       override def transform(n: Node): Seq[Node] = n match {
-        case e: Elem if (e.label == "script" && ((e \ "@id") text) == "bundle") => List(errorInjectionScript, e)
-        case elem: Elem => elem copy (child = elem.child flatMap (this transform))
+        case e: Elem =>
+          if (e.label == "head") {
+            e copy (child = e.child :+ htmlErrorObjectScript(status))
+          } else if (e.label == "script" && (e \ "@id").text == "bundle") {
+            NodeSeq.Empty
+          } else {
+            e copy (child = e.child flatMap transform)
+          }
         case other => other
       }
-    } transform(IndexServlet.html(buildversion = buildversion))
+    } transform htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode))
 
     response.setStatus(status.statusCode)
     contentType = "text/html"
