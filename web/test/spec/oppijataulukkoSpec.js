@@ -138,7 +138,7 @@ describe('Oppijataulukko', function() {
 
   describe('Siirtyminen oppijan tietoihin', function() {
     before(
-      page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'),
+      page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'), page.oppijataulukko.filterBy('tutkinto', ''), page.oppijataulukko.filterBy('luokka', ''),
       page.oppijataulukko.clickFirstOppija,
       page.waitUntilOppijaSelected('220109-784L')
     )
