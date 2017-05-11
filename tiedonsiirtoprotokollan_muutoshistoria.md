@@ -1,5 +1,6 @@
 ## 4.5.2017
 
+- Lisätty valinnaiset alku- ja loppupäivämäärät ammatillisen opiskeluoikeuden lisätietojen hojks-osioon
 - Perusopetuksen lisäopetuksessa samat opiskeluoikeuden lisätiedot kuin perusopetuksessa
 - Lisätty valinnainen ryhmätieto lukion ja ammatillisen koulutuksen päätason suorituksiin
 
