@@ -39,7 +39,7 @@ export const OppijaHaku = () => {
         option && navigateTo(option.href)
       }
     }
-    if (e.getModifierState("Shift") || e.getModifierState("Alt") || e.getModifierState("Meta") || e.getModifierState("Control")) return
+    if (e.getModifierState('Shift') || e.getModifierState('Alt') || e.getModifierState('Meta') || e.getModifierState('Control')) return
     let handler = keyHandlers[e.key]
     if (handler) {
       e.preventDefault()
