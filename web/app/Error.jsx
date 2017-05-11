@@ -1,10 +1,13 @@
 import React from 'react'
 import { logout } from './user'
 import { routeErrorP } from './router.jsx'
+import { trackRuntimeError } from './piwikTracking'
+import R from 'ramda'
 import Bacon from 'baconjs'
 
 const logError = (error) => {
   console.log('ERROR', error)
+  trackRuntimeError(R.assoc('url', '' + document.location, error))
 }
 
 export const errorP = (stateP) => {

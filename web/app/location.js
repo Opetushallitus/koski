@@ -1,15 +1,18 @@
 import Bacon from 'baconjs'
 import R from 'ramda'
 import {removeExitHook, checkExitHook} from './exitHook'
+import {trackPageView} from './piwikTracking'
 
 const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
 
 export const navigateTo = function (path, event) {
-  var parsedPath = parsePath(path)
-  previousLocation = parsedPath
+  const prevPath = previousLocation
+  const nextPath = parsePath(path)
+  previousLocation = nextPath
   history.pushState(null, null, path)
-  locationBus.push(parsedPath)
+  if (nextPath.path !== prevPath.path) trackPageView(nextPath.toString())
+  locationBus.push(nextPath)
   if (event) event.preventDefault()
 }
 
