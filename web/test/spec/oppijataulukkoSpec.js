@@ -13,7 +13,6 @@ describe('Oppijataulukko', function() {
   })
 
   describe('Perusopetus', function() {
-
     it('Näytetään tiedot', function() {
       expect(page.oppijataulukko.findOppija('Koululainen, Kaisa', 'Perusopetus')).to.deep.equal([ 'Koululainen, Kaisa',
         'Perusopetus',
@@ -134,6 +133,25 @@ describe('Oppijataulukko', function() {
     before(page.oppijataulukko.filterBy('nimi', 'kaisa'), page.oppijataulukko.filterBy('tutkinto', 'perus'), page.oppijataulukko.filterBy('luokka', '9'))
     it('Toimii', function() {
       expect(page.oppijataulukko.highlights()).to.deep.equal(["Kaisa", "Perus", "9"])
+    })
+  })
+
+  describe('Siirtyminen oppijan tietoihin', function() {
+    before(
+      page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'),
+      page.oppijataulukko.clickFirstOppija,
+      page.waitUntilOppijaSelected('220109-784L')
+    )
+    describe('Klikattaessa oppijan nimeä', function() {
+      it('Siirrytään oppijan tietoihin', function() {
+
+      })
+    })
+    describe('Klikattaessa paluulinkkiä', function() {
+      before(opinnot.backToList)
+      it('Säilytetään valitut hakukriteerit', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal(['Koululainen, Kaisa', 'Koululainen, Kaisa'])
+      })
     })
   })
 })

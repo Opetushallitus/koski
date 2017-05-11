@@ -111,8 +111,10 @@ function KoskiPage() {
     },
     tableElem: function() {
       return S('#content .oppijataulukko')
+    },
+    clickFirstOppija: function() {
+      triggerEvent(findSingle('.oppijataulukko tbody:eq(0) tr:eq(0) td.nimi a'), 'click')
     }
-
   }
 
   var api = {
