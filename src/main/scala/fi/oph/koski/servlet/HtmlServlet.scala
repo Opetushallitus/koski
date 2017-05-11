@@ -5,9 +5,9 @@ import java.util.Properties
 import fi.oph.koski.html.HtmlNodes
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.util.XML
 
-import scala.xml.transform.RewriteRule
-import scala.xml.{Elem, Node, NodeSeq}
+import scala.xml.{Elem, NodeSeq}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
   lazy val buildVersion: Option[String] = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
@@ -16,25 +16,20 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
     p.getProperty("vcsRevision", null)
   }
 
+  lazy val piwikSiteId: String = application.config.getString("piwik.siteId")
+
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {
     case 401 => redirectToLogin
     case _ => super.haltWithStatus(status)
   }
 
   def renderStatus(status: HttpStatus): Unit = {
-    val html = new RewriteRule {
-      override def transform(n: Node): Seq[Node] = n match {
-        case e: Elem =>
-          if (e.label == "head") {
-            e copy (child = e.child :+ htmlErrorObjectScript(status))
-          } else if (e.label == "script" && (e \ "@id").text == "bundle") {
-            NodeSeq.Empty
-          } else {
-            e copy (child = e.child flatMap transform)
-          }
-        case other => other
-      }
-    } transform htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode))
+    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode))) {
+      case e: Elem if e.label == "head" =>
+        e copy (child = (e.child :+ htmlErrorObjectScript(status)) ++ piwikTrackErrorObject)
+      case e: Elem if e.label == "script" && (e \ "@id").text == "bundle" =>
+        NodeSeq.Empty
+    }
 
     response.setStatus(status.statusCode)
     contentType = "text/html"

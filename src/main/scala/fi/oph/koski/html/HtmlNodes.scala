@@ -10,7 +10,7 @@ import scala.xml.Elem
 trait HtmlNodes extends PiwikNodes {
   def buildVersion: Option[String]
 
-  def htmlIndex(scriptBundleName: String): Elem =
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None): Elem =
     <html>
       <head>
         <title>Koski - Opintopolku.fi</title>
@@ -20,6 +20,7 @@ trait HtmlNodes extends PiwikNodes {
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" />
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/>
         <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        {piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body>
         <div id="content"></div>
