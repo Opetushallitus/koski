@@ -1,3 +1,6 @@
+## 11.5.2017
+- Lisätty valinnainen kenttä työssäoppimispaikan nimi työssäoppimisjaksoihin
+
 ## 4.5.2017
 
 - Lisätty valinnaiset alku- ja loppupäivämäärät ammatillisen opiskeluoikeuden lisätietojen hojks-osioon

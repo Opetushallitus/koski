@@ -218,6 +218,8 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
+  @Description("Työssäoppimispaikan nimi")
+  työssäoppimispaikka: Option[LocalizedString],
   @KoodistoUri("kunta")
   @Description("Kunta, jossa työssäoppiminen on tapahtunut")
   paikkakunta: Koodistokoodiviite,

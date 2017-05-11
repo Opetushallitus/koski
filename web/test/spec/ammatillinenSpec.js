@@ -322,6 +322,7 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
+            'Työssäoppimispaikka Sortti-asema\n' +
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
             'Laajuus 5 osp\n' +
             'Ympäristön hoitaminen kyllä 35 3\n' +
