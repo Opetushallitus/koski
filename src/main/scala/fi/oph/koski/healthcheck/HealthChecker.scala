@@ -13,7 +13,7 @@ trait HealthCheck extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
-  private lazy val oppija: Oppija = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis()))).right.get
+  private lazy val oppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
   def healthcheck: HttpStatus = try {
     application.oppijaFacade.findOppija(oid) match {
@@ -32,11 +32,15 @@ trait HealthCheck extends Logging {
 
   private def createHealthCheckUser: HttpStatus = {
     logger.info(s"Healtcheck user not found creating one with oid $oid")
-    application.oppijaFacade.createOrUpdate(oppija) match {
-      case Left(status) =>
-        logger.error(s"Problem creating healthchech oppija ${status.toString}")
-        status
-      case _ => HttpStatus.ok
+    oppija match {
+      case Left(status) => status
+      case Right(oppija) =>
+        application.oppijaFacade.createOrUpdate(oppija) match {
+          case Left(status) =>
+            logger.error(s"Problem creating healthchech oppija ${status.toString}")
+            status
+          case _ => HttpStatus.ok
+        }
     }
   }
 
