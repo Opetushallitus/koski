@@ -16,11 +16,10 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
       }
     }
     "Invalid credentials" in {
-      0 to 9 foreach { _ =>
-        post("user/login", Json.write(Login("kalle", "asdf")), headers = jsonContent) {
-          verifyResponseStatus(401)
-        }
+      post("user/login", Json.write(Login("kalle", "asdf")), headers = jsonContent) {
+        verifyResponseStatus(401)
       }
+
       // brute force prevented
       post("user/login", Json.write(Login("kalle", "kalle")), headers = jsonContent) {
         verifyResponseStatus(401)
