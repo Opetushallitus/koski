@@ -23,7 +23,7 @@ class BasicAuthSecurity(val db: DB, config: Config) extends GlobalExecutionConte
     !nextAttempt.exists(nextAllowedTime => nextAllowedTime.isAfter(now()))
   }
 
-  def attemptFailed(username: String): Unit = {
+  def loginFailed(username: String): Unit = {
     runDbSync((for {
       row <- Tables.FailedLoginAttempt.filter(r => r.username === username).map(r => (r.time, r.count)).forUpdate.result
       _ <- if (row.nonEmpty) {
@@ -34,6 +34,9 @@ class BasicAuthSecurity(val db: DB, config: Config) extends GlobalExecutionConte
       }
     } yield ()).transactionally)
   }
+
+  def loginSuccess(username: String): Unit =
+    runDbSync(Tables.FailedLoginAttempt.filter(_.username === username).delete)
 
   private def resetTime = Timestamp.valueOf(now().minus(resetPeriod))
 }

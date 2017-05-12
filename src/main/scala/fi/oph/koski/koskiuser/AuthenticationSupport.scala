@@ -89,7 +89,9 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
     }
 
     if (result.isLeft) {
-      application.basicAuthSecurity.attemptFailed(username)
+      application.basicAuthSecurity.loginFailed(username)
+    } else {
+      application.basicAuthSecurity.loginSuccess(username)
     }
     result
   }
