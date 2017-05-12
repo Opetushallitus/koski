@@ -5,6 +5,7 @@ describe('Oppijataulukko', function() {
   var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri 080154-770R'
   var eerola = 'Eerola, Jouni 081165-793C'
   var teija = 'Tekijä, Teija 251019-039B'
+  var editor = opinnot.opiskeluoikeusEditor()
 
   before(Authentication().login(), resetFixtures, page.openPage, wait.until(page.oppijataulukko.isReady))
 
@@ -148,7 +149,12 @@ describe('Oppijataulukko', function() {
       })
     })
     describe('Klikattaessa paluulinkkiä', function() {
-      before(opinnot.backToList)
+      before(
+        editor.edit,
+        editor.cancelChanges,
+        wait.until(function() { return !opinnot.isEditing() }),
+        opinnot.backToList
+      )
       it('Säilytetään valitut hakukriteerit', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['Koululainen, Kaisa', 'Koululainen, Kaisa'])
       })

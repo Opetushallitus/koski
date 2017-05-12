@@ -21,6 +21,7 @@ import delays from './delays'
 import {previousLocation, navigateToOppija, navigateWithQueryParams, locationP, showError} from './location'
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
+import {listviewPath} from './Oppijataulukko.jsx'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -139,10 +140,6 @@ const createState = (oppijaOid) => {
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
 
-const listviewPath = () => {
-  let prev = previousLocation()
-  return (prev && prev.path == '/koski/') ? prev : '/koski/'
-}
 
 const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">

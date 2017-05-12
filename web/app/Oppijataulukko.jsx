@@ -15,6 +15,11 @@ import SortingTableHeader from './SortingTableHeader.jsx'
 import delays from './delays'
 import Highlight from 'react-highlighter'
 import Link from './Link.jsx'
+import {currentLocation} from './location';
+
+export const listviewPath = () => {
+  return sessionStorage.previousListViewPath || '/koski/'
+}
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -22,6 +27,7 @@ export const Oppijataulukko = React.createClass({
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
     let nullSelection = {value : 'ei valintaa'}
+    sessionStorage.previousListViewPath = currentLocation().toString()
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
