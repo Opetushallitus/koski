@@ -1,11 +1,18 @@
 package fi.oph.koski.util
 
 import scala.collection.immutable.Seq
-import scala.xml.{Atom, Node, PrettyPrinter}
+import scala.xml.{Atom, Elem, Node, PrettyPrinter}
 
 object XML {
   def prettyPrint(xml: Node) = new PrettyPrinter(200, 2).format(xml)
+
   def texts(nodes: Seq[Node]) = nodes.map(_.text).flatMap(_.split("\n")).map(_.trim).filterNot(_ == "").mkString(" ")
+
+  def transform(node: Node)(pf: PartialFunction[Node, Seq[Node]]): Seq[Node] =
+    pf.applyOrElse(node, (node: Node) => node match {
+      case e: Elem => e.copy(child = e.child.flatMap(n => transform(n)(pf)))
+      case other => other
+    })
 
   /** An XML node to output unescaped string data, wrapped around CDATA marker.
     *
