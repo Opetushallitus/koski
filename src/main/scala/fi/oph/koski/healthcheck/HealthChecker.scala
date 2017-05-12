@@ -20,8 +20,12 @@ trait HealthCheck extends Logging {
       case Left(HttpStatus(404, _)) => createHealthCheckUser
       case Left(status) => status
       case Right(Oppija(henkilö: NimellinenHenkilö, _)) =>
-        if (application.perustiedotRepository.findOids(henkilö.kokonimi).contains(oid)) HttpStatus.ok
-        else KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from elasticsearch")
+        if (application.perustiedotRepository.findOids(henkilö.kokonimi).contains(oid)) {
+         HttpStatus.ok
+        } else {
+          logger.error(s"Healthcheck user $oid, not found from elasticsearch")
+          KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from elasticsearch")
+        }
       case Right(o) => KoskiErrorCategory.internalError(s"Healthcheck user didn't have a name ${o.henkilö}")
     }
   } catch {
