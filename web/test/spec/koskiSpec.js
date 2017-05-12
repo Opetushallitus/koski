@@ -18,7 +18,7 @@ describe('Koski', function() {
       })
       describe('Väärällä salasanalla', function() {
         before(login.openPage)
-        before(login.login('kalle', 'fail'))
+        before(login.login('omnia-tallentaja', 'fail'))
         before(wait.until(login.isLoginErrorVisible))
         it('näytetään virheilmoitus', function() {})
       })
