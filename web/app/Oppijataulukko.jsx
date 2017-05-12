@@ -15,7 +15,7 @@ import SortingTableHeader from './SortingTableHeader.jsx'
 import delays from './delays'
 import Highlight from 'react-highlighter'
 import Link from './Link.jsx'
-import {currentLocation} from './location';
+import {currentLocation} from './location'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
