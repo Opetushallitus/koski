@@ -14,6 +14,13 @@ export const removeExitHook = () => {
   }
 }
 
+export const checkExitHook = () => {
+  if (currentHook) {
+    return confirm(currentHook({}))
+  }
+  return true
+}
+
 export const withExitHook = (f, useExitHook = true) => (e) => {
   e.preventDefault()
   if (useExitHook) {

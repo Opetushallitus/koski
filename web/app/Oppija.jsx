@@ -55,7 +55,7 @@ const createState = (oppijaOid) => {
   const editBus = Bacon.Bus()
   const saveChangesBus = Bacon.Bus()
   const cancelChangesBus = Bacon.Bus()
-  const editingP = locationP.map(loc => !!loc.params.edit)
+  const editingP = locationP.map(loc => !!loc.params.edit).skipDuplicates()
 
   cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
   editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
@@ -64,7 +64,8 @@ const createState = (oppijaOid) => {
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
-  const loadOppijaE = Bacon.once(!!currentLocation().params.edit).merge(cancelChangesBus.map(false)).map((edit) => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' })))
+  const cancelE = editingP.changes().filter(R.complement(R.identity)) // Use location instead of cancelBus, because you can also use the back button to cancel changes
+  const loadOppijaE = Bacon.once(!!currentLocation().params.edit).merge(cancelE.map(false)).map((edit) => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' })))
 
   let changeBuffer = null
 
@@ -115,7 +116,7 @@ const createState = (oppijaOid) => {
     )
   })
 
-  const editE = editingP.skipDuplicates().changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
+  const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE) // :: EventStream [Model -> EventStream[Model]]
 

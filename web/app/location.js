@@ -1,16 +1,24 @@
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {removeExitHook} from './exitHook'
+import {removeExitHook, checkExitHook} from './exitHook'
 
 const locationBus = new Bacon.Bus()
+let previousLocation = currentLocation()
 
 export const navigateTo = function (path, event) {
+  var parsedPath = parsePath(path)
+  previousLocation = parsedPath
   history.pushState(null, null, path)
-  locationBus.push(parsePath(path))
+  locationBus.push(parsedPath)
   if (event) event.preventDefault()
 }
 
 window.onpopstate = function() {
+  if (!checkExitHook()) {
+    // Back-button navigation cancelled by exit hook
+    history.pushState(null, null, previousLocation.toString())
+    return
+  }
   locationBus.push(currentLocation())
 }
 
