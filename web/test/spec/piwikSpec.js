@@ -28,7 +28,7 @@ describe('Piwik', function() {
           koskiPage.waitUntilAnyOppijaSelected())
 
         it('Sivu luo kaksi Piwik-kutsua', function() {
-          expect(piwik.getQueuedMethodCalls().length).to.equal(2)
+          expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(2)
         })
 
         it('Sivu asettaa custom urlin raportoitavaksi', function() {
@@ -47,7 +47,7 @@ describe('Piwik', function() {
           before(piwik.reset, opinnotPage.backToList)
 
           it('Sivu luo kaksi Piwik-kutsua', function() {
-            expect(piwik.getQueuedMethodCalls().length).to.equal(2)
+            expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(2)
           })
 
           it('Sivu asettaa custom urlin raportoitavaksi', function() {
@@ -64,7 +64,7 @@ describe('Piwik', function() {
         before(openPage('/koski/nosuch', koskiPage.is404))
 
         it('Sivu luo kaksi Piwik-kutsua', function() {
-          expect(piwik.getQueuedMethodCalls().length).to.equal(2)
+          expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(2)
         })
 
         it('Sivu raportoi lataamisen', function() {
@@ -72,15 +72,7 @@ describe('Piwik', function() {
         })
 
         it('Sivu raportoi LoadError-tapahtuman', function() {
-          expect(piwik.getQueuedMethodCalls()[1]).to.deep.equal([
-            'trackEvent',
-            'LoadError',
-            JSON.stringify({
-              url: testFrame().document.origin + '/koski/nosuch',
-              httpStatus: 404,
-              text: 'Not found'
-            })
-          ])
+          expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {path: '/koski/nosuch', httpStatus: 404, text: 'Not found'})
         })
       })
 
@@ -90,16 +82,12 @@ describe('Piwik', function() {
           piwik.reset,
           koskiPage.oppijaHaku.search('#error#', koskiPage.isErrorShown))
 
+        it('Sivu luo yhden Piwik-kutsun', function() {
+          expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(1)
+        })
+
         it('Sivu raportoi RuntimeError-tapahtuman', function() {
-          expect(piwik.getQueuedMethodCalls()).to.deep.equal([[
-            'trackEvent',
-            'RuntimeError',
-            JSON.stringify({
-              message: 'http error 400',
-              httpStatus: 400,
-              url: '' + testFrame().document.location
-            })
-          ]])
+          expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {path: '/koski/', httpStatus: 400, message: 'http error 400'})
         })
       })
     })
@@ -116,16 +104,23 @@ describe('Piwik', function() {
       })
 
       it('Sivu raportoi LoadError-tapahtuman', function() {
-        expect(piwik.getQueuedMethodCalls()[1]).to.deep.equal([
-          'trackEvent',
-          'LoadError',
-          JSON.stringify({
-            url: testFrame().document.origin + '/koski/pulssi/nosuch',
-            httpStatus: 404,
-            text: 'Not found'
-          })
-        ])
+        expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {path: '/koski/pulssi/nosuch', httpStatus: 404, text: 'Not found'})
       })
     })
   })
+
+  function expectPiwikTrackError(piwikQueuedMethodCall, errorName, errorData) {
+    expect(piwikQueuedMethodCall).to.have.lengthOf(3)
+    expect(piwikQueuedMethodCall[0]).to.equal('trackEvent')
+    expect(piwikQueuedMethodCall[1]).to.equal(errorName)
+
+    var msgKey = errorData.text ? 'text' : 'message'
+    var expectedKeys = ['url', 'httpStatus'].concat(msgKey)
+    var json = JSON.parse(piwikQueuedMethodCall[2])
+
+    expect(json).to.have.keys(expectedKeys)
+    expect(json.url).to.match(new RegExp(errorData.path + '$'))
+    expect(json.httpStatus).to.equal(errorData.httpStatus)
+    expect(json[msgKey]).to.equal(errorData[msgKey])
+  }
 })
