@@ -1,4 +1,4 @@
-describe('Piwik', function() {
+describe('Piwik tracking', function() {
   var piwik = FakePiwik()
 
   describe('Koski-palvelun login-sivu', function() {
