@@ -1374,7 +1374,7 @@ describe('Perusopetus', function() {
                 expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
               })
               it('Esitäyttää pakolliset oppiaineet', function() {
-                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Musiikki', 'Kuvataide', 'Musiikki', 'Liikunta'])
+                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Kuvataide', 'Musiikki', 'Liikunta'])
                 expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
               })
               describe('Tutkinnon peruste', function() {
@@ -1420,7 +1420,7 @@ describe('Perusopetus', function() {
 
             describe('Merkitseminen valmiiksi', function() {
               function merkitseOppiaineetValmiiksi() {
-                var count = 6
+                var count = 5
                 for (var i = 0; i < count; i++) {
                   var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
                   var arvosana = oppiaine.propertyBySelector('.arvosana')
