@@ -55,7 +55,7 @@ export const SuoritusEditor = React.createClass({
     return Editor.shouldComponentUpdate.call(this, nextProps)
   }
 })
-SuoritusEditor.näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
+
 SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
     return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]

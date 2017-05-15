@@ -4,8 +4,7 @@ import {modelData, modelTitle, addContext} from './EditorModel.js'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
 import {yearFromIsoDateString} from '../date'
-import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor.jsx'
-import {SuoritusEditor} from './SuoritusEditor.jsx'
+import {OpiskeluoikeusEditor, näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor.jsx'
 import {modelItems} from './EditorModel'
 import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
 import {putOppija} from '../uusioppija/UusiOppija.jsx'
@@ -59,9 +58,9 @@ export const OppijaEditor = ({model}) => {
                         <ul className="opiskeluoikeudet">
                           {
                             modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                              modelItems(opiskeluoikeus, 'suoritukset').filter(SuoritusEditor.näytettäväPäätasonSuoritus).map((suoritus, suoritusIndex) =>
+                              näytettävätPäätasonSuoritukset(opiskeluoikeus).map((suoritusRyhmä, suoritusIndex) =>
                                 <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
-                                  <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
+                                  <span className="koulutus inline-text">{ modelTitle(suoritusRyhmä.suoritukset[0], 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
                                     ? <span className="inline-text">
                                         <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-

@@ -1287,6 +1287,10 @@ describe('Perusopetus', function() {
           expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
         })
 
+        it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
+          expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Fysiikka')
+        })
+
         describe('Toisen oppiaineen lisääminen', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog()
           before(editor.edit, opinnot.lisääSuoritus, wait.forAjax,
@@ -1297,6 +1301,10 @@ describe('Perusopetus', function() {
 
           it('Näytetään uusi suoritus', function() {
             expect(opinnot.suoritusTabs(1)).to.deep.equal(['Fysiikka', 'Matematiikka'])
+          })
+
+          it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
           })
         })
       })
