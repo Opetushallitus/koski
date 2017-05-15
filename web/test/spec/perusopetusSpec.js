@@ -1290,7 +1290,7 @@ describe('Perusopetus', function() {
         describe('Toisen oppiaineen lisääminen', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog()
           before(editor.edit, opinnot.lisääSuoritus, wait.forAjax,
-            lisääSuoritus.property('oppiaine').setValue('Matematiikka'),
+            lisääSuoritus.property('tunniste').setValue('Matematiikka'),
             lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
             lisääSuoritus.lisääSuoritus
           )

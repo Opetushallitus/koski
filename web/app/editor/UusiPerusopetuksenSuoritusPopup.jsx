@@ -1,6 +1,5 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
 import R from 'ramda'
 import Http from '../http'
 import * as L from 'partial.lenses'
@@ -15,7 +14,8 @@ import {
   modelData,
   modelLens,
   modelProperties,
-  modelSetValue
+  modelSetValue,
+  pushModelValue
 } from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
@@ -39,42 +39,40 @@ let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suorit
 export default UusiPerusopetuksenSuoritusPopup
 
 let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
+  let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
-  let oppiainePrototypeAtom = Atom(modelLookup(initialSuoritusModel, 'koulutusmoduuli'))
+  let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
+  let validP = errorP.not()
 
-  return (<div>
-    { oppiainePrototypeAtom.map(oppiainePrototype => {
-      let suoritusPrototype = modelSet(initialSuoritusModel, oppiainePrototype, 'koulutusmoduuli')
-      let { modelP, errorP } = accumulateModelStateAndValidity(suoritusPrototype)
-      let validP = errorP.not()
 
-      return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
-        <h2>Suorituksen lisäys</h2>
-        <div className="property oppiaine">
-          <span className="label">Oppiaine</span>
-        <span className="value">
-          <UusiPerusopetuksenOppiaineDropdown
-            oppiaineenSuoritus={suoritusPrototype}
-            selected={oppiainePrototypeAtom}
-            resultCallback={s => oppiainePrototypeAtom.set(s)}
-            pakollinen={true} enableFilter={false}
-            suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
+  return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
+    <h2>Suorituksen lisäys</h2>
+    {
+      modelP.map(oppiaineenSuoritus => {
+        return (<div key="props">
+          <PropertiesEditor 
+            context={oppiaineenSuoritus.context}
+            properties={modelProperties(oppiaineenSuoritus, ['koulutusmoduuli.tunniste', 'koulutusmoduuli.kieli', 'toimipiste'])}
+            getValueEditor={(p, getDefault) => {
+              return p.key == 'tunniste'
+                ? <UusiPerusopetuksenOppiaineDropdown
+                    oppiaineenSuoritus={oppiaineenSuoritus}
+                    selected={koulutusmoduuli(oppiaineenSuoritus)}
+                    resultCallback={oppiaine => pushModelValue(oppiaineenSuoritus, oppiaine.value, 'koulutusmoduuli')}
+                    pakollinen={true} enableFilter={false}
+                    suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
+                  />
+                : getDefault()
+              }
+            }
           />
-        </span>
-        </div>
-        {
-          modelP.map(model => {
-            return (<div key="props">
-                <PropertiesEditor context={model.context} properties={modelProperties(model, ['koulutusmoduuli.kieli', 'toimipiste'])} />
-              </div>)
-          })
-        }
+        </div>)
+      })
+    }
 
-        { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
-      </ModalDialog>)
-    })}
-  </div>)
+    { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
+  </ModalDialog>)
 }
 
 let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
