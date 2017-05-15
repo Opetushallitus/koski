@@ -26,6 +26,12 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
     pushModel(modelSetValue(wrappedModel, option))
   }
 
+  let labelClass = alternative => {
+    return 'alternative'
+        + (disabledValue === alternative.value ? ' disabled' : '')
+        + (wrappedModel.value && wrappedModel.value.value === alternative.value ? ' checked' : '')
+  }
+
   return wrappedModel.context.edit
     ? asRadiogroup
       ? (
@@ -34,7 +40,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
               alternativesP.map(alternatives =>
                 alternatives.map(alternative =>
                   <li key={ alternative.value }>
-                    <label className={disabledValue === alternative.value ? 'alternative disabled' : 'alternative'}>
+                    <label className={labelClass(alternative)}>
                       <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
                       {alternative.title}
                     </label>

@@ -142,6 +142,25 @@
         label.disabled {
           color: @color-disabled;
         }
+        label.alternative {
+          &:before {
+            content: '';
+            visibility: visible;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid @color-link-blue;
+            border-radius: 10px;
+            position: relative;
+            top: 2px;
+          }
+          &.disabled:before {
+            border: 2px solid @color-disabled;
+          }
+          &.checked:before {
+            background-color: @color-link-blue;
+          }
+        }
 
         ul {
           list-style: none;
@@ -159,24 +178,7 @@
             position: relative;
             display: inline-block;
             height: 15px;
-            margin: 0 12px 0 0;
-
-            &:before {
-              content: '';
-              visibility: visible;
-              display: inline-block;
-              width: 12px;
-              height: 12px;
-              border: 2px solid @color-link-blue;
-              border-radius: 10px;
-              position: relative;
-            }
-            &:disabled:before {
-              border: 2px solid @color-disabled;
-            }
-            &:checked:before {
-              background-color: @color-link-blue;
-            }
+            margin-left: -4px;
           }
         }
       }
