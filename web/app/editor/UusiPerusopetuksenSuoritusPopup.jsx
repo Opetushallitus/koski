@@ -19,7 +19,6 @@ import {
 } from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
-import {PropertyEditor} from './PropertyEditor.jsx'
 import {doActionWhileMounted} from '../util'
 import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
@@ -44,7 +43,7 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
   let oppiainePrototypeAtom = Atom(modelLookup(initialSuoritusModel, 'koulutusmoduuli'))
 
-  return <div>
+  return (<div>
     { oppiainePrototypeAtom.map(oppiainePrototype => {
       let suoritusPrototype = modelSet(initialSuoritusModel, oppiainePrototype, 'koulutusmoduuli')
       let { modelP, errorP } = accumulateModelStateAndValidity(suoritusPrototype)
@@ -66,16 +65,16 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         </div>
         {
           modelP.map(model => {
-            return <div key="props">
+            return (<div key="props">
                 <PropertiesEditor context={model.context} properties={modelProperties(model, ['koulutusmoduuli.kieli', 'toimipiste'])} />
-              </div>
+              </div>)
           })
         }
 
         { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
       </ModalDialog>)
     })}
-  </div>
+  </div>)
 }
 
 let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
