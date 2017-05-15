@@ -45,13 +45,12 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
   let validP = errorP.not()
 
-
   return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
     <h2>Suorituksen lisäys</h2>
     {
       modelP.map(oppiaineenSuoritus => {
         return (<div key="props">
-          <PropertiesEditor 
+          <PropertiesEditor
             context={oppiaineenSuoritus.context}
             properties={modelProperties(oppiaineenSuoritus, ['koulutusmoduuli.tunniste', 'koulutusmoduuli.kieli', 'toimipiste'])}
             getValueEditor={(p, getDefault) => {
