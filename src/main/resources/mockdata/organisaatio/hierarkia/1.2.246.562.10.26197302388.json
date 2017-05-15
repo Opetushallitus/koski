@@ -1,0 +1,27 @@
+{
+  "numHits": 1,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.26197302388",
+      "alkuPvm": 694216800000,
+      "lakkautusPvm": 996613200000,
+      "parentOid": "1.2.246.562.10.25412665926",
+      "parentOidPath": "1.2.246.562.10.26197302388/1.2.246.562.10.25412665926/1.2.246.562.10.00000000001",
+      "oppilaitosKoodi": "04044",
+      "oppilaitostyyppi": "oppilaitostyyppi_11#1",
+      "match": true,
+      "nimi": {
+        "fi": "Aapajoen koulu"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_851",
+      "children": [],
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": [
+        "OPPILAITOS"
+      ]
+    }
+  ]
+}

@@ -23,6 +23,7 @@ object MockOrganisaatiot {
   val ressunLukio = "1.2.246.562.10.62858797335"
   val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val ylioppilastutkintolautakunta = "1.2.246.562.10.43628088406"
+  val aapajoenKoulu = "1.2.246.562.10.26197302388"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -36,7 +37,8 @@ object MockOrganisaatiot {
     itäsuomenYliopisto,
     yrkehögskolanArcada,
     lahdenAmmattikorkeakoulu,
-    ressunLukio
+    ressunLukio,
+    aapajoenKoulu
   )
 
   // Näille "juuriorganisaatioille" on haettu omat json-filet mockausta varten. Jos tarvitaan uusi juuri, lisätään se tähän
@@ -45,7 +47,7 @@ object MockOrganisaatiot {
     helsinginKaupunki,
     helsinginYliopisto, jyväskylänYliopisto, tampereenYliopisto, yrkehögskolanArcada, lahdenAmmattikorkeakoulu, itäsuomenYliopisto, aaltoYliopisto,
     omnia, winnova,
-    ylioppilastutkintolautakunta)
+    ylioppilastutkintolautakunta, aapajoenKoulu)
 }
 
 object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodistoViitePalvelu) {
