@@ -22,7 +22,7 @@ import ModalDialog from './ModalDialog.jsx'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {doActionWhileMounted} from '../util'
 import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
-import {UusiPerusopetuksenOppiaineEditor} from './UusiPerusopetuksenOppiaineEditor.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
   ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
@@ -42,10 +42,11 @@ export default UusiPerusopetuksenSuoritusPopup
 let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
-  let suoritusPrototypeAtom = Atom(initialSuoritusModel)
+  let oppiainePrototypeAtom = Atom(modelLookup(initialSuoritusModel, 'koulutusmoduuli'))
 
   return <div>
-    { suoritusPrototypeAtom.map(suoritusPrototype => {
+    { oppiainePrototypeAtom.map(oppiainePrototype => {
+      let suoritusPrototype = modelSet(initialSuoritusModel, oppiainePrototype, 'koulutusmoduuli')
       let { modelP, errorP } = accumulateModelStateAndValidity(suoritusPrototype)
       let validP = errorP.not()
 
@@ -54,10 +55,10 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         <div className="property oppiaine">
           <span className="label">Oppiaine</span>
         <span className="value">
-          <UusiPerusopetuksenOppiaineEditor
+          <UusiPerusopetuksenOppiaineDropdown
             oppiaineenSuoritus={suoritusPrototype}
-            selected={suoritusPrototypeAtom}
-            resultCallback={s => suoritusPrototypeAtom.set(s)}
+            selected={oppiainePrototypeAtom}
+            resultCallback={s => oppiainePrototypeAtom.set(s)}
             pakollinen={true} enableFilter={false}
             suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
           />

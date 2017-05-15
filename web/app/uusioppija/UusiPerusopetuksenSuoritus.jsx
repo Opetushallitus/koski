@@ -4,8 +4,8 @@ import Atom from 'bacon.atom'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from '../http'
-import {UusiPerusopetuksenOppiaineEditor} from '../editor/UusiPerusopetuksenOppiaineEditor.jsx'
-import {accumulateModelState, modelLookup, modelData} from '../editor/EditorModel'
+import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
+import {accumulateModelState, modelLookup, modelData, modelSet} from '../editor/EditorModel'
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
@@ -108,12 +108,12 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
   return (<span>
     {
       suoritusPrototypeP.map(oppiaineenSuoritus => {
-        let suoritusPrototypeAtom = Atom(undefined) // Valittu suoritusprototyyppi, jossa koulutusmoduuli asetettu UusiPerusopetuksenOppiaineEditorilla
+        let oppiainePrototypeAtom = Atom(undefined) // Valittu oppiaine/koulutusmoduuliprototyyppi
         if (!oppiaineenSuoritus) return null
         oppiaineenSuoritus = Editor.setupContext(oppiaineenSuoritus, {edit:true, editorMapping})
 
-        let suoritusModelP = suoritusPrototypeAtom.flatMapLatest(oppiainePrototype => {
-          return oppiainePrototype && accumulateModelState(oppiainePrototype)
+        let suoritusModelP = oppiainePrototypeAtom.flatMapLatest(oppiainePrototype => {
+          return oppiainePrototype && accumulateModelState(modelSet(oppiaineenSuoritus, oppiainePrototype, 'koulutusmoduuli'))
         }).toProperty()
 
         let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom, (suoritus, diaarinumero) => {
@@ -124,7 +124,7 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
 
         return (<span>
           <Peruste suoritusP={Bacon.constant(modelData(oppiaineenSuoritus))} perusteAtom={perusteAtom} />
-          <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineEditor oppiaineenSuoritus={oppiaineenSuoritus} selected={suoritusPrototypeAtom} resultCallback={s => suoritusPrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
+          <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineDropdown oppiaineenSuoritus={oppiaineenSuoritus} selected={oppiainePrototypeAtom} resultCallback={s => oppiainePrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
             model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
           }

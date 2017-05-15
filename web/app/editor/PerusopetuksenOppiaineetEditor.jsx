@@ -21,11 +21,12 @@ import {
   oneOfPrototypes,
   findModelProperty,
   modelProperties,
-  addContext
+  addContext,
+  modelSet
 } from './EditorModel'
 import {sortGrades} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens, suoritusKesken} from './Suoritus'
-import {UusiPerusopetuksenOppiaineEditor} from './UusiPerusopetuksenOppiaineEditor.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 
@@ -69,12 +70,11 @@ const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   return (<span>{groups.map(pakollisuus => {
     let pakollinen = pakollisuus === 'Pakolliset oppiaineet'
     let suoritukset = groupedSuoritukset[pakollisuus] || []
-    let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
     return (<section className={pakollinen ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
       {(suoritukset.length > 0 || model.context.edit) && (<section>
         {groups.length > 1 && <h5>{pakollisuus}</h5>}
         <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={pakollinen} />
-        <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={pakollinen} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää${pakollinen ? ' pakollinen' : ' valinnainen'} oppiaine`}/>
+        <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} pakollinen={pakollinen} resultCallback={addOppiaine(model, uusiOppiaineenSuoritus)} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää${pakollinen ? ' pakollinen' : ' valinnainen'} oppiaine`}/>
       </section>)
       }
       {
@@ -85,16 +85,17 @@ const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
 }
 
 const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
-  let addOppiaine = oppiaine => pushModel(oppiaine, model.context.changeBus)
   let suoritukset = modelItems(model, 'osasuoritukset')
   return (<span>
     <section>
       <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={false} />
-      <UusiPerusopetuksenOppiaineEditor suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} resultCallback={addOppiaine} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää oppiaine`} />
+      <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus} resultCallback={addOppiaine(model, uusiOppiaineenSuoritus)} organisaatioOid={modelData(model.context.toimipiste).oid} placeholder={`Lisää oppiaine`} />
     </section>
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)
 }
+
+let addOppiaine = (model, uusiOppiaineenSuoritus) => oppiaine => pushModel(modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli'), model.context.changeBus)
 
 const KäyttäytymisenArvioEditor = ({model}) => {
   let edit = model.context.edit
