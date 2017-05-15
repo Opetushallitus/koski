@@ -10,6 +10,7 @@ export const OrganisaatioEditor = ({model, organisaatioTyypit}) => {
         onSelectionChanged = { (org) => pushModel(modelSetValue(model, { data: { oid: org.oid, nimi: org.nimi }, classes: model.value.classes })) }
         canSelectOrg={canSelectOrg}
         clearText=""
+        noSelectionText="Valitse..."
     />
     : <span>{modelData(model, 'nimi.fi')}</span>
 }

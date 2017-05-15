@@ -60,6 +60,7 @@ const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilait
         shouldShowOrg={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
         canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') }
         clearText="tyhjennä"
+        noSelectionText="Valitse..."
       />
     ))
   }
