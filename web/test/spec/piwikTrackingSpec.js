@@ -19,6 +19,7 @@ describe('Piwik tracking', function() {
         expect(piwik.getQueuedMethodCalls()).to.deep.equal([['trackPageView', '/koski/']])
       })
 
+      /*
       describe('Siirtyäessä oppijan tietoihin', function() {
         var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+$/
 
@@ -59,6 +60,7 @@ describe('Piwik tracking', function() {
           })
         })
       })
+      */
 
       describe('Palvelimen palauttaessa 404-sivun', function() {
         before(openPage('/koski/nosuch', koskiPage.is404))
