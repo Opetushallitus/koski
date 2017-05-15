@@ -149,7 +149,8 @@ object KoodistoEnumModelBuilder {
   val defaults = Map(
     "kieli" -> "FI",
     "arviointiasteikkoyleissivistava" -> "S",
-    "suorituksentila" -> "KESKEN"
+    "suorituksentila" -> "KESKEN",
+    "perusopetuksensuoritustapa" -> "koulutus"
   )
 
   def koodistoEnumValue(localization: LocalizedHtml)(k: Koodistokoodiviite) = {

@@ -224,14 +224,17 @@ export const modelProperty = (mainModel, path) => {
   }
   var found = mainModel.value.properties.find(p => p.key == path[0])
   if (!found) {
-    throw new Error('Property ' + path[0] + ' not found')
+    return undefined
   }
   return contextualizeProperty(mainModel)(found)
 }
 
 export const modelProperties = (mainModel, pathsOrFilter) => {
   if (pathsOrFilter && pathsOrFilter instanceof Array) {
-    return pathsOrFilter.map(p => modelProperty(mainModel, p))
+    return pathsOrFilter.flatMap(p => {
+      let prop = modelProperty(mainModel, p)
+      return prop ? [prop] : []
+    })
   }
   var props = modelPropertiesRaw(mainModel)
   if (pathsOrFilter && typeof pathsOrFilter == 'function') {

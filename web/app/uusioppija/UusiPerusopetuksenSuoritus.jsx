@@ -38,8 +38,7 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
       return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
       var suoritusTapaJaToimipiste = {
-        toimipiste: oppilaitos,
-        suoritustapa: {koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'}
+        toimipiste: oppilaitos
       }
       return R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)
     }
@@ -105,11 +104,11 @@ const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelm
 
 const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
 
-const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // Yleinen prototyyppi suoritukselle
+const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
   return (<span>
     {
       suoritusPrototypeP.map(oppiaineenSuoritus => {
-        let suoritusPrototypeAtom = Atom(undefined) // Valittu prototyyppi suoritukselle, valitaan UusiPerusopetuksenOppiaineEditorilla
+        let suoritusPrototypeAtom = Atom(undefined) // Valittu suoritusprototyyppi, jossa koulutusmoduuli asetettu UusiPerusopetuksenOppiaineEditorilla
         if (!oppiaineenSuoritus) return null
         oppiaineenSuoritus = Editor.setupContext(oppiaineenSuoritus, {edit:true, editorMapping})
 

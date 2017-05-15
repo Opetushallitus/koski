@@ -61,7 +61,9 @@ Editor.shouldComponentUpdate = function(nextProps) {
     result = true
   }
   if (result) {
-    //console.log('update', this.props.model.path)
+    //console.log('update', next.path)
+  } else  {
+    //console.log('skip', next.path)
   }
   return result
 }
@@ -71,6 +73,9 @@ let pathHash = (m) => {
     if (typeof m.path[i] == 'number') {
       hash += m.path[i]
     }
+  }
+  if (m.context && m.context.changeBus) {
+    hash += m.context.changeBus.id
   }
   return hash
 }

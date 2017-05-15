@@ -1,5 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
 import R from 'ramda'
 import Http from '../http'
 import * as L from 'partial.lenses'
@@ -18,16 +19,67 @@ import {
 } from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
+import {PropertyEditor} from './PropertyEditor.jsx'
 import {doActionWhileMounted} from '../util'
 import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
+import {UusiPerusopetuksenOppiaineEditor} from './UusiPerusopetuksenOppiaineEditor.jsx'
 
-const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
+const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
+  ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
+  : vuosiluokanSuoritusPopup({opiskeluoikeus, resultCallback})
+
+UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
+    let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
+    return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
+  }
+UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) => isOppiaineenSuoritus(opiskeluoikeus)
+  ? 'lisää oppiaineen suoritus' : 'lisää vuosiluokan suoritus'
+
+let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suoritukset').map(suoritus => suoritus.tyyppi.koodiarvo).includes('perusopetuksenoppiaineenoppimaara')
+
+export default UusiPerusopetuksenSuoritusPopup
+
+let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
-  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
+  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
+  let suoritusPrototypeAtom = Atom(initialSuoritusModel)
 
-  let indexForNewItem = modelItems(suoritukset).length
-  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === 'perusopetuksenvuosiluokansuoritus')
-  let initialSuoritusModel = contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
+  return <div>
+    { suoritusPrototypeAtom.map(suoritusPrototype => {
+      let { modelP, errorP } = accumulateModelStateAndValidity(suoritusPrototype)
+      let validP = errorP.not()
+
+      return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
+        <h2>Suorituksen lisäys</h2>
+        <div className="property oppiaine">
+          <span className="label">Oppiaine</span>
+        <span className="value">
+          <UusiPerusopetuksenOppiaineEditor
+            oppiaineenSuoritus={suoritusPrototype}
+            selected={suoritusPrototypeAtom}
+            resultCallback={s => suoritusPrototypeAtom.set(s)}
+            pakollinen={true} enableFilter={false}
+            suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
+          />
+        </span>
+        </div>
+        {
+          modelP.map(model => {
+            return <div key="props">
+                <PropertiesEditor context={model.context} properties={modelProperties(model, ['koulutusmoduuli.kieli', 'toimipiste'])} />
+              </div>
+          })
+        }
+
+        { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
+      </ModalDialog>)
+    })}
+  </div>
+}
+
+let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
+  let submitBus = Bacon.Bus()
+  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenvuosiluokansuoritus')
 
   initialSuoritusModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialSuoritusModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
@@ -61,11 +113,13 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
     }
   </div>)
 }
-UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
-  let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
-  return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
+
+let newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
+  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
+  let indexForNewItem = modelItems(suoritukset).length
+  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
+  return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 }
-export default UusiPerusopetuksenSuoritusPopup
 
 let valittuLuokkaAsteP = (model) => {
   let luokkaAsteLens = modelLens('koulutusmoduuli.tunniste')

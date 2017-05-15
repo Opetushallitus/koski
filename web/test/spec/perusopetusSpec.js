@@ -1282,8 +1282,22 @@ describe('Perusopetus', function() {
           addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
           addOppija.selectOppiaine('Fysiikka'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka'))
+
         it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
           expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
+        })
+
+        describe('Toisen oppiaineen lisääminen', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog()
+          before(editor.edit, opinnot.lisääSuoritus, wait.forAjax,
+            lisääSuoritus.property('oppiaine').setValue('Matematiikka'),
+            lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+            lisääSuoritus.lisääSuoritus
+          )
+
+          it('Näytetään uusi suoritus', function() {
+            expect(opinnot.suoritusTabs(1)).to.deep.equal(['Fysiikka', 'Matematiikka'])
+          })
         })
       })
     })
