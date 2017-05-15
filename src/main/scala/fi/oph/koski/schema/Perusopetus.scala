@@ -381,7 +381,6 @@ object PakollisetOppiaineet {
       List(
         PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
         MuuPeruskoulunOppiaine(aine("MA")),
-        MuuPeruskoulunOppiaine(aine("MU")),
         MuuPeruskoulunOppiaine(aine("KU")),
         MuuPeruskoulunOppiaine(aine("MU")),
         MuuPeruskoulunOppiaine(aine("LI"))
