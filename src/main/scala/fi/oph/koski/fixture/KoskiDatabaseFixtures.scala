@@ -43,7 +43,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
     runDbSync(Preferences.delete)
 
     validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
-      val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus).right.get.id
+      val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
       perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö))
     }
   }

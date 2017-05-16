@@ -55,9 +55,9 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
     try {
-      runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus).transactionally)
+      runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
     } catch {
       case e:SQLException if e.getSQLState == "23505" =>
         // 23505 = Unique constraint violation
@@ -104,11 +104,15 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     query.result
   }
 
-  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluoikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluoikeus)) =>
-          updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+          if (allowUpdate) {
+            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+          } else {
+            DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
+          }
         case Right(None) =>
           oppijaOid.verified match {
             case Some(henkilö) =>

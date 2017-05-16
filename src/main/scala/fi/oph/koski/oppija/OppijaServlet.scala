@@ -23,10 +23,14 @@ import org.scalatra.GZipSupport
 class OppijaServlet(val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
-  put("/") {
+  post("/") { putSingle(false) }
+
+  put("/") { putSingle(true) }
+
+  private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
       val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
-      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson)
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
       renderEither(result)
     }(parseErrorHandler = handleUnparseableJson)}
   }
@@ -38,7 +42,7 @@ class OppijaServlet(val application: KoskiApplication)
       val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
 
       val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
-        putter.putSingle(results._1, results._2)
+        putter.putSingle(results._1, results._2, true)
       }.toList
 
       response.setStatus(batchResults.map {
@@ -106,9 +110,9 @@ class OppijaServlet(val application: KoskiApplication)
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
 case class UpdateContext(user: KoskiSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
-  def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue, allowUpdate: Boolean): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
-    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.oppijaFacade.createOrUpdate(_)(user))
+    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.oppijaFacade.createOrUpdate(_, allowUpdate)(user))
 
     result.left.foreach { case HttpStatus(code, errors) =>
       logger(user).warn("Opiskeluoikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))

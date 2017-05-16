@@ -16,7 +16,7 @@ class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: Lis
 
   override def findById(id: Int)(implicit user: KoskiSession) = main.findById(id)
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluoikeus)
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate)
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession) = (main :: aux).par.flatMap(_.findByOppijaOid(oid)).toList
 

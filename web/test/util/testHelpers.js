@@ -123,6 +123,10 @@ function reloadTestFrame() {
   testFrame().document.location.reload()
 }
 
+function goBack() {
+  testFrame().history.back()
+}
+
 function triggerEvent(element, eventName) {
   element = S(element)
   if (!element.length) {

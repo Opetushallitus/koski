@@ -15,7 +15,7 @@ export const UusiOppija = ({hetu}) => {
   const henkilöErrorsAtom = Atom([])
   const createOppijaP = Bacon.combineWith(henkilöAtom, opiskeluoikeusAtom, toCreateOppija)
   const createOppijaE = submitBus.map(createOppijaP)
-    .flatMapLatest(putOppija)
+    .flatMapLatest(postNewOppija)
     .map(oppija => ({oid: oppija.henkilö.oid}))
 
   createOppijaE.onValue(navigateToOppija)
@@ -51,4 +51,4 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
   }
 }
 
-export const putOppija = (oppija) => Http.put('/koski/api/oppija', oppija, { errorHandler: showError, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})
+export const postNewOppija = (oppija) => Http.post('/koski/api/oppija', oppija, { errorHandler: showError, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})

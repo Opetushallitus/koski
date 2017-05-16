@@ -39,7 +39,7 @@ trait HealthCheck extends Logging {
     oppija match {
       case Left(status) => status
       case Right(oppija) =>
-        application.oppijaFacade.createOrUpdate(oppija) match {
+        application.oppijaFacade.createOrUpdate(oppija, true) match {
           case Left(status) =>
             logger.error(s"Problem creating healthchech oppija ${status.toString}")
             status

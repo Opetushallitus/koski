@@ -7,7 +7,7 @@ import {yearFromIsoDateString} from '../date'
 import {OpiskeluoikeusEditor, näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor.jsx'
 import {modelItems} from './EditorModel'
 import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
-import {putOppija} from '../uusioppija/UusiOppija.jsx'
+import {postNewOppija} from '../uusioppija/UusiOppija.jsx'
 import {reloadOppija} from '../Oppija.jsx'
 import {userP} from '../user'
 import {navigateTo} from '../location'
@@ -33,7 +33,7 @@ export const OppijaEditor = ({model}) => {
           opiskeluoikeudet: [opiskeluoikeus]
         }
         var tyyppi = opiskeluoikeus.tyyppi.koodiarvo
-        putOppija(oppija).onValue(() => {
+        postNewOppija(oppija).onValue(() => {
           reloadOppija()
           navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
         })

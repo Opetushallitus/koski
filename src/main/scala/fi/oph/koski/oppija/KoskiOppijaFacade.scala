@@ -27,7 +27,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
 
-  def createOrUpdate(oppija: Oppija)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h:UusiHenkilö if h.hetu.isDefined =>
         Hetu.validate(h.hetu.get, acceptSynthetic = false).right.flatMap { hetu =>
@@ -47,7 +47,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
           Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         } else {
           val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus)
+            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate)
           }
 
           opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -61,7 +61,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
     }
   }
 
-  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
+  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val verb = result match {
         case _: Updated => "Päivitetty"
@@ -88,7 +88,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
-      val result = OpiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus)
+      val result = OpiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate)
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)

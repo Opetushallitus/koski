@@ -130,6 +130,33 @@ object KoskiApiOperations extends ApiGroup {
       )
     )
     )
+
+    val post = add(ApiOperation(
+      "POST", "/koski/api/oppija",
+      "Lisää oppijalle opiskeluoikeuksia.",
+      <div>
+        <p>Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste Koski ja Opintopolku-järjestelmissä.
+          Lisäksi paluuarvossa on lista päivitetyistä/luoduista opiskeluoikeuksista tunnisteineen ja versioineen.</p>
+
+        <p>
+          Syötedata validoidaan json-schemaa ja tiettyjä sisäisiä sääntöjä vasten ja päivitys hyväksytään vain, mikäli validointi menee läpi. Ks. paluukoodit alla.
+        </p>
+      </div>,
+      Examples.examples,
+      Nil,
+      List(
+        KoskiErrorCategory.ok.createdOrUpdated,
+        KoskiErrorCategory.conflict.exists,
+        KoskiErrorCategory.unauthorized,
+        KoskiErrorCategory.forbidden.organisaatio,
+        KoskiErrorCategory.badRequest.format,
+        KoskiErrorCategory.badRequest.validation,
+        KoskiErrorCategory.notFound.oppijaaEiLöydy,
+        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia,
+        KoskiErrorCategory.unsupportedMediaType.jsonOnly
+      )
+    )
+    )
   }
   add(oppija)
 

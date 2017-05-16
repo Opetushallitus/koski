@@ -1315,7 +1315,7 @@ describe('Perusopetus', function() {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataPerusopetus(),
-          addOppija.goBack,
+          goBack,
           wait.until(page.oppijataulukko.isVisible)
         )
         describe('Käyttöliittymän tila', function() {
@@ -1333,6 +1333,38 @@ describe('Perusopetus', function() {
           )
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+        describe('Back-nappi lisäyksen jälkeen', function() {
+          before(
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'),
+            goBack,
+            wait.forAjax,
+            addOppija.enterValidDataPerusopetus()
+          )
+          it('Uuden oppijan lisäys on mahdollista', function() {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+
+          describe('Lisättäessä uudelleen', function() {
+            before(addOppija.submit, wait.until(page.isErrorShown))
+
+            it('Lisäys epäonnistuu, koska oppijalla on jo vastaava opiskeluoikeus läsnä-tilassa', function() {
+              expect(page.getErrorMessage()).to.equal('Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.')
+            })
+/*
+            describe('Muutettaessa opiskeluoikeus Valmistunut-tilaan', function() {
+              before(
+                page.openPage,
+                page.oppijaHaku.searchAndSelect('230872-7258'),
+                editor.edit, opinnot.tilaJaVahvistus.merkitseKeskeytyneeksi,
+                opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna, editor.saveChanges
+              )
+              it('Toisen opiskeluoikeuden lisäys onnistuu', function() {
+
+              })
+            })
+*/
           })
         })
       })
