@@ -37,7 +37,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
       <div className="opiskeluoikeus">
         <h3>
           <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
-          <span className="koulutus inline-text">{näytettävätPäätasonSuoritukset(model)[0].title}</span>
+          <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
            { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">(
                     <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
@@ -161,13 +161,22 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   }
 })
 
-let näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].includes(modelData(s).tyyppi.koodiarvo)
+let näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
 
 export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   let päätasonSuoritukset = modelItems(opiskeluoikeus, 'suoritukset').filter(näytettäväPäätasonSuoritus)
-  let onOppiaineenSuoritus = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo == 'perusopetuksenoppiaineenoppimaara'
-  let grouped = R.toPairs(R.groupBy(onOppiaineenSuoritus, päätasonSuoritukset)).map(([oppiaine, suoritukset]) => {
-    let title = oppiaine && suoritukset.length > 1 ? `${suoritukset.length} oppiainetta` : modelTitle(suoritukset[0], 'koulutusmoduuli')
+  let makeGroupTitle = (suoritus) => {
+    switch (modelData(suoritus, 'tyyppi').koodiarvo) {
+      case 'perusopetuksenoppiaineenoppimaara': return 'oppiainetta' // i18n
+      case 'korkeakoulunopintojakso': return 'opintojaksoa' // i18n
+      default: return ''
+    }
+  }
+  let grouped = R.toPairs(R.groupBy(makeGroupTitle, päätasonSuoritukset)).map(([groupTitle, suoritukset]) => {
+    console.log(groupTitle, suoritukset.length)
+    let title = groupTitle && (suoritukset.length > 1)
+      ? `${suoritukset.length} ${groupTitle}`
+      : modelTitle(suoritukset[0], 'koulutusmoduuli')
     return { title, suoritukset }
   })
   return grouped
