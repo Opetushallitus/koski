@@ -22,7 +22,11 @@ window.onpopstate = function() {
     history.pushState(null, null, previousLocation.toString())
     return
   }
-  locationBus.push(currentLocation())
+  const prevLoc = previousLocation
+  const nextLoc = currentLocation()
+  previousLocation = nextLoc
+  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
+  locationBus.push(nextLoc)
 }
 
 locationBus.mapError().onValue(removeExitHook)

@@ -127,6 +127,10 @@ function goBack() {
   testFrame().history.back()
 }
 
+function goForward() {
+  testFrame().history.forward()
+}
+
 function triggerEvent(element, eventName) {
   element = S(element)
   if (!element.length) {
