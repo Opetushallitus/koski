@@ -173,7 +173,6 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
     }
   }
   let grouped = R.toPairs(R.groupBy(makeGroupTitle, päätasonSuoritukset)).map(([groupTitle, suoritukset]) => {
-    console.log(groupTitle, suoritukset.length)
     let title = groupTitle && (suoritukset.length > 1)
       ? `${suoritukset.length} ${groupTitle}`
       : modelTitle(suoritukset[0], 'koulutusmoduuli')

@@ -1352,19 +1352,6 @@ describe('Perusopetus', function() {
             it('Lisäys epäonnistuu, koska oppijalla on jo vastaava opiskeluoikeus läsnä-tilassa', function() {
               expect(page.getErrorMessage()).to.equal('Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.')
             })
-/*
-            describe('Muutettaessa opiskeluoikeus Valmistunut-tilaan', function() {
-              before(
-                page.openPage,
-                page.oppijaHaku.searchAndSelect('230872-7258'),
-                editor.edit, opinnot.tilaJaVahvistus.merkitseKeskeytyneeksi,
-                opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna, editor.saveChanges
-              )
-              it('Toisen opiskeluoikeuden lisäys onnistuu', function() {
-
-              })
-            })
-*/
           })
         })
       })
