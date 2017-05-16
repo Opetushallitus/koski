@@ -1223,6 +1223,21 @@ describe('Perusopetus', function() {
             })
           })
 
+          describe('Toisen samanlaisen opiskeluoikeuden lisääminen kun opiskeluoikeus on päättynyt', function() {
+            before(
+              editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.tallenna, editor.saveChanges,
+              opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
+              addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
+              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulu'),
+              wait.forAjax
+            )
+            it('Lisääminen onnistuu', function() {
+              expect(opinnot.getOppilaitos(0)).to.equal('Jyväskylän normaalikoulu')
+              expect(opinnot.getOppilaitos(1)).to.equal('Jyväskylän normaalikoulu')
+            })
+          })
+
+
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,

@@ -56,12 +56,16 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
-    try {
-      runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
-    } catch {
-      case e:SQLException if e.getSQLState == "23505" =>
-        // 23505 = Unique constraint violation
-        Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
+    if (!allowUpdate && opiskeluoikeus.id.isDefined) {
+      Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja id-kenttään"))
+    } else {
+      try {
+        runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
+      } catch {
+        case e:SQLException if e.getSQLState == "23505" =>
+          // 23505 = Unique constraint violation
+          Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
+      }
     }
   }
 
@@ -69,34 +73,26 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
   }
 
-  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, Option[OpiskeluoikeusRow]], NoStream, Read] = identifier match{
+  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = identifier match{
     case PrimaryKey(id) => {
       findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map { rows =>
         rows.headOption match {
-          case Some(oikeus) => Right(Some(oikeus))
+          case Some(oikeus) => Right(List(oikeus))
           case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
         }
       }
     }
 
     case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) => {
-      findUnique(oppijaOid, { row =>
+      findByOppijaOidAction(oppijaOid).map(_.filter { row =>
         row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
-      })
+      }).map(_.toList).map(Right(_))
     }
 
     case i:OppijaOidOrganisaatioJaTyyppi => {
-      findUnique(i.oppijaOid, { row =>
+      findByOppijaOidAction(i.oppijaOid).map(_.filter { row =>
         OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
-      })
-    }
-  }
-
-  private def findUnique(oppijaOid: String, f: OpiskeluoikeusRow => Boolean)(implicit user: KoskiSession) = {
-    findByOppijaOidAction(oppijaOid).map(_.filter(f).toList).map {
-      case List(singleRow) => Right(Some(singleRow))
-      case Nil => Right(None)
-      case multipleRows => Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${multipleRows.map(_.id)})"))
+      }).map(_.toList).map(Right(_))
     }
   }
 
@@ -105,24 +101,30 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluoikeusRow]] =>
-      rows match {
-        case Right(Some(vanhaOpiskeluoikeus)) =>
-          if (allowUpdate) {
-            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
-          } else {
-            DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
+    findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, List[OpiskeluoikeusRow]] =>
+      (allowUpdate, rows) match {
+        case (_, Right(Nil)) => createAction(oppijaOid, opiskeluoikeus)
+        case (true, Right(List(vanhaOpiskeluoikeus))) =>
+          updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+        case (true, Right(rows)) =>
+          DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.id)})")))
+        case (false, Right(rows)) =>
+          rows.find(!_.toOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
+            case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
+            case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
           }
-        case Right(None) =>
-          oppijaOid.verified match {
-            case Some(henkilö) =>
-              henkilöCache.addHenkilöAction(henkilö).flatMap { _ =>
-                createAction(henkilö.oid, opiskeluoikeus)
-              }
-            case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
-          }
-        case Left(err) => DBIO.successful(Left(err))
+        case (_, Left(err)) => DBIO.successful(Left(err))
       }
+    }
+  }
+
+  private def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
+    oppijaOid.verified match {
+      case Some(henkilö) =>
+        henkilöCache.addHenkilöAction(henkilö).flatMap { _ =>
+          createAction(henkilö.oid, opiskeluoikeus)
+        }
+      case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
     }
   }
 
