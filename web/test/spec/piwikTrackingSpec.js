@@ -13,13 +13,16 @@ describe('Piwik tracking', function() {
     describe('Kirjautumisen jälkeen', function() {
       var koskiPage = KoskiPage()
 
-      before(Authentication().login(), resetFixtures, koskiPage.openPage)
+      before(
+        Authentication().login(),
+        resetFixtures,
+        koskiPage.openPage,
+        wait.until(koskiPage.isReady))
 
       it('Sivu raportoi lataamisen', function() {
         expect(piwik.getQueuedMethodCalls()).to.deep.equal([['trackPageView', '/koski/']])
       })
 
-      /*
       describe('Siirtyäessä oppijan tietoihin', function() {
         var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+$/
 
@@ -60,7 +63,6 @@ describe('Piwik tracking', function() {
           })
         })
       })
-      */
 
       describe('Palvelimen palauttaessa 404-sivun', function() {
         before(openPage('/koski/nosuch', koskiPage.is404))
