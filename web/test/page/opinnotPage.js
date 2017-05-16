@@ -324,7 +324,7 @@ function Editor(elem) {
     subEditor: function(selector) {
       return Editor(function() { return findSingle(selector, elem()) })
     },
-    isEditBarVisible() {
+    isEditBarVisible: function() {
       return S("#edit-bar").hasClass("visible")
     },
     elem: elem
