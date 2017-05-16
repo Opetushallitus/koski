@@ -32,6 +32,7 @@ case class KoskiDatabaseConfig(c: Config) {
   def isLocal = host == "localhost"
   def isRemote = !isLocal
   def toSlickDatabase = Database.forConfig("", config)
+  def isReadonly: Boolean = c.getBoolean("db.readonly")
 }
 
 
@@ -46,7 +47,9 @@ class KoskiDatabase(c: Config) extends Logging {
 
   val db: DB = config.toSlickDatabase
 
-  migrateSchema
+  if (!config.isReadonly) {
+    migrateSchema
+  }
 
   private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
     if (config.isLocal) {
