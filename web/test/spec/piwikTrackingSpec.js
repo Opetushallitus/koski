@@ -88,7 +88,11 @@ describe('Piwik-seuranta', function() {
         })
 
         it('Sivu raportoi LoadError-tapahtuman', function() {
-          expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {path: '/koski/nosuch', httpStatus: 404, text: 'Not found'})
+          expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {
+            location: /\/koski\/nosuch$/,
+            httpStatus: 404,
+            text: 'Not found'
+          })
         })
       })
 
@@ -103,7 +107,12 @@ describe('Piwik-seuranta', function() {
         })
 
         it('Sivu raportoi RuntimeError-tapahtuman', function() {
-          expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {path: '/koski/', httpStatus: 400, message: 'http error 400'})
+          expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {
+            location: /\/koski\/$/,
+            url: /\/koski\/api\/henkilo\/search\?query=#error#$/,
+            httpStatus: 400,
+            message: 'http error 400'
+          })
         })
       })
     })
@@ -120,7 +129,11 @@ describe('Piwik-seuranta', function() {
       })
 
       it('Sivu raportoi LoadError-tapahtuman', function() {
-        expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {path: '/koski/pulssi/nosuch', httpStatus: 404, text: 'Not found'})
+        expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {
+          location: /\/koski\/pulssi\/nosuch$/,
+          httpStatus: 404,
+          text: 'Not found'
+        })
       })
     })
   })
@@ -151,11 +164,13 @@ describe('Piwik-seuranta', function() {
     expect(piwikQueuedMethodCall[1]).to.equal(errorName)
 
     var msgKey = errorData.text ? 'text' : 'message'
-    var expectedKeys = ['url', 'httpStatus'].concat(msgKey)
     var json = JSON.parse(piwikQueuedMethodCall[2])
 
-    expect(json).to.have.keys(expectedKeys)
-    expect(json.url).to.match(new RegExp(errorData.path + '$'))
+    expect(json).to.have.keys(Object.keys(errorData))
+    expect(json.location).to.match(errorData.location)
+    if (errorData.url) {
+      expect(json.url).to.match(errorData.url)
+    }
     expect(json.httpStatus).to.equal(errorData.httpStatus)
     expect(json[msgKey]).to.equal(errorData[msgKey])
   }

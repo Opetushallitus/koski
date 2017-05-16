@@ -21,7 +21,7 @@ trait PiwikNodes {
       {CommentedPCData(
       """
       window.koskiError && window._paq && _paq.push(['trackEvent', 'LoadError', JSON.stringify({
-        url: '' + document.location,
+        location: '' + document.location,
         httpStatus: koskiError.httpStatus,
         text: koskiError.text
       })])

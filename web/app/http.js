@@ -2,14 +2,19 @@ import Bacon from 'baconjs'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import {showInternalError} from './location'
 
-const parseResponse = (result) => {
-  if (result.status < 300) {
-    if(result.headers.get('content-type').toLowerCase().startsWith('application/json')) {
-      return Bacon.fromPromise(result.json())
+const parseResponseFor = (url) =>
+  (result) => {
+    if (result.status < 300) {
+      if(result.headers.get('content-type').toLowerCase().startsWith('application/json')) {
+        return Bacon.fromPromise(result.json())
+      }
+      return Bacon.fromPromise(result.text())
     }
-    return Bacon.fromPromise(result.text())
-  }
-  return new Bacon.Error({ message: 'http error ' + result.status, httpStatus: result.status })
+    return new Bacon.Error({
+      url: url,
+      message: 'http error ' + result.status,
+      httpStatus: result.status
+    })
 }
 
 const reqComplete = () => {
@@ -46,7 +51,11 @@ const http = (url, optionsForFetch, options = {}) => {
   increaseLoading()
   let promise = doHttp(url, optionsForFetch)
   promise.then(reqComplete, reqComplete)
-  let result = Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse).toProperty()
+  let result = Bacon
+    .fromPromise(promise)
+    .mapError({status: 503, url: url})
+    .flatMap(parseResponseFor(url))
+    .toProperty()
   if (options.errorMapper) { // errors are mapped to values or other Error events and will be handled
     result = result.flatMapError(options.errorMapper).toProperty()
   } else if (options.errorHandler) { // explicit error handler given

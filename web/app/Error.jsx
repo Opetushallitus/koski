@@ -7,7 +7,7 @@ import Bacon from 'baconjs'
 
 const logError = (error) => {
   console.log('ERROR', error)
-  trackRuntimeError(R.assoc('url', '' + document.location, error))
+  trackRuntimeError(R.assoc('location', '' + document.location, error))
 }
 
 export const errorP = (stateP) => {
