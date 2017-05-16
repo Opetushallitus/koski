@@ -1211,10 +1211,10 @@ describe('Perusopetus', function() {
             })
           })
 
-          describe('Toisen samanlaisen opiskeluoikeuden lisääminen', function() {
+          describe('Toisen samanlaisen opiskeluoikeuden lisääminen kun opiskeluoikeus on voimassa', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-              addOppija.selectOppilaitos('Jyväskylän normaalikoulu'), // TODO: myös tässä voi jäädä perusteen autofill tapahtumatta
+              addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
               addOppija.submit,
               wait.until(page.isErrorShown)
             )

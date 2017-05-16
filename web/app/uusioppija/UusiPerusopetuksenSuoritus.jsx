@@ -18,9 +18,6 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppiaineenSuoritusAtom = Atom()
   const opetussuunnitelmaAtom = Atom()
   const perusteAtom = Atom()
-  opetussuunnitelmaAtom.changes().merge(oppimääräAtom.changes()).onValue(() => {
-    perusteAtom.set(undefined)
-  })
   const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
   oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
 
