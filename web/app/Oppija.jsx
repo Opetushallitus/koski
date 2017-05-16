@@ -55,7 +55,7 @@ const createState = (oppijaOid) => {
   const editBus = Bacon.Bus()
   const saveChangesBus = Bacon.Bus()
   const cancelChangesBus = Bacon.Bus()
-  const editingP = locationP.map(loc => !!loc.params.edit).skipDuplicates()
+  const editingP = locationP.skipErrors().map(loc => !!loc.params.edit).skipDuplicates()
 
   cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
   editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
@@ -128,7 +128,10 @@ const createState = (oppijaOid) => {
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'saved').onValue(() => savedBus.push(true))
 
-  const stateP = oppijaP.map('.event').mapError('dirty').flatMapLatest(event => {
+  const stateP = oppijaP.map('.event').mapError((e) => {
+    console.log('mapping', e, 'to dirty')
+    return 'dirty'
+  }).flatMapLatest(event => {
     if (event == 'saved') {
       return Bacon.once(event).concat(Bacon.later(5000, 'view'))
     }

@@ -1220,6 +1220,7 @@ describe('Perusopetus', function() {
             )
             it('Lisääminen ei onnistu', function() {
               expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
+              expect(editor.isEditBarVisible()).to.equal(false)
             })
           })
 
