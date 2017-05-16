@@ -7,12 +7,12 @@ const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
 
 export const navigateTo = function (path, event) {
-  const prevPath = previousLocation
-  const nextPath = parsePath(path)
-  previousLocation = nextPath
+  const prevLoc = previousLocation
+  const nextLoc = parsePath(path)
+  previousLocation = nextLoc
   history.pushState(null, null, path)
-  if (nextPath.path !== prevPath.path) trackPageView(nextPath.toString())
-  locationBus.push(nextPath)
+  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
+  locationBus.push(nextLoc)
   if (event) event.preventDefault()
 }
 
