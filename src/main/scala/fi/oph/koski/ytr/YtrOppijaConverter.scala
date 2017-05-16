@@ -49,7 +49,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
     tila = tilaValmis,
     tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
     arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
-    koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi, exam.examNameSv, exam.examNameEn), Some("ytr/koetunnukset")))
+    koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi.getOrElse(exam.examId), exam.examNameSv, exam.examNameEn), Some("ytr/koetunnukset")))
   )
 
   private def requiredKoodi(uri: String, koodi: String) = {
