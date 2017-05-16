@@ -30,7 +30,10 @@ export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
   }
 
   diaarinumerotP.onValue(options => {
-    selectOption(options[0])
+    let current = perusteAtom.get()
+    if (!current || !options.map(k => k.koodiarvo).includes(current)) {
+      selectOption(options[0])
+    }
   })
   return (<span>
     { elementWithLoadingIndicator(diaarinumerotP.map(diaarinumerot => diaarinumerot.length
