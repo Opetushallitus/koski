@@ -1211,6 +1211,17 @@ describe('Perusopetus', function() {
             })
           })
 
+          describe('Toisen samanlaisen opiskeluoikeuden lisääminen', function() {
+            before(
+              opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
+              addOppija.selectOppilaitos('Jyväskylän normaalikoulu'), // TODO: myös tässä voi jäädä perusteen autofill tapahtumatta
+              addOppija.submit,
+              wait.until(page.isErrorShown)
+            )
+            it('Lisääminen ei onnistu', function() {
+              expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
+            })
+          })
 
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
@@ -1350,7 +1361,7 @@ describe('Perusopetus', function() {
             before(addOppija.submit, wait.until(page.isErrorShown))
 
             it('Lisäys epäonnistuu, koska oppijalla on jo vastaava opiskeluoikeus läsnä-tilassa', function() {
-              expect(page.getErrorMessage()).to.equal('Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.')
+              expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
             })
           })
         })

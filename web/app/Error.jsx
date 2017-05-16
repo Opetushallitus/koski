@@ -47,13 +47,15 @@ const errorTexts = {
   503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
 }
 
+const errorText = (error) => error.text || errorTexts[error.httpStatus]
+
 export const Error = ({error}) => {
-  return errorTexts[error.httpStatus] && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorTexts[error.httpStatus]}</span><a>&#10005;</a></div> : <div id="error"></div>
+  return errorText(error) && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorText(error)}</span><a>&#10005;</a></div> : <div id="error"></div>
 }
 
-export const TopLevelError = (props) => (<div className="error content-area">
-  <h1 className="http-status">{props.status}</h1>
-  <div className="error-message">{props.text || errorTexts[props.status]} <a href="/koski">Yritä uudestaan</a>.</div>
+export const TopLevelError = ({error}) => (<div className="error content-area">
+  <h1 className="http-status">{error.httpStatus}</h1>
+  <div className="error-message">{errorText(error)} <a href="/koski">Yritä uudestaan</a>.</div>
 </div>)
 
 export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel

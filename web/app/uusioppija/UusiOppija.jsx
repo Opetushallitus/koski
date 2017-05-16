@@ -51,4 +51,12 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
   }
 }
 
-export const postNewOppija = (oppija) => Http.post('/koski/api/oppija', oppija, { errorHandler: showError, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']})
+export const postNewOppija = (oppija) => Http.post('/koski/api/oppija', oppija, {
+  errorHandler: (e) => {
+    if (e.httpStatus == 409) {
+      e.text = 'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
+    }
+    showError(e)
+  },
+  invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']
+})

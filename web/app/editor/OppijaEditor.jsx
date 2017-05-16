@@ -33,7 +33,7 @@ export const OppijaEditor = ({model}) => {
           opiskeluoikeudet: [opiskeluoikeus]
         }
         var tyyppi = opiskeluoikeus.tyyppi.koodiarvo
-        postNewOppija(oppija).onValue(() => {
+        postNewOppija(oppija).doError(() => addingAtom.set(false)).onValue(() => {
           reloadOppija()
           navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
         })

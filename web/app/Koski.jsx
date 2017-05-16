@@ -24,7 +24,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, us
       {topBar}
       {
         isTopLevel(error)
-          ? <TopLevelError status={error.httpStatus} text={error.text} />
+          ? <TopLevelError error={error} />
           : ( user
             ? content
             : null
