@@ -11,7 +11,7 @@ object OrganisaatioMockDataUpdater extends App {
 
   private def updateMockDataFromOrganisaatioPalvelu(config: Config): Unit = {
     val koodisto = KoodistoViitePalvelu(KoodistoPalvelu.withoutCache(config))(GlobalCacheManager)
-    val organisaatioPalvelu = OrganisaatioRepository.withoutCache(config, koodisto).asInstanceOf[RemoteOrganisaatioRepository]
+    val organisaatioPalvelu = OrganisaatioRepository(config, koodisto)(GlobalCacheManager).asInstanceOf[RemoteOrganisaatioRepository]
 
     MockOrganisaatiot.roots.foreach(oid => updateMockDataForOrganisaatio(oid, organisaatioPalvelu))
   }

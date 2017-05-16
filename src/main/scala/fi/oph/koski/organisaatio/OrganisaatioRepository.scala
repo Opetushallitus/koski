@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy}
+import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -44,10 +44,6 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 15000), withoutCache(config, koodisto))
-  }
-
-  def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): OrganisaatioRepository = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
         MockOrganisaatioRepository
@@ -69,17 +65,25 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
   }
 }
 
-class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
-    fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
-  }
+class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
+  private val hierarkiaCache = KeyValueCache[String, Option[OrganisaatioHierarkia]](
+    Cache.cacheAllRefresh("OrganisaatioRepository.hierarkia", durationSeconds = 3600, maxSize = 15000),
+    oid => fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
+  )
 
-  def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {
-    search(numero).flatMap {
-      case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)
-      case _ => None
-    }.headOption
-  }
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = hierarkiaCache(oid)
+
+  private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
+    Cache.cacheAllNoRefresh("OrganisaatioRepository.oppilaitos", durationSeconds = 3600, maxSize = 1000),
+    { numero: String =>
+      search(numero).flatMap {
+        case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)
+        case _ => None
+      }.headOption
+    }
+  )
+
+  def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = oppilaitosnumeroCache(numero)
 
   override def findHierarkia(query: String) = {
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
@@ -95,7 +99,8 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
   private def fetchSearchHierarchy(searchTerm: String): OrganisaatioHakuTulos = {
-    // Only for "root" user organisatiopicker UI
+    // Only for "root" user organisatiopicker UI -> no cache
+
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 
