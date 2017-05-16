@@ -1,5 +1,7 @@
 package fi.oph.koski.organisaatio
 
+import java.lang.System.currentTimeMillis
+
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
@@ -61,7 +63,7 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
       case _ => None
     }
     val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
-    OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.ytunnus, kotipaikka, org.organisaatiotyypit, oppilaitostyyppi, org.children.map(convertOrganisaatio))
+    OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.ytunnus, kotipaikka, org.organisaatiotyypit, oppilaitostyyppi, org.lakkautusPvm.forall(_ > currentTimeMillis), org.children.map(convertOrganisaatio))
   }
 }
 
@@ -92,20 +94,20 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
   def fetch(oid: String): OrganisaatioHakuTulos = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
   private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for oppilaitosnumero search
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
   private def fetchSearchHierarchy(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for "root" user organisatiopicker UI -> no cache
 
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
 
