@@ -12,7 +12,9 @@ import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
 class KoskiScheduledTasks(application: KoskiApplication) {
-  val updateHenkilötScheduler: Scheduler = new UpdateHenkilot(application).scheduler
+  if (application.database.config.isReadonly) {
+    new UpdateHenkilot(application).scheduler
+  }
 }
 
 class UpdateHenkilot(application: KoskiApplication) extends Timing {
