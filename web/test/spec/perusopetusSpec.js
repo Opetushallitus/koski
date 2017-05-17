@@ -1307,31 +1307,44 @@ describe('Perusopetus', function() {
       describe('Kun valitaan oppiaineen oppimäärä ja oppiaine', function() {
         before(
           addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
-          addOppija.selectOppiaine('Fysiikka'),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka'))
+          addOppija.selectOppiaine('A1-kieli')
+        )
 
-        it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
-          expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
+        describe('Kun kielivalinta puuttuu', function() {
+          it('Lisäys ei ole mahdollista', function() {
+            expect(addOppija.isEnabled()).to.equal(false)
+          })
         })
 
-        it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
-          expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Fysiikka')
-        })
-
-        describe('Toisen oppiaineen lisääminen', function() {
-          var lisääSuoritus = opinnot.lisääSuoritusDialog()
-          before(editor.edit, opinnot.lisääSuoritus, wait.forAjax,
-            lisääSuoritus.property('tunniste').setValue('Matematiikka'),
-            lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
-            lisääSuoritus.lisääSuoritus
+        describe('Kun valitaan kieli ja lisätään oppiaine', function() {
+          before(
+            addOppija.selectKieli('englanti'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'A1-kieli')
           )
 
-          it('Näytetään uusi suoritus', function() {
-            expect(opinnot.suoritusTabs(1)).to.deep.equal(['Fysiikka', 'Matematiikka'])
+          it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
+            expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
           })
 
-          it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
-            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
+          it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli, englanti')
+          })
+
+          describe('Toisen oppiaineen lisääminen', function() {
+            var lisääSuoritus = opinnot.lisääSuoritusDialog()
+            before(editor.edit, opinnot.lisääSuoritus, wait.forAjax,
+              lisääSuoritus.property('tunniste').setValue('Matematiikka'),
+              lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+              lisääSuoritus.lisääSuoritus
+            )
+
+            it('Näytetään uusi suoritus', function() {
+              expect(opinnot.suoritusTabs(1)).to.deep.equal(['A1-kieli', 'Matematiikka'])
+            })
+
+            it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
+              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
+            })
           })
         })
       })

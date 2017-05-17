@@ -106,28 +106,26 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.oppimaara .dropdown')
     },
     selectOppimäärä: function(oppimäärä) {
-      return function () {
-        return wait.until(pageApi.getInput('.oppimaara .dropdown').isVisible)().then(
-          pageApi.setInputValue('.oppimaara .dropdown', oppimäärä)
-        )
-      }
+      return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
     },
     selectOpetussuunnitelma: function(opetussuunnitelma) {
-      return function () {
-        return wait.until(pageApi.getInput('.opetussuunnitelma .dropdown').isVisible)().then(
-          pageApi.setInputValue('.opetussuunnitelma .dropdown', opetussuunnitelma)
-        )
-      }
+      return selectFromDropdown('.opetussuunnitelma .dropdown', opetussuunnitelma)
     },
     selectOppiaine: function(oppiaine) {
-      return function () {
-        return wait.until(pageApi.getInput('.oppiaine .dropdown').isVisible)().then(
-          pageApi.setInputValue('.oppiaine .dropdown', oppiaine)
-        )
-      }
+      return selectFromDropdown('.oppiaine .dropdown', oppiaine)
+    },
+    selectKieli: function(kieli) {
+      return selectFromDropdown('.kieli .dropdown', kieli)
     },
     goBack: function() {
       triggerEvent(S('h1 a'), 'click')
+    }
+  }
+  function selectFromDropdown(selector, value) {
+    return function () {
+      return wait.until(pageApi.getInput(selector).isVisible)().then(
+        pageApi.setInputValue(selector, value)
+      )
     }
   }
   return api

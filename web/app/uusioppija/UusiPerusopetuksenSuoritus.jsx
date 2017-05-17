@@ -12,6 +12,7 @@ import {PropertyEditor} from '../editor/PropertyEditor.jsx'
 import KoodistoDropdown from './KoodistoDropdown.jsx'
 import {koodistoValues, koodiarvoMatch} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
+import {modelValid} from '../editor/EditorModel';
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppimääräAtom = Atom()
@@ -113,7 +114,9 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
           return oppiainePrototype && accumulateModelState(modelSet(oppiaineenSuoritus, oppiainePrototype, 'koulutusmoduuli'))
         }).toProperty()
 
-        let suoritusP = Bacon.combineWith(suoritusModelP.map(modelData), perusteAtom, (suoritus, diaarinumero) => {
+        let suoritusDataP = suoritusModelP.map(model => model && modelValid(model) ? modelData(model) : null)
+
+        let suoritusP = Bacon.combineWith(suoritusDataP, perusteAtom, (suoritus, diaarinumero) => {
           if (suoritus && diaarinumero) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
         })
 
