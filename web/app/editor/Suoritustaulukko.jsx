@@ -41,8 +41,7 @@ export const Suoritustaulukko = React.createClass({
                   <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
                   ryhmänSuoritukset.map((suoritus, j) => {
                     let key = i*100 + j
-                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö}
-                                    expanded={this.state.expanded.includes(key)} onExpand={this.toggleExpand(key)} key={key} grouped={true}/>
+                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(key)} onExpand={this.toggleExpand(key)} key={key} grouped={true}/>
                   })
                 ])
               : grouped[0][1].map((suoritus, i) =>
