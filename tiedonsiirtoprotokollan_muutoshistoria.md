@@ -1,3 +1,7 @@
+## 17.5.2017
+
+- Lisätty tutkinnonOsanRyhmä-kenttä ammatillisen tutkinnon osan suoritukseen
+
 ## 11.5.2017
 - Lisätty valinnainen kenttä työssäoppimispaikan nimi työssäoppimisjaksoihin
 
