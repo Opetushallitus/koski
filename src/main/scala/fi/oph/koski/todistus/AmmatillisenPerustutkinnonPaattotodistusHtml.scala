@@ -1,22 +1,22 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
-import fi.oph.koski.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne}
 
 class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, rakenne: SuoritustapaJaRakenne) = {
-    val päätasot: List[RakenneModuuli] = rakenne.rakenne match {
-      case Some(moduuli: RakenneModuuli) => moduuli.osat.map(_.asInstanceOf[RakenneModuuli])
-      case _ => Nil
-    }
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) = {
+
+
+
+    val muutSuoritukset = Koodistokoodiviite("5", Some(LocalizedString.unlocalized("Muut suoritukset" /*i18n*/)), "")
+
     val osasuoritukset = tutkintoSuoritus.osasuoritukset.toList.flatten
-    def contains(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillisenTutkinnonOsa) = {
-      rakenne.tutkinnonOsat.map(_.tunniste).contains(tutkinnonOsa.tunniste)
-    }
-    def goesTo(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillisenTutkinnonOsa) = {
-      contains(rakenne, tutkinnonOsa) || (rakenne == päätasot.last && !päätasot.find(m => contains(m, tutkinnonOsa)).isDefined)
-    }
+
+    val grouped: List[(Koodistokoodiviite, List[AmmatillisenTutkinnonOsanSuoritus])] = osasuoritukset.groupBy(suoritus => suoritus.tutkinnonOsanRyhmä)
+        .map({case (ryhmä, osat) => (ryhmä.getOrElse(muutSuoritukset), osat)})
+        .toList.sortBy(_._1.koodiarvo)
+
     def lisätietoviite(index: Int) = "M" + (index match {
       case 0 => ""
       case n => n
@@ -52,9 +52,10 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
             </thead>
             <tbody>
               {
-                val xs = päätasot.flatMap { m =>
-                  <tr class="rakennemoduuli"><td class="nimi">{i(m.nimi)}</td></tr> ::
-                  osasuoritukset.filter(osasuoritus => goesTo(m, osasuoritus.koulutusmoduuli)).map { osasuoritus =>
+                grouped.flatMap { case (ryhmä, osat) =>
+                  println(ryhmä.nimi + " " + osat.length)
+                  val groupHeader = if (grouped.length > 1) { List(<tr class="rakennemoduuli"><td class="nimi">{i(ryhmä.nimi)}</td></tr>) } else { Nil }
+                  groupHeader ++ osat.map { osasuoritus =>
                     val lisätiedot = osasuoritus.lisätiedot.toList.flatten
                     val className = "tutkinnon-osa " + osasuoritus.koulutusmoduuli.tunniste.koodiarvo
                     <tr class={className}>
@@ -68,16 +69,15 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
                       </td>
                       <td class="lisatieto-viitteet">
                         {
-                          lisätiedot.map { lisätieto =>
-                            kaikkiLisätiedot = kaikkiLisätiedot ++ List(lisätieto)
-                            <span class="lisatieto-viite">{lisätietoviite(kaikkiLisätiedot.length - 1)}</span>
-                          }
+                        lisätiedot.map { lisätieto =>
+                          kaikkiLisätiedot = kaikkiLisätiedot ++ List(lisätieto)
+                          <span class="lisatieto-viite">{lisätietoviite(kaikkiLisätiedot.length - 1)}</span>
+                        }
                         }
                       </td>
                     </tr>
                   }
                 }
-                xs
               }
               <tr class="opintojen-laajuus">
                 <td class="nimi">Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä</td>

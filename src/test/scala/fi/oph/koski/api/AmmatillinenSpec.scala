@@ -25,10 +25,10 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Matemaattis-luonnontieteellinen osaaminen 9 Kiitettävä 3 M1)
         |Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 Kiitettävä 3
         |Sosiaalinen ja kulttuurinen osaaminen 7 Kiitettävä 3
-        |Vapaasti valittavat tutkinnon osat
+        |Vapaavalintaiset tutkinnon osat
+        |Sosiaalinen ja kulttuurinen osaaminen 5 Kiitettävä 3
         |Tutkintoa yksilöllisesti laajentavat tutkinnon osat
         |Matkailuenglanti 5 Kiitettävä 3
-        |Sosiaalinen ja kulttuurinen osaaminen 5 Kiitettävä 3
         |Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180
         |Tutkintoon sisältyy
         |Työssäoppimisen kautta hankittu osaaminen (5.0 osp)

@@ -6,7 +6,6 @@ import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
-import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne}
 
 class TodistusServlet(val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
   get("/:oppijaOid") {
@@ -40,15 +39,7 @@ class TodistusServlet(val application: KoskiApplication) extends HtmlServlet wit
               case t: PerusopetuksenLisäopetuksenSuoritus =>
                 Right((new PerusopetuksenLisaopetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: AmmatillisenTutkinnonSuoritus =>
-                t.koulutusmoduuli.perusteenDiaarinumero.flatMap(application.tutkintoRepository.findPerusteRakenne(_)) match {
-                  case Some(rakenne: TutkintoRakenne) =>
-                    val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa)
-                    maybeSuoritustapaJaRakenne match {
-                      case Some(suoritustapaJaRakenne) => Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t, suoritustapaJaRakenne))
-                      case _ => Left(KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu())
-                    }
-                  case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy"))
-                }
+                Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case t: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
                 Right(new NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
               case t: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus =>
