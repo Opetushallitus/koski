@@ -315,9 +315,10 @@ describe('Ammatillinen koulutus', function() {
             'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
-        it('näyttää tutkinnon osat', function() {
+        it('näyttää tutkinnon osat', function() { // TODO: väliotsikot
           expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
             'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Ammatilliset tutkinnon osat\n' +
             'Kestävällä tavalla toimiminen kyllä 40 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -389,6 +390,7 @@ describe('Ammatillinen koulutus', function() {
             'Työssäoppimisen yhteydessä ei\n' +
             'Kokonaisuus Laajuus Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
+            'Yhteiset tutkinnon osat\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -419,10 +421,12 @@ describe('Ammatillinen koulutus', function() {
             'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Matkailuenglanti ei 5 3\n' +
+            'Vapaavalintaiset tutkinnon osat\n' +
+            'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
+            'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
+            'Matkailuenglanti ei 5 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
           )

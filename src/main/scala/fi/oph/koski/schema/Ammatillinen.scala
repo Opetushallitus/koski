@@ -150,6 +150,8 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   def koulutusmoduuli: AmmatillisenTutkinnonOsa
   @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
   def tutkinto: Option[AmmatillinenTutkintoKoulutus]
+  @KoodistoUri("ammatillisentutkinnonosanryhma")
+  def tutkinnonOsanRyhmä: Option[Koodistokoodiviite]
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
@@ -174,6 +176,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
@@ -196,6 +199,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,

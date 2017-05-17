@@ -67,11 +67,11 @@ object AmmattitutkintoExample {
         toimipiste = stadinToimipiste,
         vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
         osasuoritukset = Some(List(
-          tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", hyväksytty),
-          tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", hyväksytty),
-          tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", hyväksytty),
-          tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", hyväksytty),
-          tutkinnonOsanSuoritus("104059", "Yrittäjyys", hyväksytty)
+          tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
+          tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
+          tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, hyväksytty),
+          tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, hyväksytty),
+          tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, hyväksytty)
         ))
       )
     )
@@ -105,7 +105,7 @@ object AmmatillinenPerustutkintoExample {
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
       osasuoritukset = Some(List(
-        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35)
+        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", None, k3, 35)
       ))
     )),
     tila = AmmatillinenOpiskeluoikeudenTila(

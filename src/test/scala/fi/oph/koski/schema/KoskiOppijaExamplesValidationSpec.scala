@@ -39,7 +39,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
       testDeserialization(TäydellisetHenkilötiedot(oid, Some("123456-7890"), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))), classOf[Henkilö])
     }
     "Suoritus" in {
-      testDeserialization(tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15), classOf[Suoritus])
+      testDeserialization(tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15), classOf[Suoritus])
       testDeserialization(ympäristöalanPerustutkintoValmis(), classOf[Suoritus])
     }
     "Järjestämismuoto" in {

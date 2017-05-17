@@ -10,6 +10,7 @@ object Koodistot {
     "ammatillisennaytonsuorituspaikka",
     "ammatillisenoppiaineet",
     "ammatillisentutkinnonosanlisatieto",
+    "ammatillisentutkinnonosanryhma",
     "ammatillisentutkinnonsuoritustapa",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "arviointiasteikkoammatillinent1k3",

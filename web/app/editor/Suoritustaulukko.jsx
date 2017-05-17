@@ -4,10 +4,15 @@ import {Editor} from './Editor.jsx'
 import {shouldShowProperty, PropertiesEditor} from './PropertiesEditor.jsx'
 import {modelProperties, modelProperty, modelItems} from './EditorModel'
 import R from 'ramda'
+import {buildClassNames} from '../classnames'
 
 export const Suoritustaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
+
+    let grouped = R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset))
+    let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
+
     let {allExpandedToggle} = this.state
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
     let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
@@ -31,9 +36,18 @@ export const Suoritustaulukko = React.createClass({
             <th className="arvosana">Arvosana</th>
           </tr></thead>
           {
-            suoritukset.map((suoritus, i) =>
-              <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(i)} onExpand={this.toggleExpand(i)} key={i}/>
-            )
+            grouped.length > 1
+              ? grouped.flatMap(([groupId, ryhmänSuoritukset], i) => [
+                  <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
+                  ryhmänSuoritukset.map((suoritus, j) => {
+                    let key = i*100 + j
+                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö}
+                                    expanded={this.state.expanded.includes(key)} onExpand={this.toggleExpand(key)} key={key} grouped={true}/>
+                  })
+                ])
+              : grouped[0][1].map((suoritus, i) =>
+                  <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(i)} onExpand={this.toggleExpand(i)} key={i}/>
+                )
           }
         </table>
       </div>)
@@ -56,7 +70,7 @@ export const Suoritustaulukko = React.createClass({
 
 const SuoritusEditor = React.createClass({
   render() {
-    let {model, showPakollisuus, showScope, onExpand, expanded} = this.props
+    let {model, showPakollisuus, showScope, onExpand, expanded, grouped} = this.props
     let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
@@ -64,7 +78,7 @@ const SuoritusEditor = React.createClass({
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
-    return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
+    return (<tbody className={buildClassNames([(!grouped && 'alternating'), (expanded && 'expanded')])}>
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
@@ -99,7 +113,7 @@ const SuoritusEditor = React.createClass({
 })
 
 const suoritusProperties = suoritus => {
-  return modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key)))
+  return modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
       .filter(shouldShowProperty(suoritus.context))
 }

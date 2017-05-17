@@ -1,0 +1,33 @@
+[ {
+  "koodiUri" : "ammatillisentutkinnonosanryhma_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Ammatilliset tutkinnon osat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisentutkinnonosanryhma_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Yhteiset tutkinnon osat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisentutkinnonosanryhma_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Vapaavalintaiset tutkinnon osat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisentutkinnonosanryhma_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]
