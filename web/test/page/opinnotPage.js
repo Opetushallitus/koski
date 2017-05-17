@@ -4,6 +4,9 @@ function OpinnotPage() {
   function opiskeluoikeus() { return findSingle('.opiskeluoikeus')}
 
   var api = {
+    opiskeluoikeuksienMäärä: function() {
+      return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
+    },
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
       var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]
