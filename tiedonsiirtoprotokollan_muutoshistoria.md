@@ -1,8 +1,13 @@
 ## 17.5.2017
 
+- Lisätty osaamisalat ja todistuksellaNäkyvätLisätiedot osittaisen ammatillisen tutkinnon suoritukseen
+
+## 17.5.2017 (versio 2017.5.4)
+
 - Lisätty tutkinnonOsanRyhmä-kenttä ammatillisen tutkinnon osan suoritukseen
 
 ## 11.5.2017
+
 - Lisätty valinnainen kenttä työssäoppimispaikan nimi työssäoppimisjaksoihin
 
 ## 4.5.2017

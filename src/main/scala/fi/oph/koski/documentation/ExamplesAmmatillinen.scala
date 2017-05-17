@@ -99,6 +99,7 @@ object AmmatillinenPerustutkintoExample {
         Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
         Some("62/011/2014")
       ),
+      osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
       järjestämismuoto = Some(järjestämismuotoOppilaitos),
       suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
       tila = tilaValmis,
@@ -106,7 +107,8 @@ object AmmatillinenPerustutkintoExample {
       toimipiste = stadinToimipiste,
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", None, k3, 35)
-      ))
+      )),
+      todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
     )),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
