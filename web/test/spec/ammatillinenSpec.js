@@ -502,9 +502,11 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Osaamisala Autokorinkorjauksen osaamisala\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
           'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+          'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
           'Suoritus: VALMIS'
         )
       })
