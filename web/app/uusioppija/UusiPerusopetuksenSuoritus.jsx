@@ -5,14 +5,13 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from '../http'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
-import {accumulateModelState, modelLookup, modelData, modelSet} from '../editor/EditorModel'
+import {accumulateModelState, modelLookup, modelData, modelSet, modelValid} from '../editor/EditorModel'
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
 import KoodistoDropdown from './KoodistoDropdown.jsx'
 import {koodistoValues, koodiarvoMatch} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
-import {modelValid} from '../editor/EditorModel';
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppimääräAtom = Atom()
