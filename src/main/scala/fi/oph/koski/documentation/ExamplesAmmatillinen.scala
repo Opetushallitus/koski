@@ -139,14 +139,14 @@ object AmmatillinenPerustutkintoExample {
             tila = tilaValmis,
             toimipiste = None,
             näyttö = Some(näyttö(date(2002, 4, 20), "Moottorin korjaus", "Autokorjaamo Oy, Riihimäki")),
-            vahvistus = vahvistus(date(2002, 5, 28), stadinAmmattiopisto)
+            vahvistus = vahvistusValinnaisellaTittelillä(date(2002, 5, 28), stadinAmmattiopisto, None)
           )),
           "Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)"
         )),
         tila = tilaValmis,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiHyväksytty)),
-        vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
+        vahvistus = vahvistusValinnaisellaTittelillä(date(2013, 5, 31), stadinAmmattiopisto)
       )
     ))
   )
@@ -196,7 +196,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiKiitettävä.copy(kuvaus=Some("Erinomaista kehitystä")))),
-        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+        vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto)
       )
     ))
   ))
@@ -219,7 +219,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiKiitettävä)),
-        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+        vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto)
       )
     ))
   ))
@@ -265,7 +265,7 @@ object AmmatillinenOldExamples {
                   )
                 )
               ),
-              vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+              vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto)
             )
           ))
         )),
@@ -338,7 +338,7 @@ object AmmatillinenOldExamples {
         date(2012, 10, 20),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2013, 1, 31), stadinAmmattiopisto)
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2013, 1, 31), stadinAmmattiopisto)
     ),
     paikallisenOsanSuoritus,
     MuunAmmatillisenTutkinnonOsanSuoritus(
@@ -357,7 +357,7 @@ object AmmatillinenOldExamples {
         date(2013, 4, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2013, 5, 31), stadinAmmattiopisto)
     ),
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
@@ -375,7 +375,7 @@ object AmmatillinenOldExamples {
         date(2014, 10, 20),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto)
     ),
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = autonLisävarustetyöt(true),
@@ -389,7 +389,7 @@ object AmmatillinenOldExamples {
         date(2015, 4, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2015, 5, 1), stadinAmmattiopisto)
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2015, 5, 1), stadinAmmattiopisto)
     ),
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
@@ -407,7 +407,7 @@ object AmmatillinenOldExamples {
         date(2016, 2, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 1), stadinAmmattiopisto, helsinki)
+      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 5, 1), stadinAmmattiopisto, helsinki)
     )
   )
 }

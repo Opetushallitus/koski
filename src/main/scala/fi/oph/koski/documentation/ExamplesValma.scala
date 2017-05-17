@@ -56,7 +56,7 @@ object ExamplesValma {
         tunniste = Koodistokoodiviite("351101", Some("Kone- ja metallialan perustutkinto"), "koulutus"),
         perusteenDiaarinumero = Some("39/011/2014"))
       ),
-      vahvistus = vahvistusPaikkakunnalla(date(2015, 10, 3), stadinAmmattiopisto, helsinki)
+      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2015, 10, 3), stadinAmmattiopisto, helsinki)
     )),
     selite = "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
 

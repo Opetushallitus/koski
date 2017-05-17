@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelTitle, modelItems} from './EditorModel.js'
+import {modelTitle, modelItems, modelData} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 
 export const VahvistusEditor = React.createClass({
@@ -10,7 +10,9 @@ export const VahvistusEditor = React.createClass({
       <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
         (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
-          <span key={i}><Editor model={henkilö} path="nimi"/>, <Editor model={henkilö} path="titteli"/></span>
+            <span key={i}>
+              <Editor model={henkilö} path="nimi"/>{(modelData(henkilö, 'titteli') || model.context.edit) && <span>, <Editor model={henkilö} path="titteli"/></span>}
+            </span>
         )
       }
     </span>)

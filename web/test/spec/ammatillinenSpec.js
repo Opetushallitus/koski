@@ -470,7 +470,7 @@ describe('Ammatillinen koulutus', function() {
           'Nimi Moottorin korjaus\n' +
           'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
           'Tila Suoritus valmis\n' +
-          'Vahvistus 28.5.2002 Reijo Reksi , rehtori\n' +
+          'Vahvistus 28.5.2002 Reijo Reksi\n' +
           'Näyttö\n' +
           'Kuvaus Moottorin korjaus\n' +
           'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +

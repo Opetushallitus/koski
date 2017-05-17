@@ -3,6 +3,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
@@ -26,4 +27,22 @@ object ExampleData {
   def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
     Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
 
+  def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
+    Some(
+      HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
+        päivä = päivä,
+        myöntäjäOrganisaatio = org,
+        myöntäjäHenkilöt = List(OrganisaatioHenkilöValinnaisellaTittelillä("Reijo Reksi", titteli,  org))
+      )
+    )
+
+  def vahvistusPaikkakunnallaJaValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä,  titteli: Option[LocalizedString] = Some("rehtori")) =
+    Some(
+      HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(
+        päivä = päivä,
+        kunta,
+        myöntäjäOrganisaatio = org,
+        myöntäjäHenkilöt = List(OrganisaatioHenkilöValinnaisellaTittelillä("Reijo Reksi", titteli, org))
+      )
+    )
 }

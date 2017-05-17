@@ -13,7 +13,7 @@ trait Vahvistus {
   def myöntäjäOrganisaatio: Organisaatio
   @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
   @Title("Myöntäjät")
-  def myöntäjäHenkilöt: List[Organisaatiohenkilö]
+  def myöntäjäHenkilöt: List[Vahvistaja]
 
   def getPaikkakunta: Option[Koodistokoodiviite] = None
 }
@@ -25,9 +25,8 @@ trait VahvistusPaikkakunnalla extends Vahvistus {
   override def getPaikkakunta: Option[Koodistokoodiviite] = Some(paikkakunta)
 }
 
-trait Henkilövahvistus extends Vahvistus {
-
-}
+trait Henkilövahvistus extends Vahvistus {}
+trait HenkilövahvistusValinnaisellaTittelillä extends Vahvistus {}
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
 case class HenkilövahvistusPaikkakunnalla(
@@ -46,6 +45,22 @@ case class HenkilövahvistusIlmanPaikkakuntaa(
   myöntäjäHenkilöt: List[Organisaatiohenkilö]
 ) extends Henkilövahvistus
 
+@Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
+case class HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(
+  päivä: LocalDate,
+  paikkakunta: Koodistokoodiviite,
+  myöntäjäOrganisaatio: Organisaatio,
+  @MinItems(1)
+  myöntäjäHenkilöt: List[OrganisaatioHenkilöValinnaisellaTittelillä]
+) extends HenkilövahvistusValinnaisellaTittelillä with VahvistusPaikkakunnalla
+
+@Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
+case class HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
+  päivä: LocalDate,
+  myöntäjäOrganisaatio: Organisaatio,
+  @MinItems(1)
+  myöntäjäHenkilöt: List[OrganisaatioHenkilöValinnaisellaTittelillä]
+) extends HenkilövahvistusValinnaisellaTittelillä
 
 @Description("Suorituksen vahvistus organisaatiotiedoilla")
 case class Organisaatiovahvistus(
@@ -56,12 +71,27 @@ case class Organisaatiovahvistus(
   def myöntäjäHenkilöt = Nil
 }
 
+trait Vahvistaja {
+  @Description("Henkilön koko nimi, esimerkiksi \"Matti Meikäläinen\"")
+  def nimi: String
+  @Description("Organisaation tunnistetiedot")
+  def organisaatio: Organisaatio
+  def getTitteli: Option[LocalizedString]
+}
+
+case class OrganisaatioHenkilöValinnaisellaTittelillä(
+  nimi: String,
+  titteli: Option[LocalizedString] = None,
+  organisaatio: Organisaatio
+) extends Vahvistaja {
+  override def getTitteli: Option[LocalizedString] = titteli
+}
+
 @Description("Henkilö- ja organisaatiotiedot")
 case class Organisaatiohenkilö(
-  @Description("Henkilön koko nimi, esimerkiksi \"Matti Meikäläinen\"")
   nimi: String,
-  @Description("Henkilön titteli organisaatiossa, esimerkiksi \"rehtori\"")
   titteli: LocalizedString,
-  @Description("Organisaation tunnistetiedot")
   organisaatio: Organisaatio
-)
+) extends Vahvistaja {
+  override def getTitteli = Some(titteli)
+}
