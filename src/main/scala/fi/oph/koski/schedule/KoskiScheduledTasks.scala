@@ -12,7 +12,7 @@ import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
 class KoskiScheduledTasks(application: KoskiApplication) {
-  if (application.database.config.isReadonly) {
+  if (!application.database.config.isReadonly) {
     new UpdateHenkilot(application).scheduler
   }
 }
