@@ -10,7 +10,7 @@ export const Suoritustaulukko = React.createClass({
   render() {
     let {suoritukset} = this.props
 
-    let grouped = R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset))
+    let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
     let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
 
     let {allExpandedToggle} = this.state
