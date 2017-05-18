@@ -18,7 +18,7 @@ import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
   *  Endpoints for the Koski UI
   */
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
-  private val preferencesService = PreferencesService(application.database.db)
+  private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession)
   get("/:oid") {
     renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {

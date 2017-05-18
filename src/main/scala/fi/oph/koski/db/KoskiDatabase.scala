@@ -13,11 +13,28 @@ import scala.sys.process._
 
 object KoskiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
+
+  def master(config: Config): KoskiDatabase =
+    new KoskiDatabase(KoskiDatabaseConfig(config))
+
+  def replica(config: Config, master: KoskiDatabase): KoskiDatabase = {
+    val readonlyConfig = KoskiDatabaseConfig(config, readOnly = true)
+    if (readonlyConfig.hasReplicaHost) {
+      new KoskiDatabase(readonlyConfig)
+    } else {
+      master
+    }
+  }
 }
 
-case class KoskiDatabaseConfig(c: Config) {
-  val host: String = c.getString("db.host")
-  val port: Int = c.getInt("db.port")
+case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
+  private val masterHost: String = c.getString("db.host")
+  private lazy val replicaHost: String = c.getString("db.replica.host")
+  private val masterPort: Int = c.getInt("db.port")
+  private val replicaPort: Int = if (c.hasPath("db.replica.port")) c.getInt("db.replica.port") else masterPort
+
+  val host: String = if (readOnly) replicaHost else masterHost
+  val port: Int =  if (readOnly) replicaPort else masterPort
   val dbName: String = c.getString("db.name")
   val jdbcDriverClassName = "org.postgresql.Driver"
   val password: String = c.getString("db.password")
@@ -32,12 +49,11 @@ case class KoskiDatabaseConfig(c: Config) {
   def isLocal = host == "localhost"
   def isRemote = !isLocal
   def toSlickDatabase = Database.forConfig("", config)
-  def isReadonly: Boolean = c.getBoolean("db.readonly")
+  def hasReplicaHost = c.hasPath("db.replica.host")
 }
 
 
-class KoskiDatabase(c: Config) extends Logging {
-  val config = KoskiDatabaseConfig(c)
+class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
   val serverProcess = startLocalDatabaseServerIfNotRunning
 
   if (!config.isRemote) {
@@ -47,7 +63,7 @@ class KoskiDatabase(c: Config) extends Logging {
 
   val db: DB = config.toSlickDatabase
 
-  if (!config.isReadonly) {
+  if (!config.readOnly) {
     migrateSchema
   }
 

@@ -21,7 +21,7 @@ object Fixtures {
 }
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
-  private val databaseFixtures = new KoskiDatabaseFixtureCreator(application.database, application.opiskeluoikeusRepository, application.henkilöRepository, application.perustiedotIndexer, application.validator)
+  private val databaseFixtures = new KoskiDatabaseFixtureCreator(application.masterDatabase, application.opiskeluoikeusRepository, application.henkilöRepository, application.perustiedotIndexer, application.validator)
   def resetFixtures = if(shouldUseFixtures(application.config)) {
     application.cacheManager.invalidateAllCaches
     databaseFixtures.resetFixtures

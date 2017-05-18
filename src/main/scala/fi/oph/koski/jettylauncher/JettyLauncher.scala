@@ -34,7 +34,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   private val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   private val server = new Server(threadPool)
 
-  application.database // <- force evaluation to make sure DB is up
+  application.masterDatabase // <- force evaluation to make sure DB is up
 
   configureLogging
   setupConnector

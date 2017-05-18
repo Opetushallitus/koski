@@ -12,13 +12,11 @@ import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
 class KoskiScheduledTasks(application: KoskiApplication) {
-  if (!application.database.config.isReadonly) {
-    new UpdateHenkilot(application).scheduler
-  }
+  val updateHenkilötScheduler: Scheduler = new UpdateHenkilot(application).scheduler
 }
 
 class UpdateHenkilot(application: KoskiApplication) extends Timing {
-  def scheduler = new Scheduler(application.database.db, "henkilötiedot-update", new IntervalSchedule(henkilötiedotUpdateInterval), henkilöUpdateContext(currentTimeMillis), updateHenkilöt)
+  def scheduler = new Scheduler(application.masterDatabase.db, "henkilötiedot-update", new IntervalSchedule(henkilötiedotUpdateInterval), henkilöUpdateContext(currentTimeMillis), updateHenkilöt)
 
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     implicit val formats = Json.jsonFormats

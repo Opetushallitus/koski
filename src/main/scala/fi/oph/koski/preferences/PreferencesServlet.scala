@@ -7,7 +7,7 @@ import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class PreferencesServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
-  private val service = PreferencesService(application.database.db)
+  private val service = PreferencesService(application.masterDatabase.db)
 
   put("/:organisaatioOid/:type") {
     withJsonBody({ body =>
