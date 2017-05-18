@@ -42,9 +42,9 @@ class TodistusServlet(val application: KoskiApplication) extends HtmlServlet wit
                 Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))
               case t: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
                 Right(new NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
-              case t: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus =>
+              case t: ValmaKoulutuksenSuoritus =>
                 Right(new ValmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
-              case t: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus =>
+              case t: TelmaKoulutuksenSuoritus =>
                 Right(new TelmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t).todistusHtml)
               case t: LukionOppimääränSuoritus =>
                 Right((new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t))

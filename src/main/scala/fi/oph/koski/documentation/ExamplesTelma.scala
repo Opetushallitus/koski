@@ -23,11 +23,11 @@ object ExamplesTelma {
           AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
         )),
         oppilaitos = Some(stadinAmmattiopisto),
-        suoritukset = List(TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
+        suoritukset = List(TelmaKoulutuksenSuoritus(
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavaKoulutus(),
+          koulutusmoduuli = TelmaKoulutus(),
           osasuoritukset = Some(List(
             telmaKurssinSuoritus("TV", "Toimintakyvyn vahvistaminen", 18f, pakollinen = true,
               sanallinenArvionti("Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa.")),
@@ -37,7 +37,7 @@ object ExamplesTelma {
               sanallinenArvionti("Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.")),
             telmaKurssinSuoritus("TIV", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen", 2f, pakollinen = false, arviointiHyväksytty, tunnustettu("Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"), näyttö = Some(näyttö(date(2016, 6, 1), "Elokuvien jälkieditointi", "FinBio Oy"))),
             telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti")),
-            TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
+            TelmaKoulutuksenOsanSuoritus(
               tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = arviointiHyväksytty
@@ -52,9 +52,9 @@ object ExamplesTelma {
   def tunnustettu(selite: String): Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(None, selite))
 
   private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[AmmatillinenArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None) =
-    TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
+    TelmaKoulutuksenOsanSuoritus(
       tila = tilaValmis,
-      koulutusmoduuli = PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
+      koulutusmoduuli = PaikallinenTelmaKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
         kuvaus = finnish(kuvaus),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),

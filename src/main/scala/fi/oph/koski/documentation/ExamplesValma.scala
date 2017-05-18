@@ -21,17 +21,17 @@ object ExamplesValma {
           AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
         )),
         oppilaitos = Some(stadinAmmattiopisto),
-        suoritukset = List(AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
+        suoritukset = List(ValmaKoulutuksenSuoritus(
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(60))),
+          koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(60))),
           osasuoritukset = Some(List(
             valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = true),
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
+            ValmaKoulutuksenOsanSuoritus(
               tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = Some(List(arviointiHyväksytty)),
@@ -68,9 +68,9 @@ object ExamplesValma {
     pakollinen: Boolean,
     tunnustettu: Option[OsaamisenTunnustaminen] = None,
     näyttö: Option[Näyttö] = None) =
-    AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
+    ValmaKoulutuksenOsanSuoritus(
       tila = tilaValmis,
-      koulutusmoduuli = PaikallinenAmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+      koulutusmoduuli = PaikallinenValmaKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
         kuvaus = finnish(kuvaus),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
