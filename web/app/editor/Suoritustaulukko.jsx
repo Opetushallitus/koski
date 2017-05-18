@@ -41,19 +41,19 @@ export const Suoritustaulukko = React.createClass({
                   <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
                   ryhmänSuoritukset.map((suoritus, j) => {
                     let key = i*100 + j
-                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(key)} onExpand={this.toggleExpand(key)} key={key} grouped={true}/>
+                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(suoritus.arrayKey)} onExpand={this.toggleExpand(suoritus)} key={key} grouped={true}/>
                   })
                 ])
               : grouped[0][1].map((suoritus, i) =>
-                  <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(i)} onExpand={this.toggleExpand(i)} key={i}/>
+                  <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(suoritus.arrayKey)} onExpand={this.toggleExpand(suoritus)} key={i}/>
                 )
           }
         </table>
       </div>)
   },
-  toggleExpand(key) {
+  toggleExpand(suoritus) {
     return (expand) => {
-      this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpand(key, expand))
+      this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpand(suoritus, expand))
     }
   },
   toggleExpandAll() {
@@ -126,16 +126,16 @@ export const suorituksenTilaSymbol = (tila) => {
   }
 }
 
-export const expandStateCalc = (currentState, suoritukset, filter = s => suoritusProperties(s).length > 0) => {
+export const expandStateCalc = (currentState, suoritukset, keyF = s => s.arrayKey, filter = s => suoritusProperties(s).length > 0) => {
   return {
     toggleExpandAll() {
       let {allExpandedToggle} = currentState
-      let newExpanded = !allExpandedToggle ? suoritukset.reduce((acc, s, i) => filter(s) ? acc.concat(i) : acc , []) : []
+      let newExpanded = !allExpandedToggle ? suoritukset.reduce((acc, s) => filter(s) ? acc.concat(keyF(s)) : acc , []) : []
       return {expanded: newExpanded, allExpandedToggle: !allExpandedToggle}
     },
-    toggleExpand(key, expand) {
+    toggleExpand(suoritus, expand) {
       let {expanded, allExpandedToggle} = currentState
-      let newExpanded = expand ? expanded.concat(key) : R.without([key], expanded)
+      let newExpanded = expand ? expanded.concat(keyF(suoritus)) : R.without([keyF(suoritus)], expanded)
 
       return {
         expanded: newExpanded,
