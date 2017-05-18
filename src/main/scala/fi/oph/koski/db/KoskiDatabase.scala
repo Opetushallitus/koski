@@ -42,6 +42,7 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
   val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName  + "?user=" + user + "&password=" + password
 
   val config = c.getConfig("db")
+    .withValue("poolName", fromAnyRef(s"koski${if (readOnly) "Replica" else "Master"}Pool"))
     .withValue("url", fromAnyRef(jdbcUrl))
     .withValue("numThreads", fromAnyRef(Pools.dbThreads))
 
