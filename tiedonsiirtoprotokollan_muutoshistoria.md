@@ -1,3 +1,7 @@
+## 18.5.2017
+
+- Lisätty työssäoppimisjaksot myös ammatillisiin päätason suorituksiin
+
 ## 17.5.2017
 
 - Lisätty osaamisalat ja todistuksellaNäkyvätLisätiedot osittaisen ammatillisen tutkinnon suoritukseen
