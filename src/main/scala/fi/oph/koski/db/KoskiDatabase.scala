@@ -29,7 +29,7 @@ object KoskiDatabase {
 
 case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
   private val masterHost: String = c.getString("db.host")
-  private lazy val replicaHost: String = c.getString("db.replica.host")
+  private val replicaHost: String = if (c.hasPath("db.replica.host")) c.getString("db.replica.host") else masterHost
   private val masterPort: Int = c.getInt("db.port")
   private val replicaPort: Int = if (c.hasPath("db.replica.port")) c.getInt("db.replica.port") else masterPort
 
