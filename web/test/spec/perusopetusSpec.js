@@ -285,6 +285,10 @@ describe('Perusopetus', function() {
   describe('Hetuton oppija', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('1.2.246.562.24.99999999123', 'Hetuton'))
 
+    it('näyttää syntymäajan hetun sijaan', function() {
+      expect(page.getSelectedOppija()).to.equal('Hetuton, Heikki (24.2.1977)')
+    })
+
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Alkamispäivä : 15.8.2008 — Päättymispäivä :\n' +

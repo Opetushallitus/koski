@@ -22,6 +22,7 @@ import {navigateToOppija, navigateWithQueryParams, locationP, showError} from '.
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
 import {listviewPath} from './Oppijataulukko.jsx'
+import {ISO2FinnishDate} from './date'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -161,13 +162,14 @@ export const ExistingOppija = React.createClass({
     oppija = Editor.setupContext(oppija, {saveChangesBus, editBus, changeBus, editorMapping})
     let henkilö = modelLookup(oppija, 'henkilö')
     let hetu = modelTitle(henkilö, 'hetu')
+    let syntymäaika = modelTitle(henkilö, 'syntymäaika')
     return oppija.loading
       ? <div className="loading"/>
       : (
         <div>
           <div className={stateP.map(state => 'oppija-content ' + state)}>
             <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
-              className='hetu'>{hetu && '(' + hetu + ')'}</span>
+              className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
             </h2>
             {

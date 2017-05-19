@@ -34,7 +34,7 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
 
   // TODO: muuta signature OppijaHenkilö -> TäydellisetHenkilötiedot
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): Option[TäydellisetHenkilötiedot] = {
-    Some(TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
+    Some(TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
   }
 
   private def toHenkilötiedot(user: QueryHenkilö) =  HenkilötiedotJaOid(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)

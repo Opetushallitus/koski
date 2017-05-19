@@ -52,7 +52,7 @@ export const OppijaHaku = () => {
     if (response.henkilöt.length > 0) {
       return response.henkilöt.map((o, i) => {
         let href = `/koski/oppija/${o.oid}`
-        let oppija = o.sukunimi +', '+ o.etunimet + (o.hetu && ' (' + o.hetu + ')')
+        let oppija = o.sukunimi +', '+ o.etunimet + (o.hetu ? ' (' + o.hetu + ')' : '')
         return {href, element: (<li className={i == selectedIndex ? 'selected' : ''} key={i}>
           <Link href={href}><Highlight search={query}>{oppija}</Highlight></Link>
         </li>)}

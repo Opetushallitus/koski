@@ -3,6 +3,7 @@ package fi.oph.koski.servlet
 import java.io.{EOFException, PrintWriter}
 
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.LocalDateSerializer
 import org.json4s.DefaultFormats
 import rx.lang.scala.Observable
 
@@ -35,7 +36,7 @@ trait ObservableSupport extends ApiServlet {
       if (index > 0) {
         writer.print(",")
       }
-      val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats)
+      val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats + LocalDateSerializer)
       writer.print(output)
     }
 

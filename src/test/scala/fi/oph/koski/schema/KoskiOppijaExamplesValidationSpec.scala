@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
@@ -36,7 +38,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
       testDeserialization(OidHenkilö(oid), classOf[Henkilö])
       testDeserialization(OidHenkilö(""), classOf[OidHenkilö], Left(List(ValidationError("oid",JString(""),EmptyString()))))
       testDeserialization(OidHenkilö("123"), classOf[OidHenkilö], Left(List(ValidationError("oid",JString("123"),RegExMismatch("""1\.2\.246\.562\.24\.\d{11}""")))))
-      testDeserialization(TäydellisetHenkilötiedot(oid, Some("123456-7890"), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))), classOf[Henkilö])
+      testDeserialization(TäydellisetHenkilötiedot(oid, Some("123456-7890"), Some(LocalDate.of(1977, 2, 2)), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))), classOf[Henkilö])
     }
     "Suoritus" in {
       testDeserialization(tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15), classOf[Suoritus])

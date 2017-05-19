@@ -13,7 +13,7 @@ import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      TäydellisetHenkilötiedot(oid, Some(oid), oid, oid, oid, oppijat.äidinkieli, None)
+      TäydellisetHenkilötiedot(oid, Some(oid), None, oid, oid, oid, oppijat.äidinkieli, None)
     }
   }
 
@@ -51,7 +51,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
-    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, Some("FI"), None, 0)
+    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, henkilö.syntymäaika, Some("FI"), None, 0)
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {

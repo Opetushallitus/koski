@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
+
 import fi.oph.scalaschema.annotation._
 
 object Henkilö {
@@ -15,13 +17,14 @@ sealed trait Henkilö
 
 object TäydellisetHenkilötiedot {
   def apply(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String): TäydellisetHenkilötiedot =
-    TäydellisetHenkilötiedot(oid, None, etunimet, kutsumanimi, sukunimi, None, None)
+    TäydellisetHenkilötiedot(oid, None, None, etunimet, kutsumanimi, sukunimi, None, None)
 }
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
 case class TäydellisetHenkilötiedot(
   oid: Henkilö.Oid,
   hetu: Option[Henkilö.Hetu],
+  syntymäaika: Option[LocalDate],
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String,

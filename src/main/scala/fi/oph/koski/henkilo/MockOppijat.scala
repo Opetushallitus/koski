@@ -1,5 +1,7 @@
 package fi.oph.koski.henkilo
 
+import java.time.LocalDate
+
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
@@ -10,7 +12,7 @@ object MockOppijat {
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
   val tyhjä = UusiHenkilö(Some("230872-7258"), "Tero", "Tero", "Tyhjä")
 
-  val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, "Heikki", "Heikki", "Hetuton", None, None))
+  val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, Some(LocalDate.of(1977, 2, 24)), "Heikki", "Heikki", "Hetuton", None, None))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
   val markkanen = oppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R")
@@ -58,7 +60,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
   def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot =
-    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), etu, etu, suku, äidinkieli, None))
+    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, etu, suku, äidinkieli, None))
 
   def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedot = {
     oppijat = oppija :: oppijat

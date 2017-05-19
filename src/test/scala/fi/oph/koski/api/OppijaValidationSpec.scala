@@ -111,7 +111,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", Some("010101-123N"), "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
+          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", Some("010101-123N"), None, "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*henkilö.oid.*regularExpressionMismatch.*".r))))
         }
       }
     }
