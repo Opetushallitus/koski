@@ -149,7 +149,6 @@ const createState = (oppijaOid) => {
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
 
-
 const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
@@ -158,8 +157,6 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
-
-
 
 export const ExistingOppija = React.createClass({
   render() {
