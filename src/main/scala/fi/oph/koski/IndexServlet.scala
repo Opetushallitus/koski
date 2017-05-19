@@ -16,6 +16,10 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
     indexHtml()
   }
 
+  get("/validointi") {
+    indexHtml()
+  }
+
   get("/uusioppija") {
     indexHtml()
   }

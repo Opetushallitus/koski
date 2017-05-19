@@ -35,7 +35,6 @@ describe('Koski', function() {
       })
     })
 
-
     describe('Kun klikataan logout-linkkiä', function() {
       before(Authentication().login(), page.openPage, page.logout)
 
@@ -66,6 +65,14 @@ describe('Koski', function() {
       it('Siirrytään login-sivulle', function() {
         expect(login.isVisible()).to.equal(true)
       })
+    })
+  })
+
+  describe('Validointi-sivu', function() {
+    before(Authentication().login(), openPage('/koski/validointi'))
+
+    it('näytetään', function () {
+      expect(isElementVisible(S('.validaatio'))).to.equal(true)
     })
   })
 
