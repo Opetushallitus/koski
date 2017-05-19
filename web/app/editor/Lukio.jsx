@@ -62,7 +62,7 @@ const LukionOppiaineEditor = React.createClass({
         <td className="maara">{suoritetutKurssit.length}</td>
         <td className="arvosana">
           <div className="annettuArvosana">{arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}</div>
-          <div className="keskiarvo">{keskiarvo ? '(' + keskiarvo.toFixed(1) + ')' : ''}</div>
+          <div className="keskiarvo">{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
         </td>
       </tr>
     )

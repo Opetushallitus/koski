@@ -75,23 +75,23 @@ describe('Lukiokoulutus', function( ){
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
           'Äidinkieli ja kirjallisuus\n' +
-          'ÄI1\n8 ÄI2\n8 ÄI3\n8 ÄI4\n8 ÄI5\n9 ÄI6\n9 ÄI8\n9 ÄI9\n9 8 9\n(8.5)\n' +
-          'A1-kieli, englanti\nENA1\n10 ENA2\n10 ENA3\n9 ENA4\n9 ENA5\n9 ENA6\n8 ENA7\n8 ENA8\n9 ENA 10\nS 9 9\n(9.0)\n' +
-          'B1-kieli, ruotsi\nRUB11\n9 RUB12\n8 RUB13\n7 RUB14\n7 RUB15\n6 5 7\n(7.4)\n' +
-          'B3-kieli, latina\nLAB31\n9 LAB32\n8 2 9\n(8.5)\n' +
-          'Matematiikka, pitkä oppimäärä\nMAA1\n9 MAA2\n10 MAA3\n8 MAA4\n10 MAA5\n7 MAA6\n9 MAA7\n8 MAA8\n7 MAA9\n9 MAA10\n8 MAA11\n8 MAA12\n10 MAA13\n8 MAA14\n9 MAA16\n9 15 9\n(8.6)\n' +
-          'Biologia\nBI1\n8 BI2\n9 BI3\n8 BI4\n9 BI5\n10 BI6\nS BI7\nS BI8\nS 8 9\n(8.8)\n' +
-          'Maantieto\nGE1\n9 GE2\n7 2 8\n(8.0)\nFysiikka\nFY1\n8 FY2\n9 FY3\n9 FY4\n7 FY5\n8 FY6\n7 FY7\n8 FY8\n7 FY9\n7 FY10\nS FY11\nS FY12\nS FY13\nS 13 8\n(7.8)\n' +
-          'Kemia\nKE1\n8 KE2\n9 KE3\n9 KE4\n5 KE5\n7 KE6\n5 KE7\nS KE8\nS 8 8\n(7.2)\n' +
-          'Uskonto tai elämänkatsomustieto\nUE1\n8 UE2\n7 UE3\n8 3 8\n(7.7)\nFilosofia\nFI1\n8 1 8\n(8.0)\n' +
-          'Psykologia\nPS1\n9 1 9\n(9.0)\n' +
-          'Historia\nHI1\n7 HI2\n8 HI3\n7 HI4\n6 4 7\n(7.0)\n' +
-          'Yhteiskuntaoppi\nYH1\n8 YH2\n8 2 8\n(8.0)\n' +
-          'Liikunta\nLI1\n8 LI2\n9 LI12\nS 3 9\n(8.5)\n' +
-          'Musiikki\nMU1\n8 1 8\n(8.0)\n' +
-          'Kuvataide\nKU1\n8 KU2\n9 2 9\n(8.5)\n' +
-          'Terveystieto\nTE1\n8 1 9\n(8.0)\n' +
-          'Tanssi ja liike\nITT1\n10 1 10\n(10.0)\n' +
+          'ÄI1\n8 ÄI2\n8 ÄI3\n8 ÄI4\n8 ÄI5\n9 ÄI6\n9 ÄI8\n9 ÄI9\n9 8 9\n(8,5)\n' +
+          'A1-kieli, englanti\nENA1\n10 ENA2\n10 ENA3\n9 ENA4\n9 ENA5\n9 ENA6\n8 ENA7\n8 ENA8\n9 ENA 10\nS 9 9\n(9,0)\n' +
+          'B1-kieli, ruotsi\nRUB11\n9 RUB12\n8 RUB13\n7 RUB14\n7 RUB15\n6 5 7\n(7,4)\n' +
+          'B3-kieli, latina\nLAB31\n9 LAB32\n8 2 9\n(8,5)\n' +
+          'Matematiikka, pitkä oppimäärä\nMAA1\n9 MAA2\n10 MAA3\n8 MAA4\n10 MAA5\n7 MAA6\n9 MAA7\n8 MAA8\n7 MAA9\n9 MAA10\n8 MAA11\n8 MAA12\n10 MAA13\n8 MAA14\n9 MAA16\n9 15 9\n(8,6)\n' +
+          'Biologia\nBI1\n8 BI2\n9 BI3\n8 BI4\n9 BI5\n10 BI6\nS BI7\nS BI8\nS 8 9\n(8,8)\n' +
+          'Maantieto\nGE1\n9 GE2\n7 2 8\n(8,0)\nFysiikka\nFY1\n8 FY2\n9 FY3\n9 FY4\n7 FY5\n8 FY6\n7 FY7\n8 FY8\n7 FY9\n7 FY10\nS FY11\nS FY12\nS FY13\nS 13 8\n(7,8)\n' +
+          'Kemia\nKE1\n8 KE2\n9 KE3\n9 KE4\n5 KE5\n7 KE6\n5 KE7\nS KE8\nS 8 8\n(7,2)\n' +
+          'Uskonto tai elämänkatsomustieto\nUE1\n8 UE2\n7 UE3\n8 3 8\n(7,7)\nFilosofia\nFI1\n8 1 8\n(8,0)\n' +
+          'Psykologia\nPS1\n9 1 9\n(9,0)\n' +
+          'Historia\nHI1\n7 HI2\n8 HI3\n7 HI4\n6 4 7\n(7,0)\n' +
+          'Yhteiskuntaoppi\nYH1\n8 YH2\n8 2 8\n(8,0)\n' +
+          'Liikunta\nLI1\n8 LI2\n9 LI12\nS 3 9\n(8,5)\n' +
+          'Musiikki\nMU1\n8 1 8\n(8,0)\n' +
+          'Kuvataide\nKU1\n8 KU2\n9 2 9\n(8,5)\n' +
+          'Terveystieto\nTE1\n8 1 9\n(8,0)\n' +
+          'Tanssi ja liike\nITT1\n10 1 10\n(10,0)\n' +
           'Teemaopinnot\nMTA\nS 1 -\n' +
           'Oman äidinkielen opinnot\nOA1\nS 1 -')
       })
@@ -171,7 +171,7 @@ describe('Lukiokoulutus', function( ){
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
           'Historia\n' +
-          'HI1\n7 HI2\n8 HI3\n7 HI4\n6 4 9\n(7.0)')
+          'HI1\n7 HI2\n8 HI3\n7 HI4\n6 4 9\n(7,0)')
       })
     })
   })
@@ -213,7 +213,7 @@ describe('Lukiokoulutus', function( ){
           'A1-kieli, englanti\n' +
           'ENA1\n' +
           '8 1 S\n' +
-          '(8.0)'
+          '(8,0)'
         )
       })
     })
