@@ -23,6 +23,7 @@ import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
 import {listviewPath} from './Oppijataulukko.jsx'
 import {ISO2FinnishDate} from './date'
+import {doActionWhileMounted} from './util'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -100,6 +101,11 @@ const createState = (oppijaOid) => {
   })
 
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
+    if (oppijaBeforeSave.event != 'dirty') {
+      console.log('nothing to save')
+      return Bacon.never()
+    }
+
     var oppijaData = modelData(oppijaBeforeSave)
     let opiskeluoikeusId = oppijaBeforeSave.opiskeluoikeusId
     let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
@@ -121,7 +127,6 @@ const createState = (oppijaOid) => {
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE) // :: EventStream [Model -> EventStream[Model]]
 
-
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
     return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() }).doError(decreaseLoading)
@@ -141,7 +146,6 @@ const createState = (oppijaOid) => {
     state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook()
     if (state == 'saved') navigateWithQueryParams({edit: undefined})
   }) // i18n
-
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
 
@@ -156,9 +160,11 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
 }))
 
 
+
 export const ExistingOppija = React.createClass({
   render() {
     let {oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP} = this.props
+
     oppija = Editor.setupContext(oppija, {saveChangesBus, editBus, changeBus, editorMapping})
     let henkilö = modelLookup(oppija, 'henkilö')
     let hetu = modelTitle(henkilö, 'hetu')
@@ -180,10 +186,15 @@ export const ExistingOppija = React.createClass({
             }
           </div>
           <EditBar {...{saveChangesBus, cancelChangesBus, stateP, oppija}}/>
+          { doActionWhileMounted(globalSaveKeyEvent.filter(stateP.map(s => s == 'dirty')), () => saveChangesBus.push()) }
         </div>
     )
   }
 })
+
+const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
+  .filter(e => (e.getModifierState('Meta') || e.getModifierState('Control')) && e.keyCode==83)
+  .doAction('.preventDefault')
 
 const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let saveChanges = (e) => {
