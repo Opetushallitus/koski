@@ -17,14 +17,8 @@ object KoskiDatabase {
   def master(config: Config): KoskiDatabase =
     new KoskiDatabase(KoskiDatabaseConfig(config))
 
-  def replica(config: Config, master: KoskiDatabase): KoskiDatabase = {
-    val readonlyConfig = KoskiDatabaseConfig(config, readOnly = true)
-    if (readonlyConfig.hasReplicaHost) {
-      new KoskiDatabase(readonlyConfig)
-    } else {
-      master
-    }
-  }
+  def replica(config: Config, master: KoskiDatabase): KoskiDatabase =
+    new KoskiDatabase(KoskiDatabaseConfig(config, readOnly = true))
 }
 
 case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
@@ -43,6 +37,7 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
 
   val config = c.getConfig("db")
     .withValue("poolName", fromAnyRef(s"koski${if (readOnly) "Replica" else "Master"}Pool"))
+    .withValue("readOnly", fromAnyRef(readOnly))
     .withValue("url", fromAnyRef(jdbcUrl))
     .withValue("numThreads", fromAnyRef(Pools.dbThreads))
 
@@ -50,14 +45,13 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
   def isLocal = host == "localhost"
   def isRemote = !isLocal
   def toSlickDatabase = Database.forConfig("", config)
-  def hasReplicaHost = c.hasPath("db.replica.host")
 }
 
 
 class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
   val serverProcess = startLocalDatabaseServerIfNotRunning
 
-  if (!config.isRemote) {
+  if (!config.isRemote && !config.readOnly) {
     createDatabase
     createUser
   }
