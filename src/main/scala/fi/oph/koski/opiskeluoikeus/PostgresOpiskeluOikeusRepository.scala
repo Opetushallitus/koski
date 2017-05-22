@@ -171,7 +171,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, nextVersionumero, diff, newData))
+                    case 1 => Right(Updated(id, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }
