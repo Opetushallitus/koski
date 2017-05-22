@@ -36,19 +36,19 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |        "field": "tyyppi.nimi.fi.keyword"
           |      },
           |      "aggs": {
-          |      "tila": {
-          |        "nested": {
-          |          "path": "tilat"
-          |        },
-          |        "aggs": {
-          |          "tila": {
-          |            "terms": {
-          |              "field": "tilat.tila.koodiarvo.keyword",
-          |              "include" : "valmistunut"
+          |        "tila": {
+          |          "nested": {
+          |            "path": "tilat"
+          |          },
+          |          "aggs": {
+          |            "tila": {
+          |              "terms": {
+          |                "field": "tilat.tila.koodiarvo.keyword",
+          |                "include": "valmistunut"
+          |              }
           |            }
           |          }
-          |        }
-          |      },
+          |        },
           |        "toimipiste": {
           |          "nested": {
           |            "path": "suoritukset"
@@ -57,7 +57,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |            "count": {
           |              "cardinality": {
           |                "field": "suoritukset.toimipiste.oid.keyword",
-          |                "precision_threshold" : 10000
+          |                "precision_threshold": 10000
           |              }
           |            }
           |          }
