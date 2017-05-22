@@ -2,7 +2,7 @@
 
 - Lisätty toinenOsaamisala -flägi osittaisen ammatillisen tutkinnon suoritukseen
 
-## 18.5.2017
+## 18.5.2017 (versio 2017.6.2)
 
 - Lisätty työssäoppimisjaksot myös ammatillisiin päätason suorituksiin
 
