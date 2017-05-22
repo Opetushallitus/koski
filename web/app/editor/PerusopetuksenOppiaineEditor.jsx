@@ -10,7 +10,7 @@ import {isPaikallinen} from './Koulutusmoduuli'
 
 export const PerusopetuksenOppiaineEditor = React.createClass({
   render() {
-    let { oppiaine, showExpand, toggleExpand, uusiOppiaineenSuoritus } = this.props
+    let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
       let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
       return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
@@ -26,7 +26,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
               <span className="koodi"><Editor model={oppiaine} path="tunniste.koodiarvo" placeholder="Koodi"/></span>
               <span className="nimi"><Editor model={fixKuvaus(oppiaine)} path="tunniste.nimi" placeholder="Oppiaineen nimi"/></span>
           </span>
-        : showExpand ? <a className="nimi" onClick={toggleExpand}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+        : showExpand ? <a className="nimi" onClick={() => onExpand(!expanded)}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
     }
       {
         // kielivalinta

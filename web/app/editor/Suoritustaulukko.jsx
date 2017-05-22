@@ -1,71 +1,56 @@
-import React from 'react'
+import React from 'baret'
 import {modelData, modelTitle, modelLookup} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {shouldShowProperty, PropertiesEditor} from './PropertiesEditor.jsx'
 import {modelProperties, modelProperty, modelItems} from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
+import {accumulateExpandedState} from './ExpandableItems'
 
-export const Suoritustaulukko = React.createClass({
-  render() {
-    let {suoritukset} = this.props
+export const Suoritustaulukko = ({suoritukset}) => {
+  let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState(suoritukset, s => s.arrayKey, s => suoritusProperties(s).length > 0)
+  let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
+  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
 
-    let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
-    let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
+  let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
+  let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
+  let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
+  let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
+  return suoritukset.length > 0 && (<div className="suoritus-taulukko">
+      <table>
+        <thead><tr>
+          <th className="suoritus">
+            {modelProperty(suoritukset[0], 'koulutusmoduuli').title}
+            { showExpandAll &&
+            <div>
+              { allExpandedP.map( allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
+                  { allExpanded ? 'Sulje kaikki' : 'Avaa kaikki' }
+                </a>
+              )}
+            </div>
+            }
+          </th>
+          {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
+          <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>
+          <th className="arvosana">Arvosana</th>
+        </tr></thead>
+        {
+          grouped.length > 1
+            ? grouped.flatMap(([groupId, ryhmänSuoritukset], i) => [
+            <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
+            ryhmänSuoritukset.map((suoritus, j) => {
+              let key = i*100 + j
+              return <SuoritusEditor baret-lift showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key} grouped={true}/>
+            })
+          ])
+            : grouped[0][1].map((suoritus, i) =>
+            <SuoritusEditor baret-lift showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
+          )
+        }
+      </table>
+    </div>)
 
-    let {allExpandedToggle} = this.state
-    let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-    let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
-    let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
-    let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-    return suoritukset.length > 0 && (<div className="suoritus-taulukko">
-        <table>
-          <thead><tr>
-            <th className="suoritus">
-              {modelProperty(suoritukset[0], 'koulutusmoduuli').title}
-              { showExpandAll &&
-                <div>
-                  <a className={'expand-all button' + (allExpandedToggle ? ' expanded' : '')} onClick={this.toggleExpandAll}>
-                    { allExpandedToggle ? 'Sulje kaikki' : 'Avaa kaikki' }
-                  </a>
-                </div>
-              }
-            </th>
-            {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
-            <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>
-            <th className="arvosana">Arvosana</th>
-          </tr></thead>
-          {
-            grouped.length > 1
-              ? grouped.flatMap(([groupId, ryhmänSuoritukset], i) => [
-                  <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
-                  ryhmänSuoritukset.map((suoritus, j) => {
-                    let key = i*100 + j
-                    return <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(suoritus.arrayKey)} onExpand={this.toggleExpand(suoritus)} key={key} grouped={true}/>
-                  })
-                ])
-              : grouped[0][1].map((suoritus, i) =>
-                  <SuoritusEditor showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={this.state.expanded.includes(suoritus.arrayKey)} onExpand={this.toggleExpand(suoritus)} key={i}/>
-                )
-          }
-        </table>
-      </div>)
-  },
-  toggleExpand(suoritus) {
-    return (expand) => {
-      this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpand(suoritus, expand))
-    }
-  },
-  toggleExpandAll() {
-    this.setState(expandStateCalc(this.state, this.props.suoritukset).toggleExpandAll())
-  },
-  getInitialState() {
-    return {
-      expanded: [],
-      allExpandedToggle: false
-    }
-  }
-})
+}
 
 const SuoritusEditor = React.createClass({
   render() {
@@ -123,26 +108,5 @@ export const suorituksenTilaSymbol = (tila) => {
     case 'KESKEYTYNYT': return ''
     case 'KESKEN': return ''
     default: return ''
-  }
-}
-
-export const expandStateCalc = (currentState, suoritukset, keyF = s => s.arrayKey, filter = s => suoritusProperties(s).length > 0) => {
-  return {
-    toggleExpandAll() {
-      let {allExpandedToggle} = currentState
-      let newExpanded = !allExpandedToggle ? suoritukset.reduce((acc, s) => filter(s) ? acc.concat(keyF(s)) : acc , []) : []
-      return {expanded: newExpanded, allExpandedToggle: !allExpandedToggle}
-    },
-    toggleExpand(suoritus, expand) {
-      let {expanded, allExpandedToggle} = currentState
-      let newExpanded = expand ? expanded.concat(keyF(suoritus)) : R.without([keyF(suoritus)], expanded)
-
-      return {
-        expanded: newExpanded,
-        allExpandedToggle: suoritukset.filter(filter).length === newExpanded.length
-            ? true
-            : newExpanded.length === 0 ? false : allExpandedToggle
-      }
-    }
   }
 }
