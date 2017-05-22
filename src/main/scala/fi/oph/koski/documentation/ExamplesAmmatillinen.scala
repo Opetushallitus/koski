@@ -100,6 +100,7 @@ object AmmatillinenPerustutkintoExample {
         Some("62/011/2014")
       ),
       osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
+      toinenOsaamisala = true,
       järjestämismuoto = Some(järjestämismuotoOppilaitos),
       suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
       tila = tilaValmis,

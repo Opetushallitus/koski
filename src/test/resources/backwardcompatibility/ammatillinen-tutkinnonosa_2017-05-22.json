@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -61,6 +60,7 @@
         },
         "koodistoUri" : "osaamisala"
       } ],
+      "toinenOsaamisala" : true,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {

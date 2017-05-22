@@ -139,6 +139,9 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
+  @Description("Onko kyse uuden osaamisalan suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
+  @DefaultValue(false)
+  toinenOsaamisala: Boolean = false,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
