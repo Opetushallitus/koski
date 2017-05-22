@@ -56,7 +56,8 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
           |          "aggs": {
           |            "count": {
           |              "cardinality": {
-          |                "field": "suoritukset.toimipiste.oid.keyword"
+          |                "field": "suoritukset.toimipiste.oid.keyword",
+          |                "precision_threshold" : 10000
           |              }
           |            }
           |          }
