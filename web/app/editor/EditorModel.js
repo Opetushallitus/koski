@@ -339,7 +339,7 @@ let contextualizeProperty = (mainModel) => (property) => {
 }
 
 let arrayKeyCounter = 0
-let ensureArrayKey = (v) => {
+export const ensureArrayKey = (v) => {
   if (v && v.value && !v.arrayKey) {
     v.arrayKey = ++arrayKeyCounter
   }

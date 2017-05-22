@@ -22,7 +22,8 @@ import {
   findModelProperty,
   modelProperties,
   addContext,
-  modelSet
+  modelSet,
+  ensureArrayKey
 } from './EditorModel'
 import {sortGrades} from '../sorting'
 import {suoritusValmis, hasArvosana, setTila, lastArviointiLens, suoritusKesken} from './Suoritus'
@@ -73,9 +74,7 @@ const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
     let suoritukset = groupedSuoritukset[pakollisuus] || []
 
     return (<section className={pakollinen ? 'pakolliset' : 'valinnaiset'} key={pakollisuus}>
-      {(suoritukset.length > 0 || model.context.edit) &&
-        <Oppiainetaulukko model={model} title={groups.length > 1 && pakollisuus} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={pakollinen} />
-      }
+      <Oppiainetaulukko model={model} title={groups.length > 1 && pakollisuus} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} pakolliset={pakollinen} />
       {
         pakollinen ? null : <KäyttäytymisenArvioEditor model={model} />
       }
@@ -90,8 +89,6 @@ const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)
 }
-
-let addOppiaine = (model, uusiOppiaineenSuoritus) => oppiaine => pushModel(modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli'), model.context.changeBus)
 
 const KäyttäytymisenArvioEditor = ({model}) => {
   let edit = model.context.edit
@@ -115,44 +112,53 @@ let createOppiaineenSuoritus = (osasuoritukset) => {
   return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
 }
 
-const Oppiainetaulukko = ({model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus}) => {
-  if (!suoritukset.length) return null
-  let { isExpandedP, setExpanded } = accumulateExpandedState(suoritukset, s => s.arrayKey, s => expandableProperties(s).length > 0)
+const Oppiainetaulukko = React.createClass({
+  render() {
+    let {model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus} = this.props
+    let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
 
-  let edit = suoritukset[0].context.edit
-  let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || edit && !pakolliset
-  let showFootnotes = !edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+    let edit = model.context.edit
+    let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || edit && !pakolliset
+    let showFootnotes = !edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+    let addOppiaine = oppiaine => {
+      var suoritusUudellaOppiaineella = modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli')
+      pushModel(suoritusUudellaOppiaineella, model.context.changeBus)
+      ensureArrayKey(suoritusUudellaOppiaineella)
+      setExpanded(suoritusUudellaOppiaineella)(true)
+    }
 
-  if (suoritukset.length == 0 && !model.context.edit) return null
-  let pakollisuus = pakolliset == undefined
-    ? ''
-    : (pakolliset ? ' pakollinen' : ' valinnainen')
+    if (suoritukset.length == 0 && !model.context.edit) return null
+    let pakollisuus = pakolliset == undefined
+      ? ''
+      : (pakolliset ? ' pakollinen' : ' valinnainen')
 
-  return (<section>
-      {title && <h5>{title}</h5>}
-      <table>
-        <thead>
-        <tr>
-          <th className="oppiaine">Oppiaine</th>
-          <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
-          {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
-        </tr>
-        </thead>
-        {
-          suoritukset.map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
-                                                                   key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
-                                                                   expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
-                                                                   showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
-        }
-      </table>
-      <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
-                                          pakollinen={pakolliset} resultCallback={addOppiaine(model, uusiOppiaineenSuoritus)}
-                                          organisaatioOid={modelData(model.context.toimipiste).oid}
-                                          placeholder={`Lisää${pakollisuus} oppiaine`}/>
-    </section>
-  )
-}
-
+    return (<section>
+        {title && <h5>{title}</h5>}
+        { suoritukset.length > 0 && (
+          <table>
+            <thead>
+            <tr>
+              <th className="oppiaine">Oppiaine</th>
+              <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
+              {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
+            </tr>
+            </thead>
+            {
+              suoritukset.map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
+                                                                       key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
+                                                                       expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
+                                                                       showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+            }
+          </table>
+        )}
+        <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
+                                            pakollinen={pakolliset} resultCallback={addOppiaine}
+                                            organisaatioOid={modelData(model.context.toimipiste).oid}
+                                            placeholder={`Lisää${pakollisuus} oppiaine`}/>
+      </section>
+    )
+  }
+})
 
 let fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {

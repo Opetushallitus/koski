@@ -973,9 +973,20 @@ describe('Perusopetus', function() {
       describe('Pakollinen oppiaine', function() {
         var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
         var filosofia = editor.subEditor('.pakollinen.FI')
-        before(opinnot.valitseSuoritus(1, 'Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-        it('Lisääminen', function () {
-          expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+        before(opinnot.valitseSuoritus(1, 'Peruskoulu'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'))
+
+        describe('Lisääminen', function() {
+          describe('Ennen tallennnusta', function() {
+            it('Uusi oppiaine näytetään avattuna', function() {
+              expect(filosofia.property('yksilöllistettyOppimäärä').isVisible()).to.equal(true)
+            })
+          })
+          describe('Tallennuksen jälkeen', function() {
+            before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+            it('Uusi oppiaine näytetään', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+            })
+          })
         })
 
         describe('Poistaminen', function () {
@@ -1844,8 +1855,11 @@ describe('Perusopetus', function() {
         var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-        it('Lisääminen', function () {
-          expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+
+        describe('Lisääminen', function() {
+          it('Uusi oppiaine näytetään', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Filosofia 8')
+          })
         })
 
         describe('Poistaminen', function () {
