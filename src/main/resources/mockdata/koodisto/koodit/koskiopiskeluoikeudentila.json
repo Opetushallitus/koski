@@ -57,5 +57,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_peruutettu",
+    "koodiArvo": "peruutettu",
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "kuvaus": "Opiskeluoikeus peruutettu",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
