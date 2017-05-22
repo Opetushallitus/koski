@@ -24,7 +24,12 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
     }.getOrElse(Map())
   }
 
-  def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
+  def privateStatistics: Map[String, Any] =
+    privateRawStatistics.map { stats =>
+      Map("oppijoidenMäärä" -> stats)
+    }.getOrElse(Map())
+
+  private def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
     val result = index.runSearch(
       Json.parse(
         """
@@ -73,6 +78,27 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
       val total = (r \ "hits" \ "total").extract[Int]
       OpiskeluoikeudetTyypeittäin(total, (r \ "aggregations" \ "tyyppi" \ "buckets").extract[List[Tyyppi]])
     }
+  }
+
+  private def privateRawStatistics = {
+    val result = index.runSearch(
+      Json.parse(
+        """
+          |{
+          |  "size": 0,
+          |  "aggs": {
+          |    "henkilöcount": {
+          |      "cardinality": {
+          |        "field": "henkilö.oid.keyword",
+          |        "precision_threshold": 40000
+          |      }
+          |    }
+          |  }
+          |}
+        """.stripMargin)
+    )
+
+    result.map(r => (r \ "aggregations" \ "henkilöcount" \ "value").extract[Int])
   }
 }
 
