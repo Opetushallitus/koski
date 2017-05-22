@@ -101,11 +101,6 @@ const createState = (oppijaOid) => {
   })
 
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
-    if (oppijaBeforeSave.event != 'dirty') {
-      console.log('nothing to save')
-      return Bacon.never()
-    }
-
     var oppijaData = modelData(oppijaBeforeSave)
     let opiskeluoikeusId = oppijaBeforeSave.opiskeluoikeusId
     let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
