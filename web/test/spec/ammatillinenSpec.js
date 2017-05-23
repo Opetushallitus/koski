@@ -596,7 +596,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equal(
-            'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus Arvosana\n' +
+            'Tutkinnon osa\nSulje kaikki Pakollisuus Arvosana\n' +
             'Johtaminen ja henkilöstön kehittäminen kyllä Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
