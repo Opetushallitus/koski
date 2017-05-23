@@ -17,7 +17,14 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, Opiskelu
     val filtered = OpiskeluoikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
+
   def findByHetu(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
+    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
     Hetu.validate(hetu).right.map(henkilöRepository.findOppijat)
+  }
+
+  def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
+    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
+    HenkilöOid.validateHenkilöOid(oid).right.map(henkilöRepository.findOppijat)
   }
 }

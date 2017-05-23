@@ -67,6 +67,36 @@ describe('Oppijahaku', function() {
         expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
       })
     })
+    describe('Henkilöpalvelusta löytyvällä OID:lla', function() {
+      before(page.oppijaHaku.search('1.2.246.562.24.99999555555', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Näytetään kuvaava teksti', function() {
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      })
+      it('Uuden oppijan lisääminen on mahdollista', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
+      })
+    })
+    describe('OID:lla, jota ei löydy henkilöpalvelusta', function() {
+      before(page.oppijaHaku.search('1.2.246.562.24.99999444444', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Näytetään kuvaava teksti', function() {
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      })
+      it('Uuden oppijan lisääminen ei ole mahdollista', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
+      })
+    })
+    describe('Henkilöpalvelusta löytyvällä OID:lla ja ilman hetua', function() {
+      before(page.oppijaHaku.search('1.2.246.562.24.99999555556', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Näytetään kuvaava teksti', function() {
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
+      })
+      it('Uuden oppijan lisääminen on mahdollista', function() {
+        expect(page.oppijaHaku.canAddNewOppija()).to.equal(true)
+      })
+    })
     describe('Keinotekoisella hetulla', function() {
       before(page.oppijaHaku.search('290397-979R', page.oppijaHaku.isNoResultsLabelShown))
 

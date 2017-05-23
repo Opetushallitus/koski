@@ -70,6 +70,9 @@ function AddOppijaPage() {
         return pageApi.getInputValue(selector + ' input')
       })
     },
+    hetu: function() {
+      return extractAsText(S('.hetu .value'))
+    },
     submit: function() {
       if (!api.isEnabled) {
         throw new Error('Button not enabled')

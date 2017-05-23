@@ -6,11 +6,11 @@ import {navigateToOppija, showError} from '../location'
 import UusiOpiskeluoikeus from './UusiOpiskeluoikeus.jsx'
 import UusiHenkilö from './UusiHenkilo.jsx'
 
-export const UusiOppija = ({hetu}) => {
+export const UusiOppija = ({hetu, oid}) => {
   const opiskeluoikeusAtom = Atom()
   const submitBus = Bacon.Bus()
   const opiskeluoikeusValidP = opiskeluoikeusAtom.map(oos => !!oos).skipDuplicates()
-  const henkilöAtom = Atom({ hetu })
+  const henkilöAtom = Atom({ hetu: hetu, oid: oid  })
   const henkilöValidAtom = Atom(false)
   const henkilöErrorsAtom = Atom([])
   const createOppijaP = Bacon.combineWith(henkilöAtom, opiskeluoikeusAtom, toCreateOppija)
@@ -32,7 +32,7 @@ export const UusiOppija = ({hetu}) => {
     <div className='content-area'>
       <form className='main-content oppija uusi-oppija'>
         <h2>Uuden opiskelijan lisäys</h2>
-        <UusiHenkilö {...{ hetu, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
+        <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
         <hr/>
         <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
         <button className='button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>

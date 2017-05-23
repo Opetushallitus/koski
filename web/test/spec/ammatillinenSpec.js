@@ -56,6 +56,51 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on OID ja Hetu', function() {
+      before(resetFixtures, prepareForNewOppija('kalle', '1.2.246.562.24.99999555555'))
+      describe('Tietojen näyttäminen', function() {
+        it('Näytetään täydennetyt nimitietokentät', function() {
+          expect(addOppija.henkilötiedot()).to.deep.equal([ 'Eino', 'Eino', 'EiKoskessa' ])
+        })
+        it('Hetua ei näytetä', function() {
+          expect(addOppija.hetu()).equal('')
+        })
+      })
+
+      describe('Kun lisätään oppija', function() {
+        before(addOppija.enterValidDataAmmatillinen())
+        before(addOppija.submitAndExpectSuccess('EiKoskessa, Eino (270181-5263)', 'Autoalan perustutkinto'))
+
+        it('lisätty oppija näytetään', function() {})
+
+        it('Lisätty opiskeluoikeus näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        })
+      })
+    })
+
+    describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on vain OID', function() {
+      before(resetFixtures, prepareForNewOppija('kalle', '1.2.246.562.24.99999555556'))
+      describe('Tietojen näyttäminen', function() {
+        it('Näytetään täydennetyt nimitietokentät', function() {
+          expect(addOppija.henkilötiedot()).to.deep.equal([ 'Eino', 'Eino', 'EiKoskessaHetuton' ])
+        })
+      })
+
+      describe('Kun lisätään oppija', function() {
+        before(addOppija.enterValidDataAmmatillinen())
+        before(addOppija.submitAndExpectSuccess('EiKoskessaHetuton, Eino', 'Autoalan perustutkinto'))
+
+        it('lisätty oppija näytetään', function() {})
+
+        it('Lisätty opiskeluoikeus näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        })
+      })
+    })
+
     describe('Validointi', function() {
       before(resetFixtures, prepareForNewOppija('kalle', '230872-7258'))
 
@@ -209,7 +254,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun sessio on vanhentunut', function() {
         before(
           resetFixtures,
-          openPage('/koski/uusioppija#230872-7258', function() {return addOppija.isVisible()}),
+          openPage('/koski/uusioppija#hetu=230872-7258', function() {return addOppija.isVisible()}),
           addOppija.enterValidDataAmmatillinen(),
           Authentication().logout,
           addOppija.submit)
@@ -220,7 +265,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before(
           Authentication().login(),
-          openPage('/koski/uusioppija#230872-7258', function() {return addOppija.isVisible()}),
+          openPage('/koski/uusioppija#hetu=230872-7258', function() {return addOppija.isVisible()}),
           addOppija.enterValidDataAmmatillinen({sukunimi: "error"}),
           addOppija.submit)
 

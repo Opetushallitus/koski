@@ -70,7 +70,7 @@ export function currentLocation() {
   return parseLocation(document.location)
 }
 
-function parseQuery(qstr) {
+export function parseQuery(qstr) {
   if (qstr == '') return {}
   var query = {}
   var a = qstr.substr(1).split('&')

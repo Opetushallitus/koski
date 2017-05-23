@@ -1,5 +1,5 @@
 import React from 'react'
-import { locationP } from './location.js'
+import { locationP, parseQuery } from './location.js'
 import { oppijaContentP } from './Oppija.jsx'
 import { UusiOppija } from './uusioppija/UusiOppija.jsx'
 import { tiedonsiirtolokiContentP } from './Tiedonsiirtoloki.jsx'
@@ -11,11 +11,12 @@ import { validointiContentP } from './Validointi.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
-  let uusiOppijaHetu = (hash.match(new RegExp('#(.*)')) || [])[1]
+  let uusiOppijaHetu = parseQuery(hash).hetu
+  let uusiOppijaOid = parseQuery(hash).oid
   if (oppijaId) {
     return oppijaContentP(oppijaId)
-  } else if (path === '/koski/uusioppija' && uusiOppijaHetu) {
-    return { content: (<UusiOppija hetu={uusiOppijaHetu}/>), title: 'Uuden opiskelijan lisäys' }
+  } else if (path === '/koski/uusioppija' && (uusiOppijaHetu || uusiOppijaOid)) {
+    return { content: (<UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />), title: 'Uuden opiskelijan lisäys' }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {

@@ -58,7 +58,9 @@ export const OppijaHaku = () => {
         </li>)}
       })
     } else if (response.canAddNew) {
-      let href = '/koski/uusioppija#' + query
+      let hetuQuery = response.hetu ? (encodeURIComponent('hetu') + '=' + encodeURIComponent(response.hetu)) : ''
+      let oidQuery = response.oid ? (encodeURIComponent('oid') + '=' + encodeURIComponent(response.oid)) : ''
+      let href = '/koski/uusioppija#' + hetuQuery + ((hetuQuery && oidQuery) ? '&' : '') + (oidQuery ? oidQuery : '')
       return [{href, element: (<Link baret-lift className={selectedIndexAtom.map(i => 'lisaa-oppija' +(i == 0 ? ' selected' : ''))} href={href}>
         Lisää uusi opiskelija
       </Link>)}]
