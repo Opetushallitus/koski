@@ -18,7 +18,10 @@ class PulssiServlet(val application: KoskiApplication) extends ApiServlet with N
   }
 
   private def privateStats = if (koskiSessionOption.exists(_.hasGlobalReadAccess)) {
-    pulssi.sisäisetOpiskeluoikeusTiedot
+    Map(
+      "sisäisetOpiskeluoikeusTiedot" -> pulssi.sisäisetOpiskeluoikeusTiedot,
+      "käyttöoikeudet" -> pulssi.käyttöoikeudet
+    )
   } else {
     Map()
   }

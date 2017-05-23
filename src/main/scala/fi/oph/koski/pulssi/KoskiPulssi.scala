@@ -9,6 +9,7 @@ trait KoskiPulssi {
   def metriikka: Map[String, Any]
   def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]]
   def sisäisetOpiskeluoikeusTiedot: Map[String, Any]
+  def käyttöoikeudet: Map[String, Any]
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
@@ -30,6 +31,15 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   )
 
   def sisäisetOpiskeluoikeusTiedot: Map[String, Any] = perustiedotStats.privateStatistics
+
+  def käyttöoikeudet: Map[String, Any] = {
+    val kokonaismäärä = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä.values.flatten.toList.distinct.size
+    val käyttöoikeusmäärät = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä.map { case (x, y) => (x, y.size) }
+    Map(
+      "kokonaismäärä" -> kokonaismäärä,
+      "käyttöoikeusmäärät" -> käyttöoikeusmäärät
+    )
+  }
 }
 
 object KoskiPulssi {

@@ -105,4 +105,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu.contains(hetu)).map(toOppijaHenkilö)
 
   override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
+
+  override def henkilötPerKäyttöoikeusryhmä: Map[String, List[String]] =
+    MockUsers.users.flatMap(u => u.käyttöoikeudet.map(_._2.nimi).map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
 }

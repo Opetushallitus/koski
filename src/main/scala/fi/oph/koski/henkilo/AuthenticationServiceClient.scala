@@ -10,7 +10,6 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
 import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
@@ -29,6 +28,7 @@ trait AuthenticationServiceClient {
   def findChangedOppijaOids(since: Long): List[Oid]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
+  def henkilötPerKäyttöoikeusryhmä: Map[String, List[String]]
 }
 
 object AuthenticationServiceClient {
@@ -123,7 +123,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     }
   )
 
-  def henkilötPerRyhmä: Map[String, List[String]] = runTask(
+  def henkilötPerKäyttöoikeusryhmä: Map[String, List[String]] = runTask(
     käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(parseJson[List[KäyttöoikeusRyhmä]]).flatMap { ryhmät =>
       gatherUnordered(ryhmät
         .filter(_.description.texts.exists(t => t.lang  == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
