@@ -17,6 +17,8 @@ export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
   return modelItems(suoritus, 'osasuoritukset').find(suoritusKesken) != undefined
 }
 
+export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
+
 const createTila = (koodiarvo) => {
   if (!tilat[koodiarvo]) throw new Error('tila puuttuu: ' + koodiarvo)
   return tilat[koodiarvo]

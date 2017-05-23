@@ -491,6 +491,14 @@ describe('Ammatillinen koulutus', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('230297-6448'))
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
+
+      it('näyttää opiskeluoikeuden otsikkotiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeus h3'))).to.equal(
+          'Stadin ammattiopisto , Luonto- ja ympäristöalan perustutkinto , osittainen ( 2012 - 2016 , valmistunut )\n' +
+          'versiohistoria')
+        expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal('Luonto- ja ympäristöalan perustutkinto , osittainen')
+      })
+
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +

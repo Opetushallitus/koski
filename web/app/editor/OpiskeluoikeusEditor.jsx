@@ -15,6 +15,7 @@ import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.j
 import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
+import {suorituksenTyyppi} from './Suoritus'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let id = modelData(model, 'id')
@@ -118,7 +119,7 @@ const SuoritusTabs = ({ model, suoritukset }) => {
     {
       suoritukset.map((suoritusModel, i) => {
         let selected = i === SuoritusTabs.suoritusIndex(model, suoritukset)
-        let titleEditor = <Editor edit="false" model={suoritusModel} path="koulutusmoduuli.tunniste"/>
+        let titleEditor = suoritusTitle(suoritusModel)
         return (<li className={selected ? 'selected': null} key={i}>
           { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, suoritusModel.tabName) } exitHook={false}> {titleEditor} </Link>}
         </li>)
@@ -166,17 +167,25 @@ let näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includ
 export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   let päätasonSuoritukset = modelItems(opiskeluoikeus, 'suoritukset').filter(näytettäväPäätasonSuoritus)
   let makeGroupTitle = (suoritus) => {
-    switch (modelData(suoritus, 'tyyppi').koodiarvo) {
+    switch (suorituksenTyyppi(suoritus)) {
       case 'perusopetuksenoppiaineenoppimaara': return 'oppiainetta' // i18n
       case 'korkeakoulunopintojakso': return 'opintojaksoa' // i18n
       default: return ''
     }
   }
+
   let grouped = R.toPairs(R.groupBy(makeGroupTitle, päätasonSuoritukset)).map(([groupTitle, suoritukset]) => {
     let title = groupTitle && (suoritukset.length > 1)
       ? `${suoritukset.length} ${groupTitle}`
-      : modelTitle(suoritukset[0], 'koulutusmoduuli')
+      : suoritusTitle(suoritukset[0])
     return { title, suoritukset }
   })
   return grouped
+}
+
+export const suoritusTitle = (suoritus) => {
+  let title = <Editor edit="false" model={suoritus} path="koulutusmoduuli.tunniste"/>
+  return suorituksenTyyppi(suoritus) == 'ammatillinentutkintoosittainen'
+    ? <span>{title}, osittainen</span>// i18n
+    : title
 }

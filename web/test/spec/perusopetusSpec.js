@@ -1369,7 +1369,7 @@ describe('Perusopetus', function() {
           })
 
           it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
-            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli, englanti')
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli')
           })
 
           describe('Toisen oppiaineen lisääminen', function() {
