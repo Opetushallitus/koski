@@ -129,10 +129,7 @@ const createState = (oppijaOid) => {
   oppijaP.onValue()
   oppijaP.map('.event').filter(event => event == 'saved').onValue(() => savedBus.push(true))
 
-  const stateP = oppijaP.map('.event').mapError((e) => {
-    console.log('mapping', e, 'to dirty')
-    return 'dirty'
-  }).flatMapLatest(event => {
+  const stateP = oppijaP.map('.event').mapError(() => 'dirty').flatMapLatest(event => {
     if (event == 'saved') {
       return Bacon.once(event).concat(Bacon.later(5000, 'view'))
     }
