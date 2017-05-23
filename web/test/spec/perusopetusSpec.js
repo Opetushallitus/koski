@@ -1223,7 +1223,7 @@ describe('Perusopetus', function() {
 
   describe('Opiskeluoikeuden lisääminen', function() {
     describe('Perusopetuksen oppimäärä', function() {
-      before(('kalle', '230872-7258'))
+      before(prepareForNewOppija('kalle', '230872-7258'))
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
