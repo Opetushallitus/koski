@@ -10,6 +10,8 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
 import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
@@ -121,6 +123,17 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     }
   )
 
+  def henkilötPerRyhmä: Map[String, List[String]] = runTask(
+    käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(parseJson[List[KäyttöoikeusRyhmä]]).flatMap { ryhmät =>
+      gatherUnordered(ryhmät
+        .filter(_.description.texts.exists(t => t.lang  == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
+        .map { ryhmä =>
+          käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma/${ryhmä.id}/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(h => (ryhmä.nimi, h.personOids))
+        }
+      )
+    }
+  ).toMap
+
   private def findOppijatByOidsTask(oids: List[String]): Task[List[OppijaNumerorekisteriOppija]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
 }
@@ -145,3 +158,9 @@ class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidSe
   }
 }
 
+case class KäyttöoikeusRyhmä(id: Int, description: KäyttöoikeusRyhmäDescriptions) {
+  def nimi = description.texts.find(_.lang == "FI").map(_.text).getOrElse("")
+}
+case class KäyttöoikeusRyhmäDescriptions(texts: List[KäyttöoikeusRyhmäDescription])
+case class KäyttöoikeusRyhmäDescription(text: String, lang: String)
+case class KäyttöoikeusRyhmäHenkilöt(personOids: List[String])
