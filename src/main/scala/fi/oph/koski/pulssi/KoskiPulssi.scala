@@ -33,11 +33,10 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def sisäisetOpiskeluoikeusTiedot: Map[String, Any] = perustiedotStats.privateStatistics
 
   def käyttöoikeudet: Map[String, Any] = {
-    val kokonaismäärä = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä.values.flatten.toList.distinct.size
-    val käyttöoikeusmäärät = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä.map { case (x, y) => (x, y.size) }
+    val käyttöoikeusryhmät = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä
     Map(
-      "kokonaismäärä" -> kokonaismäärä,
-      "käyttöoikeusmäärät" -> käyttöoikeusmäärät
+      "kokonaismäärä" -> käyttöoikeusryhmät.values.flatten.toList.distinct.size,
+      "käyttöoikeusmäärät" -> käyttöoikeusryhmät.map { case (x, y) => (x, y.size) }
     )
   }
 }
