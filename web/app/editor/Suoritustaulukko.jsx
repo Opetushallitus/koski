@@ -6,6 +6,7 @@ import {modelProperties, modelProperty, modelItems} from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
+import {hasArvosana} from './Suoritus'
 
 export const Suoritustaulukko = ({suoritukset}) => {
   let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
@@ -13,8 +14,10 @@ export const Suoritustaulukko = ({suoritukset}) => {
   let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
 
   let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
+  let showArvosana = suoritukset.find(hasArvosana) !== undefined
   let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
   let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
+  let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
   let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
   return suoritukset.length > 0 && (<div className="suoritus-taulukko">
       <table>
@@ -31,8 +34,8 @@ export const Suoritustaulukko = ({suoritukset}) => {
             }
           </th>
           {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
-          <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>
-          <th className="arvosana">Arvosana</th>
+          {showLaajuus && <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>}
+          {showArvosana && <th className="arvosana">Arvosana</th>}
         </tr></thead>
         {
           grouped.length > 1
@@ -40,11 +43,11 @@ export const Suoritustaulukko = ({suoritukset}) => {
             <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
             ryhmänSuoritukset.map((suoritus, j) => {
               let key = i*100 + j
-              return <SuoritusEditor baret-lift showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key} grouped={true}/>
+              return <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus} showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key} grouped={true}/>
             })
           ])
             : grouped[0][1].map((suoritus, i) =>
-            <SuoritusEditor baret-lift showPakollisuus={showPakollisuus} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
+            <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus} showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
           )
         }
       </table>
@@ -54,7 +57,7 @@ export const Suoritustaulukko = ({suoritukset}) => {
 
 const SuoritusEditor = React.createClass({
   render() {
-    let {model, showPakollisuus, showScope, onExpand, expanded, grouped} = this.props
+    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped} = this.props
     let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
@@ -75,8 +78,8 @@ const SuoritusEditor = React.createClass({
 
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
-      <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>
-      <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>
+      {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
+      {showArvosana && <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>}
     </tr>
     {
       expanded && hasProperties && (<tr className="details" key="details">

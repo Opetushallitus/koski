@@ -315,7 +315,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
-        it('näyttää tutkinnon osat', function() { // TODO: väliotsikot
+        it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
             'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
             'Ammatilliset tutkinnon osat\n' +
@@ -388,7 +388,7 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Työssäoppimisen yhteydessä ei\n' +
-            'Kokonaisuus Laajuus Arvosana\n' +
+            'Kokonaisuus Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
             'Yhteiset tutkinnon osat\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
@@ -556,7 +556,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equal(
-            'Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
+            'Koulutuksen osa Pakollisuus Laajuus\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
             'Auton lisävarustetyöt ei 15 osp'
           )
