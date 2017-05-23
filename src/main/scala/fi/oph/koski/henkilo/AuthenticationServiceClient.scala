@@ -74,12 +74,12 @@ object AuthenticationServiceClient {
 
 object RemoteAuthenticationServiceClient {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): RemoteAuthenticationServiceClient = {
-    val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
+    val virkailijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
-    val authServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
-    val oidServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
-    val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
+    val authServiceHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
+    val oidServiceHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
+    val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
       new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp, perustiedotRepository, perustiedotIndexer)
     } else {
