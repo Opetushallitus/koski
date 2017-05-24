@@ -42,6 +42,10 @@ trait PrometheusRepository {
     metric("/prometheus/api/v1/query?query=koski_available_percent")
       .headOption.flatMap(value).map(_.toDouble).map(round(3)).getOrElse(100)
 
+  def tiedonsiirtovirheet: Int =
+    metric("/prometheus/api/v1/query?query=koski_failed_data_transfers")
+      .headOption.flatMap(value).map(_.toDouble.toInt).getOrElse(0)
+
   def doQuery(query: String): JValue
 
   private def metric(query: String) =

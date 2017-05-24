@@ -1,0 +1,17 @@
+{
+  "data": {
+    "result": [
+      {
+        "metric": {
+          "__name__": "koski_failed_data_transfers"
+        },
+        "value": [
+          1495612685.439,
+          "1.0001250806001045"
+        ]
+      }
+    ],
+    "resultType": "vector"
+  },
+  "status": "success"
+}

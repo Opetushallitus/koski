@@ -8,8 +8,9 @@ trait KoskiPulssi {
   def opiskeluoikeudet: Map[String, Any]
   def metriikka: Map[String, Any]
   def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]]
-  def sisäisetOpiskeluoikeusTiedot: Map[String, Any]
+  def sisäisetOpiskeluoikeustiedot: Map[String, Any]
   def käyttöoikeudet: Map[String, Any]
+  def sisäinenMetriikka: Map[String, Any]
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
@@ -30,7 +31,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
     Map("koulutusmuoto" -> "Ammatillinen koulutus", "määrä" -> 208)
   )
 
-  def sisäisetOpiskeluoikeusTiedot: Map[String, Any] = perustiedotStats.privateStatistics
+  def sisäisetOpiskeluoikeustiedot: Map[String, Any] = perustiedotStats.privateStatistics
 
   def käyttöoikeudet: Map[String, Any] = {
     val käyttöoikeusryhmät = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä
@@ -39,6 +40,10 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
       "käyttöoikeusmäärät" -> käyttöoikeusryhmät.map { case (x, y) => (x, y.size) }
     )
   }
+
+  def sisäinenMetriikka: Map[String, Any] = Map(
+    "tiedonsiirtovirheet" -> application.prometheusRepository.tiedonsiirtovirheet
+  )
 }
 
 object KoskiPulssi {
