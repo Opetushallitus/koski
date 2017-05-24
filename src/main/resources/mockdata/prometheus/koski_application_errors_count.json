@@ -3,11 +3,11 @@
     "result": [
       {
         "metric": {
-          "__name__": "koski_unavailable_count"
+          "__name__": "koski_application_errors_count"
         },
         "value": [
-          1495629754.776,
-          "6"
+          1495629820.799,
+          "72"
         ]
       }
     ],

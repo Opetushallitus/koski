@@ -3,11 +3,11 @@
     "result": [
       {
         "metric": {
-          "__name__": "koski_unavailable_count"
+          "__name__": "koski_alerts_count"
         },
         "value": [
-          1495629754.776,
-          "6"
+          1495629799.264,
+          "103"
         ]
       }
     ],

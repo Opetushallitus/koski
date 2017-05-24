@@ -42,8 +42,10 @@ trait PrometheusRepository {
     metric("/prometheus/api/v1/query?query=koski_available_percent")
       .headOption.flatMap(value).map(_.toDouble).map(round(3)).getOrElse(100)
 
-  def tiedonsiirtovirheet: Int = intMetric("koski_failed_data_transfers")
-  def katkojenMäärä: Int = intMetric("koski_unavailable_count")
+  def failedTransfers: Int = intMetric("koski_failed_data_transfers")
+  def outages: Int = intMetric("koski_unavailable_count")
+  def alerts: Int = intMetric("koski_alerts_count")
+  def applicationErrors: Int = intMetric("koski_application_errors_count")
 
   def doQuery(query: String): JValue
 
