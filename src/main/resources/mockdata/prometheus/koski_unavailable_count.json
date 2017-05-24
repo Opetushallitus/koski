@@ -1,0 +1,22 @@
+{
+  "data": {
+    "result": [
+      {
+        "metric": {
+          "__name__": "koski_unavailable_count",
+          "alertname": "InstanceDown",
+          "alertstate": "firing",
+          "env": "OPHKoskiDev",
+          "instance": "dev.koski.opintopolku.fi/koski/api/healthcheck",
+          "job": "healthcheck"
+        },
+        "value": [
+          1495615053.165,
+          "18"
+        ]
+      }
+    ],
+    "resultType": "vector"
+  },
+  "status": "success"
+}

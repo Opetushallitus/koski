@@ -42,7 +42,8 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   }
 
   def sisäinenMetriikka: Map[String, Any] = Map(
-    "tiedonsiirtovirheet" -> application.prometheusRepository.tiedonsiirtovirheet
+    "tiedonsiirtovirheet" -> application.prometheusRepository.tiedonsiirtovirheet,
+    "katkojenMäärä" -> application.prometheusRepository.katkojenMäärä
   )
 }
 
