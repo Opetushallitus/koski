@@ -7,7 +7,7 @@ import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {hasArvosana} from './Suoritus'
-
+import {t} from '../i18n'
 export const Suoritustaulukko = ({suoritukset}) => {
   let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
   let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
@@ -16,7 +16,7 @@ export const Suoritustaulukko = ({suoritukset}) => {
   let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
   let showArvosana = suoritukset.find(hasArvosana) !== undefined
   let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
-  let laajuusYksikkö = modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi.fi')
+  let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
   let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
   let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
   return suoritukset.length > 0 && (<div className="suoritus-taulukko">

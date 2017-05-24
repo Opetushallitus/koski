@@ -6,7 +6,7 @@ import {Editor} from './Editor.jsx'
 import Dropdown from '../Dropdown.jsx'
 import {pushModelValue, modelData, modelSetValue} from './EditorModel'
 import {getOrganizationalPreferences} from '../organizationalPreferences'
-
+import {t} from '../i18n'
 export const OrganisaatioHenkilöEditor = ({model}) => {
   let query = Atom('')
 
@@ -14,7 +14,7 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
   let organisaatioOid = modelData(myöntäjäOrganisaatio).oid
 
   let nimi = h => modelData(h, 'nimi')
-  let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + modelData(h, 'titteli.fi'))
+  let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + t(modelData(h, 'titteli')))
   let queryFilter = q => o => nimi(o).toLowerCase().indexOf(q.toLowerCase()) >= 0
   var newItemLens = L.compose('value', 'newItem')
   let newItem = modelSetValue(L.set(newItemLens, true, model), myöntäjäOrganisaatio.value, 'organisaatio')

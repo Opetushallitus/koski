@@ -6,6 +6,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
+import {t} from '../i18n.js'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives }) => {
   if (!sortBy) sortBy = R.identity
@@ -65,7 +66,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
     : <span className="inline enum">{modelTitle(model)}</span>
 }
 
-let zeroValue = {title: 'Ei valintaa', value: 'eivalintaa'}
+let zeroValue = {title: t('Ei valintaa'), value: 'eivalintaa'}
 
 EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath

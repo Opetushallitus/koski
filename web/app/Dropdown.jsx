@@ -5,7 +5,7 @@ import R from 'ramda'
 import {parseBool, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 
-export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => {
+export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => { // i18n
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 
@@ -109,7 +109,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                               className={selectionIndexAtom.map(selectionIndex => 'option' + (i == selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : ''))}
                               onMouseDown={(e) => {selectOption(e, o)}}
                               onMouseOver={() => handleMouseOver(allOptions, o)}>
-                    { isNew ? <span><span className="plus"></span>{displayValue(newItem)}</span> : displayValue(o)}
+                    { isNew ? <span><span className="plus">{''}</span>{displayValue(newItem)}</span> : displayValue(o)}
                   </li>)
                 })
               }

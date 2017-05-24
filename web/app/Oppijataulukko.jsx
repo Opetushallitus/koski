@@ -16,6 +16,8 @@ import delays from './delays'
 import Highlight from 'react-highlighter'
 import Link from './Link.jsx'
 import {currentLocation} from './location'
+import {t} from './i18n'
+import Text from './Text.jsx'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -35,7 +37,7 @@ export const Oppijataulukko = React.createClass({
           <tr>
             <SortingTableHeader field='nimi' title='Nimi' defaultSort='asc'>
               <input
-                placeholder="hae"
+                placeholder={t('hae')}
                 type="text"
                 defaultValue={params['nimihaku']}
                 onChange={e => {
@@ -44,7 +46,7 @@ export const Oppijataulukko = React.createClass({
               />
             </SortingTableHeader>
             <th className="tyyppi">
-              <span className="title">Opiskeluoikeuden tyyppi</span>
+              <span className="title"><Text name="Opiskeluoikeuden tyyppi"/></span>
               <Dropdown
                 id="tyyppi-valinta"
                 options={[nullSelection].concat(opiskeluoikeudenTyypit)}
@@ -53,7 +55,7 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="koulutus">
-              <span className="title">Koulutus</span>
+              <span className="title"><Text name="Koulutus"/></span>
               <Dropdown
                 id="koulutus-valinta"
                 options={[nullSelection].concat(koulutus)}
@@ -62,9 +64,9 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="tutkinto">
-              <span className="title">Tutkinto / osaamisala / nimike</span>
+              <span className="title"><Text name="Tutkinto / osaamisala / nimike"/></span>
               <input
-                placeholder="hae"
+                placeholder={t('hae')}
                 type="text"
                 defaultValue={params['tutkintohaku']}
                 onChange={e => {
@@ -73,7 +75,7 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="tila">
-              <span className="title">Tila</span>
+              <span className="title"><Text name="Tila"/></span>
               <Dropdown
                 id="tila-valinta"
                 options={[nullSelection].concat(opiskeluoikeudenTila)}
@@ -82,14 +84,14 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="oppilaitos">
-              <span className="title">Oppilaitos / toimipiste</span>
+              <span className="title"><Text name="Oppilaitos / toimipiste"/></span>
               <OrganisaatioPicker
                 selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
-                onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: org.nimi.fi } : { toimipiste: null, toimipisteNimi: null })}}
+                onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: t(org.nimi) } : { toimipiste: null, toimipisteNimi: null })}}
                 noSelectionText="kaikki"
               />
             </th>
-            <SortingTableHeader field='alkamispäivä' title='Aloitus pvm'>
+            <SortingTableHeader field='alkamispäivä' title={t('Aloitus pvm')}>
               <DatePicker
                 selectedStartDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
                 selectedEndDay={params['opiskeluoikeusAlkanutViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutViimeistään'])}
@@ -101,9 +103,9 @@ export const Oppijataulukko = React.createClass({
                 }
               />
             </SortingTableHeader>
-            <SortingTableHeader field='luokka' title='Luokka / ryhmä'>
+            <SortingTableHeader field='luokka' title={t('Luokka / ryhmä')}>
               <input
-                placeholder="hae"
+                placeholder={t('hae')}
                 type="text"
                 defaultValue={params['luokkahaku']}
                 onChange={e => this.filterBus.push({'luokkahaku': e.target.value})}
@@ -118,25 +120,25 @@ export const Oppijataulukko = React.createClass({
                 <td className="nimi">
                   <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
                 </td>
-                <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
-                <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>
+                <td className="tyyppi">{ t(opiskeluoikeus.tyyppi.nimi) }</td>
+                <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{t(suoritus.tyyppi.nimi)}</li>) }</ul></td>
                 <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
                   <ul className="cell-listing" key={j}>
                     {
-                      <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{suoritus.koulutusmoduuli.tunniste.nimi.fi}</Highlight></li>
+                      <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{t(suoritus.koulutusmoduuli.tunniste.nimi)}</Highlight></li>
                     }
                     {
-                      (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{osaamisala.nimi.fi}</Highlight></li>)
+                      (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{t(osaamisala.nimi)}</Highlight></li>)
                     }
                     {
-                      (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{nimike.nimi.fi}</Highlight></li>)
+                      (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{t(nimike.nimi)}</Highlight></li>)
                     }
                   </ul>
                 )}
                 </td>
-                <td className="tila">{ L.get(['tilat', 0, 'tila', 'nimi', 'fi'], opiskeluoikeus) }</td>
+                <td className="tila">{ t(L.get(['tilat', 0, 'tila', 'nimi'], opiskeluoikeus)) }</td>
                 <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                  <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
+                  <li key={j} className="toimipiste">{t(suoritus.toimipiste.nimi)}</li>)
                 }</ul></td>
                 <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
                 <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
@@ -144,7 +146,7 @@ export const Oppijataulukko = React.createClass({
             })
           }
           </tbody>
-        </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }
+        </table>) : <div className="ajax-indicator-bg"><Text name="Ladataan..."/></div> }
       <PaginationLink pager={pager}/>
     </div>)
   },
@@ -189,7 +191,7 @@ export const oppijataulukkoContentP = (query, params) => {
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
         <OppijaHaku/>
-        <h2 className="oppijataulukko-header">Opiskelijat</h2>
+        <h2 className="oppijataulukko-header"><Text name="Opiskelijat"/></h2>
       { taulukko }
       </div>
     </div>),

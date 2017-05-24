@@ -24,6 +24,7 @@ import {addExitHook, removeExitHook} from './exitHook'
 import {listviewPath} from './Oppijataulukko.jsx'
 import {ISO2FinnishDate} from './date'
 import {doActionWhileMounted} from './util'
+import Text from './Text.jsx'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -135,7 +136,7 @@ const createState = (oppijaOid) => {
     }
     return event
   }).toProperty().doAction((state) => {
-    state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook()
+    state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook() // i18n
     if (state == 'saved') navigateWithQueryParams({edit: undefined})
   }) // i18n
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
@@ -144,7 +145,7 @@ const createState = (oppijaOid) => {
 const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
-    <Link className="back-link" href={listviewPath()}>Opiskelijat</Link>
+    <Link className="back-link" href={listviewPath()}><Text name="Opiskelijat"/></Link>
     <ExistingOppija {...{oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}}/>
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
@@ -163,9 +164,9 @@ export const ExistingOppija = React.createClass({
       : (
         <div>
           <div className={stateP.map(state => 'oppija-content ' + state)}>
-            <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
+            <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
-              <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
+              <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
             </h2>
             {
               // Set location as key to ensure full re-render when context changes
@@ -194,7 +195,7 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let dirtyP = stateP.map(state => state == 'dirty')
   let validationErrorP = dirtyP.map(dirty => dirty && !modelValid(oppija))
   let canSaveP = dirtyP.and(validationErrorP.not())
-  let messageMap = {
+  let messageMap = { // i18n
     saved: 'Kaikki muutokset tallennettu.',
     saving: 'Tallennetaan...',
     dirty: validationErrorP.map(error => error ? 'Korjaa virheelliset tiedot.': 'Tallentamattomia muutoksia'),
@@ -204,8 +205,8 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let classNameP = Bacon.combineAsArray(stateP, messageP.map(msg => msg ? 'visible' : '')).map(buildClassNames)
 
   return (<div id="edit-bar" className={classNameP}>
-    <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }>Peruuta</a>
-    <button disabled={canSaveP.not()} onClick={saveChanges}>Tallenna</button>
+    <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }><Text name="Peruuta"/></a>
+    <button disabled={canSaveP.not()} onClick={saveChanges}><Text name="Tallenna"/></button>
     <span className="state-indicator">{messageP}</span>
   </div>)
 }

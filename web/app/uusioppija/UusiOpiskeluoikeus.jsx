@@ -11,6 +11,7 @@ import KoodistoDropdown from './KoodistoDropdown.jsx'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus.jsx'
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
+import {t} from '../i18n'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -55,10 +56,10 @@ const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilait
     oppilaitosAtom.map(oppilaitos => (
       <OrganisaatioPicker
         preselectSingleOption={true}
-        selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi }}
+        selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
         onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
-        shouldShowOrg={org => !org.organisaatiotyypit.some(t => t === 'TOIMIPISTE')}
-        canSelectOrg={(org) => org.organisaatiotyypit.some(t => t === 'OPPILAITOS') }
+        shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
+        canSelectOrg={(org) => org.organisaatiotyypit.some(tyyppi => tyyppi === 'OPPILAITOS') }
         clearText="tyhjennä"
         noSelectionText="Valitse..."
       />

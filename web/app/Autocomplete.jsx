@@ -2,6 +2,7 @@ import React from 'react'
 import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
 import delays from './delays'
+import {t} from './i18n'
 
 export default BaconComponent({
   render() {
@@ -18,7 +19,7 @@ export default BaconComponent({
 
     return (
       <div ref='autocomplete' className='autocomplete'>
-        <input type="text" className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={(query ? query : (selected ? selected.nimi.fi : '')) || ''} disabled={disabled}></input>
+        <input type="text" className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={(query ? query : (selected ? t(selected.nimi) : '')) || ''} disabled={disabled}></input>
         {results}
       </div>
     )

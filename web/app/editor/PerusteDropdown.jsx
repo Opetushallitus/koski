@@ -3,6 +3,7 @@ import Http from '../http'
 import Bacon from 'baconjs'
 import Dropdown from '../Dropdown.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
+import {t} from '../i18n'
 
 export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
   let koulutustyyppiP = suoritusP.map(suoritus => {
@@ -40,7 +41,7 @@ export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
         ? <Dropdown
             options={diaarinumerotP}
             keyValue={option => option.koodiarvo}
-            displayValue={option => option.koodiarvo + ' ' + option.nimi.fi}
+            displayValue={option => option.koodiarvo + ' ' + t(option.nimi)}
             onSelectionChanged={selectOption}
             selected={selectedOptionP}/>
         : <span>{ perusteAtom }</span>

@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './http'
 import './style/pulssi.less'
-
+// i18n?
 const Pulssi = React.createClass({
   render() {
     let {pulssi} = this.state
@@ -19,19 +19,19 @@ const Pulssi = React.createClass({
 
     return (
         <div className="statistics column">
-          <h1><span>Koski</span><img src="images/pulssi.png"/><span>Pulssi</span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
+          <h1><span><Text name="Koski"/></span><img src="images/pulssi.png"/><span><Text name="Pulssi"/></span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
           <div className="top-row three-columns">
             <section className="primary-metric opiskeluoikeudet-total opiskeluoikeudet-panel">
-              <h3>Opiskeluoikeuksien määrä</h3>
+              <h3><Text name="Opiskeluoikeuksien määrä"/></h3>
               <div className="metric-large">{opiskeluoikeudet.opiskeluoikeuksienMäärä}</div>
             </section>
             <section className="primary-metric kattavuus-total kattavuus-panel">
-              <h3>Kattavuus</h3>
-              <div className="metric-large">{toPercent(schoolsWhoHaveTransferredData / schoolsTotal)} %</div>
-              {schoolsWhoHaveTransferredData} / {schoolsTotal}
+              <h3><Text name="Kattavuus"/></h3>
+              <div className="metric-large">{toPercent(schoolsWhoHaveTransferredData / schoolsTotal)}{' %'}</div>
+              {schoolsWhoHaveTransferredData}{' / '}{schoolsTotal}
             </section>
             <section className="primary-metric valmiit-tutkinnot-total valmiit-tutkinnot-panel">
-              <h3>Suoritettujen koulutusten määrä</h3>
+              <h3><Text name="Suoritettujen koulutusten määrä"/></h3>
               <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
             </section>
           </div>
@@ -65,12 +65,12 @@ const Pulssi = React.createClass({
               </div>
               <div className="two-columns">
                 <section className="metric saavutettavuus">
-                  <h3>Saavutettavuus</h3>
-                  <div className="metric-medium">{pulssi.metriikka.saavutettavuus}%</div>
-                  <div className="description">Kuinka suuren osan ajasta palvelu on ollut saatavilla viimeisen 30 päivän aikana</div>
+                  <h3><Text name="Saavutettavuus"/></h3>
+                  <div className="metric-medium">{pulssi.metriikka.saavutettavuus}{'%'}</div>
+                  <div className="description"><Text name="saatavilla viimeisen 30 päivän aikana"/></div>
                 </section>
                 <section className="metric operaatiot">
-                  <h3>Operaatiot / kk</h3>
+                  <h3><Text name="Operaatiot / kk"/></h3>
                   <div className="metric-medium">{pulssi.metriikka.operaatiot.reduce((acc, op) => acc + op.määrä, 0)}</div>
                   <ul className="metric-details">
                     {
@@ -131,7 +131,7 @@ const Kattavuus = ({koulutusmuoto, pulssi}) => {
   return (
       <div>
         <span>{koulutusmuoto}</span>
-        <span className="metric-value">{percentage} %  ({count} / {total && total.määrä})</span>
+        <span className="metric-value">{`${percentage} %  (${count} / ${total && total.määrä})`}</span>
         <div className="progress-bar">
           <div style={{width: percentage + '%'}} />
         </div>

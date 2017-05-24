@@ -3,7 +3,7 @@ import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import delays from './delays'
-
+// i18n?
 const ValidointiTaulukko = React.createClass({
   render() {
     let { validationStatus } = this.props

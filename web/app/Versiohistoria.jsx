@@ -4,6 +4,7 @@ import Http from './http'
 import Link from './Link.jsx'
 import {currentLocation, navigateTo} from './location.js'
 import {ISO2FinnishDateTime} from './date.js'
+import Text from './Text.jsx'
 
 export default BaconComponent({
   render() {
@@ -19,12 +20,12 @@ export default BaconComponent({
     }
     let selectedVersion = this.versionumero() || history.length
     return (<div className="versiohistoria">
-      <a onClick={toggle}>versiohistoria</a>
+      <a onClick={toggle}><Text name="versiohistoria"/></a>
       {
         showHistory && (<table><tbody>{
           history.map((version, i) =>
             <tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
-              <td className="versionumero">v{version.versionumero}</td>
+              <td className="versionumero">{'v' + version.versionumero}</td>
               <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
             </tr>
           )

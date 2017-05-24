@@ -6,10 +6,11 @@ import {showError, navigateTo} from './location'
 import delays from './delays'
 import Link from './Link.jsx'
 import Highlight from 'react-highlighter'
+import {t} from './i18n'
+import Text from './Text.jsx'
 
 const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
-
 const acceptableQuery = (q) => q.length >= 3
 
 const hakuTulosE = oppijaHakuE.debounce(delays().delay(500))
@@ -62,7 +63,7 @@ export const OppijaHaku = () => {
       let oidQuery = response.oid ? (encodeURIComponent('oid') + '=' + encodeURIComponent(response.oid)) : ''
       let href = '/koski/uusioppija#' + hetuQuery + ((hetuQuery && oidQuery) ? '&' : '') + (oidQuery ? oidQuery : '')
       return [{href, element: (<Link baret-lift className={selectedIndexAtom.map(i => 'lisaa-oppija' +(i == 0 ? ' selected' : ''))} href={href}>
-        Lisää uusi opiskelija
+        <Text name="Lisää uusi opiskelija"/>
       </Link>)}]
     } else {
       return []
@@ -71,8 +72,8 @@ export const OppijaHaku = () => {
 
   return (<div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
       <div>
-        <h3>Hae tai lisää opiskelija</h3>
-        <input type="text" value={searchStringAtom} id='search-query' placeholder='henkilötunnus, nimi tai oppijanumero' onChange={(e) => searchStringAtom.set(e.target.value)} onKeyDown={optionsP.map(onKeyDown)} autoFocus></input>
+        <h3><Text name="Hae tai lisää opiskelija"/></h3>
+        <input type="text" value={searchStringAtom} id='search-query' placeholder={t('henkilötunnus, nimi tai oppijanumero')} onChange={(e) => searchStringAtom.set(e.target.value)} onKeyDown={optionsP.map(onKeyDown)} autoFocus></input>
       </div>
       <div className='hakutulokset'>
         {
@@ -85,7 +86,7 @@ export const OppijaHaku = () => {
             }
             if (query.length > 2) {
               return (<div className='no-results'>
-                Ei hakutuloksia
+                <Text name="Ei hakutuloksia"/>
                 {
                   options.map(option => option.element)
                 }

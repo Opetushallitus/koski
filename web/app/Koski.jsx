@@ -37,7 +37,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, us
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
 
 titleP.onValue((title) => {
-  let defaultTitle = 'Koski - Opintopolku.fi'
+  let defaultTitle = 'Koski - Opintopolku.fi' // i18n
   document.querySelector('title').innerHTML = title ? title + ' - ' + defaultTitle : defaultTitle
 })
 

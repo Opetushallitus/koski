@@ -2,6 +2,8 @@ import React from 'react'
 import { ISO2FinnishDateTime } from './date'
 import PaginationLink from './PaginationLink.jsx'
 import Link from './Link.jsx'
+import {t} from './i18n'
+import Text from './Text.jsx'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
@@ -11,13 +13,13 @@ export const Tiedonsiirtotaulukko = React.createClass({
       <table>
         <thead>
         <tr>
-          <th className="tila">Tila</th>
-          <th className="aika">Aika</th>
-          <th className="hetu">Henkilötunnus</th>
-          <th className="nimi">Nimi</th>
-          <th className="oppilaitos">Oppilaitos</th>
-          <th className="virhe">Virhe</th>
-          <th className="tiedot">Tiedot</th>
+          <th className="tila"><Text name="Tila"/></th>
+          <th className="aika"><Text name="Aika"/></th>
+          <th className="hetu"><Text name="Henkilötunnus"/></th>
+          <th className="nimi"><Text name="Nimi"/></th>
+          <th className="oppilaitos"><Text name="Oppilaitos"/></th>
+          <th className="virhe"><Text name="Virhe"/></th>
+          <th className="tiedot"><Text name="Tiedot"/></th>
         </tr>
         </thead>
         {
@@ -63,11 +65,11 @@ const Lokirivi = React.createClass({
           <ul className="tiedonsiirto-errors">{
             virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
           }</ul>
-          <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
+          <a className="virheen-tiedot" onClick={() => showErrors(virheet)}><Text name="virhe"/></a>
         </div>)
-      : <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
+      : <a className="virheen-tiedot" onClick={() => showErrors(virheet)}><Text name="virhe"/></a>
 
-    const dataLink = () => <a className="viestin-tiedot" onClick={() => showData(row.inputData)}>tiedot</a>
+    const dataLink = () => <a className="viestin-tiedot" onClick={() => showData(row.inputData)}><Text name="tiedot"/></a>
 
     const showErrors = (virheet) => showData(virheet)
     const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
@@ -78,14 +80,14 @@ const Lokirivi = React.createClass({
         {
           isParent
             ? (isExpanded
-              ? <a className="collapse" onClick={() => setExpanded(false)}>-</a>
-              : <a className="expand" onClick={() => setExpanded(true)}>+</a>)
+              ? <a className="collapse" onClick={() => setExpanded(false)}>{'-'}</a>
+              : <a className="expand" onClick={() => setExpanded(true)}>{'+'}</a>)
             : null
         }
         {
           row.virhe
-            ? <span className="status fail">✕</span>
-            : <span className="status ok">✓</span>
+            ? <span className="status fail">{'✕'}</span>
+            : <span className="status ok">{'✓'}</span>
         }
       </td>
       <td className="aika">{ISO2FinnishDateTime(row.aika)}</td>
@@ -96,7 +98,7 @@ const Lokirivi = React.createClass({
       }</td>
       <td className="oppilaitos">{
         row.oppilaitos && row.oppilaitos.map((oppilaitos, i) =>
-          <Link key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</Link>
+          <Link key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi)}</Link>
         )
       }</td>
       <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
@@ -114,7 +116,7 @@ const LokirivinData = React.createClass({
   render() {
     const { details, showData } = this.props
     return (<div className="lokirividata-popup">
-      <a className="close" onClick={() => showData(false)}>Sulje</a>
+      <a className="close" onClick={() => showData(false)}><Text name="Sulje"/></a>
       <pre>{JSON.stringify(details, null, 2)}</pre>
     </div>)
   }

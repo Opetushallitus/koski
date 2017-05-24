@@ -1,5 +1,6 @@
 import {parseFinnishDate, formatFinnishDate} from './date.js'
 import React from 'react'
+import Text from './Text.jsx'
 
 export default React.createClass({
   render() {
@@ -12,14 +13,14 @@ export default React.createClass({
         { this.state.open &&
         <div className="date-range-container">
           <div className="date-range-input">
-            <label>Aloituspäivä</label>
+            <label><Text name="Aloituspäivä"/></label>
             <input
               className={invalidStartDate ? 'start error' : 'start'}
               type="text"
               value={invalidStartDate ? invalidStartDate.value : from ? formatFinnishDate(from) : ''}
               onChange={this.handleStartDate}
               ref={input => this.startDateInput = input}
-            />&mdash;
+            />{'—'}
             <input
               className={invalidEndDate ? 'end error' : 'end'}
               type="text"
@@ -30,15 +31,15 @@ export default React.createClass({
           <div className="date-range-shortcuts">
             <button
               className="button"
-              onClick={() => this.handleRangeSelection({from: undefined, to: undefined})}>kaikki
+              onClick={() => this.handleRangeSelection({from: undefined, to: undefined})}><Text name="kaikki"/>
             </button>
             <button
               className="button"
-              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear(), 0, 1), to: new Date()})}>kuluva vuosi
+              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear(), 0, 1), to: new Date()})}><Text name="kuluva vuosi"/>
             </button>
             <button
               className="button"
-              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear() - 1, 0, 1), to: new Date(new Date().getFullYear() - 1, 11, 31)})}>edellinen vuosi
+              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear() - 1, 0, 1), to: new Date(new Date().getFullYear() - 1, 11, 31)})}><Text name="edellinen vuosi"/>
             </button>
           </div>
         </div>

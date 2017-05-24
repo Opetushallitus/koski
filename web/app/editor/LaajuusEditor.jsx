@@ -4,7 +4,7 @@ import {modelData, modelEmpty, modelSetValue, modelValid, modelLookup} from './E
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {parseBool} from '../util'
-
+import {t} from '../i18n'
 export const LaajuusEditor = React.createClass({
   render() {
     let { model, compact, showReadonlyScope = true } = this.props
@@ -38,7 +38,7 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
   let arvoData = modelData(model, 'arvo')
   let yksikköModel = modelLookup(model, 'yksikkö')
   let yksikköData = modelData(yksikköModel)
-  let yksikkö = arvoData === undefined ? '' : yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
+  let yksikkö = arvoData === undefined ? '' : yksikköData && t((yksikköData.lyhytNimi || yksikköData.nimi))
   let alternatives = EnumEditor.knownAlternatives(yksikköModel)
 
   return model.context.edit

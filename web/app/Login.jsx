@@ -6,6 +6,8 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import './style/main.less'
 import {TopBar} from './TopBar.jsx'
+import {t} from './i18n.js'
+import Text from './Text.jsx'
 
 const Input = ({ id, type, disabled, value }) => <input type={type} disabled={disabled} value={ value.or('') } onChange={ (e) => value.set(e.target.value)} id={id}></input>
 
@@ -30,13 +32,13 @@ const Login = () => {
 
   return (
     <form className={error.map(e => e ? 'login error': 'login')}>
-      <label>Tunnus
+      <label><Text name="Tunnus"/>
         <Input id='username' type='text' disabled={inProgress} value={state.view('username')}/>
       </label>
-      <label>Salasana
+      <label><Text name="Salasana"/>
         <Input id='password' type='password' disabled={inProgress} value={state.view('password')}/>
       </label>
-      <button className='button blue' onClick={doLogin} disabled={valid.not().or(inProgress)}>{inProgress.map(p => p ? 'Kirjaudutaan...' : 'Kirjaudu sisään')}</button>
+      <button className='button blue' onClick={doLogin} disabled={valid.not().or(inProgress)}>{inProgress.map(p => p ? t('Kirjaudutaan...') : t('Kirjaudu sisään'))}</button>
     </form>
   )
 }
@@ -49,4 +51,4 @@ ReactDOM.render(
   document.getElementById('content')
 )
 
-document.querySelector('title').innerHTML = 'Login - Koski - Opintopolku.fi'
+document.querySelector('title').innerHTML = t('Login - Koski - Opintopolku.fi')

@@ -7,12 +7,12 @@ import {sortLanguages} from '../sorting'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 import {isPaikallinen} from './Koulutusmoduuli'
-
+import {t} from '../i18n'
 export const PerusopetuksenOppiaineEditor = React.createClass({
   render() {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
-      let title = modelData(aine, 'tunniste.nimi').fi + (kielenOppiaine || äidinkieli ? ', ' : '')
+      let title = t(modelData(aine, 'tunniste.nimi')) + (kielenOppiaine || äidinkieli ? ', ' : '')
       return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
     }
     let pakollinen = modelData(oppiaine, 'pakollinen')

@@ -4,6 +4,7 @@ import {contextualizeSubModel, modelItems, accumulateModelStateAndValidity, mode
 import {EnumEditor} from './EnumEditor.jsx'
 import {DateEditor} from './DateEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
+import Text from '../Text.jsx'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -22,13 +23,13 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 
 
   return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
-    <h2>Opiskeluoikeuden tilan lisäys</h2>
+    <h2><Text name="Opiskeluoikeuden tilan lisäys"/></h2>
     <div className="property alku">
-      <label>Päivämäärä:</label>
+      <label><Text name="Päivämäärä"/>{':'}</label>
       <DateEditor baret-lift model={alkuPäiväModel} isAllowedDate={isAllowedDate}/>
     </div>
     <div className="property tila">
-      <label>Tila:</label>
+      <label><Text name="Tila"/>{':'}</label>
       <EnumEditor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
     </div>
   </ModalDialog>)
