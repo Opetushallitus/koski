@@ -2,6 +2,8 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {doActionWhileMounted, parseBool} from '../util'
+import Text from '../Text.jsx'
+
 
 export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okText = 'Ok', validP = Bacon.constant(true)}) => {
   submitOnEnterKey = parseBool(submitOnEnterKey, true)
@@ -15,10 +17,10 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
   return (<div className={classNameP}>
     <div className="modal-shield" onClick={() => onDismiss()}/>
     <div className="modal-content">
-      <a className="close-modal" onClick={() => onDismiss()}>&#10005;</a>
+      <a className="close-modal" onClick={() => onDismiss()}>{'✕'}</a>
       { children }
       <button disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}>{okText}</button>
-      <a onClick={() => onDismiss()}>Peruuta</a>
+      <a onClick={() => onDismiss()}><Text name="Peruuta"/></a>
     </div>
     { doActionWhileMounted(keyE, handleKeys) }
   </div>)

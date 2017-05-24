@@ -12,6 +12,7 @@ import {PropertyEditor} from '../editor/PropertyEditor.jsx'
 import KoodistoDropdown from './KoodistoDropdown.jsx'
 import {koodistoValues, koodiarvoMatch} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
+import Text from '../Text.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const oppimääräAtom = Atom()
@@ -99,7 +100,7 @@ const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelm
   )
 }
 
-const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
+const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
 
 const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
   return (<span>
@@ -123,7 +124,7 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
 
         return (<span>
           <Peruste suoritusP={Bacon.constant(modelData(oppiaineenSuoritus))} perusteAtom={perusteAtom} />
-          <label className="oppiaine">Oppiaine <UusiPerusopetuksenOppiaineDropdown oppiaineenSuoritus={oppiaineenSuoritus} selected={oppiainePrototypeAtom} resultCallback={s => oppiainePrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
+          <label className="oppiaine"><Text name="Oppiaine"/>{' '}<UusiPerusopetuksenOppiaineDropdown oppiaineenSuoritus={oppiaineenSuoritus} selected={oppiainePrototypeAtom} resultCallback={s => oppiainePrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
             model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
           }

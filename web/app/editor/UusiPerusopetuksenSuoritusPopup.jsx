@@ -22,6 +22,8 @@ import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
+import {t} from '../i18n'
+import Text from '../Text.jsx'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
   ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
@@ -32,7 +34,7 @@ UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
     return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
   }
 UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) => isOppiaineenSuoritus(opiskeluoikeus)
-  ? 'lisää oppiaineen suoritus' : 'lisää vuosiluokan suoritus'
+  ? t('lisää oppiaineen suoritus') : t('lisää vuosiluokan suoritus')
 
 let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suoritukset').map(suoritus => suoritus.tyyppi.koodiarvo).includes('perusopetuksenoppiaineenoppimaara')
 
@@ -46,7 +48,7 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let validP = errorP.not()
 
   return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
-    <h2>Suorituksen lisäys</h2>
+    <h2><Text name="Suorituksen lisäys"/></h2>
     {
       modelP.map(oppiaineenSuoritus => {
         return (<div key="props">
@@ -101,7 +103,7 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
         return (<div>
           <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
-            <h2>Suorituksen lisäys</h2>
+            <h2><Text name="Suorituksen lisäys"/></h2>
             <PropertiesEditor baret-lift context={initialSuoritusModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
           </ModalDialog>
           { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }

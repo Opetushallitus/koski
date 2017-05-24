@@ -3,7 +3,9 @@ import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import delays from './delays'
-// i18n?
+import { t } from './i18n'
+import Text from './Text.jsx'
+
 const ValidointiTaulukko = React.createClass({
   render() {
     let { validationStatus } = this.props
@@ -14,7 +16,7 @@ const ValidointiTaulukko = React.createClass({
         <div id="message">{message}</div>
         <table>
           <thead>
-          <tr><th className="virhetyyppi">Virhetyyppi</th><th className="virheteksti">Virheteksti</th><th className="lukumäärä">Lukumäärä</th></tr>
+          <tr><th className="virhetyyppi"><Text name="Virhetyyppi"/></th><th className="virheteksti"><Text name="Virheteksti"/></th><th className="lukumäärä"><Text name="Lukumäärä"/></th></tr>
           </thead>
           <tbody>
           { validationStatus.map(({errors, oids, key}) => {
@@ -24,18 +26,18 @@ const ValidointiTaulukko = React.createClass({
               <td className="virhetyyppi">{
                 errors.length
                   ? errors.map((error, i) => <div key={i}>{error.key}</div>)
-                  : 'Virheetön'
+                  : t('Virheetön')
               }</td>
               <td className="virheteksti">{errors.map((error, i) => {
                 let errorMessage = typeof error.message == 'string'
                   ? <div>{error.message}</div>
-                  : (jsonExpanded ? <pre className="json"><code onClick={() => this.setState({expandedJsonKeys: expandedJsonKeys.filter((k) => k != key)})}>{JSON.stringify(error.message, null, 2)}</code></pre> : <a onClick={() => this.setState({ expandedJsonKeys: expandedJsonKeys.concat(key) })}>Näytä JSON</a>)
+                  : (jsonExpanded ? <pre className="json"><code onClick={() => this.setState({expandedJsonKeys: expandedJsonKeys.filter((k) => k != key)})}>{JSON.stringify(error.message, null, 2)}</code></pre> : <a onClick={() => this.setState({ expandedJsonKeys: expandedJsonKeys.concat(key) })}><Text name="Näytä JSON"/></a>)
                 return <span key={i}>{errorMessage}</span>
               })}</td>
               <td className="lukumäärä">{
                 idsExpanded
                   ? <div>
-                    <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}>Yhteensä {oids.length}</a>
+                    <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}>{t('Yhteensä') + ' ' + oids.length}</a>
                     <ul className="oids">
                     { oids.map((oid, i) => <li key={i}><a href={ '/koski/oppija/' + oid }>{oid}</a></li>)}
                     </ul></div>
@@ -68,9 +70,9 @@ const ValidointiTaulukko = React.createClass({
       var endIndex = elementIndex(window.getSelection().anchorNode.parentElement.closest('tr'))
       if (startIndex < 0 || endIndex < 0) return
       if (endIndex < startIndex) {
-        var t = endIndex
+        var x = endIndex
         endIndex = startIndex
-        startIndex = t
+        startIndex = x
       }
       let selectedRows = validationStatus.slice(startIndex, endIndex + 1)
       let selectedIds = selectedRows.flatMap((row) => row.ids)
@@ -110,7 +112,7 @@ export const validointiContentP = (query) => {
   return Bacon.combineWith(validationStatusP, validationFinishedP, (validationStatus, finished) => ({
     content: (<div className='content-area validaatio'>
       <div className="main-content">
-        <h2>Tiedon validointi</h2>
+        <h2><Text name="Tiedon validointi"/></h2>
         { finished ? 'Kaikki opiskeluoikeudet validoitu' : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.'}
         <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>

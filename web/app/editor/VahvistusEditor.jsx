@@ -11,7 +11,7 @@ export const VahvistusEditor = React.createClass({
       {
         (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
             <span key={i}>
-              <Editor model={henkilö} path="nimi"/>{(modelData(henkilö, 'titteli') || model.context.edit) && <span>, <Editor model={henkilö} path="titteli"/></span>}
+              <Editor model={henkilö} path="nimi"/>{(modelData(henkilö, 'titteli') || model.context.edit) && <span>{', '}<Editor model={henkilö} path="titteli"/></span>}
             </span>
         )
       }

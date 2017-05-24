@@ -9,7 +9,7 @@ export const PäivämääräväliEditor = ({model}) => {
   let validRange = modelValid(wrappedModel)
 
   return (<span className={validRange ? 'date-range' : 'date-range error'}>
-    <Editor model={wrappedModel} path="alku"/> — <Editor model={wrappedModel} path="loppu"/>
+    <Editor model={wrappedModel} path="alku"/>{' — '}<Editor model={wrappedModel} path="loppu"/>
   </span>)
 }
 

@@ -13,12 +13,14 @@ import {
   setTila,
   arviointiPuuttuu
 } from './Suoritus'
+import {t} from '../i18n'
+import Text from '../Text.jsx'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          Suoritus: <span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span> { /* TODO: i18n */ }
+          {t('Suoritus') + ': '}<span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span> { /* TODO: i18n */ }
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
@@ -40,7 +42,7 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   let merkitseKeskeneräiseksi = () => {
     pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
   }
-  return <button className="merkitse-kesken" disabled={opiskeluoikeudenTila == 'valmistunut'} onClick={merkitseKeskeneräiseksi}>Merkitse keskeneräiseksi</button>
+  return <button className="merkitse-kesken" disabled={opiskeluoikeudenTila == 'valmistunut'} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
 }
 
 const MerkitseKeskeytyneeksiButton = ({model}) => {
@@ -55,7 +57,7 @@ const MerkitseKeskeytyneeksiButton = ({model}) => {
   let merkitseKeskeytyneeksi = () => {
     pushModel(merkitseKeskeytyneeksiJosKesken(model))
   }
-  return <button className="merkitse-keskeytyneeksi" onClick={merkitseKeskeytyneeksi}>Merkitse keskeytyneeksi</button>
+  return <button className="merkitse-keskeytyneeksi" onClick={merkitseKeskeytyneeksi}><Text name="Merkitse keskeytyneeksi"/></button>
 }
 
 const MerkitseValmiiksiButton = ({model}) => {
@@ -70,7 +72,7 @@ const MerkitseValmiiksiButton = ({model}) => {
   }
   let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
   return (<span>
-    <button className="merkitse-valmiiksi" disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>Merkitse valmiiksi</button>
+    <button className="merkitse-valmiiksi" disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}><Text name="Merkitse valmiiksi"/></button>
     {
       addingAtom.map(adding => adding && <MerkitseSuoritusValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
     }

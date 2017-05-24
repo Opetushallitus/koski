@@ -2,6 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../location'
+import Text from '../Text.jsx'
 
 export const TogglableEditor = React.createClass({
   render() {
@@ -12,7 +13,7 @@ export const TogglableEditor = React.createClass({
     let editingAny = !!currentLocation().params.edit
     let modifiedContext = R.merge(context, { edit })
     let editLink = model.editable && !editingAny
-      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusId)}>muokkaa</button>
+      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusId)}><Text name="muokkaa"/></button>
       : null
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))

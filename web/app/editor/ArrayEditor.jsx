@@ -3,7 +3,6 @@ import {contextualizeSubModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'
-import {t} from '../i18n.js'
 import Text from '../Text.jsx'
 
 export const ArrayEditor = ({model, reverse}) => {
@@ -31,7 +30,7 @@ export const ArrayEditor = ({model, reverse}) => {
         items.map((item) => {
           return (<li key={item.arrayKey}>
             <Editor model = {item} />
-            {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}></a>}
+            {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}>{''}</a>}
           </li>)
         })
       }

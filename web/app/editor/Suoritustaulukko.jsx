@@ -8,10 +8,12 @@ import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {hasArvosana} from './Suoritus'
 import {t} from '../i18n'
+import Text from '../Text.jsx'
+
 export const Suoritustaulukko = ({suoritukset}) => {
   let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
   let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
-  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || 'Muut suoritukset' /*i18n*/]))
+  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || t('Muut suoritukset')]))
 
   let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
   let showArvosana = suoritukset.find(hasArvosana) !== undefined
@@ -33,9 +35,9 @@ export const Suoritustaulukko = ({suoritukset}) => {
             </div>
             }
           </th>
-          {showPakollisuus && <th className="pakollisuus">Pakollisuus</th>}
-          {showLaajuus && <th className="laajuus">Laajuus {samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')'}</th>}
-          {showArvosana && <th className="arvosana">Arvosana</th>}
+          {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
+          {showLaajuus && <th className="laajuus">{t('Laajuus' ) + (samaLaajuusYksikkö && laajuusYksikkö && '(' + laajuusYksikkö + ')')}</th>}
+          {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
         </tr></thead>
         {
           grouped.length > 1

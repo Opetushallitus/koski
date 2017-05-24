@@ -10,6 +10,7 @@ import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
 import {suoritusValmis, arviointiPuuttuu} from './Suoritus'
+import Text from '../Text.jsx'
 
 export const SuoritusEditor = React.createClass({
   render() {
@@ -72,7 +73,7 @@ const TodistusLink = React.createClass({
     let suoritusTila = modelData(suoritus, 'tila').koodiarvo
     let href = '/koski/todistus/' + oppijaOid + '?suoritustyyppi=' + suoritustyyppi + '&koulutusmoduuli=' + koulutusmoduuliKoodistoUri + '/' + koulutusmoduuliKoodiarvo
     return suoritusTila == 'VALMIS' && suoritustyyppi != 'korkeakoulututkinto' && suoritustyyppi != 'preiboppimaara' && suoritustyyppi != 'esiopetuksensuoritus' && !(koulutusmoduuliKoodistoUri == 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo == '9')
-      ? <a className="todistus" href={href}>näytä todistus</a>
+      ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
       : null
   }
 })

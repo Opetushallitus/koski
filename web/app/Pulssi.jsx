@@ -3,7 +3,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './http'
 import './style/pulssi.less'
-// i18n?
+import Text from './Text.jsx'
+
 const Pulssi = React.createClass({
   render() {
     let {pulssi} = this.state

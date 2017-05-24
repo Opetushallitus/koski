@@ -2,6 +2,7 @@ import React from 'react'
 import {modelData, modelTitle, modelItems} from './EditorModel.js'
 import {suorituksenTilaSymbol} from './Suoritustaulukko.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
+import Text from '../Text.jsx'
 
 export const LukionOppiaineetEditor = React.createClass({
   render() {
@@ -11,9 +12,9 @@ export const LukionOppiaineetEditor = React.createClass({
         <thead>
         <tr>
           <th className="suorituksentila"></th>
-          <th className="oppiaine">Oppiaine</th>
-          <th className="maara">Kurssien määrä</th>
-          <th className="arvosana">Arvosana (keskiarvo)</th>
+          <th className="oppiaine"><Text name="Oppiaine"/></th>
+          <th className="maara"><Text name="Kurssien määrä"/></th>
+          <th className="arvosana"><Text name="Arvosana (keskiarvo)"/></th>
         </tr>
         <tr>
           <th colSpan="4"><hr/></th>

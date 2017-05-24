@@ -8,6 +8,7 @@ import {lensedModel, modelSetValue, modelTitle, pushModel, pushRemoval} from './
 import {suoritusKesken} from './Suoritus'
 import {parseISODate} from '../date.js'
 import {Editor} from './Editor.jsx'
+import Text from '../Text.jsx'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
@@ -42,12 +43,12 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
                   <label className="date"><Editor model={item} path="alku" edit={false}/></label>
                   <label className="tila">{modelTitle(item, 'tila')}</label>
                 </div>
-                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}></a>}
+                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}>{''}</a>}
               </li>)
             })
           }
           {
-            showLisaaTila && <li className="add-item"><a onClick={showAddDialog}>Lisää opiskeluoikeuden tila</a></li>
+            showLisaaTila && <li className="add-item"><a onClick={showAddDialog}><Text name="Lisää opiskeluoikeuden tila"/></a></li>
           }
         </ul>
         {

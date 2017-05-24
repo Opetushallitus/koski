@@ -31,6 +31,8 @@ import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDr
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {accumulateExpandedState} from './ExpandableItems'
+import {t} from '../i18n'
+import Text from '../Text.jsx'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
@@ -47,8 +49,8 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
 
   return (<div className="oppiaineet">
-    <h5>Oppiaineiden arvosanat</h5>
-    <p>Arvostelu 4-10, S (suoritettu) tai H (hylätty)</p>
+    <h5><Text name="Oppiaineiden arvosanat"/></h5>
+    <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>
     {
       hasPakollisuus(model, uusiOppiaineenSuoritus)
         ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
@@ -94,7 +96,7 @@ const KäyttäytymisenArvioEditor = ({model}) => {
   let edit = model.context.edit
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
   return (käyttäytymisenArvioModel && (edit || modelData(käyttäytymisenArvioModel)))? (<div className="kayttaytyminen">
-    <h5>Käyttäytymisen arviointi</h5>
+    <h5><Text name="Käyttäytymisen arviointi"/></h5>
     {
       <Editor model={model} path="käyttäytymisenArvio"/>
     }
@@ -138,9 +140,9 @@ const Oppiainetaulukko = React.createClass({
           <table>
             <thead>
             <tr>
-              <th className="oppiaine">Oppiaine</th>
-              <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}>Arvosana</th>
-              {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>Laajuus</th>}
+              <th className="oppiaine"><Text name="Oppiaine"/></th>
+              <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>
+              {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
             </tr>
             </thead>
             {
@@ -234,9 +236,9 @@ export const OppiaineenSuoritusEditor = React.createClass({
         showFootnotes && (
           <td className="footnotes">
             <div className="footnotes-container">
-              {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title="Yksilöllistetty oppimäärä"> *</sup> : null}
-              {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title="Painotettu opetus"> **</sup> : null}
-              {modelData(model, 'korotus') ? <sup className="korotus" title="Perusopetuksen päättötodistuksen arvosanan korotus"> †</sup> : null}
+              {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title={t('Yksilöllistetty oppimäärä')}>{' *'}</sup> : null}
+              {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title={t('Painotettu opetus')}>{' **'}</sup> : null}
+              {modelData(model, 'korotus') ? <sup className="korotus" title={t('Perusopetuksen päättötodistuksen arvosanan korotus')}>{' †'}</sup> : null}
             </div>
           </td>
         )
@@ -244,7 +246,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
       {
         model.context.edit && (
           <td>
-            <a className="remove-value" onClick={() => pushRemoval(model)}></a>
+            <a className="remove-value" onClick={() => pushRemoval(model)}>{''}</a>
           </td>
         )
       }

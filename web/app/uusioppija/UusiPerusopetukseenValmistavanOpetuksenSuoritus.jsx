@@ -2,6 +2,7 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
+import Text from '../Text.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const perusteAtom = Atom()
@@ -26,4 +27,4 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
   return <Peruste {...{suoritusP, perusteAtom}} />
 }
 
-const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste">Peruste<PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
+const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusP, perusteAtom}}/></label>

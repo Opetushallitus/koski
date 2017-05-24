@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import ModalDialog from './ModalDialog.jsx'
 import UusiOpiskeluoikeus from '../uusioppija/UusiOpiskeluoikeus.jsx'
+import Text from '../Text.jsx'
 
 export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -13,7 +14,7 @@ export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
   })
   return (<form className="uusi-oppija">
     <ModalDialog className="lisaa-opiskeluoikeus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää opiskeluoikeus" validP={validP} >
-      <h2>Opiskeluoikeuden lisäys</h2>
+      <h2><Text name="Opiskeluoikeuden lisäys"/></h2>
       <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
     </ModalDialog>
   </form>)

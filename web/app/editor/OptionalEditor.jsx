@@ -3,6 +3,7 @@ import R from 'ramda'
 import {modelEmpty} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {lensedModel, pushModel, optionalModelLens, resetOptionalModel, optionalPrototypeModel} from './EditorModel'
+import Text from '../Text.jsx'
 
 export const OptionalEditor = React.createClass({
   render() {
@@ -21,12 +22,12 @@ export const OptionalEditor = React.createClass({
       {
         empty
           ? model.context.edit && prototype
-              ? <a className="add-value" onClick={() => pushModel(prototype)}>lisää</a>
+              ? <a className="add-value" onClick={() => pushModel(prototype)}><Text name="lisää"/></a>
               : null
           : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
       }
       {
-        canRemove && <a className="remove-value" onClick={removeValue}></a>
+        canRemove && <a className="remove-value" onClick={removeValue}>{''}</a>
       }
     </span>)
   }

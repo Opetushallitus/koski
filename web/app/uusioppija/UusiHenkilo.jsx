@@ -3,6 +3,8 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import Http from '../http'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
+import { t } from '../i18n'
+import Text from '../Text.jsx'
 
 export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')
@@ -15,7 +17,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom
   const henkilöValidP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(validKutsumanimiP)
   henkilöValidP.changes().onValue((valid) => henkilöValidAtom.set(valid))
 
-  const errorsP = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: 'Kutsumanimen on oltava yksi etunimistä.'}])
+  const errorsP = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: t('Kutsumanimen on oltava yksi etunimistä.')}])
   errorsP.changes().onValue((errors) => henkilöErrorsAtom.set(errors))
 
   const existingHenkilöP = hetu ? Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0') : Http.cachedGet('/koski/api/henkilo/oid/' + oid).map('.0')
@@ -28,23 +30,23 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom
             let existing = !!(henkilö && henkilö.oid)
             return (<span>
               <label className='hetu'>
-                Henkilötunnus
+                <Text name="Henkilötunnus"/>
                 <span className='value'>{hetu}</span>
               </label>
               <label className='etunimet'>
-                Etunimet
+                <Text name="Etunimet"/>
                 <InputOrValue existing={existing} atom={etunimetAtom}/>
               </label>
               <label className={kutsumanimiClassNameP}>
-                Kutsumanimi
+                <Text name="Kutsumanimi"/>
                 <InputOrValue existing={existing} atom={kutsumanimiAtom}/>
               </label>
               <label className='sukunimi'>
-                Sukunimi
+                <Text name="Sukunimi"/>
                 <InputOrValue existing={existing} atom={sukunimiAtom}/>
               </label>
             </span>)
-          }), 'Ladataan...'
+          }), <Text name="'Ladataan...'"/>
         )
       }
     </div>

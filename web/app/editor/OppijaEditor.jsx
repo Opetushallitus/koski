@@ -11,6 +11,7 @@ import {postNewOppija} from '../uusioppija/UusiOppija.jsx'
 import {reloadOppija} from '../Oppija.jsx'
 import {userP} from '../user'
 import {navigateTo} from '../location'
+import Text from '../Text.jsx'
 
 export const OppijaEditor = ({model}) => {
     let addingAtom = Atom(false)
@@ -63,8 +64,8 @@ export const OppijaEditor = ({model}) => {
                                   <span className="koulutus inline-text">{ modelTitle(suoritusRyhmä.suoritukset[0], 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
                                     ? <span className="inline-text">
-                                        <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
-                                        <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
+                                        <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>{'-'}
+                                        <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))}{','}</span>
                                       </span>
                                     : null
                                   }
@@ -86,8 +87,8 @@ export const OppijaEditor = ({model}) => {
             })}
           {
             canAddOpiskeluoikeusP.map( canAdd => canAdd && <li key="new" className={'add-opiskeluoikeus' +  (!!currentLocation().params.edit ? ' disabled' : '')}>
-                <span className="plus" onClick={toggleAdd}></span>
-                <a onClick={toggleAdd}>Lisää opiskeluoikeus</a>
+                <span className="plus" onClick={toggleAdd}>{''}</span>
+                <a onClick={toggleAdd}><Text name="Lisää opiskeluoikeus"/></a>
                 {
                   addingAtom.map(adding => adding && <UusiOpiskeluoikeusPopup resultCallback={addOpiskeluoikeus}/>)
                 }

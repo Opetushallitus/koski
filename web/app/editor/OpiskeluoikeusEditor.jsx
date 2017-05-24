@@ -16,6 +16,7 @@ import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 import {suorituksenTyyppi} from './Suoritus'
+import Text from '../Text.jsx'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let id = modelData(model, 'id')
@@ -37,16 +38,16 @@ export const OpiskeluoikeusEditor = ({model}) => {
     return (
       <div className="opiskeluoikeus">
         <h3>
-          <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')},</span>
+          <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
           <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
            { modelData(mdl, 'alkamispäivä')
-              ? <span className="inline-text">(
-                    <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>-
-                    <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))},</span>
+              ? <span className="inline-text">{'('}
+                    <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
+                    <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
                 </span>
               : null
             }
-          <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
+          <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
           <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
@@ -54,7 +55,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             {editLink}
             <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
             <div className="alku-loppu">
-              <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" /> — <PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
+              <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" />{' — '}<PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
             </div>
 
             <PropertiesEditor
@@ -70,7 +71,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           </div>
 
           <div className="suoritukset">
-            <h4>Suoritukset</h4>
+            <h4><Text name="Suoritukset"/></h4>
             <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
             <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
           </div>
@@ -127,7 +128,7 @@ const SuoritusTabs = ({ model, suoritukset }) => {
     }
     {
       model.context.edit && !onLopputilassa(model) && UusiPerusopetuksenSuoritusPopup.canAddSuoritus(model) && (
-        <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus"></span>{UusiPerusopetuksenSuoritusPopup.addSuoritusTitle(model)}</a></li>
+        <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus">{''}</span>{UusiPerusopetuksenSuoritusPopup.addSuoritusTitle(model)}</a></li>
       )
     }
     {
@@ -152,10 +153,10 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
     var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
     if (opiskeluoikeusTyyppi === 'lukiokoulutus' || opiskeluoikeusTyyppi === 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')
-      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
+      return <a className="opintosuoritusote" href={href}><Text name="näytä opintosuoritusote"/></a>
     } else if (opiskeluoikeusTyyppi === 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(opiskeluoikeus, 'oppilaitos').oid
-      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
+      return <a className="opintosuoritusote" href={href}><Text name="näytä opintosuoritusote"/></a>
     } else {
       return null
     }
@@ -186,6 +187,6 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
 export const suoritusTitle = (suoritus) => {
   let title = <Editor edit="false" model={suoritus} path="koulutusmoduuli.tunniste"/>
   return suorituksenTyyppi(suoritus) == 'ammatillinentutkintoosittainen'
-    ? <span>{title}, osittainen</span>// i18n
+    ? <span>{title}{', osittainen'}</span>
     : title
 }

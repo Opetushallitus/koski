@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Autocomplete from '../Autocomplete.jsx'
 import Http from '../http'
+import Text from '../Text.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom}) => {
   const tutkintoAtom = Atom()
@@ -33,7 +34,7 @@ const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
     {
       Bacon.combineWith(oppilaitosP, tutkintoAtom, (oppilaitos, tutkinto) =>
         oppilaitos && (
-          <label className='tutkinto'>Tutkinto<Autocomplete
+          <label className='tutkinto'><Text name="Tutkinto"/><Autocomplete
             resultAtom={tutkintoAtom}
             fetchItems={(value) => (value.length >= 3)
                 ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value)

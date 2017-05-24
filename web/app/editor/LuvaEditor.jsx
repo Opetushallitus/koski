@@ -1,5 +1,6 @@
 import React from 'react'
 import { LukionOppiaineetEditor } from './Lukio.jsx'
+import Text from '../Text.jsx'
 
 export const LuvaEditor = React.createClass({
   render() {
@@ -11,14 +12,14 @@ export const LuvaEditor = React.createClass({
         {
           lukioonvalmistavankurssinsuoritukset.length > 0 &&
           <div>
-            <h5>Lukioon valmistavat opinnot</h5>
+            <h5><Text name="Lukioon valmistavat opinnot"/></h5>
             <LukionOppiaineetEditor oppiaineet={lukioonvalmistavankurssinsuoritukset} />
           </div>
         }
         {
           lukionkurssinsuoritukset.length > 0 &&
           <div>
-            <h5>Valinnaisena suoritetut lukiokurssit</h5>
+            <h5><Text name="Valinnaisena suoritetut lukiokurssit"/></h5>
             <LukionOppiaineetEditor oppiaineet={lukionkurssinsuoritukset} />
           </div>
         }

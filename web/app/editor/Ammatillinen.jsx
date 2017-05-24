@@ -53,7 +53,7 @@ export const TyössäoppimisjaksoEditor = React.createClass({
     let {model} = this.props
     return (
       <div className="tyossaoppimisjakso">
-        <PäivämääräväliEditor model={model}/> { modelTitle(model, 'paikkakunta')}, { modelTitle(model, 'maa')}
+        <PäivämääräväliEditor model={model}/> { modelTitle(model, 'paikkakunta')}{', '}{ modelTitle(model, 'maa')}
         <PropertiesEditor
           model = {model}
           propertyFilter={p => !['alku', 'loppu', 'paikkakunta', 'maa'].includes(p.key)}

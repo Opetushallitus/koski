@@ -12,6 +12,7 @@ import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukse
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {t} from '../i18n'
+import Text from '../Text.jsx'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -51,7 +52,7 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilaitos
+const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'><Text name="Oppilaitos"/>
   {
     oppilaitosAtom.map(oppilaitos => (
       <OrganisaatioPicker
@@ -70,7 +71,7 @@ const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'>Oppilait
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
 
 const Aloituspäivä = ({dateAtom}) => {
-  return (<label className='aloituspaiva'>Aloituspäivä
+  return (<label className='aloituspaiva'><Text name="Aloituspäivä"/>
     <DateInput value={dateAtom.get()} valueCallback={(value) => dateAtom.set(value)} validityCallback={(valid) => !valid && dateAtom.set(undefined)} />
   </label>)
 }
