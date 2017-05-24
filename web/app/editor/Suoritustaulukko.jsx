@@ -36,7 +36,7 @@ export const Suoritustaulukko = ({suoritukset}) => {
             }
           </th>
           {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
-          {showLaajuus && <th className="laajuus">{t('Laajuus' ) + (samaLaajuusYksikkö && laajuusYksikkö && ' (' + laajuusYksikkö + ')')}</th>}
+          {showLaajuus && <th className="laajuus">{t('Laajuus' ) + ((samaLaajuusYksikkö && laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
           {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
         </tr></thead>
         {
