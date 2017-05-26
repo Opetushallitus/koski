@@ -14,18 +14,18 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
   val audit = new AuditLog(loggerMock)
   lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
 
+  verifyLogMessage("""\{"logSeq":"0","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","message":"Server started!"}""".r)
+
   "AuditLog" - {
     "Logs in JSON format" in {
-      verifyLogMessage(AuditLogMessage(
-        KoskiOperation.OPISKELUOIKEUS_LISAYS, MockUsers.omniaPalvelukäyttäjä.toKoskiUser(käyttöoikeuspalvelu), Map(KoskiMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")),
-        """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","kayttajaHenkiloNimi":"omnia-palvelukäyttäjä käyttäjä","oppijaHenkiloOid":"1.2.246.562.24.00000000001","clientIp":"192.168.0.10","kayttajaHenkiloOid":"1.2.246.562.24.99999999989","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
+      audit.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_LISAYS, MockUsers.omniaPalvelukäyttäjä.toKoskiUser(käyttöoikeuspalvelu), Map(KoskiMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")))
+      verifyLogMessage("""\{"logSeq":"1","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","kayttajaHenkiloNimi":"omnia-palvelukäyttäjä käyttäjä","oppijaHenkiloOid":"1.2.246.562.24.00000000001","clientIp":"192.168.0.10","kayttajaHenkiloOid":"1.2.246.562.24.99999999989","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
     }
   }
 
-  private def verifyLogMessage(msg: AuditLogMessage, expectedMessage: Regex) {
-    audit.log(msg)
+  private def verifyLogMessage(expectedMessage: Regex) {
     val infoCapture: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
-    verify(loggerMock, times(1)).info(infoCapture.capture)
+    verify(loggerMock, atLeastOnce).info(infoCapture.capture)
     val logMessage: String = infoCapture.getValue
     logMessage should fullyMatch regex(expectedMessage)
   }
