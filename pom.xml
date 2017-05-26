@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>auditlogger</artifactId>
-      <version>a22938c041811bd409970c7a3c210c74da1368d0</version>
+      <version>4189c6b155cdfec189a097560c2c9a7b8bf17564</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
