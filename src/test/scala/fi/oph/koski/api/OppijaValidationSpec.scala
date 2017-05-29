@@ -230,12 +230,12 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
               KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31"),
-              KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää ("suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
+              KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää ("suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
             )
           })
 
           "alkamispäivä > arvioituPäättymispäivä"  in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
           })
         }
 
