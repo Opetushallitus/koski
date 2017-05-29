@@ -26,6 +26,7 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
     <html>
       {htmlHead()}
       <body id="raportti">
+        <h2>Koski-raportti</h2>
         <h3>Oppijat ja opiskeluoikeudet</h3>
         <ul>
           <li class="oppijoiden-määrä">Oppijoiden määrä: <span class="value">{pulssi.oppijoidenMäärä}</span></li>
