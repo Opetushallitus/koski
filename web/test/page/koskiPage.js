@@ -176,6 +176,9 @@ function KoskiPage() {
       checkError()
       return wait.forAjax().then(checkError)
     },
+    is403: function() {
+      return isElementVisible(S(".http-status:contains(403)"))
+    },
     is404: function() {
       return isElementVisible(S(".http-status:contains(404)"))
     },

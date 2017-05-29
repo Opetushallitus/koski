@@ -2,6 +2,7 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.perustiedot.KoulutusmuotoTilasto
 import fi.oph.koski.servlet.HtmlServlet
 import org.scalatra.ScalatraServlet
 
@@ -24,17 +25,17 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
   private def raportti =
     <html>
       {htmlHead()}
-      <body>
+      <body id="raportti">
         <h3>Oppijat ja opiskeluoikeudet</h3>
         <ul>
-          <li>Oppijoiden määrä: {pulssi.oppijoidenMäärä}</li>
-          <li>Opiskeluoikeuksien määrä: {pulssi.opiskeluoikeusTilasto.opiskeluoikeuksienMäärä}</li>
+          <li class="oppijoiden-määrä">Oppijoiden määrä: <span class="value">{pulssi.oppijoidenMäärä}</span></li>
+          <li class="opiskeluoikeuksien-määrä">Opiskeluoikeuksien määrä: <span class="value">{pulssi.opiskeluoikeusTilasto.opiskeluoikeuksienMäärä}</span></li>
           <li>
             Opiskeluoikeuksien määrät koulutusmuodoittain:
             <ul>
               {pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.map { tilasto =>
-              <li>
-                {tilasto.koulutusmuoto}: {tilasto.opiskeluoikeuksienMäärä}, joista valmistuneita: {tilasto.valmistuneidenMäärä} ({percent(tilasto.valmistuneidenMäärä, tilasto.opiskeluoikeuksienMäärä)}%)
+              <li class={"opiskeluoikeuksien-määrä-" + tilasto.koulutusmuotoStr}>
+                {tilasto.koulutusmuoto}: <span class="value">{tilasto.opiskeluoikeuksienMäärä}</span>, joista valmistuneita: {tilasto.valmistuneidenMäärä} ({percent(tilasto.valmistuneidenMäärä, tilasto.opiskeluoikeuksienMäärä)}%)
               </li>
             }}
             </ul>
@@ -42,15 +43,15 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
         </ul>
         <h3>Koski tiedonsiirrot</h3>
         <ul>
-          <li>Siirtäneitä oppilaitoksia: {pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä}</li>
-          <li>Oppilaitoksia yhteensä : {pulssi.oppilaitosMäärät.yhteensä}</li>
-          <li>Siirtoprosentti: {percent(pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä, pulssi.oppilaitosMäärät.yhteensä)}</li>
+          <li class="siirtäneiden-oppilaitosten-määrä">Siirtäneitä oppilaitoksia: <span class="value">{pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä}</span></li>
+          <li class="oppilaitoksien-määrä">Oppilaitoksia yhteensä : <span class="value">{pulssi.oppilaitosMäärät.yhteensä}</span></li>
+          <li class="siirtoprosentti">Siirtoprosentti: <span class="value">{percent(pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä, pulssi.oppilaitosMäärät.yhteensä)}</span></li>
           <li>
             Koulutusmuodoittain:
             <ul>
               {pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.flatMap { tilasto =>
                 pulssi.oppilaitosMäärät.koulutusmuodoittain.get(tilasto.koulutusmuoto).map { oppilaitoksia =>
-                  <li>{tilasto.koulutusmuoto} : {tilasto.siirtäneitäOppilaitoksia} ( {percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)} %)</li>
+                  <li class={"siirtäneiden-oppilaitosten-määrä-" + tilasto.koulutusmuotoStr}>{tilasto.koulutusmuoto} : <span class="value">{tilasto.siirtäneitäOppilaitoksia}</span> ( {percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)} %)</li>
               }
             }}
             </ul>
@@ -58,20 +59,22 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
         </ul>
         <h3>Koski käyttöoikeudet</h3>
         <ul>
-          <li>Käyttöoikeuksien määrä: {pulssi.käyttöoikeudet.kokonaismäärä}</li>
+          <li class="käyttöoikeuksien-määrä">Käyttöoikeuksien määrä: <span class="value">{pulssi.käyttöoikeudet.kokonaismäärä}</span></li>
           <li>
             Käyttöoikeuksien määrät ryhmittäin:
             <ul>
-              {pulssi.käyttöoikeudet.ryhmienMäärät.map { case (ryhmä, määrä) => <li>{ryhmä}: {määrä}</li> }}
+              {pulssi.käyttöoikeudet.ryhmienMäärät.map { case (ryhmä, määrä) =>
+                <li class={"käyttöoikeusien-määrä-" + ryhmä}>{ryhmä}: <span class="value">{määrä}</span></li>
+              }}
             </ul>
           </li>
         </ul>
         <h3>Metriikka viimeisen 30 päivän ajalta</h3>
         <ul>
-          <li>Tiedonsiirtovirheet: {pulssi.metrics.epäonnistuneetSiirrot}</li>
-          <li>Käyttökatkojen määrä: {pulssi.metrics.katkot}</li>
-          <li>Hälytysten määrä: {pulssi.metrics.hälytykset}</li>
-          <li>Lokitettujen virheiden määrä: {pulssi.metrics.virheet}</li>
+          <li class="tiedonsiirtovirheiden-määrä">Tiedonsiirtovirheet: <span class="value">{pulssi.metrics.epäonnistuneetSiirrot}</span></li>
+          <li class="käyttökatkojen-määrä">Käyttökatkojen määrä: <span class="value">{pulssi.metrics.katkot}</span></li>
+          <li class="hälytysten-määrä">Hälytysten määrä: <span class="value">{pulssi.metrics.hälytykset}</span></li>
+          <li class="virheiden-määrä">Lokitettujen virheiden määrä: <span class="value">{pulssi.metrics.virheet}</span></li>
         </ul>
       </body>
     </html>

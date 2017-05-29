@@ -100,7 +100,10 @@ case class OpiskeluoikeusTilasto(
   def siirtäneitäOppilaitoksiaYhteensä: Int = koulutusmuotoTilastot.map(_.siirtäneitäOppilaitoksia).sum
 }
 
-case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäärä: Int, valmistuneidenMäärä: Int, siirtäneitäOppilaitoksia: Int)
+case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäärä: Int, valmistuneidenMäärä: Int, siirtäneitäOppilaitoksia: Int) {
+  def koulutusmuotoStr: String = koulutusmuoto.toLowerCase.replaceAll(" ", "-").replaceAll("[()]", "")
+}
+
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
 case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: ToimipisteNested)
 case class TilaNested(tila: Buckets)
