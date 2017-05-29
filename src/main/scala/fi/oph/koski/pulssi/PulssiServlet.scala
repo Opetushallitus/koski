@@ -9,7 +9,7 @@ class PulssiServlet(val application: KoskiApplication) extends ApiServlet with N
     Map(
       "opiskeluoikeudet" -> pulssi.opiskeluoikeusTilasto,
       "metriikka" -> pulssi.metriikka,
-      "oppilaitosMäärätTyypeittäin" -> pulssi.oppilaitosMäärätTyypeittäin
+      "oppilaitosMäärät" -> pulssi.oppilaitosMäärät
     )
   }
 

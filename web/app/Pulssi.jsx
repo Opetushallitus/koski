@@ -14,7 +14,7 @@ const Pulssi = React.createClass({
         acc + koulutusmuoto.valmistuneidenMäärä, 0
     )
 
-    let schoolsTotal = pulssi.oppilaitosMäärätTyypeittäin.reduce((acc, k) => acc + k.määrä, 0)
+    let schoolsTotal = R.values(pulssi.oppilaitosMäärät.koulutusmuodoittain).reduce((acc, k) => acc + k, 0)
     let schoolsWhoHaveTransferredData = opiskeluoikeudet.koulutusmuotoTilastot.reduce((acc, koulutusmuoto) => {
       return acc + koulutusmuoto.siirtäneitäOppilaitoksia
     }, 0)
@@ -116,7 +116,9 @@ const Pulssi = React.createClass({
           saavutettavuus: 0,
           operaatiot: {}
         },
-        oppilaitosMäärätTyypeittäin: []
+        oppilaitosMäärät: {
+          koulutusmuodoittain: []
+        }
       }
     }
   }
@@ -127,13 +129,13 @@ const toPercent = x => Math.round(x * 100 * 10) / 10
 const Kattavuus = ({koulutusmuoto, pulssi}) => {
   let kmuoto = pulssi.opiskeluoikeudet.koulutusmuotoTilastot.find(o => o.koulutusmuoto === koulutusmuoto)
   let count =  kmuoto && kmuoto.siirtäneitäOppilaitoksia
-  let total = pulssi.oppilaitosMäärätTyypeittäin.find(ol => ol.koulutusmuoto === koulutusmuoto)
-  let percentage = count && total && toPercent(count / total.määrä)
+  let total = pulssi.oppilaitosMäärät.koulutusmuodoittain[koulutusmuoto]
+  let percentage = count && total && toPercent(count / total)
 
   return (
       <div>
         <span>{koulutusmuoto}</span>
-        <span className="metric-value">{`${percentage} %  (${count} / ${total && total.määrä})`}</span>
+        <span className="metric-value">{`${percentage} %  (${count} / ${total})`}</span>
         <div className="progress-bar">
           <div style={{width: percentage + '%'}} />
         </div>

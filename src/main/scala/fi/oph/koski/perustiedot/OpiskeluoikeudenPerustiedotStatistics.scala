@@ -96,10 +96,11 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
 case class OpiskeluoikeusTilasto(
   opiskeluoikeuksienMäärä: Int = 0,
   koulutusmuotoTilastot: List[KoulutusmuotoTilasto] = Nil
-)
+) {
+  def siirtäneitäOppilaitoksiaYhteensä: Int = koulutusmuotoTilastot.map(_.siirtäneitäOppilaitoksia).sum
+}
 
 case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäärä: Int, valmistuneidenMäärä: Int, siirtäneitäOppilaitoksia: Int)
-
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
 case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: ToimipisteNested)
 case class TilaNested(tila: Buckets)

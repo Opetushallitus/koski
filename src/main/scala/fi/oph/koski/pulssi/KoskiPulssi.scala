@@ -8,7 +8,7 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, Opiskelu
 trait KoskiPulssi {
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto
   def metriikka: JulkinenMetriikka
-  def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]]
+  def oppilaitosMäärät: OppilaitosMäärät
   def oppijoidenMäärä: Int
   def käyttöoikeudet: KäyttöoikeusTilasto
   def metrics: KoskiMetriikka
@@ -23,13 +23,12 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def käyttöoikeudet: KäyttöoikeusTilasto = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä
   def metrics: KoskiMetriikka = application.prometheusRepository.koskiMetrics
 
-  def oppilaitosMäärätTyypeittäin: Seq[Map[String, Any]] = List(
-    Map("koulutusmuoto" -> "Perusopetus", "määrä" -> 2941),
-    Map("koulutusmuoto" -> "Lukiokoulutus", "määrä" -> 396),
-    Map("koulutusmuoto" -> "Ammatillinen koulutus", "määrä" -> 208)
-  )
+  def oppilaitosMäärät = OppilaitosMäärät(Map(
+    "Perusopetus" -> 2941,
+    "Lukiokoulutus" -> 396,
+    "Ammatillinen koulutus" -> 208
+  ))
 }
-
 
 object KoskiPulssi {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): KoskiPulssi with Cached = {
@@ -38,4 +37,8 @@ object KoskiPulssi {
       new KoskiStats(application)
     )
   }
+}
+
+case class OppilaitosMäärät(koulutusmuodoittain: Map[String, Int]) {
+  def yhteensä: Int = koulutusmuodoittain.values.sum
 }

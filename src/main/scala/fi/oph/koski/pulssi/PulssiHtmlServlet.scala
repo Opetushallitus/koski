@@ -2,6 +2,7 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.perustiedot.KoulutusmuotoTilasto
 import fi.oph.koski.servlet.HtmlServlet
 import org.scalatra.ScalatraServlet
 
@@ -33,6 +34,11 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
                 pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.map { tilasto =>
                   <li>
                     {tilasto.koulutusmuoto}: {tilasto.opiskeluoikeuksienMäärä}
+                    <ul>
+                      <li>
+                        Valmistuneita: {tilasto.valmistuneidenMäärä} ({percent(tilasto.valmistuneidenMäärä, tilasto.opiskeluoikeuksienMäärä)}%)
+                      </li>
+                    </ul>
                   </li>
                 }}
               </ul>
@@ -41,6 +47,26 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
           <h3>Koski tiedonsiirrot</h3>
           <ul>
             <li>
+              Siirtäneitä oppilaitoksia: {pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä}
+            </li>
+            <li>
+              Oppilaitoksia yhteensä : {pulssi.oppilaitosMäärät.yhteensä}
+            </li>
+            <li>
+              Siirtoprosentti:
+              {percent(pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä, pulssi.oppilaitosMäärät.yhteensä)}
+            </li>
+            <li>
+              Koulutusmuodoittain:
+              <ul>
+                  {pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.flatMap { tilasto =>
+                    pulssi.oppilaitosMäärät.koulutusmuodoittain.get(tilasto.koulutusmuoto).map { oppilaitoksia =>
+                      <li>
+                        {tilasto.koulutusmuoto}: {tilasto.siirtäneitäOppilaitoksia} ({percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)}%)
+                      </li>
+                    }
+                  }}
+              </ul>
             </li>
           </ul>
           <h3>Koski käyttöoikeudet</h3>
@@ -82,4 +108,5 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
   }
 
   private def pulssi = application.koskiPulssi
+  private def percent(x: Int, y: Int) = round(1)(x.toDouble / y.toDouble * 100)
 }

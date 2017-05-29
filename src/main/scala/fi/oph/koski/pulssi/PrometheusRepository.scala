@@ -6,7 +6,6 @@ import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
 import fi.oph.koski.json.GenericJsonFormats
 import org.json4s.JValue
 
-import scala.math.BigDecimal.RoundingMode.HALF_UP
 import scalaz.concurrent.Task
 
 object PrometheusRepository {
