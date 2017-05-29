@@ -24,6 +24,9 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
     findKoodisto match {
       case Some((koodisto, koodit)) =>
         <html>
+          <head>
+            <title>Koodisto: { koodisto.koodistoUri } - Koski - Opintopolku.fi</title>
+          </head>
           <style>
             body {{ font-family: sans-serif; }}
             td, th {{ text-align: left; padding-right: 20px; }}

@@ -80,6 +80,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
   def html = {
     <html>
       <head>
+        <title>Dokumentaatio - Koski - Opintopolku.fi</title>
         <meta charset="UTF-8"></meta>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
         <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
