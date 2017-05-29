@@ -9,6 +9,7 @@ import fi.vm.sade.security.ldap.LdapUser
 
 object MockUsers {
   val kalle = MockUser("käyttäjä", "kalle", "1.2.246.562.24.99999999987", (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosTallentaja)))
+  val pärre = MockUser("käyttäjä", "pärre", "1.2.246.562.24.99999999901", (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosTallentaja)), "sv")
   val localkoski = MockUser("käyttäjä", "localkoski", "1.2.246.562.24.99999999988", oppilaitokset.toSet.map((_: String, oppilaitosTallentaja)))
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set((omnia, oppilaitosPalvelukäyttäjä)))
   val omniaKatselija = MockUser("käyttäjä", "omnia-katselija", "1.2.246.562.24.99999999990", Set((omnia, oppilaitosKatselija)))
@@ -24,6 +25,7 @@ object MockUsers {
 
   val users = List(
     kalle,
+    pärre,
     omniaPalvelukäyttäjä,
     omniaKatselija,
     omniaTallentaja,
@@ -50,8 +52,8 @@ case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid,
 }
 
 object MockUser {
-  def apply(lastname: String, firstname: String, oid: String, käyttöoikeusryhmät: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]): MockUser = {
-    val roolit = käyttöoikeusryhmät.flatMap { case (oid, ryhmä) =>
+  def apply(lastname: String, firstname: String, oid: String, käyttöoikeusryhmät: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)], lang: String = "fi"): MockUser = {
+    val roolit = s"LANG_$lang" :: käyttöoikeusryhmät.flatMap { case (oid, ryhmä) =>
       ryhmä.palveluroolit.map { palveluRooli =>
         LdapKayttooikeudet.roleString(palveluRooli.palveluName, palveluRooli.rooli, oid)
       }

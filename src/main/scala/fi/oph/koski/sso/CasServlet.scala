@@ -2,7 +2,7 @@ package fi.oph.koski.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, ServiceTicketValidator}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage, ServiceTicketValidator}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{HtmlServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
@@ -25,6 +25,7 @@ class CasServlet(val application: KoskiApplication) extends HtmlServlet with Aut
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
               logger.info(s"Started session ${session.id} for ticket $ticket")
               koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request))
+              KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
               redirectAfterLogin
             case None =>
               haltWithStatus(KoskiErrorCategory.internalError(s"CAS-käyttäjää $username ei löytynyt LDAPista"))

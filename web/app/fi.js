@@ -32,13 +32,11 @@ export default {
   'ei': 'ei',
   'Ei valintaa': 'Ei valintaa',
   'Perusteen diaarinumero': 'Perusteen diaarinumero',
-  httpStatus: {
-    400: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
-    404: 'Etsimääsi sivua ei löytynyt',
-    409: 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.',
-    500: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
-    503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
-  },
+  'httpStatus.400': 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
+  'httpStatus.404': 'Etsimääsi sivua ei löytynyt',
+  'httpStatus.409': 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.',
+  'httpStatus.500': 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
+  'httpStatus.503': 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.',
   'Pulssi': 'Pulssi',
   'Opiskeluoikeuksien määrä': 'Opiskeluoikeuksien määrä',
   'Kattavuus': 'Kattavuus',

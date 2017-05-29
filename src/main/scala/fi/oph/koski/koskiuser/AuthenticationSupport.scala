@@ -7,6 +7,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.vm.sade.security.ldap.DirectoryClient
+import org.scalatra.{Cookie, CookieOptions}
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {

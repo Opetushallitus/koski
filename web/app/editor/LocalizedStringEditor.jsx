@@ -11,7 +11,7 @@ export const LocalizedStringEditor = ({model, ...rest}) => {
     return <ObjectEditor model={model}/>
   }
   let wrappedModel = wrapOptional({model})
-  let stringModel = R.merge(modelLookup(wrappedModel, lang), { optional: model.optional })
+  let stringModel = R.merge(modelLookup(wrappedModel, lang) || modelLookup(wrappedModel, 'fi'), { optional: model.optional })
 
   return <StringEditor {...{model: stringModel, ...rest}} />
 }

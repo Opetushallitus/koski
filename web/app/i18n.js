@@ -1,14 +1,21 @@
 import finnishTexts from './fi'
-import {currentLocation} from './location'
+import {getCookie} from './cookie'
 
-export const lang = currentLocation().params.lang || 'fi'
-export const texts = finnishTexts
+export const lang = getCookie('lang') || 'fi'
+export const texts = lang == 'fi'  ? finnishTexts : {}
 export const t = (localizedString) => {
   if (!localizedString) return ''
-  if (localizedString && localizedString[lang]) return localizedString[lang]
-  if (!texts[localizedString]) {
-    console.log('Localization missing:', localizedString)
-    texts[localizedString] = localizedString
+  if (typeof localizedString == 'object') {
+    // assume it's a localized string
+    return localizedString[lang] || localizedString['fi']
   }
-  return texts[localizedString]
+  if (typeof localizedString == 'string') {
+    // try to find a localization from the bundle
+    if (!texts[localizedString]) {
+      console.log('Localization missing:', localizedString)
+      texts[localizedString] = localizedString
+    }
+    return texts[localizedString]
+  }
+  console.err('Trying to localize', localizedString)
 }

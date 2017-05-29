@@ -4,7 +4,7 @@ import java.util.UUID
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.{AuthenticationSupport, Login, UserAuthenticationContext}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiUserLanguage, Login, UserAuthenticationContext}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{ApiServlet, JsonBodySnatcher, NoCache}
 
@@ -24,6 +24,9 @@ class LocalLoginServlet(val application: UserAuthenticationContext) extends ApiS
           logger.info("Local session ticket created: " + fakeServiceTicket)
           val finalUser = user.copy(serviceTicket = Some(fakeServiceTicket))
           setUser(Right(finalUser))
+
+          KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
+
           finalUser
         })
       case None =>

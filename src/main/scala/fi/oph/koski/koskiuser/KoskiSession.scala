@@ -7,6 +7,8 @@ import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 import fi.vm.sade.security.ldap.DirectoryClient
+import org.scalatra.servlet.{RichRequest, RichResponse}
+import org.scalatra.{Cookie, CookieOptions}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,7 +48,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
 object KoskiSession {
   def apply(user: AuthenticationUser, lang: String, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository, directoryClient: DirectoryClient): KoskiSession = {
-    new KoskiSession(user, KoskiUserLanguage(user, directoryClient), LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+    new KoskiSession(user, KoskiUserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
@@ -55,18 +57,3 @@ object KoskiSession {
 
 }
 
-object KoskiUserLanguage extends Logging {
-  def apply(user: AuthenticationUser, directoryClient: DirectoryClient) = {
-    val username = user.username
-    directoryClient.findUser(username) match {
-      case Some(ldapUser) =>
-        val pattern = "LANG_(.*)".r
-        ldapUser.roles.collect {
-          case pattern(s) => s
-        }.headOption.getOrElse("fi")
-      case _ =>
-        logger.warn(s"User $username not found from LDAP")
-        "fi"
-    }
-  }
-}
