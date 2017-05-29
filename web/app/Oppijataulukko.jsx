@@ -18,6 +18,7 @@ import Link from './Link.jsx'
 import {currentLocation} from './location'
 import {t} from './i18n'
 import Text from './Text.jsx'
+import {lang} from './i18n'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -151,7 +152,8 @@ export const Oppijataulukko = React.createClass({
     </div>)
   },
   componentWillMount() {
-    const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: k.metadata.find(m => m.kieli == 'FI').nimi})).sort((a, b) => a.value.localeCompare(b.value))
+    const koodistoMetadata = k => k.metadata.find(m => m.kieli == lang.toUpperCase()) || k.metadata.find(m => m.kieli == 'FI')
+    const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: koodistoMetadata(k).nimi})).sort((a, b) => a.value.localeCompare(b.value))
     this.filterBus = Bacon.Bus()
     this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
