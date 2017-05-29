@@ -962,11 +962,19 @@ describe('Perusopetus', function() {
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),
             uusiPaikallinen.propertyBySelector('.arvosana').selectValue('7'),
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
-            uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
-            editor.saveChanges, wait.until(page.isSavedLabelShown))
+            uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'))
 
-          it('Toimii', function () {
-            expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+          describe('Ennen tallennusta', function() {
+            it('Uusi oppiaine näytetään avattuna', function() {
+              expect(uusiPaikallinen.property('kuvaus').isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Tallennuksen jälkeen', function() {
+            before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+            it('Toimii', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+            })
           })
 
           describe('Lisäyksen jälkeen', function() {

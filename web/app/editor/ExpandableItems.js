@@ -4,15 +4,18 @@ import Bacon from 'baconjs'
 export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, filter, component}) => {
   let toggleExpandAllBus = Bacon.Bus()
   let setExpandedBus = Bacon.Bus()
-  var initialState = initialStateFromComponent(component)
+  let initialState = initialStateFromComponent(component);
   let stateP = Bacon.update(initialState,
     toggleExpandAllBus, currentState => expandStateCalc(currentState, suoritukset, keyF, filter).toggleExpandAll(),
     setExpandedBus, (currentState, {suoritus, expanded}) => expandStateCalc(currentState, suoritukset, keyF, filter).setExpanded(suoritus, expanded)
-  ).doAction((state) => {
-      if (component && !R.equals(initialStateFromComponent(component), state)) {
-        component.setState(state)
-      }
+  )
+
+  stateP.onValue((state) => {
+    if (component && !R.equals(initialStateFromComponent(component), state)) {
+      component.setState(state)
+    }
   })
+
   return {
     toggleExpandAll: () => toggleExpandAllBus.push(),
     setExpanded: (suoritus) => (expanded) => {
