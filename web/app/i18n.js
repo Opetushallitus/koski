@@ -1,5 +1,5 @@
 import finnishTexts from './fi'
-import {currentLocation} from './location';
+import {currentLocation} from './location'
 
 export const lang = currentLocation().params.lang || 'fi'
 export const texts = finnishTexts
@@ -12,4 +12,3 @@ export const t = (localizedString) => {
   }
   return texts[localizedString]
 }
-console.log('using language', lang)
