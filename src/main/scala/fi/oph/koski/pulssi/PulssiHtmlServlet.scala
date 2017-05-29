@@ -18,7 +18,7 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
     if (koskiSessionOption.exists(_.hasGlobalReadAccess)) {
       raportti
     } else {
-      renderStatus(KoskiErrorCategory.forbidden())
+      renderStatus(KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia dokumenttiin"))
     }
   }
 
