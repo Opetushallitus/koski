@@ -4,30 +4,42 @@ import fi.oph.koski.json.Json
 
 case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) {
   import PerustiedotSearchIndex._
-  def statistics: Map[String, Any] = {
+  def statistics: OpiskeluoikeusTilasto = {
     rawStatistics.map { stats =>
-      Map(
-        "opiskeluoikeuksienMäärä" -> stats.total,
-        "määrätKoulutusmuodoittain" -> stats.tyypit.map { tyyppi =>
-          val määrätTiloittain = tyyppi.tila.tila.buckets.map { bucket =>
-            Map("nimi" -> bucket.key, "opiskeluoikeuksienMäärä" -> bucket.doc_count)
-          }
-
-          Map(
-            "nimi" -> tyyppi.key,
-            "opiskeluoikeuksienMäärä" -> tyyppi.doc_count,
-            "määrätTiloittain" -> määrätTiloittain,
-            "siirtäneitäOppilaitoksia" -> tyyppi.toimipiste.count.value
+      OpiskeluoikeusTilasto(
+        stats.total,
+        stats.tyypit.map { tyyppi =>
+          KoulutusmuotoTilasto(
+            tyyppi.key,
+            tyyppi.doc_count,
+            tyyppi.tila.tila.buckets.headOption.map(_.doc_count).getOrElse(0),
+            tyyppi.toimipiste.count.value
           )
         }
       )
-    }.getOrElse(Map())
+    }.getOrElse(OpiskeluoikeusTilasto())
   }
 
-  def privateStatistics: Map[String, Any] =
-    privateRawStatistics.map { stats =>
-      Map("oppijoidenMäärä" -> stats)
-    }.getOrElse(Map())
+  def henkilöCount: Option[Int] = {
+    val result = index.runSearch(
+      Json.parse(
+        """
+          |{
+          |  "size": 0,
+          |  "aggs": {
+          |    "henkilöcount": {
+          |      "cardinality": {
+          |        "field": "henkilö.oid.keyword",
+          |        "precision_threshold": 40000
+          |      }
+          |    }
+          |  }
+          |}
+        """.stripMargin)
+    )
+
+    result.map(r => (r \ "aggregations" \ "henkilöcount" \ "value").extract[Int])
+  }
 
   private def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
     val result = index.runSearch(
@@ -79,28 +91,14 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
       OpiskeluoikeudetTyypeittäin(total, (r \ "aggregations" \ "tyyppi" \ "buckets").extract[List[Tyyppi]])
     }
   }
-
-  private def privateRawStatistics = {
-    val result = index.runSearch(
-      Json.parse(
-        """
-          |{
-          |  "size": 0,
-          |  "aggs": {
-          |    "henkilöcount": {
-          |      "cardinality": {
-          |        "field": "henkilö.oid.keyword",
-          |        "precision_threshold": 40000
-          |      }
-          |    }
-          |  }
-          |}
-        """.stripMargin)
-    )
-
-    result.map(r => (r \ "aggregations" \ "henkilöcount" \ "value").extract[Int])
-  }
 }
+
+case class OpiskeluoikeusTilasto(
+  opiskeluoikeuksienMäärä: Int = 0,
+  koulutusmuotoTilastot: List[KoulutusmuotoTilasto] = Nil
+)
+
+case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäärä: Int, valmistuneidenMäärä: Int, siirtäneitäOppilaitoksia: Int)
 
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
 case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: ToimipisteNested)

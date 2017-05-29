@@ -21,18 +21,18 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
           <h3>Oppijat ja opiskeluoikeudet</h3>
           <ul>
             <li>
-              Oppijoiden määrä: {pulssi.sisäisetOpiskeluoikeustiedot.getOrElse("oppijoidenMäärä", 0)}
+              Oppijoiden määrä: {pulssi.oppijoidenMäärä}
             </li>
             <li>
-              Opiskeluoikeuksien määrä: {pulssi.opiskeluoikeudet.getOrElse("opiskeluoikeuksienMäärä", 0)}
+              Opiskeluoikeuksien määrä: {pulssi.opiskeluoikeusTilasto.opiskeluoikeuksienMäärä}
             </li>
             <li>
               Opiskeluoikeuksien määrät koulutusmuodoittain:
               <ul>
                 {
-                pulssi.opiskeluoikeudet.getOrElse("määrätKoulutusmuodoittain", 0).asInstanceOf[List[Map[String, Any]]].map { koulutusmuoto =>
+                pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.map { tilasto =>
                   <li>
-                    {koulutusmuoto.getOrElse("nimi", "")}: {koulutusmuoto.getOrElse("opiskeluoikeuksienMäärä", 0)}
+                    {tilasto.koulutusmuoto}: {tilasto.opiskeluoikeuksienMäärä}
                   </li>
                 }}
               </ul>
@@ -46,12 +46,12 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
           <h3>Koski käyttöoikeudet</h3>
           <ul>
             <li>
-              Käyttöoikeuksien määrä: {pulssi.käyttöoikeudet.getOrElse("kokonaismäärä", 0)}
+              Käyttöoikeuksien määrä: {pulssi.käyttöoikeudet.kokonaismäärä}
             </li>
             <li>
               Käyttöoikeuksien määrät ryhmittäin:
               <ul>
-              {pulssi.käyttöoikeudet.getOrElse("käyttöoikeusmäärät", Map()).asInstanceOf[Map[String, Int]].map { case (ryhmä, määrä) =>
+              {pulssi.käyttöoikeudet.ryhmienMäärät.map { case (ryhmä, määrä) =>
                 <li>
                   {ryhmä}: {määrä}
                 </li>
@@ -62,16 +62,16 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
           <h3>Metriikka viimeisen 30 päivän ajalta</h3>
           <ul>
             <li>
-              Tiedonsiirtovirheet: {pulssi.sisäinenMetriikka.getOrElse("tiedonsiirtovirheet", 0)}
+              Tiedonsiirtovirheet: {pulssi.metrics.epäonnistuneetSiirrot}
             </li>
             <li>
-              Käyttökatkojen määrä: {pulssi.sisäinenMetriikka.getOrElse("katkot", 0)}
+              Käyttökatkojen määrä: {pulssi.metrics.katkot}
             </li>
             <li>
-              Hälytysten määrä: {pulssi.sisäinenMetriikka.getOrElse("hälytykset", 0)}
+              Hälytysten määrä: {pulssi.metrics.hälytykset}
             </li>
             <li>
-              Lokitettujen virheiden määrä: {pulssi.sisäinenMetriikka.getOrElse("sovellusvirheet", 0)}
+              Lokitettujen virheiden määrä: {pulssi.metrics.virheet}
             </li>
           </ul>
         </body>

@@ -28,7 +28,15 @@ trait AuthenticationServiceClient {
   def findChangedOppijaOids(since: Long): List[Oid]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
-  def henkilötPerKäyttöoikeusryhmä: Map[String, List[String]]
+  def getKäyttöikeusRyhmät: Map[String, List[String]]
+
+  def henkilötPerKäyttöoikeusryhmä: KäyttöoikeusTilasto = {
+    val ryhmät = getKäyttöikeusRyhmät
+    KäyttöoikeusTilasto(
+      ryhmät.values.flatten.toList.distinct.size,
+      ryhmät.map { case (x, y) => (x, y.size) }
+    )
+  }
 }
 
 object AuthenticationServiceClient {
@@ -123,10 +131,10 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     }
   )
 
-  def henkilötPerKäyttöoikeusryhmä: Map[String, List[String]] = runTask(
+  def getKäyttöikeusRyhmät: Map[String, List[String]] = runTask(
     käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(parseJson[List[KäyttöoikeusRyhmä]]).flatMap { ryhmät =>
       gatherUnordered(ryhmät
-        .filter(_.description.texts.exists(t => t.lang  == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
+        .filter(_.description.texts.exists(t => t.lang == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
         .map { ryhmä =>
           käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma/${ryhmä.id}/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(h => (ryhmä.nimi, h.personOids))
         }
@@ -158,6 +166,7 @@ class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidSe
   }
 }
 
+case class KäyttöoikeusTilasto(kokonaismäärä: Int, ryhmienMäärät: Map[String, Int])
 case class KäyttöoikeusRyhmä(id: Int, description: KäyttöoikeusRyhmäDescriptions) {
   def nimi = description.texts.find(_.lang == "FI").map(_.text).getOrElse("")
 }

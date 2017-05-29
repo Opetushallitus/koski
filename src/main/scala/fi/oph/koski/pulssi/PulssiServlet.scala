@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 class PulssiServlet(val application: KoskiApplication) extends ApiServlet with NoCache with AuthenticationSupport {
   get("/") {
     Map(
-      "opiskeluoikeudet" -> pulssi.opiskeluoikeudet,
+      "opiskeluoikeudet" -> pulssi.opiskeluoikeusTilasto,
       "metriikka" -> pulssi.metriikka,
       "oppilaitosMäärätTyypeittäin" -> pulssi.oppilaitosMäärätTyypeittäin
     )
