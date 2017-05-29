@@ -35,11 +35,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "koskiopiskeluoikeudentila_katsotaaneronneeksi",
-    "koodiArvo": "katsotaaneronneeksi",
+    "koodiUri": "koskiopiskeluoikeudentila_erotettu",
+    "koodiArvo": "erotettu",
     "metadata": [
       {
-        "nimi": "Katsotaan eronneeksi",
+        "nimi": "Erotettu",
         "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
         "kieli": "FI"
       }
