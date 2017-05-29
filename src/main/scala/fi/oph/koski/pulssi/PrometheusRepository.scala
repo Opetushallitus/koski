@@ -73,8 +73,6 @@ trait PrometheusRepository {
 
   private def value(metric: JValue): Option[String] =
     (metric \ "value").extract[List[String]].lastOption
-
-  private def round(precisison: Int) = (double: Double) => BigDecimal(double).setScale(precisison, HALF_UP).toDouble
 }
 
 case class KoskiMetriikka(
