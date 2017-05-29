@@ -1,7 +1,6 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
-import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
@@ -16,10 +15,9 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotRepository, PerustiedotSearchIndex, OpiskeluoikeudenPerustiedotIndexer, PerustiedotIndexUpdater}
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSearchIndex}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.KoskiScheduledTasks
-import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
@@ -38,11 +36,10 @@ object KoskiApplication {
 class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext {
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClientFactory.directoryClient(config)
-  lazy val tutkintoRepository = TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu)
+  lazy val tutkintoRepository = TutkintoRepository(EPerusteetRepository.apply(config), koodistoViitePalvelu)
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
-  lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val authenticationServiceClient = AuthenticationServiceClient(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository, directoryClient)
   lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
