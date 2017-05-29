@@ -1322,7 +1322,10 @@ describe('Perusopetus', function() {
           addOppija.enterValidDataPerusopetus({oppilaitos:'Helsingin medialukio'}))
 
         it('Opiskeluoikeuden tyypin valinnassa näytetään myös ammatillinen koulutus', function() {
-          expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Ammatillinen koulutus', 'Perusopetus'])
+          expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Perusopetus',
+            'Perusopetukseen valmistava opetus',
+            'Perusopetuksen lisäopetus',
+            'Ammatillinen koulutus'])
         })
 
         describe('Opiskeluoikeuden lisäys', function() {
