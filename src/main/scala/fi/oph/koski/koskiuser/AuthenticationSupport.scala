@@ -61,7 +61,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   override def koskiSessionOption: Option[KoskiSession] = {
     getUser.right.toOption.map { user: AuthenticationUser =>
-      KoskiSession(user, lang, request, application.käyttöoikeusRepository)
+      KoskiSession(user, lang, request, application.käyttöoikeusRepository, application.directoryClient)
     }
   }
 
