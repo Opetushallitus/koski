@@ -60,7 +60,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
 
 export const onLopputila = (tila) => {
   let koodi = modelData(tila).koodiarvo
-  return koodi === 'eronnut' || koodi === 'valmistunut' || koodi === 'katsotaaneronneeksi' || koodi === 'peruutettu'
+  return koodi === 'eronnut' || koodi === 'valmistunut' || koodi === 'erotettu' || koodi === 'peruutettu'
 }
 
 export const onLopputilassa = (opiskeluoikeus) => {

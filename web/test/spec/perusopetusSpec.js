@@ -391,14 +391,14 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe('Katsotaan eronneeksi', function() {
+        describe('Erotettu', function() {
           before(page.oppijaHaku.searchAndSelect('220109-784L'), editor.edit)
           it('Alkutila', function() {
             expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
 
           describe('Kun lisätään', function() {
-            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="katsotaaneronneeksi"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="erotettu"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(editor.property('päättymispäivä').getValue()).to.equal(currentDate)

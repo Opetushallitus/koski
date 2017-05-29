@@ -1,3 +1,7 @@
+## 29.5.2017
+
+- Muutettu opiskeluoikeuden tila Katsotaan eronneeksi -> Erotettu
+
 ## 22.5.2017
 
 - Lisätty toinenOsaamisala -flägi osittaisen ammatillisen tutkinnon suoritukseen
