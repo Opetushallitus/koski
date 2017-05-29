@@ -9,12 +9,16 @@ class OppilaitosServlet(val application: KoskiApplication) extends ApiServlet wi
   get("/") {
     application.oppilaitosRepository.oppilaitokset(koskiSession).toList
   }
+
+  val perusopetuksenTyypit = List("perusopetus", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus")
+  val ammatillisenTyypit = List("ammatillinenkoulutus")
+
   get("/opiskeluoikeustyypit/:oid") {
     val oppilaitostyypit: List[String] = application.organisaatioRepository.getOrganisaatioHierarkia(params("oid")).toList.flatMap(_.oppilaitostyyppi)
     oppilaitostyypit.flatMap {
-      case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut, perusJaLukioasteenKoulut).contains(tyyppi) => List("perusopetus", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus")
-      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => List("ammatillinenkoulutus")
-      case _ => List("ammatillinenkoulutus", "perusopetus")
+      case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut, perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit
+      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => ammatillisenTyypit
+      case _ => perusopetuksenTyypit ++ ammatillisenTyypit
     }.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViite("opiskeluoikeudentyyppi", _))
   }
 }
