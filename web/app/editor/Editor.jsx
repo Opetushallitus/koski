@@ -83,7 +83,8 @@ Editor.propTypes = {
   model: React.PropTypes.object.isRequired
 }
 Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
-Editor.handlesOptional = (model) => getEditorFunction(model).handlesOptional
+Editor.handlesOptional = (model, modifier) => editorFunctionHandlesOptional(getEditorFunction(model), modifier)
+const editorFunctionHandlesOptional = (editor, modifier) => editor && (editor.handlesOptional || (() => false))(modifier)
 
 const NullEditor = React.createClass({
   render() {
@@ -103,14 +104,14 @@ const getEditorFunction = (model) => {
   }
 
   let notReadOnlyEditor = editorByClass(e => !e.readOnly)
-  let optionalHandlingEditor = editorByClass(e => e.handlesOptional)
+  let optionalHandlingEditor = editorByClass(editorFunctionHandlesOptional)
 
   if (!model) return NullEditor
 
   if (model.optional) {
     let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
     let typeEditor = prototype && model.context.editorMapping[prototype.type]
-    return optionalHandlingEditor(prototype) || (typeEditor && typeEditor.handlesOptional && typeEditor) || model.context.editorMapping.optional
+    return optionalHandlingEditor(prototype) || ((editorFunctionHandlesOptional(typeEditor)) && typeEditor) || model.context.editorMapping.optional
   }
 
   let editor = notReadOnlyEditor(model) || model.context.editorMapping[model.type]

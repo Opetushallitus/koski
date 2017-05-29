@@ -19,7 +19,7 @@ export const NumberEditor = React.createClass({
   }
 })
 
-NumberEditor.handlesOptional = true
+NumberEditor.handlesOptional = () => true
 NumberEditor.validateModel = model => {
   let value = modelData(model)
   return (value !== undefined && isNaN(value)) ? [{key: 'invalid.number'}] : []

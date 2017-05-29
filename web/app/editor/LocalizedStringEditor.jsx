@@ -15,5 +15,5 @@ export const LocalizedStringEditor = ({model, ...rest}) => {
 
   return <StringEditor {...{model: stringModel, ...rest}} />
 }
-LocalizedStringEditor.handlesOptional = true
+LocalizedStringEditor.handlesOptional = () => true
 LocalizedStringEditor.canShowInline = () => true

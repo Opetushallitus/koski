@@ -16,4 +16,4 @@ export const JaksoEditor = React.createClass({
   }
 })
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
-JaksoEditor.handlesOptional = true
+JaksoEditor.handlesOptional = (modifier) => modifier != 'array'

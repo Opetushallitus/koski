@@ -20,7 +20,7 @@ export const LaajuusEditor = React.createClass({
   }
 })
 LaajuusEditor.readOnly = false
-LaajuusEditor.handlesOptional = true
+LaajuusEditor.handlesOptional = () => true
 
 LaajuusEditor.validateModel = (model) => {
   let arvo = modelData(model, 'arvo')

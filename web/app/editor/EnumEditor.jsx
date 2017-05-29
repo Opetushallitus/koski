@@ -81,7 +81,7 @@ EnumEditor.fetchAlternatives = (model) => {
 EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
 
 EnumEditor.canShowInline = () => true
-EnumEditor.handlesOptional = true
+EnumEditor.handlesOptional = () => true
 EnumEditor.validateModel = (model) => {
   if (!model.value && !model.optional) {
     return [{key: 'missing'}]

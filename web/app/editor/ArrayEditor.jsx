@@ -20,7 +20,7 @@ export const ArrayEditor = ({model, reverse}) => {
 
   let itemEditorHandlesOptional = () => {
     let childModel = wrappedModel.arrayPrototype && contextualizeSubModel(wrappedModel.arrayPrototype, wrappedModel, modelItems(wrappedModel).length)
-    return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel) : false
+    return childModel && childModel.type !== 'prototype' ? Editor.handlesOptional(childModel, 'array') : false
   }
   let minItems = wrappedModel.minItems || 0
   let tooFewItems = items.length < minItems
@@ -55,4 +55,4 @@ ArrayEditor.canShowInline = (model) => {
   let items = modelItems(model)
   return items[0] && model.context.edit ? false : Editor.canShowInline(items[0])
 }
-ArrayEditor.handlesOptional = true
+ArrayEditor.handlesOptional = () => true

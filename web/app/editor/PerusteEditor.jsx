@@ -15,4 +15,4 @@ export const PerusteEditor = ({model}) => {
   perusteAtom.filter(R.identity).changes().onValue(diaarinumero => pushModelValue(model, { data: diaarinumero }))
   return <PerusteDropdown {...{perusteAtom, suoritusP: Bacon.constant(modelData(model.context.suoritus))}}/>
 }
-PerusteEditor.handlesOptional=true
+PerusteEditor.handlesOptional=() => true

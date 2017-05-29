@@ -19,7 +19,7 @@ export const DateEditor = ({model, isAllowedDate}) => {
 }
 
 DateEditor.canShowInline = () => true
-DateEditor.handlesOptional = true
+DateEditor.handlesOptional = () => true
 DateEditor.validateModel = (model) => {
   let data = modelData(model)
   let empty = !data
