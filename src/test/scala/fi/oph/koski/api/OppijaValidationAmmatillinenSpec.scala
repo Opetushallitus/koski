@@ -234,19 +234,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
             "Päivämäärät tulevaisuudessa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
-                                          KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa("Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
+                                          KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
                 )))
             }
 
             "alkamispäivä > arviointi.päivä" - {
               "palautetaan HTTP 400"  in (put(päivämäärillä("2016-08-01", "2015-05-31", "2015-05-31"))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2015-05-31)"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenAlkamispäivää("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2015-05-31)"))))
             }
 
             "arviointi.päivä > vahvistus.päivä" - {
               "palautetaan HTTP 400"  in (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
             }
           }
 
@@ -328,7 +328,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "alkamispäivä > vahvistus.päivä" - {
           "palautetaan HTTP 400"  in (put(päivämäärillä("2016-08-01", "2015-05-31"))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2015-05-31)"))))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2015-05-31)"))))
         }
       }
     }

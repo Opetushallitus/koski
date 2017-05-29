@@ -35,7 +35,7 @@ object KoskiErrorCategory {
 
       class Organisaatio extends ErrorCategory(Validation.this, "organisaatio", "Epäkelpo organisaatio") {
         val tuntematon = subcategory("tuntematon", "Tuntematon organisaatio: oid-tunnisteella ei löytynyt organisaatiota.")
-        val vääränTyyppinen = subcategory("vääränTyyppinen", "Organisaatio on väärän tyyppinen. Esimerkiksi oppilaitoksena käytetty organisaatio ei ole oppilaitostyyppinen.")
+        val eiOppilaitos = subcategory("eiOppilaitos", "Toimipisteenä käytetylle organisaatiolle ei löydy oppilaitos-tyyppistä yliorganisaatiota.")
         val vääräKoulutustoimija = subcategory("vääräKoulutustoimija", "Koulutustoimija ei vastaa organisaatiopalvelun mukaista tietoa")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
       }
@@ -48,11 +48,19 @@ object KoskiErrorCategory {
       val henkilötiedot = new Henkilötiedot
 
       class Date extends ErrorCategory(Validation.this, "date", "Päivämäärä on oikeassa formaatissa, mutta semanttisesti epäkelpo.") {
-        val loppuEnnenAlkua = subcategory("loppuEnnenAlkua", "Annettu (arvioitu) loppupäivä on aiemmin kuin alkupäivä.")
-        val jaksojenJärjestys = subcategory("jaksojenJärjestys", "Jaksojen on oltava päivämääräjärjestyksessä")
+        val päättymisPäiväEnnenAlkamispäivää = subcategory("päättymisPäiväEnnenAlkamispäivää", "Opiskeluoikeuden päättymispäivä on aiempi kuin alkamispäivä")
+        val arvioituPäättymisPäiväEnnenAlkamispäivää = subcategory("arvioituPäättymisPäiväEnnenAlkamispäivää", "Opiskeluoikeuden arvioitu päättymispäivä on aiempi kuin alkamispäivä")
+        val opiskeluoikeusjaksojenPäivämäärät = subcategory("opiskeluoikeusjaksojenPäivämäärät", "Opiskeluoikeusjaksojen on oltava päivämääräjärjestyksessä")
+
+        val arviointiEnnenAlkamispäivää = subcategory("arviointiEnnenAlkamispäivää", "Suorituksen arviointipäivä on aiempi kuin sen alkamispäivä")
+        val vahvistusEnnenAlkamispäivää = subcategory("vahvistusEnnenAlkamispäivää", "Suorituksen vahvistuksen päivämäärä on aiempi kuin suorituksen alkamispäivä")
+        val vahvistusEnnenArviointia = subcategory("vahvistusEnnenArviointia", "Suorituksen vahvistuksen päivämäärä on aiempi kuin sen arviointipäivä")
+
         val alkamispäivä = subcategory("alkamispäivä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
         val päättymispäivämäärä = subcategory("päättymispäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää")
-        val tulevaisuudessa = subcategory("tulevaisuudessa", "Päivämäärä on tulevaisuudessa")
+        val päättymispäiväTulevaisuudessa = subcategory("päättymispäiväTulevaisuudessa", "Opiskeluoikeuden päättymispäivä on tulevaisuudessa")
+        val arviointipäiväTulevaisuudessa = subcategory("arviointipäiväTulevaisuudessa", "Suorituksen arviointipäivä on tulevaisuudessa")
+        val vahvistuspäiväTulevaisuudessa = subcategory("vahvistuspäiväTulevaisuudessa", "Suorituksen vahvistuspäivä on tulevaisuudessa")
       }
       val date = new Date
 

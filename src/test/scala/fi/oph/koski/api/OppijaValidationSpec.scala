@@ -209,8 +209,8 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
         "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä päättymispäivä (2100-05-31) on tulevaisuudessa"),
-            KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2100-05-31) on tulevaisuudessa")
+            KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa("Päivämäärä päättymispäivä (2100-05-31) on tulevaisuudessa"),
+            KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2100-05-31) on tulevaisuudessa")
           )
         })
 
@@ -228,14 +228,14 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         "Väärä päivämääräjärjestys" - {
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
             verifyResponseStatus(400,
-              KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
-              KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31"),
-              KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua ("suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
+              KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
+              KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31"),
+              KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää ("suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
             )
           })
 
           "alkamispäivä > arvioituPäättymispäivä"  in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
           })
         }
 

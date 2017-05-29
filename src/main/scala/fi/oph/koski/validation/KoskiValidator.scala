@@ -86,7 +86,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       val oppilaitokset: Either[HttpStatus, List[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
         organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
           case Some(oppilaitos) => Right(oppilaitos)
-          case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
+          case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.eiOppilaitos(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
         }
       })
       oppilaitokset.right.map(_.distinct).flatMap {
@@ -139,12 +139,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     HttpStatus.fold(
-      validateNotInFuture("päättymispäivä", opiskeluoikeus.päättymispäivä),
-      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä)),
-      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä)),
+      validateNotInFuture("päättymispäivä", KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa, opiskeluoikeus.päättymispäivä),
+      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää),
+      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä), KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää),
       HttpStatus.validate(päättäväJakso == None || päättäväJakso == viimeinenJakso)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.get.tila.koodiarvo}) jälkeen"))
         .then(HttpStatus.validate(!opiskeluoikeus.päättymispäivä.isDefined || opiskeluoikeus.päättymispäivä == päättävänJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Opiskeluoikeuden päättymispäivä (${formatOptionalDate(opiskeluoikeus.päättymispäivä)}) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (${formatOptionalDate(päättävänJaksonPäivä)})"))),
-      DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluoikeus.tila.opiskeluoikeusjaksot),
+      DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluoikeus.tila.opiskeluoikeusjaksot, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät),
       HttpStatus.validate(opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})"))
     )
   }
@@ -154,9 +154,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     HttpStatus.fold(
-      validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät)).then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät)).then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät))))
-        :: validateNotInFuture("suoritus.arviointi.päivä", arviointipäivät)
-        :: validateNotInFuture("suoritus.vahvistus.päivä", vahvistuspäivät)
+      validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät), KoskiErrorCategory.badRequest.validation.date.arviointiEnnenAlkamispäivää)
+        .then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
+          .then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
+        :: validateNotInFuture("suoritus.arviointi.päivä", KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa, arviointipäivät)
+        :: validateNotInFuture("suoritus.vahvistus.päivä", KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, vahvistuspäivät)
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
