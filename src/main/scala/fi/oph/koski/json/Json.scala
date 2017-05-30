@@ -92,6 +92,8 @@ object Json extends Logging {
     }
   }
 
+  def readResource(resourcename: String): json4s.JValue = readResourceIfExists(resourcename).getOrElse(throw new RuntimeException(s"Resource $resourcename not found"))
+
   def writeFile(filename: String, json: AnyRef) = {
     import java.nio.charset.StandardCharsets
     import java.nio.file.{Files, Paths}
