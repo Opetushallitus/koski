@@ -32,6 +32,7 @@ function AddOppijaPage() {
       params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
         return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
           .then(api.selectTutkinto(params.tutkinto))
       }
     },
