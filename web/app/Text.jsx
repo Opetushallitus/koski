@@ -20,9 +20,9 @@ export default ({name, ignoreMissing}) => {
     }
   }
   let onChange = (event) => changeText(name, event.target.value)
-  let current = t(name, ignoreMissing)
+  let current = () => t(name, ignoreMissing)
 
   return <span onClick={onClick} className="localized">{
-    edit.map(isEdit => isEdit ? <span className="editing"><input placeholder={current} onChange={onChange}/></span> : current)
+    edit.map(isEdit => isEdit ? <span className="editing"><input placeholder={current()} onChange={onChange}/></span> : current())
   }</span>
 }
