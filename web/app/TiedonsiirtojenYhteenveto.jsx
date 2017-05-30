@@ -28,7 +28,7 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => tiedonsiirrotC
                   <tbody>
                  { rivit.map((rivi, i) => {
                      return (<tr key={i}>
-                       <td className="oppilaitos"><Link href={'/koski/tiedonsiirrot?oppilaitos=' + rivi.oppilaitos.oid}><Text name={rivi.oppilaitos.nimi}/></Link></td>
+                       <td className="oppilaitos"><Link href={'/koski/tiedonsiirrot?oppilaitos=' + rivi.oppilaitos.oid}>{t(rivi.oppilaitos.nimi)}</Link></td>
                        <td className="aika">{fecha.format(fecha.parse(rivi.viimeisin, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY H:mm')}</td>
                        <td className="siirretyt">{rivi.siirretyt}</td>
                        <td className="virheelliset">{ rivi.virheelliset ? <Link href={'/koski/tiedonsiirrot/virheet?oppilaitos=' + rivi.oppilaitos.oid}>{rivi.virheelliset}</Link> : '0'}</td>

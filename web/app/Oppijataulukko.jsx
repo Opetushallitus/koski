@@ -121,25 +121,25 @@ export const Oppijataulukko = React.createClass({
                 <td className="nimi">
                   <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
                 </td>
-                <td className="tyyppi"><Text name={opiskeluoikeus.tyyppi.nimi}/></td>
-                <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}><Text name={suoritus.tyyppi.nimi}/></li>) }</ul></td>
+                <td className="tyyppi">{t(opiskeluoikeus.tyyppi.nimi)}</td>
+                <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{t(suoritus.tyyppi.nimi)}</li>) }</ul></td>
                 <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
                   <ul className="cell-listing" key={j}>
                     {
                       <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{t(suoritus.koulutusmoduuli.tunniste.nimi)}</Highlight></li>
                     }
                     {
-                      (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}><Text name={osaamisala.nimi}/></Highlight></li>)
+                      (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}><Highlight search={params['tutkintohaku'] || ''}>{t(osaamisala.nimi)}</Highlight></li>)
                     }
                     {
-                      (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}><Text name={nimike.nimi}/></Highlight></li>)
+                      (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{t(nimike.nimi)}</Highlight></li>)
                     }
                   </ul>
                 )}
                 </td>
-                <td className="tila"><Text name={L.get(['tilat', 0, 'tila', 'nimi'], opiskeluoikeus)}/></td>
+                <td className="tila">{t(L.get(['tilat', 0, 'tila', 'nimi'], opiskeluoikeus))}</td>
                 <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                  <li key={j} className="toimipiste"><Text name={suoritus.toimipiste.nimi}/></li>)
+                  <li key={j} className="toimipiste">{t(suoritus.toimipiste.nimi)}</li>)
                 }</ul></td>
                 <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
                 <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
