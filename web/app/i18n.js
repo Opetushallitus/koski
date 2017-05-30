@@ -13,13 +13,13 @@ export const t = (s, ignoreMissing) => {
   if (typeof s == 'string') {
     // try to find a localization from the bundle
     if (!texts[s]) {
-      if (ignoreMissing) return null
+      if (ignoreMissing === true) return null
       console.error('Localization missing:', s)
       texts[s] = { [lang]: s }
     }
     let localizedString = texts[s]
     if (!localizedString[lang]) {
-      if (ignoreMissing) return null
+      if (ignoreMissing === true) return null
       console.error(`Localization missing for language ${lang}:`, s)
       localizedString[lang] = localizedString.fi
     }

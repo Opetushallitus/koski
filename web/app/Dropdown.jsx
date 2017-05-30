@@ -4,8 +4,9 @@ import Atom from 'bacon.atom'
 import R from 'ramda'
 import {parseBool, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
+import {t} from './i18n'
 
-export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = 'Valitse...', enableFilter = false, newItem}) => { // i18n
+export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 

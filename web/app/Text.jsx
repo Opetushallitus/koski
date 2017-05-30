@@ -5,7 +5,7 @@ import { t } from './i18n'
 export default ({name, ignoreMissing}) => {
   if (typeof name != 'string') {
     console.error('Not a string', name)
-    throw new Error('string expected')
+    return <span>{'NOT A STRING'}</span>
   }
 
   let onClick = e => {

@@ -25,6 +25,7 @@ import {listviewPath} from './Oppijataulukko.jsx'
 import {ISO2FinnishDate} from './date'
 import {doActionWhileMounted} from './util'
 import Text from './Text.jsx'
+import {t} from './i18n'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -136,9 +137,9 @@ const createState = (oppijaOid) => {
     }
     return event
   }).toProperty().doAction((state) => {
-    state == 'dirty' ? addExitHook('Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.') : removeExitHook() // i18n
+    state == 'dirty' ? addExitHook(t('Haluatko varmasti poistua sivulta?')) : removeExitHook()
     if (state == 'saved') navigateWithQueryParams({edit: undefined})
-  }) // i18n
+  })
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
 
@@ -195,7 +196,7 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let dirtyP = stateP.map(state => state == 'dirty')
   let validationErrorP = dirtyP.map(dirty => dirty && !modelValid(oppija))
   let canSaveP = dirtyP.and(validationErrorP.not())
-  let messageMap = { // i18n
+  let messageMap = {
     saved: 'Kaikki muutokset tallennettu.',
     saving: 'Tallennetaan...',
     dirty: validationErrorP.map(error => error ? 'Korjaa virheelliset tiedot.': 'Tallentamattomia muutoksia'),
@@ -207,6 +208,6 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   return (<div id="edit-bar" className={classNameP}>
     <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }><Text name="Peruuta"/></a>
     <button disabled={canSaveP.not()} onClick={saveChanges}><Text name="Tallenna"/></button>
-    <span className="state-indicator">{messageP}</span>
+    <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : '')}</span>
   </div>)
 }

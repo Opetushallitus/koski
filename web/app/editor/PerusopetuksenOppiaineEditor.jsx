@@ -8,12 +8,14 @@ import {saveOrganizationalPreference} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
+import Text from '../Text.jsx'
+
 export const PerusopetuksenOppiaineEditor = React.createClass({
   render() {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
       let title = t(modelData(aine, 'tunniste.nimi')) + (kielenOppiaine || äidinkieli ? ', ' : '')
-      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title // i18n
+      return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + title.toLowerCase()}</span> : title
     }
     let pakollinen = modelData(oppiaine, 'pakollinen')
     let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')

@@ -169,15 +169,15 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   let päätasonSuoritukset = modelItems(opiskeluoikeus, 'suoritukset').filter(näytettäväPäätasonSuoritus)
   let makeGroupTitle = (suoritus) => {
     switch (suorituksenTyyppi(suoritus)) {
-      case 'perusopetuksenoppiaineenoppimaara': return 'oppiainetta' // i18n
-      case 'korkeakoulunopintojakso': return 'opintojaksoa' // i18n
+      case 'perusopetuksenoppiaineenoppimaara': return 'oppiainetta'
+      case 'korkeakoulunopintojakso': return 'opintojaksoa'
       default: return ''
     }
   }
 
   let grouped = R.toPairs(R.groupBy(makeGroupTitle, päätasonSuoritukset)).map(([groupTitle, suoritukset]) => {
     let title = groupTitle && (suoritukset.length > 1)
-      ? `${suoritukset.length} ${groupTitle}`
+      ? <span>{suoritukset.length}{' '}<Text name={groupTitle}/></span>
       : suoritusTitle(suoritukset[0])
     return { title, suoritukset }
   })

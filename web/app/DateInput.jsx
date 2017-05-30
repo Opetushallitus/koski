@@ -1,12 +1,13 @@
 import React from 'react'
 import {parseFinnishDate, formatFinnishDate} from './date.js'
 import DayPicker, {DateUtils} from 'react-day-picker'
+import {t} from './i18n'
 
-const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', // i18n
+const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
   'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu',
-  'Joulukuu']
+  'Joulukuu'].map(t)
 
-const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La']
+const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map(t)
 
 var DateInput = React.createClass({
   render() {
