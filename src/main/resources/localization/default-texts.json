@@ -73,6 +73,7 @@
   "edellinen vuosi": "edellinen vuosi",
   "Hae tai lisää opiskelija": "Hae tai lisää opiskelija",
   "Lisää uusi opiskelija": "Lisää uusi opiskelija",
+  "Lisää": "Lisää",
   "Tunnus": "Tunnus",
   "Salasana": "Salasana",
   "Kirjaudu sisään": "Kirjaudu sisään",
@@ -87,6 +88,7 @@
   "Virhetyyppi": "Virhetyyppi",
   "Näytä JSON": "Näytä JSON",
   "Tiedon validointi": "Tiedon validointi",
+  "Viesti ei ole skeeman mukainen": "Viesti ei ole skeeman mukainen",
   "Kutsumanimen on oltava yksi etunimistä.": "Kutsumanimen on oltava yksi etunimistä.",
   "Etunimet": "Etunimet",
   "Kutsumanimi": "Kutsumanimi",
@@ -122,5 +124,7 @@
   "Suorituksen lisäys": "Suorituksen lisäys",
   "lisää oppiaineen suoritus": "lisää oppiaineen suoritus",
   "lisää vuosiluokan suoritus": "lisää vuosiluokan suoritus",
-  "Suoritus valmis": "Suoritus valmis"
+  "Suoritus valmis": "Suoritus valmis",
+  "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS": "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS",
+  "Suoritus valmis, mutta arvosana puuttuu": "Suoritus valmis, mutta arvosana puuttuu"
 }

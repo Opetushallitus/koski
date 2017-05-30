@@ -20,7 +20,7 @@ describe('Telma', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
-          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
+          'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
         )
       })
 

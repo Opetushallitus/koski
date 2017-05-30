@@ -358,7 +358,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritustapa Opetussuunnitelman mukainen\n' +
             'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Ryhmä YMP14SN\n' +
-            'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
+            'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
         it('näyttää tutkinnon osat', function() {
@@ -381,7 +381,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritusaika 1.2.2016 — 1.2.2016\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
@@ -405,7 +405,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritusaika 1.3.2016 — 1.3.2016\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
@@ -425,7 +425,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritusaika 1.4.2016 — 1.4.2016\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila (näyttötutkintomestari) Pekka Saurmann (näyttötutkintomestari) Juhani Mykkänen\n' +
+            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
@@ -505,7 +505,7 @@ describe('Ammatillinen koulutus', function() {
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
           'Suoritustapa Näyttö\n' +
-          'Suoritus: KESKEN'
+          'Suoritus : KESKEN'
         )
       })
 
@@ -562,7 +562,7 @@ describe('Ammatillinen koulutus', function() {
           'Suorituskieli suomi\n' +
           'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
-          'Suoritus: VALMIS'
+          'Suoritus : VALMIS'
         )
       })
 
@@ -596,7 +596,7 @@ describe('Ammatillinen koulutus', function() {
             'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Alkamispäivä 1.9.2012\n' +
-            'Suoritus: VALMIS Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
+            'Suoritus : VALMIS Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
           )
         })
 
@@ -636,7 +636,7 @@ describe('Ammatillinen koulutus', function() {
             'Suorituskieli suomi\n' +
             'Suoritustapa Näyttö\n' +
             'Järjestämismuoto Koulutuksen järjestäminen oppisopimuskoulutuksena\nYritys Autokorjaamo Oy\nY-tunnus 1234567-8\n' +
-            'Suoritus: VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
+            'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
           )
         })
 
@@ -688,7 +688,7 @@ describe('Ammatillinen koulutus', function() {
           'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)\n' +
           'Laajuus 60 osp\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
-          'Suoritus: VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
+          'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
         )
       })
 
