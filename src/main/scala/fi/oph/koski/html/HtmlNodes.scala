@@ -2,12 +2,15 @@ package fi.oph.koski.html
 
 import java.io.File
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.json.Json
 import fi.oph.koski.util.XML.CommentedPCData
 
-import scala.xml.Elem
+import scala.xml.{Elem, Unparsed}
 
 trait HtmlNodes extends PiwikNodes {
+  def application: KoskiApplication
   def buildVersion: Option[String]
 
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None): Elem =
@@ -16,6 +19,9 @@ trait HtmlNodes extends PiwikNodes {
       <body>
         <div id="content"></div>
       </body>
+      <script id="localization">
+        {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}
+      </script>
       <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
 

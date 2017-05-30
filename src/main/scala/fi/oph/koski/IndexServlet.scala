@@ -1,11 +1,12 @@
 package fi.oph.koski
 
-import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
-class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
+class IndexServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before() {
     if (!isAuthenticated) {
       redirectToLogin
@@ -39,7 +40,7 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
   private def indexHtml() = htmlIndex("koski-main.js")
 }
 
-class LoginPageServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with SSOSupport {
+class LoginPageServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
   get("/") {
     if (ssoConfig.isCasSsoUsed) {
       redirect("/")

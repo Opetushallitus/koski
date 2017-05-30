@@ -1,21 +1,27 @@
-import finnishTexts from './fi'
 import {getCookie} from './cookie'
 
 export const lang = getCookie('lang') || 'fi'
-export const texts = lang == 'fi'  ? finnishTexts : {} // TODO: fetch actual texts
-export const t = (localizedString) => {
-  if (!localizedString) return ''
-  if (typeof localizedString == 'object') {
+
+const texts = window.koskiLocalizationMap
+
+export const t = (s) => {
+  if (!s) return ''
+  if (typeof s == 'object') {
     // assume it's a localized string
-    return localizedString[lang] || localizedString['fi']
+    return s[lang] || s['fi']
   }
-  if (typeof localizedString == 'string') {
+  if (typeof s == 'string') {
     // try to find a localization from the bundle
-    if (!texts[localizedString]) {
-      console.log('Localization missing:', localizedString)
-      texts[localizedString] = localizedString
+    if (!texts[s]) {
+      console.log('Localization missing:', s)
+      texts[s] = { [lang]: s }
     }
-    return texts[localizedString]
+    let localizedString = texts[s]
+    if (!localizedString[lang]) {
+      console.log(`Localization missing for language ${lang}:`, s)
+      localizedString[lang] = s
+    }
+    return localizedString[lang]
   }
-  console.err('Trying to localize', localizedString)
+  console.err('Trying to localize', s)
 }
