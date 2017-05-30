@@ -1,9 +1,11 @@
 package fi.oph.koski.pulssi
 
+import java.time.LocalDateTime.now
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.perustiedot.KoulutusmuotoTilasto
 import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
 import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
@@ -24,9 +26,13 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
 
   private def raportti =
     <html>
-      {htmlHead()}
+      <head>
+        {commonHead()}
+        <link rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
+      </head>
       <body id="raportti">
         <h2>Koski-raportti</h2>
+        <p>{finnishDateTimeFormat.format(now)}</p>
         <h3>Oppijat ja opiskeluoikeudet</h3>
         <ul>
           <li class="oppijoiden-määrä">Oppijoiden määrä: <span class="value">{pulssi.oppijoidenMäärä}</span></li>
