@@ -25,8 +25,8 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
     {
       oppiaine.context.edit && isPaikallinen(oppiaine)
         ? <span className="koodi-ja-nimi">
-              <span className="koodi"><Editor model={oppiaine} path="tunniste.koodiarvo" placeholder="Koodi"/></span>
-              <span className="nimi"><Editor model={fixKuvaus(oppiaine)} path="tunniste.nimi" placeholder="Oppiaineen nimi"/></span>
+              <span className="koodi"><Editor model={oppiaine} path="tunniste.koodiarvo" placeholder={t('Koodi')}/></span>
+              <span className="nimi"><Editor model={fixKuvaus(oppiaine)} path="tunniste.nimi" placeholder={t('Oppiaineen nimi')}/></span>
           </span>
         : showExpand ? <a className="nimi" onClick={() => onExpand(!expanded)}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
     }

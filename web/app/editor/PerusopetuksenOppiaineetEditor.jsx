@@ -130,9 +130,9 @@ const Oppiainetaulukko = React.createClass({
     }
 
     if (suoritukset.length == 0 && !model.context.edit) return null
-    let pakollisuus = pakolliset == undefined
-      ? ''
-      : (pakolliset ? ' pakollinen' : ' valinnainen')
+    let placeholder = t(pakolliset == undefined
+      ? 'Lisää oppiaine'
+      : (pakolliset ? 'Lisää pakollinen oppiaine' : 'Lisää valinnainen oppiaine'))
 
     return (<section>
         {title && <h5>{title}</h5>}
@@ -156,7 +156,7 @@ const Oppiainetaulukko = React.createClass({
         <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
                                             pakollinen={pakolliset} resultCallback={addOppiaine}
                                             organisaatioOid={modelData(model.context.toimipiste).oid}
-                                            placeholder={`Lisää${pakollisuus} oppiaine`}/>
+                                            placeholder={placeholder}/>
       </section>
     )
   }

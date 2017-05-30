@@ -7,6 +7,7 @@ import Dropdown from '../Dropdown.jsx'
 import {pushModelValue, modelData, modelSetValue} from './EditorModel'
 import {getOrganizationalPreferences} from '../organizationalPreferences'
 import {t} from '../i18n'
+
 export const OrganisaatioHenkilöEditor = ({model}) => {
   let query = Atom('')
 
@@ -37,8 +38,8 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
     />
     {
       isNewItem(model) && (<span className="uusi-henkilo">
-        <span className="nimi"><Editor model={model} path="nimi" placeholder="nimi"/></span>
-        <span className="titteli"><Editor model={model} path="titteli" placeholder="titteli"/></span></span>
+        <span className="nimi"><Editor model={model} path="nimi" placeholder={t('nimi')}/></span>
+        <span className="titteli"><Editor model={model} path="titteli" placeholder={t('titteli')}/></span></span>
       )
     }
   </span>)

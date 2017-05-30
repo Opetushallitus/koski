@@ -52,7 +52,7 @@ export default BaconComponent({
         <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectionStr }</div>
         { open &&
         <div className="organisaatio-popup">
-          <input className="organisaatio-haku" type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
+          <input className="organisaatio-haku" type="text" placeholder={t('hae')} ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
           {

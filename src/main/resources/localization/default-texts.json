@@ -72,6 +72,8 @@
   "Aika": "Aika",
   "Henkilötunnus": "Henkilötunnus",
   "Nimi": "Nimi",
+  "nimi": "nimi",
+  "titteli": "titteli",
   "Virhe": "Virhe",
   "Tiedot": "Tiedot",
   "virhe": "virhe",
@@ -162,5 +164,10 @@
   "To": "To",
   "Pe": "Pe",
   "La": "La",
-  "Omat tiedot": "Omat tiedot"
+  "Omat tiedot": "Omat tiedot",
+  "Koodi": "Koodi",
+  "Oppiaineen nimi": "Oppiaineen nimi",
+  "Lisää oppiaine": "Lisää oppiaine",
+  "Lisää pakollinen oppiaine": "Lisää pakollinen oppiaine",
+  "Lisää valinnainen oppiaine": "Lisää valinnainen oppiaine"
 }
