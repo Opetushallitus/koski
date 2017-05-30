@@ -1293,6 +1293,7 @@ describe('Perusopetus', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Omnian ammattiopisto'),
+              addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
