@@ -5,18 +5,22 @@ import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy}
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.json.Json._
-import fi.oph.koski.localization.LocalizedString.sanitizeRequired
+import fi.oph.koski.localization.LocalizedString.sanitize
+import fi.oph.koski.log.Logging
 import org.json4s._
 
-trait LocalizationRepository {
-  def localizations(): Map[String, LocalizedString]= {
+trait LocalizationRepository extends Logging {
+  def localizations(): Map[String, LocalizedString] = {
     val localized: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LokalisaatioPalveluLokalisaatio]]
       .groupBy(_.key)
       .mapValues(_.map(v => (v.locale, v.value)).toMap)
 
-
     readResource("/localization/default-texts.json").extract[Map[String, String]].map {
-      case (key, value) => (key, sanitizeRequired(localized.getOrElse(key, Map.empty), value))
+      case (key, value) =>
+        localized.get(key).map(l => (key, sanitize(l).get)).getOrElse {
+          logger.info(s"Localizations missing for key $key")
+          (key, Finnish(value))
+        }
     }
   }
 
