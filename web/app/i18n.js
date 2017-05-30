@@ -19,7 +19,7 @@ export const t = (s) => {
     let localizedString = texts[s]
     if (!localizedString[lang]) {
       console.log(`Localization missing for language ${lang}:`, s)
-      localizedString[lang] = s
+      localizedString[lang] = localizedString.fi
     }
     return localizedString[lang]
   }
