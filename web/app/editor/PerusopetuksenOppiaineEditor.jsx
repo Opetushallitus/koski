@@ -13,7 +13,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
       let title = t(modelData(aine, 'tunniste.nimi')) + (kielenOppiaine || äidinkieli ? ', ' : '')
-      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title
+      return pakollinen === false ? 'Valinnainen ' + title.toLowerCase() : title // i18n
     }
     let pakollinen = modelData(oppiaine, 'pakollinen')
     let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')

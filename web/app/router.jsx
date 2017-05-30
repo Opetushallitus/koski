@@ -1,14 +1,13 @@
 import React from 'react'
-import { locationP, parseQuery } from './location.js'
-import { oppijaContentP } from './Oppija.jsx'
-import { UusiOppija } from './uusioppija/UusiOppija.jsx'
-import { tiedonsiirtolokiContentP } from './Tiedonsiirtoloki.jsx'
-import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
-import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
-import { omatTiedotContentP } from './OmatTiedot.jsx'
-import { oppijataulukkoContentP } from './Oppijataulukko.jsx'
-import { validointiContentP } from './Validointi.jsx'
-import { t } from './i18n'
+import {locationP, parseQuery} from './location.js'
+import {oppijaContentP} from './Oppija.jsx'
+import {UusiOppija} from './uusioppija/UusiOppija.jsx'
+import {tiedonsiirtolokiContentP} from './Tiedonsiirtoloki.jsx'
+import {tiedonsiirtovirheetContentP} from './Tiedonsiirtovirheet.jsx'
+import {tiedonsiirtojenYhteenvetoContentP} from './TiedonsiirtojenYhteenveto.jsx'
+import {omatTiedotContentP} from './OmatTiedot.jsx'
+import {oppijataulukkoContentP} from './Oppijataulukko.jsx'
+import {validointiContentP} from './Validointi.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
@@ -17,7 +16,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   if (oppijaId) {
     return oppijaContentP(oppijaId)
   } else if (path === '/koski/uusioppija' && (uusiOppijaHetu || uusiOppijaOid)) {
-    return { content: (<UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />), title: t('Uuden opiskelijan lisäys') }
+    return { content: (<UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />), title: 'Uuden opiskelijan lisäys' }
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {
@@ -35,6 +34,6 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
 
 export const contentP = routeP.map('.content')
 
-export const titleP = routeP.map('.title').map(title => title || '') // TODO localization
+export const titleKeyP = routeP.map('.title').map(titleKey => titleKey || '')
 
 export const routeErrorP = contentP.map(content => content ? {} : { httpStatus: 404, comment: 'route not found' })

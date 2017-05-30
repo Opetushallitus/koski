@@ -25,7 +25,7 @@ const createTila = (koodiarvo) => {
 }
 
 const tilat = {
-  VALMIS: { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' },
+  VALMIS: { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: 'Suoritus valmis' }, // i18n
   KESKEN: { data: { koodiarvo: 'KESKEN', koodistoUri: 'suorituksentila' }, title: 'Suoritus kesken' },
   KESKEYTYNYT: { data: { koodiarvo: 'KESKEYTYNYT', koodistoUri: 'suorituksentila' }, title: 'Suoritus keskeytynyt' }
 }

@@ -148,7 +148,7 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
     <Link className="back-link" href={listviewPath()}><Text name="Opiskelijat"/></Link>
     <ExistingOppija {...{oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}}/>
   </div></div>),
-  title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : '' // i18n
+  title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
 
 export const ExistingOppija = React.createClass({

@@ -1,11 +1,10 @@
 import React from 'react'
 import Pager from './Pager'
 import * as L from 'partial.lenses'
-import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
-import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
-import {t} from './i18n'
+import {tiedonsiirrotContentP} from './Tiedonsiirrot.jsx'
+import {Tiedonsiirtotaulukko} from './Tiedonsiirtotaulukko.jsx'
 import Text from './Text.jsx'
-import { OppilaitosTitle } from './Tiedonsiirtoloki.jsx'
+import {OppilaitosTitle} from './Tiedonsiirtoloki.jsx'
 
 export const tiedonsiirtovirheetContentP = (queryString) => {
   let pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt') )
@@ -17,7 +16,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         <p><Text name="Opiskelija poistuu virhelistalta"/></p>
         <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager}/>
       </div>),
-      title: t('Tiedonsiirtovirheet') + (oppilaitos ? ' - ' + t(oppilaitos.nimi) : '')
+      title: 'Tiedonsiirtovirheet'
     }))
   )
 }

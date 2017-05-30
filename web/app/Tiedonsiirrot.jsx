@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from './Link.jsx'
 import { contentWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
+import Text from './Text.jsx'
 
 export const tiedonsiirrotContentP = (location, contentP) => contentWithLoadingIndicator(contentP).map((content) => ({
   content:  (<div className='content-area tiedonsiirrot'>
@@ -16,7 +17,7 @@ export const tiedonsiirrotContentP = (location, contentP) => contentWithLoadingI
   title: content.title
 }))
 
-const naviLink = (path, text, location, linkClassName) => {
+const naviLink = (path, textKey, location, linkClassName) => {
   const className = path == location ? 'navi-link-container selected' : 'navi-link-container'
-  return (<span className={className}><Link href={path} className={linkClassName}>{ text }</Link></span>)
+  return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
