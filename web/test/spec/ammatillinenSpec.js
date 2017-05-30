@@ -171,6 +171,7 @@ describe('Ammatillinen koulutus', function() {
             before(
               prepareForNewOppija('omnia-palvelukäyttäjä', '230872-7258'),
               addOppija.enterHenkilötiedot(),
+              addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('auto')
             )
             it('Vaihtoehto on valmiiksi valittu', function() {
@@ -209,7 +210,7 @@ describe('Ammatillinen koulutus', function() {
           })
         })
         describe('Kun oppilaitos-valinta muutetaan', function() {
-          before(addOppija.selectOppilaitos('Omnia'))
+          before(addOppija.selectOppilaitos('Omnia'), addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
           it('tutkinto pitää valita uudestaan', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
