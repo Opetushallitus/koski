@@ -13,7 +13,7 @@ export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
     resultCallback(oo)
   })
   return (<form className="uusi-oppija">
-    <ModalDialog className="lisaa-opiskeluoikeus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää opiskeluoikeus" validP={validP} >
+    <ModalDialog className="lisaa-opiskeluoikeus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää opiskeluoikeus" validP={validP} >
       <h2><Text name="Opiskeluoikeuden lisäys"/></h2>
       <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
     </ModalDialog>

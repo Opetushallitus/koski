@@ -5,7 +5,6 @@ import Http from '../http'
 import {navigateToOppija, showError} from '../location'
 import UusiOpiskeluoikeus from './UusiOpiskeluoikeus.jsx'
 import UusiHenkilö from './UusiHenkilo.jsx'
-import { t } from '../i18n'
 import Text from '../Text.jsx'
 
 export const UusiOppija = ({hetu, oid}) => {
@@ -26,7 +25,7 @@ export const UusiOppija = ({hetu, oid}) => {
 
   const submitEnabledP = henkilöValidAtom.and(inProgressP.not()).and(opiskeluoikeusValidP)
 
-  const buttonTextP = inProgressP.map((inProgress) => !inProgress ? t('Lisää henkilö') : t('Lisätään...'))
+  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lisää henkilö' : 'Lisätään...'}/>)
 
   const errorsP = henkilöErrorsAtom
 
@@ -56,7 +55,7 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
 export const postNewOppija = (oppija) => Http.post('/koski/api/oppija', oppija, {
   errorHandler: (e) => {
     if (e.httpStatus == 409) {
-      e.text = t('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
+      e.text = <Text name='Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'/>
     }
     showError(e)
   },

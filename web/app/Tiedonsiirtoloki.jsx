@@ -17,4 +17,4 @@ export const tiedonsiirtolokiContentP = (queryString) => {
     })
   ))
 }
-export const OppilaitosTitle = ({oppilaitos}) => oppilaitos ? <span>{` ${t('oppilaitoksessa')} ${t(oppilaitos.nimi)}`}</span> : null
+export const OppilaitosTitle = ({oppilaitos}) => oppilaitos ? <span>{' '}<Text name="oppilaitoksessa"/>{` ${t(oppilaitos.nimi)}`}</span> : null

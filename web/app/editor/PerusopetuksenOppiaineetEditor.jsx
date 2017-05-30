@@ -263,10 +263,10 @@ export const OppiaineenSuoritusEditor = React.createClass({
 
 OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {
-    return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
+    return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
   if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
-    return [{key: 'osasuorituksenTilla', message: 'Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'}]
+    return [{key: 'osasuorituksenTilla', message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}]
   }
 }
 

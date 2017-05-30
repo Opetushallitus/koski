@@ -63,7 +63,7 @@ const Lokirivi = React.createClass({
     const errorDetails = (virheet) => showError
       ? (<div>
           <ul className="tiedonsiirto-errors">{
-            virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
+            virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? <Text name='Viesti ei ole skeeman mukainen'/> : virhe.message}</li>)
           }</ul>
           <a className="virheen-tiedot" onClick={() => showErrors(virheet)}><Text name="virhe"/></a>
         </div>)

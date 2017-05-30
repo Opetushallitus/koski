@@ -22,7 +22,6 @@ import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
-import {t} from '../i18n'
 import Text from '../Text.jsx'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
@@ -33,8 +32,8 @@ UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
     let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
     return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
   }
-UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) => isOppiaineenSuoritus(opiskeluoikeus)
-  ? t('lisää oppiaineen suoritus') : t('lisää vuosiluokan suoritus')
+UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) =>
+  <Text name={isOppiaineenSuoritus(opiskeluoikeus) ? 'lisää oppiaineen suoritus' : 'lisää vuosiluokan suoritus'}/>
 
 let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suoritukset').map(suoritus => suoritus.tyyppi.koodiarvo).includes('perusopetuksenoppiaineenoppimaara')
 
@@ -47,7 +46,7 @@ let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
   let validP = errorP.not()
 
-  return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
+  return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
     <h2><Text name="Suorituksen lisäys"/></h2>
     {
       modelP.map(oppiaineenSuoritus => {
@@ -102,7 +101,7 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         let validP = errorP.not().and(hasToimipisteP)
 
         return (<div>
-          <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
+          <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
             <h2><Text name="Suorituksen lisäys"/></h2>
             <PropertiesEditor baret-lift context={initialSuoritusModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
           </ModalDialog>

@@ -3,7 +3,6 @@ import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import delays from './delays'
-import { t } from './i18n'
 import Text from './Text.jsx'
 
 const ValidointiTaulukko = React.createClass({
@@ -26,7 +25,7 @@ const ValidointiTaulukko = React.createClass({
               <td className="virhetyyppi">{
                 errors.length
                   ? errors.map((error, i) => <div key={i}>{error.key}</div>)
-                  : t('Virheetön')
+                  : <Text name='Virheetön'/>
               }</td>
               <td className="virheteksti">{errors.map((error, i) => {
                 let errorMessage = typeof error.message == 'string'
@@ -37,7 +36,7 @@ const ValidointiTaulukko = React.createClass({
               <td className="lukumäärä">{
                 idsExpanded
                   ? <div>
-                    <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}>{t('Yhteensä') + ' ' + oids.length}</a>
+                    <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}><Text name="Yhteensä"/>{' ' + oids.length}</a>
                     <ul className="oids">
                     { oids.map((oid, i) => <li key={i}><a href={ '/koski/oppija/' + oid }>{oid}</a></li>)}
                     </ul></div>

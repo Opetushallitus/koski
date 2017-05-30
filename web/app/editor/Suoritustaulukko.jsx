@@ -13,7 +13,7 @@ import Text from '../Text.jsx'
 export const Suoritustaulukko = ({suoritukset}) => {
   let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
   let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
-  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || t('Muut suoritukset')]))
+  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>]))
 
   let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
   let showArvosana = suoritukset.find(hasArvosana) !== undefined

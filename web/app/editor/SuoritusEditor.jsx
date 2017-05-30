@@ -59,7 +59,7 @@ export const SuoritusEditor = React.createClass({
 
 SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
-    return [{key: 'missing', message: 'Suoritus valmis, mutta arvosana puuttuu'}]
+    return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
 }
 

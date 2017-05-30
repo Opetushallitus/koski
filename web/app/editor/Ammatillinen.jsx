@@ -4,7 +4,7 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
-import {t} from '../i18n.js'
+import Text from '../Text.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -17,7 +17,7 @@ NäytönSuorituspaikkaEditor.readOnly = true
 export const NäytönArvioitsijaEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? ' (' + t('näyttötutkintomestari') + ')' : ''}</span>
+    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : ''}</span>
   }
 })
 NäytönArvioitsijaEditor.readOnly = true

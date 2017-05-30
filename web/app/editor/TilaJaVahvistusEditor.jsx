@@ -13,14 +13,13 @@ import {
   setTila,
   arviointiPuuttuu
 } from './Suoritus'
-import {t} from '../i18n'
 import Text from '../Text.jsx'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          {t('Suoritus') + ': '}<span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span> { /* TODO: i18n */ }
+          <Text name="Suoritus"/>{': '}<span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>

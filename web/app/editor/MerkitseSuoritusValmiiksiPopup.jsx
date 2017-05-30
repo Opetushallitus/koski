@@ -18,7 +18,6 @@ import ModalDialog from './ModalDialog.jsx'
 import {setTila} from './Suoritus'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
-import {t} from '../i18n'
 import Text from '../Text.jsx'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
@@ -47,7 +46,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
     pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
   })
 
-  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false" okText={t('Merkitse valmiiksi')} validP={validP}>
+  return (<ModalDialog className="merkitse-valmiiksi-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} submitOnEnterKey="false" okTextKey="Merkitse valmiiksi" validP={validP}>
     <h2><Text name="Suoritus valmis"/></h2>
     <PropertiesEditor baret-lift model={modelP.map(s => setOrgToContext(modelLookup(s, 'vahvistus')))}  />
     <JääLuokalleTaiSiirretäänEditor baret-lift model={modelP}/>

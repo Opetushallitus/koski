@@ -38,7 +38,7 @@ const Login = () => {
       <label><Text name="Salasana"/>
         <Input id='password' type='password' disabled={inProgress} value={state.view('password')}/>
       </label>
-      <button className='button blue' onClick={doLogin} disabled={valid.not().or(inProgress)}>{inProgress.map(p => p ? t('Kirjaudutaan...') : t('Kirjaudu sisään'))}</button>
+      <button className='button blue' onClick={doLogin} disabled={valid.not().or(inProgress)}>{inProgress.map(p => <Text name={p ? 'Kirjaudutaan...' : 'Kirjaudu sisään'}/>)}</button>
     </form>
   )
 }

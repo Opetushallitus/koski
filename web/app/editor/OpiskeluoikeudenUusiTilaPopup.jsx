@@ -22,7 +22,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 
 
-  return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okText="Lisää" validP={validP}>
+  return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
     <h2><Text name="Opiskeluoikeuden tilan lisäys"/></h2>
     <div className="property alku">
       <label><Text name="Päivämäärä"/>{':'}</label>

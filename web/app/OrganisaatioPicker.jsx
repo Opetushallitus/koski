@@ -6,6 +6,8 @@ import Http from './http'
 import Highlight from 'react-highlighter'
 import {buildClassNames} from './classnames.js'
 import {t} from './i18n'
+import Text from './Text.jsx'
+
 let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
     let thisSelectable = canSelectOrg(org) ? [org] : []
@@ -21,7 +23,7 @@ export default BaconComponent({
     let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = 'kaikki' } = this.props
 
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
-    let orgName = org => t(org.nimi) + (org.aktiivinen ? '' : ` (${t('lakkautettu')})`)
+    let orgName = org => <span>{t(org.nimi)} {org.aktiivinen ? null : <span>{' ('}<Text name="lakkautettu"/>{')'}</span>}</span>
 
     let renderTree = (orgs) => {
       let filteredOrgs = orgs.filter(shouldShowOrg)
@@ -39,8 +41,8 @@ export default BaconComponent({
       )
     }
 
-    let selectionStr = selectedOrg.nimi // TODO: users should always supply the localized value here
-      ? t(selectedOrg.nimi)
+    let selectionStr = selectedOrg.nimi
+      ? typeof selectedOrg.nimi == 'object'
         ? t(selectedOrg.nimi)
         : selectedOrg.nimi
       : noSelectionText

@@ -1,11 +1,10 @@
 import React from 'react'
-import { logout } from './user'
-import { routeErrorP } from './router.jsx'
-import { trackRuntimeError } from './piwikTracking'
+import {logout} from './user'
+import {routeErrorP} from './router.jsx'
+import {trackRuntimeError} from './piwikTracking'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import Text from './Text.jsx'
-import { t } from './i18n'
 
 const logError = (error) => {
   console.log('ERROR', error)
@@ -41,7 +40,7 @@ export function requiresLogin(e) {
   return e.httpStatus == 401 || e.httpStatus == 403
 }
 
-const errorText = (error) => error.text || (error.httpStatus && t('httpStatus.' + error.httpStatus))
+const errorText = (error) => error.text || (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
 
 export const Error = ({error}) => {
   return errorText(error) && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorText(error)}</span><a>{'✕'}</a></div> : <div id="error"></div>

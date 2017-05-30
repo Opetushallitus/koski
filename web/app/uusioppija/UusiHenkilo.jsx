@@ -3,7 +3,6 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import Http from '../http'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
-import { t } from '../i18n'
 import Text from '../Text.jsx'
 
 export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }) => {
@@ -17,7 +16,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom
   const henkilöValidP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom).and(validKutsumanimiP)
   henkilöValidP.changes().onValue((valid) => henkilöValidAtom.set(valid))
 
-  const errorsP = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: t('Kutsumanimen on oltava yksi etunimistä.')}])
+  const errorsP = validKutsumanimiP.map(valid => valid ? [] : [{field: 'kutsumanimi', message: <Text name='Kutsumanimen on oltava yksi etunimistä.'/>}])
   errorsP.changes().onValue((errors) => henkilöErrorsAtom.set(errors))
 
   const existingHenkilöP = hetu ? Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0') : Http.cachedGet('/koski/api/henkilo/oid/' + oid).map('.0')
@@ -46,7 +45,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom
                 <InputOrValue existing={existing} atom={sukunimiAtom}/>
               </label>
             </span>)
-          }), <Text name="'Ladataan...'"/>
+          }), <Text name="Ladataan..."/>
         )
       }
     </div>
