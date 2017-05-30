@@ -2,7 +2,7 @@ import finnishTexts from './fi'
 import {getCookie} from './cookie'
 
 export const lang = getCookie('lang') || 'fi'
-export const texts = lang == 'fi'  ? finnishTexts : {}
+export const texts = lang == 'fi'  ? finnishTexts : {} // TODO: fetch actual texts
 export const t = (localizedString) => {
   if (!localizedString) return ''
   if (typeof localizedString == 'object') {
