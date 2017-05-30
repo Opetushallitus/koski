@@ -65,7 +65,7 @@ object LocalizedString extends Logging {
     }
   }
 
-  def sanitizeRequired(values: Map[String, String], defaultValue: String): LocalizedString = sanitize(values).getOrElse(missing)
+  def sanitizeRequired(values: Map[String, String], defaultValue: String): LocalizedString = sanitize(values).getOrElse(unlocalized(defaultValue))
 
   val empty: LocalizedString = Finnish("", Some(""), Some(""))
   val missing: LocalizedString = unlocalized(missingString)

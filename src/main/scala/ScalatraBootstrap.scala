@@ -13,6 +13,7 @@ import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot}
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
@@ -67,6 +68,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/preferences", new PreferencesServlet(application))
     mount("/api/tiedonsiirrot", new TiedonsiirtoServlet(application))
     mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet(application.tutkintoRepository, application.koodistoViitePalvelu))
+    mount("/api/localization", new LocalizationServlet(application))
     mount("/healthcheck", new HealthCheckHtmlServlet(application))
     mount("/user", new UserServlet(application))
     if (!SSOConfig(application.config).isCasSsoUsed) {

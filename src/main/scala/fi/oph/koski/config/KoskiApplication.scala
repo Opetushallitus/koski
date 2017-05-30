@@ -10,6 +10,7 @@ import fi.oph.koski.henkilo.{AuthenticationServiceClient, HenkilöRepository, Ko
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
@@ -72,4 +73,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
+  lazy val localizationRepository = LocalizationRepository(config)
 }
