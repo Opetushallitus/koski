@@ -1,5 +1,6 @@
 import Atom from 'bacon.atom'
 import { lang } from './i18n'
+import http from './http'
 
 let changes = Atom([])
 export const edit = Atom(false)
@@ -8,14 +9,14 @@ export const startEdit = () => {
 }
 export const hasChanges = changes.map(c => c.length > 0)
 export const saveChanges = () => {
-  changes.get().forEach(({key, text}) => {
-    window.koskiLocalizationMap[key][lang] = text
+  changes.get().forEach(({key, value}) => {
+    window.koskiLocalizationMap[key][lang] = value
   })
-  // TODO: actually save changes here
+  http.put('/koski/api/localization', changes.get())
   edit.set(false)
 }
 export const cancelChanges = () => {
   changes.set([])
   edit.set(false)
 }
-export const changeText = (key, text) => changes.modify(c => c.concat({key, text}))
+export const changeText = (key, value) => changes.modify(c => c.concat({key, value, locale: lang}))
