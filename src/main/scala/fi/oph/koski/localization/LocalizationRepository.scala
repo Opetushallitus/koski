@@ -56,9 +56,24 @@ object LocalizationRepository {
 }
 
 class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
+
+  private var _localizations: Map[String, LocalizedString] = super.localizations()
+
+  override def localizations() = {
+    _localizations
+  }
+
   override def fetchLocalizations(): JValue = readResource("/mockdata/lokalisointi/koski.json")
 
-  override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
+  override def createOrUpdate(toUpdate: List[UpdateLocalization]): Unit = {
+    _localizations = toUpdate.foldLeft(_localizations) { (acc, n) =>
+      if (acc.contains(n.key)) {
+        acc + (n.key -> sanitize(acc(n.key).values + (n.locale -> n.value)).get)
+      } else {
+        acc + (n.key -> sanitize(Map(n.locale -> n.value)).get)
+      }
+    }
+  }
 }
 
 class RemoteLocalizationRepository(http: Http)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
