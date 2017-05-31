@@ -36,7 +36,15 @@ object ExamplesTelma {
             telmaKurssinSuoritus("TYV", "Työelämään valmentautuminen", 20f, pakollinen = true,
               sanallinenArvionti("Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.")),
             telmaKurssinSuoritus("TIV", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen", 2f, pakollinen = false, arviointiHyväksytty, tunnustettu("Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"), näyttö = Some(näyttö(date(2016, 6, 1), "Elokuvien jälkieditointi", "FinBio Oy"))),
-            telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti")),
+            telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"),
+              kuvaus = Some(
+                """|Kurssilla harjoitellaan vedessä liikkumista ja perehdytään vesiturvallisuuden perusteisiin.
+                   |Kurssilla käytäviä asioita:
+                   |  - uinnin hengitystekniikka
+                   |  - perehdytystä uinnin eri tekniikoihin
+                   |  - allasturvallisuuden perustiedot
+                """.stripMargin)
+            ),
             TelmaKoulutuksenOsanSuoritus(
               tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
@@ -51,18 +59,19 @@ object ExamplesTelma {
 
   def tunnustettu(selite: String): Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(None, selite))
 
-  private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[AmmatillinenArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None) =
+  private def telmaKurssinSuoritus(koodi: String, nimi: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[AmmatillinenArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None, kuvaus: Option[String] = None) = {
     TelmaKoulutuksenOsanSuoritus(
       tila = tilaValmis,
       koulutusmoduuli = PaikallinenTelmaKoulutuksenOsa(
-        tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
-        kuvaus = finnish(kuvaus),
+        tunniste = PaikallinenKoodi(koodi, finnish(nimi)),
+        kuvaus = finnish(kuvaus.getOrElse(nimi)),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
         pakollinen = pakollinen
       ),
       arviointi = arviointi,
       tunnustettu = tunnustaminen
     )
+  }
 }
 
 object TelmaExampleData {
