@@ -50,7 +50,7 @@ object LocalizationRepository {
       case "mock" =>
         new MockLocalizationRepository
       case url: Any =>
-        new RemoteLocalizationRepository(VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"), "/lokalisointi"))
+        new RemoteLocalizationRepository(VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("localization.url"), "/lokalisointi"))
     }
   }
 }
