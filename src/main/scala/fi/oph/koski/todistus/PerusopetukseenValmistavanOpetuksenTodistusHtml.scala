@@ -1,9 +1,10 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 
-class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: PerusopetukseenValmistavanOpetuksenSuoritus)(implicit val user: KoskiSession) extends TodistusHtml {
+class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: PerusopetukseenValmistavanOpetuksenSuoritus)(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
   def todistusHtml = <html>
     <head>
       <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>

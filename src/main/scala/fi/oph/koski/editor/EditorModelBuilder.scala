@@ -6,7 +6,7 @@ import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.{classesFromMetadata, propsFromMetadata}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
@@ -14,7 +14,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 
 object EditorModelBuilder {
-  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu): EditorModel = {
+  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
     implicit val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
     deserializationContext.rootSchema.getSchema(value.getClass.getName) match {
       case Some(objectSchema) => builder(objectSchema).buildModelForObject(value, Nil)
@@ -73,7 +73,7 @@ case class ModelBuilderContext(
   deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu) extends LocalizedHtml
+  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
@@ -286,7 +286,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       val requestsFromPreviousRound = newRequests
       newRequests = Set.empty
       requestsFromPreviousRound.foreach { schema =>
-        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user, context.koodisto)
+        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user, context.koodisto, context.localizationRepository)
         val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
         val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype(Nil))
 
@@ -337,7 +337,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId == None
       case _ => true
     }
-    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user, context.koodisto)
+    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user, context.koodisto, context.localizationRepository)
   }
 }
 

@@ -5,14 +5,14 @@ import java.time.LocalDate
 
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.Locale._
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.orderByTunniste
 import fi.oph.koski.todistus.LocalizedHtml
 
 import scala.xml.{Elem, Node}
 
-class OpintosuoritusoteHtml(implicit val user: KoskiSession) extends LocalizedHtml {
+class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
   val decimalFormat = NumberFormat.getInstance(finnish)
 
   def lukio(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[LukionOpiskeluoikeus]): Elem = {

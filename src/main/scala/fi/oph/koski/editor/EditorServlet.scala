@@ -19,7 +19,7 @@ import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
   */
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   private val preferencesService = PreferencesService(application.masterDatabase.db)
-  private def localization = LocalizedHtml.get(koskiSession)
+  private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
     renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
       case (Some(opiskeluoikeusId), Some(versionumero)) =>
@@ -75,14 +75,14 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/prototype/:key") {
-    val c = ModelBuilderContext(EditorSchema.deserializationContext.rootSchema, EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu)
+    val c = ModelBuilderContext(EditorSchema.deserializationContext.rootSchema, EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
     val className = params("key")
     val prototype = EditorModelBuilder.buildPrototype(className)(c)
     renderOption(KoskiErrorCategory.notFound)(prototype)
   }
 
   def buildModel(obj: AnyRef, editable: Boolean): EditorModel = {
-    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu)
+    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
   }
 
   get("/preferences/:organisaatioOid/:type") {

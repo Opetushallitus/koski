@@ -1,14 +1,11 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
 
-class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
+class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) = {
-
-
-
     val muutSuoritukset = Koodistokoodiviite("5", Some(LocalizedString.unlocalized("Muut suoritukset" /*i18n*/)), "")
 
     val osasuoritukset = tutkintoSuoritus.osasuoritukset.toList.flatten

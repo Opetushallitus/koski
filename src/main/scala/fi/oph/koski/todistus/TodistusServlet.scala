@@ -11,6 +11,7 @@ class TodistusServlet(val application: KoskiApplication) extends HtmlServlet wit
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
     implicit val user = koskiSession
+    implicit val localizations = application.localizationRepository
 
     val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {
       case ("koulutusmoduuli", koulutusmoduuli: String) => Some({ s: Suoritus => s.koulutusmoduuli.tunniste.toString == koulutusmoduuli })

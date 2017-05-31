@@ -1,15 +1,15 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description
 
-import scala.xml.{Node, Elem}
+import scala.xml.{Elem, Node}
 
-case class SchemaToNiceHtml(implicit val user: KoskiSession) extends LocalizedHtml {
+case class SchemaToNiceHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
   def buildHtml(schema: ClassSchema, exampleData: AnyRef): List[Elem] = {
     buildHtml(Property("", schema, Nil), exampleData, schema, NodeContext("0", None))
   }

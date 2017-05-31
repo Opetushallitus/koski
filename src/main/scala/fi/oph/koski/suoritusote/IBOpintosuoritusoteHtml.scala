@@ -1,11 +1,12 @@
 package fi.oph.koski.suoritusote
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 
 import scala.xml.Elem
 
-class IBOpintosuoritusoteHtml(implicit override val user: KoskiSession) extends OpintosuoritusoteHtml {
+class IBOpintosuoritusoteHtml(implicit override val user: KoskiSession, override val localizationRepository: LocalizationRepository) extends OpintosuoritusoteHtml {
   def ib(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[IBOpiskeluoikeus]): Elem = {
     bodyHtml(ht, <div>{
       val ibTutkinnonSuoritukset: List[IBTutkinnonSuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect { case s: IBTutkinnonSuoritus => s })

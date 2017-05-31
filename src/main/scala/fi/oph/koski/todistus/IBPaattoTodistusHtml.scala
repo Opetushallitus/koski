@@ -2,13 +2,14 @@ package fi.oph.koski.todistus
 
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 
 import scala.xml.Elem
 import scala.xml.NodeSeq.Empty
 
 
-class IBPaattoTodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
+class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: IBTutkinnonSuoritus) = {
     def oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val someArviointiIsFinal: Boolean = oppiaineet.exists(arviointiIsFinal) ||
