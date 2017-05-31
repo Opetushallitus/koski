@@ -1,13 +1,14 @@
 import Atom from 'bacon.atom'
-import { lang } from './i18n'
+import {lang} from './i18n'
 import http from './http'
-import { userP } from './user'
+import {userP} from './user'
 import * as L from 'partial.lenses'
 import R from 'ramda'
+import {parseBool} from './util'
 
 let changes = Atom({})
 export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
-export const edit = Atom(false)
+export const edit = Atom(parseBool(localStorage.edit))
 export const startEdit = () => {
   edit.set(true)
 }
@@ -18,10 +19,19 @@ export const saveChanges = () => {
     window.koskiLocalizationMap[key][locale] = value
   })
   http.put('/koski/api/localization', changeList)
-  edit.set(false)
+  cancelChanges()
 }
 export const cancelChanges = () => {
   changes.set({})
   edit.set(false)
 }
 export const changeText = (key, value) => changes.modify(cs => L.set([key], value, cs))
+
+export const setLang = (newLang) => {
+  localStorage.lang = newLang
+  window.location.reload()
+}
+
+export const languages = ['fi', 'sv', 'en']
+
+edit.onValue(e => localStorage.edit = e)

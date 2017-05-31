@@ -1,9 +1,12 @@
-import {getCookie} from './cookie'
-
-export const lang = getCookie('lang') || 'fi'
+import Cookie from 'js-cookie'
 
 const texts = window.koskiLocalizationMap
 
+export const lang = localStorage.lang || Cookie.get('lang') || 'fi'
+
+Cookie.set('lang', lang)
+
+console.log('Using language', lang)
 export const t = (s, ignoreMissing) => {
   if (!s) return ''
   if (typeof s == 'object') {
