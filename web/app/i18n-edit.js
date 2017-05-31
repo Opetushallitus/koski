@@ -27,11 +27,6 @@ export const cancelChanges = () => {
 }
 export const changeText = (key, value) => changes.modify(cs => L.set([key], value, cs))
 
-export const setLang = (newLang) => {
-  localStorage.lang = newLang
-  window.location.reload()
-}
-
 export const languages = ['fi', 'sv', 'en']
 
 edit.onValue(e => localStorage.edit = e)

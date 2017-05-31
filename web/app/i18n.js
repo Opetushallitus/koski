@@ -2,9 +2,12 @@ import Cookie from 'js-cookie'
 
 const texts = window.koskiLocalizationMap
 
-export const lang = localStorage.lang || Cookie.get('lang') || 'fi'
+export const lang = Cookie.get('lang') || 'fi'
 
-Cookie.set('lang', lang)
+export const setLang = (newLang) => {
+  Cookie.set('lang', newLang)
+  window.location.reload()
+}
 
 console.log('Using language', lang)
 export const t = (s, ignoreMissing) => {

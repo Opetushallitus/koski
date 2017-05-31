@@ -1,6 +1,6 @@
 import React from 'baret'
-import {edit, cancelChanges, saveChanges, hasChanges, languages, setLang} from './i18n-edit'
-import {lang} from './i18n'
+import {edit, cancelChanges, saveChanges, hasChanges, languages} from './i18n-edit'
+import {lang, setLang} from './i18n'
 
 export default () => {
   let classNameP = edit.map(isEdit => 'localization-edit-bar' + (isEdit ? ' visible': ''))
