@@ -9,12 +9,7 @@ export default ({name, ignoreMissing}) => {
   }
 
   let onClick = e => {
-    let isEdit = edit.get()
-    if (e.getModifierState('Alt') && !isEdit) {
-      startEdit()
-      e.stopPropagation()
-      e.preventDefault()
-    } else if (isEdit) {
+    if (edit.get()) {
       e.stopPropagation()
       e.preventDefault()
     }
@@ -22,7 +17,7 @@ export default ({name, ignoreMissing}) => {
   let onChange = (event) => changeText(name, event.target.value)
   let current = () => t(name, ignoreMissing)
 
-  return (<span onClick={hasEditAccess.map(hasAccess => hasAccess ? onClick : null)} className="localized">{
+  return (<span onClick={onClick} className="localized">{
     edit.map(isEdit => isEdit ? <span className="editing"><input defaultValue={current()} onChange={onChange}/></span> : current())
   }</span>)
 }
