@@ -21,6 +21,8 @@ object Käyttöoikeusryhmät {
   val viranomaisPääkäyttäjä = add(GlobaaliKäyttöoikeusryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Koski-viranomaistietojen katselijalle", List(Palvelurooli(OPHKATSELIJA))))
   val viranomaisPalvelu = add(GlobaaliKäyttöoikeusryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot", List(Palvelurooli(OPHKATSELIJA), Palvelurooli(TIEDONSIIRTO))))
 
+  val localizationAdmin = add(GlobaaliKäyttöoikeusryhmä("lokalisaatio-admin", "kirjoitusoikeudet lokalisaatiopalveluun", List(Palvelurooli("LOKALISOINTI", "CRUD"))))
+
   def byName(name: String) = ryhmät.find(_.nimi == name)
   def käyttöoikeusryhmät = ryhmät
 

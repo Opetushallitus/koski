@@ -18,8 +18,8 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def userOption = Some(user)
   def logString = "käyttäjä " + username + " / " + user.oid
 
-  lazy val orgKäyttöoikeudet = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
-  lazy val globalKäyttöoikeudet = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
+  lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
+  lazy val globalKäyttöoikeudet: Set[KäyttöoikeusGlobal] = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if (k.organisaatioAccessType.contains(accessType)) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
@@ -31,6 +31,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasGlobalWriteAccess = globalAccess.contains(AccessType.write)
   def hasAnyWriteAccess = hasGlobalWriteAccess || organisationOids(AccessType.write).nonEmpty
+  def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
 
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
     val juuret = organisaatiot

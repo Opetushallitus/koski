@@ -7,15 +7,16 @@ import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.security.ldap.LdapUser
 
 object LdapKayttooikeudet extends Logging {
-  val pattern = """APP_KOSKI_([A-Z_]+)_([0-9\.]+)""".r
+  val pattern = """APP_([A-Z_]+)_([A-Z_]+)_([0-9\.]+)""".r
+  val apps = List("KOSKI", "LOKALISOINTI")
 
   def käyttöoikeudet(user: LdapUser): List[Käyttöoikeus] = {
     try {
       user.roles.flatMap {
-        case pattern(rooli, oid) if (oid == Opetushallitus.organisaatioOid) =>
-          Some(KäyttöoikeusGlobal(List(Palvelurooli(rooli))))
-        case pattern(rooli, oid) =>
-          Some(KäyttöoikeusOrg(OidOrganisaatio(oid), List(Palvelurooli(rooli)), true, None))
+        case pattern(app, rooli, oid) if apps.contains(app) && oid == Opetushallitus.organisaatioOid =>
+          Some(KäyttöoikeusGlobal(List(Palvelurooli(app, rooli))))
+        case pattern(app, rooli, oid) if apps.contains(app) =>
+          Some(KäyttöoikeusOrg(OidOrganisaatio(oid), List(Palvelurooli(app, rooli)), true, None))
         case _ =>
           None
       }

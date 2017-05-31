@@ -1,5 +1,5 @@
 import React from 'baret'
-import { startEdit, edit, changeText } from './i18n-edit'
+import { startEdit, edit, hasEditAccess, changeText } from './i18n-edit'
 import { t } from './i18n'
 
 export default ({name, ignoreMissing}) => {
@@ -22,7 +22,7 @@ export default ({name, ignoreMissing}) => {
   let onChange = (event) => changeText(name, event.target.value)
   let current = () => t(name, ignoreMissing)
 
-  return (<span onClick={onClick} className="localized">{
+  return (<span onClick={hasEditAccess.map(hasAccess => hasAccess ? onClick : null)} className="localized">{
     edit.map(isEdit => isEdit ? <span className="editing"><input defaultValue={current()} onChange={onChange}/></span> : current())
   }</span>)
 }

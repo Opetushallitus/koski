@@ -1,8 +1,10 @@
 import Atom from 'bacon.atom'
 import { lang } from './i18n'
 import http from './http'
+import { userP } from './user'
 
 let changes = Atom([])
+export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
 export const edit = Atom(false)
 export const startEdit = () => {
   edit.set(true)

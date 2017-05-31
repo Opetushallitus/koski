@@ -14,7 +14,7 @@ object MockUsers {
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set((omnia, oppilaitosPalvelukäyttäjä)))
   val omniaKatselija = MockUser("käyttäjä", "omnia-katselija", "1.2.246.562.24.99999999990", Set((omnia, oppilaitosKatselija)))
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set((omnia, oppilaitosTallentaja)))
-  val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä)))
+  val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä), (Opetushallitus.organisaatioOid, localizationAdmin)))
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
   val stadinAmmattiopistoPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPalvelukäyttäjä)))
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
