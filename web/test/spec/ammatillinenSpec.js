@@ -363,7 +363,8 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
-            'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Tutkinnon osa\n' +
+            'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
             'Ammatilliset tutkinnon osat\n' +
             'Kestävällä tavalla toimiminen kyllä 40 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -434,8 +435,10 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Työssäoppimisen yhteydessä ei\n' +
-            'Kokonaisuus Arvosana\n' +
+            'Kokonaisuus\n' +
+            'Sulje kaikki Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
+            'Kuvaus Hoitotarpeen määrittäminen\n' +
             'Yhteiset tutkinnon osat\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -450,8 +453,10 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Osa-alue\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Osa-alue\n' +
+            'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
             'Matematiikka kyllä 3 3\n' +
+            'Kuvaus Matematiikan opinnot\n' +
             'Fysiikka ja kemia kyllä 3 3\n' +
             'Tieto- ja viestintätekniikka sekä sen hyödyntäminen kyllä 3 3\n' +
             'Alkamispäivä 1.1.2014\n' +
@@ -469,10 +474,12 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Vapaavalintaiset tutkinnon osat\n' +
             'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
+            'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
             'Matkailuenglanti ei 5 3\n' +
+            'Kuvaus Matkailuenglanti\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
           )
@@ -602,8 +609,10 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equal(
-            'Koulutuksen osa Pakollisuus Laajuus\n' +
+            'Koulutuksen osa\n' +
+            'Sulje kaikki Pakollisuus Laajuus\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
+            'Kuvaus Johtamisen ja henkilöstön kehittämisen valmistava koulutus\n' +
             'Auton lisävarustetyöt ei 15 osp'
           )
         })
@@ -694,11 +703,16 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää tutkinnon osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Koulutuksen osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+          'Koulutuksen osa\n' +
+          'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
+          'Kuvaus Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen\n' +
           'Opiskeluvalmiuksien vahvistaminen ei 10 Hyväksytty\n' +
+          'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
           'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 Hyväksytty\n' +
+          'Kuvaus Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen\n' +
           'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 Hyväksytty\n' +
+          'Kuvaus Arjen taitojen ja hyvinvoinnin vahvistaminen\n' +
           'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
           'Tunnustettu\n' +
           'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
