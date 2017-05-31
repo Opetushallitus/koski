@@ -30,15 +30,15 @@ abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager
   }
 
   private def fetch(): Map[String, LocalizedString] = {
-    val localized: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
+    val inLocalizationService: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
       .groupBy(_.key)
       .mapValues(_.map(v => (v.locale, v.value)).toMap)
 
     readResource("/localization/default-texts.json").extract[Map[String, String]].map {
-      case (key, value) =>
-        localized.get(key).map(l => (key, sanitize(l).get)).getOrElse {
+      case (key, finnishDefaultText) =>
+        inLocalizationService.get(key).map(l => (key, sanitize(l).get)).getOrElse {
           logger.info(s"Localizations missing for key $key")
-          (key, Finnish(value))
+          (key, Finnish(finnishDefaultText))
         }
     }
   }
