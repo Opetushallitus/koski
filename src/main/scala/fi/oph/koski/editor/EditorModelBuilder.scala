@@ -271,11 +271,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (tabular) props += ("tabular" -> true)
     if (!readOnly) props += ("editable" -> true)
 
-    val propertyTitle = property.metadata.flatMap {
-      case Title(t) => Some(t)
-      case _ => None
-    }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-    EditorProperty(property.key, propertyTitle, propertyModel, props)
+    EditorProperty(property.key, ObjectModelBuilder.propertyTitle(property), propertyModel, props)
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
@@ -339,6 +335,14 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     }
     context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user, context.koodisto, context.localizationRepository)
   }
+}
+
+object ObjectModelBuilder {
+  def propertyTitle(property: Property) = property.metadata.flatMap {
+    case Title(t) => Some(t)
+    case _ => None
+  }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
+
 }
 
 
