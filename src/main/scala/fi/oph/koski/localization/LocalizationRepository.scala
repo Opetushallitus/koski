@@ -1,7 +1,7 @@
 package fi.oph.koski.localization
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache, SingleValueCache}
+import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.json.Json._
@@ -20,7 +20,7 @@ trait LocalizationRepository extends Logging {
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
-  private val cache = KeyValueCache[String, Map[String, LocalizedString]](
+  protected val cache = KeyValueCache[String, Map[String, LocalizedString]](
     Cache.cacheAllRefresh("LocalizationRepository.localizations", durationSeconds = 60, maxSize = 1),
     key => fetch()
   )
@@ -65,6 +65,7 @@ class RemoteLocalizationRepository(http: Http)(implicit cacheInvalidator: CacheM
   override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=koski")(Http.parseJson[JValue]))
 
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = {
+    cache.strategy.invalidateCache()
     runTask(http.post(uri"/lokalisointi/cxf/rest/v1/localisation/update", localizations)(json4sEncoderOf[List[UpdateLocalization]])(Http.unitDecoder))
   }
 }
