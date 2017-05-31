@@ -470,6 +470,7 @@ case class NäytönArvioitsija(
   @Representative
   nimi: String,
   @Description("Onko suorittanut näyttötutkintomestarikoulutuksen (true/false). Puuttuva arvo tulkitaan siten, että koulutuksen suorittamisesta ei ole tietoa.")
+  @Title("Näyttötutkintomestari")
   ntm: Option[Boolean]
 ) extends SuorituksenArvioitsija
 

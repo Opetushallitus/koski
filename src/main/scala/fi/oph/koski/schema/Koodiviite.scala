@@ -28,8 +28,10 @@ case class Koodistokoodiviite(
   lyhytNimi: Option[LocalizedString],
   @Description("Käytetyn koodiston tunniste")
   @Discriminator
+  @Title("Koodisto-URI")
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
+  @Title("Koodistoversio")
   koodistoVersio: Option[Int]
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
@@ -50,6 +52,7 @@ case class PaikallinenKoodi(
   @Representative
   nimi: LocalizedString,
   @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi.")
+  @Title("Koodisto-URI")
   koodistoUri: Option[String] = None
 ) extends KoodiViite {
   override def toString = s"$koodiarvo (${nimi.get("fi")})"

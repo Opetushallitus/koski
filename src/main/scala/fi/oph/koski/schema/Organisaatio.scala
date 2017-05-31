@@ -39,6 +39,7 @@ case class Koulutustoimija(
   nimi: Option[LocalizedString] = None,
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
+  @Title("Y-tunnus")
   yTunnus: Option[String] = None,
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {

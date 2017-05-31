@@ -3,6 +3,7 @@ import { modelEmpty, modelItems, addContext } from './EditorModel.js'
 import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
 import {modelProperties} from './EditorModel'
+import Text from '../Text.jsx'
 
 export const PropertiesEditor = React.createClass({
   render() {
@@ -37,10 +38,10 @@ export const PropertiesEditor = React.createClass({
           {
             property.complexObject
               ? (<td className="complex" colSpan="2">
-              <div className="label">{property.title}</div>
+              <div className="label"><Text name={property.title}/></div>
               <div className="value">{ valueEditor }</div>
             </td>)
-              : [<td className="label" key="label">{property.title}</td>,
+              : [<td className="label" key="label"><Text name={property.title}/></td>,
               <td className="value" key="value">{ valueEditor }</td>
             ]
           }
@@ -72,7 +73,7 @@ export const TabularArrayEditor = React.createClass({
     let properties = modelProperties(items[0])
     return (<table className="tabular-array">
       <thead>
-      <tr>{ properties.map((p, i) => <th key={i}>{p.title}</th>) }</tr>
+      <tr>{ properties.map((p, i) => <th key={i}><Text name={p.title}/></th>) }</tr>
       </thead>
       <tbody>
       {

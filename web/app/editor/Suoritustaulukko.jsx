@@ -29,7 +29,7 @@ export const Suoritustaulukko = ({suoritukset}) => {
             { showExpandAll &&
             <div>
               { allExpandedP.map( allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
-                  { allExpanded ? 'Sulje kaikki' : 'Avaa kaikki' }
+                  <Text name={ allExpanded ? 'Sulje kaikki' : 'Avaa kaikki' }/>
                 </a>
               )}
             </div>
