@@ -23,6 +23,6 @@ export default ({name, ignoreMissing}) => {
   let current = () => t(name, ignoreMissing)
 
   return (<span onClick={onClick} className="localized">{
-    edit.map(isEdit => isEdit ? <span className="editing"><input placeholder={current()} onChange={onChange}/></span> : current())
+    edit.map(isEdit => isEdit ? <span className="editing"><input defaultValue={current()} onChange={onChange}/></span> : current())
   }</span>)
 }
