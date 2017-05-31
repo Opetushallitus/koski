@@ -58,7 +58,7 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
             <ul>
               {pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.flatMap { tilasto =>
                 pulssi.oppilaitosMäärät.koulutusmuodoittain.get(tilasto.koulutusmuoto).map { oppilaitoksia =>
-                  <li class={"siirtäneiden-oppilaitosten-määrä-" + tilasto.koulutusmuotoStr}>{tilasto.koulutusmuoto} : <span class="value">{tilasto.siirtäneitäOppilaitoksia}</span> ( {percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)} %)</li>
+                  <li class={"siirtäneiden-oppilaitosten-määrä-" + tilasto.koulutusmuotoStr}>{tilasto.koulutusmuoto} : <span class="value">{tilasto.siirtäneitäOppilaitoksia}</span> ({percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)} %)</li>
               }
             }}
             </ul>
