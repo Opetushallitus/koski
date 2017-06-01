@@ -7,7 +7,7 @@ import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.security.ldap.LdapUser
 
 object LdapKayttooikeudet extends Logging {
-  val pattern = """APP_([A-Z_]+)_([A-Z_]+)_([0-9\.]+)""".r
+  val pattern = """APP_([A-Z]+)_([A-Z_]+)_([0-9\.]+)""".r
   val apps = List("KOSKI", "LOKALISOINTI")
 
   def käyttöoikeudet(user: LdapUser): List[Käyttöoikeus] = {
