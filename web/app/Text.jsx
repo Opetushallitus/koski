@@ -18,7 +18,7 @@ export default ({name, ignoreMissing, lang, edit}) => {
 
   let onChange = (event) => changeText(name, event.target.value, lang)
   let current = () => t(name, ignoreMissing, lang)
-  
+
   return (<span onClick={editP.map(e => e ? onClick : null)} className="localized">{
     editP.map(e => e ? <span className="editing"><input defaultValue={current()} onChange={onChange}/></span> : current())
   }</span>)
