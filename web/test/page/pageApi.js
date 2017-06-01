@@ -1,4 +1,7 @@
 function Page(mainElement) {
+  if (!mainElement) {
+    mainElement = function() {return S('body')}
+  }
   if (typeof mainElement != 'function') {
     var el = mainElement
     mainElement = function () { return el }

@@ -14,6 +14,18 @@ describe('Lokalisointi', function() {
   describe('Tekstien muokkaus', function() {
     function editLink() { return S('#topbar .edit-localizations') }
     function startEdit() { triggerEvent(editLink(), 'click') }
+    function saveEdits() { triggerEvent(findSingle('.localization-edit-bar button'), 'click') }
+    function cancelEdits() { triggerEvent(findSingle('.localization-edit-bar .cancel'), 'click') }
+    function selectLanguage(lang) {
+      return function() {
+        triggerEvent(S('.localization-edit-bar .languages .' + lang), 'click')
+        var selector = '.localization-edit-bar .languages .' + lang + '.selected'
+        return wait.until(function() {
+          return S(selector).is(':visible')
+        })()
+      }
+    }
+    function changeText(selector, value) { return Page().setInputValue(selector + ' input', value) }
 
     describe('Tavallisella käyttäjällä', function() {
       before(Authentication().login(), resetFixtures, page.openPage)
@@ -29,6 +41,29 @@ describe('Lokalisointi', function() {
         expect(editLink().is(':visible')).to.equal(true)
       })
 
+      describe('Muokattaessa ruotsinkielisiä tekstejä', function() {
+        before(startEdit, selectLanguage('sv'), changeText('.oppija-haku h3', 'Hae juttuja'), saveEdits)
+
+        it('Muokattu teksti näytetään', function() {
+          expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
+        })
+
+        describe('Vaihdettaessa takaisin suomen kieleen', function() {
+          before(startEdit, selectLanguage('fi'), cancelEdits)
+
+          it('Suomenkielinen teksti näytetään', function() {
+            expect(S('.oppija-haku h3').text()).to.equal('Hae tai lisää opiskelija')
+          })
+
+          describe('Vaihdettaessa vielä takaisin ruotsin kieleen', function() {
+            before(startEdit, selectLanguage('sv'), cancelEdits)
+            
+            it('Muokattu teksti näytetään', function() {
+              expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
+            })
+          })
+        })
+      })
     })
   })
 })
