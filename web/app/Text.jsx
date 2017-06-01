@@ -16,10 +16,12 @@ export default ({name, ignoreMissing, lang, edit}) => {
     e.preventDefault()
   }
 
-  let onChange = (event) => changeText(name, event.target.value, lang)
+  let onInput = (event) => changeText(name, event.target.textContent, lang)
   let current = () => t(name, ignoreMissing, lang)
 
   return (<span onClick={editP.map(e => e ? onClick : null)} className="localized">{
-    editP.map(e => e ? <span className="editing"><input defaultValue={current()} onChange={onChange}/></span> : current())
+    editP.map(e => e
+      ? <span className="editing" contentEditable="true" suppressContentEditableWarning="true" onInput={onInput}>{current()}</span>
+      : current())
   }</span>)
 }
