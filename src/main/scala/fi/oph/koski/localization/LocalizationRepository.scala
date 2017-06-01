@@ -98,6 +98,9 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
       }
     }
   }
+  def reset = {
+    _localizations = super.localizations
+  }
 }
 
 class RemoteLocalizationRepository(http: Http)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {

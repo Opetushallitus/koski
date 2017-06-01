@@ -7,6 +7,7 @@ import fi.oph.koski.fixture.Fixtures._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.henkilo.{HenkilöRepository, MockAuthenticationServiceClient}
+import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.KoskiValidator
 
@@ -26,6 +27,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     application.cacheManager.invalidateAllCaches
     databaseFixtures.resetFixtures
     application.henkilöRepository.opintopolku.henkilöPalveluClient.asInstanceOf[MockAuthenticationServiceClient].resetFixtures
+    application.localizationRepository.asInstanceOf[MockLocalizationRepository].reset
     logger.info("Reset application fixtures")
   }
 }
