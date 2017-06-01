@@ -456,7 +456,7 @@
     }
 
 
-    input, select {
+    :not(.editing) > input, select {
       width: 100%;
       &.date-editor {
         width: 100px;
@@ -566,3 +566,13 @@
     z-index: @z-index-base + 1;
   }
 }
+
+.edit .oppija .opiskeluoikeus .opiskeluoikeus-content {
+  input, select {
+    width: 100%;
+    &.date-editor {
+      width: 100px;
+    }
+  }
+}
+
