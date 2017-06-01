@@ -8,7 +8,9 @@ import {parseBool} from './util'
 
 let changes = Atom({})
 export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
-export const edit = Atom(parseBool(localStorage.edit))
+hasEditAccess.not().filter(R.identity).onValue(() => edit.set(false))
+export const edit = Atom(parseBool(localStorage.editLocalizations))
+localStorage.editLocalizations = false
 export const startEdit = () => {
   edit.set(true)
 }
@@ -29,4 +31,4 @@ export const changeText = (key, value) => changes.modify(cs => L.set([key], valu
 
 export const languages = ['fi', 'sv', 'en']
 
-edit.onValue(e => localStorage.edit = e)
+edit.changes().onValue(e => localStorage.editLocalizations = e)
