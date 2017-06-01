@@ -10,9 +10,7 @@ let changes = Atom({})
 export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
 export const edit = Atom(parseBool(localStorage.edit))
 export const startEdit = () => {
-  hasEditAccess.take(1).filter(R.identity).onValue(() => {
-    edit.set(true)
-  })
+  edit.set(true)
 }
 export const hasChanges = changes.map(c => R.keys(c).length > 0)
 export const saveChanges = () => {

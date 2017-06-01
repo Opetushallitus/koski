@@ -11,4 +11,19 @@ describe('Lokalisointi', function() {
       })
     })
   })
+  describe('Tekstien muokkaus', function() {
+    describe('Tavallisella käyttäjällä', function() {
+      before(Authentication().login(), resetFixtures, page.openPage)
+      it('Ei näytetä', function() {
+        expect(S('#topbar .edit').is(':visible')).to.equal(false)
+      })
+    })
+
+    describe('Käyttäjällä, jolla on lokalisoinnin CRUD-oikeudet', function() {
+      before(Authentication().login('pää'), resetFixtures, page.openPage)
+      it('Näytetään muokkauslinkki', function() {
+        expect(S('#topbar .edit').is(':visible')).to.equal(true)
+      })
+    })
+  })
 })
