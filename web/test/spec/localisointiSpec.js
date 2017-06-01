@@ -12,18 +12,23 @@ describe('Lokalisointi', function() {
     })
   })
   describe('Tekstien muokkaus', function() {
+    function editLink() { return S('#topbar .edit-localizations') }
+    function startEdit() { triggerEvent(editLink(), 'click') }
+
     describe('Tavallisella käyttäjällä', function() {
       before(Authentication().login(), resetFixtures, page.openPage)
       it('Ei näytetä', function() {
-        expect(S('#topbar .edit').is(':visible')).to.equal(false)
+        expect(editLink().is(':visible')).to.equal(false)
       })
     })
 
     describe('Käyttäjällä, jolla on lokalisoinnin CRUD-oikeudet', function() {
       before(Authentication().login('pää'), resetFixtures, page.openPage)
+
       it('Näytetään muokkauslinkki', function() {
-        expect(S('#topbar .edit').is(':visible')).to.equal(true)
+        expect(editLink().is(':visible')).to.equal(true)
       })
+
     })
   })
 })
