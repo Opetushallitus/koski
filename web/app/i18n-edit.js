@@ -30,5 +30,3 @@ export const cancelChanges = () => {
 export const changeText = (key, value, language) => changes.modify(cs => L.set([(language || lang) + '.' + key], value, cs))
 
 export const languages = ['fi', 'sv', 'en']
-
-editAtom.changes().onValue(e => localStorage.editLocalizations = e)
