@@ -1,6 +1,7 @@
 import Cookie from 'js-cookie'
 
 const texts = window.koskiLocalizationMap
+const missing = {}
 
 export const lang = Cookie.get('lang') || 'fi'
 
@@ -10,6 +11,7 @@ export const setLang = (newLang) => {
 }
 
 console.log('Using language', lang)
+
 export const t = (s, ignoreMissing, languageOverride) => {
   let usedLanguage = languageOverride || lang
   if (!s) return ''
@@ -19,16 +21,14 @@ export const t = (s, ignoreMissing, languageOverride) => {
   }
   if (typeof s == 'string') {
     // try to find a localization from the bundle
-    if (!texts[s]) {
-      if (ignoreMissing === true) return null
-      console.error('Localization missing:', s)
-      texts[s] = { [usedLanguage]: s }
-    }
-    let localizedString = texts[s]
+    let localizedString = texts[s] || {}
     if (!localizedString[usedLanguage]) {
       if (ignoreMissing === true) return null
-      console[usedLanguage == 'fi' ? 'error' : 'log'](`Localization missing for language ${usedLanguage}:`, s)
-      localizedString[usedLanguage] = localizedString.fi
+      if (!missing[usedLanguage + '.' + s]) {
+        console[usedLanguage == 'fi' ? 'error' : 'log'](`Localization missing for language ${usedLanguage}:`, s)
+        missing[usedLanguage + '.' + s] = true
+      }
+      return s
     }
     return localizedString[usedLanguage]
   }
