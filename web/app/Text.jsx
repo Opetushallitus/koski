@@ -1,6 +1,6 @@
 import React from 'baret'
-import { startEdit, edit, hasEditAccess, changeText } from './i18n-edit'
-import { t } from './i18n'
+import {edit, changeText} from './i18n-edit'
+import {t} from './i18n'
 
 export default ({name, ignoreMissing}) => {
   if (typeof name != 'string') {
