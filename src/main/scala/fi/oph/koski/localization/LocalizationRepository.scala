@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
+import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.localization.LocalizedString.sanitize
@@ -17,6 +18,31 @@ trait LocalizationRepository extends Logging {
   def fetchLocalizations(): JValue
 
   def createOrUpdate(localizations: List[UpdateLocalization])
+
+  def createMissing(): Unit = {
+    val inLocalizationService = localizationsFromLocalizationService
+
+    val missing = defaultFinnishTexts.flatMap {
+      case (key, defaultText) => inLocalizationService.get(key) match {
+        case Some(_) => None
+        case None => Some(List(UpdateLocalization("fi", key, defaultText), UpdateLocalization("sv", key, ""), UpdateLocalization("en", key, "")))
+      }
+    }.toList.flatten
+
+    logger.info("Creating " + missing.length + " missing localizations: " + Json.write(missing))
+
+    if (missing.nonEmpty) {
+      createOrUpdate(missing)
+    }
+
+    logger.info("done.")
+  }
+
+  def localizationsFromLocalizationService: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
+    .groupBy(_.key)
+    .mapValues(_.map(v => (v.locale, v.value)).toMap)
+
+  def defaultFinnishTexts: Map[String, String] = readResource("/localization/default-texts.json").extract[Map[String, String]]
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
@@ -30,11 +56,9 @@ abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager
   }
 
   private def fetch(): Map[String, LocalizedString] = {
-    val inLocalizationService: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
-      .groupBy(_.key)
-      .mapValues(_.map(v => (v.locale, v.value)).toMap)
+    val inLocalizationService = localizationsFromLocalizationService
 
-    readResource("/localization/default-texts.json").extract[Map[String, String]].map {
+    defaultFinnishTexts.map {
       case (key, finnishDefaultText) =>
         inLocalizationService.get(key).map(l => (key, sanitize(l).get)).getOrElse {
           logger.info(s"Localizations missing for key $key")
@@ -59,7 +83,7 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
 
   private var _localizations: Map[String, LocalizedString] = super.localizations()
 
-  override def localizations() = {
+  override def localizations(): Map[String, LocalizedString] = {
     _localizations
   }
 

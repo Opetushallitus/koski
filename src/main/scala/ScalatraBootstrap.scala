@@ -42,7 +42,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       Future { KoskiJsonSchemaValidator.henkilöSchema },
       Future { application.perustiedotIndexer.init},
       Future { application.scheduledTasks.toString },
-      Future { application.tiedonsiirtoService.toString }
+      Future { application.tiedonsiirtoService.toString },
+      Future { application.localizationRepository.createMissing() }
     )
 
     if (application.config.getBoolean("koodisto.create")) tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config, application.config.getBoolean("koodisto.update")) }
