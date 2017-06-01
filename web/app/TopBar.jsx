@@ -2,7 +2,7 @@ import React from 'baret'
 import {UserInfo} from './UserInfo.jsx'
 import Link from './Link.jsx'
 import Text from './Text.jsx'
-import {edit, startEdit, hasEditAccess} from './i18n-edit'
+import {editAtom, startEdit, hasEditAccess} from './i18n-edit'
 
 export const TopBar = ({user, saved, titleKey}) => {
   let onClick = e => {
@@ -10,7 +10,7 @@ export const TopBar = ({user, saved, titleKey}) => {
     e.stopPropagation()
     e.preventDefault()
   }
-  let showEdit = hasEditAccess.and(edit.not())
+  let showEdit = hasEditAccess.and(editAtom.not())
 
   return (<header id='topbar' className={saved ? 'saved' : ''}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>

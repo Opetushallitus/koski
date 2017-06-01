@@ -8,15 +8,15 @@ import {parseBool} from './util'
 
 let changes = Atom({})
 export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
-hasEditAccess.not().filter(R.identity).onValue(() => edit.set(false))
-export const edit = Atom(parseBool(localStorage.editLocalizations))
+hasEditAccess.not().filter(R.identity).onValue(() => editAtom.set(false))
+export const editAtom = Atom(parseBool(localStorage.editLocalizations))
 localStorage.editLocalizations = false
 export const startEdit = () => {
-  edit.set(true)
+  editAtom.set(true)
 }
 export const hasChanges = changes.map(c => R.keys(c).length > 0)
 export const saveChanges = () => {
-  let changeList = R.toPairs(changes.get()).map(([key, value]) => ({ key, value, locale: lang}))
+  let changeList = R.toPairs(changes.get()).map(([langAndKey, value]) => ({ key: langAndKey.substring(3), value, locale: langAndKey.substring(0, 2)}))
   changeList.forEach(({key, value, locale}) => {
     window.koskiLocalizationMap[key][locale] = value
   })
@@ -25,10 +25,10 @@ export const saveChanges = () => {
 }
 export const cancelChanges = () => {
   changes.set({})
-  edit.set(false)
+  editAtom.set(false)
 }
-export const changeText = (key, value) => changes.modify(cs => L.set([key], value, cs))
+export const changeText = (key, value, language) => changes.modify(cs => L.set([(language || lang) + '.' + key], value, cs))
 
 export const languages = ['fi', 'sv', 'en']
 
-edit.changes().onValue(e => localStorage.editLocalizations = e)
+editAtom.changes().onValue(e => localStorage.editLocalizations = e)

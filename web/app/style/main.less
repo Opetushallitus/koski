@@ -32,6 +32,7 @@
 @import "localization";
 
 @sidebar-width: 300px;
+@topbar-height: 121px;
 @page-border-width: ~"calc((100vw - 1320px) / 2)";
 @oppija-haku-width: ~"calc(300px + (100vw - 1320px) / 2)";
 
@@ -54,7 +55,7 @@ body {
   right: 0;
   top: 0;
   z-index: @z-index-topbar;
-  height: 121px;
+  height: @topbar-height;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
   min-width: 1320px;
@@ -65,9 +66,8 @@ body {
 }
 
 .content-area {
-  height: ~"calc(100% - 121px)";
   width: 100%;
-  margin-top: 121px;
+  margin-top: @topbar-height;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
 }

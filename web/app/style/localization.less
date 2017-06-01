@@ -8,6 +8,7 @@
 
 .localization-edit-bar {
   position: fixed;
+  z-index: @z-index-popup;
   bottom: -70px;
   opacity: 0;
   left: 0;
@@ -41,6 +42,38 @@
         color: white;
         cursor: default;
         padding: 0 10px;
+      }
+    }
+  }
+  .show-all {
+    margin-left: 20px;
+    input {
+      margin-left: 10px;
+    }
+  }
+}
+
+.localization-edit-all {
+  position: absolute;
+  width: 100%;
+  top: @topbar-height;
+  padding-left: @page-border-width;
+  padding-right: @page-border-width;
+  padding-bottom: 100px;
+  padding-top: 20px;
+  background: white;
+  z-index: @z-index-base + 2;
+  table {
+    td:first-child {
+      text-align: right;
+      vertical-align: middle;
+      width: 300px;
+    }
+    td {
+      width: 400px;
+      padding-right: 10px;
+      .localized .editing input {
+        width: 100%;
       }
     }
   }
