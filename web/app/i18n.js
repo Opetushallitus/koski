@@ -26,7 +26,7 @@ export const t = (s, ignoreMissing) => {
     let localizedString = texts[s]
     if (!localizedString[lang]) {
       if (ignoreMissing === true) return null
-      console.error(`Localization missing for language ${lang}:`, s)
+      console[lang == 'fi' ? 'error' : 'log'](`Localization missing for language ${lang}:`, s)
       localizedString[lang] = localizedString.fi
     }
     return localizedString[lang]

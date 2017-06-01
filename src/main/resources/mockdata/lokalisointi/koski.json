@@ -44,6 +44,20 @@
   {
     "accesscount": 0,
     "created": 1389371731204,
+    "locale": "sv",
+    "key": "Opintopolku.fi",
+    "id": 2,
+    "category": "koski",
+    "force": false,
+    "accessed": 1392980291143,
+    "createdBy": "1.2.246.562.24.54037785580",
+    "modified": 1392744764216,
+    "modifiedBy": "1.2.246.562.24.54037785580",
+    "value": "Studieinfo.fi"
+  },
+  {
+    "accesscount": 0,
+    "created": 1389371731204,
     "locale": "fi",
     "key": "Kirjaudu ulos",
     "id": 3,
