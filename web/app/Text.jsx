@@ -35,5 +35,5 @@ const TextEditor = ({name, lang}) => {
   let classNameP = missingP.map(missing => 'editing' + (missing ? ' missing': ''))
   let editableValue = t(name, false, lang)
 
-  return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onInput={onInput} onClick={onClick}>{editableValue}</span>)
+  return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onKeyUp={onInput} onClick={onClick}>{editableValue}</span>)
 }
