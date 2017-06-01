@@ -6,11 +6,9 @@ import {edit, startEdit, hasEditAccess} from './i18n-edit'
 
 export const TopBar = ({user, saved, titleKey}) => {
   let onClick = e => {
-    if (!edit.get()) {
-      startEdit()
-      e.stopPropagation()
-      e.preventDefault()
-    }
+    startEdit()
+    e.stopPropagation()
+    e.preventDefault()
   }
   let showEdit = hasEditAccess.and(edit.not())
 

@@ -2,7 +2,10 @@ import React from 'baret'
 import {edit, cancelChanges, saveChanges, hasChanges, languages} from './i18n-edit'
 import {lang, setLang} from './i18n'
 
-export default () => {
+export default ({user}) => {
+  if (!user.hasLocalizationWriteAccess) {
+    return null
+  }
   let classNameP = edit.map(isEdit => 'localization-edit-bar' + (isEdit ? ' visible': ''))
   return (<div className={classNameP}>
     {'Lokalisoitujen tekstien muokkaus'}

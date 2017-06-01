@@ -31,7 +31,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, us
             : null
           )
       }
-      <LocalizationEditBar/>
+      <LocalizationEditBar user={user}/>
     </div>
 )
 
