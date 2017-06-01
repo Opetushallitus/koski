@@ -14,7 +14,10 @@ describe('Lokalisointi', function() {
   describe('Tekstien muokkaus', function() {
     function editLink() { return S('#topbar .edit-localizations') }
     function startEdit() { triggerEvent(editLink(), 'click') }
-    function saveEdits() { triggerEvent(findSingle('.localization-edit-bar button:not(:disabled)'), 'click') }
+    function saveEdits() {
+      triggerEvent(findSingle('.localization-edit-bar button:not(:disabled)'), 'click')
+      return wait.forAjax()
+    }
     function cancelEdits() { triggerEvent(findSingle('.localization-edit-bar .cancel'), 'click') }
     function selectLanguage(lang) {
       return function() {
