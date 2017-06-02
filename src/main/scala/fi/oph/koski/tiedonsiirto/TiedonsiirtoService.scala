@@ -143,11 +143,7 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
       hetuTaiOid.hetu.orElse(hetuTaiOid.oid)
     }.getOrElse("")
 
-    def mangle(error: ErrorDetail) = error.message match {
-      case s: String => error.copy(message = Map("text" -> s)) // TODO: this is nasty
-      case _ => error
-    }
-    val document = TiedonsiirtoDocument(koskiSession.oid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet.map(_.map(mangle)).getOrElse(Nil), lahdejarjestelma)
+    val document = TiedonsiirtoDocument(koskiSession.oid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet.getOrElse(Nil), lahdejarjestelma)
 
     val documentId = org.oid + "_" + idValue
     val json = Map("doc_as_upsert" -> true, "doc" -> document)
