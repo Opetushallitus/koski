@@ -14,9 +14,12 @@ export const TopBar = ({user, saved, titleKey}) => {
 
   return (<header id='topbar' className={saved ? 'saved' : ''}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
-      <h1><Link href="/koski/"><Text name="Koski"/></Link>{titleKey ?
-          <span>{' - '}<Text name={titleKey}/></span> : ''}</h1>{showEdit.map((show) => show && <a className="edit-localizations" onClick={onClick}>{""}</a>)}
-      <span className="save-info"><Text name="Kaikki muutokset tallennettu."/></span>
+      <h1>
+          <Link href="/koski/"><Text name="Koski"/></Link>
+          {titleKey ? <span>{' - '}<Text name={titleKey}/></span> : ''}
+      </h1>
+      {showEdit.map((show) => show && <a className="edit-localizations" onClick={onClick}>{""}</a>)}
+      <span className="save-info"><Text name="Kaikki muutokset tallennettu." edit="false"/></span>
       <UserInfo user={user}/>
     </header>
   )
