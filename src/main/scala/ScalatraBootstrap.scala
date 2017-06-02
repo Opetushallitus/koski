@@ -41,6 +41,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val parallels = List(
       Future { KoskiJsonSchemaValidator.henkilöSchema },
       Future { application.perustiedotIndexer.init},
+      Future { application.tiedonsiirtoService.init },
       Future { application.scheduledTasks.toString },
       Future { application.tiedonsiirtoService.toString },
       Future { application.localizationRepository.createMissing() }

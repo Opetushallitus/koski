@@ -24,8 +24,11 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util._
 import io.prometheus.client.Counter
+import org.http4s.EntityEncoder
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
+
+import scala.concurrent.Future
 
 
 class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
@@ -72,7 +75,7 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
 
     val doc: Map[String, Any] = ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters),
-      "sort" -> Map("aikaleima" -> "desc")
+      "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     ))
 
     val rows: Seq[TiedonsiirtoDocument] = try {
@@ -239,6 +242,25 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
   }
+
+  lazy val init = {
+    setupIndex
+  }
+
+  def setupIndex = {
+    val mappings: Map[String, Any] = Map("properties" -> Map(
+      "virheet" -> Map(
+        "properties" -> Map(
+          "key" -> Map(
+            "type" -> "text"
+          )
+        ),
+        "dynamic" -> false
+      )
+    ))
+    Http.runTask(elasticSearch.http.put(uri"/koski-index/_mapping/tiedonsiirto", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+  }
+
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
