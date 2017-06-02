@@ -2,13 +2,11 @@ package fi.oph.koski.tiedonsiirto
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
-import java.util.Date
 
-import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow}
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
@@ -21,7 +19,6 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util._
@@ -47,27 +44,32 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
   }
 
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
-    def findFromElastic(oppilaitos: Option[String], pageInfo: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoDocument] = timed("findByOrganisaatio") {
-      val doc = Json.toJValue(Map(
-        "query" -> Map()
-      )) // TODO: filter by oppilaitos, do pagination, access rights
+    haeTiedonsiirrot(filtersFrom(query), query.oppilaitos, query.paginationSettings)
+  }
 
-      try {
-        val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[TiedonsiirtoDocument])
-      } catch {
-        case e: HttpStatusException if e.status == 400 =>
-          logger.warn(e.getMessage)
-          Nil
-      }
-    }
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+    haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
+  }
 
+  private def filtersFrom(query: TiedonsiirtoQuery): List[Map[String, Any]] = Nil // TODO: filter by oppilaitos, do pagination, access rights
+
+  private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-    val rows: Seq[TiedonsiirtoDocument] = findFromElastic(query.oppilaitos, query.paginationSettings)
+    val doc = Json.toJValue(Map(
+      "query" -> ElasticSearch.allFilter(filters)
+    )) // TODO: filter by oppilaitos, do pagination, access rights
 
+    val rows: Seq[TiedonsiirtoDocument] = try {
+      val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+      (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[TiedonsiirtoDocument])
+    } catch {
+      case e: HttpStatusException if e.status == 400 =>
+        logger.warn(e.getMessage)
+        Nil
+    }
 
-    val oppilaitosResult = query.oppilaitos match {
+    val oppilaitosResult: Either[HttpStatus, Option[Oppilaitos]] = oppilaitosOid match {
       case Some(oppilaitosOid) =>
         val oppilaitos: Option[Oppilaitos] = organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).flatMap(_.toOppilaitos)
         oppilaitos match {
@@ -80,21 +82,10 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
 
     oppilaitosResult.right.map { oppilaitos =>
       val converted: Tiedonsiirrot = Tiedonsiirrot(toHenkilönTiedonsiirrot(rows), oppilaitos = oppilaitos.map(_.toOidOrganisaatio))
-      PaginatedResponse(query.paginationSettings, converted, rows.length)
+      PaginatedResponse(paginationSettings, converted, rows.length)
     }
   }
 
-  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
-    haeTiedonsiirrot(query.copy(paginationSettings = None)).right.map { tiedonsiirrot =>
-      val result = tiedonsiirrot.result.copy(henkilöt = ListPagination.applyPagination(
-        query.paginationSettings,
-        tiedonsiirrot.result.henkilöt
-          .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.nonEmpty) } }
-          .map(v => v.copy(rivit = v.rivit.filter(_.virhe.nonEmpty)))
-      ).toList)
-      PaginatedResponse(query.paginationSettings, result, result.henkilöt.length)
-    }
-  }
 
   def storeTiedonsiirtoResult(implicit koskiSession: KoskiSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
     if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {

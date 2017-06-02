@@ -27,3 +27,16 @@ case class ElasticSearch(config: Config) extends Logging {
     Http.runTask(http.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
 
 }
+
+object ElasticSearch {
+  def allFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
+    case Nil => Map.empty
+    case _ => Map(
+      "bool" -> Map(
+        "must" -> List(
+          queries
+        )
+      )
+    )
+  }
+}
