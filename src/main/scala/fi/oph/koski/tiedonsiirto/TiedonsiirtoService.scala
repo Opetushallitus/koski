@@ -2,22 +2,26 @@ package fi.oph.koski.tiedonsiirto
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
+import java.util.Date
 
 import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow}
+import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.http.Http._
+import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.Json._
+import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util._
@@ -25,23 +29,29 @@ import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
+
+class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
 
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
-    def find(oppilaitos: Option[String], pageInfo: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
-      val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
-      var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
-      oppilaitos.foreach { oppilaitos =>
-        val oid: JValue = JArray(List(JObject(("oid", JString(oppilaitos)))))
-        tableQuery = tableQuery.filter(_.oppilaitos @> oid)
+    def findFromElastic(oppilaitos: Option[String], pageInfo: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoDocument] = timed("findByOrganisaatio") {
+      val doc = Json.toJValue(Map(
+        "query" -> Map()
+      )) // TODO: filter by oppilaitos, do pagination
+
+      try {
+        val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[TiedonsiirtoDocument])
+      } catch {
+        case e: HttpStatusException if e.status == 400 =>
+          logger.warn(e.getMessage)
+          Nil
       }
-      runDbSync(QueryPagination.applyPagination(tableQuery.sortBy(_.id.desc), pageInfo).result)
     }
 
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-    val rows: Seq[TiedonsiirtoRow] = find(query.oppilaitos, query.paginationSettings)
+    val rows: Seq[TiedonsiirtoDocument] = findFromElastic(query.oppilaitos, query.paginationSettings)
 
 
     val oppilaitosResult = query.oppilaitos match {
@@ -78,25 +88,58 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
       return
     }
 
-    val oppija = data.flatMap(extractHenkilö(_, oppijaOid))
-    val lahdejarjestelma = data.flatMap(extractLahdejarjestelma)
-    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio)).map(toJValue)
+    val henkilö = data.flatMap(extractHenkilö(_, oppijaOid))
+    val lahdejarjestelma: Option[String] = data.flatMap(extractLahdejarjestelma)
+    val oppilaitokset: Option[List[OidOrganisaatio]] = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio))
     val koulutustoimija: Option[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio)))
 
     val juuriOrganisaatio = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatio
 
-    juuriOrganisaatio.foreach(org => {
-      val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
+    juuriOrganisaatio.foreach((org: OrganisaatioWithOid) => {
+      val (data: Option[JValue], virheet: Option[JValue]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
       runDbSync {
-        Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet, row.lahdejarjestelma) } +=(koskiSession.oid, org.oid, oppija, oppilaitokset, data, virheet, lahdejarjestelma)
+        Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet, row.lahdejarjestelma) } +=
+          (koskiSession.oid, org.oid, henkilö, oppilaitokset.map(toJValue), data, virheet, lahdejarjestelma)
       }
+
+      storeToElasticSearch(henkilö, org, oppilaitokset, data, virheet, lahdejarjestelma)
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
         mailer.sendMail(org.oid)
       }
     })
+  }
+
+
+  private def storeToElasticSearch(henkilö: Option[JValue] /*TODO: why not tiedonsiirtooppija*/, org: OrganisaatioWithOid,
+                                   oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
+                                   virheet: Option[JValue], lahdejarjestelma: Option[String])(implicit koskiSession: KoskiSession) = {
+    val idValue: String = henkilö.flatMap { henkilö =>
+      val hetuTaiOid = henkilö.extract[HetuTaiOid]
+      hetuTaiOid.hetu.orElse(hetuTaiOid.oid)
+    }.getOrElse("")
+
+    val document = TiedonsiirtoDocument(koskiSession.oid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet, lahdejarjestelma)
+
+    val jsonLines: Seq[Map[String, Any]] = List(
+      Map("update" -> Map("_id" -> (org.oid + "_" + idValue), "_index" -> "koski", "_type" -> "tiedonsiirto")),
+      Map("doc_as_upsert" -> true, "doc" -> document)
+    )
+
+    val response = Http.runTask(elasticSearch.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
+
+
+    val errors = (response \ "errors").extract[Boolean]
+    if (errors) {
+      val msg = s"Elasticsearch indexing failed: ${Json.writePretty(response)}"
+      logger.error(msg)
+      Left(KoskiErrorCategory.internalError(msg))
+    } else {
+      val itemResults = (response \ "items").extract[List[JValue]].map(_ \ "update" \ "_shards" \ "successful").map(_.extract[Int])
+      Right(itemResults.sum)
+    }
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
@@ -169,6 +212,13 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     })
   }
 
+  private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoDocument]): List[HenkilönTiedonsiirrot] = {
+    tiedonsiirrot.map { row =>
+      val rivi = TiedonsiirtoRivi(Math.random().toInt /*TODO tarvitaanko id?*/, row.aikaleima.toLocalDateTime, row.oppija, row.oppilaitokset.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
+      HenkilönTiedonsiirrot(row.oppija, List(rivi))
+    }.toList
+  }
+/*
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]): List[HenkilönTiedonsiirrot] = {
     implicit val ordering = DateOrdering.localDateTimeReverseOrdering
     tiedonsiirrot.groupBy { t =>
@@ -183,7 +233,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
         }
         HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
     }.toList.sortBy(_.rivit.head.aika)
-  }
+  }*/
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
@@ -195,3 +245,5 @@ case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppil
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: JValue)
+
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], virheet: Option[JValue], lähdejärjestelmä: Option[String], aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
