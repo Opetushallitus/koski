@@ -21,7 +21,7 @@ import org.json4s.jackson.{JsonMethods, Serialization}
 import scala.util.Try
 
 object GenericJsonFormats {
-  val genericFormats: Formats =  new DefaultFormats {
+  val genericFormats: Formats = new DefaultFormats {
     override def dateFormatter = {
       val format = super.dateFormatter
       format.setTimeZone(DefaultFormats.UTC)

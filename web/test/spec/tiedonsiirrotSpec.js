@@ -11,16 +11,16 @@ describe('Tiedonsiirrot', function() {
     insertExample('tiedonsiirto - epäonnistunut.json'),
     insertExample('tiedonsiirto - onnistunut.json'),
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
+    refreshIndices,
     tiedonsiirrot.openPage
   )
   
   describe("Tiedonsiirtoloki", function() {
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
-        ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
-        ['270303-281N', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', ''],
-        ['', ' ', '', 'virhe', 'tiedot'],
         ['', '', '', 'virhe', 'tiedot'],
+        ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
+        ['270303-281N', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', '']
       ])
     })
   })

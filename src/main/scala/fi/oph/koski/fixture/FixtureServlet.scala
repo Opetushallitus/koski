@@ -9,4 +9,8 @@ class FixtureServlet(val application: KoskiApplication) extends ApiServlet with 
     application.fixtureCreator.resetFixtures
     application.elasticSearch.refreshIndex
   }
+
+  post("/refresh") {
+    application.elasticSearch.refreshIndex
+  }
 }

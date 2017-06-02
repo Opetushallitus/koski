@@ -11,10 +11,11 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json._
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.json.Json.toJValue
+import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateTimeSerializer}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
+import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -28,10 +29,12 @@ import org.json4s.{JValue, _}
 
 
 class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
+  implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer
+
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
 
   def deleteAll: Unit = {
-    val doc = Json.toJValue(Map("query" -> Map("match_all" -> Map())))
+    val doc = toJValue(Map("query" -> Map("match_all" -> Map())))
 
     val deleted = Http.runTask(elasticSearch.http
       .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
@@ -68,7 +71,8 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
     val doc: Map[String, Any] = ElasticSearch.applyPagination(paginationSettings, Map(
-      "query" -> ElasticSearch.allFilter(filters)
+      "query" -> ElasticSearch.allFilter(filters),
+      "sort" -> Map("aikaleima" -> "desc")
     ))
 
     val rows: Seq[TiedonsiirtoDocument] = try {
@@ -159,6 +163,7 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
+    // TODO: hae elasticsearchista
     def getOrganisaatio(oid: String) = {
       organisaatioRepository.getOrganisaatio(oid) match {
         case s@Some(org) => s
@@ -234,22 +239,6 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
   }
-/*
-  private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]): List[HenkilönTiedonsiirrot] = {
-    implicit val ordering = DateOrdering.localDateTimeReverseOrdering
-    tiedonsiirrot.groupBy { t =>
-      val oppijanTunniste = t.oppija.map(Json.fromJValue[HetuTaiOid])
-      oppijanTunniste.flatMap(_.oid).orElse(oppijanTunniste.map(_.hetu))
-    }.map {
-      case (x, rows) =>
-        val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
-        val rivit = rows.map { row =>
-          val oppilaitos: List[OidOrganisaatio] = row.oppilaitos.flatMap(_.extractOpt[List[OidOrganisaatio]]).toList.flatten.distinct
-          TiedonsiirtoRivi(row.id, row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)
-        }
-        HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
-    }.toList.sortBy(_.rivit.head.aika)
-  }*/
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
