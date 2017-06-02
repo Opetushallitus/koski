@@ -5,6 +5,7 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
 import Http._
+import fi.oph.koski.util.PaginationSettings
 
 /**
   * Created by jpaanane on 02/06/2017.
@@ -38,5 +39,12 @@ object ElasticSearch {
         )
       )
     )
+  }
+
+  def applyPagination(paginationSettings: Option[PaginationSettings], doc: Map[String, Any]) = paginationSettings match {
+    case None => doc
+    case Some(pagination) => doc ++ Map(
+      "from" -> pagination.page * pagination.size,
+      "size" -> pagination.size)
   }
 }

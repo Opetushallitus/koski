@@ -51,17 +51,17 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
     haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
-  private def filtersFrom(query: TiedonsiirtoQuery): List[Map[String, Any]] = Nil // TODO: filter by oppilaitos, do pagination, access rights
+  private def filtersFrom(query: TiedonsiirtoQuery): List[Map[String, Any]] = Nil // TODO: filter by oppilaitos, access rights
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-    val doc = Json.toJValue(Map(
+    val doc: Map[String, Any] = ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters)
-    )) // TODO: filter by oppilaitos, do pagination, access rights
+    ))
 
     val rows: Seq[TiedonsiirtoDocument] = try {
-      val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+      val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
       (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[TiedonsiirtoDocument])
     } catch {
       case e: HttpStatusException if e.status == 400 =>

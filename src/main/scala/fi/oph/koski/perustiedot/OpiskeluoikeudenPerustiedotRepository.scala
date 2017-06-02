@@ -121,11 +121,9 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
       case _ => ElasticSearch.allFilter(elasticFilters)
     }
 
-    val doc = Json.toJValue(Map(
+    val doc = Json.toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
       "query" -> elasticQuery,
-      "sort" -> elasticSort,
-      "from" -> pagination.page * pagination.size,
-      "size" -> pagination.size
+      "sort" -> elasticSort)
     ))
 
     index.runSearch(doc)
