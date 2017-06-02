@@ -58,8 +58,7 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
-    // TODO: filter by oppilaitos
-    tallentajaOrganisaatioFilter
+    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilter
   }
 
   private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): List[Map[String, Any]] =
