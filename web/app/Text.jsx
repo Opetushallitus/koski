@@ -20,6 +20,7 @@ export default ({name, ignoreMissing, lang, edit}) => {
 }
 
 const TextEditor = ({name, lang}) => {
+  let currentValue = t(name, false, lang)
   let changed = Atom(false)
   let onClick = e => {
     e.stopPropagation()
@@ -27,13 +28,16 @@ const TextEditor = ({name, lang}) => {
   }
 
   let onInput = (event) => {
-    changed.set(true)
-    changeText(name, event.target.textContent, lang)
+    var newValue = event.target.textContent
+    if (newValue != currentValue) {
+      currentValue = newValue
+      changed.set(true)
+      changeText(name, newValue, lang)
+    }
   }
   let wasMissing = !t(name, true, lang)
   let missingP = changed.map(c => !c && wasMissing)
   let classNameP = missingP.map(missing => 'editing' + (missing ? ' missing': ''))
-  let editableValue = t(name, false, lang)
 
-  return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onKeyUp={onInput} onClick={onClick}>{editableValue}</span>)
+  return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onKeyUp={onInput} onInput={onInput} onClick={onClick}>{currentValue}</span>)
 }
