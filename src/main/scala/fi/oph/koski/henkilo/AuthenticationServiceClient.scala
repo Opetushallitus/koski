@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -11,7 +12,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
-import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
+import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
@@ -40,9 +41,9 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): AuthenticationServiceClient = config.getString("opintopolku.virkailija.url") match {
+  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): AuthenticationServiceClient = config.getString("opintopolku.virkailija.url") match {
     case "mock" => new MockAuthenticationServiceClientWithDBSupport(db)
-    case _ => RemoteAuthenticationServiceClient(config, perustiedotRepository, perustiedotIndexer)
+    case _ => RemoteAuthenticationServiceClient(config, perustiedotRepository, elasticSearch)
   }
 
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
@@ -81,7 +82,7 @@ object AuthenticationServiceClient {
 }
 
 object RemoteAuthenticationServiceClient {
-  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): RemoteAuthenticationServiceClient = {
+  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): RemoteAuthenticationServiceClient = {
     val virkailijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
@@ -89,7 +90,7 @@ object RemoteAuthenticationServiceClient {
     val oidServiceHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
     val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp, perustiedotRepository, perustiedotIndexer)
+      new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp, perustiedotRepository, elasticSearch)
     } else {
       new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
     }
@@ -146,14 +147,14 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
 }
 
-class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, indexer: OpiskeluoikeudenPerustiedotIndexer) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {
+class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
     oids.map { oid =>
       found.get(oid) match {
         case Some(henkilö) => henkilö
         case None =>
-          indexer.refreshIndex
+          elasticSearch.refreshIndex
           perustiedotRepository.findHenkilöPerustiedot(oid).map { henkilö =>
             OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, 0)
           }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, 0))

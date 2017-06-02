@@ -11,7 +11,7 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
-case class ErrorDetail(key: String, message: AnyRef) {
+case class ErrorDetail(key: String, message: AnyRef) { // TODO: maybe use a common message format here?
   override def toString = key + " (" + Json.write(message) + ")"
 }
 

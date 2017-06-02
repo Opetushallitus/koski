@@ -10,7 +10,7 @@ import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersi
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeudenPerustiedotIndexer}
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotIndexer}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 

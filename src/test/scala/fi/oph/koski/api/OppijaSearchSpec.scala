@@ -56,7 +56,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
       OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(s"1.2.246.562.24.000000000000$i", name, name, name), stadinAmmattiopisto, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, tilaKesken))), None)
     }
     KoskiApplicationForTests.perustiedotIndexer.updateBulk(tiedot, replaceDocument = true)
-    KoskiApplicationForTests.perustiedotIndexer.refreshIndex
+    KoskiApplicationForTests.elasticSearch.refreshIndex
     tiedot.map(t => t.henkilö.oid).toList
   }
 }

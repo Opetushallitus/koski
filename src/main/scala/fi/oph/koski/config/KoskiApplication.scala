@@ -42,7 +42,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
-  lazy val authenticationServiceClient = AuthenticationServiceClient(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
+  lazy val authenticationServiceClient = AuthenticationServiceClient(config, masterDatabase.db, perustiedotRepository, elasticSearch)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository, directoryClient)
   lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
   lazy val masterDatabase = KoskiDatabase.master(config)

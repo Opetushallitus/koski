@@ -103,9 +103,6 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
     observable
   }
 
-  def refreshIndex =
-    Http.runTask(index.elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-
   private def setupIndex: Boolean = {
     val settings = Json.parse("""
     {

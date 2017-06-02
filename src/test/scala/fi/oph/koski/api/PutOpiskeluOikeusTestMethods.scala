@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
@@ -24,7 +25,9 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = Json.write(oppija, true)
-    put("api/oppija", body = jsonString, headers = headers)(f)
+    val result = put("api/oppija", body = jsonString, headers = headers)(f)
+    KoskiApplicationForTests.elasticSearch.refreshIndex
+    result
   }
 
   def request[A](path: String, contentType: String, content: String, method: String)(f: => A): Unit = {
