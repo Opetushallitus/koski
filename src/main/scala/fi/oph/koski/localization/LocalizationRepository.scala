@@ -35,7 +35,7 @@ trait LocalizationRepository extends Logging {
       try {
         createOrUpdate(missing)
       } catch {
-        case e: Exception => logger.warn("Failed to create missing localizations")
+        case e: Exception => logger.warn(e)("Failed to create missing localizations")
       }
     }
 
