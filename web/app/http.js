@@ -67,6 +67,7 @@ const http = (url, optionsForFetch, options = {}) => {
 }
 
 http.get = (url, options = {}) => http(url, { credentials: 'include' },  options)
+http.delete = (url, options = {}) => http(url, { credentials: 'include', method: 'delete'},  options)
 http.post = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} }, options)
 http.put = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} }, options)
 http.mock = (url, result) => mocks[url] = result

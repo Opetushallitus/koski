@@ -10,3 +10,8 @@ export const saveOrganizationalPreference = (organisaatioOid, type, key, data) =
 export const getOrganizationalPreferences = (organisaatioOid, type) => {
   return Http.cachedGet(`/koski/api/editor/preferences/${organisaatioOid}/${type}`)
 }
+
+export const deleteOrganizationalPreference = (organisaatioOid, type, key) => {
+  return Http.delete(`/koski/api/preferences/${organisaatioOid}/${type}/${key}`).flatMap(() =>
+    Http.cachedGet(`/koski/api/editor/preferences/${organisaatioOid}/${type}`, {force: true}))
+}

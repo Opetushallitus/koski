@@ -6,12 +6,13 @@ import {parseBool, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 import {t} from './i18n'
 
-export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem}) => {
+export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem, isRemovable = () => false, onRemoval, removeText}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 
   enableFilter = parseBool(enableFilter)
   let selectionIndexAtom = Atom(0)
+  let removeIndexAtom = Atom(undefined)
   let queryAtom = Atom(undefined)
   let openAtom = Atom(false)
   selectedP.changes().onValue(() => openAtom.set(false))
@@ -80,6 +81,11 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
     e.stopPropagation()
     onSelectionChanged(option)
   }
+  let selectRemoval = (e, option) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onRemoval(keyValue(option))
+  }
   return (<span>{
     elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
@@ -106,11 +112,27 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
               {
                 allOptions.map((o,i) => {
                   let isNew = isNewItem(allOptions, o, i)
+                  let className = Bacon.combineWith(
+                    (s, r) => s + r,
+                    selectionIndexAtom.map(selectionIndex => 'option' + (i === selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : '')),
+                    removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''))
                   return (<li key={keyValue(o) || displayValue(o)}
-                              className={selectionIndexAtom.map(selectionIndex => 'option' + (i == selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : ''))}
+                              className={className}
                               onMouseDown={(e) => {selectOption(e, o)}}
                               onMouseOver={() => handleMouseOver(allOptions, o)}>
-                    { isNew ? <span><span className="plus">{''}</span>{displayValue(newItem)}</span> : displayValue(o)}
+                    {
+                      isNew ?
+                        <span><span className="plus">{''}</span>{displayValue(newItem)}</span> :
+                        isRemovable(o) ?
+                          <span className="removable-input" title={removeText}>{displayValue(o)}
+                            <a className="remove-value"
+                               onMouseDown={(e) => {selectRemoval(e, o)}}
+                               onMouseOver={() => removeIndexAtom.set(i)}
+                               onMouseLeave={() => removeIndexAtom.set(undefined)}
+                            >{''}</a>
+                          </span> :
+                          displayValue(o)
+                    }
                   </li>)
                 })
               }
