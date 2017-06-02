@@ -32,7 +32,11 @@ trait LocalizationRepository extends Logging {
     logger.info("Creating " + missing.length + " missing localizations: " + Json.write(missing))
 
     if (missing.nonEmpty) {
-      createOrUpdate(missing)
+      try {
+        createOrUpdate(missing)
+      } catch {
+        case e: Exception => logger.warn("Failed to create missing localizations")
+      }
     }
 
     logger.info("done.")
