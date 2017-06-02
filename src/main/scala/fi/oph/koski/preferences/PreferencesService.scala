@@ -8,7 +8,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KoskiSchema, Organisaatiohenkilö, PerusopetukseenValmistavanOpetuksenOppiaine, PerusopetuksenPaikallinenValinnainenOppiaine}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
 
 case class PreferencesService(protected val db: DB) extends Logging with KoskiDatabaseMethods {
@@ -34,6 +33,17 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
           case Left(errors) =>
             KoskiErrorCategory.badRequest.validation.jsonSchema(errors)
         }
+      case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)
+    }
+  }
+
+  def delete(organisaatioOid: String, `type`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
+    if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+
+    prefTypes.get(`type`) match {
+      case Some(klass) =>
+        runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key).delete)
+        HttpStatus.ok
       case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)
     }
   }

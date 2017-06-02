@@ -19,6 +19,13 @@ class PreferencesServlet(val application: KoskiApplication) extends ApiServlet w
     })()
   }
 
+  delete("/:organisaatioOid/:type/:key") {
+    val organisaatioOid = params("organisaatioOid")
+    val `type` = params("type")
+    val key = params("key")
+    renderStatus(service.delete(organisaatioOid, `type`, key)(koskiSession))
+  }
+
   get("/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
