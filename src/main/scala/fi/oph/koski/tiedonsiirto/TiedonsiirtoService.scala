@@ -14,7 +14,7 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserInfo, KoskiUserRepository}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -51,7 +51,18 @@ class TiedonsiirtoService(val db: DB, elasticSearch: ElasticSearch, mailer: Tied
     haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
-  private def filtersFrom(query: TiedonsiirtoQuery): List[Map[String, Any]] = Nil // TODO: filter by oppilaitos, access rights
+  private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
+    // TODO: filter by oppilaitos
+    tallentajaOrganisaatioFilter
+  }
+
+  private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): List[Map[String, Any]] =
+    if (session.hasGlobalReadAccess) {
+      Nil
+    } else {
+      List(Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))))
+    }
+
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))

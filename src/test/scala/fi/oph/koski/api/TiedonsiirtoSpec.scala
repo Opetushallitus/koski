@@ -110,13 +110,9 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
 
-      putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(400)
-      }
-
       val tiedonsiirtorivit: List[TiedonsiirtoRivi] = getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).filter(_.oppija.toList.flatMap(_.hetu).contains(eerola.hetu.get))
       val hetutRiveiltä = tiedonsiirtorivit.flatMap(_.oppija.flatMap(_.hetu)).filter(_ == eerola.hetu.get)
-      hetutRiveiltä should equal(List(eerola.hetu.get, eerola.hetu.get))
+      hetutRiveiltä should equal(List(eerola.hetu.get))
     }
 
     "näytetään virheelliset" in {
