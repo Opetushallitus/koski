@@ -38,18 +38,23 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
   }
 
   /**
-    * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
+    * Update (replace) or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
     */
-  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot), insertMissing = true)
+  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot), replaceDocument = true)
 
-  def updateBulk(items: Seq[WithId], insertMissing: Boolean): Either[HttpStatus, Int] = {
+  /*
+   * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
+   *
+   * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
+   */
+  def updateBulk(items: Seq[WithId], replaceDocument: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }
     val jsonLines = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
-        Map("doc_as_upsert" -> insertMissing, "doc" -> perustiedot)
+        Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
     }
     val response = Http.runTask(index.elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
@@ -84,7 +89,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
         }.toList
-        val changed = updateBulk(perustiedot, insertMissing = true) match {
+        val changed = updateBulk(perustiedot, replaceDocument = true) match {
           case Right(count) => count
           case Left(_) => 0 // error already logged
         }
