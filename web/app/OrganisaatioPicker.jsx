@@ -23,7 +23,7 @@ export default BaconComponent({
     let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = 'kaikki' } = this.props
 
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
-    let orgName = org => <span>{t(org.nimi)} {org.aktiivinen ? null : <span>{' ('}<Text name="lakkautettu"/>{')'}</span>}</span>
+    let orgName = org => <span><Highlight search={searchString}>{t(org.nimi)}</Highlight> {org.aktiivinen ? null : <span>{' ('}<Text name="lakkautettu"/>{')'}</span>}</span>
 
     let renderTree = (orgs) => {
       let filteredOrgs = orgs.filter(shouldShowOrg)
@@ -31,7 +31,7 @@ export default BaconComponent({
         <li key={i}>
           {
             canSelectOrg(org)
-              ? <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{orgName(org)}</Highlight></a>
+              ? <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}>{orgName(org)}</a>
               : <span>{orgName(org)}</span>
           }
           <ul className="aliorganisaatiot">
