@@ -115,7 +115,7 @@ function Page(mainElement) {
         var input = el()
         switch (inputType(input)) {
           case "DROPDOWN": // Dropdown.jsx
-            return textsOf(input.find('.option'))
+            return textsOf(input.find('.option')).map(sanitizeText)
           default:
             throw new Error("getOptions not supported for " + inputType(input))
         }

@@ -208,6 +208,9 @@ function textsOf(elements) {
   return toArray(elements).map(function(el) { return $(el).text().trim() })
 }
 
+function sanitizeText(text) {
+  return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/|||/g, "")
+}
 
 function extractAsText(el, subElement) {
   if (isJQuery(el) && el.length > 1) {
@@ -234,9 +237,6 @@ function extractAsText(el, subElement) {
   }
   function extractMultiple(elements) {
     return sanitizeText(toArray(elements).map(extractSubElement).filter(nonEmpty).join(" ")).trim()
-  }
-  function sanitizeText(text) {
-    return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/||/g, "")
   }
   function extractSubElement(el) {
     return extractAsText(el, true)

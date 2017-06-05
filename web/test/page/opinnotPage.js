@@ -352,6 +352,16 @@ function Property(elem) {
       triggerEvent(findSingle('.remove-value', elem()), 'click')
       return KoskiPage().verifyNoError()
     },
+    removeFromDropdown: function(value) {
+      return function() {
+        var dropdownElem = findSingle('.dropdown', elem())
+        triggerEvent(findSingle('.select', dropdownElem), 'click')
+        return wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible)()
+          .then(function() {
+            triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown')
+          }).then(wait.forAjax)
+      }
+    },
     removeItem: function(index) {
       return function() {
         triggerEvent(findSingle('li:eq(' + index + ') .remove-item', elem()), 'click')

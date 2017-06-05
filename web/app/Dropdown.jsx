@@ -124,7 +124,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                       isNew ?
                         <span><span className="plus">{''}</span>{displayValue(newItem)}</span> :
                         isRemovable(o) ?
-                          <span className="removable-input" title={removeText}>{displayValue(o)}
+                          <span className="removable-option" title={removeText}>{displayValue(o)}
                             <a className="remove-value"
                                onMouseDown={(e) => {selectRemoval(e, o)}}
                                onMouseOver={() => removeIndexAtom.set(i)}

@@ -998,6 +998,14 @@ describe('Perusopetus', function() {
                   expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
                 })
 
+                describe('Poistettaessa oppiaine', function() {
+                  before(uusiOppiaine.removeFromDropdown('Tanssi ja liike'))
+
+                  it('Oppiainetta ei löydy enää listalta', function() {
+                    expect(uusiOppiaine.getOptions()).to.not.include('Tanssi ja liike')
+                  })
+                })
+
                 after(editor.cancelChanges)
               })
             })
