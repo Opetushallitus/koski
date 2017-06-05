@@ -40,7 +40,7 @@ describe('Tiedonsiirrot', function() {
     before(tiedonsiirrot.openYhteenveto())
 
     it('Näytetään', function() {
-      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Stadin ammattiopisto', 'Aalto-yliopisto'])
+      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'Stadin ammattiopisto'])
     })
   })
 
