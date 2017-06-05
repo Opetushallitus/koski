@@ -15,13 +15,14 @@ import rx.lang.scala.Observable
 import slick.lifted.Query
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
+import fi.oph.koski.util.QueryPagination.applyPagination
 
 class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
-    streamingQuery(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination)
+    streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }
 
-  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
+  def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
     val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
@@ -62,15 +63,6 @@ class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
-
-    streamingQuery(sorted, pagination)
+    streamingQuery(applyPagination(sorted, pagination))
   }
-
-  private def streamingQuery[E, U, C[_]](query: Query[E, U, C], pagination: Option[PaginationSettings]) = {
-    import ReactiveStreamsToRx._
-    val paginated = QueryPagination.applyPagination(query, pagination)
-    // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
-    db.stream(paginated.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
-  }
-
 }

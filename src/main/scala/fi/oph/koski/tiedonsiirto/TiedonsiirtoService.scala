@@ -17,6 +17,7 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
+import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util._
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
@@ -116,7 +117,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     juuriOrganisaatio.foreach((org: OrganisaatioWithOid) => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-      storeToElasticSearch(henkilö, org, oppilaitokset, data, virheet, lahdejarjestelma)
+      storeToElasticSearch(henkilö, org, oppilaitokset, data, virheet, lahdejarjestelma, koskiSession.oid, new Timestamp(System.currentTimeMillis))
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
@@ -126,15 +127,16 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   }
 
 
-  private def storeToElasticSearch(henkilö: Option[JValue] /*TODO: why not tiedonsiirtooppija*/, org: OrganisaatioWithOid,
+  def storeToElasticSearch(henkilö: Option[JValue] /*TODO: why not tiedonsiirtooppija*/, org: OrganisaatioWithOid,
                                    oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
-                                   virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String])(implicit koskiSession: KoskiSession) = {
+                                   virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
+                                    userOid: String, aikaleima: Timestamp) = {
     val idValue: String = henkilö.flatMap { henkilö =>
       val hetuTaiOid = henkilö.extract[HetuTaiOid]
       hetuTaiOid.hetu.orElse(hetuTaiOid.oid)
     }.getOrElse("")
 
-    val document = TiedonsiirtoDocument(koskiSession.oid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma)
+    val document = TiedonsiirtoDocument(userOid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
 
     val documentId = org.oid + "_" + idValue
     val json = Map("doc_as_upsert" -> true, "doc" -> document)
@@ -153,32 +155,39 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
+    import fi.oph.koski.date.DateOrdering._
+    var ordering = sorting.field match {
+      case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin}
+      case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
+    }
+    if (sorting.descending) ordering = ordering.reverse
+
     val query = Json.parse("""{
                   |  "size": 0,
                   |  "aggs": {
                   |  	"organisaatio": {
-                  |		"terms": { "field": "tallentajaOrganisaatioOid.keyword" },
-                  |		"aggs": {
-                  |			"oppilaitos": {
-                  |				"terms": { "field": "oppilaitokset.oid.keyword" },
-                  |				"aggs": {
-                  |					"käyttäjä": {
-                  |						"terms": { "field": "tallentajaKäyttäjäOid.keyword" },
-                  |           "aggs": {
-                  |             "lähdejärjestelmä": {
-                  |               "terms": { "field": "lähdejärjestelmä.keyword" },
-                  |   						"aggs": {
-                  |                 "viimeisin" : { "max" : { "field" : "aikaleima" } },
-                  |				    			"fail": {
-                  |						    		"filter": { "term": { "success": false }}}
-                  |							    }
-                  |					    	}
+                  |		  "terms": { "field": "tallentajaOrganisaatioOid.keyword", "size" : 20000 },
+                  |		  "aggs": {
+                  |			  "oppilaitos": {
+                  |				  "terms": { "field": "oppilaitokset.oid.keyword", "size" : 20000 },
+                  | 				"aggs": {
+                  |	  				"käyttäjä": {
+                  |		  				"terms": { "field": "tallentajaKäyttäjäOid.keyword", "size" : 20000 },
+                  |             "aggs": {
+                  |               "lähdejärjestelmä": {
+                  |                 "terms": { "field": "lähdejärjestelmä.keyword", "size" : 20000, "missing": "-" },
+                  |   				  		"aggs": {
+                  |                   "viimeisin" : { "max" : { "field" : "aikaleima" } },
+                  |				    		  	"fail": {
+                  |						    	  	"filter": { "term": { "success": false }}}
+                  |		  					    }
+                  |			  		    	}
+                  |               }
                   |             }
-                  |           }
-                  |					}
-                  |				}
-                  |			}
-                  |		}
+                  |				  	}
+                  |				  }
+                  |		  	}
+                  |		  }
                   |  	}
                   |  }
                   |}""".stripMargin)
@@ -205,7 +214,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
-    }.getOrElse(Nil)
+    }.getOrElse(Nil).sorted(ordering)
   }
 
   private def getOrganisaatio(oid: String) = organisaatioRepository.getOrganisaatio(oid).map(_.toOidOrganisaatio).getOrElse(OidOrganisaatio(oid, Some(LocalizedString.unlocalized(oid))))
@@ -266,6 +275,11 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
           )
         ),
         "dynamic" -> false
+      ),
+      "data" -> Map(
+        "properties" -> Map(
+        ),
+        "dynamic" -> false
       )
     ))
     Http.runTask(elasticSearch.http.put(uri"/koski-index/_mapping/tiedonsiirto", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
@@ -283,4 +297,4 @@ case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Opt
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp)

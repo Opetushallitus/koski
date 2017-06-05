@@ -24,7 +24,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
       // JSON queries go to PostgreSQL
-      opiskeluoikeusQueryService.streamingQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
+      opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
         case (opiskeluoikeusRow, henkilöRow) =>  OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
       }
     } else {

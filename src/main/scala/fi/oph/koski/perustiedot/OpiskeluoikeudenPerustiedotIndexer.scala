@@ -84,7 +84,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
   def reIndex(pagination: Option[PaginationSettings] = None) = {
     logger.info("Starting elasticsearch re-indexing")
     val bufferSize = 1000
-    val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
