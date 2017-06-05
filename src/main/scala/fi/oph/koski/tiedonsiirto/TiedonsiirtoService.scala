@@ -17,7 +17,6 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
-import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util._
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}

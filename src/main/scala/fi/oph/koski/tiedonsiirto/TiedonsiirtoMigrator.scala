@@ -44,5 +44,6 @@ class TiedonsiirtoMigrator(tiedonsiirtoService: TiedonsiirtoService, val db: DB)
 object TiedonsiirtoMigrator extends App {
   val koski = KoskiApplication.apply
   val minId = sys.env.getOrElse("MIN_ID", "0").toInt
+  koski.tiedonsiirtoService.init
   new TiedonsiirtoMigrator(koski.tiedonsiirtoService, koski.replicaDatabase.db).runMigration(minId)
 }
