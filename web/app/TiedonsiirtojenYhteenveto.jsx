@@ -20,7 +20,7 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => tiedonsiirrotC
                     <SortingTableHeader field="aika" titleKey='Viimeisin siirto'/>
                     <th className="siirretyt"><Text name="Siirrettyjen lukumäärä"/></th>
                     <th className="virheelliset"><Text name="Virheellisten lukumäärä"/></th>
-                    <th className="opiskeluoikeudet"><Text name="Opiskelu-oikeuksien lukumäärä"/></th>
+                    <th className="opiskeluoikeudet"><Text name="Onnistuneiden lukumäärä"/></th>
                     <th className="lähdejärjestelmä"><Text name="Lähdejärjestelmä"/></th>
                     <th className="lähdejärjestelmä"><Text name="Käyttäjä"/></th>
                   </tr>
@@ -32,7 +32,7 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => tiedonsiirrotC
                        <td className="aika">{fecha.format(fecha.parse(rivi.viimeisin, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY H:mm')}</td>
                        <td className="siirretyt">{rivi.siirretyt}</td>
                        <td className="virheelliset">{ rivi.virheelliset ? <Link href={'/koski/tiedonsiirrot/virheet?oppilaitos=' + rivi.oppilaitos.oid}>{rivi.virheelliset}</Link> : '0'}</td>
-                       <td className="opiskeluoikeudet">{rivi.opiskeluoikeudet}</td>
+                       <td className="opiskeluoikeudet">{rivi.onnistuneet}</td>
                        <td className="lähdejärjestelmä">{rivi.lähdejärjestelmä ? t(rivi.lähdejärjestelmä.nimi) : ''}</td>
                        <td className="käyttäjä">{rivi.käyttäjä.käyttäjätunnus || rivi.käyttäjä.oid}</td>
                      </tr>)
