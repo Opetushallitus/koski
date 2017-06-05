@@ -209,7 +209,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
         siirretyt = (lähdejärjestelmäResults \ "doc_count").extract[Int]
         epäonnistuneet = (lähdejärjestelmäResults \ "fail" \ "doc_count").extract[Int]
         onnistuneet = siirretyt - epäonnistuneet
-        viimeisin = (lähdejärjestelmäResults \ "viimeisin" \ "value").extract[LocalDateTime]
+        viimeisin = new Timestamp((lähdejärjestelmäResults \ "viimeisin" \ "value").extract[Long]).toLocalDateTime
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
