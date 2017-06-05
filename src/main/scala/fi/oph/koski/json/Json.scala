@@ -18,10 +18,11 @@ import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.{JsonMethods, Serialization}
 
+import scala.Double
 import scala.util.Try
 
 object GenericJsonFormats {
-  val genericFormats: Formats =  new DefaultFormats {
+  val genericFormats: Formats = new DefaultFormats {
     override def dateFormatter = {
       val format = super.dateFormatter
       format.setTimeZone(DefaultFormats.UTC)
@@ -133,6 +134,7 @@ object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
 object LocalDateTimeSerializer extends CustomSerializer[LocalDateTime](format => (
   {
     case JString(s) => ExtractionHelper.tryExtract(LocalDateTime.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
+    case JDouble(i) => ExtractionHelper.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
     case JInt(i) => ExtractionHelper.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
     case JNull => throw new InvalidRequestException(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
   },

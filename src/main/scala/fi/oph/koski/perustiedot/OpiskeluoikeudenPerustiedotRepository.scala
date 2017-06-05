@@ -2,6 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
+import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -45,13 +46,6 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
         "query" -> query
       )
     )
-    def allFilter(queries: List[Map[String, Any]]) = Map(
-      "bool" -> Map(
-        "must" -> List(
-          queries
-        )
-      )
-    )
     val elasticSort = sorting match {
       case Ascending("nimi") => nimi("asc")
       case Ascending("luokka") => luokka("asc")
@@ -80,7 +74,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
 
     val suoritusFilter = suoritusFilters match {
       case Nil => Nil
-      case filters => List(nestedFilter("suoritukset", allFilter(filters)))
+      case filters => List(nestedFilter("suoritukset", ElasticSearch.allFilter(filters)))
     }
 
     val elasticFilters: List[Map[String, Any]] = filters.flatMap {
@@ -124,14 +118,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
 
     val elasticQuery = elasticFilters match {
       case Nil => Map.empty
-      case _ => allFilter(elasticFilters)
+      case _ => ElasticSearch.allFilter(elasticFilters)
     }
 
-    val doc = Json.toJValue(Map(
+    val doc = Json.toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
       "query" -> elasticQuery,
-      "sort" -> elasticSort,
-      "from" -> pagination.page * pagination.size,
-      "size" -> pagination.size
+      "sort" -> elasticSort)
     ))
 
     index.runSearch(doc)

@@ -51,7 +51,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
     if (items.isEmpty) {
       return Right(0)
     }
-    val jsonLines = items.flatMap { perustiedot =>
+    val jsonLines: Seq[Map[String, Any]] = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
@@ -102,9 +102,6 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
   }
-
-  def refreshIndex =
-    Http.runTask(index.elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
 
   private def setupIndex: Boolean = {
     val settings = Json.parse("""

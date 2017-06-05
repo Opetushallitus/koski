@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
@@ -55,6 +56,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
         }
+        KoskiApplicationForTests.elasticSearch.refreshIndex
         verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, None, None, errorStored = true, dataStored = true, expectedLähdejärjestelmä = None)
       }
     }
@@ -108,13 +110,9 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
 
-      putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(400)
-      }
-
       val tiedonsiirtorivit: List[TiedonsiirtoRivi] = getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).filter(_.oppija.toList.flatMap(_.hetu).contains(eerola.hetu.get))
       val hetutRiveiltä = tiedonsiirtorivit.flatMap(_.oppija.flatMap(_.hetu)).filter(_ == eerola.hetu.get)
-      hetutRiveiltä should equal(List(eerola.hetu.get, eerola.hetu.get))
+      hetutRiveiltä should equal(List(eerola.hetu.get))
     }
 
     "näytetään virheelliset" in {

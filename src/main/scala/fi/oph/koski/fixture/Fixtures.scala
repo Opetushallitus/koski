@@ -28,6 +28,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     databaseFixtures.resetFixtures
     application.henkilöRepository.opintopolku.henkilöPalveluClient.asInstanceOf[MockAuthenticationServiceClient].resetFixtures
     application.localizationRepository.asInstanceOf[MockLocalizationRepository].reset
+    application.tiedonsiirtoService.deleteAll
     logger.info("Reset application fixtures")
   }
 }

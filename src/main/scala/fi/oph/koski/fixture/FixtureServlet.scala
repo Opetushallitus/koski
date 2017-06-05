@@ -7,6 +7,10 @@ import fi.oph.koski.servlet.ApiServlet
 class FixtureServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
   post("/reset") {
     application.fixtureCreator.resetFixtures
-    application.perustiedotIndexer.refreshIndex
+    application.elasticSearch.refreshIndex
+  }
+
+  post("/refresh") {
+    application.elasticSearch.refreshIndex
   }
 }

@@ -85,7 +85,7 @@ const Lokirivi = React.createClass({
             : null
         }
         {
-          row.virhe
+          row.virhe.length
             ? <span className="status fail">{'✕'}</span>
             : <span className="status ok">{'✓'}</span>
         }
@@ -101,9 +101,9 @@ const Lokirivi = React.createClass({
           <Link key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi)}</Link>
         )
       }</td>
-      <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
+      <td className="virhe">{row.virhe.length > 0 && <span>{errorDetails(row.virhe)}</span>}</td>
       <td className="tiedot">
-        {row.virhe && dataLink()}
+        {!!row.inputData && dataLink()}
         {
           dataToBeShown && <LokirivinData details={dataToBeShown} showData={showData}/>
         }
