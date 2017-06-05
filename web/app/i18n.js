@@ -10,8 +10,6 @@ export const setLang = (newLang) => {
   window.location.reload()
 }
 
-console.log('Using language', lang)
-
 export const t = (s, ignoreMissing, languageOverride) => {
   let usedLanguage = languageOverride || lang
   if (!s) return ''
