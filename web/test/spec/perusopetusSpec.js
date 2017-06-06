@@ -1517,7 +1517,15 @@ describe('Perusopetus', function() {
                 expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
               })
               it('Esitäyttää pakolliset oppiaineet', function() {
-                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'Matematiikka', 'Kuvataide', 'Musiikki', 'Liikunta'])
+                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+                  'Matematiikka',
+                  'Ympäristöoppi',
+                  'Uskonto tai elämänkatsomustieto',
+                  'Musiikki',
+                  'Kuvataide',
+                  'Käsityö',
+                  'Liikunta',
+                  'Opinto-ohjaus'])
                 expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
               })
               describe('Tutkinnon peruste', function() {
@@ -1563,14 +1571,16 @@ describe('Perusopetus', function() {
 
             describe('Merkitseminen valmiiksi', function() {
               function merkitseOppiaineetValmiiksi() {
-                var count = 5
+                var count = 20
+                var promises = []
                 for (var i = 0; i < count; i++) {
                   var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
                   var arvosana = oppiaine.propertyBySelector('.arvosana')
-                  before(
-                    arvosana.selectValue('5')
-                  )
+                  if (arvosana.isVisible()) {
+                    promises.push(arvosana.selectValue('5')())
+                  }
                 }
+                return Q.all(promises)
               }
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
@@ -1584,8 +1594,7 @@ describe('Perusopetus', function() {
                 })
               })
               describe('Kun kaikki oppiaineet on merkitty valmiiksi', function() {
-                merkitseOppiaineetValmiiksi()
-                before(editor.edit)
+                before(merkitseOppiaineetValmiiksi, editor.edit)
                 describe('Aluksi', function() {
                   it('Merkitse valmiiksi -nappi näytetään', function() {
                     expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
@@ -1675,8 +1684,8 @@ describe('Perusopetus', function() {
                           var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
                           var dialogEditor = dialog.editor
                           var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
-                          merkitseOppiaineetValmiiksi()
                           before(
+                            merkitseOppiaineetValmiiksi,
                             tilaJaVahvistus.merkitseValmiiksi,
                             dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
                             myöntäjät.itemEditor(0).setValue('Reijo Reksi'),

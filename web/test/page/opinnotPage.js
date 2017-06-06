@@ -405,7 +405,7 @@ function Property(elem) {
       return toArray(elem().find('.value .array > li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
-      return isVisibleBy(function() { return findSingle('.value', elem())})
+      return isVisibleBy(function() { return findSingle('.value', elem())}) || isVisibleBy(function() { return findSingle('.dropdown', elem())})
     },
     isValid: function() {
       return !elem().find('.error').is(':visible')

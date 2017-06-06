@@ -23,6 +23,8 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     params.getAs[Int](name) match {
       case Some(id) if id >= 0 =>
         id
+      case None =>
+        throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing(s"""Kyselyparametri $name puuttuu"""))
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.format.number, "Invalid " + name + " : " + params(name))
     }
