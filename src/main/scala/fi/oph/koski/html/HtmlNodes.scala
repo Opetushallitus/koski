@@ -7,7 +7,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
 import fi.oph.koski.util.XML.CommentedPCData
 
-import scala.xml.{Elem, NodeSeq, Unparsed}
+import scala.xml.{Elem, NodeSeq, Unparsed, XML}
 
 trait HtmlNodes extends PiwikNodes {
   def application: KoskiApplication
@@ -19,7 +19,7 @@ trait HtmlNodes extends PiwikNodes {
       {commonHead(piwikHttpStatusCode)}
       </head>
       <body>
-        <div id="content"></div>
+        <div class={if (useRaamit) "in-raamit" else ""} id="content"></div>
       </body>
       <script id="localization">
         {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}
@@ -35,7 +35,16 @@ trait HtmlNodes extends PiwikNodes {
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" /> ++
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/> ++
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
+    raamit ++
     piwikTrackingScriptLoader(piwikHttpStatusCode)
+
+  def raamit: NodeSeq = if (useRaamit) {
+    <script type="text/javascript" src={s"${application.config.getString("opintopolku.virkailija.url")}/virkailija-raamit/apply-raamit.js"}/>
+  } else {
+    NodeSeq.Empty
+  }
+
+  private def useRaamit = application.config.getBoolean("useRaamit")
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
