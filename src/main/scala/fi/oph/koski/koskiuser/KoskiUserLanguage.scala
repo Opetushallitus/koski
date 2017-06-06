@@ -27,7 +27,6 @@ object KoskiUserLanguage extends Logging {
   }
 
   def setLanguageCookie(lang: String, response: RichResponse) = {
-    logger.info(s"Set language $lang to cookie")
     response.addCookie(Cookie("lang", lang)(CookieOptions(path = "/")))
   }
 }
