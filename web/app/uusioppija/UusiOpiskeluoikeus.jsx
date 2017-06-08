@@ -52,21 +52,24 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const Oppilaitos = ({oppilaitosAtom}) => (<label className='oppilaitos'><Text name="Oppilaitos"/>
-  {
-    oppilaitosAtom.map(oppilaitos => (
-      <OrganisaatioPicker
-        preselectSingleOption={true}
-        selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
-        onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
-        shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
-        canSelectOrg={(org) => org.organisaatiotyypit.some(tyyppi => tyyppi === 'OPPILAITOS') }
-        clearText="tyhjennä"
-        noSelectionText="Valitse..."
-      />
-    ))
-  }
-</label>)
+const Oppilaitos = ({oppilaitosAtom}) => {
+  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
+  return (<label className='oppilaitos'><Text name="Oppilaitos"/>
+    {
+      oppilaitosAtom.map(oppilaitos => (
+        <OrganisaatioPicker
+          preselectSingleOption={true}
+          selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
+          onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
+          shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
+          canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
+          clearText="tyhjennä"
+          noSelectionText="Valitse..."
+        />
+      ))
+    }
+  </label>)
+}
 
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
 
