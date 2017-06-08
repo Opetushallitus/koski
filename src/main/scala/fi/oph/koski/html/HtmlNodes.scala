@@ -19,7 +19,7 @@ trait HtmlNodes extends PiwikNodes {
       {commonHead(piwikHttpStatusCode)}
       </head>
       <body>
-        <div class={if (useRaamit) "in-raamit" else ""} id="content"></div>
+        <div data-inraamit={if (useRaamit) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
         {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}

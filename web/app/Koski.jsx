@@ -15,7 +15,7 @@ import { t } from './i18n'
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
 const savedP = savedBus.flatMapLatest(() => Bacon.once(true).concat((locationP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
 
-const topBarP = Bacon.combineWith(userP, savedP, titleKeyP, (user, saved, titleKey) => <TopBar user={user} saved={saved} titleKey={titleKey} />)
+const topBarP = Bacon.combineWith(userP, savedP, titleKeyP, (user, saved, titleKey) => <TopBar user={user} saved={saved} titleKey={titleKey} inRaamit={inRaamit}/>)
 const allErrorsP = errorP(Bacon.combineAsArray(contentP, savedP))
 
 // Renderered Virtual DOM
@@ -42,6 +42,8 @@ titleKeyP.onValue((titleKey) => {
   let defaultTitle = t('Koski') + ' - ' + t('Opintopolku.fi')
   document.querySelector('title').innerHTML = titleKey ? t(titleKey) + ' - ' + defaultTitle : defaultTitle
 })
+
+const inRaamit = !!document.getElementById('content').dataset.inraamit
 
 // Handle errors
 domP.onError(handleError)

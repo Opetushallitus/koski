@@ -4,15 +4,16 @@ import Link from './Link.jsx'
 import Text from './Text.jsx'
 import {editAtom, startEdit, hasEditAccess} from './i18n-edit'
 
-export const TopBar = ({user, saved, titleKey}) => {
+export const TopBar = ({user, saved, titleKey, inRaamit}) => {
   let onClick = e => {
     startEdit()
     e.stopPropagation()
     e.preventDefault()
   }
   let showEdit = hasEditAccess.and(editAtom.not())
+  console.log(inRaamit)
 
-  return (<header id='topbar' className={saved ? 'saved' : ''}>
+  return inRaamit ? <header id="topbar"><Text name="Koski"/></header> : (<header id='topbar' className={saved ? 'saved' : ''}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
           <Link href="/koski/"><Text name="Koski"/></Link>
