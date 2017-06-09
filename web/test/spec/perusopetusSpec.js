@@ -1734,6 +1734,10 @@ describe('Perusopetus', function() {
                                     expect(opinnot.lisääSuoritusVisible()).to.equal(false)
                                   })
 
+                                  it('9. luokalle ei esitäytetä oppiaineita', function() {
+                                    expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+                                  })
+
                                   describe('Uudempi 2.luokan suoritus', function() {
                                     before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
                                     it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {

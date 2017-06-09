@@ -127,7 +127,7 @@ let valittuLuokkaAsteP = (model) => {
 
 let osasuorituksetP = (model, luokkaAsteP, toimintaAlueittain) =>
   luokkaAsteP.map('.data').flatMapLatest(data => {
-    if (!data) return []
+    if (!data || data.koodiarvo) return []
     return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${data.koodistoUri}/${data.koodiarvo}?toimintaAlueittain=${toimintaAlueittain}`)
   }).toProperty()
 
