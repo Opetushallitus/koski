@@ -11,7 +11,6 @@ export const TopBar = ({user, saved, titleKey, inRaamit}) => {
     e.preventDefault()
   }
   let showEdit = hasEditAccess.and(editAtom.not())
-  console.log(inRaamit)
 
   return inRaamit ? <header id="topbar"><Text name="Koski"/></header> : (<header id='topbar' className={saved ? 'saved' : ''}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
