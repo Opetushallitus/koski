@@ -45,10 +45,6 @@ body {
   box-sizing: border-box;
 }
 
-#content {
-  min-width: 1320px;
-}
-
 #topbar {
   position: fixed;
   left: 0;
@@ -72,6 +68,19 @@ body {
   justify-content: center;
   align-items: center;
 
+  .selected {
+    &:after {
+      font-family: FontAwesome;
+      font-size: 8px;
+      position: relative;
+      content: '\F078';
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -8px;
+      bottom: 7px;
+    }
+  }
   a {
     line-height: 48px;
     color: white;
@@ -94,6 +103,10 @@ body {
   margin-top: @topbar-height;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
+}
+
+#content[data-inraamit='true'] .content-area {
+  margin-top: 0;
 }
 
 .main-content {

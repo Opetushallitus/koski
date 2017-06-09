@@ -17,7 +17,7 @@ export const tiedonsiirrotContentP = (location, contentP) => contentWithLoadingI
   title: content.title
 }))
 
-const naviLink = (path, textKey, location, linkClassName) => {
-  const className = path == location ? 'navi-link-container selected' : 'navi-link-container'
+export const naviLink = (path, textKey, location, linkClassName, isSelected = (p, l) => p === l) => {
+  const className = isSelected(path, location) ? 'navi-link-container selected' : 'navi-link-container'
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }

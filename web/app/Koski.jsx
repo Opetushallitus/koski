@@ -18,7 +18,7 @@ history.replaceState(null, null, currentLocation().filterQueryParams((k) => k !=
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
 const savedP = savedBus.flatMapLatest(() => Bacon.once(true).concat((locationP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
 
-const topBarP = Bacon.combineWith(userP, savedP, titleKeyP, (user, saved, titleKey) => <TopBar user={user} saved={saved} titleKey={titleKey} inRaamit={inRaamit}/>)
+const topBarP = Bacon.combineWith(userP, savedP, titleKeyP, locationP, (user, saved, titleKey, location) => <TopBar user={user} saved={saved} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
 const allErrorsP = errorP(Bacon.combineAsArray(contentP, savedP))
 
 // Renderered Virtual DOM
