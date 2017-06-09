@@ -44,6 +44,7 @@ export const parsePath = (path) => {
 }
 
 export function parseLocation(location) {
+  let hashStr = location.hash ? location.hash : ''
   return {
     path: location.pathname.replace(/(^\/?)/,'/'),
     params: parseQuery(location.search),
@@ -60,9 +61,9 @@ export function parseLocation(location) {
       let parameterPairs = R.filter(([, value]) => !!value, R.toPairs(newParams))
       let query = R.join('&', R.map(R.join('='), parameterPairs))
       let search = query ? '?' + query : ''
-      return parseLocation({pathname: location.pathname, search: search})
+      return parseLocation({pathname: location.pathname, hash: location.hash, search: search})
     },
-    toString() { return `${this.path}${this.queryString}` }
+    toString() { return `${this.path}${hashStr}${this.queryString}` }
   }
 }
 
