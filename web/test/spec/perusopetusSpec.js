@@ -1786,6 +1786,61 @@ describe('Perusopetus', function() {
         it('Merkitse valmiiksi -nappi on enabloitu', function() {
           expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
         })
+
+        describe('Kun merkitään valmiiksi', function() {
+          before(tilaJaVahvistus.merkitseValmiiksi)
+
+          it('Siirretään seuraavalle luokalle -riviä ei näytetä', function() {
+            expect(tilaJaVahvistus.merkitseValmiiksiDialog.editor.propertyBySelector('.jaa-tai-siirretaan').isVisible()).to.equal(false)
+          })
+
+          describe('Kun on merkitty valmiiksi', function() {
+            before(
+              tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
+              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+            it('Tallennus onnistuu', function() {
+
+            })
+
+            describe('Kun poistetaan luokalleen jäänti ja merkitään jälleen keskeneräiseksi', function() {
+              before(
+                editor.edit,
+                editor.property('jääLuokalle').setValue(false),
+                tilaJaVahvistus.merkitseKeskeneräiseksi,
+                editor.saveChanges
+              )
+              it('Tallennus onnistuu', function() {
+
+              })
+            })
+          })
+        })
+      })
+
+      describe('Kun oppilas ei jää luokalle', function() {
+        before(editor.edit, editor.property('jääLuokalle').setValue(false))
+
+        it('Merkitse valmiiksi -nappia ei näytetä', function() {
+          expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+        })
+
+        describe('Kun merkitään perusopetuksen oppimäärä valmiiksi', function() {
+          before(
+            opinnot.valitseSuoritus(1, 'Peruskoulu'),
+            tilaJaVahvistus.merkitseValmiiksi,
+            tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+            editor.saveChanges,
+            opinnot.valitseSuoritus(1, '9. vuosiluokka')
+          )
+
+          it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
+            expect(extractAsText(S('.tila-vahvistus'))).to.equal('Suoritus : VALMIS Vahvistus : 9.6.2017 Jyväskylä Reijo Reksi , rehtori')
+          })
+        })
       })
     })
   })

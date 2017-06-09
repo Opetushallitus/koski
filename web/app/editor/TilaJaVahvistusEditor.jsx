@@ -1,5 +1,9 @@
-import {addContext, modelData, modelLens, modelSetValue, pushModel} from './EditorModel'
+import {
+  addContext, modelData, modelItems, modelLens, modelLookup, modelSet, modelSetValue,
+  pushModel
+} from './EditorModel'
 import React from 'baret'
+import R from 'ramda'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
@@ -14,7 +18,7 @@ import {
   suoritusValmis
 } from './Suoritus'
 import Text from '../Text.jsx'
-import {isYsiluokka, jääLuokalle} from './PerusopetuksenOppiaineetEditor.jsx'
+import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
@@ -66,6 +70,14 @@ const MerkitseValmiiksiButton = ({model}) => {
   let merkitseValmiiksiCallback = (suoritusModel) => {
     if (suoritusModel) {
       pushModel(suoritusModel, model.context.changeBus)
+      if (isPerusopetuksenOppimäärä(model)) {
+        let ysiluokkaKesken = modelItems(model.context.opiskeluoikeus, 'suoritukset').find(R.allPass([isYsiluokka, suoritusKesken]))
+        if (ysiluokkaKesken) {
+          var ysiLuokkaValmis = setTila(ysiluokkaKesken, 'VALMIS')
+          ysiLuokkaValmis = modelSet(ysiLuokkaValmis, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
+          pushModel(ysiLuokkaValmis, model.context.changeBus)
+        }
+      }
     } else {
       addingAtom.set(false)
     }

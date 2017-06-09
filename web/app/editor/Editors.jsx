@@ -15,12 +15,12 @@ import {JaksoEditor} from './JaksoEditor.jsx'
 import {BooleanEditor} from './BooleanEditor.jsx'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import {ToimipisteEditor} from './ToimipisteEditor.jsx'
-import * as Ammatillinen from './Ammatillinen.jsx'
-import * as Perusopetus from './Perusopetus.jsx'
+import * as AmmatillinenEditors from './AmmatillinenEditors.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 import {OrganisaatioHenkilöEditor} from './OrganisaatioHenkiloEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {PerusteEditor} from './PerusteEditor.jsx'
+import {OppiaineenSuoritusEditor} from './PerusopetuksenOppiaineetEditor.jsx'
 
 export const editorMapping = R.mergeAll([{
   'optional': OptionalEditor,
@@ -44,5 +44,10 @@ export const editorMapping = R.mergeAll([{
   'toimipiste': ToimipisteEditor,
   'organisaatiowithoid': OrganisaatioEditor,
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
-  'peruste': PerusteEditor
-}, Ammatillinen.editorMapping, Perusopetus.editorMapping])
+  'peruste': PerusteEditor,
+  // Perusopetus
+  'erityisentuenpaatos': JaksoEditor,
+  'perusopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor,
+  'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor
+
+}, AmmatillinenEditors.editorMapping])

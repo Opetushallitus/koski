@@ -204,7 +204,7 @@ function TilaJaVahvistus() {
 function MerkitseValmiiksiDialog() {
   function elem() { return findSingle('.merkitse-valmiiksi-modal')}
   function buttonElem() { return findSingle('button', elem())}
-  return {
+  var api = {
     merkitseValmiiksi: function( ) {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
       triggerEvent(buttonElem(), 'click')
@@ -212,8 +212,16 @@ function MerkitseValmiiksiDialog() {
     },
     organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
     editor: Editor(elem),
-    myöntäjät: Editor(elem).property('myöntäjäHenkilöt')
+    myöntäjät: Editor(elem).property('myöntäjäHenkilöt'),
+    lisääMyöntäjä: function(nimi, titteli) {
+      return function() {
+        return api.myöntäjät.itemEditor(0).setValue('Lisää henkilö')()
+          .then(api.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue(nimi))
+          .then(api.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue(titteli))
+      }
+    }
   }
+  return api
 }
 
 function LisääSuoritusDialog() {
@@ -405,7 +413,9 @@ function Property(elem) {
       return toArray(elem().find('.value .array > li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
-      return isVisibleBy(function() { return findSingle('.value', elem())}) || isVisibleBy(function() { return findSingle('.dropdown', elem())})
+      return isVisibleBy(function() { return findSingle('.value', elem())})
+        || isVisibleBy(function() { return findSingle('.dropdown', elem())})
+        || isVisibleBy(function() { return findSingle('input', elem())})
     },
     isValid: function() {
       return !elem().find('.error').is(':visible')

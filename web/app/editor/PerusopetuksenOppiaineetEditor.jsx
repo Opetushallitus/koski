@@ -8,32 +8,33 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {
+  addContext,
   contextualizeSubModel,
   createOptionalEmpty,
+  ensureArrayKey,
+  findModelProperty,
   lensedModel,
   modelData,
   modelErrorMessages,
   modelItems,
   modelLens,
   modelLookup,
-  modelSetValue,
-  pushModel,
-  pushRemoval,
-  oneOfPrototypes,
-  findModelProperty,
   modelProperties,
-  addContext,
   modelSet,
-  ensureArrayKey
+  modelSetValue,
+  oneOfPrototypes,
+  pushModel,
+  pushRemoval
 } from './EditorModel'
 import {sortGrades} from '../sorting'
-import {suoritusValmis, hasArvosana, setTila, lastArviointiLens, suoritusKesken} from './Suoritus'
+import {hasArvosana, lastArviointiLens, setTila, suoritusKesken, suoritusValmis} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
+import {isToimintaAlueittain, isYsiluokka, jääLuokalle} from './Perusopetus'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
@@ -71,13 +72,6 @@ const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
   return !isToimintaAlueittain(model) && (koulutusmoduuliProtos.some(oppiaineHasPakollisuus) || modelItems(model, 'osasuoritukset').map(m => modelLookup(m, 'koulutusmoduuli')).some(oppiaineHasPakollisuus))
 }
-
-export const isToimintaAlueittain = (model) => !!modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
-export const isYsiluokka = (suoritus) => {
-  let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
-  return tunniste.koodistoUri == 'perusopetuksenluokkaaste' && tunniste.koodiarvo == '9'
-}
-export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
 
 const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]

@@ -20,9 +20,9 @@ import {
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
-import {isToimintaAlueittain} from './PerusopetuksenOppiaineetEditor.jsx'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
+import {isToimintaAlueittain} from './Perusopetus'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
   ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
