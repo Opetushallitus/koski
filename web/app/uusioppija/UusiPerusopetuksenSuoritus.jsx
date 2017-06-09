@@ -31,9 +31,11 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     }
   }).toProperty()
 
-  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus) => {
+  const oppiaineetP = Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101`).map(modelData)
+
+  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus, oppiaineet) => {
     if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
-      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste)
+      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste, oppiaineet)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
       var suoritusTapaJaToimipiste = {
         toimipiste: oppilaitos
@@ -42,9 +44,8 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     }
   }
 
-  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
-
 
   return (<span>
     <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
@@ -68,7 +69,7 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
-let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste) => {
+let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste, oppiaineet) => {
   return {
     koulutusmoduuli: {
       tunniste: {
@@ -81,13 +82,17 @@ let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, pe
     tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
     oppimäärä: opetussuunnitelma,
     suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
-    tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'}
+    tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'},
+    osasuoritukset: oppiaineet
   }
 }
 
 
 const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelmatP}) => {
-  let suoritusP = opetussuunnitelmaAtom.map(opetussuunnitelma => makePerusopetuksenOppimääränSuoritus(null, opetussuunnitelma, null))
+  let suoritusP = opetussuunnitelmaAtom.map(opetussuunnitelma =>
+    makePerusopetuksenOppimääränSuoritus(null, opetussuunnitelma, null, null)
+  )
+
   return (<div>
     <KoodistoDropdown
       className="opetussuunnitelma"

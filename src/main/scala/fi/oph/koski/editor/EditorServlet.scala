@@ -14,6 +14,8 @@ import fi.oph.koski.tutkinto.Koulutustyyppi
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 
+import scala.collection.immutable
+
 /**
   *  Endpoints for the Koski UI
   */
@@ -62,15 +64,21 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/suoritukset/prefill/:koodistoUri/:koodiarvo") {
-    if (params("koodistoUri") == "perusopetuksenluokkaaste") {
-      val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
-      val luokkaAste = getIntegerParam("koodiarvo")
-      val suoritukset = PakollisetOppiaineet.pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(application.koodistoViitePalvelu, luokkaAste, toimintaAlueittain)
-
+    def toListModel(suoritukset: List[Suoritus]) = {
       val models = suoritukset.map { suoritus => buildModel(suoritus, true)}
       ListModel(models, None, Map.empty)
-    } else {
-      haltWithStatus(KoskiErrorCategory.notFound())
+    }
+    val luokkaAstePattern = """(\d)""".r
+    val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
+
+    (params("koodistoUri"), params("koodiarvo")) match {
+      case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
+        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
+      case ("koulutus", "201101") =>
+        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(toimintaAlueittain))
+      case _ =>
+        println((params("koodistoUri") + "/" + params("koodiarvo")))
+        haltWithStatus(KoskiErrorCategory.notFound())
     }
   }
 

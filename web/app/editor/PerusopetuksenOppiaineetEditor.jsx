@@ -49,7 +49,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
-  let showOppiaineet = !isYsiluokka(model) || jääLuokalle(model)
+  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || osasuoritukset.filter(R.complement(suoritusKesken)).length > 0)
 
   return (<div className="oppiaineet">
     { isYsiluokka(model) && <div><PropertyEditor model={model} propertyName="jääLuokalle" /></div>}

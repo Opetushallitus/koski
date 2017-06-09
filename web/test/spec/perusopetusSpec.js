@@ -1267,6 +1267,35 @@ describe('Perusopetus', function() {
               expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
             })
+
+            it('Oppiaineita ei näytetä', function() {
+              expect(S('.oppiaineet h5').is(':visible')).to.equal(false)
+            })
+          })
+
+          describe('Painettaessa muokkaa-nappia', function() {
+            before(editor.edit)
+            it('Esitäytetyt oppiaineet näytetään', function() {
+              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+                'A1-kieli,',
+                'B1-kieli,',
+                'Matematiikka',
+                'Biologia',
+                'Maantieto',
+                'Fysiikka',
+                'Kemia',
+                'Terveystieto',
+                'Uskonto tai elämänkatsomustieto',
+                'Historia',
+                'Yhteiskuntaoppi',
+                'Musiikki',
+                'Kuvataide',
+                'Käsityö',
+                'Liikunta',
+                'Kotitalous',
+                'Opinto-ohjaus'])
+            })
+            after(editor.cancelChanges)
           })
 
           describe('Toisen samanlaisen opiskeluoikeuden lisääminen kun opiskeluoikeus on voimassa', function() {
@@ -1295,7 +1324,6 @@ describe('Perusopetus', function() {
               expect(opinnot.getOppilaitos(1)).to.equal('Jyväskylän normaalikoulu')
             })
           })
-
 
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
