@@ -62,8 +62,27 @@ body {
 }
 
 #content[data-inraamit='true'] #topbar {
-  height: 30px;
-  background: lightgray;
+  background: #1E516D;
+  position: relative;
+  color: white;
+  text-align: center;
+  height: 48px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    line-height: 48px;
+    color: white;
+  }
+  .separator {
+    margin: 10px 25px 0 25px;
+    width: 2px;
+    height: 38px;
+    background-color: @color-topbar-separator;
+    display: inline-block;
+  }
 }
 
 .login {

@@ -12,7 +12,11 @@ export const TopBar = ({user, saved, titleKey, inRaamit}) => {
   }
   let showEdit = hasEditAccess.and(editAtom.not())
 
-  return inRaamit ? <header id="topbar"><Text name="Koski"/></header> : (<header id='topbar' className={saved ? 'saved' : ''}>
+  return inRaamit ? (<header id="topbar">
+    <a href="/koski"><Text name="Opiskelijat"/></a>
+    <span className="separator" />
+    <a href="/koski/tiedonsiirrot"><Text name="Tiedonsiirrot"/></a>
+  </header>) : (<header id='topbar' className={saved ? 'saved' : ''}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
           <Link href="/koski/"><Text name="Koski"/></Link>
