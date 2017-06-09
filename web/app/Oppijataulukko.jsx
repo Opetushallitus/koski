@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
-import {navigateWithQueryParams} from './location'
+import {appendQueryParams, navigateWithQueryParams} from './location'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
@@ -187,7 +187,7 @@ export const Oppijataulukko = React.createClass({
 var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
-  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
+  let pager = Pager(appendQueryParams('/koski/api/opiskeluoikeus/perustiedot', R.dissoc('ticket', params)))
   let taulukkoContentP = pager.rowsP.doAction((rivit) => edellisetRivit = rivit).startWith(null).map((rivit) => <Oppijataulukko rivit={rivit} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
   return Bacon.combineWith(taulukkoContentP, (taulukko) => ({
     content: (<div className='content-area oppijataulukko'>
