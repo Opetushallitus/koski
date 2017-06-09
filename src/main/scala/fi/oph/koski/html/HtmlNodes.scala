@@ -39,7 +39,7 @@ trait HtmlNodes extends PiwikNodes {
     piwikTrackingScriptLoader(piwikHttpStatusCode)
 
   def raamit: NodeSeq = if (useRaamit) {
-    <script type="text/javascript" src={s"${application.config.getString("opintopolku.virkailija.url")}/virkailija-raamit/apply-raamit.js"}/>
+    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
   } else {
     NodeSeq.Empty
   }
