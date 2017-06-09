@@ -11,7 +11,8 @@ function LoginPage() {
     },
     login: function(username, password) {
       return function() {
-        return pageApi.setInputValue('#username', username)()
+        wait.forMilliseconds(100)()
+          .then(pageApi.setInputValue('#username', username))
           .then(pageApi.setInputValue('#password', password))
           .then(pageApi.button(function() { return loginElement().find('button') }).click)
       }
