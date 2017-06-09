@@ -2,6 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
+import {PropertyEditor} from './PropertyEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import R from 'ramda'
@@ -47,16 +48,21 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
+  let showOppiaineet = !isYsiluokka(model) || jääLuokalle(model)
 
   return (<div className="oppiaineet">
-    <h5><Text name="Oppiaineiden arvosanat"/></h5>
-    <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>
-    {
-      hasPakollisuus(model, uusiOppiaineenSuoritus)
-        ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
-        : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+    { isYsiluokka(model) && <div><PropertyEditor model={model} propertyName="jääLuokalle" /></div>}
+    { showOppiaineet && (<div>
+        <h5><Text name="Oppiaineiden arvosanat"/></h5>
+        <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>
+        {
+          hasPakollisuus(model, uusiOppiaineenSuoritus)
+            ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+            : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+        }
+        {selitteet && <p className="selitteet">{selitteet}</p>}
+      </div>)
     }
-    {selitteet && <p className="selitteet">{selitteet}</p>}
   </div>)
 }
 
@@ -67,6 +73,11 @@ const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
 }
 
 export const isToimintaAlueittain = (model) => !!modelData(model.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
+export const isYsiluokka = (suoritus) => {
+  let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
+  return tunniste.koodistoUri == 'perusopetuksenluokkaaste' && tunniste.koodiarvo == '9'
+}
+export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
 
 const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   let groups = [pakollisetTitle, valinnaisetTitle]

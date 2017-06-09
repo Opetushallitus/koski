@@ -1,4 +1,4 @@
-import {modelData, pushModel, addContext, modelSetValue, modelLens} from './EditorModel'
+import {addContext, modelData, modelLens, modelSetValue, pushModel} from './EditorModel'
 import React from 'baret'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
@@ -6,14 +6,15 @@ import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {
+  arviointiPuuttuu,
   onKeskeneräisiäOsasuorituksia,
-  suoritusKesken,
-  suoritusValmis,
-  suorituksenTila,
   setTila,
-  arviointiPuuttuu
+  suorituksenTila,
+  suoritusKesken,
+  suoritusValmis
 } from './Suoritus'
 import Text from '../Text.jsx'
+import {isYsiluokka, jääLuokalle} from './PerusopetuksenOppiaineetEditor.jsx'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
@@ -60,7 +61,7 @@ const MerkitseKeskeytyneeksiButton = ({model}) => {
 }
 
 const MerkitseValmiiksiButton = ({model}) => {
-  if (!model.context.edit || !suoritusKesken(model)) return null
+  if (!model.context.edit || !suoritusKesken(model) || ( isYsiluokka(model) && !jääLuokalle(model))) return null
   let addingAtom = Atom(false)
   let merkitseValmiiksiCallback = (suoritusModel) => {
     if (suoritusModel) {

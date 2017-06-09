@@ -102,6 +102,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
+  @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")

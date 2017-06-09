@@ -1761,6 +1761,34 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('9. vuosiluokka', function() {
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.valitseSuoritus(1, '9. vuosiluokka'))
+
+    describe('Aluksi', function() {
+      it('Oppiaineita ei näytetä', function() {
+        expect(S('.oppiaineet h5').is(':visible')).to.equal(false)
+      })
+    })
+
+    describe('Muokattaessa', function() {
+      before(editor.edit)
+
+      it('Merkitse valmiiksi -nappia ei näytetä', function() {
+        expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+      })
+
+      describe('Kun oppilas jää luokalle', function() {
+        before(editor.property('jääLuokalle').setValue(true))
+        it('Oppiaineet näytetään', function() {
+          expect(S('.oppiaineet h5').is(':visible')).to.equal(true)
+        })
+
+        it('Merkitse valmiiksi -nappi on enabloitu', function() {
+          expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+        })
+      })
+    })
+  })
   describe('Perusopetuksen oppiaineen oppimäärän suoritus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
     describe('Kaikki tiedot näkyvissä', function() {
