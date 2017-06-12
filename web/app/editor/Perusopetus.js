@@ -8,7 +8,6 @@ export const isPerusopetuksenOppimäärä = (suoritus) => {
   return tunniste.koodistoUri == 'koulutus' && tunniste.koodiarvo == '201101'
 }
 export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
-
 export const luokkaAste = (suoritus) => {
   let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
   return tunniste.koodistoUri == 'perusopetuksenluokkaaste' ? tunniste.koodiarvo : undefined

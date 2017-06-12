@@ -309,6 +309,9 @@ function OpiskeluoikeusDialog() {
       triggerEvent(button(), 'click')
       return wait.forAjax()
     },
+    peruuta: function() {
+      triggerEvent(findSingle('.peruuta', elem()), 'click')
+    },
     isEnabled: function() {
       return !button().is(':disabled')
     },

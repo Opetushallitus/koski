@@ -388,6 +388,8 @@ describe('Perusopetus', function() {
             it('Valmistunut-tilaa ei voi lisätä', function() {
               expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
             })
+
+            after(opiskeluoikeus.peruuta, editor.cancelChanges)
           })
         })
 
@@ -1778,10 +1780,14 @@ describe('Perusopetus', function() {
     })
   })
 
-  describe('9. vuosiluokka', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.valitseSuoritus(1, '9. vuosiluokka'))
+  describe('9. vuosiluokan oppilas', function() {
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'))
 
     describe('Aluksi', function() {
+      it('Näytetään 9. luokan suoritus, koska oppijalla ei ole päättötodistusta', function() {
+        expect(opinnot.getTutkinto(0)).to.equal('9. vuosiluokka')
+      })
+
       it('Oppiaineita ei näytetä', function() {
         expect(opinnot.oppiaineet.isVisible()).to.equal(false)
       })

@@ -1,11 +1,11 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {modelData, modelLookup, modelTitle, modelItems, addContext} from './EditorModel.js'
+import {addContext, modelData, modelItems, modelLookup, modelTitle} from './EditorModel.js'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {OpiskeluoikeudenTilaEditor, onLopputilassa} from './OpiskeluoikeudenTilaEditor.jsx'
+import {onLopputilassa, OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
 import Versiohistoria from '../Versiohistoria.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
@@ -15,9 +15,9 @@ import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.j
 import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
-import {suorituksenTyyppi} from './Suoritus'
+import {suorituksenTyyppi, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
-import {isPerusopetuksenOppimäärä} from './Perusopetus'
+import {isPerusopetuksenOppimäärä, luokkaAste} from './Perusopetus'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let id = modelData(model, 'id')
@@ -143,10 +143,14 @@ const SuoritusTabs = ({ model, suoritukset }) => {
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
 SuoritusTabs.suoritusQueryParam = context => context.opiskeluoikeusId + '.suoritus'
 SuoritusTabs.suoritusIndex = (model, suoritukset) => {
-  var paramName = SuoritusTabs.suoritusQueryParam(model.context)
-  let index = currentLocation().params[paramName] || 0
+  let paramName = SuoritusTabs.suoritusQueryParam(model.context)
+  let index = currentLocation().params[paramName] || defaultSuoritusIndex(model, suoritukset)
   if (!isNaN(index)) return index // numeric index
   return suoritukset.map(s => s.tabName).indexOf(index)
+}
+let defaultSuoritusIndex = (model, suoritukset) => {
+  let index = suoritukset.findIndex(suoritus => luokkaAste(suoritus) || (isPerusopetuksenOppimäärä(suoritus) && suoritusValmis(suoritus) ))
+  return (index >= 0) ? index : 0
 }
 
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
