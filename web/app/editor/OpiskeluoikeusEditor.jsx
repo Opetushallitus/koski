@@ -17,6 +17,7 @@ import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 import {suorituksenTyyppi} from './Suoritus'
 import Text from '../Text.jsx'
+import {isPerusopetuksenOppimäärä} from './Perusopetus'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let id = modelData(model, 'id')
@@ -94,7 +95,7 @@ const assignTabNames = (suoritukset) => {
   for (var i in suoritukset) {
     let suoritus = suoritukset[i]
     if (!suoritus.tabName) {
-      var tabName = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
+      let tabName = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
       while (tabNamesInUse[tabName]) {
         tabName += '-2'
       }
@@ -116,11 +117,13 @@ const SuoritusTabs = ({ model, suoritukset }) => {
       addingAtom.set(false)
     }
   }
+  let tabTitle = (suoritusModel) => isPerusopetuksenOppimäärä(suoritusModel) ? <Text name="Päättötodistus"/> : suoritusTitle(suoritusModel)
+
   return (<ul className="suoritus-tabs">
     {
       suoritukset.map((suoritusModel, i) => {
         let selected = i === SuoritusTabs.suoritusIndex(model, suoritukset)
-        let titleEditor = suoritusTitle(suoritusModel)
+        let titleEditor = tabTitle(suoritusModel)
         return (<li className={selected ? 'selected': null} key={i}>
           { selected ? titleEditor : <Link href={ SuoritusTabs.urlForTab(model, suoritusModel.tabName) } exitHook={false}> {titleEditor} </Link>}
         </li>)
@@ -184,9 +187,9 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   return grouped
 }
 
-export const suoritusTitle = (suoritus) => {
-  let title = <Editor edit="false" model={suoritus} path="koulutusmoduuli.tunniste"/>
+const suoritusTitle = (suoritus) => {
+  let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
   return suorituksenTyyppi(suoritus) == 'ammatillinentutkintoosittainen'
-    ? <span>{title}{', osittainen'}</span>
+    ? `${title}, osittainen`
     : title
 }
