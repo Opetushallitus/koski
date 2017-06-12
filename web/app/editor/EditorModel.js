@@ -438,6 +438,8 @@ const resolvePrototype = (model, context) => {
         model.value[i] = resolvePrototype(model.value[i], context)
       }
     }
+    // merge in properties, such as maxLines
+    foundProto = R.merge(foundProto, R.dissoc('type', R.dissoc('key', model)))
     return foundProto
   }
   return model

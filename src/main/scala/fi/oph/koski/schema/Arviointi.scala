@@ -65,6 +65,7 @@ case class Arvioitsija(
 
 trait SanallinenArviointi extends Arviointi {
   @Title("Sanallinen arviointi")
+  @MultiLineString(3)
   def kuvaus: Option[LocalizedString]
   override def description = kuvaus.getOrElse(super.description)
 }

@@ -25,3 +25,6 @@ case class ReadOnly(why: String) extends Metadata {
 }
 
 case class ClassName(classname: String) extends RepresentationalMetadata
+
+/* This is a multi-line string that should be edited with a textare instead of a string input */
+case class MultiLineString(lineCount: Int) extends RepresentationalMetadata

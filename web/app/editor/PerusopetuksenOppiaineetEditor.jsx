@@ -211,8 +211,7 @@ let expandableProperties = (model) => {
     return shouldShowProperty(model.context)(p)
   }
 
-  return modelProperties(modelLookup(model, 'arviointi.-1'))
-    .concat(modelProperties(oppiaine))
+  return modelProperties(oppiaine)
     .concat(modelProperties(fixArvosana(model)))
     .filter(extraPropertiesFilter)
 
@@ -270,6 +269,9 @@ export const OppiaineenSuoritusEditor = React.createClass({
         )
       }
     </tr>
+    {
+      <tr key='sanallinenArviointi' className="sanallinen-arviointi"><td colSpan="4" className="details"><PropertiesEditor model={modelLookup(model, 'arviointi.-1')} propertyFilter={p => p.key == 'kuvaus'} /></td></tr>
+    }
     {
       expanded && <tr key='details'><td colSpan="4" className="details"><PropertiesEditor context={model.context} properties={extraProperties} /></td></tr>
     }

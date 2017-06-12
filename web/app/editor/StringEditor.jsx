@@ -9,7 +9,9 @@ export const StringEditor = ({model, placeholder}) => {
   let data = modelData(model)
   let error = !modelValid(model)
   return model.context.edit
-    ? <input className={error ? 'editor-input error' : 'editor-input valid'} type="text" defaultValue={data} placeholder={placeholder} onChange={ onChange }></input>
+    ? (model.maxLines
+      ? <textarea className={error ? 'editor-input error' : 'editor-input valid'} defaultValue={data} placeholder={placeholder} onChange={ onChange } rows={ model.maxLines }></textarea>
+      : <input className={error ? 'editor-input error' : 'editor-input valid'} type="text" defaultValue={data} placeholder={placeholder} onChange={ onChange }></input>)
     : <span className="inline string">{!data ? '' : splitToRows(data)}</span>
 }
 
