@@ -1215,16 +1215,16 @@ describe('Perusopetus', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('180497-112F'))
     describe('Alussa', function() {
       it('Uusimpien suoritusten välilehti valittu', function() {
-        expect(opinnot.suoritusOnValittu(1, 'Päättötodistus')).to.equal(true)
-        expect(opinnot.suoritusOnValittu(2, 'Päättötodistus')).to.equal(true)
+        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
       })
     })
     describe('Kun valitaan, ensimmäisestä opiskeluoikeudesta', function() {
       before(opinnot.valitseSuoritus(1, '8. vuosiluokka'))
       it('Toimii', function() {
-        expect(opinnot.suoritusOnValittu(1, 'Päättötodistus')).to.equal(false)
+        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(false)
         expect(opinnot.suoritusOnValittu(1, '8. vuosiluokka')).to.equal(true)
-        expect(opinnot.suoritusOnValittu(2, 'Päättötodistus')).to.equal(true)
+        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
       })
 
       describe('Kun valitaan, molemmista opiskeluoikeuksista', function() {
