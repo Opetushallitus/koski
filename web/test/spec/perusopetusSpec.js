@@ -1867,7 +1867,7 @@ describe('Perusopetus', function() {
           )
 
           it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
-            expect(extractAsText(S('.tila-vahvistus'))).to.equal('Suoritus : VALMIS Vahvistus : 9.6.2017 Jyväskylä Reijo Reksi , rehtori')
+            expect(tilaJaVahvistus.tila()).to.equal('VALMIS')
           })
         })
       })

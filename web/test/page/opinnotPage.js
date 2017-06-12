@@ -203,6 +203,9 @@ function TilaJaVahvistus() {
     text: function( ){
       return extractAsText(findSingle('.tiedot', elem()))
     },
+    tila: function( ) {
+      return extractAsText(findSingle('.tila .tila', elem()))
+    },
     merkitseValmiiksiDialog: MerkitseValmiiksiDialog()
   }
   return api

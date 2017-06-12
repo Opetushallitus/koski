@@ -24,7 +24,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          <Text name="Suoritus"/>{': '}<span className={ suoritusValmis(model) ? 'valmis' : ''}>{ suorituksenTila(model) }</span>
+          <Text name="Suoritus"/>{': '}<span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ suorituksenTila(model) }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
