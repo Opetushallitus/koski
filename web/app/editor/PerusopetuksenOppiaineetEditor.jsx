@@ -8,7 +8,6 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {
-  accumulateModelState,
   addContext,
   contextualizeSubModel,
   createOptionalEmpty,
@@ -36,7 +35,6 @@ import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
-import {doActionWhileMounted} from '../util'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
