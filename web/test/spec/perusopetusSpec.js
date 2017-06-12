@@ -751,7 +751,7 @@ describe('Perusopetus', function() {
       describe('Vieraan kielen valinta', function() {
 
         describe('kielivalinnan muuttaminen', function() {
-          var b1kieli = editor.subEditor('.oppiaineet tbody:eq(1) tr:eq(0)')
+          var b1kieli = editor.subEditor('.oppiaineet tbody.oppiaine:eq(1) tr:eq(0)')
           var kieli = b1kieli.propertyBySelector('.oppiaine')
           before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.saveChanges)
           it('muutettu kielivalinta näytetään', function() {
@@ -2003,8 +2003,8 @@ describe('Perusopetus', function() {
 
       describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
         var kurssi = editor.subEditor('.oppiaineet tbody.xxx')
-        var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:nth-child(1)')
-        var kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:nth-child(2)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
+        var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:eq(0)')
+        var kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:eq(1)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
 
         before(editor.edit, opinnot.expandAll, sanallinenArviointi.setValue('Uusi arviointi'), kurssinKuvaus.setValue('Uusi kuvaus'), editor.saveChanges, opinnot.expandAll)
         it('Toimii', function() {
