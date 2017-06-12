@@ -84,6 +84,7 @@ function OpinnotPage() {
     },
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
+    oppiaineet: Oppiaineet(),
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -117,6 +118,12 @@ function OpinnotPage() {
   }
 
   return api
+}
+
+function Oppiaineet() {
+  return {
+    isVisible: function() { return S('.oppiaineet h5').is(':visible') }
+  }
 }
 
 function Opiskeluoikeudet() {

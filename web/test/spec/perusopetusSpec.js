@@ -245,7 +245,7 @@ describe('Perusopetus', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog()
           before(editor.edit, editor.property('tila').removeItem(0),
             opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue('1a'), lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
-            lisääSuoritus.lisääSuoritus, editor.saveChanges
+            lisääSuoritus.lisääSuoritus
           )
           it('Esitäyttää toiminta-alueet', function() {
             expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['motoriset taidot',
@@ -1269,7 +1269,7 @@ describe('Perusopetus', function() {
             })
 
             it('Oppiaineita ei näytetä', function() {
-              expect(S('.oppiaineet h5').is(':visible')).to.equal(false)
+              expect(opinnot.oppiaineet.isVisible()).to.equal(false)
             })
           })
 
@@ -1577,7 +1577,8 @@ describe('Perusopetus', function() {
               describe('Siirrettäessä suoritus KESKEN-tilaan', function() {
                 before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), editor.saveChanges, wait.until(page.isSavedLabelShown))
                 it('Arvosana poistetaan', function() {
-                  expect(arvosana.getValue()).to.equal('')
+                  // Koko arvosanataulukko piilotetaan, koska kaikki oppiaineet KESKEN-tilassa
+                  expect(opinnot.oppiaineet.isVisible()).to.equal(false)
                 })
 
                 describe('Siirrettäessä VALMIS-tilaan ilman arvosanaa', function() {
@@ -1794,7 +1795,7 @@ describe('Perusopetus', function() {
 
     describe('Aluksi', function() {
       it('Oppiaineita ei näytetä', function() {
-        expect(S('.oppiaineet h5').is(':visible')).to.equal(false)
+        expect(opinnot.oppiaineet.isVisible()).to.equal(false)
       })
     })
 
@@ -1808,7 +1809,7 @@ describe('Perusopetus', function() {
       describe('Kun oppilas jää luokalle', function() {
         before(editor.property('jääLuokalle').setValue(true))
         it('Oppiaineet näytetään', function() {
-          expect(S('.oppiaineet h5').is(':visible')).to.equal(true)
+          expect(opinnot.oppiaineet.isVisible()).to.equal(true)
         })
 
         it('Merkitse valmiiksi -nappi on enabloitu', function() {
