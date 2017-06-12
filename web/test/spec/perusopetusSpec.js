@@ -227,7 +227,7 @@ describe('Perusopetus', function() {
           var sosiaalisetTaidot = editor.subEditor('.3')
 
           describe('Poistaminen', function () {
-            before(editor.edit, sosiaalisetTaidot.propertyBySelector('tr').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(editor.edit, sosiaalisetTaidot.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('toimii', function () {
               expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
             })
@@ -827,7 +827,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Kun poistetaan ensimmäinen oppiaine ja annetaan toiselle arvosana (bug fix)', function() {
-          before(opinnot.collapseAll, editor.edit, äidinkieli.propertyBySelector('tr').removeValue, arvosana.selectValue('9'), editor.saveChanges)
+          before(opinnot.collapseAll, editor.edit, äidinkieli.propertyBySelector('>tr:first-child').removeValue, arvosana.selectValue('9'), editor.saveChanges)
           it('Toimii', function() {
             expect(arvosana.getValue()).to.equal('9')
           })
@@ -950,7 +950,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Poistaminen', function () {
-            before(editor.edit, historia.propertyBySelector('tr').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(editor.edit, historia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('toimii', function () {
               expect(extractAsText(S('.oppiaineet'))).to.not.contain('Valinnainen historia 9')
             })
@@ -985,14 +985,14 @@ describe('Perusopetus', function() {
             })
 
             describe('Poistettaessa suoritus', function() {
-              before(tanssi.propertyBySelector('tr').removeValue)
+              before(tanssi.propertyBySelector('>tr:first-child').removeValue)
               it('Uusi oppiaine löytyy listalta', function() {
                 expect(uusiOppiaine.getOptions()).to.include('Tanssi')
               })
 
               describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
                 before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('7'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.saveChanges, editor.edit)
-                before(tanssi.propertyBySelector('tr').removeValue)
+                before(tanssi.propertyBySelector('>tr:first-child').removeValue)
 
                 it('Muutettu oppiaine löytyy listalta', function() {
                   expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
@@ -1033,7 +1033,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Poistaminen', function () {
-          before(editor.edit, filosofia.propertyBySelector('tr').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+          before(editor.edit, filosofia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
           })
@@ -2026,7 +2026,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Poistaminen', function () {
-          before(editor.edit, filosofia.propertyBySelector('tr').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+          before(editor.edit, filosofia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
           })
@@ -2105,14 +2105,14 @@ describe('Perusopetus', function() {
             })
 
             describe('Poistettaessa suoritus', function() {
-              before(tanssi.propertyBySelector('tr').removeValue)
+              before(tanssi.propertyBySelector('>tr:first-child').removeValue)
               it('Uusi oppiaine löytyy listalta', function() {
                 expect(uusiOppiaine.getOptions()).to.include('Tanssi')
               })
 
               describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
                 before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('H'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.saveChanges, editor.edit)
-                before(tanssi.propertyBySelector('tr').removeValue)
+                before(tanssi.propertyBySelector('>tr:first-child').removeValue)
 
                 it('Muutettu oppiaine löytyy listalta', function() {
                   expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
