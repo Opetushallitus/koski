@@ -1,19 +1,18 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import Http from '../http'
 import * as L from 'partial.lenses'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {
-  contextualizeSubModel,
-  modelItems,
-  modelLookup,
   accumulateModelStateAndValidity,
-  modelSet,
   addContext,
+  contextualizeSubModel,
   modelData,
+  modelItems,
   modelLens,
+  modelLookup,
   modelProperties,
+  modelSet,
   modelSetValue,
   pushModelValue
 } from './EditorModel'
@@ -22,7 +21,7 @@ import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
-import {isToimintaAlueittain} from './Perusopetus'
+import {isToimintaAlueittain, luokkaAsteenOsasuoritukset} from './Perusopetus'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
   ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
@@ -90,7 +89,7 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let luokkaAsteP = valittuLuokkaAsteP(initialSuoritusModel)
   return (<div>
     {
-      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(initialSuoritusModel, luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
+      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
         initialSuoritusModel = modelSetValue(initialSuoritusModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
         initialSuoritusModel = modelSetValue(initialSuoritusModel, osasuoritukset.value, 'osasuoritukset')
         initialSuoritusModel = addContext(initialSuoritusModel, { suoritus: initialSuoritusModel })
@@ -125,10 +124,10 @@ let valittuLuokkaAsteP = (model) => {
   return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
 }
 
-let osasuorituksetP = (model, luokkaAsteP, toimintaAlueittain) =>
+let osasuorituksetP = (luokkaAsteP, toimintaAlueittain) =>
   luokkaAsteP.map('.data').flatMapLatest(data => {
     if (!data || data.koodiarvo == '9') return []
-    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/${data.koodistoUri}/${data.koodiarvo}?toimintaAlueittain=${toimintaAlueittain}`)
+    return luokkaAsteenOsasuoritukset(data.koodiarvo, toimintaAlueittain)
   }).toProperty()
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {

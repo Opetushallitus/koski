@@ -1599,18 +1599,6 @@ describe('Perusopetus', function() {
             })
 
             describe('Merkitseminen valmiiksi', function() {
-              function merkitseOppiaineetValmiiksi() {
-                var count = 20
-                var promises = []
-                for (var i = 0; i < count; i++) {
-                  var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
-                  var arvosana = oppiaine.propertyBySelector('.arvosana')
-                  if (arvosana.isVisible()) {
-                    promises.push(arvosana.selectValue('5')())
-                  }
-                }
-                return Q.all(promises)
-              }
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
                 it('Tila on "kesken"', function() {
@@ -1623,7 +1611,7 @@ describe('Perusopetus', function() {
                 })
               })
               describe('Kun kaikki oppiaineet on merkitty valmiiksi', function() {
-                before(merkitseOppiaineetValmiiksi, editor.edit)
+                before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi, editor.edit)
                 describe('Aluksi', function() {
                   it('Merkitse valmiiksi -nappi näytetään', function() {
                     expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
@@ -1714,7 +1702,7 @@ describe('Perusopetus', function() {
                           var dialogEditor = dialog.editor
                           var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
                           before(
-                            merkitseOppiaineetValmiiksi,
+                            opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
                             tilaJaVahvistus.merkitseValmiiksi,
                             dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
                             myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
@@ -1808,16 +1796,19 @@ describe('Perusopetus', function() {
 
       describe('Kun oppilas jää luokalle', function() {
         before(editor.property('jääLuokalle').setValue(true))
-        it('Oppiaineet näytetään', function() {
-          expect(opinnot.oppiaineet.isVisible()).to.equal(true)
-        })
 
-        it('Merkitse valmiiksi -nappi on enabloitu', function() {
-          expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+        describe('Käyttöliittymän tila', function() {
+          it('Oppiaineet näytetään', function() {
+            expect(opinnot.oppiaineet.isVisible()).to.equal(true)
+          })
+
+          it('Oppiaineet esitäytetään', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi')).length).to.be.greaterThan(0)
+          })
         })
 
         describe('Kun merkitään valmiiksi', function() {
-          before(tilaJaVahvistus.merkitseValmiiksi)
+          before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi, tilaJaVahvistus.merkitseValmiiksi)
 
           it('Siirretään seuraavalle luokalle -riviä ei näytetä', function() {
             expect(tilaJaVahvistus.merkitseValmiiksiDialog.editor.propertyBySelector('.jaa-tai-siirretaan').isVisible()).to.equal(false)

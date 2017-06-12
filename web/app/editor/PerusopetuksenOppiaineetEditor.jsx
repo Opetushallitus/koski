@@ -8,6 +8,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {
+  accumulateModelState,
   addContext,
   contextualizeSubModel,
   createOptionalEmpty,
@@ -34,7 +35,8 @@ import {isPaikallinen} from './Koulutusmoduuli'
 import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {isToimintaAlueittain, isYsiluokka, jääLuokalle} from './Perusopetus'
+import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
+import {doActionWhileMounted} from '../util'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
@@ -51,8 +53,20 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || osasuoritukset.filter(R.complement(suoritusKesken)).length > 0)
 
+  if (isYsiluokka(model) && jääLuokalle(model) && osasuoritukset.length == 0) {
+    luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
+      pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
+    })
+  } else if (isYsiluokka(model) && !jääLuokalle(model) && osasuoritukset.length > 0) {
+    pushModel(modelSetValue(model, [], 'osasuoritukset'))
+  }
+
   return (<div className="oppiaineet">
-    { isYsiluokka(model) && <div><PropertyEditor model={model} propertyName="jääLuokalle" /></div>}
+    { isYsiluokka(model) && (<div className="ysiluokka-jaa-luokalle">
+        <PropertyEditor model={model} propertyName="jääLuokalle" />
+        <em><Text name="Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle"/></em>
+      </div>)
+    }
     { showOppiaineet && (<div>
         <h5><Text name="Oppiaineiden arvosanat"/></h5>
         <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>

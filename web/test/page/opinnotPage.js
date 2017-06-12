@@ -1,5 +1,4 @@
 function OpinnotPage() {
-
   function oppija() { return findSingle('.oppija') }
   function opiskeluoikeus() { return findSingle('.opiskeluoikeus')}
 
@@ -122,7 +121,21 @@ function OpinnotPage() {
 
 function Oppiaineet() {
   return {
-    isVisible: function() { return S('.oppiaineet h5').is(':visible') }
+    isVisible: function() { return S('.oppiaineet h5').is(':visible') },
+
+    merkitseOppiaineetValmiiksi: function () {
+      var editor = OpinnotPage().opiskeluoikeusEditor()
+      var count = 20
+      var promises = []
+      for (var i = 0; i < count; i++) {
+        var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
+        var arvosana = oppiaine.propertyBySelector('.arvosana')
+        if (arvosana.isVisible()) {
+          promises.push(arvosana.selectValue('5')())
+        }
+      }
+      return Q.all(promises)
+    }
   }
 }
 
