@@ -316,5 +316,6 @@
   "Fi": "Suomeksi",
   "Sv": "Ruotsiksi",
   "En": "Englanniksi",
-  "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin."
+  "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.",
+  "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle": "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle"
 }
