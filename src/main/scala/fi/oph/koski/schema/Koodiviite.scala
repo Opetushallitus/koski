@@ -1,12 +1,11 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.localization.LocalizedString.unlocalized
-import fi.oph.koski.localization.{Deserializer, Localizable, LocalizedString}
+import fi.oph.koski.localization.{Deserializer, Localized, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 import org.json4s.{Formats, JObject, JValue, TypeInfo}
 
-trait KoodiViite extends Localizable {
+trait KoodiViite extends Localized {
   def koodiarvo: String
   def getNimi: Option[LocalizedString]
 }

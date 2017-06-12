@@ -35,7 +35,7 @@ case class SchemaToNiceHtml(implicit val user: KoskiSession, val localizationRep
   }
 
   def suoritusHtml(property: Property, schema: ClassSchema, suoritus: Suoritus, context: NodeContext) = {
-    def simpleHtml = simplePropertyHtml(i(suoritus.koulutusmoduuli.description), i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin)))
+    def simpleHtml = simplePropertyHtml(i(suoritus.koulutusmoduuli), i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin)))
     suoritus match {
       case s: PerusopetuksenToiminta_AlueenSuoritus =>
         simpleHtml

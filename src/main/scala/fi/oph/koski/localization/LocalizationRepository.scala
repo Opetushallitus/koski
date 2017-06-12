@@ -15,6 +15,11 @@ trait LocalizationRepository extends Logging {
 
   def localizations(): Map[String, LocalizedString]
 
+  def get(key: String) = localizations.get(key).getOrElse{
+    logger.error(s"Unknown localization key: $key")
+    LocalizedString.unlocalized(key)
+  }
+
   def fetchLocalizations(): JValue
 
   def createOrUpdate(localizations: List[UpdateLocalization])

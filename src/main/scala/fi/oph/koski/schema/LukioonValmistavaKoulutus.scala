@@ -2,9 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
+import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
@@ -99,7 +100,7 @@ case class ÄidinkieliJaKirjallisuus(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
-  override def description = concat(nimi, ", ", kieli)
+  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
 case class MuutKielet(
@@ -112,7 +113,7 @@ case class MuutKielet(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
-  override def description = concat(nimi, ", ", kieli)
+  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
 case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(

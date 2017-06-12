@@ -8,19 +8,24 @@ import org.json4s.{Formats, JObject, JValue, Serializer}
 import org.json4s.reflect.TypeInfo
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
-trait LocalizedString extends Localizable {
+trait LocalizedString extends Localized {
   def valueList: List[(String, String)]
   lazy val values: Map[String, String] = Map(valueList : _*)
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).orElse(values.values.headOption).getOrElse(missingString)
-  def description = this
   def concat(x: LocalizedString) = {
     val (fi :: sv :: en :: Nil) = LocalizedString.languages.map { lang => get(lang) + x.get(lang) }
     Finnish(fi, Some(sv), Some(en))
   }
+  def description = this
 }
 
 trait Localizable {
+  def description(texts: LocalizationRepository): LocalizedString
+}
+
+trait Localized extends Localizable {
   def description: LocalizedString
+  def description(texts: LocalizationRepository): LocalizedString = description
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")
@@ -73,17 +78,14 @@ object LocalizedString extends Logging {
   def finnish(string: String): LocalizedString = Finnish(string)
   def swedish(string: String): LocalizedString = Swedish(string)
   def english(string: String): LocalizedString = English(string)
-  def concat(strings: Any*) = strings.foldLeft(LocalizedString.empty) {
-    case (built, next) => built.concat(fromAny(next))
-  }
-  def fromAny(thing: Any) = thing match {
-    case x: Localizable => x.description
-    case x: Any => unlocalized(x.toString)
+  def concat(strings: LocalizedString*) = strings.foldLeft(LocalizedString.empty) {
+    case (built, next) => built.concat(next)
   }
 }
 
 object LocalizedStringImplicits {
   implicit def str2localized(string: String): LocalizedString = LocalizedString.finnish(string)
+  implicit def localized2localizedString(localized: Localized): LocalizedString = localized.description
   implicit object LocalizedStringFinnishOrdering extends Ordering[LocalizedString] {
     override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
   }

@@ -50,7 +50,7 @@ object EditorModelBuilder {
 
   def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
-  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o.description), o)
+  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), o)
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
     case s: ClassRefSchema => context.mainSchema.getSchema(s.fullClassName).get
     case _ => schema
@@ -234,7 +234,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val objectContext = newContext(obj)
     val properties: List[EditorProperty] = schema.properties.map(property => createModelProperty(obj, objectContext, property))
     val objectTitle = obj match {
-      case o: Localizable => Some(context.i(o.description))
+      case o: Localizable => Some(context.i(o))
       case _ => None
     }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested

@@ -2,11 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.{concat, finnish}
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizedString.{concat, finnish, unlocalized}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.annotation._
 
@@ -354,7 +353,7 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
   perusteenDiaarinumero: Option[String] = None,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PerusopetuksenKoodistostaLöytyväOppiaine {
-  override def description = concat(nimi, ", ", kieli)
+  override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
 }
 
 case class LaajuusVuosiviikkotunneissa(

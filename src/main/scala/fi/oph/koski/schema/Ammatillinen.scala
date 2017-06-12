@@ -2,9 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation._
+import fi.oph.koski.localization.LocalizedStringImplicits._
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluoikeus(
@@ -376,7 +377,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
-  override def description = concat(nimi, ", ", kieli)
+  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
 @Title("Äidinkieli")
@@ -391,7 +392,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
-  override def description = concat(nimi, ", ", kieli)
+  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")

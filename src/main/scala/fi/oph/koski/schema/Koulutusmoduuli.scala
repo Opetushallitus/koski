@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclusive, Title}
 
 trait Koulutusmoduuli extends Localizable {
@@ -11,7 +11,7 @@ trait Koulutusmoduuli extends Localizable {
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString
-  def description: LocalizedString = nimi
+  def description(texts: LocalizationRepository): LocalizedString = nimi
   def isTutkinto = false
 }
 

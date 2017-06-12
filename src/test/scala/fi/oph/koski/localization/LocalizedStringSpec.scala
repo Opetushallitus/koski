@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
 import org.scalatest.{FreeSpec, Matchers}
+import LocalizedStringImplicits._
 
 class LocalizedStringSpec extends FreeSpec with Matchers {
   "String concatenation" - {

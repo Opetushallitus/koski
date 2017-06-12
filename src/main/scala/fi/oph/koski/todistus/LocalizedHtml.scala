@@ -10,7 +10,7 @@ trait LocalizedHtml {
   implicit val localizationRepository: LocalizationRepository
   val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
   def lang = user.lang
-  def i(s: Localizable): String = s.description.get(lang)
+  def i(s: Localizable): String = s.description(localizationRepository).get(lang)
   def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
 }
 
