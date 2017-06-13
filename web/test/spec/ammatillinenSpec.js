@@ -547,9 +547,9 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää opiskeluoikeuden otsikkotiedot', function() {
         expect(extractAsText(S('.opiskeluoikeus h3'))).to.equal(
-          'Stadin ammattiopisto , Luonto- ja ympäristöalan perustutkinto , osittainen ( 2012 - 2016 , valmistunut )\n' +
+          'Stadin ammattiopisto , Luonto- ja ympäristöalan perustutkinto, osittainen ( 2012 - 2016 , valmistunut )\n' +
           'versiohistoria')
-        expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal('Luonto- ja ympäristöalan perustutkinto , osittainen')
+        expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal('Luonto- ja ympäristöalan perustutkinto, osittainen')
       })
 
       it('näyttää opiskeluoikeuden tiedot', function() {
