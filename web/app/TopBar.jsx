@@ -14,10 +14,12 @@ export const TopBar = ({user, saved, titleKey, inRaamit, location}) => {
 const RaamitTopBar = ({location}) => {
   return (
     <header id="topbar">
-      {naviLink('/koski/', 'Opiskelijat', location.path, '')}
-      <span className="separator"/>
-      {naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}
+      <ul>
+        <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
+        <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
+      </ul>
     </header>
+
   )
 }
 
