@@ -45,7 +45,7 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 1.9.2012 — Päättymispäivä : 1.6.2016\n' +
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 1.6.2016\n' +
           'Tila 1.6.2016 Valmistunut\n' +
           '1.9.2012 Läsnä\n' +
           'Lisätiedot\n' +

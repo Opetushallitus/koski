@@ -10,7 +10,7 @@ describe('Telma', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 14.9.2009 — Päättymispäivä : 4.6.2016\n' +
+          'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
           '14.9.2009 Läsnä'
         )

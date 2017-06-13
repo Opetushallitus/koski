@@ -15,7 +15,7 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
     it('näyttää opiskeluoikeuden tiedot', function() {
-      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
         'Tila 4.6.2016 Valmistunut\n' +
         '15.8.2008 Läsnä')
     })
@@ -182,7 +182,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
 
         it('näyttää opiskeluoikeuden tiedot', function() {
-          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
             'Tila 4.6.2016 Valmistunut\n' +
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
@@ -291,7 +291,7 @@ describe('Perusopetus', function() {
 
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-        'Alkamispäivä : 15.8.2008 — Päättymispäivä :\n' +
+        'Opiskeluoikeuden voimassaoloaika : 15.8.2008 —\n' +
         'Tila 15.8.2008 Läsnä'
       )
     })
@@ -1876,7 +1876,7 @@ describe('Perusopetus', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä')
       })
@@ -1945,7 +1945,7 @@ describe('Perusopetus', function() {
 
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 15.8.2008 — Päättymispäivä : 4.6.2016\n' +
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
@@ -2057,7 +2057,7 @@ describe('Perusopetus', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 15.8.2007 — Päättymispäivä : 1.6.2008\n' +
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2007 — 1.6.2008\n' +
           'Tila 1.6.2008 Valmistunut\n' +
           '15.8.2007 Läsnä')
       })

@@ -2,7 +2,6 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import {addContext, modelData, modelItems, modelLookup, modelTitle} from './EditorModel.js'
-import {PropertyEditor} from './PropertyEditor.jsx'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {onLopputilassa, OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
@@ -28,7 +27,6 @@ export const OpiskeluoikeusEditor = ({model}) => {
     let suoritukset = modelItems(mdl, 'suoritukset')
     assignTabNames(suoritukset)
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
-    let päättymispäiväProperty = (modelData(mdl, 'arvioituPäättymispäivä') && !modelData(mdl, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
     var suoritusIndex = SuoritusTabs.suoritusIndex(mdl, suoritukset)
     if (suoritusIndex < 0 || suoritusIndex >= suoritukset.length) {
       navigateTo(SuoritusTabs.urlForTab(mdl, suoritukset[0].tabName))
@@ -55,10 +53,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <div className="opiskeluoikeuden-tiedot">
             {editLink}
             <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
-            <div className="alku-loppu">
-              <PropertyEditor model={addContext(mdl, {edit: false})} propertyName="alkamispäivä" />{' — '}<PropertyEditor model={addContext(mdl, {edit: false})} propertyName={päättymispäiväProperty} />
-            </div>
-
+            <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={mdl}/>
             <PropertiesEditor
               model={mdl}
               propertyFilter={ p => !excludedProperties.includes(p.key) }
@@ -70,17 +65,27 @@ export const OpiskeluoikeusEditor = ({model}) => {
               modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
             }
           </div>
-
           <div className="suoritukset">
             <h4><Text name="Suoritukset"/></h4>
             <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
             <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
           </div>
-
         </div>
       </div>)
     }
   } />)
+}
+
+const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
+  let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
+  return (<div className="alku-loppu">
+    <Text name="Opiskeluoikeuden voimassaoloaika"/>{': '}
+    <Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä" />
+    {' — '}
+    <Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} />
+    {' '}
+    {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
+  </div>)
 }
 
 const assignTabNames = (suoritukset) => {

@@ -344,7 +344,7 @@ describe('Ammatillinen koulutus', function() {
         })
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
             'Tila 31.5.2016 Valmistunut\n' +
             '1.9.2012 Läsnä')
         })
@@ -501,7 +501,7 @@ describe('Ammatillinen koulutus', function() {
       before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('140176-449X'), opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 1.9.2016 — Arvioitu päättymispäivä : 1.5.2020\n' +
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
           'Tila 1.9.2016 Läsnä'
         )
       })
@@ -554,7 +554,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
           'Tila 31.5.2016 Valmistunut\n' +
           '1.9.2012 Läsnä'
         )
@@ -591,7 +591,7 @@ describe('Ammatillinen koulutus', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
             'Tila 31.5.2016 Valmistunut\n' +
             '1.9.2012 Läsnä'
           )
@@ -632,7 +632,7 @@ describe('Ammatillinen koulutus', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Alkamispäivä : 1.9.2012 — Päättymispäivä : 31.5.2016\n' +
+            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
             'Tila 31.5.2016 Valmistunut\n' +
             '1.9.2012 Läsnä'
           )
@@ -686,7 +686,7 @@ describe('Ammatillinen koulutus', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Alkamispäivä : 14.9.2009 — Päättymispäivä : 4.6.2016\n' +
+          'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
           '14.9.2009 Läsnä'
         )
