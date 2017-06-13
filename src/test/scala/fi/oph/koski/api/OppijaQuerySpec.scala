@@ -20,6 +20,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     "kun haku osuu" - {
       "nimihaku" - {
         "sukunimellä tai etunimellä" in {
+          resetFixtures
           queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
           queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
         }
