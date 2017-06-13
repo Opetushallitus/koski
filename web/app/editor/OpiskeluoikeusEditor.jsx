@@ -80,9 +80,9 @@ const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
   return (<div className="alku-loppu">
     <Text name="Opiskeluoikeuden voimassaoloaika"/>{': '}
-    <Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä" />
+    <span className="alkamispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä" /></span>
     {' — '}
-    <Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} />
+    <span className="päättymispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} /></span>
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
   </div>)

@@ -67,7 +67,13 @@ function OpinnotPage() {
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function() {
-      return Editor(function() { return findSingle('.opiskeluoikeus-content') })
+      function elem() { return findSingle('.opiskeluoikeus-content') }
+      return _.merge(
+        Editor(elem),
+        {
+          päättymispäivä: function() { return elem().find('.päättymispäivä').text() }
+        }
+      )
     },
     lisääSuoritusVisible: function() {
       return S(".add-suoritus").is(":visible")
