@@ -430,7 +430,7 @@ describe('Perusopetus', function() {
             before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="peruutettu"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
             })
 
             it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
