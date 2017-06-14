@@ -1546,18 +1546,6 @@ describe('Perusopetus', function() {
               it('Toimipiste on oikein', function() {
                 expect(editor.property('toimipiste').getValue()).to.equal('Jyväskylän normaalikoulu, alakoulu')
               })
-              it('Esitäyttää pakolliset oppiaineet', function() {
-                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
-                  'Matematiikka',
-                  'Ympäristöoppi',
-                  'Uskonto tai elämänkatsomustieto',
-                  'Musiikki',
-                  'Kuvataide',
-                  'Käsityö',
-                  'Liikunta',
-                  'Opinto-ohjaus'])
-                expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
-              })
               describe('Tutkinnon peruste', function() {
                 before(editor.saveChanges)
                 it('Esitäyttää perusteen diaarinumeron', function() {
@@ -1774,6 +1762,93 @@ describe('Perusopetus', function() {
                 })
               })
             })
+          })
+        })
+      })
+
+      describe('Oppiaineiden esitäyttö', function() {
+        before(
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataPerusopetus(),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
+          editor.edit
+        )
+
+        function lisääVuosiluokka(luokkaAste) {
+          before(
+            opinnot.lisääSuoritus,
+            lisääSuoritus.property('tunniste').setValue(luokkaAste + '. vuosiluokka'),
+            lisääSuoritus.property('luokka').setValue(luokkaAste + 'a'),
+            lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+            lisääSuoritus.lisääSuoritus
+          )
+        }
+
+        describe('Luokat 1-2', function() {
+          lisääVuosiluokka('1')
+          it('Esitäyttää pakolliset oppiaineet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+              'Matematiikka',
+              'Ympäristöoppi',
+              'Uskonto tai elämänkatsomustieto',
+              'Musiikki',
+              'Kuvataide',
+              'Käsityö',
+              'Liikunta',
+              'Opinto-ohjaus'])
+            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
+          })
+        })
+
+        describe('Luokat 3-6', function() {
+          lisääVuosiluokka('3')
+          it('Esitäyttää pakolliset oppiaineet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+              'A1-kieli,',
+              'Matematiikka',
+              'Ympäristöoppi',
+              'Uskonto tai elämänkatsomustieto',
+              'Historia',
+              'Yhteiskuntaoppi',
+              'Musiikki',
+              'Kuvataide',
+              'Käsityö',
+              'Liikunta',
+              'Opinto-ohjaus'])
+            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
+          })
+        })
+
+        describe('Luokat 7-8', function() {
+          lisääVuosiluokka('7')
+          it('Esitäyttää pakolliset oppiaineet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+              'A1-kieli,',
+              'B1-kieli,',
+              'Matematiikka',
+              'Biologia',
+              'Maantieto',
+              'Fysiikka',
+              'Kemia',
+              'Terveystieto',
+              'Uskonto tai elämänkatsomustieto',
+              'Historia',
+              'Yhteiskuntaoppi',
+              'Musiikki',
+              'Kuvataide',
+              'Käsityö',
+              'Liikunta',
+              'Kotitalous',
+              'Opinto-ohjaus'])
+            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
+          })
+        })
+
+        describe('Luokka 9', function() {
+          lisääVuosiluokka('9')
+          it('Ei esitäytetä eikä näytetä oppiaineita', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+            expect(opinnot.oppiaineet.isVisible()).to.equal(false)
           })
         })
       })

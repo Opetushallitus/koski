@@ -21,7 +21,7 @@ import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
-import {isToimintaAlueittain, luokkaAsteenOsasuoritukset} from './Perusopetus'
+import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
 
 const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
   ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
@@ -86,12 +86,12 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
 
   initialSuoritusModel = addContext(initialSuoritusModel, { editAll: true })
 
-  let luokkaAsteP = valittuLuokkaAsteP(initialSuoritusModel)
+  let defaultLuokkaAsteP = valittuLuokkaAsteP(initialSuoritusModel)
+
   return (<div>
     {
-      Bacon.combineWith(luokkaAsteP.last(), osasuorituksetP(luokkaAsteP, isToimintaAlueittain(opiskeluoikeus)).last(), (valittuLuokkaAste, osasuoritukset) => {
+      defaultLuokkaAsteP.last().map(valittuLuokkaAste => {
         initialSuoritusModel = modelSetValue(initialSuoritusModel, valittuLuokkaAste, 'koulutusmoduuli.tunniste')
-        initialSuoritusModel = modelSetValue(initialSuoritusModel, osasuoritukset.value, 'osasuoritukset')
         initialSuoritusModel = addContext(initialSuoritusModel, { suoritus: initialSuoritusModel })
 
         let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
@@ -99,12 +99,17 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
         let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
         let validP = errorP.not().and(hasToimipisteP)
 
+        let finalSuoritus = submitBus.filter(validP).map(modelP).flatMapFirst((suoritus) => {
+          let oppiaineidenSuoritukset = (luokkaAste(suoritus) == '9') ? Bacon.constant([]) : luokkaAsteenOsasuoritukset(luokkaAste(suoritus), isToimintaAlueittain(opiskeluoikeus))
+          return oppiaineidenSuoritukset.map(oppiaineet => modelSetValue(suoritus, oppiaineet.value, 'osasuoritukset'))
+        })
+
         return (<div>
           <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
             <h2><Text name="Suorituksen lisäys"/></h2>
             <PropertiesEditor baret-lift context={initialSuoritusModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
           </ModalDialog>
-          { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
+          { doActionWhileMounted(finalSuoritus, resultCallback) }
         </div>)
       })
     }
@@ -123,12 +128,6 @@ let valittuLuokkaAsteP = (model) => {
   let luokkaAsteModel = L.get(luokkaAsteLens, model)
   return EnumEditor.fetchAlternatives(luokkaAsteModel).map('.0')
 }
-
-let osasuorituksetP = (luokkaAsteP, toimintaAlueittain) =>
-  luokkaAsteP.map('.data').flatMapLatest(data => {
-    if (!data || data.koodiarvo == '9') return []
-    return luokkaAsteenOsasuoritukset(data.koodiarvo, toimintaAlueittain)
-  }).toProperty()
 
 let puuttuvatLuokkaAsteet = (opiskeluoikeus) => {
   var olemassaOlevatLuokkaAsteet = olemassaolevatLuokkaAsteenSuoritukset(opiskeluoikeus).filter(siirretäänSeuraavalleLuokalle).map(suorituksenLuokkaAste)
