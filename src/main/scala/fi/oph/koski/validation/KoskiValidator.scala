@@ -240,7 +240,4 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ =>
       HttpStatus.ok
   }
-
-
-
 }
