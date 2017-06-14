@@ -223,7 +223,7 @@ describe('Perusopetus', function() {
 
       describe('Tietojen muuttaminen', function() {
         describe('Oppiaineet', function() {
-          var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
           var sosiaalisetTaidot = editor.subEditor('.3')
 
           describe('Poistaminen', function () {
@@ -430,7 +430,7 @@ describe('Perusopetus', function() {
             before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="peruutettu"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
+              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
             })
 
             it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
@@ -442,20 +442,20 @@ describe('Perusopetus', function() {
             before(editor.edit, editor.property('tila').removeItem(0), editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivä poistetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
             })
           })
         })
 
         describe('Läsnä', function() {
           it('Alkutila', function() {
-            expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
           describe('Kun lisätään', function() {
             before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="lasna"]'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
             })
 
             describe('editoitaessa', function() {
@@ -470,13 +470,13 @@ describe('Perusopetus', function() {
 
         describe('Väliaikaisesti keskeytynyt', function() {
           it('Alkutila', function() {
-            expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+            expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
           describe('Kun lisätään', function() {
             before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
+              expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
             })
           })
         })
@@ -943,7 +943,7 @@ describe('Perusopetus', function() {
 
       describe('Valinnainen oppiaine', function() {
         before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
-        var uusiOppiaine = editor.propertyBySelector('.valinnaiset .uusi-oppiaine')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
           var historia = editor.subEditor('.valinnainen.HI')
           before(editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.saveChanges, wait.until(page.isSavedLabelShown))
@@ -1016,7 +1016,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Pakollinen oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'))
 
@@ -1856,6 +1856,9 @@ describe('Perusopetus', function() {
         describe('Kun merkitään perusopetuksen oppimäärä valmiiksi', function() {
           before(
             opinnot.valitseSuoritus(1, 'Päättötodistus'),
+            wait.forAjax,
+            opinnot.oppiaineet.uusiOppiaine('.pakolliset').selectValue('Matematiikka'),
+            opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
             tilaJaVahvistus.merkitseValmiiksi,
             tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
             tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
@@ -2021,7 +2024,7 @@ describe('Perusopetus', function() {
 
 
       describe('Pakollinen oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.pakolliset .uusi-oppiaine')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
@@ -2088,7 +2091,7 @@ describe('Perusopetus', function() {
         after(editor.edit, arvosana.selectValue('S'), editor.saveChanges, wait.until(page.isSavedLabelShown))
       })
       describe('Oppiaine', function() {
-        var uusiOppiaine = editor.propertyBySelector('.uusi-oppiaine')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
         describe('Uuden oppiaineen lisääminen', function() {
           var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen:nth-child(3)')
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),

@@ -141,6 +141,11 @@ function Oppiaineet() {
         }
       }
       return Q.all(promises)
+    },
+
+    uusiOppiaine: function(selector) {
+      selector = selector || ""
+      return OpinnotPage().opiskeluoikeusEditor().propertyBySelector(selector + ' .uusi-oppiaine')
     }
   }
 }
