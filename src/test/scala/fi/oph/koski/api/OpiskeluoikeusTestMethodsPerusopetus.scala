@@ -18,15 +18,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluoikeusTestMethods[
     tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 
-  val päättötodistusSuoritus = PerusopetuksenOppimääränSuoritus(
-    koulutusmoduuli = Perusopetus(perusteenDiaarinumero = Some("104/011/2014")),
-    suoritustapa = PerusopetusExampleData.suoritustapaKoulutus,
-    oppimäärä = PerusopetusExampleData.perusopetuksenOppimäärä,
-    suorituskieli = None,
-    tila = tilaValmis,
-    toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus
-  )
+  val päättötodistusSuoritus = PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 
   val vuosiluokkasuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(9).copy(perusteenDiaarinumero = Some("104/011/2014")),

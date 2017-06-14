@@ -1,3 +1,7 @@
+## 14.6.2017
+
+- Perusopetuksen oppimäärän suoritukselta vaaditaan vähintään yksi oppiaine, jos suoritus on tilassa VALMIS
+
 ## 29.5.2017
 
 - Muutettu opiskeluoikeuden tila Katsotaan eronneeksi -> Erotettu

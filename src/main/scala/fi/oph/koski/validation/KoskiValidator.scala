@@ -162,6 +162,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
+        :: validatePuuttuvatOppiaineet(suoritus)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus.vahvistus.orElse(vahvistus)))
     )
   }
@@ -230,5 +231,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
   }
+
+  def validatePuuttuvatOppiaineet(suoritus: Suoritus) = suoritus match {
+    case s: PerusopetuksenOppimääränSuoritus if s.osasuoritusLista.isEmpty && s.valmis =>
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sen tila on VALMIS")
+    case _ =>
+      HttpStatus.ok
+  }
+
+
 
 }
