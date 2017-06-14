@@ -274,6 +274,7 @@ case class PerusopetuksenLuokkaAste(
 ) extends KoodistostaLöytyväKoulutusmoduuli with PerusopetuksenDiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = false
+  def luokkaAste = tunniste.koodiarvo
 }
 
 trait PerusopetuksenDiaarinumerollinenKoulutus extends DiaarinumerollinenKoulutus

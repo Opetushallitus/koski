@@ -1,6 +1,7 @@
 ## 14.6.2017
 
 - Perusopetuksen oppimäärän suoritukselta vaaditaan vähintään yksi oppiaine, jos suoritus on tilassa VALMIS
+- 9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun suoritus on VALMIS, eikä oppilas jää luokalle
 
 ## 29.5.2017
 

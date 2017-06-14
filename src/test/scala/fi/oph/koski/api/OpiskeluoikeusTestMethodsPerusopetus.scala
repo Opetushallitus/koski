@@ -20,13 +20,6 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluoikeusTestMethods[
 
   val päättötodistusSuoritus = PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 
-  val vuosiluokkasuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(9).copy(perusteenDiaarinumero = Some("104/011/2014")),
-    luokka = "9E",
-    suorituskieli = None,
-    tila = tilaValmis,
-    toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus
-  )
+  val vuosiluokkasuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus
 
 }
