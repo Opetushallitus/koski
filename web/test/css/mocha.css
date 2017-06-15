@@ -268,3 +268,15 @@ body {
         position: absolute;
     }
 }
+
+@media only screen  and (min-width : 2450px) {
+    #mocha {
+        float: left;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    #mocha-stats {
+        left: 20px;
+    }
+}
