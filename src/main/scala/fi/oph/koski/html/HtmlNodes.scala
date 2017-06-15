@@ -16,7 +16,7 @@ trait HtmlNodes extends PiwikNodes {
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None): Elem =
     <html>
       <head>
-      {commonHead(piwikHttpStatusCode)}
+      {commonHead(piwikHttpStatusCode) ++ raamit}
       </head>
       <body>
         <div data-inraamit={if (useRaamit) "true" else ""} id="content"></div>
@@ -35,7 +35,6 @@ trait HtmlNodes extends PiwikNodes {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" /> ++
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/> ++
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
-    raamit ++
     piwikTrackingScriptLoader(piwikHttpStatusCode)
 
   def raamit: NodeSeq = if (useRaamit) {
