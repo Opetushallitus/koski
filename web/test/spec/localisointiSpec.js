@@ -12,7 +12,7 @@ describe('Lokalisointi', function() {
     })
   })
   describe('Tekstien muokkaus', function() {
-    function editLink() { return S('#topbar .edit-localizations') }
+    function editLink() { return S('.edit-localizations') }
     function startEdit() { triggerEvent(editLink(), 'click') }
     function saveEdits() {
       triggerEvent(findSingle('.localization-edit-bar button:not(:disabled)'), 'click')

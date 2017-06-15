@@ -62,7 +62,7 @@ export const OppijaHaku = () => {
       let hetuQuery = response.hetu ? (encodeURIComponent('hetu') + '=' + encodeURIComponent(response.hetu)) : ''
       let oidQuery = response.oid ? (encodeURIComponent('oid') + '=' + encodeURIComponent(response.oid)) : ''
       let href = '/koski/uusioppija#' + hetuQuery + ((hetuQuery && oidQuery) ? '&' : '') + (oidQuery ? oidQuery : '')
-      return [{href, element: (<Link baret-lift className={selectedIndexAtom.map(i => 'lisaa-oppija' +(i == 0 ? ' selected' : ''))} href={href}>
+      return [{href, element: (<Link key={selectedIndexAtom.map(i => i)} baret-lift className={selectedIndexAtom.map(i => 'lisaa-oppija' +(i == 0 ? ' selected' : ''))} href={href}>
         <Text name="Lisää uusi opiskelija"/>
       </Link>)}]
     } else {

@@ -26,6 +26,7 @@ import {ISO2FinnishDate} from './date'
 import {doActionWhileMounted} from './util'
 import Text from './Text.jsx'
 import {t} from './i18n'
+import {EditLocalizationsLink} from './EditLocalizationsLink.jsx'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -146,6 +147,7 @@ const createState = (oppijaOid) => {
 const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}) => oppijaP.map(oppija => ({
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
+    <EditLocalizationsLink />
     <Link className="back-link" href={listviewPath()}><Text name="Opiskelijat"/></Link>
     <ExistingOppija {...{oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}}/>
   </div></div>),

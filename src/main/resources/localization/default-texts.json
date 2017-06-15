@@ -294,7 +294,6 @@
   "Todistuksella näkyvät lisätiedot": "Todistuksella näkyvät lisätiedot",
   "Erityisen tuen päätös": "Erityisen tuen päätös",
   "Lisätiedot": "Lisätiedot",
-  "Y-tunnus": "Y-tunnus",
   "Hyväksytty": "Hyväksytty",
   "Hylkäyksen peruste": "Hylkäyksen peruste",
   "Tutkinnon osa": "Tutkinnon osa",
@@ -320,5 +319,6 @@
   "En": "Englanniksi",
   "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.",
   "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle": "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle",
-  "Päättötodistus": "Päättötodistus"
+  "Päättötodistus": "Päättötodistus",
+  "Muokkaa käännöksiä": "Muokkaa käännöksiä"
 }

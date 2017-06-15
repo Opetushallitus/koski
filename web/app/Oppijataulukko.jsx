@@ -19,6 +19,7 @@ import {currentLocation} from './location'
 import {t} from './i18n'
 import Text from './Text.jsx'
 import {lang} from './i18n'
+import {EditLocalizationsLink} from './EditLocalizationsLink.jsx'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -193,6 +194,7 @@ export const oppijataulukkoContentP = (query, params) => {
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
         <OppijaHaku/>
+        <EditLocalizationsLink/>
         <h2 className="oppijataulukko-header"><Text name="Opiskelijat"/></h2>
       { taulukko }
       </div>
