@@ -14,7 +14,13 @@ export default ({name, ignoreMissing, lang, edit, labelFor}) => {
   }
 
   if (labelFor !== undefined && document.getElementById(labelFor)) {
-    return <label htmlFor={labelFor}>{t(name, ignoreMissing, lang)}</label>
+    return (
+      <label htmlFor={labelFor}>
+        <span className="localized">
+          {t(name, ignoreMissing, lang)}
+        </span>
+      </label>
+    )
   }
 
   return (<span className="localized">{
