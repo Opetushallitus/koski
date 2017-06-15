@@ -103,7 +103,7 @@ export const OppijaEditor = ({model}) => {
               return modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
                 <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                   <OpiskeluoikeusEditor
-                    model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid }) }
+                    model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid, opiskeluoikeusIndex }) }
                   />
                 </li>
               )

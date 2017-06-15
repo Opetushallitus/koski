@@ -20,9 +20,8 @@ import {isPerusopetuksenOppimäärä, luokkaAste} from './Perusopetus'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let id = modelData(model, 'id')
-  model = addContext(model, {opiskeluoikeusId: id})
+  model = addContext(model, {opiskeluoikeus: model})
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
-    mdl = addContext(mdl, {opiskeluoikeus: mdl})
     let context = mdl.context
     let suoritukset = modelItems(mdl, 'suoritukset')
     assignTabNames(suoritukset)
@@ -146,18 +145,20 @@ const SuoritusTabs = ({ model, suoritukset }) => {
 )}
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
-SuoritusTabs.suoritusQueryParam = context => context.opiskeluoikeusId + '.suoritus'
+SuoritusTabs.suoritusQueryParam = context => (modelData(context.opiskeluoikeus, 'id') || context.opiskeluoikeusIndex) + '.suoritus'
 SuoritusTabs.suoritusIndex = (model, suoritukset) => {
   let paramName = SuoritusTabs.suoritusQueryParam(model.context)
-  let index = currentLocation().params[paramName] || defaultSuoritusIndex(model, suoritukset)
-  if (!isNaN(index)) return index // numeric index
-  return suoritukset.map(s => s.tabName).indexOf(index)
+  let selectedTabName = currentLocation().params[paramName]
+  let index = suoritukset.map(s => s.tabName).indexOf(selectedTabName)
+  if (index < 0) {
+    index = suoritukset.findIndex(s => luokkaAste(s) || (isPerusopetuksenOppimäärä(s) && suoritusValmis(s) ))
+    if (index < 0) index = 0
+    selectedTabName = suoritukset[index].tabName
+    let newLocation = currentLocation().addQueryParams({ [paramName]: selectedTabName }).toString()
+    history.replaceState(null, null, newLocation)
+  }
+  return index
 }
-let defaultSuoritusIndex = (model, suoritukset) => {
-  let index = suoritukset.findIndex(suoritus => luokkaAste(suoritus) || (isPerusopetuksenOppimäärä(suoritus) && suoritusValmis(suoritus) ))
-  return (index >= 0) ? index : 0
-}
-
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {
     let {opiskeluoikeus} = this.props

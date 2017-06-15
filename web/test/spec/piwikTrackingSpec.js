@@ -32,7 +32,7 @@ describe('Piwik-seuranta', function() {
       })
 
       describe('Siirtyäessä oppijan tietoihin', function() {
-        var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+$/
+        var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+(\?.*)?$/
 
         before(
           piwik.reset,

@@ -58,7 +58,7 @@ export function parseLocation(location) {
       return this.replaceQueryParams(newParams)
     },
     replaceQueryParams(newParams) {
-      let parameterPairs = R.filter(([, value]) => !!value, R.toPairs(newParams))
+      let parameterPairs = R.filter(([, value]) => value != undefined && value != '', R.toPairs(newParams))
       let query = R.join('&', R.map(R.join('='), parameterPairs))
       let search = query ? '?' + query : ''
       return parseLocation({pathname: location.pathname, hash: location.hash, search: search})

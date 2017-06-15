@@ -1941,8 +1941,23 @@ describe('Perusopetus', function() {
             opinnot.valitseSuoritus(1, '9. vuosiluokka')
           )
 
-          it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
-            expect(tilaJaVahvistus.tila()).to.equal('VALMIS')
+          describe('Käyttöliittymän tila', function() {
+            it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
+              expect(tilaJaVahvistus.tila()).to.equal('VALMIS')
+            })
+          })
+
+          describe('Kun palautetaan päättötodistus KESKEN-tilaan', function() {
+            before(
+              page.openPage,
+              page.oppijaHaku.searchAndSelect('160932-311V'),
+              editor.edit,
+              tilaJaVahvistus.merkitseKeskeneräiseksi,
+              editor.saveChanges
+            )
+            it('Pysytään päättötodistus -täbillä', function() {
+              expect(opinnot.getTutkinto(0)).to.equal('Peruskoulu')
+            })
           })
         })
       })
