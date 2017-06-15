@@ -3,15 +3,14 @@ import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import {Error, TopLevelError, isTopLevel, handleError, errorP} from './Error.jsx'
+import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error.jsx'
 import {userP} from './user'
 import {contentP, titleKeyP} from './router.jsx'
 import {TopBar} from './TopBar.jsx'
 import {locationP} from './location.js'
 import {savedBus} from './Oppija.jsx'
 import LocalizationEditBar from './LocalizationEditBar.jsx'
-import { t } from './i18n'
-import {currentLocation} from './location'
+import {t} from './i18n'
 
 history.replaceState(null, null, currentLocation().filterQueryParams((k) => k !== 'ticket').toString())
 

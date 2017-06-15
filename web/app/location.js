@@ -1,6 +1,6 @@
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {removeExitHook, checkExitHook} from './exitHook'
+import {checkExitHook, removeExitHook} from './exitHook'
 import {trackPageView} from './piwikTracking'
 
 const locationBus = new Bacon.Bus()
