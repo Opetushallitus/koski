@@ -7,7 +7,7 @@ import scala.xml.Node
 trait PiwikNodes {
   def piwikSiteId: String
 
-  def piwikTrackingScriptLoader(piwikHttpStatusCode: Option[Int]): Seq[Node] =
+  def piwikTrackingScriptLoader(piwikHttpStatusCode: Option[Int] = None): Seq[Node] =
     <script type="text/javascript">
       {CommentedPCData("""
       window._paq = window._paq || []

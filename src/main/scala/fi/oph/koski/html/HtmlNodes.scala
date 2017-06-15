@@ -7,43 +7,42 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
 import fi.oph.koski.util.XML.CommentedPCData
 
-import scala.xml.{Elem, NodeSeq, Unparsed, XML}
+import scala.xml.NodeSeq.Empty
+import scala.xml.{Elem, NodeSeq, Unparsed}
 
 trait HtmlNodes extends PiwikNodes {
   def application: KoskiApplication
   def buildVersion: Option[String]
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None): Elem =
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = true): Elem = {
     <html>
       <head>
-      {commonHead(piwikHttpStatusCode) ++ raamit}
+        {commonHead ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body>
-        <div data-inraamit={if (useRaamit) "true" else ""} id="content"></div>
+        <div data-inraamit={if (application.config.getBoolean("useRaamit") && raamitEnabled) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
         {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}
       </script>
       <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
+  }
 
-  def commonHead(piwikHttpStatusCode: Option[Int] = None): NodeSeq =
+  def commonHead: NodeSeq =
     <title>Koski - Opintopolku.fi</title> ++
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> ++
     <meta charset="UTF-8" /> ++
     <link rel="shortcut icon" href="/koski/favicon.ico" /> ++
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" /> ++
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/> ++
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
-    piwikTrackingScriptLoader(piwikHttpStatusCode)
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-  def raamit: NodeSeq = if (useRaamit) {
+  private def raamit(enabled: Boolean) = if (application.config.getBoolean("useRaamit") && enabled) {
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
   } else {
-    NodeSeq.Empty
+    Empty
   }
-
-  private def useRaamit = application.config.getBoolean("useRaamit")
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">

@@ -10,7 +10,7 @@ import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
-    htmlIndex("koski-pulssi.js")
+    htmlIndex("koski-pulssi.js", raamitEnabled = false)
   }
 
   get("/raportti") {
@@ -27,7 +27,7 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
   private def raportti =
     <html>
       <head>
-        {commonHead()}
+        {commonHead ++ piwikTrackingScriptLoader()}
         <link rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
       </head>
       <body id="raportti">
