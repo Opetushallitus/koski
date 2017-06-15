@@ -31,7 +31,9 @@ window.onpopstate = function() {
 
 locationBus.mapError().onValue(removeExitHook)
 
-export const locationP = locationBus.toProperty(currentLocation())
+let filteredLocation = currentLocation().filterQueryParams((k) => k !== 'ticket')
+history.replaceState(null, null, filteredLocation.toString())
+export const locationP = locationBus.toProperty(filteredLocation)
 
 export const navigateToOppija = (oppija, event) => navigateTo(`/koski/oppija/${oppija.oid}`, event)
 export const showError = (error) => locationBus.error(error)
