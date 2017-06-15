@@ -88,7 +88,7 @@ Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä Koski vaihtoehtois
 
 Avaa selaimessa
 
-    http://localhost:7021/koski
+> [http://localhost:7021/koski](http://localhost:7021/koski)
 
 Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
@@ -163,7 +163,7 @@ Buildaa ja aja kaikki testit
 
 Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa selaimessa osoitteessa
 
-    http://localhost:7021/koski/test/runner.html
+> [http://localhost:7021/koski/test/runner.html](http://localhost:7021/koski/test/runner.html)
 
 Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
@@ -298,11 +298,11 @@ Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen
 
 Esimerkkihaku: haetaan organisaatiopuurakenne.
 
-    https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
+> https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
 
 Henkilöpalvelun swagger:
 
-    https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
+> https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
 
 ### ePerusteet
 
@@ -313,14 +313,14 @@ EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/op
 
 EPerusteiden Swagger-dokumentaatio:
 
-    https://eperusteet.opintopolku.fi/eperusteet-service/
+> https://eperusteet.opintopolku.fi/eperusteet-service/
 
 Pari testiurlia:
 
-    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
-    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
-    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
-    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
 
 ### Koodistopalvelu
 
@@ -328,12 +328,12 @@ Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) 
 
 Koodistopalvelun Swagger-dokumentaatio:
 
-    https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
+> https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
 
 Pari testiurlia Koodistopalveluun:
 
-    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
-    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 
 Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`.
 
@@ -360,11 +360,11 @@ Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
 
 Koski-järjestelmän rajapinta-dokumentaatio generoidaan lähdekoodista sekä testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
 
-https://koskidev.koski.oph.reaktor.fi/koski/documentation
+> https://koskidev.koski.oph.reaktor.fi/koski/documentation
 
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia.
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
 
-https://github.com/Opetushallitus/json-schema-viewer`
+> https://github.com/Opetushallitus/json-schema-viewer
 
 Mon Apr 18 14:18:11 EEST 2016
