@@ -5,12 +5,16 @@ import {t} from './i18n'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 
-export default ({name, ignoreMissing, lang, edit}) => {
+export default ({name, ignoreMissing, lang, edit, labelFor}) => {
   let editP = edit == undefined ? editAtom : Bacon.constant(parseBool(edit))
 
   if (typeof name != 'string') {
     console.error('Not a string', name)
     return <span>{'NOT A STRING'}</span>
+  }
+
+  if (labelFor !== undefined && document.getElementById(labelFor)) {
+    return <label htmlFor={labelFor}>{t(name, ignoreMissing, lang)}</label>
   }
 
   return (<span className="localized">{
