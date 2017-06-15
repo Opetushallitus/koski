@@ -62,7 +62,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   return (<div className="oppiaineet">
     { isYsiluokka(model) && (<div className="ysiluokka-jaa-luokalle">
         <PropertyEditor model={model} propertyName="jääLuokalle" />
-        <em><Text name="Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle"/></em>
+        { model.context.edit && <em><Text name="Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle"/></em> }
       </div>)
     }
     { showOppiaineet && (<div>
