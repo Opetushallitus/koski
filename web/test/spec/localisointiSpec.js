@@ -73,4 +73,9 @@ describe('Lokalisointi', function() {
       })
     })
   })
+
+  // TODO: testi monikielisten tekstien muokkaukselle
+  // 1. tyhjän tekstin tilalle syötetttynä kieleksi tulee käyttäjän kieli
+  // 2. olemassa olevan tekstin muokkaus säilyttää alkuperäisen kielen
+  // 3. tekstin tyhjennyt, tallennus, muokkaus -> käytetään käyttäjän kieltä
 })
