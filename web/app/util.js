@@ -15,3 +15,5 @@ export const parseBool = (b, defaultValue) => {
 const isObs = x => x instanceof Bacon.Observable
 
 export const toObservable = (x) => isObs(x) ? x : Bacon.constant(x)
+
+export const ift = (obs, value) => toObservable(obs).map(show => show ? value : null)

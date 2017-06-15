@@ -1,10 +1,12 @@
-import React from 'react'
+import React from 'baret'
+import Atom from 'bacon.atom'
 import {logout} from './user'
 import {routeErrorP} from './router.jsx'
 import {trackRuntimeError} from './piwikTracking'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import Text from './Text.jsx'
+import {ift} from './util'
 
 const logError = (error) => {
   console.log('ERROR', error)
@@ -43,7 +45,10 @@ export function requiresLogin(e) {
 const errorText = (error) => error.text || (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
 
 export const Error = ({error}) => {
-  return errorText(error) && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorText(error)}</span><a>{'✕'}</a></div> : <div id="error"></div>
+  let showAtom = Atom(errorText(error) && !isTopLevel(error))
+  return (<div id="error" className={ift(showAtom, 'error')}>
+    {ift(showAtom, <span><span className="error-text">{errorText(error)}</span><a onClick={() => showAtom.set(false)}>{'✕'}</a></span>)}
+  </div>)
 }
 
 export const TopLevelError = ({error}) => (<div className="error content-area">
