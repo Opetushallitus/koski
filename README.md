@@ -54,11 +54,11 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
-- Java 8
+- Java 8 (osx: `brew cask install java`)
 - Maven 3 (osx: `brew install maven`)
 - Postgres 9.6 (osx: `brew install postgresql`)
 - Elasticsearch 5.1.1 (osx: `brew install elasticsearch`)
-- Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu)
+- Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu`)
 - Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
