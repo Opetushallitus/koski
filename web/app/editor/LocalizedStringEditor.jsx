@@ -1,7 +1,6 @@
 import React from 'react'
 import R from 'ramda'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {ObjectEditor} from './ObjectEditor.jsx'
 import {StringEditor} from './StringEditor.jsx'
 import {modelLookup} from './EditorModel.js'
 import {lang} from '../i18n'
@@ -9,10 +8,6 @@ import {lensedModel, modelData, modelSetValue, oneOfPrototypes} from './EditorMo
 import * as L from 'partial.lenses'
 
 export const LocalizedStringEditor = ({model, ...rest}) => {
-  if (!model.context.edit) {
-    return <ObjectEditor model={model}/>
-  }
-
   let wrappedModel = wrapOptional({model})
 
   let languagePriority = [lang, 'fi', 'sv', 'en']
