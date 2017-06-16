@@ -15,7 +15,7 @@ describe('Ylioppilastutkinto', function( ){
   describe('Kaikki tiedot näkyvissä', function() {
     before(opinnot.expandAll)
     it('toimii', function() {
-      expect(S('.ylioppilastutkinnonsuoritus .osasuoritukset .koulutusmoduuli:eq(0) .nimi .fi .value').text()).to.equal('Maantiede')
+      expect(S('.ylioppilastutkinnonsuoritus .osasuoritukset .koulutusmoduuli:eq(0) .nimi .fi').text()).to.equal('Maantiede')
     })
   })
 
