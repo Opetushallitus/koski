@@ -1,5 +1,8 @@
 describe('Lokalisointi', function() {
   var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+
   describe('Ruotsinkielisellä käyttäjällä', function() {
     before(Authentication().login('pärre'), resetFixtures, page.openPage)
     describe('Oppijataulukko', function() {
@@ -11,7 +14,7 @@ describe('Lokalisointi', function() {
       })
     })
   })
-  describe('Tekstien muokkaus', function() {
+  describe('Sovelluksen käyttöliittymätekstien muokkaus', function() {
     function editLink() { return S('.edit-localizations') }
     function startEdit() { triggerEvent(editLink(), 'click') }
     function saveEdits() {
@@ -74,8 +77,62 @@ describe('Lokalisointi', function() {
     })
   })
 
-  // TODO: testi monikielisten tekstien muokkaukselle
-  // 1. tyhjän tekstin tilalle syötetttynä kieleksi tulee käyttäjän kieli
-  // 2. olemassa olevan tekstin muokkaus säilyttää alkuperäisen kielen
-  // 3. tekstin tyhjennyt, tallennus, muokkaus -> käytetään käyttäjän kieltä
+  describe('Monikieliset tekstit muokattavassa datassa', function() {
+    let property = editor.property('todistuksellaNäkyvätLisätiedot')
+
+    describe('Syötettäessä suomenkielisellä käyttäjällä', function() {
+      before(
+        Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+        editor.edit, property.setValue('Hyvä meininki'),
+        editor.saveChanges
+      )
+      it('Teksti merkitään suomenkieliseksi', function() {
+        expect(property.getLanguage()).to.equal('fi')
+      })
+
+      describe('Muokattaessa suomenkielistä tekstiä ruotsinkielisen käyttäjän toimesta', function() {
+        before(Authentication().login('pärre'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+
+        it('Ennen muokkausta näytetään suomenkielinen teksti', function() {
+          expect(property.getLanguage()).to.equal('fi')
+        })
+
+        describe('Muokkauksen jälkeen', function() {
+          before(
+            editor.edit,
+            property.setValue('Erittäin hyvä meininki'),
+            editor.saveChanges
+          )
+
+          it('Teksti säilyy suomenkielisenä', function() {
+            expect(property.getValue()).to.equal('Erittäin hyvä meininki')
+            expect(property.getLanguage()).to.equal('fi')
+          })
+
+          describe('Kun poistetaan teksti, tallennetaan ja muokataan uudelleen', function() {
+            before(
+              editor.edit,
+              property.setValue(''),
+              editor.saveChanges,
+              editor.edit,
+              property.setValue('Jättebra'),
+              editor.saveChanges
+            )
+
+            it('Uusi teksti merkitään ruotsinkieliseksi', function() {
+              expect(property.getValue()).to.equal('Jättebra')
+              expect(property.getLanguage()).to.equal('sv')
+            })
+
+            describe('Muokattaessa ruotsinkielistä tekstiä suomenkielisen käyttäjän toimesta', function() {
+              it('Teksti säilyy ruotsinkielisenä', function() {
+                // TODO
+              })
+            })
+          })
+        })
+
+      })
+    })
+  })
 })

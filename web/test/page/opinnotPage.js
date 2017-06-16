@@ -428,6 +428,9 @@ function Property(elem) {
         return Page(elem).setInputValue('.dropdown, .editor-input', value)()
       }
     },
+    getLanguage: function() {
+      return elem().find('.localized-string').attr('class').split(/\s+/).filter(function(c) { return ['fi', 'sv', 'en'].includes(c) }).join(' ')
+    },
     toPäivämääräväli: function() {
       return Päivämääräväli(elem)
     },
