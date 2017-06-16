@@ -125,8 +125,16 @@ describe('Lokalisointi', function() {
             })
 
             describe('Muokattaessa ruotsinkielistä tekstiä suomenkielisen käyttäjän toimesta', function() {
+              before(
+                Authentication().login('kalle'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+                editor.edit,
+                property.setValue('Jättebra!!'),
+                editor.saveChanges
+              )
+
               it('Teksti säilyy ruotsinkielisenä', function() {
-                // TODO
+                expect(property.getValue()).to.equal('Jättebra!!')
+                expect(property.getLanguage()).to.equal('sv')
               })
             })
           })
