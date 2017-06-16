@@ -130,16 +130,18 @@ const createState = (oppijaOid) => {
     return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() }).doError(decreaseLoading)
   })
   oppijaP.onValue()
-  oppijaP.map('.event').filter(event => event == 'saved').onValue(() => savedBus.push(true))
+  oppijaP.map('.event').filter(event => event === 'saved').onValue(() => savedBus.push(true))
 
-  const stateP = oppijaP.map('.event').mapError(() => 'dirty').flatMapLatest(event => {
-    if (event == 'saved') {
-      return Bacon.once(event).concat(Bacon.later(5000, 'view'))
+  const stateP = oppijaP.map('.event').mapError(() => 'dirty').slidingWindow(2).flatMapLatest(events => {
+    let prev = events[0]
+    let next = events.last()
+    if(prev === 'saved' && next === 'view') {
+      return Bacon.later(2000, 'view')
     }
-    return event
+    return Bacon.once(next)
   }).toProperty().doAction((state) => {
-    state == 'dirty' ? addExitHook(t('Haluatko varmasti poistua sivulta?')) : removeExitHook()
-    if (state == 'saved') navigateWithQueryParams({edit: undefined})
+    state === 'dirty' ? addExitHook(t('Haluatko varmasti poistua sivulta?')) : removeExitHook()
+    if (state === 'saved') navigateWithQueryParams({edit: undefined})
   })
   return { oppijaP, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}
 }
