@@ -274,9 +274,18 @@ body {
         float: left;
         height: 100vh;
         overflow-y: scroll;
+        width: 30%;
     }
 
-    #mocha-stats {
+    #mocha #mocha-stats {
+        top: 0;
         left: 20px;
+        width: 32%;
+        background-color: white;
+        padding-top: 15px;
+    }
+
+    iframe {
+        border-width: 0 1px 0 1px;
     }
 }
