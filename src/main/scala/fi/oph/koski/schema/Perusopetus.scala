@@ -60,7 +60,13 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  vaikeastiKehitysvammainen: Option[Boolean] = None,
+  majoitusetu: Option[Päätösjakso] = None,
+  kuljetusetu: Option[Päätösjakso] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None
+
+
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenTuenPäätös(

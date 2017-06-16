@@ -159,5 +159,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false)")
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None
 ) extends OpiskeluoikeudenLisätiedot

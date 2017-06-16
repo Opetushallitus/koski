@@ -1,0 +1,28 @@
+[
+  {
+    "koodiUri" : "ammatillisenpoissaolosyy_1",
+    "koodiArvo" : "1",
+    "metadata" : [ {
+      "nimi" : "Kesälomakeskeytys",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisenpoissaolosyy_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "Oma ilmoitus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "ammatillisenpoissaolosyy_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "Muu",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

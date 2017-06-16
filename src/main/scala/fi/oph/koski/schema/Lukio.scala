@@ -43,7 +43,8 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenKoulutustehtävänJakso(
