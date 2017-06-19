@@ -72,8 +72,10 @@ export const OppijaHaku = () => {
 
   return (<div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
       <div>
-        <h3><Text name="Hae tai lisää opiskelija"/></h3>
-        <input type="text" value={searchStringAtom} id='search-query' placeholder={t('henkilötunnus, nimi tai oppijanumero')} onChange={(e) => searchStringAtom.set(e.target.value)} onKeyDown={optionsP.map(onKeyDown)} autoFocus></input>
+        <label>
+          <h3><Text name="Hae tai lisää opiskelija"/></h3>
+          <input type="text" value={searchStringAtom} id='search-query' placeholder={t('henkilötunnus, nimi tai oppijanumero')} onChange={(e) => searchStringAtom.set(e.target.value)} onKeyDown={optionsP.map(onKeyDown)} autoFocus></input>
+        </label>
       </div>
       <div className='hakutulokset'>
         {
