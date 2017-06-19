@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -49,7 +48,8 @@
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
       },
-      "vuosiluokkiinSitoutumatonOpetus" : false
+      "vuosiluokkiinSitoutumatonOpetus" : false,
+      "vaikeastiVammainen" : false
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {

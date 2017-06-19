@@ -158,7 +158,7 @@ object ExamplesPerusopetus {
         kotiopetus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
         ulkomailla = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
         vuosiluokkiinSitoutumatonOpetus = true,
-        vaikeastiVammainen = Some(true),
+        vaikeastiVammainen = true,
         majoitusetu = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
         kuljetusetu = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
         oikeusMaksuttomaanAsuntolapaikkaan = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4))))

@@ -40,6 +40,5 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
     case s: ListSchema => s :: allSchemas(s.itemSchema)
     case s: ElementSchema => List(s)
   }
-
 }
 

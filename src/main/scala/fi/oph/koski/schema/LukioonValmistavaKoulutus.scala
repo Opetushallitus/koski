@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
@@ -160,5 +160,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None
+  @DefaultValue(false)
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot

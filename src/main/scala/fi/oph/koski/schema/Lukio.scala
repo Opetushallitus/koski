@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, Title}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
@@ -44,7 +44,8 @@ case class LukionOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None
+  @DefaultValue(false)
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenKoulutustehtävänJakso(

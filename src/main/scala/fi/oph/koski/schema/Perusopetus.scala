@@ -61,7 +61,8 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  vaikeastiVammainen: Option[Boolean] = None,
+  @DefaultValue(false)
+  vaikeastiVammainen: Boolean = false,
   majoitusetu: Option[Päätösjakso] = None,
   kuljetusetu: Option[Päätösjakso] = None,
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None

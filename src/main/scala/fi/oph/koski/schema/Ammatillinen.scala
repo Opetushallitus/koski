@@ -42,12 +42,15 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  vaikeastiVammainen: Option[Boolean] = None,
-  vammainenJaAvustaja: Option[Boolean] = None,
+  @DefaultValue(false)
+  vaikeastiVammainen: Boolean = false,
+  @DefaultValue(false)
+  vammainenJaAvustaja: Boolean = false,
   majoitus: Option[List[Päätösjakso]] = None,
   sisäoppilaitosmainenMajoitus: Option[List[Päätösjakso]] = None,
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Päätösjakso]] = None,
-  vankilaopetuksessa: Option[Boolean] = None,
+  @DefaultValue(false)
+  vankilaopetuksessa: Boolean = false,
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @Title("Osa-aikaisuus")
