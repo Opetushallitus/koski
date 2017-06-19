@@ -87,7 +87,6 @@ case class ErityisenTuenPäätös(
   erityisryhmässä: Boolean
 )
 
-
 trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
