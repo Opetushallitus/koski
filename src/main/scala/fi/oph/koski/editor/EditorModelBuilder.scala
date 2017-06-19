@@ -132,6 +132,7 @@ object MetadataToModel {
     metadata.collect { case MinValueExclusive(x) => x }.foreach { x => props += ("minValueExclusive" -> x)}
     metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
     metadata.collect { case MultiLineString(x) => props += ("maxLines" -> x)}
+    metadata.collect { case UnitOfMeasure(u) => props += ("unitOfMeasure" -> u)}
     props
   }
 

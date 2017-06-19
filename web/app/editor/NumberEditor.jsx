@@ -13,11 +13,13 @@ export const NumberEditor = React.createClass({
       ? Math.round(data * 100) / 100
       : data
 
-    return wrappedModel.context.edit
-      ? <input type="text" defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"></input>
-      : <span className="inline number">{value}</span>
+    return wrapWithUnitOfMeasure(model.unitOfMeasure, wrappedModel.context.edit
+      ? <input type="text" defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"/>
+      : <span className="inline number">{value}</span>)
   }
 })
+
+const wrapWithUnitOfMeasure = (unitOfMeasure, content) => unitOfMeasure ? <span>{content}<span className="unit-of-measure">{unitOfMeasure}</span></span> : content
 
 NumberEditor.handlesOptional = () => true
 NumberEditor.validateModel = model => {

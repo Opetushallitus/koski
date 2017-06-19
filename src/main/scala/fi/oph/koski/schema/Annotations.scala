@@ -28,3 +28,6 @@ case class ClassName(classname: String) extends RepresentationalMetadata
 
 /* This is a multi-line string that should be edited with a textare instead of a string input */
 case class MultiLineString(lineCount: Int) extends RepresentationalMetadata
+
+/* Tags a numeric field with a unit of measure */
+case class UnitOfMeasure(unit: String) extends RepresentationalMetadata

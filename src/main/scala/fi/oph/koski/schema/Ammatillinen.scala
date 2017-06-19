@@ -53,6 +53,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   vankilaopetuksessa: Boolean = false,
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
+  @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")
   osaAikaisuus: Option[Int] = None,
   @Description("Yli 4 viikon poissaolot")
