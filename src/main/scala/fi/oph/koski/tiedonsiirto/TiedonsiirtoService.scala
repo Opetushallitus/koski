@@ -50,16 +50,17 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
-    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilter
+    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters
   }
 
-  private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): List[Map[String, Any]] =
-    if (session.hasGlobalReadAccess) {
-      Nil
-    } else {
-      List(Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))))
-    }
+  private def tallentajaOrganisaatioFilters(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter.toList
 
+  private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): Option[Map[String, Any]] =
+    if (session.hasGlobalReadAccess) {
+      None
+    } else {
+      Some(Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))))
+    }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
@@ -161,35 +162,35 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     }
     if (sorting.descending) ordering = ordering.reverse
 
-    val query = Json.parse("""{
-                  |  "size": 0,
-                  |  "aggs": {
-                  |  	"organisaatio": {
-                  |		  "terms": { "field": "tallentajaOrganisaatioOid.keyword", "size" : 20000 },
-                  |		  "aggs": {
-                  |			  "oppilaitos": {
-                  |				  "terms": { "field": "oppilaitokset.oid.keyword", "size" : 20000 },
-                  | 				"aggs": {
-                  |	  				"käyttäjä": {
-                  |		  				"terms": { "field": "tallentajaKäyttäjäOid.keyword", "size" : 20000 },
-                  |             "aggs": {
-                  |               "lähdejärjestelmä": {
-                  |                 "terms": { "field": "lähdejärjestelmä.keyword", "size" : 20000, "missing": "-" },
-                  |   				  		"aggs": {
-                  |                   "viimeisin" : { "max" : { "field" : "aikaleima" } },
-                  |				    		  	"fail": {
-                  |						    	  	"filter": { "term": { "success": false }}}
-                  |		  					    }
-                  |			  		    	}
-                  |               }
-                  |             }
-                  |				  	}
-                  |				  }
-                  |		  	}
-                  |		  }
-                  |  	}
-                  |  }
-                  |}""".stripMargin)
+    val query = Map(
+      "size" -> 0,
+      "aggs" ->
+        Map(
+          "organisaatio"-> Map(
+            "terms"-> Map( "field"-> "tallentajaOrganisaatioOid.keyword", "size" -> 20000 ),
+            "aggs"-> Map(
+              "oppilaitos"-> Map(
+                "terms"-> Map( "field"-> "oppilaitokset.oid.keyword", "size" -> 20000 ),
+                "aggs"-> Map(
+                  "käyttäjä"-> Map(
+                    "terms"-> Map( "field"-> "tallentajaKäyttäjäOid.keyword", "size" -> 20000 ),
+                    "aggs"-> Map(
+                      "lähdejärjestelmä"-> Map(
+                        "terms"-> Map( "field"-> "lähdejärjestelmä.keyword", "size" -> 20000, "missing"-> "-" ),
+                        "aggs"-> Map(
+                          "viimeisin" -> Map( "max" -> Map( "field" -> "aikaleima" ) ),
+                          "fail"-> Map(
+                            "filter"-> Map( "term"-> Map( "success"-> false )))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+    ) ++ tallentajaOrganisaatioFilter.map(filter => Map("query" -> filter)).getOrElse(Map())
 
     runSearch(query).map { response =>
       for {

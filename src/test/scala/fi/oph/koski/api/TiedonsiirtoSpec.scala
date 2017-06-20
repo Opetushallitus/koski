@@ -84,6 +84,18 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
   }
 
+  "Tiedonsiirtojen yhteenveto ei näytä muiden organisaatioiden tietoja" in {
+    resetFixtures
+    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(200)
+    }
+    authGet("api/tiedonsiirrot/yhteenveto", user = stadinAmmattiopistoPalvelukäyttäjä) {
+      verifyResponseStatus(200)
+      val yhteenveto = Json.read[List[TiedonsiirtoYhteenveto]](body)
+      yhteenveto.length should be(0)
+    }
+  }
+
   "Tiedonsiirtolokin katsominen" - {
     val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
     "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
