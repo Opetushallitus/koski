@@ -60,7 +60,7 @@ const createState = (oppijaOid) => {
   const editBus = Bacon.Bus()
   const saveChangesBus = Bacon.Bus()
   const cancelChangesBus = Bacon.Bus()
-  const editingP = locationP.skipErrors().map(loc => !!loc.params.edit).skipDuplicates()
+  const editingP = locationP.skipErrors().filter(loc => loc.path.startsWith('/koski/oppija/')).map(loc => !!loc.params.edit).skipDuplicates()
 
   cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
   editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
