@@ -199,7 +199,7 @@ object AmmatillinenExampleData {
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = Some(List(Päätösjakso(Some(date(2012, 9, 1)), Some(date(2013, 9, 1))))),
     vankilaopetuksessa = true,
     osaAikaisuus = Some(80),
-    poissaolojaksot = Some(List(Poissaolojakso(Some(date(2013, 10, 1)), Some(date(2013, 10, 31)), Koodistokoodiviite("2", "ammatillisenpoissaolosyy"))))
+    poissaolojaksot = Some(List(Poissaolojakso(Some(date(2013, 10, 1)), Some(date(2013, 10, 31)), Koodistokoodiviite("2", "ammatillistenopintojenpoissaolonsyy"))))
   )
 
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(

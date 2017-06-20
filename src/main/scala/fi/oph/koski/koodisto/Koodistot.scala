@@ -9,7 +9,7 @@ object Koodistot {
     "ammatillisennaytonarviointikohde",
     "ammatillisennaytonsuorituspaikka",
     "ammatillisenoppiaineet",
-    "ammatillisenpoissaolosyy",
+    "ammatillistenopintojenpoissaolonsyy",
     "ammatillisentutkinnonosanlisatieto",
     "ammatillisentutkinnonosanryhma",
     "ammatillisentutkinnonsuoritustapa",

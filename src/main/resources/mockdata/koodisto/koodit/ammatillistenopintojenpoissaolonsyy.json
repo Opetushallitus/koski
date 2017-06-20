@@ -1,6 +1,6 @@
 [
   {
-    "koodiUri" : "ammatillisenpoissaolosyy_1",
+    "koodiUri" : "ammatillistenopintojenpoissaolonsyy_1",
     "koodiArvo" : "1",
     "metadata" : [ {
       "nimi" : "Kesälomakeskeytys",
@@ -8,7 +8,7 @@
     } ],
     "versio" : 1
   }, {
-    "koodiUri" : "ammatillisenpoissaolosyy_2",
+    "koodiUri" : "ammatillistenopintojenpoissaolonsyy_2",
     "koodiArvo" : "2",
     "metadata" : [ {
       "nimi" : "Oma ilmoitus",
@@ -17,7 +17,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "ammatillisenpoissaolosyy_3",
+    "koodiUri" : "ammatillistenopintojenpoissaolonsyy_3",
     "koodiArvo" : "3",
     "metadata" : [ {
       "nimi" : "Muu",

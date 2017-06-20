@@ -65,7 +65,7 @@ case class Poissaolojakso(
   alku: Option[LocalDate],
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
   loppu: Option[LocalDate],
-  @KoodistoUri("ammatillisenpoissaolosyy")
+  @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
 )
 
