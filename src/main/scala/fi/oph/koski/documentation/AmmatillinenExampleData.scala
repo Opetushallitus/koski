@@ -191,7 +191,15 @@ object AmmatillinenExampleData {
       opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
     )),
     oikeusMaksuttomaanAsuntolapaikkaan = true,
-    ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")))
+    ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla"))),
+    vaikeastiVammainen = true,
+    vammainenJaAvustaja = true,
+    majoitus = Some(List(Päätösjakso(Some(date(2012, 9, 1)), Some(date(2013, 9, 1))))),
+    sisäoppilaitosmainenMajoitus = Some(List(Päätösjakso(Some(date(2012, 9, 1)), Some(date(2013, 9, 1))))),
+    vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = Some(List(Päätösjakso(Some(date(2012, 9, 1)), Some(date(2013, 9, 1))))),
+    vankilaopetuksessa = true,
+    osaAikaisuus = Some(80),
+    poissaolojaksot = Some(List(Poissaolojakso(Some(date(2013, 10, 1)), Some(date(2013, 10, 31)), Koodistokoodiviite("2", "ammatillistenopintojenpoissaolonsyy"))))
   )
 
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(

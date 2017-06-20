@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "oid" : "1.2.246.562.24.00000000001"
   },
@@ -161,13 +160,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2014-11-08",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -213,9 +205,14 @@
             "fi" : "Yleinen opetusryhmä"
           },
           "koodistoUri" : "opetusryhma"
-        }
+        },
+        "alku" : "2012-10-20",
+        "loppu" : "2013-08-15"
       },
-      "oikeusMaksuttomaanAsuntolapaikkaan" : false
+      "oikeusMaksuttomaanAsuntolapaikkaan" : false,
+      "vaikeastiVammainen" : false,
+      "vammainenJaAvustaja" : false,
+      "vankilaopetuksessa" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",

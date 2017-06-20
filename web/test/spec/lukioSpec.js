@@ -57,7 +57,8 @@ describe('Lukiokoulutus', function( ){
           'Tehtävä Erityisenä koulutustehtävänä taide\n' +
           'Ulkomaanjaksot 1.9.2012 — 1.9.2013\n' +
           'Maa Ruotsi\n' +
-          'Kuvaus Harjoittelua ulkomailla')
+          'Kuvaus Harjoittelua ulkomailla\n' +
+          'Oikeus maksuttomaan asuntolapaikkaan kyllä')
       })
 
       it('näyttää suorituksen tiedot', function() {

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, Title}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
@@ -43,7 +43,9 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @DefaultValue(false)
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenKoulutustehtävänJakso(

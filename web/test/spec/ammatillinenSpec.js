@@ -538,6 +538,26 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Opiskeluoikeuden lisätiedot', function() {
+      before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('211097-402L'), opinnot.expandAll)
+
+      it('näytetään', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot > .lisätiedot'))).to.equal('Lisätiedot\n' +
+          'Hojks Opetusryhmä Yleinen opetusryhmä\nOikeus maksuttomaan asuntolapaikkaan kyllä\n' +
+          'Ulkomaanjaksot 1.9.2012 — 1.9.2013\n' +
+          'Maa Ruotsi\n' +
+          'Kuvaus Harjoittelua ulkomailla\n' +
+          'Vaikeasti vammainen kyllä' +
+          '\nVammainen ja avustaja kyllä\n' +
+          'Majoitus 1.9.2012 — 1.9.2013\n' +
+          'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
+          'Vaativan erityisen tuen yhteydessä järjestettävä majoitus 1.9.2012 — 1.9.2013\n' +
+          'Vankilaopetuksessa kyllä\nOsa-aikaisuus 80 %\n' +
+          'Poissaolojaksot 1.10.2013 — 31.10.2013\n' +
+          'Syy Oma ilmoitus')
+      })
+    })
+
   })
 
   describe('Osittainen ammatillinen tutkinto', function() {

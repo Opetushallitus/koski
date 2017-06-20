@@ -60,7 +60,14 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @DefaultValue(false)
+  vaikeastiVammainen: Boolean = false,
+  majoitusetu: Option[Päätösjakso] = None,
+  kuljetusetu: Option[Päätösjakso] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None
+
+
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenTuenPäätös(
@@ -80,7 +87,6 @@ case class ErityisenTuenPäätös(
   @Title("Opiskelee erityisryhmässä")
   erityisryhmässä: Boolean
 )
-
 
 trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus
 

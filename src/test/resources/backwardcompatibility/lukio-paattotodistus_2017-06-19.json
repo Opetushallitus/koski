@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "020655-2479",
     "etunimet" : "Liisa",
@@ -73,7 +72,8 @@
         "kuvaus" : {
           "fi" : "Harjoittelua ulkomailla"
         }
-      } ]
+      } ],
+      "oikeusMaksuttomaanAsuntolapaikkaan" : true
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -3710,6 +3710,74 @@
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ITT",
+            "nimi" : {
+              "fi" : "Tanssi ja liike"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tanssi ja liike"
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "10",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ITT1",
+              "nimi" : {
+                "fi" : "Tanssin introkurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Opiskelija oppii tuntemaan omaa kehoansa monipuolisesti. Hän osaa käyttää liikkeen peruselementtejä liikkumisessaan\nja kykenee improvisoimaan liikkeellisesti annetun aiheen mukaan."
+            },
+            "kurssinTyyppi" : {
+              "koodiarvo" : "soveltava",
+              "koodistoUri" : "lukionkurssintyyppi"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
         "tyyppi" : {
           "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
@@ -3764,6 +3832,64 @@
             "koodistoUri" : "suorituksentyyppi"
           }
         } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionmuuopinto",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OA",
+            "koodistoUri" : "lukionmuutopinnot"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "OA1",
+              "nimi" : {
+                "fi" : "Oman äidinkielen keskustelukurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä"
+            },
+            "kurssinTyyppi" : {
+              "koodiarvo" : "soveltava",
+              "koodistoUri" : "lukionkurssintyyppi"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "kuvaus" : {
+              "fi" : "Sujuvaa keskustelua"
+            },
+            "päivä" : "2016-06-08",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
       } ],
       "todistuksellaNäkyvätLisätiedot" : {
         "fi" : "Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"
@@ -3771,7 +3897,8 @@
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      }
+      },
+      "ryhmä" : "12A"
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",

@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "211007-442N",
     "etunimet" : "Luke",
@@ -540,7 +539,22 @@
     },
     "lisätiedot" : {
       "pidennettyPäättymispäivä" : true,
-      "ulkomainenVaihtoopiskelija" : false
+      "ulkomainenVaihtoopiskelija" : false,
+      "ulkomaanjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "maa" : {
+          "koodiarvo" : "752",
+          "nimi" : {
+            "fi" : "Ruotsi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "kuvaus" : {
+          "fi" : "Harjoittelua ulkomailla"
+        }
+      } ],
+      "oikeusMaksuttomaanAsuntolapaikkaan" : true
     }
   } ]
 }

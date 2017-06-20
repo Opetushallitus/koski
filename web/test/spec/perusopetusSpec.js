@@ -197,7 +197,11 @@ describe('Perusopetus', function() {
             'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
             'Kotiopetus 15.8.2008 — 4.6.2016\n' +
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
-            'Vuosiluokkiin sitoutumaton opetus kyllä')
+            'Vuosiluokkiin sitoutumaton opetus kyllä\n' +
+            'Vaikeasti vammainen kyllä\n' +
+            'Majoitusetu 15.8.2008 — 4.6.2016\n' +
+            'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
+            'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016')
         })
 
         it('näyttää suorituksen tiedot', function() {
@@ -2044,7 +2048,9 @@ describe('Perusopetus', function() {
           'Lisätiedot\n' +
           'Perusopetuksen aloittamista lykätty ei\n' +
           'Aloittanut ennen oppivelvollisuutta ei\n' +
-          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\nVuosiluokkiin sitoutumaton opetus ei')
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+          'Vuosiluokkiin sitoutumaton opetus ei\n' +
+          'Vaikeasti vammainen ei')
       })
 
       it('näyttää suorituksen tiedot', function() {

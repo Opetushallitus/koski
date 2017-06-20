@@ -1,0 +1,11 @@
+{
+  "koodistoUri" : "ammatillistenopintojenpoissaolonsyy",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Ammatillisten opintojen poissaolon syy"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2017-06-16",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

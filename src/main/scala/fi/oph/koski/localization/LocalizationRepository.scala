@@ -27,7 +27,7 @@ trait LocalizationRepository extends Logging {
   def createMissing(): Unit = {
     val inLocalizationService = localizationsFromLocalizationService
 
-    val missing = defaultFinnishTexts.flatMap {
+    val missing = DefaultLocalizations.defaultFinnishTexts.flatMap {
       case (key, defaultText) => inLocalizationService.get(key) match {
         case Some(_) => None
         case None => Some(List(UpdateLocalization("fi", key, defaultText), UpdateLocalization("sv", key, ""), UpdateLocalization("en", key, "")))
@@ -50,8 +50,10 @@ trait LocalizationRepository extends Logging {
   def localizationsFromLocalizationService: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
     .groupBy(_.key)
     .mapValues(_.map(v => (v.locale, v.value)).toMap)
+}
 
-  def defaultFinnishTexts: Map[String, String] = readResource("/localization/default-texts.json").extract[Map[String, String]]
+object DefaultLocalizations {
+  lazy val defaultFinnishTexts: Map[String, String] = readResource("/localization/default-texts.json").extract[Map[String, String]]
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
@@ -67,7 +69,7 @@ abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager
   private def fetch(): Map[String, LocalizedString] = {
     val inLocalizationService = localizationsFromLocalizationService
 
-    defaultFinnishTexts.map {
+    DefaultLocalizations.defaultFinnishTexts.map {
       case (key, finnishDefaultText) =>
         inLocalizationService.get(key).map(l => (key, sanitize(l).get)).getOrElse {
           logger.info(s"Localizations missing for key $key")

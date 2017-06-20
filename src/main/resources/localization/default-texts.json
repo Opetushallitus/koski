@@ -320,5 +320,16 @@
   "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista paikallinen oppiaine. Poistaminen ei vaikuta olemassa oleviin suorituksiin.",
   "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle": "Oppiaineiden arvioinnit syötetään 9. vuosiluokalla vain, jos oppilas jää luokalle",
   "Päättötodistus": "Päättötodistus",
-  "Muokkaa käännöksiä": "Muokkaa käännöksiä"
+  "Muokkaa käännöksiä": "Muokkaa käännöksiä",
+  "Poissaolojaksot" : "Poissaolojaksot",
+  "Majoitusetu" : "Majoitusetu",
+  "Vankilaopetuksessa" : "Vankilaopetuksessa",
+  "Vaativan erityisen tuen yhteydessä järjestettävä majoitus" : "Vaativan erityisen tuen yhteydessä järjestettävä majoitus",
+  "Vaikeasti vammainen" : "Vaikeasti vammainen",
+  "Sisäoppilaitosmainen majoitus" : "Sisäoppilaitosmainen majoitus",
+  "Vammainen ja avustaja" : "Vammainen ja avustaja",
+  "Syy" : "Syy",
+  "Majoitus" : "Majoitus",
+  "Kuljetusetu" : "Kuljetusetu",
+  "Osa-aikaisuus" : "Osa-aikaisuus"
 }

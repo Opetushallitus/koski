@@ -40,6 +40,7 @@ export const editorMapping = R.mergeAll([{
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
   'paatosjakso': PäivämääräväliEditor,
   'erityisentuenpaatos': JaksoEditor,
+  'poissaolojakso': JaksoEditor,
   'jakso': JaksoEditor,
   'toimipiste': ToimipisteEditor,
   'organisaatiowithoid': OrganisaatioEditor,

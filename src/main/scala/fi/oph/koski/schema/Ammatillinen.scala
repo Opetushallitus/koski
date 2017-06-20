@@ -41,8 +41,33 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   hojks: Option[Hojks],
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @DefaultValue(false)
+  vaikeastiVammainen: Boolean = false,
+  @DefaultValue(false)
+  vammainenJaAvustaja: Boolean = false,
+  majoitus: Option[List[Päätösjakso]] = None,
+  sisäoppilaitosmainenMajoitus: Option[List[Päätösjakso]] = None,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Päätösjakso]] = None,
+  @DefaultValue(false)
+  vankilaopetuksessa: Boolean = false,
+  @MinValueExclusive(0)
+  @MaxValueExclusive(100)
+  @UnitOfMeasure("%")
+  @Title("Osa-aikaisuus")
+  osaAikaisuus: Option[Int] = None,
+  @Description("Yli 4 viikon poissaolot")
+  poissaolojaksot: Option[List[Poissaolojakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
+
+case class Poissaolojakso(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate],
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate],
+  @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
+  syy: Koodistokoodiviite
+)
 
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
@@ -56,6 +81,8 @@ case class AmmatillinenOpiskeluoikeusjakso(
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
   opintojenRahoitus: Option[Koodistokoodiviite] = None
+
+  // TODO: Henkilöstökoulutus (lisätään koodistoon opintojenRahoitus)
 ) extends KoskiOpiskeluoikeusjakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
