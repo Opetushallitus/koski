@@ -1,4 +1,4 @@
-describe('EditBar', function( ){
+describe('Muokkauspalkki', function( ){
     function currentURL() {
         return testFrame().location.href
     }
@@ -18,34 +18,50 @@ describe('EditBar', function( ){
     var page = KoskiPage()
     before(Authentication().login(), resetFixtures)
 
-    describe('Visibility', function() {
+    describe('Näkyvyys', function() {
         before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
-        it('hidden by default', function() {
+        it('piilossa näyttötilassa', function() {
             expect(isVisible("#edit-bar")).to.equal(false)
         })
 
-        it('visible on edit mode', function() {
+        it('näkyvillä muokkaustilassa', function() {
             click("button.toggle-edit")
             expect(isVisible("#edit-bar")).to.equal(true)
         })
 
-        it('hidden when exiting edit mode', function() {
+        it('piilossa muokkaustilasta poistuttaessa', function() {
             click("a.cancel")
             expect(isVisible("#edit-bar")).to.equal(false)
         })
 
-        it('visible when entering edit mode again', function() {
+
+        it('piilossa oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function(done) {
+            click("a.back-link")
+            expect(currentURL().endsWith("/koski/")).to.equal(true)
+            expect(hasClass("#topbar + div", "oppijataulukko")).to.equal(true)
+            goBack()
+            setTimeout(() => {
+                try {
+                    expect(currentURL().endsWith("/koski/")).to.equal(false)
+                    expect(isVisible("#edit-bar")).to.equal(false)
+                }
+                catch (err) {
+                    done(err)
+                    return
+                }
+                done()
+            }, 0)
+        })
+
+        it('näkyvillä muokkaustilaan palattaessa', function() {
             click("button.toggle-edit")
             expect(isVisible("#edit-bar")).to.equal(true)
         })
 
-        it('returns to oppijataulukko with back link', function() {
+        it('näkyvillä oppijataulukosta muokkaustilaan edellinen-painikkeella palattaessa', function(done) {
             click("a.back-link")
             expect(currentURL().endsWith("/koski/")).to.equal(true)
             expect(hasClass("#topbar + div", "oppijataulukko")).to.equal(true)
-        })
-
-        it('shows correctly when returning to edit mode with back button', function(done) {
             goBack()
             setTimeout(() => {
                 try {
