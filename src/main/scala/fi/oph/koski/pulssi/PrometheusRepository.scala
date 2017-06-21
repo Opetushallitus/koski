@@ -33,14 +33,14 @@ trait PrometheusRepository {
     koskiAvailability <- availability
     failedTransfers <- intMetric("koski_failed_data_transfers")
     outages <- intMetric("koski_unavailable_count")
-    alerts <- intMetric("koski_alerts_count")
+    monthlyAlerts <- monthlyAlerts
     applicationErrors <- intMetric("koski_application_errors_count")
   } yield KoskiMetriikka(
     ops.map(op => (op("nimi").toString, op("määrä").asInstanceOf[Int])).toMap,
     koskiAvailability,
     failedTransfers,
     outages,
-    alerts,
+    monthlyAlerts,
     applicationErrors
   ))
 
@@ -57,6 +57,14 @@ trait PrometheusRepository {
         "määrä" -> count
       )
     }.sortBy(_("nimi").toString)
+  )
+
+  private def monthlyAlerts: Task[Map[String, Int]] = metric("/prometheus/api/v1/query?query=koski_alerts").map(_.map { metric =>
+      val alert = (metric \ "metric" \ "alertname").extract[String]
+      val instance = (metric \ "metric" \ "instance").extractOpt[String].map(i => "@"+i).getOrElse("")
+      val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
+      (s"$alert$instance", Math.max(0, count))
+    }.toMap
   )
 
   private def availability: Task[Double] =
@@ -79,10 +87,11 @@ case class KoskiMetriikka(
   saavutettavuus: Double,
   epäonnistuneetSiirrot: Int,
   katkot: Int,
-  hälytykset: Int,
+  hälytykset: Map[String, Int],
   virheet: Int
 ) {
   def toPublic = JulkinenMetriikka(operaatiot, saavutettavuus)
+  def hälytyksetYhteensä: Int = hälytykset.values.sum
 }
 
 case class JulkinenMetriikka(

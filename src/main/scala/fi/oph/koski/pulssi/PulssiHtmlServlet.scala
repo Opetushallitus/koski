@@ -80,7 +80,14 @@ class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServl
         <ul>
           <li class="tiedonsiirtovirheiden-määrä">Tiedonsiirtovirheet: <span class="value">{pulssi.metrics.epäonnistuneetSiirrot}</span></li>
           <li class="käyttökatkojen-määrä">Käyttökatkojen määrä: <span class="value">{pulssi.metrics.katkot}</span></li>
-          <li class="hälytysten-määrä">Hälytysten määrä: <span class="value">{pulssi.metrics.hälytykset}</span></li>
+          <li class="hälytysten-määrä">
+            Hälytysten määrä: <span class="value">{pulssi.metrics.hälytyksetYhteensä}</span>
+            <ul>
+            {pulssi.metrics.hälytykset.map { case (nimi, määrä) =>
+              <li>{nimi}: {määrä}</li>
+            }}
+            </ul>
+          </li>
           <li class="virheiden-määrä">Lokitettujen virheiden määrä: <span class="value">{pulssi.metrics.virheet}</span></li>
         </ul>
       </body>
