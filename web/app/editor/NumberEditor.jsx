@@ -13,8 +13,11 @@ export const NumberEditor = React.createClass({
       ? Math.round(data * 100) / 100
       : data
 
+    let minValue = model.minValue || (model.minValueExclusive && model.minValueExclusive + 1)
+    let maxValue = model.maxValue || (model.maxValueExclusive && model.maxValueExclusive - 1)
+
     return wrapWithUnitOfMeasure(model.unitOfMeasure, wrappedModel.context.edit
-      ? <input type="text" defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"/>
+      ? <input type="number" min={minValue} max={maxValue} defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"/>
       : <span className="inline number">{value}</span>)
   }
 })
