@@ -1,7 +1,9 @@
 # Koski
 
 Koski tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Koski
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin:
+
+> https://confluence.csc.fi/display/OPHPALV/Koski
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
 
@@ -65,7 +67,7 @@ Minimissään tarvitset nämä:
 ## Buildi ja ajaminen
 
 Koski:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
-eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
+eri taskit on helppo suorittaa. Ks [`Makefile`](Makefile)-tiedosto.
 
 Buildaa koko systeemi
 
@@ -109,7 +111,7 @@ Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä 
 Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän
 automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
 
-Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja tietokannan datahakemisto on `postgresql/data`.
+Paikallisen kannan konfiguraatio on tiedostossa [`postgresql/postgresql.conf`](postgresql/postgresql.conf) ja tietokannan datahakemisto on [`postgresql/data`](postgresql/data).
 
 Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
@@ -259,8 +261,8 @@ Ks. https://github.com/Opetushallitus/koski-env
 
 ## Build-prosessi ja hakemistot
 
-Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta [target/webapp] jonka sisältyy muodostuu webpack-buildilla, ks [webpack.config.js](web/webpack.config.js), joka muun muassa kopioi staattisia resursseja paikoilleen
-hakemistosta [web] ja sen alihakemistoista.
+Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp` jonka sisältyy muodostuu webpack-buildilla, ks [webpack.config.js](web/webpack.config.js), joka muun muassa kopioi staattisia resursseja paikoilleen
+hakemistosta [`web/`](web/) ja sen alihakemistoista.
 
 Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
 Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](src/main/scala/ScalatraBootstrap.scala) ja [IndexServlet](src/main/scala/fi/oph/koski/servlet/IndexServlet.scala).
@@ -274,16 +276,16 @@ Versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hake
 Sovellus käyttää konfigurointiin [Typesafe Config](https://github.com/typesafehub/config) -kirjastoa,
 jonka avulla tarvittavat asetukset haetaan tiedostoista ja/tai komentoriviltä.
 
-Sovelluksen oletusasetukset ovat tiedostossa [src/main/resources/reference.conf].
+Sovelluksen oletusasetukset ovat tiedostossa [`src/main/resources/reference.conf`](src/main/resources/reference.conf).
 Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näillä asetuksilla
 ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan,
 eikä ota yhteyttä ulkoisiin järjestelmiin.
 
 Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski saadaan ottamaan yhteys ulkoisiin
-järjestelmiin. Pilviympäristössä käytetään tällä hetkellä [cloud/restart.sh] -skriptiä, jolla annetaan
+järjestelmiin. Pilviympäristössä käytetään tällä hetkellä `cloud/restart.sh` -skriptiä, jolla annetaan
 tarvittavat asetukset.
 
-Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa [src/main/resources/koksidev.conf]
+Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa `src/main/resources/koskidev.conf`
 (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina,
 esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
