@@ -362,7 +362,7 @@ Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
 
 Koski-järjestelmän rajapinta-dokumentaatio generoidaan lähdekoodista sekä testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
 
-> https://koskidev.koski.oph.reaktor.fi/koski/documentation
+> https://dev.koski.opintopolku.fi/koski/documentation
 
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia.
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
