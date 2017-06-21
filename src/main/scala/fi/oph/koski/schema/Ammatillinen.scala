@@ -46,9 +46,9 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   vaikeastiVammainen: Boolean = false,
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
-  majoitus: Option[List[Päätösjakso]] = None,
-  sisäoppilaitosmainenMajoitus: Option[List[Päätösjakso]] = None,
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Päätösjakso]] = None,
+  majoitus: Option[List[Majoitusjakso]] = None,
+  sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
   @DefaultValue(false)
   vankilaopetuksessa: Boolean = false,
   @MinValueExclusive(0)
@@ -60,14 +60,18 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   poissaolojaksot: Option[List[Poissaolojakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
+case class Majoitusjakso (
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
+
+
 case class Poissaolojakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
-  alku: Option[LocalDate],
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  alku: LocalDate,
   loppu: Option[LocalDate],
   @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
-)
+) extends Jakso
 
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
