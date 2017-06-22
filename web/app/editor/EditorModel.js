@@ -287,9 +287,6 @@ export const modelErrorMessages = (model, context) => {
 }
 
 export const applyChanges = (modelBeforeChange, changes) => {
-  if (!modelBeforeChange.context) {
-    modelBeforeChange.context = { prototypes: modelBeforeChange.prototypes }
-  }
   let basePath = toPath(modelBeforeChange.path)
   var withAppliedChanges = changes.reduce((acc, change) => {
     //console.log('apply', change, 'to', acc)

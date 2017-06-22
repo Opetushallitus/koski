@@ -70,9 +70,17 @@ const createState = (oppijaOid) => {
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
 
   const cancelE = editingP.changes().filter(R.complement(R.identity)) // Use location instead of cancelBus, because you can also use the back button to cancel changes
-  const loadOppijaE = Bacon.once(!!currentLocation().params.edit).merge(cancelE.map(false)).map((edit) => () => Http.cachedGet(oppijaEditorUri, { willHandleErrors: true}).map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' })))
+  const loadOppijaE = Bacon.once(!!currentLocation().params.edit)
+    .merge(cancelE.map(false))
+    .map((edit) => () =>
+      Http.cachedGet(oppijaEditorUri, { willHandleErrors: true})
+        .map(setupModelContext)
+        .map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' }))
+    )
 
   let changeBuffer = null
+
+  let setupModelContext = (oppijaModel) => Editor.setupContext(oppijaModel, {saveChangesBus, editBus, changeBus, editorMapping})
 
   const shouldThrottle = (batch) => {
     let model = getModelFromChange(batch[0])
@@ -117,9 +125,11 @@ const createState = (oppijaOid) => {
     return Bacon.once(R.merge(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
       Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
         .flatMap(() => Http.cachedGet(oppijaEditorUri, { errorHandler: function(e) { e.topLevel=true; showError(e) }})) // loading after save fails -> rare, not easily recoverable error, show full screen
+        .map(setupModelContext)
         .map( oppija => R.merge(oppija, { event: 'saved' }))
     )
   })
+
 
   const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
 
@@ -158,9 +168,8 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP} = this.props
+    let {oppija, saveChangesBus, cancelChangesBus, stateP} = this.props
 
-    oppija = Editor.setupContext(oppija, {saveChangesBus, editBus, changeBus, editorMapping})
     let henkilö = modelLookup(oppija, 'henkilö')
     let hetu = modelTitle(henkilö, 'hetu')
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
