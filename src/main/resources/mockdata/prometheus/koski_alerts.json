@@ -1,0 +1,93 @@
+{
+  "data": {
+    "result": [
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "APIHealthcheckResponseDurationLong"
+        },
+        "value": [
+          1498052905.617,
+          "3"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "InstanceDown",
+          "instance": "koski-app2:8080/koski/api/healthcheck"
+        },
+        "value": [
+          1498052905.617,
+          "9"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "ErrorLogMessage",
+          "instance": "koski-app1"
+        },
+        "value": [
+          1498052905.617,
+          "33"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "InstanceDown",
+          "instance": "koski-app1:8080/koski/api/healthcheck"
+        },
+        "value": [
+          1498052905.617,
+          "17"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "ErrorLogMessage"
+        },
+        "value": [
+          1498052905.617,
+          "84"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "InstanceDown"
+        },
+        "value": [
+          1498052905.617,
+          "26"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "ErrorLogMessage",
+          "instance": "koski-app2"
+        },
+        "value": [
+          1498052905.617,
+          "51"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "koski_alerts",
+          "alertname": "InstanceDown",
+          "instance": "https://dev.koski.opintopolku.fi/koski/api/healthcheck"
+        },
+        "value": [
+          1498052905.617,
+          "7"
+        ]
+      }
+    ],
+    "resultType": "vector"
+  },
+  "status": "success"
+}
