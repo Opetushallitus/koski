@@ -284,15 +284,15 @@ function Päivämääräväli(elem) {
   var api = {
     setAlku: function(value) {
       return function() {
-        return Page(elem).setInputValue('.calendar-input:nth-child(1) input', value)()
+        return Page(elem).setInputValue('.alku input', value)()
       }
     },
     getAlku: function() {
-      return elem().find('span.inline.date:nth-child(1)').text()
+      return elem().find('.alku span.inline.date').text()
     },
     setLoppu: function(value) {
       return function() {
-        return Page(elem).setInputValue('.calendar-input:nth-child(2) input', value)()
+        return Page(elem).setInputValue('.loppu input', value)()
       }
     },
     isValid: function() {
