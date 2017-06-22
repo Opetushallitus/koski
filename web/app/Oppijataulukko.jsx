@@ -120,7 +120,15 @@ export const Oppijataulukko = React.createClass({
             näytettävätRivit.map( (opiskeluoikeus, i) => {
               return (<tr className="alternating" key={i}>
                 <td className="nimi">
-                  <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}><Highlight search={params['nimihaku'] || ''}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight></Link>
+                  <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}>
+                    <Highlight
+                      ignoreDiacritics={true}
+                      diacriticsBlacklist={'åäöÅÄÖ'}
+                      search={params['nimihaku'] || ''}
+                    >
+                      { opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}
+                    </Highlight>
+                  </Link>
                 </td>
                 <td className="tyyppi">{t(opiskeluoikeus.tyyppi.nimi)}</td>
                 <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{t(suoritus.tyyppi.nimi)}</li>) }</ul></td>

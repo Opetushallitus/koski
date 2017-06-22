@@ -55,7 +55,13 @@ export const OppijaHaku = () => {
         let href = `/koski/oppija/${o.oid}`
         let oppija = o.sukunimi +', '+ o.etunimet + (o.hetu ? ' (' + o.hetu + ')' : '')
         return {href, element: (<li className={i == selectedIndex ? 'selected' : ''} key={i}>
-          <Link href={href}><Highlight search={query}>{oppija}</Highlight></Link>
+          <Link href={href}>
+            <Highlight
+              ignoreDiacritics={true}
+              diacriticsBlacklist={'åäöÅÄÖ'}
+              search={query}
+            >{oppija}</Highlight>
+          </Link>
         </li>)}
       })
     } else if (response.canAddNew) {
