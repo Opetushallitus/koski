@@ -161,36 +161,26 @@ let modelValueLens = ({model} = {}) => L.lens(
   }
 )
 
-var recursion = 0
-
 let getUsedModelForOptionalModel = (m, {model} = {}) => {
-  recursion++
-  try {
-    if (recursion > 10) {
-      debugger
-    }
-    if (!model) model = m
-    if (m.value) return m
-    if (!m.context) {
-      m = contextualizeSubModel(m, model)
-    }
-    let prototypeModel = optionalPrototypeModel(m)
-    //console.log('creating empty with', editor)
-    let editor = undefined
-    if (prototypeModel) { // TODO: why enum fails?
-      editor = getEditor(prototypeModel)
-    } else {
-      editor = getEditor(model)
-    }
-    let createEmpty = (editor && editor.createEmpty) || R.identity
-    let emptyModel = createEmpty(prototypeModel || model)
-    if (emptyModel == undefined) {
-      debugger
-    }
-    return emptyModel
-  } finally {
-    recursion--
+  if (!model) model = m
+  if (m.value) return m
+  if (!m.context) {
+    m = contextualizeSubModel(m, model)
   }
+  let prototypeModel = optionalPrototypeModel(m)
+  //console.log('creating empty with', editor)
+  let editor = undefined
+  if (prototypeModel) { // TODO: why enum fails?
+    editor = getEditor(prototypeModel)
+  } else {
+    editor = getEditor(model)
+  }
+  let createEmpty = (editor && editor.createEmpty) || R.identity
+  let emptyModel = createEmpty(prototypeModel || model)
+  if (emptyModel == undefined) {
+    debugger
+  }
+  return emptyModel
 }
 
 export const optionalModelLens = ({model}) => {
