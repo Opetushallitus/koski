@@ -346,6 +346,7 @@ describe('Ammatillinen koulutus', function() {
           'Vaikeasti vammainen ei\n' +
           'Vammainen ja avustaja ei\n' +
           'Majoitus 22.6.2017 — 1.1.2099\n' +
+          'Henkilöstökoulutus ei\n' +
           'Vankilaopetuksessa ei\n' +
           'Osa-aikaisuus 50 %\n' +
           'Poissaolojaksot 22.6.2017 —\n' +

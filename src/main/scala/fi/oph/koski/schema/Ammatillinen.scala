@@ -50,6 +50,8 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
   @DefaultValue(false)
+  henkilöstökoulutus: Boolean = false,
+  @DefaultValue(false)
   vankilaopetuksessa: Boolean = false,
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
