@@ -18,6 +18,7 @@ export const StringEditor = ({model, placeholder}) => {
 let splitToRows = (data) => data.split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
 StringEditor.handlesOptional = () => true
+StringEditor.isEmpty = m => !modelData(m)
 StringEditor.canShowInline = () => true
 StringEditor.validateModel = (model) => {
   return !model.optional && !modelData(model) ? [{key: 'missing'}] : []

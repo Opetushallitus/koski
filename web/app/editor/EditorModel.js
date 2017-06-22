@@ -112,10 +112,25 @@ export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
   return (model && (model.title || (model.value && model.value.title) || (model.value && '' + modelData(model)))) || ''
 }
-
-export const modelEmpty = (mainModel, path) => {
+const modelEmptyDefaultImpl = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
   return !model.value || valueEmpty(model.value) && itemsEmpty(modelItems(model.items))
+}
+
+export const modelEmpty = modelEmptyDefaultImpl // TODO: use editor-based checking instead?
+export const recursivelyEmpty = (m) => {
+  if (!m.value) return true
+  if (m.type == 'object') {
+    if (!m.value.properties) return true
+    for (var i in m.value.properties) {
+      if (!recursivelyEmpty(m.value.properties[i].model)) return false
+    }
+    return true
+  }
+  if (m.type == 'array') {
+    return m.value.length == 0
+  }
+  return !m.value.data
 }
 
 export const modelSet = (mainModel, newModel, path) => {
@@ -130,7 +145,7 @@ export const modelSetValue = (model, value, path) => {
   return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
 }
 
-let modelValueLens = ({model, createEmpty} = {}) => L.lens(
+let modelValueLens = ({model} = {}) => L.lens(
   (m) => {
     if (!m) {
       throw new Error('model missing')
@@ -138,46 +153,58 @@ let modelValueLens = ({model, createEmpty} = {}) => L.lens(
     return m.value
   },
   (v, m) => {
-    let usedModel = m.optional ? getUsedModelForOptionalModel(m, {model, createEmpty}) : m
+    let plainOptional = (m.optional && !m.type)
+    let usedModel = plainOptional ? getUsedModelForOptionalModel(m, {model}) : m
     return L.set('value', v, usedModel)
   }
 )
 
-let getUsedModelForOptionalModel = (m, {model, createEmpty = (x => x)} = {}) => {
-  if (!model) model = m
-  if (m.value) return m
-  if (!m.context) {
-    m = contextualizeSubModel(m, model)
-  }
-  return createEmpty(optionalPrototypeModel(m))
-}
-const modelEmptyForOptional = (m) => {
-  if (!m.value) return true
-  if (m.type == 'object') {
-    if (!m.value.properties) return true
-    for (var i in m.value.properties) {
-      if (!modelEmptyForOptional(m.value.properties[i].model)) return false
+var recursion = 0
+
+let getUsedModelForOptionalModel = (m, {model} = {}) => {
+  recursion++
+  try {
+    if (recursion > 10) {
+      debugger
     }
-    return true
+    if (!model) model = m
+    if (m.value) return m
+    if (!m.context) {
+      m = contextualizeSubModel(m, model)
+    }
+    let prototypeModel = optionalPrototypeModel(m)
+    //console.log('creating empty with', editor)
+    let editor = undefined
+    if (prototypeModel) { // TODO: why enum fails?
+      editor = getEditor(prototypeModel)
+    } else {
+      editor = getEditor(model)
+    }
+    let createEmpty = (editor && editor.createEmpty) || R.identity
+    let emptyModel = createEmpty(prototypeModel || model)
+    if (emptyModel == undefined) {
+      debugger
+    }
+    return emptyModel
+  } finally {
+    recursion--
   }
-  if (m.type == 'array') {
-    return m.value.length == 0
-  }
-  return !m.value.data
 }
 
-export const optionalModelLens = ({model, isEmpty = modelEmptyForOptional, createEmpty}) => {
+export const optionalModelLens = ({model}) => {
   return L.lens(
     m => {
-      return getUsedModelForOptionalModel(m, {model, isEmpty, createEmpty}) // why not just m?
+      return getUsedModelForOptionalModel(m, {model})
     },
     (newModel, contextModel) => {
+      let editor = getEditor(model)
+      let isEmpty = (editor && editor.isEmpty) || modelEmptyDefaultImpl
       if (isEmpty(newModel)) {
-        //console.log('set empty', newModel)
+        //console.log('set empty', newModel.path)
         return createOptionalEmpty(contextModel)
       } else {
-        //console.log('set non-empty', newModel)
-        return modelSetValue(getUsedModelForOptionalModel(contextModel, {model, isEmpty, createEmpty}), newModel.value)
+        //console.log('set non-empty', newModel.path)
+        return modelSetValue(getUsedModelForOptionalModel(contextModel, {model}), newModel.value)
       }
     }
   )
@@ -450,16 +477,30 @@ const removeCommonPath = (p1, p2) => {
 }
 
 const getValidator = (model, context) => {
-  let validatorMapping = context.editorMapping
-  let editor = validatorMapping[model.type]
-  if (model.value && model.value.classes) {
-    for (var i in model.value.classes) {
-      editor = validatorMapping[model.value.classes[i]]
-      if (editor) break
-    }
-  }
+  let editor = getEditor(model, context)
   return editor && editor.validateModel
 }
+
+const getEditor = (model, context) => {
+  context = context || model.context
+  let editorMapping = context.editorMapping
+  if (!editorMapping) {
+    throw new Error('editorMapping missing')
+  }
+  if (model.value && model.value.classes) {
+    for (var i in model.value.classes) {
+      let editor = editorMapping[model.value.classes[i]]
+      if (editor) {
+        return editor
+      }
+    }
+  }
+  if (!editorMapping[model.type]) {
+    //console.log('not found by type', model.type, model)
+  }
+  return editorMapping[model.type]
+}
+
 const validateModel = (model, context, results = {}, path = []) => {
   if (!context) context = model.context
   if (!context) throw new Error('context missing')

@@ -10,10 +10,7 @@ import {t} from '../i18n.js'
 
 export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives }) => {
   if (!sortBy) sortBy = R.identity
-  let wrappedModel = wrapOptional({
-    model,
-    createEmpty: (protomodel) => modelSetValue(protomodel, zeroValue)
-  })
+  let wrappedModel = wrapOptional({model})
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
@@ -82,6 +79,7 @@ EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alter
 
 EnumEditor.canShowInline = () => true
 EnumEditor.handlesOptional = () => true
+EnumEditor.createEmpty = (protomodel) => modelSetValue(protomodel, zeroValue)
 EnumEditor.validateModel = (model) => {
   if (!model.value && !model.optional) {
     return [{key: 'missing'}]

@@ -2,6 +2,7 @@ import React from 'react'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
+import {recursivelyEmpty} from './EditorModel'
 
 export const JaksoEditor = React.createClass({
   render() {
@@ -15,5 +16,7 @@ export const JaksoEditor = React.createClass({
     )
   }
 })
+
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
+JaksoEditor.isEmpty = recursivelyEmpty
 JaksoEditor.handlesOptional = (modifier) => modifier != 'array'

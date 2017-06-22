@@ -8,7 +8,7 @@ import {t} from '../i18n'
 export const LaajuusEditor = React.createClass({
   render() {
     let { model, compact, showReadonlyScope = true } = this.props
-    let wrappedModel = wrapOptional({model: model, isEmpty: m => modelEmpty(m, 'arvo'), createEmpty: m => modelSetValue(m, undefined, 'arvo')})
+    let wrappedModel = wrapOptional({model: model})
     return (
       <span className="property laajuus">
         <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
@@ -19,6 +19,8 @@ export const LaajuusEditor = React.createClass({
     )
   }
 })
+LaajuusEditor.isEmpty = (m) => modelEmpty(m, 'arvo')
+LaajuusEditor.createEmpty = m => modelSetValue(m, undefined, 'arvo')
 LaajuusEditor.readOnly = false
 LaajuusEditor.handlesOptional = () => true
 

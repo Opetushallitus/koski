@@ -6,7 +6,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {modelSetData} from './EditorModel'
 
 export const DateEditor = ({model, isAllowedDate}) => {
-  let wrappedModel = wrapOptional({model, createEmpty: (d) => modelSetData(d, '')}) // TODO: empty value should actually be provided from the server
+  let wrappedModel = wrapOptional({model})
 
   let validityCallback = (valid, stringInput) => !valid && pushModelValue(wrappedModel, { data: stringInput}) // push raw string value to model in case of invalid input. will cause model validation to fail
   let valueCallback = (date) => pushModelValue(wrappedModel, date && { data: formatISODate(date), title: formatFinnishDate(date)})
@@ -18,6 +18,7 @@ export const DateEditor = ({model, isAllowedDate}) => {
     : <span className="inline date">{dateValue && formatFinnishDate(dateValue)}</span>
 }
 
+DateEditor.createEmpty = (d) => modelSetData(d, '')
 DateEditor.canShowInline = () => true
 DateEditor.handlesOptional = () => true
 DateEditor.validateModel = (model) => {
