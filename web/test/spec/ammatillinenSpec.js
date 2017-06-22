@@ -276,7 +276,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
+    var editor = opinnot.opiskeluoikeusEditor()
     before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
 
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
@@ -284,8 +284,8 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Kun valitaan suoritustapa', function() {
-      var suoritustapa = opiskeluoikeusEditor.property('suoritustapa')
-      before(opiskeluoikeusEditor.edit, suoritustapa.waitUntilLoaded, suoritustapa.selectValue('Opetussuunnitelman mukainen'), opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
+      var suoritustapa = editor.property('suoritustapa')
+      before(editor.edit, suoritustapa.waitUntilLoaded, suoritustapa.selectValue('Opetussuunnitelman mukainen'), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
       describe('Muutosten näyttäminen', function() {
         it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
@@ -310,15 +310,48 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Kun poistetaan suoritustapa', function() {
-        before(opiskeluoikeusEditor.edit, suoritustapa.selectValue('Ei valintaa'), opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
+        before(editor.edit, suoritustapa.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
         it('Näytetään muuttuneet tiedot', function() {
           expect(suoritustapa.isVisible()).to.equal(false)
         })
       })
     })
 
+    describe('Opiskeluoikeuden lisätiedot', function() {
+      before(
+        editor.edit,
+        opinnot.expandAll,
+        editor.property('oikeusMaksuttomaanAsuntolapaikkaan').setValue(true),
+        editor.property('ulkomaanjaksot').addItem,
+        editor.property('ulkomaanjaksot').property('maa').setValue('Algeria'),
+        editor.property('ulkomaanjaksot').property('kuvaus').setValue('Testing'),
+        editor.property('majoitus').addItem,
+        editor.property('majoitus').propertyBySelector('.loppu').setValue('1.1.2099'),
+        editor.property('osaAikaisuus').setValue('50'),
+        editor.property('poissaolojaksot').addItem,
+        editor.property('poissaolojaksot').property('syy').setValue('Oma ilmoitus'),
+        editor.saveChanges,
+        wait.until(page.isSavedLabelShown)
+      )
+
+      it('Toimii', function() {
+        expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
+          'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
+          'Ulkomaanjaksot 22.6.2017 —\n' +
+            'Maa Algeria\n' +
+            'Kuvaus Testing\n' +
+          'Vaikeasti vammainen ei\n' +
+          'Vammainen ja avustaja ei\n' +
+          'Majoitus 22.6.2017 — 1.1.2099\n' +
+          'Vankilaopetuksessa ei\n' +
+          'Osa-aikaisuus 50 %\n' +
+          'Poissaolojaksot 22.6.2017 —\n' +
+            'Syy Oma ilmoitus')
+      })
+    })
+
     describe('Suorituksen lisääminen', function() {
-      before(opiskeluoikeusEditor.edit)
+      before(editor.edit)
       it('Päätason suoritusta ei voi lisätä ammatillisissa opinnoissa', function() {
         expect(opinnot.lisääSuoritusVisible()).to.equal(false)
       })
