@@ -23,7 +23,7 @@ const oppijatP = Bacon.update(
   hakuTulosE.skipErrors(), ((current, hakutulos) => hakutulos)
 )
 
-const searchInProgressP = oppijaHakuE.awaiting(hakuTulosE.mapError()).throttle(delays().delay(200))
+const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(hakuTulosE.mapError()).throttle(delays().delay(200))
 
 export const OppijaHaku = () => {
   let selectedIndexAtom = Atom(-1)
