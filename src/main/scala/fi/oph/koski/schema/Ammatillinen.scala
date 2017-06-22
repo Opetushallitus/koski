@@ -85,8 +85,6 @@ case class AmmatillinenOpiskeluoikeusjakso(
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
   opintojenRahoitus: Option[Koodistokoodiviite] = None
-
-  // TODO: Henkilöstökoulutus (lisätään koodistoon opintojenRahoitus)
 ) extends KoskiOpiskeluoikeusjakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
