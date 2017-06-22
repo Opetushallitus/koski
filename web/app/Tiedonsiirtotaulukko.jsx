@@ -1,5 +1,5 @@
 import React from 'react'
-import { ISO2FinnishDateTime } from './date'
+import { ISO2FinnishDateTime, ISO2FinnishDate } from './date'
 import PaginationLink from './PaginationLink.jsx'
 import Link from './Link.jsx'
 import {t} from './i18n'
@@ -15,7 +15,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
         <tr>
           <th className="tila"><Text name="Tila"/></th>
           <th className="aika"><Text name="Aika"/></th>
-          <th className="hetu"><Text name="Henkilötunnus"/></th>
+          <th className="hetu"><Text name="Henkilötunnus / Syntymäaika"/></th>
           <th className="nimi"><Text name="Nimi"/></th>
           <th className="oppilaitos"><Text name="Oppilaitos"/></th>
           <th className="virhe"><Text name="Virhe"/></th>
@@ -91,7 +91,7 @@ const Lokirivi = React.createClass({
         }
       </td>
       <td className="aika">{ISO2FinnishDateTime(row.aika)}</td>
-      <td className="hetu">{row.oppija && row.oppija.hetu}</td>
+      <td className="hetu">{row.oppija && (row.oppija.hetu || (row.oppija.syntymäaika && ISO2FinnishDate(row.oppija.syntymäaika)))}</td>
       <td className="nimi">{
         (row.oppija && row.oppija.oid)
           ? <Link href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</Link> : nimi

@@ -1,14 +1,14 @@
 package fi.oph.koski.tiedonsiirto
 
 import java.sql.Timestamp
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json.toJValue
-import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateTimeSerializer}
+import fi.oph.koski.json.Json.{fromJValue, toJValue}
+import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.localization.{LocalizedString, LocalizedStringDeserializer}
@@ -24,7 +24,7 @@ import org.json4s.{JValue, _}
 
 
 class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
-  implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer
+  implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer + LocalDateSerializer
 
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
 
@@ -127,16 +127,14 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   }
 
 
-  def storeToElasticSearch(henkilö: Option[JValue] /*TODO: why not tiedonsiirtooppija*/, org: OrganisaatioWithOid,
+  def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
                                    oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                                     userOid: String, aikaleima: Timestamp) = {
-    val idValue: String = henkilö.flatMap { henkilö =>
-      val hetuTaiOid = henkilö.extract[HetuTaiOid]
-      hetuTaiOid.hetu.orElse(hetuTaiOid.oid)
-    }.getOrElse("")
 
-    val document = TiedonsiirtoDocument(userOid, org.oid, henkilö.map(_.extract[TiedonsiirtoOppija]), oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+    val idValue: String = henkilö.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
+
+    val document = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
 
     val documentId = org.oid + "_" + idValue
     val json = Map("doc_as_upsert" -> true, "doc" -> document)
@@ -240,18 +238,24 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     }
   }
 
-  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[JValue] = {
+  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: HetuTaiOid = Json.fromJValue[HetuTaiOid](annetutHenkilötiedot)
+    val annettuTunniste: HetuTaiOid = fromJValue[HetuTaiOid](annetutHenkilötiedot)
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
-    val haetutTiedot: Option[HenkilötiedotJaOid] = (oid, annettuTunniste.hetu) match {
-      case (Some(oid), None) => henkilöRepository.findByOid(oid).map(_.toHenkilötiedotJaOid)
-      case (None, Some(hetu)) => henkilöRepository.findOppijat(hetu).headOption
+
+    val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.hetu) match {
+      case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
+        TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), h.äidinkieli)
+      }
+      case (None, Some(hetu)) => henkilöRepository.findOppijat(hetu).headOption.map { h =>
+        TiedonsiirtoOppija(Some(h.oid), h.hetu, syntymäaika = None, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), äidinkieli = None)
+      }
       case _ => None
     }
-    haetutTiedot.map(toJValue).orElse(oidHenkilö match {
-      case Some(oidHenkilö) => Some(annetutHenkilötiedot.merge(toJValue(oidHenkilö)))
-      case None => annetutHenkilötiedot.toOption
+
+    haetutTiedot.orElse(oidHenkilö match {
+      case Some(oidHenkilö) => Some(annetutHenkilötiedot.merge(toJValue(oidHenkilö)).extract[TiedonsiirtoOppija])
+      case None => annetutHenkilötiedot.toOption.map(_.extract[TiedonsiirtoOppija])
     })
   }
 
@@ -290,7 +294,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
 case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], virhe: List[ErrorDetail], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
-case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
+case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: LocalDateTime, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])

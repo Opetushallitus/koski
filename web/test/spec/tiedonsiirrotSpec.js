@@ -11,6 +11,7 @@ describe('Tiedonsiirrot', function() {
     insertExample('tiedonsiirto - epäonnistunut.json'),
     insertExample('tiedonsiirto - onnistunut.json'),
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
+    insertExample('tiedonsiirto - vain syntymäaika.json'),
     refreshIndices,
     tiedonsiirrot.openPage
   )
@@ -19,6 +20,7 @@ describe('Tiedonsiirrot', function() {
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
         ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
+        ['24.2.1977', 'Heikki Hetuton', 'Stadin ammattiopisto', '', ''],
         ['270303-281N', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', ''],
         ['', ' ', '', 'virhe', 'tiedot']
       ])

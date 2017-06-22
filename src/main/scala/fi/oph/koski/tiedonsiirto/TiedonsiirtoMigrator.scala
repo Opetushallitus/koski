@@ -6,14 +6,14 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.Tiedonsiirto
 import fi.oph.koski.db.{KoskiDatabaseMethods, TiedonsiirtoRow}
 import fi.oph.koski.http.ErrorDetail
-import fi.oph.koski.json.{GenericJsonFormats, LocalDateTimeSerializer}
+import fi.oph.koski.json.{GenericJsonFormats, LocalDateSerializer, LocalDateTimeSerializer}
 import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
 class TiedonsiirtoMigrator(tiedonsiirtoService: TiedonsiirtoService, val db: DB) extends KoskiDatabaseMethods with Timing {
-  implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer
+  implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer + LocalDateSerializer
 
 
   def runMigration(minId: Int) = {
@@ -25,7 +25,7 @@ class TiedonsiirtoMigrator(tiedonsiirtoService: TiedonsiirtoService, val db: DB)
     val total = rows.foldLeft(0){ case (count, row) =>
       println("Migrate " + row)
       tiedonsiirtoService.storeToElasticSearch(
-        row.oppija,
+        row.oppija.map(_.extract[TiedonsiirtoOppija]),
         OidOrganisaatio(row.tallentajaOrganisaatioOid),
         row.oppilaitos.map(_.extract[List[OidOrganisaatio]]),
         row.data,

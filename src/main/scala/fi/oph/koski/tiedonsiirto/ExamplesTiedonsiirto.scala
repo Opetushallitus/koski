@@ -12,6 +12,7 @@ object ExamplesTiedonsiirto {
 
   val examples: List[Example] = List(
     Example("tiedonsiirto - onnistunut", "Onnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.vainHenkilötiedot, List(opiskeluoikeus)), 403),
+    Example("tiedonsiirto - vain syntymäaika", "Onnistunut tiedonsiirto", Oppija(MockOppijat.hetuton, List(opiskeluoikeus)), 403),
     Example("tiedonsiirto - epäonnistunut", "Epäonnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.vainHenkilötiedot, List(failingOpiskeluoikeus)), 403),
     Example("tiedonsiirto - epäonnistunut 2", "Onnistunut tiedonsiirto", Oppija(MockOppijat.ammattilainen.vainHenkilötiedot, List(failingOpiskeluoikeus)), 403)
   )
