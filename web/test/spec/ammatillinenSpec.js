@@ -321,6 +321,8 @@ describe('Ammatillinen koulutus', function() {
       before(
         editor.edit,
         opinnot.expandAll,
+        editor.property('hojks').addValue,
+        editor.property('hojks').property('opetusryhmä').setValue('Erityisopetusryhmä'),
         editor.property('oikeusMaksuttomaanAsuntolapaikkaan').setValue(true),
         editor.property('ulkomaanjaksot').addItem,
         editor.property('ulkomaanjaksot').property('maa').setValue('Algeria'),
@@ -336,6 +338,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('Toimii', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
+          'Hojks Opetusryhmä Erityisopetusryhmä\n' +
           'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
           'Ulkomaanjaksot 22.6.2017 —\n' +
             'Maa Algeria\n' +

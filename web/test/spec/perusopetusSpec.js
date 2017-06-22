@@ -718,9 +718,17 @@ describe('Perusopetus', function() {
         })
       })
       describe('Suorituskielen lisäys', function() {
-        before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit, editor.property('suorituskieli').selectValue('suomi'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-        it('muutettu suorituskieli näytetään', function() {
-          expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
+        before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit)
+        describe('Lisättäessä', function() {
+          it('Näytetään ei valintaa', function() {
+            expect(editor.property('suorituskieli').getValue()).to.equal('Ei valintaa')
+          })
+        })
+        describe('Lisäyksen jälkeen', function() {
+          before(editor.property('suorituskieli').selectValue('suomi'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          it('muutettu suorituskieli näytetään', function() {
+            expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
+          })
         })
       })
       describe('Todistuksella näkyvät lisätiedot', function() {
