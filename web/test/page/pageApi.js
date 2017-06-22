@@ -76,6 +76,7 @@ function Page(mainElement) {
         switch (inputType(input)) {
           case "EMAIL":
           case "TEXT":
+          case "NUMBER":
           case "PASSWORD":
           case "TEXTAREA":
             input.val(value)
