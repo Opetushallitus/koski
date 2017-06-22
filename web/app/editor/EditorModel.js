@@ -58,11 +58,13 @@ let getModelId = (model) => {
 let calculateModelId = (m) => {
   let id = 0
   if (m.value && m.value.properties) {
+    id = 1 // to distinguish from a null value
     for (var i in m.value.properties) {
       id = hashAdd(id, getModelId(m.value.properties[i].model))
     }
   }
   if (m.type === 'array' && m.value) {
+    id = 1 // to distinguish from a null value
     for (var i in m.value) {
       id = hashAdd(id, getModelId(m.value[i]))
     }
