@@ -45,15 +45,20 @@ export function requiresLogin(e) {
 const errorText = (error) => error.text || (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
 
 export const Error = ({error}) => {
-  let showAtom = Atom(errorText(error) && !isTopLevel(error))
+  let showError = errorText(error) && !isTopLevel(error)
+  if (showError) { console.log('render error', error) }
+  let showAtom = Atom(showError)
   return (<div id="error" className={ift(showAtom, 'error')}>
     {ift(showAtom, <span><span className="error-text">{errorText(error)}</span><a onClick={() => showAtom.set(false)}>{'✕'}</a></span>)}
   </div>)
 }
 
-export const TopLevelError = ({error}) => (<div className="error content-area">
-  <h1 className="http-status">{error.httpStatus}</h1>
-  <div className="error-message">{errorText(error)} <a href="/koski"><Text name="Yritä uudestaan"/></a>{'.'}</div>
-</div>)
+export const TopLevelError = ({error}) => {
+  console.log('render top-level error', error)
+  return (<div className="error content-area">
+    <h1 className="http-status">{error.httpStatus}</h1>
+    <div className="error-message">{errorText(error)} <a href="/koski"><Text name="Yritä uudestaan"/></a>{'.'}</div>
+  </div>)
+}
 
 export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel
