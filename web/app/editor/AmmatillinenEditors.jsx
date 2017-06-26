@@ -5,6 +5,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
+import {ObjectEditor} from './ObjectEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -65,6 +66,11 @@ export const TyössäoppimisjaksoEditor = React.createClass({
 TyössäoppimisjaksoEditor.readOnly = true
 TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
+const SisältäväOpiskeluoikeusEditor = ({model}) => {
+  if (model.context.edit) return <ObjectEditor model={model}/>
+  return <span><span className="id"><Editor model={model} path="id"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
+}
+
 export const editorMapping = {
   'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
@@ -72,5 +78,6 @@ export const editorMapping = {
   'naytonsuoritusaika': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
-  'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor
+  'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
+  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor
 }

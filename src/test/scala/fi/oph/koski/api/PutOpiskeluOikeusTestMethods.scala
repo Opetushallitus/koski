@@ -41,8 +41,8 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     }
   }
 
-  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Henkilötiedot, opiskeluoikeus: T) = {
-    resetFixtures
+  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Henkilötiedot, opiskeluoikeus: T, resetFixtures: Boolean = false): T = {
+    if (resetFixtures) this.resetFixtures
     createOrUpdate(oppija, opiskeluoikeus).asInstanceOf[T]
   }
 

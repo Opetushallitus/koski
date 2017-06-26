@@ -19,25 +19,25 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
   "Muutoshistoria" - {
     "Luotaessa uusi opiskeluoikeus" - {
       "Luodaan historiarivi" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         verifyHistory(oppija, opiskeluoikeus, List(1))
       }
 
       "osasuorituksilla" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0))
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0), resetFixtures = true)
         verifyHistory(oppija, opiskeluoikeus, List(1))
       }
     }
     "Päivitettäessä" - {
       "Luodaan uusi versiorivi" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
         verifyHistory(oppija, modified, List(1, 2))
       }
 
       "Jos mikään ei ole muuttunut" - {
         "Ei luoda uutta versioriviä" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
           val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus)
           verifyHistory(oppija, modified, List(1))
         }
@@ -46,7 +46,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
       "Kun syötteessä annetaan versionumero" - {
         "Versionumero sama kuin viimeisin" - {
           "Päivitys hyväksytään" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
             verifyHistory(oppija, modified, List(1, 2))
           }
@@ -54,7 +54,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
 
         "Versionumero ei täsmää" - {
           "Päivitys hylätään" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
@@ -93,7 +93,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
 
     "Versiohistorian hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get) {
           getHistory(opiskeluoikeus.id.get)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
@@ -103,7 +103,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
 
     "Yksittäisen version hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get + "/1") {
           verifyResponseStatus(200)
           val versio = readOpiskeluoikeus
@@ -113,7 +113,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
       }
       "Tuntematon versionumero" - {
         "Palautetaan 404" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get + "/2") {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota 2 ei löydy opiskeluoikeuden \\d+ historiasta.".r))
           }

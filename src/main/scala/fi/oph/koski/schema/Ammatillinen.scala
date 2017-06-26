@@ -14,6 +14,7 @@ case class AmmatillinenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  override val sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,

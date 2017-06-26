@@ -4,17 +4,20 @@ import java.time.LocalDate
 
 import fi.oph.koski.date.DateValidation
 import fi.oph.koski.date.DateValidation._
+import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) extends Timing {
+class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(Json.toJValue(oppija))
   }
@@ -40,25 +43,26 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     timed("extractAndValidateOpiskeluoikeus") {
       val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
       extractionResult.right.flatMap { opiskeluoikeus =>
-        validateOpiskeluoikeus(opiskeluoikeus)
+        validateOpiskeluoikeus(opiskeluoikeus, None)
       }
     }
   }
 
   private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(validateOpiskeluoikeus)
+    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(validateOpiskeluoikeus(_, Some(oppija.henkilö)))
     HttpStatus.foldEithers(results).right.flatMap {
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
       case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
     }
   }
 
-  private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
+  private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
       fillMissingOrganisations(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus.getOppilaitos)
           .then { validateLähdejärjestelmä(opiskeluoikeus) }
           .then { HttpStatus.fold(
+            validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, None)))
@@ -110,6 +114,37 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         logger.warn(s"Koulutustoimijaa ei löydy oppilaitokselle ${oo.oppilaitos}")
         Right(oo)
     }
+  }
+
+  private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
+    case Some(SisältäväOpiskeluoikeus(id, Oppilaitos(oppilaitosOid, _, _, _))) =>
+      opiskeluoikeudet.findById(id) match {
+        case Some(sisältäväOpiskeluoikeus) if (sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid) =>
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
+        case Some(sisältäväOpiskeluoikeus) =>
+          val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
+            case None => Left(HttpStatus.ok)
+            case Some(h: HenkilöWithOid) => Right(h.oid)
+            case Some(h: UusiHenkilö) => h.hetu.flatMap(opintopolku.findByHetu) match {
+              case Some(henkilö) => Right(henkilö.oid)
+              case None => Left(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
+            }
+          }
+
+          löydettyHenkilö match {
+            case Right(löydettyHenkilöOid) if (löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid) =>
+              KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
+            case Left(status) =>
+              status
+            case _ =>
+              HttpStatus.ok
+          }
+        case None =>
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy id-arvolla $id")
+        case _ =>
+          HttpStatus.ok
+      }
+    case None => HttpStatus.ok
   }
 
   private def validateAccess(org: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {

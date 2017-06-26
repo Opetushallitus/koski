@@ -51,6 +51,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def omistajaOrganisaatio = oppilaitos
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
+  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
 trait OpiskeluoikeudenLisätiedot
@@ -64,6 +65,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
+
+case class SisältäväOpiskeluoikeus(id: Int, oppilaitos: Oppilaitos)
 
 trait OpiskeluoikeudenTila {
   @Representative

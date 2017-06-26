@@ -42,6 +42,13 @@ object KoskiErrorCategory {
       }
       val organisaatio = new Organisaatio
 
+      class SisältäväOpiskeluoikeus extends ErrorCategory(Validation.this, "sisältäväOpiskeluoikeus", "Sisältävä opiskeluoikeus") {
+        val eiLöydy = subcategory("eiLöydy", "Sisältävää opiskeluoikeutta ei löydy id-arvolla")
+        val vääräOppilaitos = subcategory("vääräOppilaitos", "Sisältävän opiskeluoikeuden oppilaitos ei täsmää")
+        val henkilöTiedot = subcategory("henkilöTiedot", "Sisältävän opiskeluoikeuden henkilö-oid ei vastaa syötettyjä henkilötietoja, tai henkilöä ei löydetty syötetyllä henkilötunnuksella")
+      }
+      val sisältäväOpiskeluoikeus = new SisältäväOpiskeluoikeus
+
       class Henkilötiedot extends ErrorCategory(Validation.this, "henkilötiedot", "Epäkelvot henkilötiedot") {
         val virheelliset = subcategory("puutteelliset", "Henkilötiedot virheelliset henkilöpalvelun tekemien tarkistusten perusteella.")
         val hetu = subcategory("hetu", "Henkilötunnus on virheellinen.")
