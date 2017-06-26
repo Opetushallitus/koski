@@ -124,19 +124,13 @@ function KoskiPage() {
 
   var api = {
     openPage: function() {
-      return openPage('/koski/', api.isVisible)()
+      return openPage('/koski/', api.isReady)()
     },
     isVisible: function() {
       return isElementVisible(S('#content .oppija-haku')) || isElementVisible(S('#content .oppija'))
     },
-    isLoading: function() {
-      return S('.loading').length > 0
-    },
-    isNotLoading: function() {
-      return !api.isLoading()
-    },
     isReady: function() {
-      return api.isVisible() && !api.isLoading()
+      return api.isVisible() && !isLoading()
     },
     loginAndOpen: function() {
       return Authentication().login('kalle')().then(api.openPage)

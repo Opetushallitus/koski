@@ -91,7 +91,6 @@ describe('Koski', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
-        wait.forAjax,
         mockHttp('/koski/api/henkilo/search?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
