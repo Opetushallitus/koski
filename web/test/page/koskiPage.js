@@ -32,7 +32,7 @@ function KoskiPage() {
         name = query
       }
       return function() {
-        return OppijaHaku.search(query)().then(OppijaHaku.selectOppija(name))
+        return OppijaHaku.search(query, name)().then(OppijaHaku.selectOppija(name))
       }
     },
     getSearchResults: function() {
