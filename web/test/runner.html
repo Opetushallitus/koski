@@ -24,6 +24,10 @@
     mocha.ui('bdd')
     mocha.reporter('html')
     mocha.timeout(testTimeoutPageLoad)
+    if (window.initMochaPhantomJS) {
+      console.log('Calling window.initMochaPhantomJS')
+      window.initMochaPhantomJS();
+    }
     console.log('Mocha setup done')
 </script>
 <script>console.log('loading util/polyfills.js')</script>
