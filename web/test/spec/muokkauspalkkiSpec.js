@@ -43,35 +43,34 @@ describe('Muokkauspalkki', function () {
 
 
     describe('Oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function () {
-      before(function () {
-        this.timeout(2000)
-        click('a.back-link')
+      before(
+        function () {click('a.back-link')},
         wait.until(function () {
-          return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass(':oppijataulukko')
-        })
-        goBack()
+          return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass('oppijataulukko')
+        }),
+        function () {goBack()},
         wait.until(function () {
           return !currentURL().endsWith('/koski/')
         })
-      })
+      )
+
       it('Pysyy piilossa', function () {
         expect(editBarVisible()).to.equal(false)
       })
     })
 
     describe('Oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function () {
-      before(function () {
-        this.timeout(2000)
-        click('button.toggle-edit')
-        click('a.back-link')
+      before(
+        function () {click('button.toggle-edit')},
+        function () {click('a.back-link')},
         wait.until(function () {
-          return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass(':oppijataulukko')
-        })
-        goBack()
+          return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass('oppijataulukko')
+        }),
+        function () {goBack()},
         wait.until(function () {
           return !currentURL().endsWith('/koski/')
         })
-      })
+      )
 
       it('Pysyy näkyvillä', function () {
         expect(editBarVisible()).to.equal(true)
