@@ -99,6 +99,7 @@ describe('Piwik-seuranta', function() {
       describe('Palvelimen vastatessa Ajax-kyselyyn virheellä', function() {
         before(
           koskiPage.openPage,
+          wait.forAjax,
           piwik.reset,
           koskiPage.oppijaHaku.search('#error#', koskiPage.isErrorShown))
 
