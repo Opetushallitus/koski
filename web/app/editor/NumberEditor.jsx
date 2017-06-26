@@ -1,6 +1,7 @@
 import React from 'react'
 import {modelData, pushModelValue} from './EditorModel.js'
 import {wrapOptional} from './OptionalEditor.jsx'
+import {modelSetValue} from './EditorModel'
 
 export const NumberEditor = React.createClass({
   render() {
@@ -13,10 +14,10 @@ export const NumberEditor = React.createClass({
       ? Math.round(data * 100) / 100
       : data
 
-    let minValue = model.minValue || (model.minValueExclusive && model.minValueExclusive + 1)
-    let maxValue = model.maxValue || (model.maxValueExclusive && model.maxValueExclusive - 1)
+    let minValue = wrappedModel.minValue || (wrappedModel.minValueExclusive != undefined && wrappedModel.minValueExclusive + 1)
+    let maxValue = wrappedModel.maxValue || (wrappedModel.maxValueExclusive != undefined && wrappedModel.maxValueExclusive - 1)
 
-    return wrapWithUnitOfMeasure(model.unitOfMeasure, wrappedModel.context.edit
+    return wrapWithUnitOfMeasure(wrappedModel.unitOfMeasure, wrappedModel.context.edit
       ? <input type="number" min={minValue} max={maxValue} defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"/>
       : <span className="inline number">{value}</span>)
   }
@@ -25,6 +26,7 @@ export const NumberEditor = React.createClass({
 const wrapWithUnitOfMeasure = (unitOfMeasure, content) => unitOfMeasure ? <span>{content}<span className="unit-of-measure">{unitOfMeasure}</span></span> : content
 
 NumberEditor.handlesOptional = () => true
+NumberEditor.createEmpty = (m) => modelSetValue(m, undefined)
 NumberEditor.validateModel = model => {
   let value = modelData(model)
   return (value !== undefined && isNaN(value)) ? [{key: 'invalid.number'}] : []
