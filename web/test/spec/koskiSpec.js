@@ -82,6 +82,7 @@ describe('Koski', function() {
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
+        wait.forAjax,
         page.oppijaHaku.search('#error#', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
@@ -90,6 +91,7 @@ describe('Koski', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
+        wait.forAjax,
         mockHttp('/koski/api/henkilo/search?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
@@ -99,7 +101,6 @@ describe('Koski', function() {
 
     describe('Kun sivua ei löydy', function() {
       before(Authentication().login(), openPage('/koski/asdf', page.is404))
-
       it('näytetään 404-sivu', function() {})
     })
   })
