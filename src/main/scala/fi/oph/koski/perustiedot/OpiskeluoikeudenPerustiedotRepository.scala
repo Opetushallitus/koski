@@ -155,7 +155,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
     if (hakusana == "") {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
     }
-    if (hakusana == "#error#") {
+    if (hakusana.toLowerCase == "#error#") {
       throw new TestingException("Testing error handling")
     }
 
