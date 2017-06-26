@@ -16,10 +16,16 @@ function KoskiPage() {
         }
       }
       return function() {
-        return pageApi.setInputValue('#search-query', query)()
-          .then(wait.until(OppijaHaku.isSearchInProgress))
-          .then(wait.until(not(OppijaHaku.isSearchInProgress)))
-          .then(wait.until(expectedResults))
+        if (query.length < 3) {
+          return pageApi.setInputValue('#search-query', query)()
+            .then(wait.until(expectedResults))
+        }
+        else {
+          return pageApi.setInputValue('#search-query', query)()
+            .then(wait.until(OppijaHaku.isSearchInProgress))
+            .then(wait.until(not(OppijaHaku.isSearchInProgress)))
+            .then(wait.until(expectedResults))
+        }
       }
     },
     searchAndSelect: function(query, name) {
