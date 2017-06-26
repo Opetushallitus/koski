@@ -6,7 +6,7 @@ function AddOppijaPage() {
   var pageApi = Page(form)
   var api = {
     isVisible: function() {
-      return isElementVisible(form()) && !isNotLoading()
+      return isElementVisible(form()) && isNotLoading()
     },
     isEnabled: function() {
       return button().is(":visible") && !button().is(':disabled')
