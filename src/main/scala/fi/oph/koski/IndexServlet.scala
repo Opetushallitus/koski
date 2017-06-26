@@ -40,7 +40,7 @@ class IndexServlet(val application: KoskiApplication) extends ScalatraServlet wi
   }
 
   private def indexHtml() = {
-    htmlIndex("koski-main.js", raamitEnabled = raamitEnabled)
+    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
   }
 }
 

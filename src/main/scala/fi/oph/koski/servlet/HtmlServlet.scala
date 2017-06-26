@@ -25,7 +25,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
   }
 
   def renderStatus(status: HttpStatus): Unit = {
-    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamitEnabled = raamitEnabled)) {
+    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamitEnabled = raamitHeaderSet)) {
       case e: Elem if e.label == "head" =>
         e copy (child = (e.child :+ htmlErrorObjectScript(status)) ++ piwikTrackErrorObject)
     }
@@ -44,5 +44,5 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
       renderStatus(KoskiErrorCategory.internalError())
   }
 
-  def raamitEnabled = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
+  def raamitHeaderSet = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
 }

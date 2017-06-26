@@ -38,11 +38,7 @@ trait HtmlNodes extends PiwikNodes {
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/> ++
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-  private def raamit(enabled: Boolean) = if (application.config.getBoolean("useRaamit") && enabled) {
-    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
-  } else {
-    Empty
-  }
+  private def raamit(enabled: Boolean) = if (enabled) <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/> else Empty
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
