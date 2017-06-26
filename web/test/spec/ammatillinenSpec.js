@@ -300,7 +300,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun sivu ladataan uudelleen', function() {
         before(
           page.openPage,
-          page.oppijaHaku.search('Tunkkila-Fagerlund', 1),
+          page.oppijaHaku.search('Tunkkila-Fagerlund'),
           page.oppijaHaku.selectOppija('Tunkkila-Fagerlund')
         )
 

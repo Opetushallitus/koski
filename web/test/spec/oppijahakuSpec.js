@@ -18,7 +18,7 @@ describe('Oppijahaku', function() {
     })
   })
   describe('Kun haku tuottaa tuloksia', function() {
-    before(page.oppijaHaku.search('eero', 3))
+    before(page.oppijaHaku.search('eero', [eerola, eero, markkanen]))
 
     it('Hakutulokset näytetään', function() {
       expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
@@ -37,8 +37,8 @@ describe('Oppijahaku', function() {
     })
   })
   describe('Haun tyhjentäminen', function() {
-    before(page.openPage, page.oppijaHaku.search('esimerkki', 1))
-    before(page.oppijaHaku.search('', 0))
+    before(page.openPage, page.oppijaHaku.search('esimerkki')),
+    before(page.oppijaHaku.search('', []))
 
     it('tyhjentää hakutulos-listauksen', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)

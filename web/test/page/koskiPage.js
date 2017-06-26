@@ -2,30 +2,29 @@ function KoskiPage() {
   var pageApi = Page(function() {return S('#content')})
 
   var OppijaHaku = {
-    search: function(query, expectedResults) { // TODO: defaulttina voisi odottaa, että vähintään yksi tulos näkyy, jossa esiintyy hakusana
+    search: function(query, expectedResults) {
+      if (!expectedResults) expectedResults = query
       if (expectedResults instanceof Array) {
         var resultList = expectedResults
         expectedResults = function() {
           return _.eq(resultList, OppijaHaku.getSearchResults())
         }
       }
-      else if (typeof expectedResults != 'function') {
-        var expectedNumberOfResults = expectedResults
+      else if (typeof expectedResults == "string") {
+        var expectedString = expectedResults
         expectedResults = function() {
-          return OppijaHaku.getSearchResults().length == expectedNumberOfResults
+          var results = OppijaHaku.getSearchResults()
+          return results.length == 1 && results[0].toLowerCase().indexOf(expectedString.toLowerCase()) >= 0
         }
       }
+      else if (typeof expectedResults != 'function') {
+        throw new Error('either function, array or string expected')
+      }
       return function() {
-        if (query.length < 3) {
-          return pageApi.setInputValue('#search-query', query)()
-            .then(wait.until(expectedResults))
-        }
-        else {
-          return pageApi.setInputValue('#search-query', query)()
-            .then(wait.until(OppijaHaku.isSearchInProgress))
-            .then(wait.until(not(OppijaHaku.isSearchInProgress)))
-            .then(wait.until(expectedResults))
-        }
+        return pageApi.setInputValue('#search-query', query)()
+          .then(wait.forAjax)
+          .then(wait.until(not(OppijaHaku.isSearchInProgress)))
+          .then(wait.until(expectedResults))
       }
     },
     searchAndSelect: function(query, name) {
@@ -33,7 +32,7 @@ function KoskiPage() {
         name = query
       }
       return function() {
-        return OppijaHaku.search(query, 1)().then(OppijaHaku.selectOppija(name))
+        return OppijaHaku.search(query)().then(OppijaHaku.selectOppija(name))
       }
     },
     getSearchResults: function() {
