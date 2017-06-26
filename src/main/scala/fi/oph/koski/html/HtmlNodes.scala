@@ -14,13 +14,13 @@ trait HtmlNodes extends PiwikNodes {
   def application: KoskiApplication
   def buildVersion: Option[String]
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = true): Elem = {
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false): Elem = {
     <html>
       <head>
         {commonHead ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body>
-        <div data-inraamit={if (application.config.getBoolean("useRaamit") && raamitEnabled) "true" else ""} id="content"></div>
+        <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
         {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}

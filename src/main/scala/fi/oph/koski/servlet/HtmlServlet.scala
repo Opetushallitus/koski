@@ -7,6 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.util.XML
 
+import scala.util.Try
 import scala.xml.Elem
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
@@ -24,7 +25,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
   }
 
   def renderStatus(status: HttpStatus): Unit = {
-    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode))) {
+    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamitEnabled = raamitEnabled)) {
       case e: Elem if e.label == "head" =>
         e copy (child = (e.child :+ htmlErrorObjectScript(status)) ++ piwikTrackErrorObject)
     }
@@ -42,4 +43,6 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
       logger.error("HtmlServlet cannot render " + x)
       renderStatus(KoskiErrorCategory.internalError())
   }
+
+  def raamitEnabled = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
 }

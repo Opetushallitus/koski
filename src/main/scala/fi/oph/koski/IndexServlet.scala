@@ -6,6 +6,8 @@ import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
+import scala.util.Try
+
 class IndexServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before() {
     if (!isAuthenticated) {
@@ -37,7 +39,9 @@ class IndexServlet(val application: KoskiApplication) extends ScalatraServlet wi
     indexHtml()
   }
 
-  private def indexHtml() = htmlIndex("koski-main.js")
+  private def indexHtml() = {
+    htmlIndex("koski-main.js", raamitEnabled = raamitEnabled)
+  }
 }
 
 class LoginPageServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
