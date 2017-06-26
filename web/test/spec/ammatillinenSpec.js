@@ -325,12 +325,15 @@ describe('Ammatillinen koulutus', function() {
         editor.property('hojks').property('opetusryhmä').setValue('Erityisopetusryhmä'),
         editor.property('oikeusMaksuttomaanAsuntolapaikkaan').setValue(true),
         editor.property('ulkomaanjaksot').addItem,
+        editor.property('ulkomaanjaksot').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('ulkomaanjaksot').property('maa').setValue('Algeria'),
         editor.property('ulkomaanjaksot').property('kuvaus').setValue('Testing'),
         editor.property('majoitus').addItem,
+        editor.property('majoitus').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('majoitus').propertyBySelector('.loppu').setValue('1.1.2099'),
         editor.property('osaAikaisuus').setValue('50'),
         editor.property('poissaolojaksot').addItem,
+        editor.property('poissaolojaksot').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('poissaolojaksot').property('syy').setValue('Oma ilmoitus'),
         editor.saveChanges,
         wait.until(page.isSavedLabelShown)
@@ -589,7 +592,7 @@ describe('Ammatillinen koulutus', function() {
           'Majoitus 1.9.2012 — 1.9.2013\n' +
           'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
           'Vaativan erityisen tuen yhteydessä järjestettävä majoitus 1.9.2012 — 1.9.2013\n' +
-          'Vankilaopetuksessa kyllä\nOsa-aikaisuus 80 %\n' +
+          'Henkilöstökoulutus kyllä\nVankilaopetuksessa kyllä\nOsa-aikaisuus 80 %\n' +
           'Poissaolojaksot 1.10.2013 — 31.10.2013\n' +
           'Syy Oma ilmoitus')
       })
