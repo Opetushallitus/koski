@@ -82,7 +82,6 @@ describe('Koski', function() {
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
-        wait.forAjax,
         page.oppijaHaku.search('#error#', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
