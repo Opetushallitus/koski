@@ -118,7 +118,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(id, Oppilaitos(oppilaitosOid, _, _, _))) =>
-      opiskeluoikeudet.findById(id) match {
+      opiskeluoikeudet.findById(id)(KoskiSession.systemUser) match {
         case Some(sisältäväOpiskeluoikeus) if (sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid) =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
         case Some(sisältäväOpiskeluoikeus) =>

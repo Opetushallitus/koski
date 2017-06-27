@@ -153,7 +153,7 @@ object Tables {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
-        if oo.oppilaitosOid inSet oids
+        if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
       } yield { oo}
     }
   }

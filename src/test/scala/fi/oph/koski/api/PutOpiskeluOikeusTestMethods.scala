@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
@@ -34,16 +35,16 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
   }
 
-  def createOrUpdate(oppija: Henkilö with Henkilötiedot, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
-    putOppija(Json.toJValue(Oppija(oppija, List(opiskeluoikeus)))){
+  def createOrUpdate(oppija: Henkilö with Henkilötiedot, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }, user: UserWithPassword = defaultUser) = {
+    putOppija(Json.toJValue(Oppija(oppija, List(opiskeluoikeus))), headers = authHeaders(user) ++ jsonContent){
       check
       lastOpiskeluoikeusByHetu(oppija)
     }
   }
 
-  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Henkilötiedot, opiskeluoikeus: T, resetFixtures: Boolean = false): T = {
+  def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö with Henkilötiedot, opiskeluoikeus: T, resetFixtures: Boolean = false, user: UserWithPassword = defaultUser): T = {
     if (resetFixtures) this.resetFixtures
-    createOrUpdate(oppija, opiskeluoikeus).asInstanceOf[T]
+    createOrUpdate(oppija, opiskeluoikeus, user = user).asInstanceOf[T]
   }
 
   def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValue(Map(
