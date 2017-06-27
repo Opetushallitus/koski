@@ -4,7 +4,9 @@ import fi.oph.koski.henkilo.HenkilötiedotSearchResponse
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
 import fi.oph.koski.schema.HenkilötiedotJaOid
+import fi.oph.koski.util.PaginatedResponse
 
 trait SearchTestMethods extends HttpSpecification {
   def search[T](query: String, user: UserWithPassword)(f: => T) = {
@@ -21,6 +23,12 @@ trait SearchTestMethods extends HttpSpecification {
     search(query, user) {
       verifyResponseStatus(200)
       Json.read[HenkilötiedotSearchResponse](body).henkilöt
+    }
+  }
+
+  def searchForPerustiedot(queryParams: Map[String, String], user: UserWithPassword = defaultUser): List[OpiskeluoikeudenPerustiedot] = {
+    get("api/opiskeluoikeus/perustiedot", params = queryParams, headers = authHeaders(user)) {
+      Json.read[PaginatedResponse[List[OpiskeluoikeudenPerustiedot]]](body).result
     }
   }
 }

@@ -19,6 +19,7 @@ case class OpiskeluoikeudenPerustiedot(
   id: Int,
   henkilö: NimitiedotJaOid,
   oppilaitos: Oppilaitos,
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
@@ -68,6 +69,7 @@ object OpiskeluoikeudenPerustiedot {
       id,
       toNimitiedotJaOid(henkilö),
       (data \ "oppilaitos").extract[Oppilaitos],
+      (data \ "sisältyyOpiskeluoikeuteen").extract[Option[SisältäväOpiskeluoikeus]],
       (data \ "alkamispäivä").extract[Option[LocalDate]],
       (data \ "päättymispäivä").extract[Option[LocalDate]],
       (data \ "tyyppi").extract[Koodistokoodiviite],

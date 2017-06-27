@@ -175,7 +175,10 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
     if (session.hasGlobalReadAccess) {
       Nil
     } else {
-      List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))
+      List(Map("bool" -> Map("should" -> List(
+        Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
+        Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read)))
+      ))))
     }
 
 

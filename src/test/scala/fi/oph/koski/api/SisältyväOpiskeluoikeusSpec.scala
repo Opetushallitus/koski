@@ -8,7 +8,7 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilai
 import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 
-class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with LocalJettyHttpSpecification {
+class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
@@ -46,6 +46,16 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
         putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
           verifyResponseStatus(200)
         }
+      }
+
+      "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(fixture.original.id.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyvä.id.get)
+      }
+
+      "Sisältyvän opiskeluoikeuden organisaatio ei löydä sisältävää opiskeluoikeutta hakutoiminnolla" in {
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id) should equal(Nil)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.omniaKatselija).map(_.id) should contain(sisältyvä.id.get)
       }
     }
 
