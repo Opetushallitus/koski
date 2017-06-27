@@ -17,13 +17,15 @@ describe('Tiedonsiirrot', function() {
   )
   
   describe("Tiedonsiirtoloki", function() {
+    let sortByName = (a, b) => a[1].localeCompare(b[1])
+
     it('Näytetään', function() {
-      expect(tiedonsiirrot.tiedot()).to.deep.equal([
+      expect(tiedonsiirrot.tiedot().sort(sortByName)).to.deep.equal([
         ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
         ['24.2.1977', 'Heikki Hetuton', 'Stadin ammattiopisto', '', ''],
         ['270303-281N', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', ''],
         ['', ' ', '', 'virhe', 'tiedot']
-      ])
+      ].sort(sortByName))
     })
   })
 
