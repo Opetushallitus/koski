@@ -21,13 +21,13 @@
     console.log('Setting up mocha')
     var testTimeoutPageLoad = 10000
     var testTimeoutDefault = 10000
-    mocha.ui('bdd')
-    mocha.reporter('html')
-    mocha.timeout(testTimeoutPageLoad)
     if (window.initMochaPhantomJS) {
       console.log('Calling window.initMochaPhantomJS')
       window.initMochaPhantomJS();
     }
+    mocha.ui('bdd')
+    mocha.reporter('html')
+    mocha.timeout(testTimeoutPageLoad)
     console.log('Mocha setup done')
 </script>
 <script>console.log('loading util/polyfills.js')</script>
