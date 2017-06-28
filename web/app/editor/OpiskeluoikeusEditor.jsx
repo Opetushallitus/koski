@@ -36,17 +36,20 @@ export const OpiskeluoikeusEditor = ({model}) => {
     return (
       <div className="opiskeluoikeus">
         <h3>
+          <span className="otsikkotiedot">
           <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
           <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
-           { modelData(mdl, 'alkamispäivä')
-              ? <span className="inline-text">{'('}
-                    <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
-                    <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
+          </span>
+          { modelData(mdl, 'alkamispäivä')
+            ? <span className="inline-text">{'('}
+              <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
+              <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
                 </span>
-              : null
-            }
+            : null
+          }
           <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
           <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
+          <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
           <div className="opiskeluoikeuden-tiedot">
@@ -73,6 +76,18 @@ export const OpiskeluoikeusEditor = ({model}) => {
       </div>)
     }
   } />)
+}
+
+const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
+  let selectAllText = (e) => {
+    let el = e.target
+    var range = document.createRange()
+    range.selectNodeContents(el)
+    var sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
+  }
+  return <span className="id">ID: <span className="value" onClick={selectAllText}>{modelData(opiskeluoikeus, 'id')}</span></span>
 }
 
 const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {

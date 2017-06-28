@@ -66,7 +66,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
 
-case class SisältäväOpiskeluoikeus(id: Int, oppilaitos: Oppilaitos)
+case class SisältäväOpiskeluoikeus(oppilaitos: Oppilaitos, id: Int)
 
 trait OpiskeluoikeudenTila {
   @Representative

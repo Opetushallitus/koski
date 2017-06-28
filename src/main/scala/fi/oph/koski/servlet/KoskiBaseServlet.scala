@@ -32,6 +32,10 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     getIntegerParam(name)
   }
 
+  def getBooleanParam(name: String, defaultValue: Boolean = false): Boolean = {
+    params.getAs[Boolean](name).getOrElse(defaultValue)
+  }
+
   error {
     case InvalidRequestException(detail) =>
       haltWithStatus(detail)

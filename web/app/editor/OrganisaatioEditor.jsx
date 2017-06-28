@@ -2,7 +2,7 @@ import React from 'baret'
 import {modelData, modelSetValue, pushModel} from './EditorModel'
 import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
 import {t} from '../i18n'
-export const OrganisaatioEditor = ({model, organisaatioTyypit}) => {
+export const OrganisaatioEditor = ({model, organisaatioTyypit, showAll}) => {
   let canSelectOrg = org => organisaatioTyypit ? org.organisaatiotyypit.some(tyyppi => organisaatioTyypit.includes(tyyppi)) : true
   return model.context.edit
     ? <OrganisaatioPicker
@@ -11,6 +11,7 @@ export const OrganisaatioEditor = ({model, organisaatioTyypit}) => {
         canSelectOrg={canSelectOrg}
         clearText=""
         noSelectionText="Valitse..."
+        showAll={showAll}
     />
     : <span>{t(modelData(model, 'nimi'))}</span>
 }

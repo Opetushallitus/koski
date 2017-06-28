@@ -7,7 +7,8 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 class OrganisaatioServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/hierarkia") {
     val query = params.get("query")
-    val filtered = if (koskiSession.isRoot) {
+    val all = getBooleanParam("all")
+    val filtered = if (all || koskiSession.isRoot) {
       query match {
         case Some(query) if (query.length >= 3) =>
           application.organisaatioRepository.findHierarkia(query)

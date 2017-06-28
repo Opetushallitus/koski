@@ -7,6 +7,8 @@ import Highlight from 'react-highlighter'
 import {buildClassNames} from './classnames.js'
 import {t} from './i18n'
 import Text from './Text.jsx'
+import {parseBool} from './util'
+import {parseLocation} from './location'
 
 let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
@@ -81,11 +83,13 @@ export default BaconComponent({
     }
   },
   componentWillMount() {
+    let showAll = parseBool(this.props.showAll)
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
+
     let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
-      Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)
+      Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll}))
         .map((organisaatiot) => ({ organisaatiot, searchString }))
     ).takeUntil(this.unmountE)
     searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))

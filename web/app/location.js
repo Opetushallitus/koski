@@ -46,10 +46,13 @@ export const parsePath = (path) => {
 }
 
 export function parseLocation(location) {
+  if (typeof location == "string") {
+    return parsePath(location)
+  }
   let hashStr = location.hash ? location.hash : ''
   return {
     path: location.pathname.replace(/(^\/?)/,'/'),
-    params: parseQuery(location.search),
+    params: parseQuery(location.search || ''),
     queryString: location.search || '',
     hash: location.hash,
     addQueryParams(newParams) {

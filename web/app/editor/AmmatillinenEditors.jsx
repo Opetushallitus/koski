@@ -5,7 +5,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
-import {ObjectEditor} from './ObjectEditor.jsx'
+import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -67,7 +67,11 @@ TyössäoppimisjaksoEditor.readOnly = true
 TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
 const SisältäväOpiskeluoikeusEditor = ({model}) => {
-  if (model.context.edit) return <ObjectEditor model={model}/>
+  if (model.context.edit) {
+    return <PropertiesEditor model={model} getValueEditor={(p, getDefault) => {
+      return p.key == 'oppilaitos' ? <OrganisaatioEditor model={p.model} showAll={true}/> : getDefault()
+    }}/>
+  }
   return <span><span className="id"><Editor model={model} path="id"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
 }
 
