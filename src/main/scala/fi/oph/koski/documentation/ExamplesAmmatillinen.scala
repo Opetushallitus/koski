@@ -46,6 +46,7 @@ object AmmattitutkintoExample {
         päättymispäivä = None,
         toimipiste = stadinToimipiste,
         vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
+        suorituskieli = suomenKieli,
         osasuoritukset = Some(List(
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
             tila = tilaValmis,
@@ -68,7 +69,7 @@ object AmmattitutkintoExample {
           Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
           Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
         )),
-        suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+        suorituskieli = suomenKieli,
         tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = stadinToimipiste,
@@ -109,7 +110,7 @@ object AmmatillinenPerustutkintoExample {
       osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
       toinenOsaamisala = true,
       järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
-      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+      suorituskieli = suomenKieli,
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
@@ -180,7 +181,7 @@ object AmmatillinenOldExamples {
         osaamisala = None,
         suoritustapa = Some(suoritustapaNäyttö),
         järjestämismuodot = Some(List(Järjestämismuotojakso(date(2016, 9, 1), None, järjestämismuotoOppisopimus))),
-        suorituskieli = None,
+        suorituskieli = suomenKieli,
         tila = tilaKesken,
         alkamispäivä = Some(date(2016, 9, 1)),
         toimipiste = stadinToimipiste,
@@ -221,7 +222,8 @@ object AmmatillinenOldExamples {
       suoritustapa = Some(suoritustapaNäyttö),
       järjestämismuodot = None,
       tila = tilaKesken,
-      toimipiste = stadinToimipiste
+      toimipiste = stadinToimipiste,
+      suorituskieli = suomenKieli
     ),
 
     osat = Some(List(
@@ -315,7 +317,7 @@ object AmmatillinenOldExamples {
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaNäyttö),
           järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
-          suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+          suorituskieli = suomenKieli,
           tila = tilaValmis,
           alkamispäivä = None,
           toimipiste = stadinToimipiste,

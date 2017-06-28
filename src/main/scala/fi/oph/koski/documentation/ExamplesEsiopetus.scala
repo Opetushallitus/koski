@@ -24,7 +24,7 @@ object ExamplesEsiopetus {
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu,
             suorituskieli = suomenKieli,
-            muutSuorituskielet = Some(List(ruotsinKieli.get)),
+            muutSuorituskielet = Some(List(ruotsinKieli)),
             vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))
           )
       ),

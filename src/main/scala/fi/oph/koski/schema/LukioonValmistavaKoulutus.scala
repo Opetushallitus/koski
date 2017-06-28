@@ -37,13 +37,13 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton
+) extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen
 
 @Description("Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot")
 case class LukioonValmistavaKoulutus(
@@ -54,7 +54,7 @@ case class LukioonValmistavaKoulutus(
   def laajuus = None
 }
 
-trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
+trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
 case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Title("Oppiaine")
@@ -145,7 +145,7 @@ case class LukioonValmistavanKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus
+) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(

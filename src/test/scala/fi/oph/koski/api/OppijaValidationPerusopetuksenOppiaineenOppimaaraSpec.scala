@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.schema._
@@ -18,7 +19,8 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
       toimipiste = jyväskylänNormaalikoulu,
       arviointi = PerusopetusExampleData.arviointi(9),
       suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,
-      vahvistus = vahvistus
+      vahvistus = vahvistus,
+      suorituskieli = suomenKieli
     )
   ))
 

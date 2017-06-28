@@ -23,7 +23,8 @@ object AmmatillinenExampleData {
     koulutusmoduuli = koulutusmoduuli,
     tila = tilaKesken,
     alkamispäivä = Some(date(2016, 9, 1)),
-    toimipiste = toimipiste
+    toimipiste = toimipiste,
+    suorituskieli = suomenKieli
   )
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
@@ -253,7 +254,7 @@ object AmmatillinenExampleData {
       osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
       suoritustapa = Some(suoritustapaOps),
       järjestämismuodot = Some(List(Järjestämismuotojakso(date(2013, 9, 1), None, järjestämismuotoOppilaitos))),
-      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+      suorituskieli = suomenKieli,
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
@@ -322,7 +323,7 @@ object AmmatillinenExampleData {
       osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
       suoritustapa = Some(suoritustapaOps),
       järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
-      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+      suorituskieli = suomenKieli,
       tila = tilaKesken,
       alkamispäivä = None,
       toimipiste = toimipiste,

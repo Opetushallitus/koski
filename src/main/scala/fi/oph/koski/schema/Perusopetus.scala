@@ -88,7 +88,7 @@ case class ErityisenTuenPäätös(
   erityisryhmässä: Boolean
 )
 
-trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus
+trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
@@ -101,7 +101,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
@@ -134,7 +134,7 @@ case class PerusopetuksenOppimääränSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
@@ -173,14 +173,14 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä
 
-sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
+sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
@@ -194,7 +194,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä
+) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(

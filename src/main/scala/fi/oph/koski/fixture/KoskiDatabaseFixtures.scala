@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
+import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.Json
@@ -100,7 +101,8 @@ object OpiskeluoikeusTestData {
       suoritukset = List(AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
-        toimipiste = oppilaitos
+        toimipiste = oppilaitos,
+        suorituskieli = suomenKieli
       )),
       alkamispäivä = Some(date(2000, 1, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None)))

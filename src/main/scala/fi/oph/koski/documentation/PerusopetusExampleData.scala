@@ -96,8 +96,8 @@ object PerusopetusExampleData {
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
-    muutSuorituskielet = Some(List(sloveeni.get)),
-    kielikylpykieli = ruotsinKieli,
+    muutSuorituskielet = Some(List(sloveeni)),
+    kielikylpykieli = Some(ruotsinKieli),
     osasuoritukset = kaikkiAineet,
     käyttäytymisenArvio = Some(PerusopetuksenKäyttäytymisenArviointi(kuvaus = Some("Esimerkillistä käyttäytymistä koko vuoden ajan"))),
     vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
@@ -135,7 +135,8 @@ object PerusopetusExampleData {
     tila = tilaKesken,
     toimipiste = jyväskylänNormaalikoulu,
     suoritustapa = suoritustapaKoulutus,
-    oppimäärä = perusopetuksenOppimäärä
+    oppimäärä = perusopetuksenOppimäärä,
+    suorituskieli = suomenKieli
   )
 
   val perusopetuksenOppimääränSuoritus = PerusopetuksenOppimääränSuoritus(
@@ -145,6 +146,7 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,
     oppimäärä = perusopetuksenOppimäärä,
-    osasuoritukset = kaikkiAineet
+    osasuoritukset = kaikkiAineet,
+    suorituskieli = suomenKieli
   )
 }

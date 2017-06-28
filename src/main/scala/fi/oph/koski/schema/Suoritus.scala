@@ -16,10 +16,6 @@ trait Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate] = None
-  @Description("Opintojen suorituskieli")
-  @KoodistoUri("kieli")
-  @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
-  def suorituskieli: Option[Koodistokoodiviite]
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
   def tila: Koodistokoodiviite
@@ -45,6 +41,20 @@ trait Suoritus {
   def kesken = tila.koodiarvo == "KESKEN"
 }
 
+trait Suorituskielellinen {
+  @Description("Opintojen suorituskieli")
+  @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
+  def suorituskieli: Koodistokoodiviite
+}
+
+trait MahdollisestiSuorituskielellinen {
+  @Description("Opintojen suorituskieli")
+  @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
+  def suorituskieli: Option[Koodistokoodiviite]
+}
+
 trait Arvioinniton extends Suoritus {
   def arviointi = None
 }
@@ -62,10 +72,9 @@ trait Ryhmällinen {
   def ryhmä: Option[String]
 }
 
-trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
-}
+trait PäätasonSuoritus extends Suoritus with Toimipisteellinen
 
-trait Todistus extends PäätasonSuoritus {
+trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 

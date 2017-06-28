@@ -18,7 +18,7 @@ object OpiskeluoikeusTestMethodsLukio {
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
     oppimäärä = nuortenOpetussuunnitelma,
-    suorituskieli = None,
+    suorituskieli = suomenKieli,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistus,

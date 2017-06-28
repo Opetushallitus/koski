@@ -1,16 +1,15 @@
 package fi.oph.koski.documentation
 
 import java.time.LocalDate
-
-import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
-import ExampleData.{helsinki, tilaValmis}
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, tilaValmis}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema._
 
 object ExamplesIB {
   val ressunLukio: Oppilaitos = Oppilaitos(MockOrganisaatiot.ressunLukio, Some(Koodistokoodiviite("00082", None, "oppilaitosnumero", None)), Some("Ressun lukio"))
@@ -18,6 +17,7 @@ object ExamplesIB {
     toimipiste = ressunLukio,
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
+    suorituskieli = englanti,
     osasuoritukset = Some(List(
       preIBAineSuoritus(lukionÄidinkieli("AI1"),List(
         (valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8")
@@ -129,6 +129,7 @@ object ExamplesIB {
   def ibTutkinnonSuoritus(predicted: Boolean) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
+    suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(osasuoritukset(predicted = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(

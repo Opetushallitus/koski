@@ -58,7 +58,7 @@ case class ErityisenKoulutustehtävänJakso(
   tehtävä: Koodistokoodiviite
 ) extends Jakso
 
-trait LukionPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
+trait LukionPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 
 case class LukionOppimääränSuoritus(
   @Title("Koulutus")
@@ -70,7 +70,7 @@ case class LukionOppimääränSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
@@ -89,7 +89,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @Description("Lukion oppiaineen oppimäärän arviointi")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
@@ -122,9 +122,7 @@ case class MuidenLukioOpintojenSuoritus(
   @Description("Kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
-) extends LukionOppimääränOsasuoritus with VahvistuksetonSuoritus with Arvioinniton {
-  override def suorituskieli = None
-}
+) extends LukionOppimääränOsasuoritus with VahvistuksetonSuoritus with Arvioinniton
 
 @Title("Muu lukio-opinto")
 @Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")
@@ -145,7 +143,7 @@ case class LukionOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen
 
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
@@ -163,7 +161,7 @@ case class LukionKurssinSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   suoritettuLukiodiplomina: Option[Boolean] = None,
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
-) extends VahvistuksetonSuoritus
+) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 case class LukionOppiaineenArviointi(
   arvosana: Koodistokoodiviite,

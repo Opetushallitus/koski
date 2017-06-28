@@ -32,7 +32,7 @@ case class Ensisijaisuus(
   päättymispäivä: Option[LocalDate]
 )
 
-trait KorkeakouluSuoritus extends PäätasonSuoritus {
+trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen {
   def toimipiste: Oppilaitos
 }
 

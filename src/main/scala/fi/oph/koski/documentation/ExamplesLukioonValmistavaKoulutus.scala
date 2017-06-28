@@ -28,6 +28,7 @@ object ExamplesLukioonValmistavaKoulutus {
           vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(),
+          suorituskieli = suomenKieli,
           osasuoritukset = Some(List(
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),

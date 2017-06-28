@@ -9,9 +9,10 @@ import fi.oph.koski.schema._
 
 object ExampleData {
   lazy val longTimeAgo = date(2000, 1, 1)
-  lazy val suomenKieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None))
-  lazy val ruotsinKieli = Some(Koodistokoodiviite("SV", Some("ruotsi"), "kieli", None))
-  lazy val sloveeni = Some(Koodistokoodiviite("SL", Some("sloveeni"), "kieli", None))
+  lazy val suomenKieli = Koodistokoodiviite("FI", Some("suomi"), "kieli", None)
+  lazy val ruotsinKieli = Koodistokoodiviite("SV", Some("ruotsi"), "kieli", None)
+  lazy val englanti = Koodistokoodiviite("EN", Some("englanti"), "kieli", None)
+  lazy val sloveeni = Koodistokoodiviite("SL", Some("sloveeni"), "kieli", None)
   val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))

@@ -30,7 +30,7 @@ case class AmmatillinenOpiskeluoikeus(
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[AmmatillinenPäätasonSuoritus]])
 }
 
-sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen
+sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen with Suorituskielellinen
 
 trait Työssäoppimisjaksollinen {
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
@@ -109,7 +109,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
   val päättymispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -145,7 +145,7 @@ case class AmmatillisenTutkinnonSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[Henkilövahvistus] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
@@ -176,7 +176,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -189,7 +189,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with VahvistuksetonSuoritus with Arvioinniton with Ryhmällinen
 
-trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
+trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
   @Discriminator
@@ -344,7 +344,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus
+) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 @Title("Ammatillisen tutkinnon osan osa-alueen suoritus")
 case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
@@ -360,7 +360,7 @@ case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus
+) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
@@ -563,7 +563,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with Arvioinniton
+) extends VahvistuksetonSuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
 
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
 
@@ -576,7 +576,7 @@ case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   def laajuus = None
 }
 
-trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton {
+trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen {
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
 }
 
@@ -588,7 +588,7 @@ case class ValmaKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
@@ -617,7 +617,7 @@ case class ValmaKoulutuksenOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends ValmentavanKoulutuksenOsanSuoritus
+) extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA) tunnistetiedot")
 @Title("Valma-koulutus")
@@ -648,7 +648,7 @@ case class TelmaKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")
@@ -677,7 +677,7 @@ case class TelmaKoulutuksenOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends ValmentavanKoulutuksenOsanSuoritus
+) extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) tunnistetiedot")
 @Title("Telma-koulutus")

@@ -38,7 +38,7 @@ case class IBTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
@@ -59,7 +59,7 @@ case class PreIBSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
@@ -68,7 +68,7 @@ case class PreIBSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
 
-trait IBPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton
+trait IBPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 
 @Title("Pre IB -koulutus")
 @Description("Pre IB -koulutuksen tunnistetiedot")
@@ -90,7 +90,7 @@ case class IBTutkinto(
   override def isTutkinto = true
 }
 
-trait IBSuoritus extends VahvistuksetonSuoritus
+trait IBSuoritus extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 @Title("IB-oppiaineen suoritus")
 case class IBOppiaineenSuoritus(

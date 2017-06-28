@@ -33,9 +33,7 @@ case class YlioppilastutkinnonSuoritus(
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton {
-  override def suorituskieli: Option[Koodistokoodiviite] = None
-}
+) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
@@ -44,9 +42,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus {
-  override def suorituskieli: Option[Koodistokoodiviite] = None
-}
+) extends VahvistuksetonSuoritus
 
 case class YlioppilaskokeenArviointi(
   @KoodistoUri("koskiyoarvosanat")
