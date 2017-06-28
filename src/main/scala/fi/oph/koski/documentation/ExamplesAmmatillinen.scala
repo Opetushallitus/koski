@@ -6,7 +6,8 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{AmmatillisenTutkinnonOsanSuoritus, _}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema._
 
 object ExamplesAmmatillinen {
   lazy val examples = List(
@@ -20,7 +21,8 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - perustutkinto", "Ympäristönhoitajaksi valmistunut opiskelija", AmmatillinenPerustutkintoExample.perustutkinto),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto),
     Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
-    Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa)
+    Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
+    Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400)
   )
 }
 
@@ -118,6 +120,8 @@ object AmmatillinenPerustutkintoExample {
       )
     )
   )
+
+  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus().copy(sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), 1234567))))
 
   lazy val osittainenPerustutkinto = Oppija(exampleHenkilö, List(osittainenPerustutkintoOpiskeluoikeus))
 
