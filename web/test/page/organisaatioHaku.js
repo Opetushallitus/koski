@@ -3,11 +3,18 @@ function OrganisaatioHaku(elem) {
     select: function (value) {
       return function() {
         if (value) {
-          return api.enter(value)()
-            .then(function () {
-              return triggerEvent(elem().find('.organisaatio-popup a:contains(' + value + ')').get(0), 'click')
-            })
-            .then(wait.forAjax)
+          if (elem().find('.organisaatio-selection').hasClass('disabled')) {
+            // Single organization allowed
+            if (!elem().find('.organisaatio-selection').text().startsWith(value)) {
+              throw new Error('Organisaatio ' + value + ' ei ole valittavissa')
+            }
+          } else {
+            return api.enter(value)()
+              .then(function () {
+                return triggerEvent(elem().find('.organisaatio-popup a:contains(' + value + ')').get(0), 'click')
+              })
+              .then(wait.forAjax)
+          }
         } else {
           api.open()
           triggerEvent(elem().find('.organisaatio-popup .kaikki'), 'click')

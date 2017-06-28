@@ -3,9 +3,6 @@ function OpinnotPage() {
   function opiskeluoikeus() { return findSingle('.opiskeluoikeus')}
 
   var api = {
-    opiskeluoikeuksienMäärä: function() {
-      return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
-    },
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
       var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]
@@ -152,6 +149,14 @@ function Oppiaineet() {
 
 function Opiskeluoikeudet() {
   return {
+    opiskeluoikeuksienMäärä: function() {
+      return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
+    },
+
+    opiskeluoikeuksienOtsikot: function() {
+      return textsOf(S('.opiskeluoikeuksientiedot .opiskeluoikeus h3 .otsikkotiedot'))
+    },
+
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
         triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')

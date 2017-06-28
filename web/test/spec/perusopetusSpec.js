@@ -1331,7 +1331,7 @@ describe('Perusopetus', function() {
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
               addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
-              wait.until(function() { return opinnot.opiskeluoikeuksienMäärä() == 2 })
+              wait.until(function() { return opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä() == 2 })
             )
             it('Lisääminen onnistuu', function() {
               expect(opinnot.getOppilaitos(0)).to.equal('Jyväskylän normaalikoulu')
