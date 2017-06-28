@@ -1,0 +1,99 @@
+{
+  "henkilö" : {
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "20",
+          "nimi" : {
+            "fi" : "Oppisopimusmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        },
+        "oppisopimus" : {
+          "työnantaja" : {
+            "nimi" : {
+              "fi" : "Autokorjaamo Oy"
+            },
+            "yTunnus" : "1234567-8"
+          }
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

@@ -152,6 +152,40 @@
           "koodistoVersio" : 1
         }
       },
+      "työssäoppimisjaksot" : [ {
+        "alku" : "2014-01-01",
+        "loppu" : "2014-03-15",
+        "työssäoppimispaikka" : {
+          "fi" : "Sortti-asema"
+        },
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "maa" : {
+          "koodiarvo" : "246",
+          "nimi" : {
+            "fi" : "Suomi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "työtehtävät" : {
+          "fi" : "Toimi harjoittelijana Sortti-asemalla"
+        },
+        "laajuus" : {
+          "arvo" : 5.0,
+          "yksikkö" : {
+            "koodiarvo" : "6",
+            "nimi" : {
+              "fi" : "Osaamispistettä"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -173,6 +207,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -224,37 +262,6 @@
             }
           } ]
         },
-        "työssäoppimisjaksot" : [ {
-          "alku" : "2014-01-01",
-          "loppu" : "2014-03-15",
-          "paikkakunta" : {
-            "koodiarvo" : "179",
-            "nimi" : {
-              "fi" : "Jyväskylä"
-            },
-            "koodistoUri" : "kunta"
-          },
-          "maa" : {
-            "koodiarvo" : "246",
-            "nimi" : {
-              "fi" : "Suomi"
-            },
-            "koodistoUri" : "maatjavaltiot2"
-          },
-          "työtehtävät" : {
-            "fi" : "Toimi harjoittelijana Sortti-asemalla"
-          },
-          "laajuus" : {
-            "arvo" : 5.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -280,6 +287,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -482,6 +493,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -558,6 +573,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -633,6 +652,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -834,6 +857,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -1086,6 +1113,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -1322,6 +1353,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -1561,6 +1596,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -1636,6 +1675,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -1714,6 +1757,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "4",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -1790,6 +1837,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "3",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",

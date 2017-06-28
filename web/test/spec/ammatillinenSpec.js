@@ -395,6 +395,10 @@ describe('Ammatillinen koulutus', function() {
             'Suorituskieli suomi\n' +
             'Suoritustapa Opetussuunnitelman mukainen\n' +
             'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
+            'Työssäoppimispaikka Sortti-asema\n' +
+            'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
+            'Laajuus 5 osp\n' +
             'Ryhmä YMP14SN\n' +
             'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
@@ -407,10 +411,6 @@ describe('Ammatillinen koulutus', function() {
             'Kestävällä tavalla toimiminen kyllä 40 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
-            'Työssäoppimispaikka Sortti-asema\n' +
-            'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
-            'Laajuus 5 osp\n' +
             'Ympäristön hoitaminen kyllä 35 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +

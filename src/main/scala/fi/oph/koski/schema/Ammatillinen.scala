@@ -192,7 +192,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with VahvistuksetonSuoritus with Arvioinniton with Ryhmällinen
 
-trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjaksollinen {
+trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
   @Discriminator
@@ -233,7 +233,6 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   näyttö: Option[Näyttö] = None,
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
@@ -258,7 +257,6 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus {
@@ -559,8 +557,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends VahvistuksetonSuoritus with Arvioinniton
@@ -615,8 +611,6 @@ case class ValmaKoulutuksenOsanSuoritus(
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends ValmentavanKoulutuksenOsanSuoritus
@@ -677,8 +671,6 @@ case class TelmaKoulutuksenOsanSuoritus(
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends ValmentavanKoulutuksenOsanSuoritus

@@ -1,3 +1,6 @@
+## 28.6.2017
+- Poistettu työssäoppimisjaksot tutkinnonosan tasolta
+
 ## 14.6.2017
 
 - Perusopetuksen oppimäärän suoritukselta vaaditaan vähintään yksi oppiaine, jos suoritus on tilassa VALMIS
