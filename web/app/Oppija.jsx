@@ -105,7 +105,7 @@ const createState = (oppijaOid) => {
           changeBuffer = null
           //console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
-          return R.merge(locallyModifiedOppija, {event: 'dirty', opiskeluoikeusId})
+          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusId})
         })
       })
     }
