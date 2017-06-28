@@ -1,3 +1,5 @@
+import R from 'ramda'
+
 const queuePiwikMethodCall = (methodName, ...methodArgs) => {
   if (window._paq) {
     window._paq.push([methodName, ...methodArgs])
@@ -14,5 +16,5 @@ export const trackEvent = (name, data) => {
 }
 
 export const trackRuntimeError = (error) => {
-  trackEvent('RuntimeError', JSON.stringify(error))
+  trackEvent('RuntimeError', JSON.stringify(R.dissoc('jsonMessage', error)))
 }
