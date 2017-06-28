@@ -10,7 +10,7 @@ const parseResponseFor = (url) =>
       }
       return Bacon.fromPromise(result.text())
     }
-    if(result.headers.get('content-type').toLowerCase().startsWith('application/json')) {
+    if(result.headers && result.headers.get('content-type').toLowerCase().startsWith('application/json')) {
       return Bacon.fromPromise(result.json()).flatMap(errorJson => new Bacon.Error({
           url: url,
           jsonMessage: errorJson,
