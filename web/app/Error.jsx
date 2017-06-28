@@ -42,7 +42,11 @@ export function requiresLogin(e) {
   return e.httpStatus == 401 || e.httpStatus == 403
 }
 
-const errorText = (error) => error.text || (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
+const errorText = (error) => {
+  return error.text ||
+    (error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation') && error.jsonMessage[0].message) ||
+    (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
+}
 
 export const Error = ({error}) => {
   let showError = errorText(error) && !isTopLevel(error)

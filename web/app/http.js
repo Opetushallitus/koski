@@ -10,6 +10,16 @@ const parseResponseFor = (url) =>
       }
       return Bacon.fromPromise(result.text())
     }
+    if(result.headers.get('content-type').toLowerCase().startsWith('application/json')) {
+      return Bacon.fromPromise(result.json()).flatMap(errorJson => new Bacon.Error({
+          url: url,
+          jsonMessage: errorJson,
+          message: 'http error ' + result.status,
+          httpStatus: result.status
+        })
+      )
+    }
+
     return new Bacon.Error({
       url: url,
       message: 'http error ' + result.status,
