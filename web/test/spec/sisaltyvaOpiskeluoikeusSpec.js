@@ -40,11 +40,16 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
         page.oppijaHaku.searchAndSelect('280618-402H')
       )
 
-      it('toimii', function() {
+      it('Lukuoikeudet on', function() {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
           'Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto',
           'Omnian ammattiopisto,Autoalan perustutkinto'
         ])
+      })
+
+      it('Kirjoitusoikeuksia ei ole', function() {
+        expect(opinnot.opiskeluoikeusEditor(0).isEditable()).to.equal(true)
+        expect(opinnot.opiskeluoikeusEditor(1).isEditable()).to.equal(false)
       })
     })
   })

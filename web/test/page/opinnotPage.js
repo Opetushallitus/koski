@@ -63,8 +63,9 @@ function OpinnotPage() {
       }
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
-    opiskeluoikeusEditor: function() {
-      function elem() { return findSingle('.opiskeluoikeus-content') }
+    opiskeluoikeusEditor: function(index) {
+      index = index || 0
+      function elem() { return findSingle('.opiskeluoikeus-content:eq(' + index + ')') }
       return _.merge(
         Editor(elem),
         {
