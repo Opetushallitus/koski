@@ -57,8 +57,8 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
 
         it('Lukuoikeudet on', function() {
           expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
-            'Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto',
-            'Omnian ammattiopisto,Autoalan perustutkinto'
+            'Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto(2012-2016,valmistunut)',
+            'Omnian ammattiopisto,Autoalan perustutkinto(2017-,läsnä)'
           ])
         })
 

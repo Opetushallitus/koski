@@ -37,17 +37,17 @@ export const OpiskeluoikeusEditor = ({model}) => {
       <div className="opiskeluoikeus">
         <h3>
           <span className="otsikkotiedot">
-          <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
-          <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
-          </span>
-          { modelData(mdl, 'alkamispäivä')
-            ? <span className="inline-text">{'('}
-              <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
-              <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
+            <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
+            <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
+            { modelData(mdl, 'alkamispäivä')
+              ? <span className="inline-text">{'('}
+                <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
+                <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
                 </span>
-            : null
-          }
-          <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
+              : null
+            }
+            <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
+          </span>
           <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
           <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
