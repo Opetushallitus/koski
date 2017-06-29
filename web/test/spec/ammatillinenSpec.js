@@ -549,6 +549,7 @@ describe('Ammatillinen koulutus', function() {
           'Koulutus Autoalan perustutkinto 39/011/2014\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
+          'Suorituskieli suomi\n' +
           'Suoritustapa Näyttö\n' +
           'Suoritus : KESKEN'
         )
@@ -659,6 +660,7 @@ describe('Ammatillinen koulutus', function() {
             'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Alkamispäivä 1.9.2012\n' +
+            'Suorituskieli suomi\n' +
             'Suoritus : VALMIS Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
           )
         })
@@ -757,6 +759,7 @@ describe('Ammatillinen koulutus', function() {
           'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)\n' +
           'Laajuus 60 osp\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
+          'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
         )
       })

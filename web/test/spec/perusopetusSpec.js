@@ -28,6 +28,7 @@ describe('Perusopetus', function() {
             'Opetussuunnitelma Perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
+            'Suorituskieli suomi\n' +
             'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
@@ -210,6 +211,7 @@ describe('Perusopetus', function() {
             'Opetussuunnitelma Aikuisten perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
+            'Suorituskieli suomi\n' +
             'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
@@ -720,8 +722,8 @@ describe('Perusopetus', function() {
       describe('Suorituskielen lisäys', function() {
         before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit)
         describe('Lisättäessä', function() {
-          it('Näytetään ei valintaa', function() {
-            expect(editor.property('suorituskieli').getValue()).to.equal('Ei valintaa')
+          it('Näytetään oletus', function() {
+            expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
           })
         })
         describe('Lisäyksen jälkeen', function() {
@@ -1995,6 +1997,7 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Arvosana 9\n' +
           'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
     })
@@ -2065,6 +2068,7 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Perusopetuksen lisäopetus\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
@@ -2172,6 +2176,7 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Perusopetukseen valmistava opetus\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
