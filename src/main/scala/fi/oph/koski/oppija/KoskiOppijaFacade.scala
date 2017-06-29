@@ -54,6 +54,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
             case Some(Left(error)) => Left(error)
             case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluoikeusCreationResults.toList.map {
               case Right(r) => r
+              case Left(_) => throw new RuntimeException("Unreachable match arm: Left")
             }))
           }
         }

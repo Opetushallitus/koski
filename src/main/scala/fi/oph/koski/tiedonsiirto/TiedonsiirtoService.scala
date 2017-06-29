@@ -222,6 +222,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     case JString(x) => List(x)
     case JNothing => Nil
     case JNull => Nil
+    case _ => throw new RuntimeException("Unreachable match arm")
   }
 
   private def extractLahdejarjestelma(data: JValue): Option[String] = {

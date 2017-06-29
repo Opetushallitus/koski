@@ -78,8 +78,9 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     }
     val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
     val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
-      create(createUserInfo).left.flatMap { case HttpStatus(409, _) =>
-        oidFrom(findOppijaByHetu(hetu))
+      create(createUserInfo).left.flatMap {
+        case HttpStatus(409, _) => oidFrom(findOppijaByHetu(hetu))
+        case HttpStatus(_, _) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
       }
     }
     oid.right.map(oid => findOppijaByOid(oid).get)
