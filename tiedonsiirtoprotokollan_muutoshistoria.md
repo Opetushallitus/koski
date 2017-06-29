@@ -1,3 +1,6 @@
+## 29.6.2017
+- Muutettu järjestämismuoto listaksi järjestämismuotojaksoja
+
 ## 28.6.2017
 - Poistettu työssäoppimisjaksot tutkinnonosan tasolta
 

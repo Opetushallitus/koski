@@ -63,7 +63,11 @@ object AmmattitutkintoExample {
       AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = tutkinto,
         suoritustapa = Some(suoritustapaNäyttö),
-        järjestämismuoto = Some(järjestämismuotoOppisopimus),
+        järjestämismuodot = Some(List(
+          Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
+          Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
+          Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
+        )),
         suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
         tila = tilaValmis,
         alkamispäivä = None,
@@ -104,7 +108,7 @@ object AmmatillinenPerustutkintoExample {
       ),
       osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
       toinenOsaamisala = true,
-      järjestämismuoto = Some(järjestämismuotoOppilaitos),
+      järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
       suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
       tila = tilaValmis,
       alkamispäivä = None,
@@ -175,7 +179,7 @@ object AmmatillinenOldExamples {
         tutkintonimike = None,
         osaamisala = None,
         suoritustapa = Some(suoritustapaNäyttö),
-        järjestämismuoto = Some(järjestämismuotoOppisopimus),
+        järjestämismuodot = Some(List(Järjestämismuotojakso(date(2016, 9, 1), None, järjestämismuotoOppisopimus))),
         suorituskieli = None,
         tila = tilaKesken,
         alkamispäivä = Some(date(2016, 9, 1)),
@@ -215,7 +219,7 @@ object AmmatillinenOldExamples {
     tutkinto = AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = Some(suoritustapaNäyttö),
-      järjestämismuoto = None,
+      järjestämismuodot = None,
       tila = tilaKesken,
       toimipiste = stadinToimipiste
     ),
@@ -247,7 +251,7 @@ object AmmatillinenOldExamples {
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
-          järjestämismuoto = Some(järjestämismuotoOppilaitos),
+          järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
           tila = tilaKesken,
           toimipiste = stadinToimipiste,
           suorituskieli = suomenKieli,
@@ -310,7 +314,7 @@ object AmmatillinenOldExamples {
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaNäyttö),
-          järjestämismuoto = Some(järjestämismuotoOppilaitos),
+          järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
           suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamispäivä = None,

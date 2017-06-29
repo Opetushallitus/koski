@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelTitle} from './EditorModel.js'
+import {modelData, modelTitle, modelLookup} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
@@ -49,6 +49,27 @@ const TutkinnonOsanLisätietoEditor = React.createClass({
   }
 })
 
+export const JärjestämismuotojaksoEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return (
+        <div className="jarjestamismuotojakso">
+          <PäivämääräväliEditor model={model}/>{', '} { modelTitle(model, 'järjestämismuoto.tunniste')}
+          <PropertiesEditor
+              model = {modelLookup(model, 'järjestämismuoto')}
+              propertyFilter={p => !['tunniste'].includes(p.key)}
+          />
+          <PropertiesEditor
+              model = {model}
+              propertyFilter={p => !['alku', 'loppu', 'järjestämismuoto'].includes(p.key)}
+          />
+        </div>
+    )
+  }
+})
+JärjestämismuotojaksoEditor.readOnly = true
+JärjestämismuotojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
+
 export const TyössäoppimisjaksoEditor = React.createClass({
   render() {
     let {model} = this.props
@@ -83,6 +104,7 @@ export const editorMapping = {
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
+  'jarjestamismuotojakso': JärjestämismuotojaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
   'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor

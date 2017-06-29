@@ -335,7 +335,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     "Oppisopimus" - {
       def toteutusOppisopimuksella(yTunnus: String): AmmatillisenTutkinnonSuoritus = {
-        autoalanPerustutkinnonSuoritus().copy(järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))
+        autoalanPerustutkinnonSuoritus().copy(järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 1, 1), None, OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))))
       }
 
       "Kun ok" - {

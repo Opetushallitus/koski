@@ -110,9 +110,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   val päättymispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Koulutuksen järjestämismuoto")
-  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  järjestämismuoto: Option[Järjestämismuoto] = None,
+  @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Description("Valmistavan koulutuksen osat")
   @Title("Koulutuksen osat")
@@ -151,9 +150,8 @@ case class AmmatillisenTutkinnonSuoritus(
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,
-  @Description("Koulutuksen järjestämismuoto")
-  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  järjestämismuoto: Option[Järjestämismuoto] = None,
+  @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
@@ -179,9 +177,8 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Koulutuksen järjestämismuoto")
-  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  järjestämismuoto: Option[Järjestämismuoto] = None,
+  @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
@@ -529,10 +526,17 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
-  @Flatten
   @Discriminator
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
+
+case class Järjestämismuotojakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @Description("Koulutuksen järjestämismuoto")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+  järjestämismuoto: Järjestämismuoto
+) extends Jakso
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")

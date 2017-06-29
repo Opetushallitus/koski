@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "oid" : "1.2.246.562.24.00000000001"
   },
@@ -97,16 +96,19 @@
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
       },
-      "järjestämismuoto" : {
-        "tunniste" : {
-          "koodiarvo" : "10",
-          "nimi" : {
-            "fi" : "Oppilaitosmuotoinen"
-          },
-          "koodistoUri" : "jarjestamismuoto",
-          "koodistoVersio" : 1
+      "järjestämismuodot" : [ {
+        "alku" : "2012-09-01",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
+            "nimi" : {
+              "fi" : "Oppilaitosmuotoinen"
+            },
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          }
         }
-      },
+      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -213,6 +215,7 @@
       "oikeusMaksuttomaanAsuntolapaikkaan" : false,
       "vaikeastiVammainen" : false,
       "vammainenJaAvustaja" : false,
+      "henkilöstökoulutus" : false,
       "vankilaopetuksessa" : false
     },
     "tyyppi" : {

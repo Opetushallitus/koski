@@ -233,24 +233,51 @@
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
       },
-      "järjestämismuoto" : {
-        "tunniste" : {
-          "koodiarvo" : "20",
-          "nimi" : {
-            "fi" : "Oppisopimusmuotoinen"
-          },
-          "koodistoUri" : "jarjestamismuoto",
-          "koodistoVersio" : 1
-        },
-        "oppisopimus" : {
-          "työnantaja" : {
+      "järjestämismuodot" : [ {
+        "alku" : "2014-08-01",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
             "nimi" : {
-              "fi" : "Autokorjaamo Oy"
+              "fi" : "Oppilaitosmuotoinen"
             },
-            "yTunnus" : "1234567-8"
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
           }
         }
-      },
+      }, {
+        "alku" : "2015-05-31",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "20",
+            "nimi" : {
+              "fi" : "Oppisopimusmuotoinen"
+            },
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          },
+          "oppisopimus" : {
+            "työnantaja" : {
+              "nimi" : {
+                "fi" : "Autokorjaamo Oy"
+              },
+              "yTunnus" : "1234567-8"
+            }
+          }
+        }
+      }, {
+        "alku" : "2016-03-31",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
+            "nimi" : {
+              "fi" : "Oppilaitosmuotoinen"
+            },
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          }
+        }
+      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {

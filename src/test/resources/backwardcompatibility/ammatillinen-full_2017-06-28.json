@@ -150,16 +150,19 @@
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
       },
-      "järjestämismuoto" : {
-        "tunniste" : {
-          "koodiarvo" : "10",
-          "nimi" : {
-            "fi" : "Oppilaitosmuotoinen"
-          },
-          "koodistoUri" : "jarjestamismuoto",
-          "koodistoVersio" : 1
+      "järjestämismuodot" : [ {
+        "alku" : "2012-09-01",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
+            "nimi" : {
+              "fi" : "Oppilaitosmuotoinen"
+            },
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          }
         }
-      },
+      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {

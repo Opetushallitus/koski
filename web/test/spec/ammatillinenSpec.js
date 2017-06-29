@@ -394,7 +394,7 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Suoritustapa Opetussuunnitelman mukainen\n' +
-            'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Järjestämismuodot 1.9.2013 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
             'Työssäoppimispaikka Sortti-asema\n' +
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
@@ -623,7 +623,7 @@ describe('Ammatillinen koulutus', function() {
           'Toinen osaamisala kyllä\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
-          'Järjestämismuoto Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+          'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
           'Suoritus : VALMIS'
         )
@@ -700,7 +700,11 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Suoritustapa Näyttö\n' +
-            'Järjestämismuoto Koulutuksen järjestäminen oppisopimuskoulutuksena\nYritys Autokorjaamo Oy\nY-tunnus 1234567-8\n' +
+            'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
+            'Oppisopimus Yritys Autokorjaamo Oy\n' +
+            'Y-tunnus 1234567-8\n' +
+            '31.3.2016 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
           )
         })
