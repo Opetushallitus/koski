@@ -1264,7 +1264,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Kun syötetään validit tiedot', function() {
-        before(addOppija.enterValidDataPerusopetus())
+        before(addOppija.enterValidDataPerusopetus({suorituskieli: 'ruotsi'}))
 
         describe('Käyttöliittymän tila', function() {
           it('Lisää-nappi on enabloitu', function() {
@@ -1281,6 +1281,7 @@ describe('Perusopetus', function() {
             it('Lisätty opiskeluoikeus näytetään', function() {
               expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
               expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+              expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
             })
 
@@ -1388,6 +1389,13 @@ describe('Perusopetus', function() {
           )
 
           it('lisätty oppija näytetään', function() {})
+
+          it('lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
+            expect(opinnot.getOppilaitos()).to.equal('Helsingin medialukio')
+            expect(opinnot.getSuorituskieli()).to.equal('suomi')
+            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
+          })
         })
       })
     })
@@ -1399,6 +1407,7 @@ describe('Perusopetus', function() {
       it('Näytetään oikein', function() {
         expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
         expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
+        expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
     })
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
@@ -1425,10 +1434,12 @@ describe('Perusopetus', function() {
         describe('Kun valitaan kieli ja lisätään oppiaine', function() {
           before(
             addOppija.selectKieli('englanti'),
+            wait.forMilliseconds(1000),
             addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'A1-kieli')
           )
 
           it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
+            expect(opinnot.getSuorituskieli()).to.equal('suomi')
             expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
           })
 
@@ -2158,6 +2169,7 @@ describe('Perusopetus', function() {
         expect(opinnot.getTutkinto()).to.equal('Perusopetuksen lisäopetus')
         expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
         expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('105/011/2014')
+        expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
     })
   })
@@ -2252,12 +2264,13 @@ describe('Perusopetus', function() {
     })
     describe('Opiskeluoikeuden lisääminen', function() {
       before(prepareForNewOppija('kalle', '230872-7258'))
-      before(addOppija.enterValidDataPerusopetus(), addOppija.selectOpiskeluoikeudenTyyppi('Perusopetukseen valmistava opetus'))
+      before(addOppija.enterValidDataPerusopetus({suorituskieli: 'englanti'}), addOppija.selectOpiskeluoikeudenTyyppi('Perusopetukseen valmistava opetus'))
       before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Perusopetukseen valmistava opetus'))
       it('Lisätty opiskeluoikeus näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal('Perusopetukseen valmistava opetus')
         expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
         expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('57/011/2015')
+        expect(opinnot.getSuorituskieli()).to.equal('englanti')
       })
     })
   })

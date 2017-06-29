@@ -12,6 +12,11 @@ function OpinnotPage() {
       index = typeof index !== 'undefined' ? index : 0
       return S(S('.opiskeluoikeus > h3 .otsikkotiedot .oppilaitos')[index]).text().slice(0, -1)
     },
+    getSuorituskieli: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      var nth = S('.opiskeluoikeus .suoritus .property.suorituskieli .value')[index]
+      return S(nth).text()
+    },
     valitseSuoritus: function(opiskeluoikeusIndex, nimi) {
       return function() {
         var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')

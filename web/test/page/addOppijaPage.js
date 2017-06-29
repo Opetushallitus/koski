@@ -38,7 +38,13 @@ function AddOppijaPage() {
     },
     enterData: function(params) {
       return function() {
-        return api.enterHenkilötiedot(params)().then(api.selectOppilaitos(params.oppilaitos))
+        return api.enterHenkilötiedot(params)()
+          .then(api.selectOppilaitos(params.oppilaitos))
+          .then(function() {
+            if (params.suorituskieli) {
+              api.selectSuorituskieli(params.suorituskieli)()
+            }
+          })
       }
     },
     enterTutkinto: function(name) {
@@ -117,6 +123,9 @@ function AddOppijaPage() {
     },
     selectOppiaine: function(oppiaine) {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
+    },
+    selectSuorituskieli: function(kieli) {
+      return selectFromDropdown('.suorituskieli .dropdown', kieli)
     },
     selectKieli: function(kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)

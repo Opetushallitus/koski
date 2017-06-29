@@ -44,7 +44,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Kun lisätään oppija', function() {
-        before(addOppija.enterValidDataAmmatillinen())
+        before(addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}))
         before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'))
 
         it('lisätty oppija näytetään', function() {})
@@ -52,6 +52,7 @@ describe('Ammatillinen koulutus', function() {
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
         })
       })
     })
@@ -76,6 +77,7 @@ describe('Ammatillinen koulutus', function() {
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getSuorituskieli()).to.equal('suomi')
         })
       })
     })
@@ -97,6 +99,7 @@ describe('Ammatillinen koulutus', function() {
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getSuorituskieli()).to.equal('suomi')
         })
       })
     })
