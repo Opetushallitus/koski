@@ -31,8 +31,6 @@
 @import "highlight";
 @import "localization";
 
-@sidebar-width: 300px;
-@topbar-height: 121px;
 @page-border-width: ~"calc((100vw - 1320px) / 2)";
 @oppija-haku-width: ~"calc(300px + (100vw - 1320px) / 2)";
 
@@ -43,65 +41,6 @@ body {
 
 * {
   box-sizing: border-box;
-}
-
-#topbar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: @z-index-topbar;
-  height: @topbar-height;
-  padding-left: @page-border-width;
-  padding-right: @page-border-width;
-  min-width: 1320px;
-}
-
-#content[data-inraamit='true'] #topbar {
-  background: #1E516D;
-  position: relative;
-  color: white;
-  text-align: center;
-  height: 48px;
-  font-size: 16px;
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    li {
-      display: flex;
-      justify-content: center;
-      &:not(:last-child):after {
-        content: '';
-        margin: 10px 25px 0 25px;
-        width: 2px;
-        height: 38px;
-        background-color: @color-topbar-separator;
-        display: inline-block;
-      }
-    }
-  }
-
-  .selected {
-    &:after {
-      font-family: FontAwesome;
-      font-size: 8px;
-      position: relative;
-      content: '\F078';
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: -8px;
-      bottom: 7px;
-    }
-  }
-  a {
-    line-height: 48px;
-    color: white;
-  }
 }
 
 .login {

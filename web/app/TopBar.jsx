@@ -7,12 +7,12 @@ import {naviLink} from './Tiedonsiirrot.jsx'
 export const TopBar = ({user, saved, titleKey, inRaamit, location}) => {
   return inRaamit ?
     <RaamitTopBar location={location}/> :
-    <LocalTopBar user={user} saved={saved} titleKey={titleKey}/>
+    <LocalTopBar location={location} user={user} saved={saved} titleKey={titleKey}/>
 }
 
 const RaamitTopBar = ({location}) => {
   return (
-    <header id="topbar">
+    <header id="topbar" className="inraamit topbarnav">
       <ul>
         <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
         <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
@@ -22,9 +22,9 @@ const RaamitTopBar = ({location}) => {
   )
 }
 
-const LocalTopBar = ({user, saved, titleKey}) => {
+const LocalTopBar = ({location, user, saved, titleKey}) => {
   return (
-    <header id='topbar' className={saved ? 'saved' : ''}>
+    <header id='topbar' className={'local' + (saved ? 'saved' : '')}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
         <Link href="/koski/"><Text name="Koski"/></Link>
@@ -32,6 +32,14 @@ const LocalTopBar = ({user, saved, titleKey}) => {
       </h1>
       <span className="save-info"><Text name="Kaikki muutokset tallennettu." edit="false"/></span>
       <UserInfo user={user}/>
+      {(user !== null) &&
+        <div className='topbarnav'>
+          <ul>
+            <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
+            <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
+          </ul>
+        </div>
+      }
     </header>
   )
 }
