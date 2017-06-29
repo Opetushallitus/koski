@@ -185,7 +185,7 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
   def buildModelForObject(o: AnyRef, metadata: List[Metadata]) = {
     o match {
       case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath), propsFromMetadata(metadata))
-      case k: A => buildModelForObject(Some(k), metadata)
+      case k: A @unchecked => buildModelForObject(Some(k), metadata)
     }
   }
 }

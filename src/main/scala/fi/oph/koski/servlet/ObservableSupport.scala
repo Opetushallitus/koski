@@ -10,7 +10,7 @@ import rx.lang.scala.Observable
 trait ObservableSupport extends ApiServlet {
   override protected def renderResponse(actionResult: Any): Unit = {
     actionResult match {
-      case in: Observable[AnyRef] => streamResponse(in)
+      case in: Observable[AnyRef @unchecked] => streamResponse(in)
       case a => super.renderResponse(a)
     }
   }

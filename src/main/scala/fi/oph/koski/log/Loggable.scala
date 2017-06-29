@@ -19,7 +19,7 @@ object Loggable {
         case s: String => "\"" + s + "\""
         case s: java.lang.Boolean => s.toString
         case n: Number => n.toString
-        case x: Option[AnyRef] => x.map(y => describe(y)).toString
+        case x: Option[AnyRef @unchecked] => x.map(y => describe(y)).toString
         case x: Loggable => x.logString
         case _ => "_"
       }
