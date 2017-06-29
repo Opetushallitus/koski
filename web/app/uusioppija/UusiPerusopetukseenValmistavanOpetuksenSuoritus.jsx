@@ -4,9 +4,9 @@ import Bacon from 'baconjs'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
 
-export default ({suoritusAtom, oppilaitosAtom}) => {
+export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const perusteAtom = Atom()
-  const makeSuoritus = (oppilaitos, peruste) => {
+  const makeSuoritus = (oppilaitos, peruste, suorituskieli) => {
     if (oppilaitos) {
       return {
         koulutusmoduuli: {
@@ -19,11 +19,11 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
         toimipiste: oppilaitos,
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetukseenvalmistavaopetus'},
-        suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' } // TODO: get from GUI
+        suorituskieli : suorituskieli
       }
     }
   }
-  let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, makeSuoritus)
+  let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
   suoritusP.filter('.koulutusmoduuli.perusteenDiaarinumero').onValue(suoritus => suoritusAtom.set(suoritus))
   return <Peruste {...{suoritusP, perusteAtom}} />
 }

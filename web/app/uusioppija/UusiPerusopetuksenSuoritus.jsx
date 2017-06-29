@@ -14,7 +14,7 @@ import {koodistoValues, koodiarvoMatch} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
 
-export default ({suoritusAtom, oppilaitosAtom}) => {
+export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const oppimääräAtom = Atom()
   const oppiaineenSuoritusAtom = Atom()
   const opetussuunnitelmaAtom = Atom()
@@ -33,19 +33,19 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
 
   const oppiaineetP = Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101`).map(modelData)
 
-  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus, oppiaineet) => {
-    if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {
-      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste, oppiaineet)
-    } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
+  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
+    if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
+      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste, oppiaineet, suorituskieli)
+    } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus && suorituskieli) {
       var suoritusTapaJaToimipiste = {
         toimipiste: oppilaitos,
-        suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' } // TODO: get from GUI
+        suorituskieli : suorituskieli
       }
       return R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)
     }
   }
 
-  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, suorituskieliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
@@ -70,9 +70,9 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
-let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste, oppiaineet) => {
+let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste, oppiaineet, suorituskieli) => {
   return {
-    suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' }, // TODO: get from GUI
+    suorituskieli : suorituskieli,
     koulutusmoduuli: {
       tunniste: {
         koodiarvo: '201101',

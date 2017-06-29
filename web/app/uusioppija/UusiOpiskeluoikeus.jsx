@@ -13,10 +13,12 @@ import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaope
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
+import {sortLanguages} from '../sorting'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
   const oppilaitosAtom = Atom()
+  const suorituskieliAtom = Atom()
   const tyyppiAtom = Atom()
   const tilaAtom = Atom()
   const suoritusAtom = Atom()
@@ -27,6 +29,9 @@ export default ({opiskeluoikeusAtom}) => {
     .toProperty()
 
   opiskeluoikeustyypitP.onValue(tyypit => tyyppiAtom.set(tyypit[0]))
+
+  const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
+  suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
 
   const opiskeluoikeudenTilatP = koodistoValues('koskiopiskeluoikeudentila')
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
@@ -39,12 +44,13 @@ export default ({opiskeluoikeusAtom}) => {
       {
         oppilaitosAtom.map(o => !!o).and(<OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
       }
+      <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />
       {
         tyyppiAtom.map('.koodiarvo').map(tyyppi => {
-          if (tyyppi == 'perusopetus') return <UusiPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom}/>
-          if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom}/>
-          if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom}/>
-          if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom}/>
+          if (tyyppi == 'perusopetus') return <UusiPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         })
       }
       <Aloituspäivä dateAtom={dateAtom} />
@@ -71,6 +77,7 @@ const Oppilaitos = ({oppilaitosAtom}) => {
   </label>)
 }
 
+const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title="Suorituskieli" atom={suorituskieliAtom} optionsP={suorituskieletP}/>
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
 
 const Aloituspäivä = ({dateAtom}) => {

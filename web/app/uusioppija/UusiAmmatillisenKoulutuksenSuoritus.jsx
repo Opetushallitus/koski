@@ -5,11 +5,11 @@ import Autocomplete from '../Autocomplete.jsx'
 import Http from '../http'
 import Text from '../Text.jsx'
 
-export default ({suoritusAtom, oppilaitosAtom}) => {
+export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const tutkintoAtom = Atom()
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
-  const makeSuoritus = (oppilaitos, tutkinto) => {
+  const makeSuoritus = (oppilaitos, tutkinto, suorituskieli) => {
     if (tutkinto && oppilaitos) {
       return {
         koulutusmoduuli: {
@@ -22,11 +22,11 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
         toimipiste : oppilaitos,
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'},
-        suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' } // TODO: get from GUI
+        suorituskieli : suorituskieli
       }
     }
   }
-  Bacon.combineWith(oppilaitosAtom, tutkintoAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
+  Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
 }
 
