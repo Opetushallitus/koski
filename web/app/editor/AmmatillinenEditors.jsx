@@ -68,9 +68,11 @@ TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateMo
 
 const SisältäväOpiskeluoikeusEditor = ({model}) => {
   if (model.context.edit) {
-    return <PropertiesEditor model={model} getValueEditor={(p, getDefault) => {
-      return p.key == 'oppilaitos' ? <OrganisaatioEditor model={p.model} showAll={true}/> : getDefault()
-    }}/>
+    return (
+        <PropertiesEditor model={model} getValueEditor={(p, getDefault) => {
+          return p.key === 'oppilaitos' ? <OrganisaatioEditor model={p.model} showAll={true}/> : getDefault()
+        }}/>
+    )
   }
   return <span><span className="id"><Editor model={model} path="id"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
 }

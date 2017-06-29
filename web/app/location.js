@@ -46,7 +46,7 @@ export const parsePath = (path) => {
 }
 
 export function parseLocation(location) {
-  if (typeof location == "string") {
+  if (typeof location == 'string') {
     return parsePath(location)
   }
   let hashStr = location.hash ? location.hash : ''
