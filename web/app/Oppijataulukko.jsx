@@ -125,9 +125,7 @@ export const Oppijataulukko = React.createClass({
                       ignoreDiacritics={true}
                       diacriticsBlacklist={'åäöÅÄÖ'}
                       search={params['nimihaku'] || ''}
-                    >
-                      { opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}
-                    </Highlight>
+                    >{opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</Highlight>
                   </Link>
                 </td>
                 <td className="tyyppi">{t(opiskeluoikeus.tyyppi.nimi)}</td>
