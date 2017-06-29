@@ -44,12 +44,15 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
     } else {
       val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(foundFromKoski).map(p => Henkilötiedot(p.id, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
       application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {
-        case Right(updatedCount) => updatedCount
+        case Right(updatedCount) => {
+          updatedCount
           logger.info(s"Updated ${foundFromKoski.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)
-        case Left(HttpStatus(_, errors)) =>
+        }
+        case Left(HttpStatus(_, errors)) => {
           logger.error(s"Couldn't update data to elasticsearch ${errors.mkString}")
           HenkilöUpdateContext(oppijatByOid(foundFromKoski.head).modified - 1000)
+        }
       }
     }
   }
