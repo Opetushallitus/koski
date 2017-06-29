@@ -59,7 +59,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
-    oppijat.getOppijat.filter {_.oid == id}.headOption
+    oppijat.getOppijat.find {_.oid == id}
   }
 
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
