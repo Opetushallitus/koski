@@ -34,6 +34,7 @@ object EditorModelBuilder {
     case t: BooleanSchema => BooleanModelBuilder(t)
     case t: DateSchema => DateModelBuilder(t)
     case t: StringSchema => StringModelBuilder(t)
+    case _ => throw new RuntimeException("Unreachable match arm: builder must be called with a proper schema")
   }).asInstanceOf[EditorModelBuilder[Any]]
 
   def modelBuilderForClass(t: SchemaWithClassName)(implicit context: ModelBuilderContext): ModelBuilderForClass = t match {

@@ -62,6 +62,7 @@ class TodistusServlet(val application: KoskiApplication) extends HtmlServlet wit
           case _ =>
             Left(KoskiErrorCategory.notFound.todistustaEiLöydy())
         }
+      case _ => throw new RuntimeException("Unreachable match arm: OpiskeluoikeusFinder must return exisiting Oppija on success")
     })
   }
 }
