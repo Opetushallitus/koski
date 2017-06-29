@@ -21,7 +21,8 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
         },
         toimipiste : oppilaitos,
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'}
+        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'},
+        suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' } // TODO: get from GUI
       }
     }
   }

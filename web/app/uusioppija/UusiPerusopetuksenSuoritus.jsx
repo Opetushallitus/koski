@@ -38,7 +38,8 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
       return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste, oppiaineet)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
       var suoritusTapaJaToimipiste = {
-        toimipiste: oppilaitos
+        toimipiste: oppilaitos,
+        suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' } // TODO: get from GUI
       }
       return R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)
     }
@@ -71,6 +72,7 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
 
 let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste, oppiaineet) => {
   return {
+    suorituskieli : { koodiarvo : 'FI', nimi : { fi : 'suomi' }, koodistoUri : 'kieli' }, // TODO: get from GUI
     koulutusmoduuli: {
       tunniste: {
         koodiarvo: '201101',
