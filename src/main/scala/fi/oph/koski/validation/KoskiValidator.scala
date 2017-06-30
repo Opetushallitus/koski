@@ -116,8 +116,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
-    case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), id)) =>
+  private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
+    case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), id)) if accessType == AccessType.write =>
       opiskeluoikeudet.findById(id)(KoskiSession.systemUser) match {
         case Some(sisältäväOpiskeluoikeus) if (sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid) =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
@@ -144,7 +144,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         case _ =>
           HttpStatus.ok
       }
-    case None => HttpStatus.ok
+    case _ => HttpStatus.ok
   }
 
   private def validateAccess(org: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
