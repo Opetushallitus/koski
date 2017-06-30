@@ -3,7 +3,7 @@ package fi.oph.koski.localization
 import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Representative
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.{Formats, JObject, JValue, Serializer}
 import org.json4s.reflect.TypeInfo
 
@@ -29,16 +29,19 @@ trait Localized extends Localizable {
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")
+@Title("Suomeksi")
 case class Finnish(@Representative fi: String, sv: Option[String] = None, en: Option[String] = None) extends LocalizedString {
   def valueList = (("fi" -> fi) :: sv.toList.map(("sv", _))) ++ en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana ruotsi")
+@Title("Ruotsiksi")
 case class Swedish(@Representative sv: String, en: Option[String] = None) extends LocalizedString {
   def valueList = ("sv" -> sv) :: en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana englanti")
+@Title("Englanniksi")
 case class English(@Representative en: String) extends LocalizedString {
   def valueList = List(("en" -> en))
 }

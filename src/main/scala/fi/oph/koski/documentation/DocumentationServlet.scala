@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{KoodistoKoodiMetadata, KoodistoPalvelu}
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.{KoskiSchema, Oppija, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.ApiServlet
 
 class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
@@ -16,7 +16,10 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
   }
 
   get("/koski-oppija-schema.html") {
-    KoskiSchemaDocumentHtml.html
+    params.get("entity") match {
+      case None => KoskiSchemaDocumentHtml.html(shallowEntities = List(classOf[Oppija]))
+      case Some(simpleName) => KoskiSchemaDocumentHtml.html(focusEntitySimplename = Some(simpleName), shallowEntities = List(classOf[OsaamisenTunnustaminen]))
+    }
   }
 
   get("/examples/:name.json") {

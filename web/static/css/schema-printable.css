@@ -15,6 +15,11 @@ table, th, td {
     text-align: left;
 }
 
+.entity > .description {
+    display: block;
+    margin-bottom: 20px;
+}
+
 th, td {
     position: relative;
     vertical-align: top;
@@ -27,4 +32,24 @@ td {
 th {
     background-color: #f5f5f5;
     padding: 9px 10px;
+}
+
+td.nimi, th.nimi {
+    width: 15%;
+}
+
+td.lukumäärä, th.lukumäärä {
+    width: 5%;
+}
+
+td.tyyppi, th.tyyppi {
+    width: 30%;
+}
+
+.alternatives.localizedstring a {
+    margin-right: 10px;
+}
+
+.alternatives:not(.localizedstring) a {
+    display: block;
 }
