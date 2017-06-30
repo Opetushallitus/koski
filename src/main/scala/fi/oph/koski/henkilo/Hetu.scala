@@ -9,7 +9,7 @@ import scala.util.matching.Regex
 
 object Hetu {
   val checkChars = List('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y')
-  val hetuRegex: Regex = "^(0[1-9]|1[0-9]|2[0-9]|3[0-1])(0[1-9]|1[0-2])([0-9][0-9])(A|-|\\+)([0-9]{3})([0-9A-Y])$".r
+  val hetuRegex: Regex = "^([012][0-9]|3[01])(0[1-9]|1[0-2])([0-9]{2})(A|-|\\+)([0-9]{3})([0-9A-FHJ-NPR-Y])$".r
 
   def validFormat(hetu: String): Either[HttpStatus, String] with Product with Serializable = {
     hetuRegex.findFirstIn(hetu) match {
