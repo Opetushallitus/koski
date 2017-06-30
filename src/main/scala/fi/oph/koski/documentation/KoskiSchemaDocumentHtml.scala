@@ -20,13 +20,15 @@ object KoskiSchemaDocumentHtml {
 
 
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
+    val title = "Koski-tietomalli" + focusSchema.toList.map(s => " - " + s.title).mkString
 
     <html>
       <head>
+        <title>{title}</title>
         <link type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
       </head>
       <body>
-        <h1>Koski-tietomalli{focusSchema.toList.map(s => " - " + s.title)}</h1>
+        <h1>{title}</h1>
         {
           schemaBacklog.map{case (s, breadcrumbs) =>
             classHtml(s, breadcrumbs, backlog.map(_._1))
