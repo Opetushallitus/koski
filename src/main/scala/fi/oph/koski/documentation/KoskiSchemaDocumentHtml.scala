@@ -1,51 +1,64 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 
-import scala.collection.mutable.MutableList
+import scala.collection.mutable.ArrayBuffer
 import scala.xml.Elem
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
   def html(shallowEntities: List[Class[_]] = Nil, focusEntitySimplename: Option[String] = None) = {
+    val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntitySimplename).toList
+      .sortBy(-_._2.toList.length) // Nones last
+    val schemaBacklog = backlog.map {
+      case (name, breadcrumbs) => (mainSchema.getSchema(name).get.asInstanceOf[ClassSchema], breadcrumbs)
+    }
+    val focusSchema = focusEntitySimplename.flatMap(name => schemaBacklog.map(_._1).find(s => s.simpleName == name))
+
     <html>
       <head>
         <link type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
       </head>
       <body>
-        <h1>Koski-tietomalli</h1>
-        { schemaHtml(mainSchema, shallowEntities, focusEntitySimplename) }
+        <h1>Koski-tietomalli{focusSchema.toList.map(s => " - " + s.title)}</h1>
+        {
+          schemaBacklog.map{case (s, breadcrumbs) =>
+            classHtml(s, breadcrumbs, backlog.map(_._1))
+          }
+        }
       </body>
     </html>
   }
 
-  def schemaHtml(schema: ClassSchema, shallowEntities: List[Class[_]], focusEntitySimplename: Option[String]) = {
-    val backlog = buildBacklog(mainSchema, new MutableList[String], shallowEntities, focusEntitySimplename).toList
-    backlog.map(name => mainSchema.getSchema(name).get.asInstanceOf[ClassSchema]).map(s => classHtml(s, backlog))
-  }
-
-  private def buildBacklog(x: ClassSchema, backlog: MutableList[String], shallowEntities: List[Class[_]], focusEntitySimplename: Option[String]): MutableList[String] = {
+  private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], backlog: ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities: List[Class[_]], focusEntitySimplename: Option[String]): ArrayBuffer[(String, Option[List[Breadcrumb]])] = {
     val name = x.fullClassName
-    if (!backlog.contains(name)) {
-      backlog += name
+    val index = backlog.indexWhere(_._1 == name)
+    if (index < 0) {
+      backlog +=((name, breadcrumbs))
       if (!shallowEntities.map(_.getName).contains(name)) {
-        val moreSchemas: Seq[ClassSchema] = x.properties.flatMap { p =>
+        val moreSchemas: Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
           val (itemSchema, _) = cardinalityAndItemSchema(p.schema, p.metadata)
           val resolvedItemSchema = resolveSchema(itemSchema)
           classSchemasIn(resolvedItemSchema)
-        }.filter(s => focusEntitySimplename.isEmpty || focusEntitySimplename.get == s.simpleName)
+            .filter(s => focusEntitySimplename.isEmpty || focusEntitySimplename.get == s.simpleName)
+            .map(s => (s, Breadcrumb(x, p)))
+        }
 
-        moreSchemas.foreach { s =>
-          buildBacklog(s, backlog, shallowEntities, None)
+        moreSchemas.foreach { case (s, breadcrumb) =>
+          buildBacklog(s, breadcrumbs.map(_ ++ List(breadcrumb)), backlog, shallowEntities, None)
         }
       }
+    } else if (backlog(index)._2.nonEmpty) {
+      // remove breadcrumb from this one, because it's contained in multiple contexts
+      backlog += backlog.remove(index).copy(_2 = None)
     }
     backlog
   }
+
+  case class Breadcrumb(schema: ClassSchema, property: Property)
 
   private def classSchemasIn(schema: Schema): List[ClassSchema] = schema match {
     case s: ClassSchema => List(s)
@@ -57,8 +70,8 @@ object KoskiSchemaDocumentHtml {
   }
 
 
-  def classHtml(schema: ClassSchema, includedEntities: List[String]) = <div class="entity">
-    <h3 id={schema.simpleName}>{schema.title}</h3>
+  def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String]) = <div class="entity">
+    <h3 id={schema.simpleName}>{breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + bc.schema.simpleName}>{bc.schema.title}</a> &gt; </span>)}{schema.title}</h3>
     {descriptionHtml(schema)}
     <table>
       <thead>
@@ -75,7 +88,7 @@ object KoskiSchemaDocumentHtml {
             val (itemSchema, cardinality) = cardinalityAndItemSchema(p.schema, p.metadata)
             val resolvedItemSchema = resolveSchema(itemSchema)
             <tr>
-              <td class="nimi">{p.title}</td>
+              <td class="nimi">{p.key}</td>
               <td class="lukumäärä">{cardinality}</td>
               <td class="tyyppi">
                 {schemaTypeHtml(resolvedItemSchema, includedEntities)}
