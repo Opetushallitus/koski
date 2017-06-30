@@ -108,6 +108,7 @@ trait Läsnäolojakso extends Alkupäivällinen {
   def tila: Koodistokoodiviite
 }
 
+@Title("Lähdejärjestelmä-ID")
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   id: Option[String],

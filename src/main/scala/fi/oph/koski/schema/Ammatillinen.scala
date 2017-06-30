@@ -282,6 +282,7 @@ case class Työssäoppimisjakso(
   laajuus: LaajuusOsaamispisteissä
 ) extends Jakso
 
+@Title("Ammatillinen tutkintokoulutus")
 @Description("Ammatillisen tutkinnon tunnistetiedot")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,

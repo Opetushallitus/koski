@@ -116,7 +116,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
-  liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiitteet]] = None
+  liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
@@ -144,8 +144,8 @@ case class PerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
-@Description("Vuosiluokan todistuksen liitteet")
-case class PerusopetuksenVuosiluokanSuorituksenLiitteet(
+@Description("Vuosiluokan todistuksen liitetieto")
+case class PerusopetuksenVuosiluokanSuorituksenLiite(
   @Description("Liitetiedon tyyppi kooditettuna")
   @KoodistoUri("perusopetuksentodistuksenliitetieto")
   @KoodistoKoodiarvo("kayttaytyminen")
@@ -270,6 +270,7 @@ case class Perusopetus(
   override def isTutkinto = true
 }
 
+@Title("Perusopetuksen luokka-aste")
 @Description("Perusopetuksen luokka-asteen (1-9) tunnistetiedot")
 case class PerusopetuksenLuokkaAste(
  @Description("Luokka-asteen tunniste (1-9)")
@@ -298,6 +299,7 @@ trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaa
 
 trait PerusopetuksenKoodistostaLöytyväOppiaine extends PerusopetuksenOppiaine with YleissivistavaOppiaine
 
+@Title("Paikallinen valinnainen oppiaine")
 case class PerusopetuksenPaikallinenValinnainenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
@@ -307,6 +309,7 @@ case class PerusopetuksenPaikallinenValinnainenOppiaine(
   def pakollinen: Boolean = false
 }
 
+@Title("Muu oppiaine")
 case class MuuPeruskoulunOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
@@ -332,8 +335,9 @@ case class MuuPeruskoulunOppiaine(
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PerusopetuksenKoodistostaLöytyväOppiaine
 
+@Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
-case class PeruskoulunAidinkieliJaKirjallisuus(
+case class PeruskoulunÄidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
   @Description("Mikä kieli on kyseessä")
@@ -345,6 +349,7 @@ case class PeruskoulunAidinkieliJaKirjallisuus(
 ) extends PerusopetuksenKoodistostaLöytyväOppiaine
 
 
+@Title("Vieras tai toinen kotimainen kieli")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class PeruskoulunVierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("A1")
@@ -392,7 +397,7 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
       toimintaAlueidenSuoritukset
     } else {
       List(
-        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
         PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
         PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
         MuuPeruskoulunOppiaine(aine("MA")),
@@ -418,7 +423,7 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
       toimintaAlueidenSuoritukset
     } else if (luokkaAste >= 1 && luokkaAste <= 2) {
       List(
-        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
         MuuPeruskoulunOppiaine(aine("MA")),
         MuuPeruskoulunOppiaine(aine("YL")),
         MuuPeruskoulunOppiaine(aine("KT")),
@@ -430,7 +435,7 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
       ).map(suoritus)
     } else if (luokkaAste >= 3 && luokkaAste <= 6) {
       List(
-        PeruskoulunAidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
         PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
         MuuPeruskoulunOppiaine(aine("MA")),
         MuuPeruskoulunOppiaine(aine("YL")),

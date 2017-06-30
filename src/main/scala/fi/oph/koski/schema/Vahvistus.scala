@@ -51,7 +51,7 @@ case class HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(
   paikkakunta: Koodistokoodiviite,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
-  myöntäjäHenkilöt: List[OrganisaatioHenkilöValinnaisellaTittelillä]
+  myöntäjäHenkilöt: List[OrganisaatiohenkilöValinnaisellaTittelillä]
 ) extends HenkilövahvistusValinnaisellaTittelillä with VahvistusPaikkakunnalla
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
@@ -59,7 +59,7 @@ case class HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
   päivä: LocalDate,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
-  myöntäjäHenkilöt: List[OrganisaatioHenkilöValinnaisellaTittelillä]
+  myöntäjäHenkilöt: List[OrganisaatiohenkilöValinnaisellaTittelillä]
 ) extends HenkilövahvistusValinnaisellaTittelillä
 
 @Description("Suorituksen vahvistus organisaatiotiedoilla")
@@ -79,7 +79,8 @@ trait Vahvistaja {
   def getTitteli: Option[LocalizedString]
 }
 
-case class OrganisaatioHenkilöValinnaisellaTittelillä(
+@Description("Henkilö- ja organisaatiotiedot, mahdollisesti titteli.")
+case class OrganisaatiohenkilöValinnaisellaTittelillä(
   nimi: String,
   titteli: Option[LocalizedString] = None,
   organisaatio: Organisaatio

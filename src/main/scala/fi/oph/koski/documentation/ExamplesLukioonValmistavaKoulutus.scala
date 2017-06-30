@@ -30,7 +30,7 @@ object ExamplesLukioonValmistavaKoulutus {
           koulutusmoduuli = LukioonValmistavaKoulutus(),
           osasuoritukset = Some(List(
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
-              ÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
+              LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
               tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(

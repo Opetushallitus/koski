@@ -69,6 +69,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvaoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
 
+@Title("Lukion oppiaineen opintojen suoritus")
 case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
@@ -88,7 +89,8 @@ trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinna
   def tunniste: KoodiViite
 }
 
-case class ÄidinkieliJaKirjallisuus(
+@Title("Äidinkieli ja kirjallisuus")
+case class LukioonValmistavaÄidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("LVAIK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,

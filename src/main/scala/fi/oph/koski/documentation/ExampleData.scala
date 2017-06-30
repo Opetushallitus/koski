@@ -32,7 +32,7 @@ object ExampleData {
       HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
         päivä = päivä,
         myöntäjäOrganisaatio = org,
-        myöntäjäHenkilöt = List(OrganisaatioHenkilöValinnaisellaTittelillä("Reijo Reksi", titteli,  org))
+        myöntäjäHenkilöt = List(OrganisaatiohenkilöValinnaisellaTittelillä("Reijo Reksi", titteli,  org))
       )
     )
 
@@ -42,7 +42,7 @@ object ExampleData {
         päivä = päivä,
         kunta,
         myöntäjäOrganisaatio = org,
-        myöntäjäHenkilöt = List(OrganisaatioHenkilöValinnaisellaTittelillä("Reijo Reksi", titteli, org))
+        myöntäjäHenkilöt = List(OrganisaatiohenkilöValinnaisellaTittelillä("Reijo Reksi", titteli, org))
       )
     )
 }

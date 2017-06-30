@@ -126,7 +126,7 @@ case class MuidenLukioOpintojenSuoritus(
   override def suorituskieli = None
 }
 
-@Title("Muu lukion-opinto")
+@Title("Muu lukio-opinto")
 @Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")
 case class MuuLukioOpinto(
   @KoodistoUri("lukionmuutopinnot")
@@ -229,6 +229,7 @@ trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiain
   def tunniste: KoodiViite
 }
 
+@Title("Paikallinen oppiaine")
 case class PaikallinenLukionOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
@@ -239,6 +240,7 @@ case class PaikallinenLukionOppiaine(
 
 trait LukionValtakunnallinenOppiaine extends LukionOppiaine with YleissivistavaOppiaine
 
+@Title("Muu valtakunnallinen oppiaine")
 case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
@@ -262,8 +264,9 @@ case class LukionMuuValtakunnallinenOppiaine(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine
 
+@Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
-case class AidinkieliJaKirjallisuus(
+case class LukionÄidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
   @Description("Mikä kieli on kyseessä")
@@ -292,6 +295,7 @@ case class VierasTaiToinenKotimainenKieli(
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
+@Title("Matematiikka")
 @Description("Oppiaineena matematiikka")
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")

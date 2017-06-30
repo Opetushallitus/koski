@@ -24,7 +24,8 @@ object OrganisaatioOid {
   }
 }
 
-@Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio.")
+@Title("Organisaatio-OID")
+@Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio, jonka OID-tunniste on tiedossa")
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
