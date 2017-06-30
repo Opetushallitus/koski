@@ -22,11 +22,12 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
     def isHenkilöSchema(s: ClassSchema) = classOf[Henkilö].isAssignableFrom(Class.forName(s.fullClassName))
     params.get("entity") match {
       case None => KoskiSchemaDocumentHtml.html(
-        focusEntities = isHenkilöSchema,
+        expandEntities = isHenkilöSchema,
         shallowEntities = const(true)
       )
       case Some(focusEntityName) => KoskiSchemaDocumentHtml.html(
-        focusEntities = { schema => schema.simpleName == focusEntityName || isHenkilöSchema(schema) },
+        focusEntities = { schema => schema.simpleName == focusEntityName },
+        expandEntities = isHenkilöSchema,
         shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName }
       )
     }
