@@ -79,6 +79,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {

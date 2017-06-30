@@ -194,9 +194,9 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Jos valmis päätason suoritus on poistunut" - {
       "Aiemmin tallennettu suoritus säilytetään" in {
         resetFixtures
-        val vanhaValmisSuoritus = valmis(ammatillisenPerustutkinnonSuoritus(autoalanPerustutkinto))
-        val vanhaKeskeneräinenSuoritus = ammatillisenPerustutkinnonSuoritus(puutarhuri)
-        val uusiSuoritus = ammatillisenPerustutkinnonSuoritus(parturikampaaja)
+        val vanhaValmisSuoritus = valmis(ammatillinenTutkintoSuoritus(autoalanPerustutkinto))
+        val vanhaKeskeneräinenSuoritus = ammatillinenTutkintoSuoritus(puutarhuri)
+        val uusiSuoritus = ammatillinenTutkintoSuoritus(parturikampaaja)
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus))
         def poistaSuoritukset(oo: AmmatillinenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
         verifyChange(original = oo, change = poistaSuoritukset) {

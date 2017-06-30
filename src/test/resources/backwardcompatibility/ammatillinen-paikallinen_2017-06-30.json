@@ -61,23 +61,19 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "100031",
+            "koodiarvo" : "123456789",
             "nimi" : {
-              "fi" : "Moottorin ja voimansiirron huolto ja korjaus"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 15.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
+              "fi" : "Pintavauriotyöt"
             }
-          }
+          },
+          "kuvaus" : {
+            "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
+          },
+          "pakollinen" : false
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -137,81 +133,28 @@
             }
           } ]
         },
-        "tunnustettu" : {
-          "osaaminen" : {
-            "koulutusmoduuli" : {
-              "tunniste" : {
-                "koodiarvo" : "11-22-33",
-                "nimi" : {
-                  "fi" : "Moottorin korjaus"
-                }
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Pintavaurioiden korjausta"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
               },
-              "kuvaus" : {
-                "fi" : "Opiskelijan on\n- tunnettava jakopyörästön merkitys moottorin toiminnalle\n- osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta\nvalmistajan antamiin ohjearvoihin\n- osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja\n- osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden\nmukaisesti\n- tunnettava venttiilikoneiston merkitys moottorin toiminnan osana\nosatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään\n- noudatettava sovittuja työaikoja"
-              },
-              "pakollinen" : false
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
             },
-            "tila" : {
-              "koodiarvo" : "VALMIS",
-              "koodistoUri" : "suorituksentila"
-            },
-            "vahvistus" : {
-              "päivä" : "2002-05-28",
-              "myöntäjäOrganisaatio" : {
-                "oid" : "1.2.246.562.10.52251087186",
-                "oppilaitosnumero" : {
-                  "koodiarvo" : "10105",
-                  "koodistoUri" : "oppilaitosnumero"
-                },
-                "nimi" : {
-                  "fi" : "Stadin ammattiopisto"
-                }
-              },
-              "myöntäjäHenkilöt" : [ {
-                "nimi" : "Reijo Reksi",
-                "organisaatio" : {
-                  "oid" : "1.2.246.562.10.52251087186",
-                  "oppilaitosnumero" : {
-                    "koodiarvo" : "10105",
-                    "koodistoUri" : "oppilaitosnumero"
-                  },
-                  "nimi" : {
-                    "fi" : "Stadin ammattiopisto"
-                  }
-                }
-              } ]
-            },
-            "näyttö" : {
-              "kuvaus" : {
-                "fi" : "Moottorin korjaus"
-              },
-              "suorituspaikka" : {
-                "tunniste" : {
-                  "koodiarvo" : "1",
-                  "nimi" : {
-                    "fi" : "työpaikka"
-                  },
-                  "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-                  "koodistoVersio" : 1
-                },
-                "kuvaus" : {
-                  "fi" : "Autokorjaamo Oy, Riihimäki"
-                }
-              },
-              "suoritusaika" : {
-                "alku" : "2002-04-20",
-                "loppu" : "2002-04-20"
-              },
-              "työssäoppimisenYhteydessä" : false
-            },
-            "tyyppi" : {
-              "koodiarvo" : "ammatillisentutkinnonosa",
-              "koodistoUri" : "suorituksentyyppi"
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
             }
           },
-          "selite" : {
-            "fi" : "Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)"
-          }
+          "suoritusaika" : {
+            "alku" : "2013-05-20",
+            "loppu" : "2013-05-20"
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

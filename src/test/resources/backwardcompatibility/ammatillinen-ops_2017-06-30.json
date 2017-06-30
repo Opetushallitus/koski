@@ -1,9 +1,6 @@
 {
   "henkilö" : {
-    "hetu" : "280618-402H",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+    "oid" : "1.2.246.562.24.00000000001"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -18,7 +15,7 @@
     },
     "alkamispäivä" : "2012-09-01",
     "arvioituPäättymispäivä" : "2015-05-31",
-    "päättymispäivä" : "2016-05-31",
+    "päättymispäivä" : "2016-01-09",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -29,13 +26,20 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus"
+          },
+          "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-05-31",
+        "alku" : "2016-01-09",
         "tila" : {
-          "koodiarvo" : "valmistunut",
+          "koodiarvo" : "eronnut",
           "nimi" : {
-            "fi" : "Valmistunut"
+            "fi" : "Eronnut"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -45,14 +49,21 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "361902",
+          "koodiarvo" : "351301",
           "nimi" : {
-            "fi" : "Luonto- ja ympäristöalan perustutkinto"
+            "fi" : "Autoalan perustutkinto"
           },
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "62/011/2014"
+        "perusteenDiaarinumero" : "39/011/2014"
       },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10024",
+        "nimi" : {
+          "fi" : "Autokorinkorjaaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
       "osaamisala" : [ {
         "koodiarvo" : "1525",
         "nimi" : {
@@ -60,7 +71,6 @@
         },
         "koodistoUri" : "osaamisala"
       } ],
-      "toinenOsaamisala" : true,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
@@ -68,7 +78,7 @@
         }
       },
       "tila" : {
-        "koodiarvo" : "VALMIS",
+        "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"
       },
       "suorituskieli" : {
@@ -77,6 +87,14 @@
           "fi" : "suomi"
         },
         "koodistoUri" : "kieli"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Opetussuunnitelman mukainen"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "järjestämismuodot" : [ {
         "alku" : "2012-09-01",
@@ -94,16 +112,15 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "100432",
+            "koodiarvo" : "101053",
             "nimi" : {
-              "fi" : "Ympäristön hoitaminen"
+              "fi" : "Viestintä- ja vuorovaikutusosaaminen"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true,
           "laajuus" : {
-            "arvo" : 35.0,
+            "arvo" : 11.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -112,6 +129,10 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -125,6 +146,16 @@
         },
         "arviointi" : [ {
           "arvosana" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "H2"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-05-20",
+          "hyväksytty" : true
+        }, {
+          "arvosana" : {
             "koodiarvo" : "3",
             "nimi" : {
               "fi" : "K3"
@@ -135,7 +166,7 @@
           "hyväksytty" : true
         } ],
         "vahvistus" : {
-          "päivä" : "2016-05-31",
+          "päivä" : "2014-11-08",
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -168,14 +199,29 @@
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
-      "todistuksellaNäkyvätLisätiedot" : {
-        "fi" : "Suorittaa toista osaamisalaa"
-      },
       "tyyppi" : {
-        "koodiarvo" : "ammatillinentutkintoosittainen",
+        "koodiarvo" : "ammatillinentutkinto",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
+    "lisätiedot" : {
+      "hojks" : {
+        "opetusryhmä" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Yleinen opetusryhmä"
+          },
+          "koodistoUri" : "opetusryhma"
+        },
+        "alku" : "2012-10-20",
+        "loppu" : "2013-08-15"
+      },
+      "oikeusMaksuttomaanAsuntolapaikkaan" : false,
+      "vaikeastiVammainen" : false,
+      "vammainenJaAvustaja" : false,
+      "henkilöstökoulutus" : false,
+      "vankilaopetuksessa" : false
+    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

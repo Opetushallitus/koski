@@ -175,6 +175,10 @@
           },
           "pakollinen" : true
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -375,6 +379,10 @@
           },
           "pakollinen" : false
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -472,6 +480,10 @@
           },
           "pakollinen" : true
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -568,6 +580,10 @@
             "koodistoVersio" : 1
           },
           "pakollinen" : true
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -676,6 +692,10 @@
             }
           }
         },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
@@ -772,6 +792,10 @@
             "koodistoVersio" : 1
           },
           "pakollinen" : true
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",

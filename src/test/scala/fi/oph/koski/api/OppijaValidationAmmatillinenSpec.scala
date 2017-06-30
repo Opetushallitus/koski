@@ -81,7 +81,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "Paikallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
-            val suoritus = paikallinenTutkinnonOsaSuoritus
+            val suoritus = paikallinenTutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat)
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
 
@@ -333,6 +333,37 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
     }
 
+    "Ammatillinen perustutkinto ja tutkinnonosan ryhmä" - {
+      "Ammatillinen perustutkinto" - {
+        "Tutkinnonosan ryhmä on määritetty" - {
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+          "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        }
+
+        "Tutkinnonosan ryhmää ei ole määritetty" - {
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None))))
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta tutkinnonosat/100023 puuttuu tutkinnonosan ryhmä joka on pakollinen ammatillisen perustutkinnon tutkinnonosille."))))
+        }
+      }
+      "Muu kuin Ammatillinen perustutkinto" - {
+        val tutkinnonOsanSuoritus = tutkinnonOsaSuoritus.copy(
+          koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
+        )
+
+        def erikoisammattitutkintoSuoritus(osasuoritus: AmmatillisenTutkinnonOsanSuoritus) = autoalanErikoisammattitutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(osasuoritus)))
+
+        "Tutkinnonosan ryhmää ei ole määritetty" - {
+          val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None))
+          "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        }
+
+        "Tutkinnonosan ryhmä on määritetty" - {
+          val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus)
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä("Tutkinnonosalle tutkinnonosat/104052 on määritetty tutkinnonosan ryhmä vaikka kyseessä ei ole ammatillinen perustutkinto."))))
+        }
+      }
+    }
+
     "Oppisopimus" - {
       def toteutusOppisopimuksella(yTunnus: String): AmmatillisenTutkinnonSuoritus = {
         autoalanPerustutkinnonSuoritus().copy(järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 1, 1), None, OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))))
@@ -377,7 +408,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     koulutusmoduuli = tutkinnonOsa,
     tila = tilaKesken,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-    arviointi = arviointiHyvä()
+    arviointi = arviointiHyvä(),
+    tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
   )
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(

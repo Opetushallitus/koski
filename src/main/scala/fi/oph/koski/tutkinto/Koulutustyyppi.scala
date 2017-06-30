@@ -22,6 +22,7 @@ object Koulutustyyppi {
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
 
   val ammatillisetKoulutustyypit = List(ammatillinenPerustutkinto, ammatillinenPerustutkintoErityisopetuksena, ammatillinenPerustutkintoNäyttötutkintona, ammattitutkinto, erikoisammattitutkinto)
+  val ammatillisenPerustutkinnonTyypit = List(ammatillinenPerustutkinto, ammatillinenPerustutkintoErityisopetuksena, ammatillinenPerustutkintoNäyttötutkintona)
   val perusopetuksenKoulutustyypit = List(perusopetus, aikuistenPerusopetus)
   val lukionKoulutustyypit = List(lukiokoulutus, aikuistenLukiokoulutus)
 }

@@ -32,11 +32,12 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
       }
     }
 
-    "Kun lisätään opiskeluoikeus ilman tutkinnon perusteen diaarinumeroa" - {
+    // TODO Poista, kun diaarinumero on pakollinen
+    /*"Kun lisätään opiskeluoikeus ilman tutkinnon perusteen diaarinumeroa" - {
       "palautetaan HTTP 200"  in {
         putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(None)) (verifyResponseStatus(200))
       }
-    }
+    }*/
 
     "Kun yritetään lisätä opiskeluoikeus tyhjällä diaarinumerolla" - {
       "palautetaan HTTP 400 virhe"  in {
