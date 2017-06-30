@@ -46,6 +46,10 @@ td.tyyppi, th.tyyppi {
     width: 30%;
 }
 
+td.kuvaus .description {
+    margin-right: 0.2em;
+}
+
 .alternatives.localizedstring a {
     margin-right: 10px;
 }
