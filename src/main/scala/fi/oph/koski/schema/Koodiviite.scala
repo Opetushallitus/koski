@@ -5,8 +5,6 @@ import fi.oph.koski.localization.{Deserializer, Localized, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 import org.json4s.{Formats, JObject, JValue, TypeInfo}
 
-case class InvalidKoodiViiteError(msg: String)  extends Exception(msg)
-
 trait KoodiViite extends Localized {
   def koodiarvo: String
   def getNimi: Option[LocalizedString]
@@ -67,7 +65,7 @@ object KoodiViiteDeserializer extends Deserializer[KoodiViite] {
     case (TypeInfo(KoodiViiteClass, _), json) =>
       json match {
         case viite: JObject => viite.extract[Koodistokoodiviite]
-        case _ => throw new InvalidKoodiViiteError("Invalid JSON type in KoodiViite")
+        case _ => throw new UnsupportedOperationException("Invalid JSON type in KoodiViite")
       }
   }
 }

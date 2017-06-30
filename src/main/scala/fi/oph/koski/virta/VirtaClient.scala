@@ -5,7 +5,6 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.util.Files
-import fi.oph.koski.util.MockResourceError
 
 import scala.xml.{Elem, Node}
 
@@ -40,7 +39,7 @@ object MockVirtaClient extends VirtaClient {
       case VirtaHakuehtoHetu(hetu) =>
         loadXml("src/main/resources/mockdata/virta/opintotiedot/" + hetu + ".xml")
       case _ =>
-        throw new MockResourceError("opintotiedot must be searched by VirtaHakuehtoHetu")
+        throw new RuntimeException("opintotiedot must be searched by VirtaHakuehtoHetu")
     }
   }
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
@@ -48,7 +47,7 @@ object MockVirtaClient extends VirtaClient {
       case VirtaHakuehtoHetu(hetu) =>
         loadXml("src/main/resources/mockdata/virta/henkilotiedot/" + hetu + ".xml")
       case _ =>
-        throw new MockResourceError("henkilötiedot must be searched by VirtaHakuehtoHetu")
+        throw new RuntimeException("henkilötiedot must be searched by VirtaHakuehtoHetu")
     }
   }
 
