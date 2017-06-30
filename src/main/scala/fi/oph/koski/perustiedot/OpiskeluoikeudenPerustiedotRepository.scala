@@ -3,6 +3,7 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -60,15 +61,13 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case Tutkintohaku(hakusana) =>
         analyzeString(hakusana).map { namePrefix =>
-          Map("bool" -> Map("should" -> List(
+          anyFilter(List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
-          )))
+          ))
         }
-      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
-        toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}
-      )))
+      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(anyFilter(toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}))
       case _ => Nil
     }
 
@@ -90,17 +89,15 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
               "must" -> List(
                 Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
                 Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                Map("bool" -> Map(
-                  "should" -> List(
-                    Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                    Map("bool" -> Map(
-                      "must_not" -> Map(
-                        "exists" -> Map(
-                          "field" -> "tilat.loppu"
-                        )
+                anyFilter(List(
+                  Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+                  Map("bool" -> Map(
+                    "must_not" -> Map(
+                      "exists" -> Map(
+                        "field" -> "tilat.loppu"
                       )
-                    ))
-                  )
+                    )
+                  ))
                 ))
               )
             )
@@ -175,19 +172,19 @@ class OpiskeluoikeudenPerustiedotRepository(index: PerustiedotSearchIndex, opisk
     if (session.hasGlobalReadAccess) {
       Nil
     } else {
-      List(Map("bool" -> Map("should" -> List(
+      List(anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read)))
-      ))))
+      )))
     }
 
 
   private def nameFilter(hakusana: String) =
     analyzeString(hakusana).map { namePrefix =>
-      Map("bool" -> Map("should" -> List(
+      anyFilter(List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
-      )))
+      ))
     }
 
   private def analyzeString(string: String): List[String] = {
