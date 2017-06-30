@@ -5,18 +5,21 @@ import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 
+import scala.Function.const
 import scala.collection.mutable.ArrayBuffer
 import scala.xml.Elem
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
-  def html(shallowEntities: List[Class[_]] = Nil, focusEntitySimplename: Option[String] = None) = {
-    val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntitySimplename).toList
+  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(true)) = {
+    val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities).toList
       .sortBy(-_._2.toList.length) // Nones last
     val schemaBacklog = backlog.map {
       case (name, breadcrumbs) => (mainSchema.getSchema(name).get.asInstanceOf[ClassSchema], breadcrumbs)
     }
-    val focusSchema = focusEntitySimplename.flatMap(name => schemaBacklog.map(_._1).find(s => s.simpleName == name))
+
+
+    val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
 
     <html>
       <head>
@@ -33,22 +36,22 @@ object KoskiSchemaDocumentHtml {
     </html>
   }
 
-  private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], backlog: ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities: List[Class[_]], focusEntitySimplename: Option[String]): ArrayBuffer[(String, Option[List[Breadcrumb]])] = {
+  private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], backlog: ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities: ClassSchema => Boolean, focusEntities: ClassSchema => Boolean): ArrayBuffer[(String, Option[List[Breadcrumb]])] = {
     val name = x.fullClassName
     val index = backlog.indexWhere(_._1 == name)
     if (index < 0) {
       backlog +=((name, breadcrumbs))
-      if (!shallowEntities.map(_.getName).contains(name)) {
+      if (!shallowEntities(x)) {
         val moreSchemas: Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
           val (itemSchema, _) = cardinalityAndItemSchema(p.schema, p.metadata)
           val resolvedItemSchema = resolveSchema(itemSchema)
           classSchemasIn(resolvedItemSchema)
-            .filter(s => focusEntitySimplename.isEmpty || focusEntitySimplename.get == s.simpleName)
+            .filter(focusEntities)
             .map(s => (s, Breadcrumb(x, p)))
         }
 
         moreSchemas.foreach { case (s, breadcrumb) =>
-          buildBacklog(s, breadcrumbs.map(_ ++ List(breadcrumb)), backlog, shallowEntities, None)
+          buildBacklog(s, breadcrumbs.map(_ ++ List(breadcrumb)), backlog, shallowEntities, const(true))
         }
       }
     } else if (backlog(index)._2.nonEmpty) {
@@ -167,8 +170,8 @@ object KoskiSchemaDocumentHtml {
 
 object KoskiSchemaDocumentHtmlPrinter extends App {
   Files.writeFile("main-schema.html", KoskiSchemaDocumentHtml.html(
-    shallowEntities = List(classOf[Oppija])).toString)
+    shallowEntities = { s => s.simpleName == "oppija"}).toString)
   Files.writeFile("ammatillinen-schema.html", KoskiSchemaDocumentHtml.html(
-    shallowEntities = List(classOf[OsaamisenTunnustaminen]),
-    focusEntitySimplename = Some("ammatillinenopiskeluoikeus")).toString)
+    shallowEntities = { s => s.simpleName == "osaamisentunnustaminen" },
+    focusEntities = { schema => schema.simpleName == "ammatillinenopiskeluoikeus"}).toString)
 }

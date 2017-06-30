@@ -3,8 +3,11 @@ package fi.oph.koski.documentation
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{KoodistoKoodiMetadata, KoodistoPalvelu}
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.{KoskiSchema, Oppija, OsaamisenTunnustaminen}
+import fi.oph.koski.schema.{Henkilö, KoskiSchema, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.ApiServlet
+import fi.oph.scalaschema.ClassSchema
+
+import scala.Function.const
 
 class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
   get("/") {
@@ -16,9 +19,16 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
   }
 
   get("/koski-oppija-schema.html") {
+    def isHenkilöSchema(s: ClassSchema) = classOf[Henkilö].isAssignableFrom(Class.forName(s.fullClassName))
     params.get("entity") match {
-      case None => KoskiSchemaDocumentHtml.html(shallowEntities = List(classOf[Oppija]))
-      case Some(simpleName) => KoskiSchemaDocumentHtml.html(focusEntitySimplename = Some(simpleName), shallowEntities = List(classOf[OsaamisenTunnustaminen]))
+      case None => KoskiSchemaDocumentHtml.html(
+        focusEntities = isHenkilöSchema,
+        shallowEntities = const(true)
+      )
+      case Some(focusEntityName) => KoskiSchemaDocumentHtml.html(
+        focusEntities = { schema => schema.simpleName == focusEntityName || isHenkilöSchema(schema) },
+        shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName }
+      )
     }
   }
 
