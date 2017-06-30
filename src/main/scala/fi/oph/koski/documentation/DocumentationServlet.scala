@@ -15,6 +15,10 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
     KoskiSchema.schemaJson
   }
 
+  get("/koski-oppija-schema.html") {
+    KoskiSchemaDocumentHtml.html
+  }
+
   get("/examples/:name.json") {
     renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }

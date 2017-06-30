@@ -20,7 +20,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
   }
 
   private def findMissingLocalizedTextsInSchema = {
-    val keys = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect { case s: ClassSchema => s.properties.map(ObjectModelBuilder.propertyTitle) }.flatten.toSet
+    val keys = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect { case s: ClassSchema => s.properties.map(_.title) }.flatten.toSet
     val keyValueMap = keys.zip(keys).toMap
     keyValueMap -- DefaultLocalizations.defaultFinnishTexts.keys
   }

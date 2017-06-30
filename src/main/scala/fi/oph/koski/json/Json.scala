@@ -18,7 +18,6 @@ import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.{JsonMethods, Serialization}
 
-import scala.Double
 import scala.util.Try
 
 object GenericJsonFormats {
@@ -96,10 +95,7 @@ object Json extends Logging {
   def readResource(resourcename: String): json4s.JValue = readResourceIfExists(resourcename).getOrElse(throw new RuntimeException(s"Resource $resourcename not found"))
 
   def writeFile(filename: String, json: AnyRef) = {
-    import java.nio.charset.StandardCharsets
-    import java.nio.file.{Files, Paths}
-
-    Files.write(Paths.get(filename), writePretty(json).getBytes(StandardCharsets.UTF_8))
+    Files.writeFile(filename, writePretty(json))
   }
 
   def maskSensitiveInformation(parsedJson: JValue): JValue = {

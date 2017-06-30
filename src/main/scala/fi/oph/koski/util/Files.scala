@@ -1,5 +1,9 @@
 package fi.oph.koski.util
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
+
+import fi.oph.koski.json.Json.writePretty
 import fi.oph.koski.log.Logging
 
 import scala.io.{BufferedSource, Source}
@@ -20,6 +24,9 @@ object Files extends Logging {
     }
   }
 
+  def writeFile(filename: String, content: String): Unit = {
+    java.nio.file.Files.write(Paths.get(filename), content.getBytes(StandardCharsets.UTF_8))
+  }
 }
 
 trait FileOps {

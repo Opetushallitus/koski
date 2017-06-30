@@ -9,6 +9,7 @@ import scala.xml.Elem
 
 object KoskiTiedonSiirtoHtml {
   private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"
+  private val schemaDocumentUrl = "/koski/documentation/koski-oppija-schema.html"
   private val schemaFileUrl = "/koski/documentation/koski-oppija-schema.json"
   private def general =s"""
 
@@ -44,12 +45,23 @@ Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.
 
 <div class="preview-image-links">
   <a href="${schemaViewerUrl}">
-    <image src="/koski/images/koski-schema-preview.png">
+    <div class="img-wrapper">
+      <image src="/koski/images/koski-schema-preview.png">
+    </div>
     <div class="caption">Visualisoitu JSON-schema</div>
     <p>Voi tarkastella schemaa visualisointityökalun avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.</p>
   </a>
+  <a href="${schemaDocumentUrl}">
+    <div class="img-wrapper">
+      <image src="/koski/images/koski-schema-html-preview.png">
+    </div>
+    <div class="caption">Printattava dokumentti</div>
+    <p>Printattava versio schemasta</p>
+  </a>
   <a href="${schemaFileUrl}">
-    <image src="/koski/images/koski-schema-json-preview.png">
+    <div class="img-wrapper">
+      <image src="/koski/images/koski-schema-json-preview.png">
+    </div>
     <div class="caption">Lataa JSON-tiedostona</div>
     <p>Voit myös ladata scheman tiedostona</p>
   </a>
