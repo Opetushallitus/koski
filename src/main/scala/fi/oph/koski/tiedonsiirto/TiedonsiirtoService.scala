@@ -59,7 +59,10 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     if (session.hasGlobalReadAccess) {
       None
     } else {
-      Some(Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))))
+      Some(ElasticSearch.anyFilter(List(
+        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))),
+        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(AccessType.read)))
+      )))
     }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {

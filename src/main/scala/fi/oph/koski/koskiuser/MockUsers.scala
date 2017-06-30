@@ -16,10 +16,9 @@ object MockUsers {
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set((omnia, oppilaitosTallentaja)))
   val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä), (Opetushallitus.organisaatioOid, localizationAdmin)))
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
-  val stadinAmmattiopistoPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPalvelukäyttäjä)))
+  val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
-  val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.stadinAmmattiopisto, vastuukäyttäjä)))
-  val helsinkiPalvelukäyttäjä = MockUser("helsinki", "helsinki", "1.2.246.562.24.99999999997", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
+  val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.helsinginKaupunki, vastuukäyttäjä)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
 
@@ -32,9 +31,8 @@ object MockUsers {
     localkoski,
     paakayttaja,
     viranomainen,
-    stadinAmmattiopistoPalvelukäyttäjä,
+    helsinginKaupunkiPalvelukäyttäjä,
     stadinAmmattiopistoTallentaja,
-    helsinkiPalvelukäyttäjä,
     kahdenOrganisaatioPalvelukäyttäjä,
     omattiedot,
     stadinVastuukäyttäjä

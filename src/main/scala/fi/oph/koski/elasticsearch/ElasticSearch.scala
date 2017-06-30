@@ -41,6 +41,17 @@ object ElasticSearch {
     )
   }
 
+  def anyFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
+    case Nil => Map.empty
+    case _ => Map(
+      "bool" -> Map(
+        "should" -> List(
+          queries
+        )
+      )
+    )
+  }
+
   def applyPagination(paginationSettings: Option[PaginationSettings], doc: Map[String, Any]) = paginationSettings match {
     case None => doc
     case Some(pagination) => doc ++ Map(
