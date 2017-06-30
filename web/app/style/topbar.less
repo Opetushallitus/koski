@@ -9,7 +9,7 @@
   right: 0;
   top: 0;
   z-index: @z-index-topbar;
-  height: @topbar-height;
+  height: 48px;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
   min-width: 1320px;
@@ -20,8 +20,8 @@
   position: relative;
   color: white;
   text-align: center;
-  height: 48px;
   font-size: 16px;
+  height: 48px;
 }
 
 .topbarnav {
@@ -72,51 +72,52 @@
 }
 
 #topbar.local {
-  background: @color-white;
+  background: rgb(21, 158, 203);
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+  color: white;
 
   #logo {
-    @logo-color: #84BF41;
     display: inline-block;
-    background: @logo-color;
+    background: white;
     border-radius: 1px;
-    height: 50px;
-    width: 206px;
-    margin-top: 36px;
+    width: 151px;
     text-align: center;
-
-    font-size: 22px;
+    font-size: 15px;
     font-weight: 600;
-    color: @color-white;
-    line-height: 49px;
+    color: black;
+    margin-left: 21px;
+    line-height: 24px;
+
     &:after {
       content: "";
-      .Triangle(25px, @logo-color, left);
-      margin-left: 212px;
-      margin-top: -49px;
+      .Triangle(12px, #ffffff, left);
+      margin-left: 155px;
+      margin-top: -24px;
     }
   }
 
   h1 {
     display: inline-block;
     text-transform: uppercase;
-    font-size: 20px;
-    color: #1A1919;
+    font-size: 1em;
+    color: white;
     line-height: 27px;
     margin-left: 67px;
     font-weight: normal;
-    a {
-      color: black;
-      font-size: 1em;
-    }
     max-width: 415px;
     vertical-align: middle;
+    margin-bottom: 9px;
+    margin-top: 9px;
+    margin-left: 30px;
+
+    a {
+      color: white;
+      font-size: 1em;
+    }
   }
 
   .user-info {
     float: right;
-    margin-top: 39px;
-
     .name {
       margin-right: 10px;
     }
