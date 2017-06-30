@@ -17,7 +17,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Hidden
   @Discriminator
   def tyyppi: Koodistokoodiviite
-  @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
+  @Description("Opiskeluoikeuden yksilöivä tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")
   @Hidden
   def id: Option[Int]
@@ -51,6 +51,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def omistajaOrganisaatio = oppilaitos
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
+  @Description("Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen.")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
@@ -66,7 +67,12 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
 
-case class SisältäväOpiskeluoikeus(oppilaitos: Oppilaitos, id: Int)
+case class SisältäväOpiskeluoikeus(
+  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto")
+  oppilaitos: Oppilaitos,
+  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden yksilöivä tunniste")
+  id: Int
+)
 
 trait OpiskeluoikeudenTila {
   @Representative
