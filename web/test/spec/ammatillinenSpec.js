@@ -707,7 +707,7 @@ describe('Ammatillinen koulutus', function() {
             'Suoritustapa Näyttö\n' +
             'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
-            'Oppisopimus Yritys Autokorjaamo Oy\n' +
+            'Yritys Autokorjaamo Oy\n' +
             'Y-tunnus 1234567-8\n' +
             '31.3.2016 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'

@@ -527,6 +527,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
   @Discriminator
+  @Flatten
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
