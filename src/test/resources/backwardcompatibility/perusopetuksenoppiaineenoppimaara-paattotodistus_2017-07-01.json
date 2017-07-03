@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "220109-784L",
-    "etunimet" : "Kaisa",
-    "kutsumanimi" : "Kaisa",
-    "sukunimi" : "Koululainen"
+    "hetu" : "010101-123N",
+    "etunimet" : "Eero",
+    "kutsumanimi" : "Eero",
+    "sukunimi" : "Esimerkki"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -16,11 +16,11 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "alkamispäivä" : "2007-08-15",
-    "päättymispäivä" : "2008-06-01",
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2007-08-15",
+        "alku" : "2008-08-15",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -30,7 +30,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2008-06-01",
+        "alku" : "2016-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -44,10 +44,18 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "999905",
-          "koodistoUri" : "koulutus"
-        }
+          "koodiarvo" : "AI",
+          "koodistoUri" : "koskioppiaineetyleissivistava"
+        },
+        "kieli" : {
+          "koodiarvo" : "AI1",
+          "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+        },
+        "pakollinen" : true,
+        "perusteenDiaarinumero" : "104/011/2014"
       },
+      "yksilöllistettyOppimäärä" : false,
+      "painotettuOpetus" : false,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -62,6 +70,13 @@
         "koodiarvo" : "VALMIS",
         "koodistoUri" : "suorituksentila"
       },
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        },
+        "hyväksytty" : true
+      } ],
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "paikkakunta" : {
@@ -98,6 +113,10 @@
           }
         } ]
       },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -105,54 +124,13 @@
         },
         "koodistoUri" : "kieli"
       },
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "ai",
-            "nimi" : {
-              "fi" : "Äidinkieli"
-            }
-          },
-          "laajuus" : {
-            "arvo" : 10.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          },
-          "opetuksenSisältö" : {
-            "fi" : "Suullinen ilmaisu ja kuullun ymmärtäminen"
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "kuvaus" : {
-            "fi" : "Keskustelee sujuvasti suomeksi"
-          },
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      } ],
       "tyyppi" : {
-        "koodiarvo" : "perusopetukseenvalmistavaopetus",
+        "koodiarvo" : "perusopetuksenoppiaineenoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetukseenvalmistavaopetus",
+      "koodiarvo" : "perusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]

@@ -56,7 +56,8 @@
         "tunniste" : {
           "koodiarvo" : "020075",
           "koodistoUri" : "koulutus"
-        }
+        },
+        "perusteenDiaarinumero" : "105/011/2014"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",

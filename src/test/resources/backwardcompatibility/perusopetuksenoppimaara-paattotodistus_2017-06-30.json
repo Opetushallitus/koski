@@ -46,7 +46,8 @@
         "tunniste" : {
           "koodiarvo" : "7",
           "koodistoUri" : "perusopetuksenluokkaaste"
-        }
+        },
+        "perusteenDiaarinumero" : "104/011/2014"
       },
       "luokka" : "7C",
       "toimipiste" : {
@@ -555,7 +556,8 @@
         "tunniste" : {
           "koodiarvo" : "8",
           "koodistoUri" : "perusopetuksenluokkaaste"
-        }
+        },
+        "perusteenDiaarinumero" : "104/011/2014"
       },
       "luokka" : "8C",
       "toimipiste" : {
@@ -1265,7 +1267,8 @@
         "tunniste" : {
           "koodiarvo" : "9",
           "koodistoUri" : "perusopetuksenluokkaaste"
-        }
+        },
+        "perusteenDiaarinumero" : "104/011/2014"
       },
       "luokka" : "9C",
       "toimipiste" : {

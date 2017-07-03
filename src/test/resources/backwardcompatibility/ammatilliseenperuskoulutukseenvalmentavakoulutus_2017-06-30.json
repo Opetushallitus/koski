@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "021080-725C",
-    "etunimet" : "Tuula",
-    "kutsumanimi" : "Tuula",
-    "sukunimi" : "Telmanen"
+    "hetu" : "130404-054C",
+    "etunimet" : "Anneli",
+    "kutsumanimi" : "Anneli",
+    "sukunimi" : "Amikseenvalmistautuja"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -44,8 +44,19 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "999903",
+          "koodiarvo" : "999901",
           "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "5/011/2015",
+        "laajuus" : {
+          "arvo" : 60.0,
+          "yksikkö" : {
+            "koodiarvo" : "6",
+            "nimi" : {
+              "fi" : "Osaamispistettä"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
         }
       },
       "toimipiste" : {
@@ -108,16 +119,16 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "TV",
+            "koodiarvo" : "AKO",
             "nimi" : {
-              "fi" : "Toimintakyvyn vahvistaminen"
+              "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
             }
           },
           "kuvaus" : {
-            "fi" : "Toimintakyvyn vahvistaminen"
+            "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
           },
           "laajuus" : {
-            "arvo" : 18.0,
+            "arvo" : 10.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -142,13 +153,17 @@
             "koodistoVersio" : 1
           },
           "päivä" : "2013-03-20",
-          "kuvaus" : {
-            "fi" : "Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa."
-          },
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
+          "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -163,6 +178,56 @@
             "fi" : "Opiskeluvalmiuksien vahvistaminen"
           },
           "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TOV",
+            "nimi" : {
+              "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
+          },
+          "laajuus" : {
             "arvo" : 15.0,
             "yksikkö" : {
               "koodiarvo" : "6",
@@ -172,7 +237,7 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           },
-          "pakollinen" : true
+          "pakollinen" : false
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -188,74 +253,32 @@
             "koodistoVersio" : 1
           },
           "päivä" : "2013-03-20",
-          "kuvaus" : {
-            "fi" : "Opiskelija osaa opiskella työskennellä itsenäisesti, mutta ryhmässä toimimisessa tarvitsee joskus apua. Hän viestii vuorovaikutustilanteissa hyvin, osaa käyttää tietotekniikkaa ja matematiikan perustaitoja arkielämässä."
-          },
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
+          "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "TYV",
+            "koodiarvo" : "ATH",
             "nimi" : {
-              "fi" : "Työelämään valmentautuminen"
+              "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
             }
           },
           "kuvaus" : {
-            "fi" : "Työelämään valmentautuminen"
+            "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
           },
           "laajuus" : {
-            "arvo" : 20.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2013-03-20",
-          "kuvaus" : {
-            "fi" : "Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista."
-          },
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "TIV",
-            "nimi" : {
-              "fi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen"
-          },
-          "laajuus" : {
-            "arvo" : 2.0,
+            "arvo" : 10.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -280,62 +303,17 @@
             "koodistoVersio" : 1
           },
           "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
-        "tunnustettu" : {
-          "selite" : {
-            "fi" : "Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"
-          }
-        },
         "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "UV",
-            "nimi" : {
-              "fi" : "Uimaliikunta ja vesiturvallisuus"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Kurssilla harjoitellaan vedessä liikkumista ja perehdytään vesiturvallisuuden perusteisiin.\nKurssilla käytäviä asioita:\n  - uinnin hengitystekniikka\n  - perehdytystä uinnin eri tekniikoihin\n  - allasturvallisuuden perustiedot\n                "
-          },
-          "laajuus" : {
-            "arvo" : 5.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          },
-          "pakollinen" : false
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "2",
-            "nimi" : {
-              "fi" : "H2"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-          },
-          "päivä" : "2013-03-20",
-          "hyväksytty" : true
-        } ],
-        "tunnustettu" : {
-          "selite" : {
-            "fi" : "Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"
-          }
-        },
-        "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
+          "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -374,15 +352,100 @@
             "koodistoVersio" : 1
           },
           "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100209",
+                "nimi" : {
+                  "fi" : "Asennuksen ja automaation perustyöt"
+                },
+                "koodistoUri" : "tutkinnonosat",
+                "koodistoVersio" : 1
+              },
+              "pakollinen" : true
+            },
+            "tutkinto" : {
+              "tunniste" : {
+                "koodiarvo" : "351101",
+                "nimi" : {
+                  "fi" : "Kone- ja metallialan perustutkinto"
+                },
+                "koodistoUri" : "koulutus"
+              },
+              "perusteenDiaarinumero" : "39/011/2014"
+            },
+            "toimipiste" : {
+              "oid" : "1.2.246.562.10.42456023292",
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+              }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
+            "vahvistus" : {
+              "päivä" : "2015-10-03",
+              "paikkakunta" : {
+                "koodiarvo" : "091",
+                "nimi" : {
+                  "fi" : "Helsinki"
+                },
+                "koodistoUri" : "kunta"
+              },
+              "myöntäjäOrganisaatio" : {
+                "oid" : "1.2.246.562.10.52251087186",
+                "oppilaitosnumero" : {
+                  "koodiarvo" : "10105",
+                  "koodistoUri" : "oppilaitosnumero"
+                },
+                "nimi" : {
+                  "fi" : "Stadin ammattiopisto"
+                }
+              },
+              "myöntäjäHenkilöt" : [ {
+                "nimi" : "Reijo Reksi",
+                "titteli" : {
+                  "fi" : "rehtori"
+                },
+                "organisaatio" : {
+                  "oid" : "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero" : {
+                    "koodiarvo" : "10105",
+                    "koodistoUri" : "oppilaitosnumero"
+                  },
+                  "nimi" : {
+                    "fi" : "Stadin ammattiopisto"
+                  }
+                }
+              } ]
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          }
+        },
         "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
+          "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "telma",
+        "koodiarvo" : "valma",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],

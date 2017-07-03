@@ -49,6 +49,13 @@
         "koodistoUri" : "suorituksentila"
       },
       "alkamispäivä" : "2016-09-01",
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
       "tyyppi" : {
         "koodiarvo" : "ammatillinentutkinto",
         "koodistoUri" : "suorituksentyyppi"

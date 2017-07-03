@@ -46,7 +46,8 @@
         "tunniste" : {
           "koodiarvo" : "999906",
           "koodistoUri" : "koulutus"
-        }
+        },
+        "perusteenDiaarinumero" : "56/011/2015"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",

@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "010101-123N",
-    "etunimet" : "Eero",
-    "kutsumanimi" : "Eero",
-    "sukunimi" : "Esimerkki"
+    "hetu" : "220109-784L",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -16,11 +16,11 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
+    "alkamispäivä" : "2006-08-13",
+    "päättymispäivä" : "2007-06-03",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2008-08-15",
+        "alku" : "2006-08-13",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -30,7 +30,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2016-06-04",
+        "alku" : "2007-06-03",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -41,20 +41,13 @@
         }
       } ]
     },
+    "lisätiedot" : {
+      "pidennettyOppivelvollisuus" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      }
+    },
     "suoritukset" : [ {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "AI",
-          "koodistoUri" : "koskioppiaineetyleissivistava"
-        },
-        "kieli" : {
-          "koodiarvo" : "AI1",
-          "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
-        },
-        "pakollinen" : true
-      },
-      "yksilöllistettyOppimäärä" : false,
-      "painotettuOpetus" : false,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -69,15 +62,12 @@
         "koodiarvo" : "VALMIS",
         "koodistoUri" : "suorituksentila"
       },
-      "arviointi" : [ {
-        "arvosana" : {
-          "koodiarvo" : "9",
-          "koodistoUri" : "arviointiasteikkoyleissivistava"
-        },
-        "hyväksytty" : true
-      } ],
+      "tyyppi" : {
+        "koodiarvo" : "esiopetuksensuoritus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
       "vahvistus" : {
-        "päivä" : "2016-06-04",
+        "päivä" : "2007-06-03",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -112,10 +102,6 @@
           }
         } ]
       },
-      "suoritustapa" : {
-        "koodiarvo" : "erityinentutkinto",
-        "koodistoUri" : "perusopetuksensuoritustapa"
-      },
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -123,13 +109,26 @@
         },
         "koodistoUri" : "kieli"
       },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppiaineenoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
+      "muutSuorituskielet" : [ {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      } ],
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "102/011/2014",
+        "tunniste" : {
+          "koodiarvo" : "001101",
+          "koodistoUri" : "koulutus"
+        },
+        "kuvaus" : {
+          "fi" : "Kaksikielinen esiopetus (suomi-portugali)"
+        }
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetus",
+      "koodiarvo" : "esiopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]
