@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema._
 
 object ExamplesAmmatillinen {
@@ -121,7 +122,9 @@ object AmmatillinenPerustutkintoExample {
     )
   )
 
-  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus().copy(sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), 1234567))))
+  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))).copy(
+    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), 1234567))
+  ))
 
   lazy val osittainenPerustutkinto = Oppija(exampleHenkilö, List(osittainenPerustutkintoOpiskeluoikeus))
 
