@@ -19,6 +19,7 @@ import {setTila} from './Suoritus'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
 import Text from '../Text.jsx'
+import {showError} from '../location'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
   let submitBus = Bacon.Bus()
@@ -40,7 +41,7 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })
 
-  let kotipaikkaE = modelP.map(m => modelData(m, 'vahvistus.myöntäjäOrganisaatio').oid).skipDuplicates().flatMapLatest(oid => Http.cachedGet(`/koski/api/editor/organisaatio/${oid}/kotipaikka`)).filter(R.identity)
+  let kotipaikkaE = modelP.map(m => modelData(m, 'vahvistus.myöntäjäOrganisaatio').oid).skipDuplicates().flatMapLatest(getKotipaikka).filter(R.identity)
 
   modelP.sampledBy(kotipaikkaE, (model, kotipaikka) => [model, kotipaikka]).onValue(([model, kotipaikka]) => {
     pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
@@ -57,3 +58,12 @@ let setOrgToContext = (vahvistus) => {
   let myöntäjäOrganisaatio = modelLookup(vahvistus, 'myöntäjäOrganisaatio')
   return addContext(vahvistus, { myöntäjäOrganisaatio })
 }
+
+const getKotipaikka = oid =>
+  Http.cachedGet(`/koski/api/editor/organisaatio/${oid}/kotipaikka`, {
+    errorHandler: (e) => {
+      if (e.httpStatus !== 404) {
+        showError(e)
+      }
+    }
+  })
