@@ -275,10 +275,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         suoritus.tutkinnonOsanRyhmä
           .map(_ => HttpStatus.ok)
-          .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
+          .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
       } else {
         suoritus.tutkinnonOsanRyhmä
-          .map(_ => KoskiErrorCategory.badRequest.validation.rakenne.koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä("Tutkinnonosalle " + suoritus.koulutusmoduuli.tunniste + " on määritetty tutkinnonosan ryhmä vaikka kyseessä ei ole ammatillinen perustutkinto."))
+          .map(_ => KoskiErrorCategory.badRequest.validation.rakenne.koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä("Tutkinnonosalle " + suoritus.koulutusmoduuli.tunniste + " on määritetty tutkinnonosan ryhmä, vaikka kyseessä ei ole ammatillinen perustutkinto."))
           .getOrElse(HttpStatus.ok)
       }
     }
