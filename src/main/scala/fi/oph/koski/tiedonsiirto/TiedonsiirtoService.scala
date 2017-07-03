@@ -16,6 +16,7 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
 import io.prometheus.client.Counter
@@ -23,7 +24,7 @@ import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
 
-class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
+class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
   implicit val formats = GenericJsonFormats.genericFormats.preservingEmptyValues + LocalizedStringDeserializer + LocalDateTimeSerializer + LocalDateSerializer
 
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
@@ -31,7 +32,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   def deleteAll: Unit = {
     val doc = toJValue(Map("query" -> Map("match_all" -> Map())))
 
-    val deleted = Http.runTask(elasticSearch.http
+    val deleted = Http.runTask(index.http
       .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
         case (200, text, request) => (Json.parse(text) \ "deleted").extract[Int]
         case (status, text, request) if List(404, 409).contains(status) => 0
@@ -96,7 +97,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
 
   private def runSearch[T <: AnyRef](doc: T)(implicit mf: Manifest[T]) = {
     try {
-      val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[T])(Http.parseJson[JValue]))
+      val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[T])(Http.parseJson[JValue]))
       Some(response)
     } catch {
       case e: HttpStatusException if e.status == 400 =>
@@ -142,7 +143,7 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
     val documentId = org.oid + "_" + idValue
     val json = Map("doc_as_upsert" -> true, "doc" -> document)
 
-    val response = Http.runTask(elasticSearch.http.post(uri"/koski/tiedonsiirto/${documentId}/_update", json)(Json4sHttp4s.json4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
+    val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update", json)(Json4sHttp4s.json4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
 
     val result = (response \ "result").extract[String]
     if (!(List("created", "updated", "noop").contains(result))) {
@@ -271,10 +272,8 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
   }
 
   lazy val init = {
-    setupIndex
-  }
+    index.init
 
-  def setupIndex = {
     val mappings: Map[String, Any] = Map("properties" -> Map(
       "virheet" -> Map(
         "properties" -> Map(
@@ -290,9 +289,9 @@ class TiedonsiirtoService(elasticSearch: ElasticSearch, mailer: TiedonsiirtoFail
         "dynamic" -> false
       )
     ))
-    Http.runTask(elasticSearch.http.put(uri"/koski-index/_mapping/tiedonsiirto", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-  }
 
+    Http.runTask(index.http.put(uri"/koski-index/_mapping/tiedonsiirto", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+  }
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])

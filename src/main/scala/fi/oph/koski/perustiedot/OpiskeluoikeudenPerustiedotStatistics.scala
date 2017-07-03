@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.json.Json
 
-case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) {
+case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex) {
   import PerustiedotSearchIndex._
   def statistics: OpiskeluoikeusTilasto = {
     rawStatistics.map { stats =>
@@ -21,7 +21,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
   }
 
   def henkilöCount: Option[Int] = {
-    val result = index.runSearch(
+    val result = index.runSearch("perustiedot",
       Json.parse(
         """
           |{
@@ -42,7 +42,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: PerustiedotSearchIndex) 
   }
 
   private def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
-    val result = index.runSearch(
+    val result = index.runSearch("perustiedot",
       Json.parse(
         """
           |{

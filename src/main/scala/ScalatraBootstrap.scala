@@ -33,7 +33,7 @@ import org.scalatra._
 import scala.concurrent.Future
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
-  override def init(context: ServletContext) {
+  override def init(context: ServletContext) = tryCatch("Servlet context initialization") {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)

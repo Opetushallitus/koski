@@ -11,7 +11,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.util.{PaginationSettings, Timing}
-import org.http4s.EntityEncoder
 import org.json4s._
 
 import scala.concurrent.Future
@@ -24,13 +23,20 @@ object PerustiedotIndexUpdater extends App with Timing {
   }
 }
 
-class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
+class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
   import PerustiedotSearchIndex._
 
   lazy val init = {
-    val reIndexingNeeded = setupIndex
+    index.init
 
-    if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
+    val mappings = Map("perustiedot" -> Map("properties" -> Map(
+      "tilat" -> Map("type" -> "nested"),
+      "suoritukset" -> Map("type" -> "nested")
+    )))
+
+    Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+
+    if (index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")) {
       Future {
         reIndex() // Re-index on background
       }
@@ -57,7 +63,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
     }
-    val response = Http.runTask(index.elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
+    val response = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
     val errors = (response \ "errors").extract[Boolean]
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${Json.writePretty(response)}"
@@ -72,7 +78,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
   def deleteByOppijaOids(oids: List[Oid]) = {
     val doc = Json.toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
 
-    val deleted = Http.runTask(index.elasticSearchHttp
+    val deleted = Http.runTask(index.http
       .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
         case (200, text, request) => (Json.parse(text) \ "deleted").extract[Int]
         case (status, text, request) if List(404, 409).contains(status) => 0
@@ -101,66 +107,6 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: PerustiedotSearc
       {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
-  }
-
-  private def setupIndex: Boolean = {
-    val settings = Json.parse("""
-    {
-        "analysis": {
-          "filter": {
-            "finnish_folding": {
-              "type": "icu_folding",
-              "unicodeSetFilter": "[^åäöÅÄÖ]"
-            }
-          },
-          "analyzer": {
-            "default": {
-              "tokenizer": "icu_tokenizer",
-              "filter":  [ "finnish_folding", "lowercase" ]
-            }
-          }
-        }
-    }""").extract[Map[String, Any]]
-
-    val mappings = Map("perustiedot" -> Map("properties" -> Map(
-      "tilat" -> Map("type" -> "nested"),
-      "suoritukset" -> Map("type" -> "nested")
-    ))) // TODO: check if mappings changed, force re-creation of index
-
-    val statusCode = Http.runTask(index.elasticSearchHttp.get(uri"/koski")(Http.statusCode))
-    var reindexNeeded = if (indexExists) {
-      val serverSettings = (Http.runTask(index.elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
-      val alreadyApplied = (serverSettings ++ settings) == serverSettings
-      if (alreadyApplied) {
-        logger.info("Elasticsearch index settings are up to date")
-        false
-      } else {
-        logger.info("Updating Elasticsearch index settings")
-        Http.runTask(index.elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-        Http.runTask(index.elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-        Http.runTask(index.elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-        logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
-        true
-      }
-    } else {
-      logger.info("Creating Elasticsearch index")
-      Http.runTask(index.elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings, "mappings" -> mappings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-      logger.info("Creating Elasticsearch index alias")
-      Http.runTask(index.elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-      logger.info("Created index and alias.")
-      true
-    }
-
-    reindexNeeded
-  }
-
-  private def indexExists = {
-    Http.runTask(index.elasticSearchHttp.get(uri"/koski")(Http.statusCode)) match {
-      case 200 => true
-      case 404 => false
-      case statusCode =>
-        throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
-    }
   }
 
   case class UpdateStatus(updated: Int, changed: Int) {
