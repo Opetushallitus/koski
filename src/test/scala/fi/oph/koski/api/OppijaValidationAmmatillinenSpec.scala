@@ -130,8 +130,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Kun tutkinnolla ei ole diaarinumeroa" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None), johtaminenJaHenkilöstönKehittäminen)
-            "palautetaan HTTP 200 (diaarinumeroa ei vaadita)" - (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(200)))
+            "palautetaan HTTP 400 (diaarinumeroa vaaditaan)" - (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())))
           }
 
           "Kun tutkinnon diaarinumero on virheellinen" - {

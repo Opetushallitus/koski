@@ -19,7 +19,7 @@ object ExamplesPerusopetuksenLisaopetus {
   )
 
   val lisäopetuksenSuoritus = PerusopetuksenLisäopetuksenSuoritus(
-    koulutusmoduuli = PerusopetuksenLisäopetus(),
+    koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
@@ -49,7 +49,7 @@ object ExamplesPerusopetuksenLisaopetus {
   )
 
   val lisäopetuksenSuoritusToimintaAlueittain = PerusopetuksenLisäopetuksenSuoritus(
-    koulutusmoduuli = PerusopetuksenLisäopetus(),
+    koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),

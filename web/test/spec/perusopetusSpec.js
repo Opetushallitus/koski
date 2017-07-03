@@ -85,7 +85,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 8. vuosiluokka\n' +
+            'Luokka-aste 8. vuosiluokka 104/011/2014\n' +
             'Luokka 8C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2014\n' +
@@ -145,7 +145,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 9. vuosiluokka\n' +
+            'Luokka-aste 9. vuosiluokka 104/011/2014\n' +
             'Luokka 9C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2015\n' +
@@ -166,7 +166,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 7. vuosiluokka\n' +
+            'Luokka-aste 7. vuosiluokka 104/011/2014\n' +
             'Luokka 7C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2013\n' +
@@ -2003,6 +2003,7 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Oppiaine Äidinkieli ja kirjallisuus\n' +
           'Kieli Suomen kieli ja kirjallisuus\n' +
+          'Peruste 104/011/2014\n' +
           'Yksilöllistetty oppimäärä ei\n' +
           'Painotettu opetus ei\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
@@ -2077,7 +2078,7 @@ describe('Perusopetus', function() {
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Perusopetuksen lisäopetus\n' +
+          'Koulutus Perusopetuksen lisäopetus 105/011/2014\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
@@ -2186,7 +2187,7 @@ describe('Perusopetus', function() {
       })
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Perusopetukseen valmistava opetus\n' +
+          'Koulutus Perusopetukseen valmistava opetus 57/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')

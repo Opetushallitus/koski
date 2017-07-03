@@ -27,7 +27,8 @@ object PerusopetusExampleData {
 
   val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
 
-  val perusopetus = Perusopetus(Some("104/011/2014"))
+  val perusopetuksenDiaarinumero = "104/011/2014"
+  val perusopetus = Perusopetus(Some(perusopetuksenDiaarinumero))
   val suoritustapaKoulutus = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
   val suoritustapaErityinenTutkinto = Koodistokoodiviite("erityinentutkinto", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
@@ -36,7 +37,10 @@ object PerusopetusExampleData {
   def valinnainenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
     PerusopetuksenPaikallinenValinnainenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
-  def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = PeruskoulunÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
+  def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = PeruskoulunÄidinkieliJaKirjallisuus(
+    perusteenDiaarinumero = diaarinumero,
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus")
+  )
   def kieli(oppiaine: String, kieli: String) = PeruskoulunVierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
@@ -92,7 +96,7 @@ object PerusopetusExampleData {
   )
 
   val kahdeksannenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(8), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
@@ -104,7 +108,7 @@ object PerusopetusExampleData {
   )
 
   val seitsemännenLuokanTuplaus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(7), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
     tila = tilaValmis,
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
@@ -114,7 +118,7 @@ object PerusopetusExampleData {
   )
 
   val kuudennenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(6), luokka = "6A", alkamispäivä = Some(date(2012, 6, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero), luokka = "6A", alkamispäivä = Some(date(2012, 6, 15)),
     tila = tilaValmis,
     toimipiste = kulosaarenAlaAste,
     suorituskieli = suomenKieli,
@@ -123,7 +127,7 @@ object PerusopetusExampleData {
   )
 
   val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(9), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,

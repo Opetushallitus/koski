@@ -18,7 +18,7 @@ describe('Telma', function() {
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)\n' +
+          'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA) 6/011/2015\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
           'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'

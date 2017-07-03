@@ -27,7 +27,7 @@ object ExamplesTelma {
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = TelmaKoulutus(),
+          koulutusmoduuli = TelmaKoulutus(perusteenDiaarinumero = Some("6/011/2015")),
           suorituskieli = suomenKieli,
           osasuoritukset = Some(List(
             telmaKurssinSuoritus("TV", "Toimintakyvyn vahvistaminen", 18f, pakollinen = true,

@@ -20,7 +20,7 @@ object ExamplesEsiopetus {
       koulutustoimija = None,
       suoritukset = List(
           EsiopetuksenSuoritus(
-            koulutusmoduuli = Esiopetus(kuvaus = Some("Kaksikielinen esiopetus (suomi-portugali)")),
+            koulutusmoduuli = Esiopetus(kuvaus = Some("Kaksikielinen esiopetus (suomi-portugali)"), perusteenDiaarinumero = Some("102/011/2014")),
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu,
             suorituskieli = suomenKieli,

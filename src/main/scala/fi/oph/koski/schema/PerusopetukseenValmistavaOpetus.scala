@@ -29,7 +29,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
+  koulutusmoduuli: PerusopetukseenValmistavaOpetus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -57,7 +57,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
 case class PerusopetukseenValmistavaOpetus(
   @KoodistoKoodiarvo("999905")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999905", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String] = None
+  perusteenDiaarinumero: Option[String]
 ) extends DiaarinumerollinenKoulutus {
   def laajuus = None
 }

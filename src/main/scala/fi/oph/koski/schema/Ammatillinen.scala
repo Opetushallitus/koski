@@ -624,7 +624,7 @@ case class ValmaKoulutuksenOsanSuoritus(
 case class ValmaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String] = None,
+  perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends DiaarinumerollinenKoulutus
 
@@ -684,7 +684,7 @@ case class TelmaKoulutuksenOsanSuoritus(
 case class TelmaKoulutus(
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String] = None,
+  perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends DiaarinumerollinenKoulutus
 

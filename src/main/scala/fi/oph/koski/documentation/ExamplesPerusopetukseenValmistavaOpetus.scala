@@ -19,6 +19,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetukseenValmistavanOpetuksenSuoritus(
+        koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
         tila = tilaValmis,
         toimipiste = jyväskylänNormaalikoulu,
         vahvistus = vahvistusPaikkakunnalla(),

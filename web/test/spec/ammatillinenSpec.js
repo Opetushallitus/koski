@@ -759,7 +759,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)\n' +
+          'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) 5/011/2015\n' +
           'Laajuus 60 osp\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
           'Suorituskieli suomi\n' +

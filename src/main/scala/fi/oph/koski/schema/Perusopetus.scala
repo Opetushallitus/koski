@@ -287,7 +287,7 @@ case class PerusopetuksenLuokkaAste(
 trait PerusopetuksenDiaarinumerollinenKoulutus extends DiaarinumerollinenKoulutus
 
 object PerusopetuksenLuokkaAste {
-  def apply(luokkaAste: Int): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), None)
+  def apply(luokkaAste: Int, diaarinumero: String): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), Some(diaarinumero))
 }
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")

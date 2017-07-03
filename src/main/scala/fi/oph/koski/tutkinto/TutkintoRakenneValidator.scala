@@ -6,7 +6,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
+  def validateTutkintoRakenne(suoritus: PäätasonSuoritus) = suoritus match {
     case (tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
@@ -40,22 +40,23 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {
-    tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne) match {
-      case None =>
-        tutkinto.perusteenDiaarinumero match {
-          case Some(d) if koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutustendiaarinumerot", d).isEmpty =>
-            Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d))
-          case _ =>
-            Left(KoskiErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
+      tutkinto.perusteenDiaarinumero.map { diaarinumero =>
+        tutkintoRepository.findPerusteRakenne(diaarinumero) match {
+          case None =>
+            if (koodistoViitePalvelu.getKoodistoKoodiViite("koskikoulutustendiaarinumerot", diaarinumero).isEmpty) {
+              Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero))
+            } else {
+              Left(KoskiErrorCategory.ok())
+            }
+          case Some(rakenne) =>
+            koulutustyypit match {
+              case Some(koulutustyypit) if !koulutustyypit.contains(rakenne.koulutustyyppi) =>
+                Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
+              case _ =>
+                Right(rakenne)
+            }
         }
-      case Some(rakenne) =>
-        koulutustyypit match {
-          case Some(koulutustyypit) if !koulutustyypit.contains(rakenne.koulutustyyppi) =>
-            Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
-          case _ =>
-            Right(rakenne)
-        }
-    }
+      }.getOrElse(Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()))
   }
 
 

@@ -42,7 +42,7 @@ case class EsiopetuksenSuoritus(
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Title("Koulutus")
-  koulutusmoduuli: Esiopetus = Esiopetus(),
+  koulutusmoduuli: Esiopetus,
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
@@ -51,7 +51,7 @@ case class EsiopetuksenSuoritus(
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(
-  perusteenDiaarinumero: Option[String] = None,
+  perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
   @Description("Kuvaus esiopetuksesta")
