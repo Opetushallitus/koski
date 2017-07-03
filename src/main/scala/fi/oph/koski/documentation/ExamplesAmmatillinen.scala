@@ -122,7 +122,7 @@ object AmmatillinenPerustutkintoExample {
     )
   )
 
-  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))).copy(
+  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))).copy(
     sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), 1234567))
   ))
 
