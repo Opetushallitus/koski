@@ -1,5 +1,6 @@
 ## 29.6.2017
 - Muutettu järjestämismuoto listaksi järjestämismuotojaksoja
+- Muutettu perusteenDiaarinumero ja suorituskieli pakollisiksi päätason suorituksissa
 
 ## 28.6.2017
 - Poistettu työssäoppimisjaksot tutkinnonosan tasolta
