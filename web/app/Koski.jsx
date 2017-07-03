@@ -8,16 +8,11 @@ import {userP} from './user'
 import {contentP, titleKeyP} from './router.jsx'
 import {TopBar} from './TopBar.jsx'
 import {locationP} from './location.js'
-import {savedBus} from './Oppija.jsx'
 import LocalizationEditBar from './LocalizationEditBar.jsx'
 import {t} from './i18n'
 
-
-// Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
-const savedP = savedBus.flatMapLatest(() => Bacon.once(true).concat((locationP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
-
-const topBarP = Bacon.combineWith(userP, savedP, titleKeyP, locationP, (user, saved, titleKey, location) => <TopBar user={user} saved={saved} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
-const allErrorsP = errorP(Bacon.combineAsArray(contentP, savedP))
+const topBarP = Bacon.combineWith(userP, titleKeyP, locationP, (user, titleKey, location) => <TopBar user={user} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
+const allErrorsP = errorP(contentP)
 
 // Renderered Virtual DOM
 const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, user, content, error) =>

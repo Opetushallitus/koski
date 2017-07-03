@@ -35,8 +35,6 @@ Bacon.Observable.prototype.flatScan = function(seed, f) {
   ).toProperty(seed)
 }
 
-export const savedBus = Bacon.Bus()
-
 let currentState = null
 
 export const reloadOppija = () => {
@@ -140,7 +138,6 @@ const createState = (oppijaOid) => {
     return updateF(currentOppija).doAction((x) => { if (!x.inProgress) decreaseLoading() }).doError(decreaseLoading)
   })
   oppijaP.onValue()
-  oppijaP.map('.event').filter(event => event === 'saved').onValue(() => savedBus.push(true))
 
   const stateP = oppijaP.map('.event').mapError(() => 'dirty').slidingWindow(2).flatMapLatest(events => {
     let prev = events[0]
