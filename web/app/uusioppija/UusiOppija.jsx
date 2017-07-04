@@ -13,7 +13,6 @@ export const UusiOppija = ({hetu, oid}) => {
   const opiskeluoikeusValidP = opiskeluoikeusAtom.map(oos => !!oos).skipDuplicates()
   const henkilöAtom = Atom({ hetu: hetu, oid: oid  })
   const henkilöValidAtom = Atom(false)
-  const henkilöErrorsAtom = Atom([])
   const createOppijaP = Bacon.combineWith(henkilöAtom, opiskeluoikeusAtom, toCreateOppija)
   const createOppijaE = submitBus.map(createOppijaP)
     .flatMapLatest(postNewOppija)
@@ -27,19 +26,14 @@ export const UusiOppija = ({hetu, oid}) => {
 
   const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lisää henkilö' : 'Lisätään...'}/>)
 
-  const errorsP = henkilöErrorsAtom
-
   return (
     <div className='content-area'>
       <form className='main-content oppija uusi-oppija'>
         <h2><Text name="Uuden opiskelijan lisäys"/></h2>
-        <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom, henkilöErrorsAtom }}/>
+        <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom }}/>
         <hr/>
         <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
         <button className='button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>
-        <ul className='error-messages'>
-          {errorsP.map(errors => errors.map(({ field, message }, i) => <li key={i} className={field}>{message}</li>))}
-        </ul>
       </form>
     </div>
   )
