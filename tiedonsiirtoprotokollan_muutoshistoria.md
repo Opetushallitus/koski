@@ -1,3 +1,6 @@
+## 4.7.2017
+- Erotettu aikuisten perusopetuksen oppimäärän suoritus omaksi suoritustyypikseen
+
 ## 30.6.2017
 - Tutkinnonosan ryhmätieto pakolliseksi ammatillisissa perustutkinnoissa
 
