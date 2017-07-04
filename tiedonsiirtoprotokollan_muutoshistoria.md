@@ -1,3 +1,6 @@
+## 30.6.2017
+- Tutkinnonosan ryhmätieto pakolliseksi ammatillisissa perustutkinnoissa
+
 ## 29.6.2017
 - Muutettu järjestämismuoto listaksi järjestämismuotojaksoja
 - Muutettu perusteenDiaarinumero ja suorituskieli pakollisiksi päätason suorituksissa
