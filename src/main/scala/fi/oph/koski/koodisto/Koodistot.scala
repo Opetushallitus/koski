@@ -3,6 +3,9 @@ package fi.oph.koski.koodisto
 object Koodistot {
   // Koski-spesifiset koodistot.
   val koskiKoodistot = List (
+    "aikuistenperusopetuksenkurssit2015",
+    "aikuistenperusopetuksenalkuvaiheenkurssit2017",
+    "aikuistenperusopetuksenpaattovaiheenkurssit2017",
     "aineryhmaib",
     "ammatillisennaytonarvioinnistapaattaneet",
     "ammatillisennaytonarviointikeskusteluunosallistuneet",

@@ -1,0 +1,991 @@
+[ {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai1",
+  "koodiArvo" : "LÄI1",
+  "metadata" : [ {
+    "nimi" : "Lähtökohtia luku- ja kirjoitustaidon opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai2",
+  "koodiArvo" : "LÄI2",
+  "metadata" : [ {
+    "nimi" : "Äänteestä ja kirjaimesta tavuksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai3",
+  "koodiArvo" : "LÄI3",
+  "metadata" : [ {
+    "nimi" : "Tavusta sanaksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai4",
+  "koodiArvo" : "LÄI4",
+  "metadata" : [ {
+    "nimi" : "Harjoitellaan sanoja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai5",
+  "koodiArvo" : "LÄI5",
+  "metadata" : [ {
+    "nimi" : "Lisätään tavuja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai6",
+  "koodiArvo" : "LÄI6",
+  "metadata" : [ {
+    "nimi" : "Sanoista lauseisiin",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai7",
+  "koodiArvo" : "LÄI7",
+  "metadata" : [ {
+    "nimi" : "Lauseista kohti tekstiä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai8",
+  "koodiArvo" : "LÄI8",
+  "metadata" : [ {
+    "nimi" : "Sujuvoitetaan luku- ja kirjoitustaitoja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai9",
+  "koodiArvo" : "LÄI9",
+  "metadata" : [ {
+    "nimi" : "Käydään ostoksilla",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai10",
+  "koodiArvo" : "LÄI10",
+  "metadata" : [ {
+    "nimi" : "Asuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai11",
+  "koodiArvo" : "LÄI11",
+  "metadata" : [ {
+    "nimi" : "Toimitaan kotona",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai12",
+  "koodiArvo" : "LÄI12",
+  "metadata" : [ {
+    "nimi" : "Annetaan henkilötietoja ja täytetään lomakkeita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai13",
+  "koodiArvo" : "LÄI13",
+  "metadata" : [ {
+    "nimi" : "Asioidaan terveyspalveluissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai14",
+  "koodiArvo" : "LÄI14",
+  "metadata" : [ {
+    "nimi" : "Viestintää päivähoidossa, koulussa ja työelämässä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai15",
+  "koodiArvo" : "LÄI15",
+  "metadata" : [ {
+    "nimi" : "Vietetään vapaa-aikaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma1",
+  "koodiArvo" : "LMA1",
+  "metadata" : [ {
+    "nimi" : "Lukujen maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma2",
+  "koodiArvo" : "LMA2",
+  "metadata" : [ {
+    "nimi" : "Luvut arjessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma3",
+  "koodiArvo" : "LMA3",
+  "metadata" : [ {
+    "nimi" : "Laskutoimituksia arjessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk1",
+  "koodiArvo" : "LYK1",
+  "metadata" : [ {
+    "nimi" : "Arkielämä ja yhteiskunnan palvelut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk2",
+  "koodiArvo" : "LYK2",
+  "metadata" : [ {
+    "nimi" : "Demokraattinen yhteiskunta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyl1",
+  "koodiArvo" : "LYL1",
+  "metadata" : [ {
+    "nimi" : "Ympäristö- ja luonnontiedon alkeet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot1",
+  "koodiArvo" : "LOT1",
+  "metadata" : [ {
+    "nimi" : "Koulutusjärjestelmä ja opiskelukäytänteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot2",
+  "koodiArvo" : "LOT2",
+  "metadata" : [ {
+    "nimi" : "Ammatteihin tutustuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai1",
+  "koodiArvo" : "AÄI1",
+  "metadata" : [ {
+    "nimi" : "Suomen kielen ja kirjallisuuden opiskelun perustaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai2",
+  "koodiArvo" : "AÄI2",
+  "metadata" : [ {
+    "nimi" : "Opiskelun ja tiedonhallinnan taidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai3",
+  "koodiArvo" : "AÄI3",
+  "metadata" : [ {
+    "nimi" : "Tekstien moninaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai4",
+  "koodiArvo" : "AÄI4",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai5",
+  "koodiArvo" : "AÄI5",
+  "metadata" : [ {
+    "nimi" : "Kieli ja tekstit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai6",
+  "koodiArvo" : "AÄI6",
+  "metadata" : [ {
+    "nimi" : "Kieli ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai7",
+  "koodiArvo" : "AÄI7",
+  "metadata" : [ {
+    "nimi" : "Kieli ja kulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai8",
+  "koodiArvo" : "AÄI8",
+  "metadata" : [ {
+    "nimi" : "Kieli ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai9",
+  "koodiArvo" : "AÄI9",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottamisen perusteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai10",
+  "koodiArvo" : "AÄI10",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai11",
+  "koodiArvo" : "AÄI11",
+  "metadata" : [ {
+    "nimi" : "Tekstien tulkinnan perusteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai12",
+  "koodiArvo" : "AÄI12",
+  "metadata" : [ {
+    "nimi" : "Tekstien tulkinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai13",
+  "koodiArvo" : "AÄI13",
+  "metadata" : [ {
+    "nimi" : "Kaunokirjallisuuden lukeminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai14",
+  "koodiArvo" : "AÄI14",
+  "metadata" : [ {
+    "nimi" : "Mediatekstit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai15",
+  "koodiArvo" : "AÄI15",
+  "metadata" : [ {
+    "nimi" : "Tietokirjallisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai16",
+  "koodiArvo" : "AÄI16",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja kansanperinne",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai17",
+  "koodiArvo" : "AÄI17",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuurin ilmiöitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as21",
+  "koodiArvo" : "AS21",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia suomen kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as22",
+  "koodiArvo" : "AS22",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as23",
+  "koodiArvo" : "AS23",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Minä ja perheeni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as24",
+  "koodiArvo" : "AS24",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutusta asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as25",
+  "koodiArvo" : "AS25",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Asumisen arkea",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as26",
+  "koodiArvo" : "AS26",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Matkustaminen eri kulkuvälineissä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as27",
+  "koodiArvo" : "AS27",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Terveys ja hyvinvointi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as28",
+  "koodiArvo" : "AS28",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Minun päiväni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as29",
+  "koodiArvo" : "AS29",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Työelämässä toimiminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as210",
+  "koodiArvo" : "AS210",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Minun historiani",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as211",
+  "koodiArvo" : "AS211",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Asuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as212",
+  "koodiArvo" : "AS212",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Luonto ja lähiympäristö",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as213",
+  "koodiArvo" : "AS213",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Harrastukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as214",
+  "koodiArvo" : "AS214",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Asiointi lääkärissä ja apteekissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as215",
+  "koodiArvo" : "AS215",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Koulutus ja työ Suomessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as216",
+  "koodiArvo" : "AS216",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Monimediainen ympäristö",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as217",
+  "koodiArvo" : "AS217",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kirjallisuus, kansalliset juhlapäivät ja tapakulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama1",
+  "koodiArvo" : "AMA1",
+  "metadata" : [ {
+    "nimi" : "Luvut ja laskutoimitukset I",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama2",
+  "koodiArvo" : "AMA2",
+  "metadata" : [ {
+    "nimi" : "Luvut ja laskutoimitukset II",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama3",
+  "koodiArvo" : "AMA3",
+  "metadata" : [ {
+    "nimi" : "Geometria I",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama4",
+  "koodiArvo" : "AMA4",
+  "metadata" : [ {
+    "nimi" : "Geometria II",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama5",
+  "koodiArvo" : "AMA5",
+  "metadata" : [ {
+    "nimi" : "Matemaattinen ongelmanratkaisu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk1",
+  "koodiArvo" : "AYK1",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunnan perusrakenteet ja arjen tiedot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk2",
+  "koodiArvo" : "AYK2",
+  "metadata" : [ {
+    "nimi" : "Historia, maatuntemus ja yhteiskunnan toiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk3",
+  "koodiArvo" : "AYK3",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri-identiteetti ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl1",
+  "koodiArvo" : "AYL1",
+  "metadata" : [ {
+    "nimi" : "Ihminen ja monimuotoinen maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl2",
+  "koodiArvo" : "AYL2",
+  "metadata" : [ {
+    "nimi" : "Luonnon rakenteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ate1",
+  "koodiArvo" : "ATE1",
+  "metadata" : [ {
+    "nimi" : "Terve elämä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot1",
+  "koodiArvo" : "AOT1",
+  "metadata" : [ {
+    "nimi" : "Ura- ja elämänsuunnittelutaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot2",
+  "koodiArvo" : "AOT2",
+  "metadata" : [ {
+    "nimi" : "Työelämään tutustuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena1",
+  "koodiArvo" : "AENA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena2",
+  "koodiArvo" : "AENA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena3",
+  "koodiArvo" : "AENA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena4",
+  "koodiArvo" : "AENA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa1",
+  "koodiArvo" : "ALAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa2",
+  "koodiArvo" : "ALAA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa3",
+  "koodiArvo" : "ALAA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa4",
+  "koodiArvo" : "ALAA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma1",
+  "koodiArvo" : "ASMA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma2",
+  "koodiArvo" : "ASMA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma3",
+  "koodiArvo" : "ASMA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma4",
+  "koodiArvo" : "ASMA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa1",
+  "koodiArvo" : "ASAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa2",
+  "koodiArvo" : "ASAA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa3",
+  "koodiArvo" : "ASAA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa4",
+  "koodiArvo" : "ASAA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa1",
+  "koodiArvo" : "ARAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa2",
+  "koodiArvo" : "ARAA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa3",
+  "koodiArvo" : "ARAA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa4",
+  "koodiArvo" : "ARAA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea1",
+  "koodiArvo" : "AVEA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea2",
+  "koodiArvo" : "AVEA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea3",
+  "koodiArvo" : "AVEA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea4",
+  "koodiArvo" : "AVEA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa1",
+  "koodiArvo" : "AIAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa2",
+  "koodiArvo" : "AIAA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa3",
+  "koodiArvo" : "AIAA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa4",
+  "koodiArvo" : "AIAA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa1",
+  "koodiArvo" : "AEAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa2",
+  "koodiArvo" : "AEAA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa3",
+  "koodiArvo" : "AEAA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa4",
+  "koodiArvo" : "AEAA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa1",
+  "koodiArvo" : "APOA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa2",
+  "koodiArvo" : "APOA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa3",
+  "koodiArvo" : "APOA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa4",
+  "koodiArvo" : "APOA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa1",
+  "koodiArvo" : "AKXA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa2",
+  "koodiArvo" : "AKXA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa3",
+  "koodiArvo" : "AKXA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa4",
+  "koodiArvo" : "AKXA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

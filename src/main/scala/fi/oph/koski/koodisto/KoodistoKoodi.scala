@@ -23,7 +23,7 @@ case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[Koo
 
 object KoodistoKoodi {
   def koodiUri(koodistoUri: String, koodiarvo: String) = {
-    koodistoUri + "_" + koodiarvo.toLowerCase.replaceAll("\\.|/", "")
+    koodistoUri + "_" + koodiarvo.toLowerCase.replaceAll("\\.|/", "").replaceAll("ä", "a").replaceAll("ö", "o")
   }
 }
 

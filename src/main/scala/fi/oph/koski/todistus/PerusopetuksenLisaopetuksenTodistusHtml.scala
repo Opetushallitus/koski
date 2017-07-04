@@ -6,7 +6,8 @@ import fi.oph.koski.schema._
 
 import scala.xml.Elem
 
-class PerusopetuksenLisaopetuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: PerusopetuksenLisäopetuksenSuoritus)(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends PeruskoulunTodistusHtml[PerusopetuksenLisäopetuksenOppiaineenSuoritus] {
+class PerusopetuksenLisaopetuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: PerusopetuksenLisäopetuksenSuoritus)(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository)
+      extends PeruskoulunTodistusHtml[PerusopetuksenLisäopetuksenOppiaineenSuoritus] {
   def oppiaineet = todistus.osasuoritukset.toList.flatten.collect { case s: PerusopetuksenLisäopetuksenOppiaineenSuoritus => s }
   def title = "Todistus lisäopetuksen suorittamisesta"
 

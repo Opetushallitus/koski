@@ -1,0 +1,14 @@
+{
+  "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Aikuisten perusopetuksen alkuvaiheen kurssit 2017"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2017-07-04",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}

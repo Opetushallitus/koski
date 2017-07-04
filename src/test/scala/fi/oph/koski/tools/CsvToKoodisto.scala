@@ -6,6 +6,8 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto._
 import fi.oph.koski.util.Files
 
+// Csv format: nimi, koodiarvo
+
 object CsvToKoodisto extends App {
   val filename = "koodistot.csv"
   val koodistoUri = "koskikoulutustendiaarinumerot"

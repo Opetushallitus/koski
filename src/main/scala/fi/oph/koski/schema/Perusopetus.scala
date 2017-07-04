@@ -122,8 +122,8 @@ case class PerusopetuksenVuosiluokanSuoritus(
 trait PerusopetuksenOppimääränSuoritus extends Suoritus {
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
-  override def osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
-  def oppiaineet: List[OppiaineenTaiToiminta_AlueenSuoritus] = osasuoritukset.toList.flatten
+  override def osasuoritukset: Option[List[Suoritus]] = None
+  def oppiaineet = osasuoritukset.toList.flatten
 }
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
@@ -144,23 +144,7 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
 
-@Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
-case class AikuistenPerusopetuksenOppimääränSuoritus(
-  @Title("Koulutus")
-  koulutusmoduuli: Perusopetus,
-  toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
-  suoritustapa: Koodistokoodiviite,
-  suorituskieli: Koodistokoodiviite,
-  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
-  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
+
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(

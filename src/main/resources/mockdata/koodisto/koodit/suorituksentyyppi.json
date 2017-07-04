@@ -156,6 +156,30 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppiaine",
+    "koodiArvo": "aikuistenperusopetuksenoppiaine",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen oppiaine",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenkurssi",
+    "koodiArvo": "aikuistenperusopetuksenkurssi",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen kurssi",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksentoimintaalue",
     "koodiArvo": "perusopetuksentoimintaalue",
     "metadata": [

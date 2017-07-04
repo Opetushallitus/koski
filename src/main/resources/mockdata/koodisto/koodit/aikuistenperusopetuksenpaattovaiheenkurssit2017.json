@@ -1,0 +1,1153 @@
+[ {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1",
+  "koodiArvo" : "ÄI1",
+  "metadata" : [ {
+    "nimi" : "Suomen kielen ja kirjallisuuden perusteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2",
+  "koodiArvo" : "ÄI2",
+  "metadata" : [ {
+    "nimi" : "Monimuotoiset tekstit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3",
+  "koodiArvo" : "ÄI3",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottaminen ja tulkitseminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4",
+  "koodiArvo" : "ÄI4",
+  "metadata" : [ {
+    "nimi" : "Kieli ja kulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5",
+  "koodiArvo" : "ÄI5",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6",
+  "koodiArvo" : "ÄI6",
+  "metadata" : [ {
+    "nimi" : "Median maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7",
+  "koodiArvo" : "ÄI7",
+  "metadata" : [ {
+    "nimi" : "Kauno- ja tietokirjallisuuden lukeminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8",
+  "koodiArvo" : "ÄI8",
+  "metadata" : [ {
+    "nimi" : "Tekstien tulkinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9",
+  "koodiArvo" : "ÄI9",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10",
+  "koodiArvo" : "ÄI10",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuurin ilmiöitä ja kirjallisuutta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s21",
+  "koodiArvo" : "S21",
+  "metadata" : [ {
+    "nimi" : "Opiskelutaitojen vahvistaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s22",
+  "koodiArvo" : "S22",
+  "metadata" : [ {
+    "nimi" : "Luonnontieteen tekstit tutummiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s23",
+  "koodiArvo" : "S23",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunnallisten aineiden tekstit tutummiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s24",
+  "koodiArvo" : "S24",
+  "metadata" : [ {
+    "nimi" : "Median tekstejä ja kuvia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s25",
+  "koodiArvo" : "S25",
+  "metadata" : [ {
+    "nimi" : "Tiedonhankintataitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s26",
+  "koodiArvo" : "S26",
+  "metadata" : [ {
+    "nimi" : "Uutistekstit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s27",
+  "koodiArvo" : "S27",
+  "metadata" : [ {
+    "nimi" : "Mielipiteen ilmaiseminen ja perusteleminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s28",
+  "koodiArvo" : "S28",
+  "metadata" : [ {
+    "nimi" : "Kaunokirjalliset tekstit tutuiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s29",
+  "koodiArvo" : "S29",
+  "metadata" : [ {
+    "nimi" : "Kulttuurinen moninaisuus - moninainen kulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_s210",
+  "koodiArvo" : "S210",
+  "metadata" : [ {
+    "nimi" : "Ajankohtaiset ilmiöt Suomessa ja maailmalla",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma1",
+  "koodiArvo" : "MA1",
+  "metadata" : [ {
+    "nimi" : "Luvut ja laskutoimitukset I",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma2",
+  "koodiArvo" : "MA2",
+  "metadata" : [ {
+    "nimi" : "Luvut ja laskutoimitukset II",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma3",
+  "koodiArvo" : "MA3",
+  "metadata" : [ {
+    "nimi" : "Lausekkeet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma4",
+  "koodiArvo" : "MA4",
+  "metadata" : [ {
+    "nimi" : "Yhtälöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma5",
+  "koodiArvo" : "MA5",
+  "metadata" : [ {
+    "nimi" : "Geometria",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma6",
+  "koodiArvo" : "MA6",
+  "metadata" : [ {
+    "nimi" : "Prosentit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma7",
+  "koodiArvo" : "MA7",
+  "metadata" : [ {
+    "nimi" : "Funktiot ja tilastot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ma8",
+  "koodiArvo" : "MA8",
+  "metadata" : [ {
+    "nimi" : "Geometria ja trigonometria",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_u1",
+  "koodiArvo" : "U1",
+  "metadata" : [ {
+    "nimi" : "Uskonnot maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_et1",
+  "koodiArvo" : "ET1",
+  "metadata" : [ {
+    "nimi" : "Katsomukset ja ihmisoikeudet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_hi1",
+  "koodiArvo" : "HI1",
+  "metadata" : [ {
+    "nimi" : "Suomen historian käännekohdat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_yh1",
+  "koodiArvo" : "YH1",
+  "metadata" : [ {
+    "nimi" : "Yhteiskuntajärjestelmä sekä julkiset palvelut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_yh2",
+  "koodiArvo" : "YH2",
+  "metadata" : [ {
+    "nimi" : "Työelämän tuntemus ja oma talous",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_fy1",
+  "koodiArvo" : "FY1",
+  "metadata" : [ {
+    "nimi" : "Fysiikka omassa elämässä ja elinympäristössä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ke1",
+  "koodiArvo" : "KE1",
+  "metadata" : [ {
+    "nimi" : "Kemia omassa elämässä ja elinympäristössä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_bi1",
+  "koodiArvo" : "BI1",
+  "metadata" : [ {
+    "nimi" : "Mitä elämä on?",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ge1",
+  "koodiArvo" : "GE1",
+  "metadata" : [ {
+    "nimi" : "Muuttuva maapallo ja kestävä tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_te1",
+  "koodiArvo" : "TE1",
+  "metadata" : [ {
+    "nimi" : "Terve elämä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ot1",
+  "koodiArvo" : "OT1",
+  "metadata" : [ {
+    "nimi" : "Jatko-opinnot ja ammatinvalinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ot2",
+  "koodiArvo" : "OT2",
+  "metadata" : [ {
+    "nimi" : "Työelämäosaaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1",
+  "koodiArvo" : "RUB1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2",
+  "koodiArvo" : "RUB2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3",
+  "koodiArvo" : "RUB3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4",
+  "koodiArvo" : "RUB4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5",
+  "koodiArvo" : "RUB5",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6",
+  "koodiArvo" : "RUB6",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7",
+  "koodiArvo" : "RUB7",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8",
+  "koodiArvo" : "RUB8",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena1",
+  "koodiArvo" : "ENA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena2",
+  "koodiArvo" : "ENA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena3",
+  "koodiArvo" : "ENA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena4",
+  "koodiArvo" : "ENA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena5",
+  "koodiArvo" : "ENA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena6",
+  "koodiArvo" : "ENA6",
+  "metadata" : [ {
+    "nimi" : "Globaalienglanti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena7",
+  "koodiArvo" : "ENA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena8",
+  "koodiArvo" : "ENA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa1",
+  "koodiArvo" : "LAA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa2",
+  "koodiArvo" : "LAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa3",
+  "koodiArvo" : "LAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa4",
+  "koodiArvo" : "LAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa5",
+  "koodiArvo" : "LAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa6",
+  "koodiArvo" : "LAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa7",
+  "koodiArvo" : "LAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa8",
+  "koodiArvo" : "LAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma1",
+  "koodiArvo" : "SMA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma2",
+  "koodiArvo" : "SMA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma3",
+  "koodiArvo" : "SMA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma4",
+  "koodiArvo" : "SMA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma5",
+  "koodiArvo" : "SMA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma6",
+  "koodiArvo" : "SMA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma7",
+  "koodiArvo" : "SMA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma8",
+  "koodiArvo" : "SMA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa1",
+  "koodiArvo" : "RAA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa2",
+  "koodiArvo" : "RAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa3",
+  "koodiArvo" : "RAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa4",
+  "koodiArvo" : "RAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa5",
+  "koodiArvo" : "RAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa6",
+  "koodiArvo" : "RAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa7",
+  "koodiArvo" : "RAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa8",
+  "koodiArvo" : "RAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa1",
+  "koodiArvo" : "SAA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa2",
+  "koodiArvo" : "SAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa3",
+  "koodiArvo" : "SAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa4",
+  "koodiArvo" : "SAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa5",
+  "koodiArvo" : "SAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa6",
+  "koodiArvo" : "SAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa7",
+  "koodiArvo" : "SAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa8",
+  "koodiArvo" : "SAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea1",
+  "koodiArvo" : "VEA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea2",
+  "koodiArvo" : "VEA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea3",
+  "koodiArvo" : "VEA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea4",
+  "koodiArvo" : "VEA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea5",
+  "koodiArvo" : "VEA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea6",
+  "koodiArvo" : "VEA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea7",
+  "koodiArvo" : "VEA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea8",
+  "koodiArvo" : "VEA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa1",
+  "koodiArvo" : "IAA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa2",
+  "koodiArvo" : "IAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa3",
+  "koodiArvo" : "IAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa4",
+  "koodiArvo" : "IAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa5",
+  "koodiArvo" : "IAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa6",
+  "koodiArvo" : "IAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa7",
+  "koodiArvo" : "IAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa8",
+  "koodiArvo" : "IAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa1",
+  "koodiArvo" : "EAA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa2",
+  "koodiArvo" : "EAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa3",
+  "koodiArvo" : "EAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa4",
+  "koodiArvo" : "EAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa5",
+  "koodiArvo" : "EAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa6",
+  "koodiArvo" : "EAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa7",
+  "koodiArvo" : "EAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa8",
+  "koodiArvo" : "EAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa1",
+  "koodiArvo" : "POA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa2",
+  "koodiArvo" : "POA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa3",
+  "koodiArvo" : "POA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa4",
+  "koodiArvo" : "POA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa5",
+  "koodiArvo" : "POA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa6",
+  "koodiArvo" : "POA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa7",
+  "koodiArvo" : "POA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa8",
+  "koodiArvo" : "POA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa1",
+  "koodiArvo" : "KXA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa2",
+  "koodiArvo" : "KXA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa3",
+  "koodiArvo" : "KXA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa4",
+  "koodiArvo" : "KXA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa5",
+  "koodiArvo" : "KXA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa6",
+  "koodiArvo" : "KXA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa7",
+  "koodiArvo" : "KXA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa8",
+  "koodiArvo" : "KXA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

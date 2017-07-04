@@ -3,7 +3,6 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.PerusopetuksenExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
@@ -58,9 +57,9 @@ object ExamplesPerusopetus {
     )
   )
 
-  val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
+  lazy val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
 
-  val aineopiskelija = Oppija(
+  lazy val aineopiskelija = Oppija(
     MockOppijat.eero.vainHenkilötiedot,
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
@@ -86,7 +85,7 @@ object ExamplesPerusopetus {
     ))
   )
 
-  val erityinenTutkintoAikuinen = Oppija(
+  lazy val erityinenTutkintoAikuinen = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
@@ -101,7 +100,7 @@ object ExamplesPerusopetus {
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
-          osasuoritukset = kaikkiAineet
+          osasuoritukset = AikuistenPerusopetusExampleData.aikuistenAineet
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
@@ -112,7 +111,7 @@ object ExamplesPerusopetus {
     ))
   )
 
-  val toimintaAlueittainOpiskelija = Oppija(
+  lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
@@ -178,8 +177,4 @@ object ExamplesPerusopetus {
   )
 }
 
-object PerusopetuksenExampleData {
-  val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
-  val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
-  val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
-}
+
