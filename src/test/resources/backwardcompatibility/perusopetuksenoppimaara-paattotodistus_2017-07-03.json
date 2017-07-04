@@ -1342,10 +1342,6 @@
           "koodistoUri" : "koulutus"
         }
       },
-      "oppimäärä" : {
-        "koodiarvo" : "perusopetus",
-        "koodistoUri" : "perusopetuksenoppimaara"
-      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {

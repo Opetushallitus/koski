@@ -41,7 +41,6 @@ object Koodistot {
     "oppiaineetib",
     "oppiaineetluva",
     "perusopetuksenluokkaaste",
-    "perusopetuksenoppimaara",
     "perusopetuksentodistuksenliitetieto",
     "perusopetuksensuoritustapa",
     "perusopetuksentoimintaalue",

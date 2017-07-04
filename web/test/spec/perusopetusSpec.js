@@ -25,7 +25,6 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Peruskoulu 104/011/2014\n' +
-            'Opetussuunnitelma Perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
@@ -208,7 +207,6 @@ describe('Perusopetus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Peruskoulu 104/011/2014\n' +
-            'Opetussuunnitelma Aikuisten perusopetus\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
@@ -1401,11 +1399,14 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetus', function() {
-      before(prepareForNewOppija('kalle', '230872-7258'))
-      before(addOppija.enterValidDataPerusopetus(), addOppija.selectOpetussuunnitelma('Aikuisten perusopetus'))
-      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'))
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus')
+      )
       it('Näytetään oikein', function() {
-        expect(editor.property('oppimäärä').getValue()).to.equal('Aikuisten perusopetus')
+        expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
         expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
         expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
@@ -1414,8 +1415,8 @@ describe('Perusopetus', function() {
       before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataPerusopetus())
 
       describe('Käyttöliittymän tila', function() {
-        it('Näytetään oppimäärävaihtoehdot (Perusopetuksen oppiaineen oppimäärä, Perusopetuksen oppimäärä)', function() {
-          expect(addOppija.oppimäärät()).to.deep.equal(['Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
+        it('Näytetään oppimäärävaihtoehdot', function() {
+          expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
         })
       })
 

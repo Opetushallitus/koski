@@ -118,9 +118,6 @@ function AddOppijaPage() {
     selectOppimäärä: function(oppimäärä) {
       return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
     },
-    selectOpetussuunnitelma: function(opetussuunnitelma) {
-      return selectFromDropdown('.opetussuunnitelma .dropdown', opetussuunnitelma)
-    },
     selectOppiaine: function(oppiaine) {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
     },

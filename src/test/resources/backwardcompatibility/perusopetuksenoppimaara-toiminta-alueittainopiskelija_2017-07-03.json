@@ -100,10 +100,6 @@
           "koodistoUri" : "koulutus"
         }
       },
-      "oppimäärä" : {
-        "koodiarvo" : "aikuistenperusopetus",
-        "koodistoUri" : "perusopetuksenoppimaara"
-      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -280,7 +276,7 @@
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodiarvo" : "aikuistenperusopetuksenoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],

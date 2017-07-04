@@ -13,6 +13,6 @@ export const PerusteEditor = ({model}) => {
   model = wrapOptional({model})
   let perusteAtom = Atom(modelData(model))
   perusteAtom.filter(R.identity).changes().onValue(diaarinumero => pushModelValue(model, { data: diaarinumero }))
-  return <PerusteDropdown {...{perusteAtom, suoritusP: Bacon.constant(modelData(model.context.suoritus))}}/>
+  return <PerusteDropdown {...{perusteAtom, suoritusTyyppiP: Bacon.constant(modelData(model.context.suoritus, 'tyyppi'))}}/>
 }
 PerusteEditor.handlesOptional=() => true

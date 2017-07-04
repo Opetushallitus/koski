@@ -94,14 +94,13 @@ object ExamplesPerusopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
-        PerusopetuksenOppimääränSuoritus(
+        AikuistenPerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
-          oppimäärä = aikuistenOppimäärä,
           osasuoritukset = kaikkiAineet
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(
@@ -121,14 +120,13 @@ object ExamplesPerusopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
-        PerusopetuksenOppimääränSuoritus(
+        NuortenPerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
-          oppimäärä = aikuistenOppimäärä,
           osasuoritukset = Some(List(
             toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
             toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),

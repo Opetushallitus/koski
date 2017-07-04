@@ -5,19 +5,18 @@ import Dropdown from '../Dropdown.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 
-export const PerusteDropdown = ({suoritusP, perusteAtom}) => {
-  let koulutustyyppiP = suoritusP.map(suoritus => {
-    if (suoritus.tyyppi.koodiarvo == 'perusopetuksenoppimaara' || suoritus.tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
-      if (suoritus.oppimäärä && suoritus.oppimäärä.koodiarvo == 'aikuistenperusopetus') return '17'
+export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
+  let koulutustyyppiP = suoritusTyyppiP.map(tyyppi => {
+    if (tyyppi.koodiarvo == 'perusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
       return '16'
     }
-    if (suoritus.tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara') {
+    if (tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara') {
       return '17'
     }
-    if (suoritus.tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
+    if (tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
       return '6'
     }
-    if (suoritus.tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
+    if (tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
       return '22'
     }
   }).skipDuplicates()

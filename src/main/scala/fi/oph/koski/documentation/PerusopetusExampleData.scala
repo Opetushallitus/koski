@@ -134,22 +134,20 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 30))
   )
 
-  val perusopetuksenOppimääränSuoritusKesken = PerusopetuksenOppimääränSuoritus(
+  val perusopetuksenOppimääränSuoritusKesken = NuortenPerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = perusopetus,
     tila = tilaKesken,
     toimipiste = jyväskylänNormaalikoulu,
     suoritustapa = suoritustapaKoulutus,
-    oppimäärä = perusopetuksenOppimäärä,
     suorituskieli = suomenKieli
   )
 
-  val perusopetuksenOppimääränSuoritus = PerusopetuksenOppimääränSuoritus(
+  val perusopetuksenOppimääränSuoritus = NuortenPerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = perusopetus,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,
-    oppimäärä = perusopetuksenOppimäärä,
     osasuoritukset = kaikkiAineet,
     suorituskieli = suomenKieli
   )

@@ -15,15 +15,11 @@ import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const oppimääräAtom = Atom()
+  const oppimääräAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
   const oppiaineenSuoritusAtom = Atom()
-  const opetussuunnitelmaAtom = Atom()
   const perusteAtom = Atom()
-  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
+  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,aikuistenperusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
   oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
-
-  const opetussuunnitelmatP = koodistoValues('perusopetuksenoppimaara')
-  opetussuunnitelmatP.onValue(tilat => opetussuunnitelmaAtom.set(tilat.find(koodiarvoMatch('perusopetus'))))
 
   const suoritusPrototypeP = oppimääräAtom.map('.koodiarvo').flatMap(oppimäärä => {
     if (oppimäärä == 'perusopetuksenoppiaineenoppimaara') {
@@ -33,9 +29,9 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
   const oppiaineetP = Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101`).map(modelData)
 
-  const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
-    if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
-      return makePerusopetuksenOppimääränSuoritus(oppilaitos, opetussuunnitelma, peruste, oppiaineet, suorituskieli)
+  const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
+    if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
+      return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus && suorituskieli) {
       var suoritusTapaJaToimipiste = {
         toimipiste: oppilaitos,
@@ -45,14 +41,14 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   }
 
-  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, opetussuunnitelmaAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, suorituskieliAtom, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, suorituskieliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
     <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
     {
-      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)
-        ? <Opetussuunnitelma opetussuunnitelmaAtom={opetussuunnitelmaAtom} opetussuunnitelmatP={opetussuunnitelmatP} perusteAtom={perusteAtom}/>
+      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä)
+        ? <Peruste {...{suoritusTyyppiP: oppimääräAtom, perusteAtom}} />
         : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom}/>
       )
     }
@@ -70,7 +66,7 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
-let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, peruste, oppiaineet, suorituskieli) => {
+let makePerusopetuksenOppimääränSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) => {
   return {
     suorituskieli : suorituskieli,
     koulutusmoduuli: {
@@ -82,32 +78,13 @@ let makePerusopetuksenOppimääränSuoritus = (oppilaitos, opetussuunnitelma, pe
     },
     toimipiste: oppilaitos,
     tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-    oppimäärä: opetussuunnitelma,
     suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
-    tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenoppimaara'},
+    tyyppi: oppimäärä,
     osasuoritukset: oppiaineet
   }
 }
 
-
-const Opetussuunnitelma = ({opetussuunnitelmaAtom, perusteAtom, opetussuunnitelmatP}) => {
-  let suoritusP = opetussuunnitelmaAtom.map(opetussuunnitelma =>
-    makePerusopetuksenOppimääränSuoritus(null, opetussuunnitelma, null, null)
-  )
-
-  return (<div>
-    <KoodistoDropdown
-      className="opetussuunnitelma"
-      title="Opetussuunnitelma"
-      optionsP = { opetussuunnitelmatP }
-      atom = { opetussuunnitelmaAtom }
-    />
-    <Peruste {...{suoritusP, perusteAtom}} />
-  </div>
-  )
-}
-
-const Peruste = ({suoritusP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusP, perusteAtom}}/></label>
+const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>
 
 const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
   return (<span>
@@ -130,7 +107,7 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
         suoritusP.onValue(suoritus => oppiaineenSuoritusAtom.set(suoritus))
 
         return (<span>
-          <Peruste suoritusP={Bacon.constant(modelData(oppiaineenSuoritus))} perusteAtom={perusteAtom} />
+          <Peruste suoritusTyyppiP={Bacon.constant(modelData(oppiaineenSuoritus, 'tyyppi'))} perusteAtom={perusteAtom} />
           <label className="oppiaine"><Text name="Oppiaine"/>{' '}<UusiPerusopetuksenOppiaineDropdown oppiaineenSuoritus={oppiaineenSuoritus} selected={oppiainePrototypeAtom} resultCallback={s => oppiainePrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
           { suoritusModelP.map(model =>
             model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )

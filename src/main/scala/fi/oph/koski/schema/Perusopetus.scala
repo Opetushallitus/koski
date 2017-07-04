@@ -119,15 +119,17 @@ case class PerusopetuksenVuosiluokanSuoritus(
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
+trait PerusopetuksenOppimääränSuoritus extends Suoritus {
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
+  @Title("Oppiaineet")
+  override def osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
+  def oppiaineet: List[OppiaineenTaiToiminta_AlueenSuoritus] = osasuoritukset.toList.flatten
+}
+
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
-case class PerusopetuksenOppimääränSuoritus(
+case class NuortenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: Perusopetus,
-  @KoodistoUri("perusopetuksenoppimaara")
-  @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten opetussuunnitelman mukaisesti")
-  @Title("Opetussuunnitelma")
-  @ReadOnly("Opetussuunnitelmaa ei saa muuttaa käyttöliittymän kautta suorituksen luonnin jälkeen")
-  oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -136,13 +138,29 @@ case class PerusopetuksenOppimääränSuoritus(
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
+) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
+
+@Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
+case class AikuistenPerusopetuksenOppimääränSuoritus(
+  @Title("Koulutus")
+  koulutusmoduuli: Perusopetus,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  suoritustapa: Koodistokoodiviite,
+  suorituskieli: Koodistokoodiviite,
+  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
+) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(

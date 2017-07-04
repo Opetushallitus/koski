@@ -132,6 +132,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaara",
+    "koodiArvo": "aikuistenperusopetuksenoppimaara",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen oppimäärä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenoppiaine",
     "koodiArvo": "perusopetuksenoppiaine",
     "metadata": [

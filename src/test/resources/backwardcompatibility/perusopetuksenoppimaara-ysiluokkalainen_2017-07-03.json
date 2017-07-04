@@ -17,7 +17,6 @@
       }
     },
     "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2008-08-15",
@@ -25,16 +24,6 @@
           "koodiarvo" : "lasna",
           "nimi" : {
             "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -49,10 +38,6 @@
           "koodistoUri" : "koulutus"
         }
       },
-      "oppimäärä" : {
-        "koodiarvo" : "aikuistenperusopetus",
-        "koodistoUri" : "perusopetuksenoppimaara"
-      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -64,11 +49,50 @@
         }
       },
       "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "koulutus",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "8",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
+        "perusteenDiaarinumero" : "104/011/2014"
+      },
+      "luokka" : "8C",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "alkamispäivä" : "2014-08-15",
+      "tila" : {
         "koodiarvo" : "VALMIS",
         "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
-        "päivä" : "2016-06-04",
+        "päivä" : "2015-05-30",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -103,16 +127,37 @@
           }
         } ]
       },
-      "suoritustapa" : {
-        "koodiarvo" : "erityinentutkinto",
-        "koodistoUri" : "perusopetuksensuoritustapa"
-      },
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
           "fi" : "suomi"
         },
         "koodistoUri" : "kieli"
+      },
+      "muutSuorituskielet" : [ {
+        "koodiarvo" : "SL",
+        "nimi" : {
+          "fi" : "sloveeni"
+        },
+        "koodistoUri" : "kieli"
+      } ],
+      "kielikylpykieli" : {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "jääLuokalle" : false,
+      "käyttäytymisenArvio" : {
+        "arvosana" : {
+          "koodiarvo" : "S",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        },
+        "kuvaus" : {
+          "fi" : "Esimerkillistä käyttäytymistä koko vuoden ajan"
+        },
+        "hyväksytty" : true
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -730,7 +775,79 @@
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodiarvo" : "perusopetuksenvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
+        "perusteenDiaarinumero" : "104/011/2014"
+      },
+      "luokka" : "9C",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "alkamispäivä" : "2015-08-15",
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "vahvistus" : {
+        "päivä" : "2016-05-30",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "jääLuokalle" : false,
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenvuosiluokka",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
