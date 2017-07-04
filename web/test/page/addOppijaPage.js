@@ -24,7 +24,7 @@ function AddOppijaPage() {
       params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
-          .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
+          .then(pageApi.setInputValue('.kutsumanimi input[disabled], .kutsumanimi .dropdown', params.kutsumanimi, true))
           .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
       }
     },
@@ -67,8 +67,8 @@ function AddOppijaPage() {
       return pageApi.setInputValue('.aloituspaiva input', date)
     },
     henkilötiedot: function() {
-      return ['.etunimet', '.kutsumanimi', '.sukunimi'].map(function(selector) {
-        return pageApi.getInputValue(selector + ' input')
+      return ['.etunimet input', '.kutsumanimi input[disabled], .kutsumanimi .dropdown', '.sukunimi input'].map(function(selector) {
+        return pageApi.getInputValue(selector)
       })
     },
     hetu: function() {

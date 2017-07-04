@@ -112,17 +112,6 @@ describe('Ammatillinen koulutus', function() {
           expect(addOppija.tutkintoIsEnabled()).to.equal(false)
         })
       })
-      describe('Kun kutsumanimi ei löydy etunimistä', function() {
-        before(
-          addOppija.enterValidDataAmmatillinen({kutsumanimi: 'eiloydy'})
-        )
-        it('Lisää-nappi on disabloitu', function() {
-          expect(addOppija.isEnabled()).to.equal(false)
-        })
-        it('Näytetään virheilmoitus', function() {
-          expect(addOppija.isErrorShown('kutsumanimi')()).to.equal(true)
-        })
-      })
       describe('Kun kutsumanimi löytyy väliviivallisesta nimestä', function() {
         before(
           addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'})
