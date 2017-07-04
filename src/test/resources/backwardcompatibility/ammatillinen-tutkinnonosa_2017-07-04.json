@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -54,6 +53,14 @@
         },
         "perusteenDiaarinumero" : "62/011/2014"
       },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10024",
+        "nimi" : {
+          "fi" : "Autokorinkorjaaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
+      "toinenTutkintonimike" : true,
       "osaamisala" : [ {
         "koodiarvo" : "1525",
         "nimi" : {

@@ -168,6 +168,13 @@ case class AmmatillisenTutkinnonSuoritus(
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
+  @KoodistoUri("tutkintonimikkeet")
+  @OksaUri("tmpOKSAID588", "tutkintonimike")
+  tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Description("Onko kyse uuden tutkintonimikkeen suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
+  @DefaultValue(false)
+  toinenTutkintonimike: Boolean = false,
   @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")

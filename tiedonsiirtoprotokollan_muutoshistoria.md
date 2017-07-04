@@ -1,3 +1,7 @@
+## 4.7.2017
+
+- Lisätty tutkintonimikkeet ja toinenTutkintonimike-flägi osittaisen ammatillisen tutkinnon suoritukseen
+
 ## 14.6.2017
 
 - Perusopetuksen oppimäärän suoritukselta vaaditaan vähintään yksi oppiaine, jos suoritus on tilassa VALMIS

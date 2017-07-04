@@ -102,6 +102,8 @@ object AmmatillinenPerustutkintoExample {
         Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
         Some("62/011/2014")
       ),
+      tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+      toinenTutkintonimike = true,
       osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
       toinenOsaamisala = true,
       järjestämismuoto = Some(järjestämismuotoOppilaitos),
