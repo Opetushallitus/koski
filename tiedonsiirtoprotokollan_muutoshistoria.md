@@ -5,6 +5,7 @@
 
 ## 4.7.2017
 - Erotettu aikuisten perusopetuksen oppimäärän suoritus omaksi suoritustyypikseen
+- Lisätty tutkintonimikkeet ja toinenTutkintonimike-flägi osittaisen ammatillisen tutkinnon suoritukseen
 
 ## 30.6.2017
 - Tutkinnonosan ryhmätieto pakolliseksi ammatillisissa perustutkinnoissa

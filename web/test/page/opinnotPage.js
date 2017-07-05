@@ -431,7 +431,7 @@ function Property(elem) {
     },
     selectValue: function(value) {
       return function() {
-        return Page(elem).setInputValue('.dropdown', value)().then(wait.forAjax)
+        return Page(elem).setInputValue('.dropdown', value.toString())().then(wait.forAjax)
       }
     },
     setValue: function(value) {

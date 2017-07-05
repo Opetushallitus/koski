@@ -22,7 +22,7 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Tietojen näyttäminen', function() {
         it('Näytetään henkilöpalvelussa olevat nimitiedot', function() {
-          expect(addOppija.henkilötiedot()).to.deep.equal([ 'Tero Petteri Gustaf', 'Tero Petteri Gustaf', 'Tunkkila-Fagerlund' ])
+          expect(addOppija.henkilötiedot()).to.deep.equal(['Tero Petteri Gustaf', 'Tero', 'Tunkkila-Fagerlund' ])
         })
       })
 
@@ -113,17 +113,6 @@ describe('Ammatillinen koulutus', function() {
         })
         it('Tutkinto-kenttä on disabloitu', function() {
           expect(addOppija.tutkintoIsEnabled()).to.equal(false)
-        })
-      })
-      describe('Kun kutsumanimi ei löydy etunimistä', function() {
-        before(
-          addOppija.enterValidDataAmmatillinen({kutsumanimi: 'eiloydy'})
-        )
-        it('Lisää-nappi on disabloitu', function() {
-          expect(addOppija.isEnabled()).to.equal(false)
-        })
-        it('Näytetään virheilmoitus', function() {
-          expect(addOppija.isErrorShown('kutsumanimi')()).to.equal(true)
         })
       })
       describe('Kun kutsumanimi löytyy väliviivallisesta nimestä', function() {
@@ -623,6 +612,8 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Tutkintonimike Autokorinkorjaaja\n' +
+          'Toinen tutkintonimike kyllä\n' +
           'Osaamisala Autokorinkorjauksen osaamisala\n' +
           'Toinen osaamisala kyllä\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +

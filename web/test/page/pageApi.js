@@ -17,13 +17,13 @@ function Page(mainElement) {
         return mainElement().find(selector)
       })
     },
-    setInputValue: function(selector, value) {
+    setInputValue: function(selector, value, exact) {
       return function() {
         var input = api.getInput(selector)
-        var isRadio = input.attr("type") === "radio"
+        var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(function() {input.setValue(value)})
+          .then(function() {input.setValue(value, exact)})
           .then(wait.forAjax)
       }
     },
@@ -37,19 +37,19 @@ function Page(mainElement) {
       return Clickable(el)
     },
     elementText: function(id) {
-      return api.elementTextBySelector("#" + escapeSelector(id))
+      return api.elementTextBySelector('#' + escapeSelector(id))
     },
     elementTextBySelector: function(selector) {
       var found = mainElement().find(selector).first()
-      if (found.prop("tagName") === "TEXTAREA" ||
-        found.prop("tagName") === "INPUT" ||
-        found.prop("tagName") === "SELECT") {
-        throw new Error("Use Input.value() to read inputs from form elements")
+      if (found.prop('tagName') === 'TEXTAREA' ||
+        found.prop('tagName') === 'INPUT' ||
+        found.prop('tagName') === 'SELECT') {
+        throw new Error('Use Input.value() to read inputs from form elements')
       }
       return found.text().trim()
     },
     classAttributeOf: function(htmlId) {
-      return mainElement().find("#" + escapeSelector(htmlId)).first().attr("class")
+      return mainElement().find('#' + escapeSelector(htmlId)).first().attr('class')
     }
   }
   return api
@@ -69,67 +69,77 @@ function Page(mainElement) {
         return isVisibleBy(el)
       },
       isEnabled: function () {
-        return el().is(":enabled")
+        return el().is(':enabled')
       },
-      setValue: function(value) {
+      setValue: function(value, exact) {
         var input = el()
         switch (inputType(input)) {
-          case "EMAIL":
-          case "TEXT":
-          case "NUMBER":
-          case "PASSWORD":
-          case "TEXTAREA":
+          case 'EMAIL':
+          case 'TEXT':
+          case 'NUMBER':
+          case 'PASSWORD':
+          case 'TEXTAREA':
             input.val(value)
-            triggerEvent(input, "input")
-            break;
-          case "CHECKBOX":
-            if (value != input.is(":checked")) {
+            triggerEvent(input, 'input')
+            break
+          case 'CHECKBOX':
+            if (value != input.is(':checked')) {
               if(window.callPhantom) {
-                input.prop("checked", value)
+                input.prop('checked', value)
               }
-              triggerEvent(input, "click")
+              triggerEvent(input, 'click')
             }
-            break;
-          case "RADIO":
-            var radioOption = _(input).find(function(item) { return $(item).prop("value") == value })
-            if (!option) throw new Error("Option " + value + " not found")
+            break
+          case 'RADIO':
+            var radioOption = _(input).find(function(item) { return $(item).prop('value') == value })
+            if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
-            triggerEvent(S(radioOption), "click")
-            break;
-          case "SELECT":
-            var option = _(input.children()).find(function(item) { return $(item).prop("value") == value })
-            if (!option) throw new Error("Option " + value + " not found in " + htmlOf(input))
-            input.val($(option).attr("value"))
-            triggerEvent(input, "change")
-            break;
-          case "DROPDOWN": // Dropdown.jsx
+            triggerEvent(S(radioOption), 'click')
+            break
+          case 'SELECT':
+            var option = _(input.children()).find(function(item) { return $(item).prop('value') == value })
+            if (!option) throw new Error('Option ' + value + ' not found in ' + htmlOf(input))
+            input.val($(option).attr('value'))
+            triggerEvent(input, 'change')
+            break
+          case 'DROPDOWN': // Dropdown.jsx
             if (!findSingle('.options', S(input)).hasClass('open')) {
               triggerEvent(findSingle('.select', S(input)), 'click')
             }
-            triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
-            break;
+
+            if (exact) {
+              var result = S(input).find('.options li').filter(function(i, v) {return $(v).text().trim() === value})
+              if (result.length !== 1) {
+                throw new Error("Element '.options li' filtered by text '"+value+"' result length "+result.length+' !== 1 in '+S(input))
+              }
+              triggerEvent(result, 'mousedown')
+            }
+            else {
+              triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
+            }
+            break
 				  default:
-						throw new Error("Unknown input type: " + inputType(input))
+						throw new Error('Unknown input type: ' + inputType(input))
         }
       },
       getOptions: function() {
         var input = el()
         switch (inputType(input)) {
-          case "DROPDOWN": // Dropdown.jsx
+          case 'DROPDOWN': // Dropdown.jsx
             return textsOf(input.find('.option')).map(sanitizeText)
           default:
-            throw new Error("getOptions not supported for " + inputType(input))
+            throw new Error('getOptions not supported for ' + inputType(input))
         }
       }
     }
 
     function inputType(el) {
-      if (el.prop("tagName") == "SELECT" || el.prop("tagName") == "TEXTAREA")
-        return el.prop("tagName")
-      else if ($(el).hasClass("dropdown")) // Dropdown.jsx
-        return "DROPDOWN"
+      if (el.prop('tagName') == 'SELECT' || el.prop('tagName') == 'TEXTAREA')
+        return el.prop('tagName')
+      else if ($(el).hasClass('dropdown')) // Dropdown.jsx
+        return 'DROPDOWN'
       else
-        return el.prop("type").toUpperCase()
+        return el.prop('type').toUpperCase()
     }
   }
 
@@ -139,7 +149,7 @@ function Page(mainElement) {
         return el()
       },
       isEnabled: function () {
-        return el().is(":enabled")
+        return el().is(':enabled')
       },
       isVisible: function() {
         return isElementVisible(el())
@@ -148,12 +158,12 @@ function Page(mainElement) {
         return el().text()
       },
       click: function () {
-        triggerEvent(el().first(), "click")
+        triggerEvent(el().first(), 'click')
       }
     }
   }
 
   function escapeSelector(s){
-    return s.replace( /(:|\.|\[|\])/g, "\\$1" )
+    return s.replace( /(:|\.|\[|\])/g, '\\$1' )
   }
 }
