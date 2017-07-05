@@ -23,8 +23,7 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
   }
 
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = {
-    val retval = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
-    retval
+    henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
   }
 
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = oids match {
