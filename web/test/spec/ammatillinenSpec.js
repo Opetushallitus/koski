@@ -22,7 +22,7 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Tietojen näyttäminen', function() {
         it('Näytetään henkilöpalvelussa olevat nimitiedot', function() {
-          expect(addOppija.henkilötiedot()).to.deep.equal([ 'Tero Petteri Gustaf', 'Tero Petteri Gustaf', 'Tunkkila-Fagerlund' ])
+          expect(addOppija.henkilötiedot()).to.deep.equal(['Tero Petteri Gustaf', 'Tero', 'Tunkkila-Fagerlund' ])
         })
       })
 
