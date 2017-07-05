@@ -23,31 +23,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           }))
       }
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
-      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(perusopetuksenKoulutustyypit))).then {
-        def verifyKurssikoodisto(vuosiluku: String, koodistoUri: String) = {
-          val kurssit = suoritus.osasuoritukset.toList.flatten.flatMap(_.osasuoritukset.toList.flatten).map(_.koulutusmoduuli)
-
-          HttpStatus.fold(kurssit
-            .map(_.tunniste)
-            .collect { case k: Koodistokoodiviite if k.koodistoUri != koodistoUri => k.koodistoUri }
-            .distinct
-            .map(k => KoskiErrorCategory.badRequest.validation.rakenne.vääräKurssikoodisto(s"Aikuisten perusopetuksessa ${vuosiluku} käytetty väärää kurssikoodistoa ${k} (käytettävä koodistoa ${koodistoUri})"))
-          )
-        }
-        suoritus.koulutusmoduuli.perusteenDiaarinumero match {
-          case Some("OPH-1280-2017") =>
-            verifyKurssikoodisto("2017", "aikuistenperusopetuksenpaattovaiheenkurssit2017")
-          case Some("19/011/2015") => HttpStatus.ok
-            verifyKurssikoodisto("2015", "aikuistenperusopetuksenkurssit2015")
-          case _ => HttpStatus.ok
-        }
-      }
+      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)))).then { validateKurssikoodisto(suoritus) }
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: PerusopetuksenDiaarinumerollinenKoulutus =>
-          HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
+          HttpStatus.justStatus(getRakenne(d, Some(List(perusopetus))))
         case d: PerusopetuksenOppiaine =>
-          HttpStatus.justStatus(getRakenne(d, Some(perusopetuksenKoulutustyypit)))
+          HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
         case d: LukionOppimäärä =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
         case d: LukionOppiaine =>
@@ -57,6 +39,27 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case _ =>
           HttpStatus.ok
       }
+  }
+
+  private def validateKurssikoodisto(suoritus: AikuistenPerusopetuksenOppimääränSuoritus) = {
+    def verifyKurssikoodisto(vuosiluku: String, koodistoUri: String) = {
+      val kurssit = suoritus.osasuoritukset.toList.flatten.flatMap(_.osasuoritukset.toList.flatten).map(_.koulutusmoduuli)
+
+      HttpStatus.fold(kurssit
+        .map(_.tunniste)
+        .collect { case k: Koulutustyyppi if k.koodistoUri != koodistoUri => k.koodistoUri }
+        .distinct
+        .map(k => KoskiErrorCategory.badRequest.validation.rakenne.vääräKurssikoodisto(s"Aikuisten perusopetuksessa ${vuosiluku} käytetty väärää kurssikoodistoa ${k} (käytettävä koodistoa ${koodistoUri})"))
+      )
+    }
+
+    suoritus.koulutusmoduuli.perusteenDiaarinumero match {
+      case Some("OPH-1280-2017") =>
+        verifyKurssikoodisto("2017", "aikuistenperusopetuksenpaattovaiheenkurssit2017")
+      case Some("19/011/2015") => HttpStatus.ok
+        verifyKurssikoodisto("2015", "aikuistenperusopetuksenkurssit2015")
+      case _ => HttpStatus.ok
+    }
   }
 
   private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {

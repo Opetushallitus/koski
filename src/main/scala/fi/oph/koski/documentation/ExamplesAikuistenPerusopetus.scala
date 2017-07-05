@@ -26,7 +26,7 @@ object ExamplesAikuistenPerusopetus {
       koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("104/011/2014")),
+          koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("19/011/2015")),
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
