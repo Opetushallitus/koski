@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{Description, EnumValue, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
