@@ -95,14 +95,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
   @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, joihin valmistava koulutus tähtää")
   tutkinto: AmmatillinenTutkintoKoulutus,
-  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
-  @KoodistoUri("tutkintonimikkeet")
-  @OksaUri("tmpOKSAID588", "tutkintonimike")
-  tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
-  @KoodistoUri("osaamisala")
-  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-  osaamisala: Option[List[Koodistokoodiviite]] = None,
+  override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
@@ -121,7 +115,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
 @Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
 case class NäyttötutkintoonValmistavaKoulutus(
@@ -134,14 +128,8 @@ case class NäyttötutkintoonValmistavaKoulutus(
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
-  @KoodistoUri("tutkintonimikkeet")
-  @OksaUri("tmpOKSAID588", "tutkintonimike")
-  tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
-  @KoodistoUri("osaamisala")
-  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-  osaamisala: Option[List[Koodistokoodiviite]] = None,
+  override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -162,23 +150,17 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
 @Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa.")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
-  @KoodistoUri("tutkintonimikkeet")
-  @OksaUri("tmpOKSAID588", "tutkintonimike")
-  tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   @Description("Onko kyse uuden tutkintonimikkeen suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
   @DefaultValue(false)
   toinenTutkintonimike: Boolean = false,
-  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
-  @KoodistoUri("osaamisala")
-  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-  osaamisala: Option[List[Koodistokoodiviite]] = None,
+  override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   @Description("Onko kyse uuden osaamisalan suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
   @DefaultValue(false)
   toinenOsaamisala: Boolean = false,
@@ -197,7 +179,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with VahvistuksetonSuoritus with Arvioinniton with Ryhmällinen
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with VahvistuksetonSuoritus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
 trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjaksollinen {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
@@ -730,3 +712,17 @@ case class AmmatillinenArviointi(
   arvioitsijat: Option[List[Arvioitsija]] = None,
   kuvaus: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi
+
+trait Tutkintonimikkeellinen {
+  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
+  @KoodistoUri("tutkintonimikkeet")
+  @OksaUri("tmpOKSAID588", "tutkintonimike")
+  def tutkintonimike: Option[List[Koodistokoodiviite]] = None
+}
+
+trait Osaamisalallinen {
+  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
+  @KoodistoUri("osaamisala")
+  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
+  def osaamisala: Option[List[Koodistokoodiviite]] = None
+}
