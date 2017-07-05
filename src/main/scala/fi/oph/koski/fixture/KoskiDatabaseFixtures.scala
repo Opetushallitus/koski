@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenOppimäärä, aineopiskelija}
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenOppimäärä, aikuistenPerusopetus2015, aineopiskelija, oppiaineidenSuoritukset2015}
 import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus
 import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueittainOpiskelija
@@ -74,7 +74,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus),
       (MockOppijat.toimintaAlueittainOpiskelija, ExamplesPerusopetus.toimintaAlueittainOpiskelija.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.oppiaineenKorottaja, ExamplesAikuistenPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
-      (MockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOppimäärä.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOppimäärä(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015).tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
       (MockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),
