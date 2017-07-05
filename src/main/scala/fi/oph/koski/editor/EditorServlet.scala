@@ -75,7 +75,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
       case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
         toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
       case ("koulutus", "201101") =>
-        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(toimintaAlueittain))
+        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>
         println((params("koodistoUri") + "/" + params("koodiarvo")))
         haltWithStatus(KoskiErrorCategory.notFound())

@@ -4,8 +4,8 @@ import java.time.LocalDate
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish, unlocalized}
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.annotation._
 
@@ -393,67 +393,79 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   private def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
   private def kesken = koodi("suorituksentila", "KESKEN")
   private def aine(koodiarvo: String) = koodi("koskioppiaineetyleissivistava", koodiarvo)
-  private def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine, tila = kesken)
-  def päättötodistuksenSuoritukset(toimintaAlueittain: Boolean) = {
-    if (toimintaAlueittain) {
-      toimintaAlueidenSuoritukset
-    } else {
-      List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-        PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
-        PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-        MuuPeruskoulunOppiaine(aine("BI")),
-        MuuPeruskoulunOppiaine(aine("GE")),
-        MuuPeruskoulunOppiaine(aine("FY")),
-        MuuPeruskoulunOppiaine(aine("KE")),
-        MuuPeruskoulunOppiaine(aine("TE")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-        MuuPeruskoulunOppiaine(aine("HI")),
-        MuuPeruskoulunOppiaine(aine("YH")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-        MuuPeruskoulunOppiaine(aine("KO")),
-        MuuPeruskoulunOppiaine(aine("OP"))
-      ).map(suoritus)
+  private def nuortenSuoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine, tila = kesken)
+  private def aikuistenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine, tila = kesken)
+  def päättötodistuksenSuoritukset(suorituksenTyyppi: String, toimintaAlueittain: Boolean) = {
+    suorituksenTyyppi match {
+      case "perusopetuksenoppimaara" =>
+        if (toimintaAlueittain) {
+          toimintaAlueidenSuoritukset
+        } else {
+          päättötodistuksenOppiaineet.map(nuortenSuoritus)
+        }
+      case "aikuistenperusopetuksenoppimaara" =>
+        päättötodistuksenOppiaineet.map(aikuistenSuoritus)
     }
   }
   def pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste: Int, toimintaAlueittain: Boolean) = {
     if (toimintaAlueittain) {
       toimintaAlueidenSuoritukset
     } else if (luokkaAste >= 1 && luokkaAste <= 2) {
-      List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-        MuuPeruskoulunOppiaine(aine("YL")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-        MuuPeruskoulunOppiaine(aine("OP"))
-      ).map(suoritus)
+      luokkaAsteiden1_2Oppiaineet.map(nuortenSuoritus)
     } else if (luokkaAste >= 3 && luokkaAste <= 6) {
-      List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-        PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-        MuuPeruskoulunOppiaine(aine("YL")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-        MuuPeruskoulunOppiaine(aine("HI")),
-        MuuPeruskoulunOppiaine(aine("YH")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-        MuuPeruskoulunOppiaine(aine("OP"))
-      ).map(suoritus)
+      luokkaAsteiden3_6Oppiaineet.map(nuortenSuoritus)
     } else if (luokkaAste <= 9) {
-      päättötodistuksenSuoritukset(toimintaAlueittain)
+      päättötodistuksenSuoritukset("perusopetuksenoppimaara", toimintaAlueittain)
     } else {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Tuntematon luokka-aste: " + luokkaAste))
     }
   }
+
+  private lazy val luokkaAsteiden3_6Oppiaineet = List(
+    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+    MuuPeruskoulunOppiaine(aine("MA")),
+    MuuPeruskoulunOppiaine(aine("YL")),
+    MuuPeruskoulunOppiaine(aine("KT")),
+    MuuPeruskoulunOppiaine(aine("HI")),
+    MuuPeruskoulunOppiaine(aine("YH")),
+    MuuPeruskoulunOppiaine(aine("MU")),
+    MuuPeruskoulunOppiaine(aine("KU")),
+    MuuPeruskoulunOppiaine(aine("KS")),
+    MuuPeruskoulunOppiaine(aine("LI")),
+    MuuPeruskoulunOppiaine(aine("OP"))
+  )
+
+  private lazy val päättötodistuksenOppiaineet = List(
+    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
+    MuuPeruskoulunOppiaine(aine("MA")),
+    MuuPeruskoulunOppiaine(aine("BI")),
+    MuuPeruskoulunOppiaine(aine("GE")),
+    MuuPeruskoulunOppiaine(aine("FY")),
+    MuuPeruskoulunOppiaine(aine("KE")),
+    MuuPeruskoulunOppiaine(aine("TE")),
+    MuuPeruskoulunOppiaine(aine("KT")),
+    MuuPeruskoulunOppiaine(aine("HI")),
+    MuuPeruskoulunOppiaine(aine("YH")),
+    MuuPeruskoulunOppiaine(aine("MU")),
+    MuuPeruskoulunOppiaine(aine("KU")),
+    MuuPeruskoulunOppiaine(aine("KS")),
+    MuuPeruskoulunOppiaine(aine("LI")),
+    MuuPeruskoulunOppiaine(aine("KO")),
+    MuuPeruskoulunOppiaine(aine("OP"))
+  )
+
+  private lazy val luokkaAsteiden1_2Oppiaineet = List(
+    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+    MuuPeruskoulunOppiaine(aine("MA")),
+    MuuPeruskoulunOppiaine(aine("YL")),
+    MuuPeruskoulunOppiaine(aine("KT")),
+    MuuPeruskoulunOppiaine(aine("MU")),
+    MuuPeruskoulunOppiaine(aine("KU")),
+    MuuPeruskoulunOppiaine(aine("KS")),
+    MuuPeruskoulunOppiaine(aine("LI")),
+    MuuPeruskoulunOppiaine(aine("OP"))
+  )
 }

@@ -27,7 +27,13 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   }).toProperty()
 
-  const oppiaineetP = Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101`).map(modelData)
+  const oppiaineetP = oppimääräAtom.flatMapLatest((tyyppi) => {
+    if (koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(tyyppi)) {
+      return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${tyyppi.koodiarvo}`).map(modelData)
+    } else {
+      return []
+    }
+  }).toProperty()
 
   const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
     if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
