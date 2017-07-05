@@ -50,16 +50,7 @@ object ExamplesAikuistenPerusopetus {
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
-      suoritukset = List(
-        AikuistenPerusopetuksenOppimääränSuoritus(
-          koulutusmoduuli = koulutus,
-          suorituskieli = suomenKieli,
-          tila = tilaValmis,
-          toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistusPaikkakunnalla(),
-          suoritustapa = suoritustapaErityinenTutkinto,
-          osasuoritukset = oppiaineet
-        )),
+      suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(koulutus, oppiaineet)),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
@@ -68,6 +59,18 @@ object ExamplesAikuistenPerusopetus {
       )
     ))
   )
+
+  def aikuistenPerusopetukseOppimääränSuoritus(koulutus: AikuistenPerusopetus, oppiaineet: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]]) = {
+    AikuistenPerusopetuksenOppimääränSuoritus(
+      koulutusmoduuli = koulutus,
+      suorituskieli = suomenKieli,
+      tila = tilaValmis,
+      toimipiste = jyväskylänNormaalikoulu,
+      vahvistus = vahvistusPaikkakunnalla(),
+      suoritustapa = suoritustapaErityinenTutkinto,
+      osasuoritukset = oppiaineet
+    )
+  }
 
   def oppiaineenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,

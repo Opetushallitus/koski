@@ -20,8 +20,6 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
 
 @Description("Aikuisten perusopetuksen tunnistetiedot, aikuisten perusopetuksen opetussuunnitelman 2015 mukaisesti")
 case class AikuistenPerusopetus(
- @EnumValue("19/011/2015")
- @EnumValue("OPH-1280-2017")
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
