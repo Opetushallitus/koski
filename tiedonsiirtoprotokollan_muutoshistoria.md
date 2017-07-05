@@ -1,3 +1,8 @@
+## 5.7.2017
+
+- Lisätty aikuisten perusopetuksen kurssitaso
+- Hyväksytään perusopetuksen oppiaineen oppimäärän suorituksessa vain aikuisten perusopetuksen diaarinumerot (ei nuorten)
+
 ## 4.7.2017
 - Erotettu aikuisten perusopetuksen oppimäärän suoritus omaksi suoritustyypikseen
 
