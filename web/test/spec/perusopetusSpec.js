@@ -286,6 +286,61 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Aikuisten perusopetus', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('280598-2415'))
+
+    it('näyttää opiskeluoikeuden tiedot', function() {
+      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
+        'Tila 4.6.2016 Valmistunut\n' +
+        '15.8.2008 Läsnä')
+    })
+
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärä 19/011/2015\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+      })
+      it('näyttää oppiaineiden arvosanat', function() {
+        expect(extractAsText(S('.oppiaineet'))).to.equal(
+          'Oppiaineiden arvosanat\n' +
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Pakolliset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9\n' +
+          'B1-kieli, ruotsi 8\n' +
+          'A1-kieli, englanti 8\n' +
+          'Uskonto tai elämänkatsomustieto 10\n' +
+          'Historia 8\n' +
+          'Yhteiskuntaoppi 10\n' +
+          'Matematiikka 9\n' +
+          'Kemia 7\n' +
+          'Fysiikka 9\n' +
+          'Biologia 9 *\n' +
+          'Maantieto 9\n' +
+          'Musiikki 7\n' +
+          'Kuvataide 8\n' +
+          'Kotitalous 8\n' +
+          'Terveystieto 8\n' +
+          'Käsityö 9\n' +
+          'Liikunta 9 **\n' +
+          'Valinnaiset oppiaineet\n' +
+          'Oppiaine Arvosana Laajuus\n' +
+          'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+          'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
+          'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+          'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+          'Tietokoneen hyötykäyttö 9\n' +
+          'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
+          '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+        )
+      })
+    })
+  })
+
   describe('Hetuton oppija', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('1.2.246.562.24.99999999123', 'Hetuton'))
 
