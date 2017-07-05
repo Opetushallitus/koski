@@ -133,7 +133,6 @@ case class MuuLukioOpinto(
 ) extends KoodistostaLöytyväKoulutusmoduuli
 
 case class LukionOppiaineenSuoritus(
-  @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,

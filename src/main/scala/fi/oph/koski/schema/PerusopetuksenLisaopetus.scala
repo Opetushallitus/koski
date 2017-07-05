@@ -51,7 +51,6 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
-  @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   tila: Koodistokoodiviite,

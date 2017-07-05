@@ -1,17 +1,14 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{Description, EnumValue, Title}
 
-@Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AikuistenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -19,21 +16,19 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
+) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
 
-@Description("Aikuisten perusopetuksen tunnistetiedot")
+@Description("Aikuisten perusopetuksen tunnistetiedot, aikuisten perusopetuksen opetussuunnitelman 2015 mukaisesti")
 case class AikuistenPerusopetus(
+ @EnumValue("19/011/2015")
+ @EnumValue("OPH-1280-2017")
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
-) extends Koulutus with PerusopetuksenDiaarinumerollinenKoulutus {
-  override def laajuus = None
-  override def isTutkinto = true
-}
+) extends Perusopetus
 
 @Description("Perusopetuksen oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän suoritusta")
 case class AikuistenPerusopetuksenOppiaineenSuoritus(
-  @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
@@ -46,6 +41,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
+
 
 case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen kurssin tunnistetiedot")

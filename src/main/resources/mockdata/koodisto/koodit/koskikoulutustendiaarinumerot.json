@@ -113,6 +113,17 @@
   ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_oph12802017",
+  "koodiArvo" : "OPH-1280-2017",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet 2017",
+    "kieli" : "FI"
+  } ],
+  "withinCodeElements": [
+    {"codeElementUri": "koulutustyyppi_17", "codeElementVersion": 2 }
+  ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
   "koodiArvo" : "2/011/2004",
   "metadata" : [ {

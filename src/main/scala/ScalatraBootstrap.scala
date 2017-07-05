@@ -39,7 +39,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     val parallels = List(
-      Future { KoskiJsonSchemaValidator.henkilöSchema },
       Future { application.perustiedotIndexer.init},
       Future { application.tiedonsiirtoService.init },
       Future { application.scheduledTasks.toString },

@@ -2,9 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OppiaineenSuoritus extends Suoritus {
+  @Title("Oppiaine")
   def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
 }
 

@@ -39,11 +39,14 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
       Examples.examples.foreach { e =>
         (e.name + " serialisoituu") in {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
+            .filterNot { x => x.isInstanceOf[AikuistenPerusopetuksenOppiaineenSuoritus]}
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = Json.write(s)
-            val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString).right.get
-            suoritus should (equal(s))
+            val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
+              case Right(suoritus) => suoritus should (equal(s))
+              case Left(error) => fail(s"deserialization of $s failed: $error")
+            }
           }
         }
       }

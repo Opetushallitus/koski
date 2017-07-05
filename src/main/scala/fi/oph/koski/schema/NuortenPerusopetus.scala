@@ -119,22 +119,27 @@ case class PerusopetuksenVuosiluokanSuoritus(
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
-trait PerusopetuksenOppimääränSuoritus extends Suoritus {
+trait PerusopetuksenOppimääränSuoritus extends Suoritus with Todistus with Arvioinniton {
+  @Title("Koulutus")
+  override def koulutusmoduuli: Perusopetus
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  def suoritustapa: Koodistokoodiviite
+  def suorituskieli: Koodistokoodiviite
+  def muutSuorituskielet: Option[List[Koodistokoodiviite]]
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override def osasuoritukset: Option[List[Suoritus]] = None
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
   def oppiaineet = osasuoritukset.toList.flatten
 }
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class NuortenPerusopetuksenOppimääränSuoritus(
-  @Title("Koulutus")
-  koulutusmoduuli: Perusopetus,
+  koulutusmoduuli: NuortenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -142,9 +147,7 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
-
-
+) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(
@@ -161,7 +164,6 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with Mahdolli
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
-  @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
@@ -237,12 +239,14 @@ case class PerusopetuksenToiminta_Alue(
   def laajuus = None
 }
 
-@Description("Perusopetuksen tunnistetiedot")
-case class Perusopetus(
+@Description("Nuorten perusopetuksen tunnistetiedot")
+case class NuortenPerusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
-) extends Koulutus with PerusopetuksenDiaarinumerollinenKoulutus {
+) extends Perusopetus
+
+trait Perusopetus extends Koulutus with PerusopetuksenDiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = true
 }

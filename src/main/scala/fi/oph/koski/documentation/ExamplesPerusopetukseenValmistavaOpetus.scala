@@ -9,7 +9,7 @@ import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetukseenValmistavaOpetus {
-  val opiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
+  val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
     alkamispäivä = Some(date(2007, 8, 15)),
     päättymispäivä = Some(date(2008, 6, 1)),
     tila = PerusopetuksenOpiskeluoikeudenTila(List(
@@ -39,5 +39,5 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     )
   )
 
-  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(MockOppijat.koululainen.vainHenkilötiedot, List(opiskeluoikeus))))
+  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(MockOppijat.koululainen.vainHenkilötiedot, List(perusopetukseenValmistavaOpiskeluoikeus))))
 }

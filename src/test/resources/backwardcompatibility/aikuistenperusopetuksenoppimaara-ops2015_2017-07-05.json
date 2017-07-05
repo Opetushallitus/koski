@@ -43,7 +43,7 @@
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
-        "perusteenDiaarinumero" : "104/011/2014",
+        "perusteenDiaarinumero" : "19/011/2015",
         "tunniste" : {
           "koodiarvo" : "201101",
           "koodistoUri" : "koulutus"
@@ -134,6 +134,97 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI1",
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI2",
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI3",
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI10",
+              "nimi" : {
+                "fi" : "Paikallinen äidinkielen kurssi"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "aikuistenperusopetuksenoppiaine",
