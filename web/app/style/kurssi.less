@@ -1,0 +1,78 @@
+.kurssit {
+  list-style: none;
+  padding: 0;
+  .kurssi {
+    position: relative;
+    display: table-cell;
+    width: 62px;
+    > .tunniste {
+      cursor: pointer;
+      font-weight: 600;
+      &.syventava, &.soveltava {
+        color: #979797;
+        font-style: italic;
+      }
+    }
+
+    .tunniste + .arvosana {
+      cursor: pointer;
+    }
+
+    .details {
+      position: absolute;
+      padding: 25px;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+      z-index: @z-index-base + 2;
+      width: 550px;
+      tbody tr {
+        background-color: white;
+        td {
+          padding: 0 15px 0 0;
+          border-bottom-width: 0;
+        }
+        td:nth-child(1) {
+          color: @color-label;
+        }
+      }
+
+      &-bottom {
+        top: 35px;
+        left: -265px;
+
+        &:after {
+          content: "";
+          .Triangle(15px, white, bottom);
+          position: absolute;
+          top: -29px;
+          left: ~"calc(50% - 15px)";
+        }
+      }
+      &-left {
+        top: 35px;
+        right: 25px;
+
+        &:after {
+          content: "";
+          .Triangle(15px, white, bottom);
+          position: absolute;
+          top: -29px;
+          right: 10px;
+        }
+      }
+      &-right {
+        top: 35px;
+        left: -10px;
+
+        &:after {
+          content: "";
+          .Triangle(15px, white, bottom);
+          position: absolute;
+          top: -29px;
+          left: 10px;
+        }
+      }
+
+    }
+  }
+}

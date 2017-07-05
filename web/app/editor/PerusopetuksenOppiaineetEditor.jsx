@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {PropertyEditor} from './PropertyEditor.jsx'
+import {KurssiEditor} from './KurssiEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import R from 'ramda'
@@ -205,7 +206,7 @@ let expandableProperties = (model) => {
 
   let extraPropertiesFilter = p => {
     if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'tila', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
-    if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero'].includes(p.key)) return false // these are never shown
+    if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero', 'osasuoritukset'].includes(p.key)) return false // these are never shown
     return shouldShowProperty(model.context)(p)
   }
 
@@ -230,6 +231,8 @@ export const OppiaineenSuoritusEditor = React.createClass({
     let extraProperties = expandableProperties(model)
 
     let showExpand = extraProperties.length > 0
+
+    let sanallinenArvioProperties = modelProperties(modelLookup(model, 'arviointi.-1'), p => p.key == 'kuvaus')
 
     return (<tbody className={className}>
     <tr>
@@ -268,17 +271,28 @@ export const OppiaineenSuoritusEditor = React.createClass({
       }
     </tr>
     {
-      <tr key='sanallinenArviointi' className="sanallinen-arviointi"><td colSpan="4" className="details"><PropertiesEditor model={modelLookup(model, 'arviointi.-1')} propertyFilter={p => p.key == 'kuvaus'} /></td></tr>
+      sanallinenArvioProperties.length > 0 && <tr key='sanallinenArviointi' className="sanallinen-arviointi"><td colSpan="4" className="details"><PropertiesEditor properties={sanallinenArvioProperties} context={model.context} /></td></tr>
     }
     {
       expanded && <tr key='details'><td colSpan="4" className="details"><PropertiesEditor context={model.context} properties={extraProperties} /></td></tr>
     }
+    <PerusopetuksenKurssitEditor model={model}/>
     {
       modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="4" className="error">{error}</td></tr>)
     }
     </tbody>)
   }
 })
+
+const PerusopetuksenKurssitEditor = ({model}) => {
+  let kurssit = modelItems(model, 'osasuoritukset')
+  if (!kurssit.length) return null
+  return (<tr className="kurssit"><td colSpan="4"><ul className="kurssit">{
+    kurssit.map((kurssi, kurssiIndex) =>
+      <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>
+    )
+  }</ul></td></tr>)
+}
 
 OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {

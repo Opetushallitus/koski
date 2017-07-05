@@ -59,6 +59,7 @@ sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
 }
 
 case class PaikallinenAikuistenPerusopetuksenKurssi(
+  @Flatten
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenKurssi with PaikallinenKoulutusmoduuli

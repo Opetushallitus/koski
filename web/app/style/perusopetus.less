@@ -24,39 +24,58 @@
       }
 
       > table {
-        thead {
+        > thead {
           border-bottom: 1px solid @color-disabled;
         }
-        td, th {
-          padding-bottom: 7px;
-        }
-        .oppiaine {
-          width: 500px;
-          color: @color-label;
+        > thead,tbody > tr {
+          > td, th {
+            padding-bottom: 7px;
+          }
+          > .oppiaine {
+            width: 500px;
+            color: @color-label;
 
-          .koodi-ja-nimi {
-            .koodi {
-              display: inline-block;
-              width: 75px;
-              margin-right: 10px;
+            .koodi-ja-nimi {
+              .koodi {
+                display: inline-block;
+                width: 75px;
+                margin-right: 10px;
+              }
+              .nimi {
+                display: inline-block;
+                width: 270px;
+              }
             }
-            .nimi {
-              display: inline-block;
-              width: 270px;
+
+            .sanallinen-arviointi textarea {
+              width: 300px;
+              float: right;
+              margin-right: 25px;
+              line-height: 1.5em;
             }
           }
-
-          .sanallinen-arviointi textarea {
-            width: 300px;
-            float: right;
-            margin-right: 25px;
-            line-height: 1.5em;
+          > .arvosana {
+            text-align: right;
+            select {
+              width: initial;
+            }
           }
-        }
-        .arvosana {
-          text-align: right;
-          select {
-            width: initial;
+          > td.laajuus, th.laajuus {
+            padding-left: 10px;
+            text-align: right;
+            white-space: nowrap;
+            .yksikko.vuosiviikkotuntia {
+              font-size: 0.8em;
+            }
+          }
+          td.oppiaine .dropdown {
+            display: inline-block;
+            max-width: 100px;
+          }
+          .kurssit {
+            padding-left: 20px;
+            margin-bottom: 5px;
+            background: @color-neutral-gray;
           }
         }
         .footnotes {
@@ -74,18 +93,6 @@
             line-height: initial;
             top: -0.3em
           }
-        }
-        td.laajuus, th.laajuus {
-          padding-left: 10px;
-          text-align: right;
-          white-space: nowrap;
-          .yksikko.vuosiviikkotuntia {
-            font-size: 0.8em;
-          }
-        }
-        td.oppiaine .dropdown {
-          display: inline-block;
-          max-width: 100px;
         }
         .inline {
           display: inline-block;
