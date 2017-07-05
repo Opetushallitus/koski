@@ -2004,7 +2004,7 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Oppiaine Äidinkieli ja kirjallisuus\n' +
           'Kieli Suomen kieli ja kirjallisuus\n' +
-          'Peruste 104/011/2014\n' +
+          'Peruste 19/011/2015\n' +
           'Yksilöllistetty oppimäärä ei\n' +
           'Painotettu opetus ei\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
