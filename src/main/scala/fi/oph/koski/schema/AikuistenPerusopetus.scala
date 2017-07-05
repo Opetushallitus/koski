@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: Perusopetus,
+  koulutusmoduuli: AikuistenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -20,6 +20,16 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with Todistus with Arvioinniton
+
+@Description("Aikuisten perusopetuksen tunnistetiedot")
+case class AikuistenPerusopetus(
+ perusteenDiaarinumero: Option[String],
+ @KoodistoKoodiarvo("201101")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
+) extends Koulutus with PerusopetuksenDiaarinumerollinenKoulutus {
+  override def laajuus = None
+  override def isTutkinto = true
+}
 
 @Description("Perusopetuksen oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän suoritusta")
 case class AikuistenPerusopetuksenOppiaineenSuoritus(
@@ -72,3 +82,28 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
+
+@Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
+case class PerusopetuksenOppiaineenOppimääränSuoritus(
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
+  @Title("Oppiaine")
+  @Flatten
+  koulutusmoduuli: PerusopetuksenOppiaine,
+  yksilöllistettyOppimäärä: Boolean = false,
+  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
+  painotettuOpetus: Boolean = false,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  @Title("Arvosana")
+  @Flatten
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  suoritustapa: Koodistokoodiviite,
+  suorituskieli: Koodistokoodiviite,
+  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä

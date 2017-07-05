@@ -5,7 +5,6 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.Finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -58,58 +57,6 @@ object ExamplesPerusopetus {
   )
 
   lazy val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
-
-  lazy val aineopiskelija = Oppija(
-    MockOppijat.eero.vainHenkilötiedot,
-    List(PerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
-      päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      koulutustoimija = None,
-      suoritukset = List(
-        PerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("104/011/2014")),
-          tila = tilaValmis,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi(9),
-          suoritustapa = suoritustapaErityinenTutkinto,
-          vahvistus = vahvistusPaikkakunnalla(),
-          suorituskieli = suomenKieli
-        )),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
-        List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
-        )
-      )
-    ))
-  )
-
-  lazy val erityinenTutkintoAikuinen = Oppija(
-    exampleHenkilö,
-    List(PerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
-      päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      koulutustoimija = None,
-      suoritukset = List(
-        AikuistenPerusopetuksenOppimääränSuoritus(
-          koulutusmoduuli = perusopetus,
-          suorituskieli = suomenKieli,
-          tila = tilaValmis,
-          toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistusPaikkakunnalla(),
-          suoritustapa = suoritustapaErityinenTutkinto,
-          osasuoritukset = AikuistenPerusopetusExampleData.aikuistenAineet
-        )),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
-        List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
-        )
-      )
-    ))
-  )
 
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
@@ -171,10 +118,6 @@ object ExamplesPerusopetus {
   val examples = List(
     Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
     Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus),
-    Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
-    Example("aikuisten perusopetuksen oppimäärä - erityinen tutkinto", "Aikuisopiskelija on suorittanut peruskoulun oppimäärän erityisenä tutkintona", erityinenTutkintoAikuinen),
     Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija)
   )
 }
-
-
