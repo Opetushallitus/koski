@@ -5,6 +5,7 @@ import Bacon from 'baconjs'
 import delays from './delays'
 import Text from './Text.jsx'
 import Atom from 'bacon.atom'
+import Link from './Link.jsx'
 
 const ValidointiTaulukko = React.createClass({
   render() {
@@ -39,7 +40,7 @@ const ValidointiTaulukko = React.createClass({
                   ? <div>
                     <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}><Text name="Yhteensä"/>{' ' + oids.length}</a>
                     <ul className="oids">
-                    { oids.map((oid, i) => <li key={i}><a href={ '/koski/oppija/' + oid }>{oid}</a></li>)}
+                    { oids.map((oid, i) => <li key={i}><Link href={ '/koski/oppija/' + oid.henkilöOid }>{oid.opiskeluoikeusId}</Link></li>)}
                     </ul></div>
                   : <a onClick={() => this.setState({ expandedIdsKeys: expandedIdsKeys.concat(key)})}>{oids.length}</a>
               }
@@ -83,7 +84,11 @@ const ValidointiTaulukko = React.createClass({
   }
 })
 
+let latestQuery = undefined
+let latestContent = undefined
+
 export const validointiContentP = (query) => {
+  if (query == latestQuery) return latestContent
   let startedAtom = Atom(false)
   let oboeBus = Bacon.Bus()
   startedAtom.changes().filter(R.identity).onValue(() =>
@@ -94,38 +99,40 @@ export const validointiContentP = (query) => {
   )
 
   var keyCounter = 0
+  let oidsOf = ({ henkilöOid, opiskeluoikeusId }) => ({henkilöOid, opiskeluoikeusId})
   let validationStatusP = oboeBus.scan([], (grouped, validationResult) => {
     for (var i in grouped) {
       if (R.equals(grouped[i].errors, validationResult.errors)) {
-        grouped[i].oids.push(validationResult.henkilöOid)
-        grouped[i].ids.push(validationResult.opiskeluoikeusId)
+        grouped[i].oids.push(oidsOf(validationResult))
         return grouped
       }
     }
     grouped.push({
       errors: validationResult.errors,
       key: ++keyCounter,
-      oids: [validationResult.henkilöOid],
-      ids: [validationResult.opiskeluoikeusId]
+      oids: [oidsOf(validationResult)]
     })
     return grouped
   }).throttle(delays().delay(1000)).map(R.sortBy((row) => -row.oids.length))
 
   let validationFinishedP = validationStatusP.filter(false).mapEnd(true).startWith(false)
 
-  return Bacon.combineWith(validationStatusP, startedAtom, validationFinishedP, (validationStatus, started, finished) => ({
+  latestContent = Bacon.combineWith(validationStatusP, startedAtom, validationFinishedP, (validationStatus, started, finished) => ({
     content: (<div className='content-area validaatio'>
       <div className="main-content">
         <h2><Text name="Tiedon validointi"/></h2>
         { started
-            ? (finished
-              ? 'Kaikki opiskeluoikeudet validoitu'
-              : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.')
-            : <button onClick={() => startedAtom.set(true)}>Aloita validointi</button>
+          ? (finished
+            ? 'Kaikki opiskeluoikeudet validoitu'
+            : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.')
+          : <button onClick={() => startedAtom.set(true)}>Aloita validointi</button>
         }
         <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>
     </div>),
     title: ''
   }))
+
+  latestQuery = query
+  return latestContent
 }
