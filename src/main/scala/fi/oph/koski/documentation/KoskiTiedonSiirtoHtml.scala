@@ -121,6 +121,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
           { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
           { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
+          { examplesHtml(ExamplesAikuistenPerusopetus.examples, "Aikuisten perusopetus") }
           { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
           { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
           { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
