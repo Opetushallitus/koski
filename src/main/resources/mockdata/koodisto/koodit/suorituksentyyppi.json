@@ -132,6 +132,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaaranalkuvaihe",
+    "koodiArvo": "aikuistenperusopetuksenoppimaaranalkuvaihe",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen oppimäärän alkuvaihe",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaara",
     "koodiArvo": "aikuistenperusopetuksenoppimaara",
     "metadata": [
@@ -173,6 +185,30 @@
     "metadata": [
       {
         "nimi": "Aikuisten perusopetuksen kurssi",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenoppiaine",
+    "koodiArvo": "aikuistenperusopetuksenalkuvaiheenoppiaine",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen alkuvaiheen oppiaine",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenkurssi",
+    "koodiArvo": "aikuistenperusopetuksenalkuvaiheenkurssi",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssi",
         "lyhytNimi": "",
         "kieli": "FI"
       }

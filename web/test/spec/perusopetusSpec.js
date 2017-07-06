@@ -295,10 +295,10 @@ describe('Perusopetus', function() {
         '15.8.2008 Läsnä')
     })
 
-    describe('Kaikki tiedot näkyvissä', function() {
+    describe('Päättövaiheen opinnot', function() {
       before(opinnot.expandAll)
       it('näyttää suorituksen tiedot', function() {
-        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärä 19/011/2015\n' +
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärä OPH-1280-2017\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
@@ -337,6 +337,29 @@ describe('Perusopetus', function() {
           'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
           '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
         )
+      })
+    })
+
+    describe('Alkuvaiheen opinnot', function() {
+      before(opinnot.valitseSuoritus(1, 'Aikuisten perusopetuksen oppimäärän alkuvaihe'), opinnot.expandAll)
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärän alkuvaihe OPH-1280-2017\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+      })
+      it('näyttää oppiaineiden arvosanat', function() {
+        expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Pakolliset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9\n' +
+          'A1-kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
+          'Matematiikka 10\nLMA1\n9 LMA2\n9 LMA3\n9\n' +
+          'Yhteiskuntaoppi 8\nLYK1\n9 LYK2\n9\n' +
+          'Ympäristöoppi 8\nLYL1\n9\n' +
+          'Terveystieto 10\nATE1\n9\n' +
+          'Opinto-ohjaus S')
       })
     })
   })

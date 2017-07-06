@@ -136,7 +136,7 @@ const SuoritusTabs = ({ model, suoritukset }) => {
       addingAtom.set(false)
     }
   }
-  let tabTitle = (suoritusModel) => isPerusopetuksenOppimäärä(suoritusModel) ? <Text name="Päättötodistus"/> : suoritusTitle(suoritusModel)
+  let tabTitle = (suoritusModel) => suorituksenTyyppi(suoritusModel) == 'perusopetuksenoppimaara' ? <Text name="Päättötodistus"/> : suoritusTitle(suoritusModel)
 
   return (<ul className="suoritus-tabs">
     {
@@ -214,7 +214,11 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
 
 const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
-  return suorituksenTyyppi(suoritus) == 'ammatillinentutkintoosittainen'
-    ? `${title}, osittainen`
-    : title
+  console.log(suorituksenTyyppi(suoritus))
+  switch(suorituksenTyyppi(suoritus)) {
+    case 'ammatillinentutkintoosittainen': return `${title}, osittainen` // TODO: i18n
+    case 'aikuistenperusopetuksenoppimaara':
+    case 'aikuistenperusopetuksenoppimaaranalkuvaihe': return modelTitle(suoritus, 'tyyppi')
+    default: return title
+  }
 }

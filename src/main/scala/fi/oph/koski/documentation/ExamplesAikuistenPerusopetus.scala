@@ -6,8 +6,8 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritustapaErityinenTutkinto, äidinkieli, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.schema._
 
 
 object ExamplesAikuistenPerusopetus {
@@ -58,6 +58,23 @@ object ExamplesAikuistenPerusopetus {
         )
       )
     ))
+  )
+
+  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = PerusopetuksenOpiskeluoikeus(
+    alkamispäivä = Some(date(2008, 8, 15)),
+    päättymispäivä = Some(date(2016, 6, 4)),
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      ExamplesAikuistenPerusopetuksenAlkuvaihe.aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
+    ),
+    tila = PerusopetuksenOpiskeluoikeudenTila(
+      List(
+        PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+        PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+      )
+    )
   )
 
   def aikuistenPerusopetukseOppimääränSuoritus(koulutus: AikuistenPerusopetus, oppiaineet: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]]) = {

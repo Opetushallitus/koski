@@ -157,9 +157,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
       case s: PerusopetuksenOppimääränSuoritus => -100 // ensin oppimäärän suoritus
       case s: PerusopetuksenOppiaineenOppimääränSuoritus => 0 // oppiaineiden oppimäärien suoritukset
       case s: PerusopetuksenVuosiluokanSuoritus => - s.koulutusmoduuli.tunniste.koodiarvo.toInt // sitten luokka-asteet
-      case _ =>
-        logger.warn("Tuntematon suoritus: " + s)
-        -1000000
+      case _ => 100
     }
     val secondary = s.valmis
     (primary, secondary)

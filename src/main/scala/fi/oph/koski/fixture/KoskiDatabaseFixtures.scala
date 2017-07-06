@@ -74,7 +74,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus),
       (MockOppijat.toimintaAlueittainOpiskelija, ExamplesPerusopetus.toimintaAlueittainOpiskelija.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.oppiaineenKorottaja, ExamplesAikuistenPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
-      (MockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOppimäärä(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015).tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen),
       (MockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
       (MockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),

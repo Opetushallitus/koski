@@ -93,12 +93,10 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Flatten
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä with SuoritustavallinenPerusopetuksenSuoritus

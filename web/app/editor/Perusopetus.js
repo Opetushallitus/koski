@@ -1,11 +1,11 @@
 import {modelData} from './EditorModel'
 import Http from '../http'
+import {suorituksenTyyppi} from './Suoritus'
 
 export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
 export const isPerusopetuksenOppimäärä = (suoritus) => {
-  let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
-  return tunniste.koodistoUri == 'koulutus' && tunniste.koodiarvo == '201101'
+  return ['perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara'].includes(suorituksenTyyppi(suoritus))
 }
 export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
 export const luokkaAste = (suoritus) => {

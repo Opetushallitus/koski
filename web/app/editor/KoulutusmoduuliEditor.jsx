@@ -2,7 +2,7 @@ import React from 'react'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {Editor} from './Editor.jsx'
 import {t} from '../i18n.js'
-import {modelData} from './EditorModel'
+import {suorituksenTyyppi} from './Suoritus'
 
 export const KoulutusmoduuliEditor = React.createClass({
   render() {
@@ -11,7 +11,7 @@ export const KoulutusmoduuliEditor = React.createClass({
     return (<span className="koulutusmoduuli">
       <span className="tunniste">
         {
-          modelData(model.context.suoritus, 'tyyppi.koodiarvo') == 'aikuistenperusopetuksenoppimaara'
+          ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe'].includes(suorituksenTyyppi(model.context.suoritus))
             ? <Editor model={model.context.suoritus} path="tyyppi" edit={false}/>
             : <Editor model={model} path="tunniste" edit={overrideEdit}/>
         }
