@@ -18,7 +18,7 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
 
-@Description("Aikuisten perusopetuksen tunnistetiedot, aikuisten perusopetuksen opetussuunnitelman 2015 mukaisesti")
+@Description("Aikuisten perusopetuksen tunnistetiedot")
 case class AikuistenPerusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
