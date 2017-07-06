@@ -234,19 +234,9 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("AÄI1"),
       alkuvaiheenKurssinSuoritus("AÄI2"),
       alkuvaiheenKurssinSuoritus("AÄI3"),
-      alkuvaiheenKurssinSuoritus("LÄI1"),
-      alkuvaiheenKurssinSuoritus("LÄI2"),
-      alkuvaiheenKurssinSuoritus("LÄI3"),
-      alkuvaiheenKurssinSuoritus("LÄI4"),
-      alkuvaiheenKurssinSuoritus("LÄI5"),
-      alkuvaiheenKurssinSuoritus("LÄI6"),
-      alkuvaiheenKurssinSuoritus("LÄI7"),
-      alkuvaiheenKurssinSuoritus("LÄI8"),
-      alkuvaiheenKurssinSuoritus("LÄI9"),
-      alkuvaiheenKurssinSuoritus("AÄI1"),
-      alkuvaiheenKurssinSuoritus("AÄI2"),
-      alkuvaiheenKurssinSuoritus("AÄI3"),
-      alkuvaiheenKurssinSuoritus("AÄI4")
+      alkuvaiheenKurssinSuoritus("AÄI4"),
+      alkuvaiheenKurssinSuoritus("AÄI5"),
+      alkuvaiheenKurssinSuoritus("AÄI6")
     ))),
     alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenVierasKieli(kieli=Koodistokoodiviite(koodiarvo = "EN", koodistoUri = "kielivalikoima"))).copy(arviointi = arviointi(7), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("AENA1"),

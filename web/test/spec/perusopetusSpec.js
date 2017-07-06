@@ -351,15 +351,14 @@ describe('Perusopetus', function() {
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-          'Pakolliset oppiaineet\n' +
           'Oppiaine Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9\n' +
-          'A1-kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9\n' +
+          'Vieras kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
           'Matematiikka 10\nLMA1\n9 LMA2\n9 LMA3\n9\n' +
-          'Yhteiskuntaoppi 8\nLYK1\n9 LYK2\n9\n' +
-          'Ympäristöoppi 8\nLYL1\n9\n' +
+          'Yhteiskuntatietous ja kulttuurintuntemus 8\nLYK1\n9 LYK2\n9\n' +
+          'Ympäristö- ja luonnontieto 8\nLYL1\n9\n' +
           'Terveystieto 10\nATE1\n9\n' +
-          'Opinto-ohjaus S')
+          'Opinto-ohjaus ja työelämän taidot S')
       })
     })
   })

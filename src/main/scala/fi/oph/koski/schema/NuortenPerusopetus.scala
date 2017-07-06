@@ -330,7 +330,7 @@ case class PeruskoulunÄidinkieliJaKirjallisuus(
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenKoodistostaLöytyväOppiaine
+) extends PerusopetuksenKoodistostaLöytyväOppiaine with Äidinkieli
 
 
 @Title("Vieras tai toinen kotimainen kieli")
@@ -348,7 +348,7 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenKoodistostaLöytyväOppiaine {
+) extends PerusopetuksenKoodistostaLöytyväOppiaine with Kieliaine {
   override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
 }
 

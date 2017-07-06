@@ -14,12 +14,12 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
   render() {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
-      let title = t(modelData(aine, 'tunniste.nimi')) + (kielenOppiaine || äidinkieli ? ', ' : '')
+      let title = t(modelData(aine, 'tunniste.nimi')) + (kieliaine ? ', ' : '')
       return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + title.toLowerCase()}</span> : title
     }
     let pakollinen = modelData(oppiaine, 'pakollinen')
-    let kielenOppiaine = oppiaine.value.classes.includes('peruskoulunvierastaitoinenkotimainenkieli')
-    let äidinkieli = oppiaine.value.classes.includes('peruskoulunaidinkielijakirjallisuus')
+    let äidinkieli = oppiaine.value.classes.includes('aidinkieli')
+    let kieliaine = oppiaine.value.classes.includes('kieliaine')
 
     return (<span>
     {
@@ -32,7 +32,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
     }
       {
         // kielivalinta
-        (kielenOppiaine || äidinkieli) && <span className="value kieli"><Editor model={oppiaine} path="kieli" sortBy={kielenOppiaine && sortLanguages}/></span>
+        kieliaine && <span className="value kieli"><Editor model={oppiaine} path="kieli" sortBy={!äidinkieli && sortLanguages}/></span>
       }
       {
         this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.saveChangesBus, () => {

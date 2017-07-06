@@ -393,7 +393,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
-) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
@@ -408,7 +408,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
-) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Äidinkieli {
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 

@@ -55,3 +55,9 @@ trait Valinnaisuus {
   @Description("Onko pakollinen osa tutkinnossa (true/false)")
   def pakollinen: Boolean
 }
+
+trait Kieliaine extends Koulutusmoduuli {
+  def kieli: Koodistokoodiviite
+}
+
+trait Äidinkieli extends Kieliaine

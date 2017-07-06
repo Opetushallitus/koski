@@ -101,7 +101,7 @@ case class LukioonValmistavaÄidinkieliJaKirjallisuus(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Äidinkieli {
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
@@ -114,7 +114,7 @@ case class MuutKielet(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 

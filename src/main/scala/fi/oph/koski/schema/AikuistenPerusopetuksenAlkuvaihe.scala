@@ -86,7 +86,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   kieli: Koodistokoodiviite
-) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine
+) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine with Äidinkieli
 
 @Title("Vieras tai toinen kotimainen kieli")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
@@ -96,7 +96,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenVierasKieli(
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite
-) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine {
+) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine with Kieliaine {
   override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
 }
 

@@ -279,7 +279,7 @@ case class IBOppiaineLanguage(
   kieli: Koodistokoodiviite,
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
-) extends IBAineRyhmäOppiaine {
+) extends IBAineRyhmäOppiaine with Kieliaine {
   override def description(text: LocalizationRepository) = concat(nimi, ", ",  kieli)
 }
 

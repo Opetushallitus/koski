@@ -272,7 +272,7 @@ case class LukionÄidinkieliJaKirjallisuus(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine
+) extends LukionValtakunnallinenOppiaine with Äidinkieli
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class VierasTaiToinenKotimainenKieli(
@@ -288,7 +288,7 @@ case class VierasTaiToinenKotimainenKieli(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine {
+) extends LukionValtakunnallinenOppiaine with Kieliaine {
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
