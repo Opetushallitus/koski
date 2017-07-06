@@ -9,7 +9,7 @@ import Highlight from 'react-highlighter'
 import {t} from './i18n'
 import Text from './Text.jsx'
 
-const searchStringAtom = Atom('')
+export const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
 const acceptableQuery = (q) => q.length >= 3
 
