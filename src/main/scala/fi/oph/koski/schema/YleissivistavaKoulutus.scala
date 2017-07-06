@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OppiaineenSuoritus extends Suoritus {
   @Title("Oppiaine")
-  def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
+  def koulutusmoduuli: Koulutusmoduuli
 }
 
 trait Yksilöllistettävä {

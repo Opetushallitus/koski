@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Title}
+import LocalizedString._
 
 case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")
@@ -22,7 +23,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
 
 @Description("Oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän alkuvaiheen suoritusta")
 case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
-  koulutusmoduuli: PerusopetuksenOppiaine,
+  koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
   painotettuOpetus: Boolean = false,
@@ -47,6 +48,57 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenkurssi", koodistoUri = "suorituksentyyppi")
 ) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+
+@Description("Perusopetuksen oppiaineen tunnistetiedot")
+sealed trait AikuistenPerusopetuksenAlkuvaiheenOppiaine extends Koulutusmoduuli {
+  @Title("Oppiaine")
+  def tunniste: KoodiViite
+  def laajuus = None
+}
+
+trait AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+  @Description("Oppiaine")
+  @KoodistoUri("aikuistenperusopetuksenalkuvaiheenoppiaineet")
+  @OksaUri("tmpOKSAID256", "oppiaine")
+  def tunniste: Koodistokoodiviite
+}
+
+@Title("Paikallinen oppiaine")
+case class AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString
+) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuli
+
+@Title("Muu oppiaine")
+case class MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine(
+  @KoodistoKoodiarvo("MA")
+  @KoodistoKoodiarvo("YH")
+  @KoodistoKoodiarvo("YL")
+  @KoodistoKoodiarvo("TE")
+  @KoodistoKoodiarvo("OP")
+  tunniste: Koodistokoodiviite
+) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine
+
+@Title("Äidinkieli ja kirjallisuus")
+case class AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(
+  @KoodistoKoodiarvo("AI")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "aikuistenperusopetuksenalkuvaiheenoppiaineet"),
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("oppiaineaidinkielijakirjallisuus")
+  kieli: Koodistokoodiviite
+) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine
+
+@Title("Vieras tai toinen kotimainen kieli")
+@Description("Oppiaineena vieras tai toinen kotimainen kieli")
+case class AikuistenPerusopetuksenAlkuvaiheenVierasKieli(
+  @KoodistoKoodiarvo("A1")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("A1", koodistoUri = "aikuistenperusopetuksenalkuvaiheenoppiaineet"),
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite
+) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine {
+  override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
+}
 
 sealed trait AikuistenPerusopetuksenAlkuvaiheenKurssi extends Koulutusmoduuli {
   def laajuus: Option[LaajuusVuosiviikkotunneissa]

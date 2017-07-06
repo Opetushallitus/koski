@@ -5,6 +5,7 @@ object Koodistot {
   val koskiKoodistot = List (
     "aikuistenperusopetuksenkurssit2015",
     "aikuistenperusopetuksenalkuvaiheenkurssit2017",
+    "aikuistenperusopetuksenalkuvaiheenoppiaineet",
     "aikuistenperusopetuksenpaattovaiheenkurssit2017",
     "aineryhmaib",
     "ammatillisennaytonarvioinnistapaattaneet",

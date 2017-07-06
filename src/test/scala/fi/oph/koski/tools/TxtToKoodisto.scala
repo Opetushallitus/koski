@@ -11,9 +11,9 @@ import fi.oph.koski.util.Files
 // where xx == koodiarvo, yy = nimi
 
 object TxtToKoodisto extends App {
-  val filename = "aikuisten_perusopetus_alkuvaihe_2017.txt"
-  val koodistoUri = "aikuistenperusopetuksenalkuvaiheenkurssit2017"
-  val koodistoNimi = "Aikuisten perusopetuksen alkuvaiheen kurssit 2017"
+  val filename = "alkuvaiheen_oppiaineet.txt"
+  val koodistoUri = "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+  val koodistoNimi = "Aikuisten perusopetuksen alkuvaiheen oppiaineet"
 
   private val fileContent = Files.asString(filename, StandardCharsets.ISO_8859_1).get
   private val lines = fileContent.split("\n").toList

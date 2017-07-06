@@ -3,6 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.alkuvaiheenKurssinSuoritus
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritustapaErityinenTutkinto, äidinkieli, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
@@ -214,8 +215,13 @@ object ExamplesAikuistenPerusopetus {
     osasuoritukset = alkuvaiheenOppiaineet
   )
 
+  def kieli(oppiaine: String, kieli: String) = PeruskoulunVierasTaiToinenKotimainenKieli(
+    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+
+
   def alkuvaiheenOppiaineet = Some(List(
-    alkuvaiheenOppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(arviointi = arviointi(9), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LÄI1"),
       alkuvaiheenKurssinSuoritus("LÄI2"),
       alkuvaiheenKurssinSuoritus("LÄI3"),
@@ -224,37 +230,55 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("LÄI6"),
       alkuvaiheenKurssinSuoritus("LÄI7"),
       alkuvaiheenKurssinSuoritus("LÄI8"),
-      alkuvaiheenKurssinSuoritus("LÄI9")
+      alkuvaiheenKurssinSuoritus("LÄI9"),
+      alkuvaiheenKurssinSuoritus("AÄI1"),
+      alkuvaiheenKurssinSuoritus("AÄI2"),
+      alkuvaiheenKurssinSuoritus("AÄI3"),
+      alkuvaiheenKurssinSuoritus("LÄI1"),
+      alkuvaiheenKurssinSuoritus("LÄI2"),
+      alkuvaiheenKurssinSuoritus("LÄI3"),
+      alkuvaiheenKurssinSuoritus("LÄI4"),
+      alkuvaiheenKurssinSuoritus("LÄI5"),
+      alkuvaiheenKurssinSuoritus("LÄI6"),
+      alkuvaiheenKurssinSuoritus("LÄI7"),
+      alkuvaiheenKurssinSuoritus("LÄI8"),
+      alkuvaiheenKurssinSuoritus("LÄI9"),
+      alkuvaiheenKurssinSuoritus("AÄI1"),
+      alkuvaiheenKurssinSuoritus("AÄI2"),
+      alkuvaiheenKurssinSuoritus("AÄI3"),
+      alkuvaiheenKurssinSuoritus("AÄI4")
     ))),
-    alkuvaiheenOppiaineenSuoritus(kieli("A1", "EN")).copy(arviointi = arviointi(7), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenVierasKieli(kieli=Koodistokoodiviite(koodiarvo = "EN", koodistoUri = "kielivalikoima"))).copy(arviointi = arviointi(7), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("AENA1"),
       alkuvaiheenKurssinSuoritus("AENA2"),
       alkuvaiheenKurssinSuoritus("AENA3"),
       alkuvaiheenKurssinSuoritus("AENA4")
     ))),
-    alkuvaiheenOppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("MA")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LMA1"),
       alkuvaiheenKurssinSuoritus("LMA2"),
       alkuvaiheenKurssinSuoritus("LMA3")
     ))),
     // Yhteiskuntatietous ja kulttuurintuntemus
-    alkuvaiheenOppiaineenSuoritus(oppiaine("YH")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YH")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LYK1"),
       alkuvaiheenKurssinSuoritus("LYK2")
     ))),
     // Ympäristö- ja luonnontieto
-    alkuvaiheenOppiaineenSuoritus(oppiaine("YL")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YL")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LYL1")
     ))),
     // Terveystieto
-    alkuvaiheenOppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("TE")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("ATE1")
     ))),
     // Opinto-ohjaus
-    alkuvaiheenOppiaineenSuoritus(oppiaine("OP")).copy(arviointi = arviointi("S"))
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("OP")).copy(arviointi = arviointi("S"))
   ))
 
-  def alkuvaiheenOppiaineenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
+  def alkuvaiheenOppiaine(aine: String) = MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "aikuistenperusopetuksenalkuvaiheenoppiaineet", koodiarvo = aine))
+
+  def alkuvaiheenOppiaineenSuoritus(aine: AikuistenPerusopetuksenAlkuvaiheenOppiaine) = AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     tila = tilaValmis,

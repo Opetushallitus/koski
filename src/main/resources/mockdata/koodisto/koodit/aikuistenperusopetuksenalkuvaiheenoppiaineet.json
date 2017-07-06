@@ -1,0 +1,64 @@
+[ {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+  "koodiArvo" : "AI",
+  "metadata" : [ {
+    "nimi" : "Äidinkieli ja kirjallisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
+  "koodiArvo" : "A1",
+  "metadata" : [ {
+    "nimi" : "Vieras kieli",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
+  "koodiArvo" : "MA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
+  "koodiArvo" : "YH",
+  "metadata" : [ {
+    "nimi" : "Yhteiskuntatietous ja kulttuurintuntemus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
+  "koodiArvo" : "YL",
+  "metadata" : [ {
+    "nimi" : "Ympäristö- ja luonnontieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
+  "koodiArvo" : "TE",
+  "metadata" : [ {
+    "nimi" : "Terveystieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
+  "koodiArvo" : "OP",
+  "metadata" : [ {
+    "nimi" : "Opinto-ohjaus ja työelämän taidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]
