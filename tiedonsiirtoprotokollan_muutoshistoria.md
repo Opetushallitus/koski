@@ -1,3 +1,7 @@
+## 6.7.2017
+
+- Lisätty aikuisten perusopetuksen alkuvaiheen opinnot
+
 ## 5.7.2017
 
 - Lisätty aikuisten perusopetuksen kurssitaso
