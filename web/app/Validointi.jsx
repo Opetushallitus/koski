@@ -4,6 +4,7 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import delays from './delays'
 import Text from './Text.jsx'
+import Atom from 'bacon.atom'
 
 const ValidointiTaulukko = React.createClass({
   render() {
@@ -83,11 +84,15 @@ const ValidointiTaulukko = React.createClass({
 })
 
 export const validointiContentP = (query) => {
+  let startedAtom = Atom(false)
   let oboeBus = Bacon.Bus()
-  Oboe('/koski/api/opiskeluoikeus/validate' + query)
-    .node('{errors opiskeluoikeusId}', (x) => oboeBus.push(x))
-    .done(() => oboeBus.end())
-    .fail((e) => oboeBus.error(e))
+  startedAtom.changes().filter(R.identity).onValue(() =>
+    Oboe('/koski/api/opiskeluoikeus/validate' + query)
+      .node('{errors opiskeluoikeusId}', (x) => oboeBus.push(x))
+      .done(() => oboeBus.end())
+      .fail((e) => oboeBus.error(e))
+  )
+
   var keyCounter = 0
   let validationStatusP = oboeBus.scan([], (grouped, validationResult) => {
     for (var i in grouped) {
@@ -108,11 +113,16 @@ export const validointiContentP = (query) => {
 
   let validationFinishedP = validationStatusP.filter(false).mapEnd(true).startWith(false)
 
-  return Bacon.combineWith(validationStatusP, validationFinishedP, (validationStatus, finished) => ({
+  return Bacon.combineWith(validationStatusP, startedAtom, validationFinishedP, (validationStatus, started, finished) => ({
     content: (<div className='content-area validaatio'>
       <div className="main-content">
         <h2><Text name="Tiedon validointi"/></h2>
-        { finished ? 'Kaikki opiskeluoikeudet validoitu' : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.'}
+        { started
+            ? (finished
+              ? 'Kaikki opiskeluoikeudet validoitu'
+              : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.')
+            : <button onClick={() => startedAtom.set(true)}>Aloita validointi</button>
+        }
         <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>
     </div>),
