@@ -13,10 +13,7 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
 const RaamitTopBar = ({location}) => {
   return (
     <header id="topbar" className="inraamit topbarnav">
-      <ul>
-        <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
-        <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
-      </ul>
+      {navLinks(location)}
     </header>
   )
 }
@@ -32,12 +29,15 @@ const LocalTopBar = ({location, user, titleKey}) => {
       <UserInfo user={user}/>
       {(user !== null) &&
         <div className='topbarnav'>
-          <ul>
-            <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
-            <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
-          </ul>
+          {navLinks(location)}
         </div>
       }
     </header>
   )
 }
+
+const navLinks = (location) => (<ul>
+    <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
+    <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
+    <li>{naviLink('/koski/validointi', 'Validointi', location.path, '')}</li>
+  </ul>)
