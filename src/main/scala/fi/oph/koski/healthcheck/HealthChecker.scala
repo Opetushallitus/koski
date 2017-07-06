@@ -101,6 +101,7 @@ trait HealthCheck extends Logging {
     case e: TimeoutException =>
       Left(HttpStatus(504, List(ErrorDetail(key, "timeout"))))
     case e =>
+      logger.warn(e)("healthcheck failed")
       Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
   }
 
