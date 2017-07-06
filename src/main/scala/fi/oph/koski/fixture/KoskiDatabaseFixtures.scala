@@ -6,10 +6,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenOppimäärä, aikuistenPerusopetus2015, aineopiskelija, oppiaineidenSuoritukset2015}
-import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus
-import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus
-import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueittainOpiskelija
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.Json

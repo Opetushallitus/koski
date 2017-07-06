@@ -13,8 +13,8 @@ import fi.oph.koski.schema._
 object ExamplesAikuistenPerusopetus {
   val examples = List(
     Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
-    Example("aikuisten perusopetuksen oppimäärä 2015", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän opetussuunnitelman 2015 mukaisesti", aikuistenPerusopetuksenOppimäärä(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015)),
-    Example("aikuisten perusopetuksen oppimäärä 2017", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän opetussuunnitelman 2017 mukaisesti", aikuistenPerusopetuksenOppimäärä(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017))
+    Example("aikuisten perusopetuksen oppimäärä 2015", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän opetussuunnitelman 2015 mukaisesti", aikuistenPerusopetuksenOppimäärä2015),
+    Example("aikuisten perusopetuksen oppimäärä 2017", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän alkuvaiheineen opetussuunnitelman 2017 mukaisesti", Oppija(exampleHenkilö, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)))
   )
 
   lazy val aineopiskelija = Oppija(
@@ -43,14 +43,14 @@ object ExamplesAikuistenPerusopetus {
     ))
   )
 
-  def aikuistenPerusopetuksenOppimäärä(koulutus: AikuistenPerusopetus, oppiaineet: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]]) = Oppija(
+  def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
-      suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(koulutus, oppiaineet)),
+      suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015)),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
@@ -66,7 +66,7 @@ object ExamplesAikuistenPerusopetus {
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(
-      ExamplesAikuistenPerusopetuksenAlkuvaihe.aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetuksenAlkuvaiheenSuoritus,
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
     tila = PerusopetuksenOpiskeluoikeudenTila(
@@ -181,6 +181,88 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String) = AikuistenPerusopetuksenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus)),
+    tilaValmis,
+    arviointi = arviointi(9)
+  )
+
+  def aikuistenPerusopetuksenAlkuvaihe = {
+    Oppija(
+      exampleHenkilö,
+      List(PerusopetuksenOpiskeluoikeus(
+        alkamispäivä = Some(date(2008, 8, 15)),
+        päättymispäivä = Some(date(2016, 6, 4)),
+        oppilaitos = Some(jyväskylänNormaalikoulu),
+        koulutustoimija = None,
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus),
+        tila = PerusopetuksenOpiskeluoikeudenTila(
+          List(
+            PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+            PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          )
+        )
+      ))
+    )
+  }
+
+  def aikuistenPerusopetuksenAlkuvaiheenSuoritus = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
+    aikuistenPerusopetus2017,
+    suorituskieli = suomenKieli,
+    tila = tilaValmis,
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistusPaikkakunnalla(),
+    suoritustapa = suoritustapaErityinenTutkinto,
+    osasuoritukset = alkuvaiheenOppiaineet
+  )
+
+  def alkuvaiheenOppiaineet = Some(List(
+    alkuvaiheenOppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("LÄI1"),
+      alkuvaiheenKurssinSuoritus("LÄI2"),
+      alkuvaiheenKurssinSuoritus("LÄI3"),
+      alkuvaiheenKurssinSuoritus("LÄI4"),
+      alkuvaiheenKurssinSuoritus("LÄI5"),
+      alkuvaiheenKurssinSuoritus("LÄI6"),
+      alkuvaiheenKurssinSuoritus("LÄI7"),
+      alkuvaiheenKurssinSuoritus("LÄI8"),
+      alkuvaiheenKurssinSuoritus("LÄI9")
+    ))),
+    alkuvaiheenOppiaineenSuoritus(kieli("A1", "EN")).copy(arviointi = arviointi(7), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("AENA1"),
+      alkuvaiheenKurssinSuoritus("AENA2"),
+      alkuvaiheenKurssinSuoritus("AENA3"),
+      alkuvaiheenKurssinSuoritus("AENA4")
+    ))),
+    alkuvaiheenOppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("LMA1"),
+      alkuvaiheenKurssinSuoritus("LMA2"),
+      alkuvaiheenKurssinSuoritus("LMA3")
+    ))),
+    // Yhteiskuntatietous ja kulttuurintuntemus
+    alkuvaiheenOppiaineenSuoritus(oppiaine("YH")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("LYK1"),
+      alkuvaiheenKurssinSuoritus("LYK2")
+    ))),
+    // Ympäristö- ja luonnontieto
+    alkuvaiheenOppiaineenSuoritus(oppiaine("YL")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("LYL1")
+    ))),
+    // Terveystieto
+    alkuvaiheenOppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(10), osasuoritukset = Some(List(
+      alkuvaiheenKurssinSuoritus("ATE1")
+    ))),
+    // Opinto-ohjaus
+    alkuvaiheenOppiaineenSuoritus(oppiaine("OP")).copy(arviointi = arviointi("S"))
+  ))
+
+  def alkuvaiheenOppiaineenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
+    koulutusmoduuli = aine,
+    suorituskieli = None,
+    tila = tilaValmis,
+    arviointi = None
+  )
+
+  def alkuvaiheenKurssinSuoritus(koodiarvo: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
+    ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017")),
     tilaValmis,
     arviointi = arviointi(9)
   )
