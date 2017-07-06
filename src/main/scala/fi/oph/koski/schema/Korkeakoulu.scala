@@ -36,39 +36,39 @@ trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuoritusk
   def toimipiste: Oppilaitos
 }
 
-  case class KorkeakoulututkinnonSuoritus(
-    @Title("Tutkinto")
-    koulutusmoduuli: Korkeakoulututkinto,
-    toimipiste: Oppilaitos,
-    tila: Koodistokoodiviite,
-    arviointi: Option[List[KorkeakoulunArviointi]],
-    vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-    suorituskieli: Option[Koodistokoodiviite],
-    @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
-    @Title("Opintojaksot")
-    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
-    @KoodistoKoodiarvo("korkeakoulututkinto")
-    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
-  ) extends KorkeakouluSuoritus {
-    override def tarvitseeVahvistuksen = false
-  }
+case class KorkeakoulututkinnonSuoritus(
+  @Title("Tutkinto")
+  koulutusmoduuli: Korkeakoulututkinto,
+  toimipiste: Oppilaitos,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[KorkeakoulunArviointi]],
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  suorituskieli: Option[Koodistokoodiviite],
+  @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
+  @Title("Opintojaksot")
+  override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+  @KoodistoKoodiarvo("korkeakoulututkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
+) extends KorkeakouluSuoritus {
+  override def tarvitseeVahvistuksen = false
+}
 
-  case class KorkeakoulunOpintojaksonSuoritus(
-    @Title("Opintojakso")
-    koulutusmoduuli: KorkeakoulunOpintojakso,
-    toimipiste: Oppilaitos,
-    tila: Koodistokoodiviite,
-    arviointi: Option[List[KorkeakoulunArviointi]],
-    vahvistus: Option[Henkilövahvistus],
-    suorituskieli: Option[Koodistokoodiviite],
-    @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
-    @Title("Sisältyvät opintojaksot")
-    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
-    @KoodistoKoodiarvo("korkeakoulunopintojakso")
-    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
-  ) extends KorkeakouluSuoritus {
-    override def tarvitseeVahvistuksen = false
-  }
+case class KorkeakoulunOpintojaksonSuoritus(
+  @Title("Opintojakso")
+  koulutusmoduuli: KorkeakoulunOpintojakso,
+  toimipiste: Oppilaitos,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[KorkeakoulunArviointi]],
+  vahvistus: Option[Henkilövahvistus],
+  suorituskieli: Option[Koodistokoodiviite],
+  @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
+  @Title("Sisältyvät opintojaksot")
+  override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
+  @KoodistoKoodiarvo("korkeakoulunopintojakso")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
+) extends KorkeakouluSuoritus {
+  override def tarvitseeVahvistuksen = false
+}
 
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(

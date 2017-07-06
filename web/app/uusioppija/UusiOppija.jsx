@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from '../http'
 import {navigateToOppija, showError} from '../location'
+import {searchStringAtom} from '../OppijaHaku.jsx'
 import UusiOpiskeluoikeus from './UusiOpiskeluoikeus.jsx'
 import UusiHenkilö from './UusiHenkilo.jsx'
 import Text from '../Text.jsx'
@@ -18,7 +19,10 @@ export const UusiOppija = ({hetu, oid}) => {
     .flatMapLatest(postNewOppija)
     .map(oppija => ({oid: oppija.henkilö.oid}))
 
-  createOppijaE.onValue(navigateToOppija)
+  createOppijaE.onValue(v => {
+    searchStringAtom.set('')
+    navigateToOppija(v)
+  })
 
   const inProgressP = submitBus.awaiting(createOppijaE.mapError())
 
