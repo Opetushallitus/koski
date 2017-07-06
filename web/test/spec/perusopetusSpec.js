@@ -1481,7 +1481,7 @@ describe('Perusopetus', function() {
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
-        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus')
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärä')
       )
       it('Näytetään oikein', function() {
         expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
