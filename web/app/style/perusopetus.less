@@ -27,8 +27,8 @@
         > thead {
           border-bottom: 1px solid @color-disabled;
         }
-        > thead,tbody > tr {
-          > td, th {
+        > thead > tr, > tbody > tr {
+          > td, > th {
             padding-bottom: 7px;
           }
           > .oppiaine {
@@ -60,7 +60,7 @@
               width: initial;
             }
           }
-          > td.laajuus, th.laajuus {
+          > td.laajuus, > th.laajuus {
             padding-left: 10px;
             text-align: right;
             white-space: nowrap;
@@ -74,8 +74,12 @@
           }
           .kurssit {
             padding-left: 20px;
+            margin-left: 20px;
             margin-bottom: 5px;
             background: @color-neutral-gray;
+            .kurssi {
+              padding-right: 10px;
+            }
           }
         }
         .footnotes {
