@@ -1,5 +1,7 @@
 package fi.oph.koski.healthcheck
 
+import java.util.concurrent.TimeoutException
+
 import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -10,6 +12,10 @@ import fi.oph.koski.koskiuser.KoskiSession._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
+
+import scala.concurrent.duration._
+import scala.language.postfixOps
+import scalaz.concurrent.Task
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
@@ -88,12 +94,13 @@ trait HealthCheck extends Logging {
   }
 
   private def get[T](key: String, f: => T): Either[HttpStatus, T] = try {
-    Right(f)
+    Right(Task(f).runFor(5 seconds))
   } catch {
     case e: HttpStatusException =>
       Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))
+    case e: TimeoutException =>
+      Left(HttpStatus(504, List(ErrorDetail(key, "timeout"))))
     case e =>
-      logger.error(e)("healthcheck failed")
       Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
   }
 
