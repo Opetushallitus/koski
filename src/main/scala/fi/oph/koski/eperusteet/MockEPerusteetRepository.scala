@@ -9,6 +9,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-luonto-ja-ymparistoala",
     "rakenne-autoalan-tyonjohto",
     "rakenne-perusopetus",
+    "rakenne-aikuisten-perusopetus2017",
     "rakenne-lukio",
     "rakenne-hiusalan-perustutkinto",
     "rakenne-puutarhatalouden-perustutkinto").map { id =>

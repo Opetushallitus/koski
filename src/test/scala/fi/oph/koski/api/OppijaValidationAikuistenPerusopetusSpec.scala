@@ -20,7 +20,7 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Pe
     )
   }
 
-  def eperusteistaLöytymätönValidiDiaarinumero: String = "OPH-1280-2017"
+  def eperusteistaLöytymätönValidiDiaarinumero: String = "19/011/2015"
 
   "Kurssisuoritukset" - {
     "OPS 2015, mutta kurssisuorituksissa 2017 koodisto -> HTTP 400" in {

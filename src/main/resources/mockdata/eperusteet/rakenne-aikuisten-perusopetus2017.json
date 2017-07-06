@@ -1,0 +1,34 @@
+{
+  "id" : 2499640,
+  "globalVersion" : {
+    "aikaleima" : 1498132010053
+  },
+  "nimi" : {
+    "_tunniste" : "e3ed18e1-e761-48e9-b1c1-f984001a116f",
+    "fi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet",
+    "_id" : "2693547"
+  },
+  "koulutustyyppi" : "koulutustyyppi_17",
+  "koulutukset" : [ ],
+  "kielet" : [ "fi" ],
+  "kuvaus" : null,
+  "maarayskirje" : {
+    "id" : 2693560,
+    "url" : {
+      "fi" : "http://www.oph.fi/download/184338_AIPE_maarays_fi2017.pdf"
+    }
+  },
+  "muutosmaaraykset" : [ ],
+  "diaarinumero" : "OPH-1280-2017",
+  "voimassaoloAlkaa" : 1514757600000,
+  "siirtymaPaattyy" : null,
+  "voimassaoloLoppuu" : null,
+  "paatospvm" : 1497214800000,
+  "luotu" : 1493780399090,
+  "muokattu" : 1498132010053,
+  "tila" : "valmis",
+  "tyyppi" : "normaali",
+  "koulutusvienti" : false,
+  "korvattavatDiaarinumerot" : [ ],
+  "osaamisalat" : [ ]
+}
