@@ -123,9 +123,9 @@ export const validointiContentP = (query) => {
         <h2><Text name="Tiedon validointi"/></h2>
         { started
           ? (finished
-            ? 'Kaikki opiskeluoikeudet validoitu'
-            : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.')
-          : <button onClick={() => startedAtom.set(true)}>Aloita validointi</button>
+            ? <Text name="Kaikki opiskeluoikeudet validoitu."/>
+            : <Text name="Odota, tietoja validoidaan."/>)
+          : <button onClick={() => startedAtom.set(true)}><Text name="Aloita validointi"/></button>
         }
         <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>

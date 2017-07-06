@@ -338,5 +338,8 @@
   "Sisältyy opiskeluoikeuteen" : "Sisältyy opiskeluoikeuteen",
   "Toinen tutkintonimike" : "Toinen tutkintonimike",
   "Validointi": "Validointi",
+  "Aloita validointi": "Aloita validointi",
+  "Kaikki opiskeluoikeudet validoitu.": "Kaikki opiskeluoikeudet validoitu.",
+  "Odota, tietoja validoidaan.": "Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.",
   "Yhteensä": "Yhteensä"
 }
