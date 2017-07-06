@@ -12,8 +12,8 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
   def oppiaineet: List[T]
   def title: String
 
-  private def onPakollinen(suoritus: Suoritus) = suoritus match {
-    case s:OppiaineenSuoritus => s.koulutusmoduuli.pakollinen
+  private def onPakollinen(suoritus: Suoritus) = suoritus.koulutusmoduuli match {
+    case s: Valinnaisuus => s.pakollinen
     case _ => true
   }
   def onYksilöllistetty(suoritus: Suoritus) = suoritus match {
