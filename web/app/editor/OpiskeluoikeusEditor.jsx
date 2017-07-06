@@ -214,7 +214,6 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
 
 const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
-  console.log(suorituksenTyyppi(suoritus))
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return `${title}, osittainen` // TODO: i18n
     case 'aikuistenperusopetuksenoppimaara':
