@@ -66,7 +66,7 @@ export default class OrganisaatioPicker extends BaconComponent {
       : noSelectionText
 
     return (
-      <div className={loading ? 'organisaatio loading' : 'organisaatio'} tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
+      <div className={loading ? 'organisaatio loading' : 'organisaatio'} tabIndex="0" onKeyDown={this.onKeyDown.bind(this)} ref={root => this.root = root}>
         <div className={buildClassNames(['organisaatio-selection text-like-input', singleResult && 'disabled single-result'])} onClick={ () => !singleResult && this.setState({open:!open}) }>{ selectionStr }</div>
         { open &&
         <div className="organisaatio-popup">

@@ -31,7 +31,7 @@ export default class DateRangeSelection extends React.Component {
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
     return (
-      <div className="date-range" onKeyDown={this.onKeyDown} tabIndex="0" ref={root => this.root = root}>
+      <div className="date-range" onKeyDown={this.onKeyDown.bind(this)} tabIndex="0" ref={root => this.root = root}>
         <div
           onClick={this.toggleOpen.bind(this)}
           className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
