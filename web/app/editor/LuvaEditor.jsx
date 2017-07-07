@@ -2,7 +2,7 @@ import React from 'react'
 import { LukionOppiaineetEditor } from './Lukio.jsx'
 import Text from '../Text.jsx'
 
-export const LuvaEditor = React.createClass({
+export class LuvaEditor extends React.Component {
   render() {
     let {suoritukset} = this.props
     let lukionkurssinsuoritukset = suoritukset.filter(s => s.value.classes.includes('lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa'))
@@ -26,4 +26,4 @@ export const LuvaEditor = React.createClass({
       </div>
     )
   }
-})
+}

@@ -1,14 +1,39 @@
-import {parseFinnishDate, formatFinnishDate} from './date.js'
+import {formatFinnishDate, parseFinnishDate} from './date.js'
 import React from 'react'
 import Text from './Text.jsx'
 
-export default React.createClass({
+export default class DateRangeSelection extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      from: this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay),
+      to: this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
+    }
+    this.keyHandlers = {
+      Enter(e) {
+        e.preventDefault()
+        this.setState({open: false})
+      },
+      Escape() {
+        this.setState({open: false})
+      },
+      ArrowDown(e) {
+        e.stopPropagation()
+        if(!this.state.open) {
+          this.setState({open: true})
+        }
+      }
+    }
+    this.handleFocus = this.handleFocus.bind(this)
+    this.handleClickOutside = this.handleClickOutside.bind(this)
+  }
+
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
     return (
       <div className="date-range" onKeyDown={this.onKeyDown} tabIndex="0" ref={root => this.root = root}>
         <div
-          onClick={this.toggleOpen}
+          onClick={this.toggleOpen.bind(this)}
           className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
         { this.state.open &&
         <div className="date-range-container">
@@ -18,14 +43,14 @@ export default React.createClass({
               className={invalidStartDate ? 'start error' : 'start'}
               type="text"
               value={invalidStartDate ? invalidStartDate.value : from ? formatFinnishDate(from) : ''}
-              onChange={this.handleStartDate}
+              onChange={this.handleStartDate.bind(this)}
               ref={input => this.startDateInput = input}
             />{'—'}
             <input
               className={invalidEndDate ? 'end error' : 'end'}
               type="text"
               value={invalidEndDate ? invalidEndDate.value : to ? formatFinnishDate(to) : ''}
-              onChange={this.handleEndDate}
+              onChange={this.handleEndDate.bind(this)}
             />
           </div>
           <div className="date-range-shortcuts">
@@ -46,7 +71,8 @@ export default React.createClass({
         }
       </div>
     )
-  },
+  }
+
   handleStartDate(e) {
     const newStartDate = calculateStartState(e.target.value, this.state.to)
     const newState = Object.assign(
@@ -54,7 +80,8 @@ export default React.createClass({
       this.state.invalidEndDate ? calculateEndState(this.state.invalidEndDate.value, newStartDate.from) : {to: this.state.to}
     )
     this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
-  },
+  }
+
   handleEndDate(e) {
     const newEndDate = calculateEndState(e.target.value, this.state.from)
     const newState = Object.assign(
@@ -62,62 +89,57 @@ export default React.createClass({
       this.state.invalidStartDate ? calculateStartState(this.state.invalidStartDate.value, newEndDate.to) : {from: this.state.from}
     )
     this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
-  },
+  }
+
   handleRangeSelection(range) {
+    debugger
     this.setState(range, () => this.props.onSelectionChanged(range))
     this.setState({open: false})
-  },
+  }
+
   getInitialState() {
     return {
       from: this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay),
       to: this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
     }
-  },
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.state.open && !prevState.open) {
       this.startDateInput.focus()
     }
-  },
+  }
+
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
     window.addEventListener('focus', this.handleFocus, true)
-  },
+  }
+
   componentWillUnmount() {
     window.removeEventListener('click', this.handleClickOutside, false)
     window.removeEventListener('focus', this.handleFocus, true)
-  },
+  }
+
   handleFocus(e) {
-    const focusInside = e.target == window ? false : !!this.root.contains(e.target)
+    const focusInside = e.target === window ? false : !!this.root.contains(e.target)
     this.setState({open: this.state.open && focusInside})
-  },
+  }
+
   handleClickOutside(e) {
     !e.target.closest('.date-range') && this.setState({open: false})
-  },
+  }
+
   toggleOpen() {
     this.setState({open: !this.state.open })
-  },
+  }
+
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]
     if(handler) {
       handler.call(this, e)
     }
-  },
-  keyHandlers: {
-    Enter(e) {
-      e.preventDefault()
-      this.setState({open: false})
-    },
-    Escape() {
-      this.setState({open: false})
-    },
-    ArrowDown(e) {
-      e.stopPropagation()
-      if(!this.state.open) {
-        this.setState({open: true})
-      }
-    }
   }
-})
+}
 
 const calculateEndState = (endValue, fromDate) => {
   const endDate = parseFinnishDate(endValue)

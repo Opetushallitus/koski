@@ -25,7 +25,16 @@ export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
 }
 
-export const Oppijataulukko = React.createClass({
+export class Oppijataulukko extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      opiskeluoikeudenTyypit: [],
+      koulutus: [],
+      opiskeluoikeudenTila: []
+    }
+  }
+
   render() {
     let { rivit, edellisetRivit, pager, params } = this.props
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
@@ -157,7 +166,8 @@ export const Oppijataulukko = React.createClass({
         </table>) : <div className="ajax-indicator-bg"><Text name="Ladataan..."/></div> }
       <PaginationLink pager={pager}/>
     </div>)
-  },
+  }
+
   componentWillMount() {
     const koodistoMetadata = k => k.metadata.find(m => m.kieli == lang.toUpperCase()) || k.metadata.find(m => m.kieli == 'FI')
     const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: koodistoMetadata(k).nimi})).sort((a, b) => a.value.localeCompare(b.value))
@@ -181,15 +191,8 @@ export const Oppijataulukko = React.createClass({
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
     this.filterBus.merge(this.textFilterBus.throttle(delays().delay(500))).onValue(navigateWithQueryParams)
-  },
-  getInitialState() {
-    return {
-      opiskeluoikeudenTyypit: [],
-      koulutus: [],
-      opiskeluoikeudenTila: []
-    }
   }
-})
+}
 
 var edellisetRivit = null
 

@@ -4,7 +4,7 @@ import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor.jsx'
 import {modelProperties} from './EditorModel'
 import {findModelProperty} from './EditorModel'
 
-export const ObjectEditor = React.createClass({
+export class ObjectEditor extends React.Component {
   render() {
     let {model} = this.props
     let context = model.context
@@ -32,7 +32,7 @@ export const ObjectEditor = React.createClass({
               {objectEditor()}
              </span>)
   }
-})
+}
 ObjectEditor.canShowInline = (model) => {
   return !!findRepresentative(model) && !model.context.edit && !isArrayItem(model.context)
 }

@@ -19,7 +19,23 @@ let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) =
   let selectables = organisaatiot.flatMap(selectableOrgs)
   return selectables.length == 1 && selectables[0]
 }
-export default BaconComponent({
+export default class OrganisaatioPicker extends BaconComponent {
+  constructor(props) {
+    super(props)
+    this.keyHandlers = {
+      ArrowDown() {
+        if(!this.state.open) {
+          this.setState({open: true})
+        }
+      },
+      Escape() {
+        this.setState({open: false})
+      }
+    }
+    this.state = { open: false }
+    this.handleClickOutside = this.handleClickOutside.bind(this)
+    this.handleFocus = this.handleFocus.bind(this)
+  }
   render() {
     let { organisaatiot = [], open, loading, searchString, singleResult } = this.state
     let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = 'kaikki' } = this.props
@@ -71,7 +87,7 @@ export default BaconComponent({
         }
       </div>
     )
-  },
+  }
   componentDidUpdate(prevProps, prevState) {
     if (this.state.open) {
       if (this.state.searchString === undefined) {
@@ -81,8 +97,9 @@ export default BaconComponent({
         this.refs.hakuboksi.focus()
       }
     }
-  },
+  }
   componentWillMount() {
+    super.componentWillMount()
     let showAll = parseBool(this.props.showAll)
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
@@ -100,41 +117,29 @@ export default BaconComponent({
         this.props.onSelectionChanged(singleResult)
       })
     }
-  },
-  getInitialState() {
-    return { open: false }
-  },
+  }
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
     window.addEventListener('focus', this.handleFocus, true)
-  },
+  }
   componentWillUnmount() {
+    super.componentWillUnmount()
     window.removeEventListener('click', this.handleClickOutside, false)
     window.removeEventListener('focus', this.handleFocus, true)
-  },
+  }
   handleFocus(e) {
     const focusInside = e.target == window ? false : !!this.root.contains(e.target)
     if(!focusInside) {
       this.setState({open: false})
     }
-  },
+  }
   handleClickOutside(e) {
     !e.target.closest('.organisaatio') && this.setState({open: false})
-  },
+  }
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]
     if(handler) {
       handler.call(this, e)
     }
-  },
-  keyHandlers: {
-    ArrowDown() {
-      if(!this.state.open) {
-        this.setState({open: true})
-      }
-    },
-    Escape() {
-      this.setState({open: false})
-    }
   }
-})
+}

@@ -131,7 +131,7 @@ let createOppiaineenSuoritus = (osasuoritukset) => {
   return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
 }
 
-const Oppiainetaulukko = React.createClass({
+class Oppiainetaulukko extends React.Component {
   render() {
     let {model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus} = this.props
     let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
@@ -177,7 +177,7 @@ const Oppiainetaulukko = React.createClass({
       </section>
     )
   }
-})
+}
 
 let fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {
@@ -214,7 +214,7 @@ let expandableProperties = (model) => {
     .filter(extraPropertiesFilter)
 
 }
-export const OppiaineenSuoritusEditor = React.createClass({
+export class OppiaineenSuoritusEditor extends React.Component {
   render() {
     let {model, showLaajuus, showFootnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
 
@@ -278,7 +278,7 @@ export const OppiaineenSuoritusEditor = React.createClass({
     }
     </tbody>)
   }
-})
+}
 
 OppiaineenSuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && !hasArvosana(m)) {

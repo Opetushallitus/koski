@@ -159,7 +159,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   </span>)
 }
 
-const SuoritusEditor = React.createClass({
+class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
     let arviointi = modelLookup(model, 'arviointi.-1')
@@ -202,7 +202,7 @@ const SuoritusEditor = React.createClass({
     }
     </tbody>)
   }
-})
+}
 
 const suoritusProperties = suoritus => {
   return modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')

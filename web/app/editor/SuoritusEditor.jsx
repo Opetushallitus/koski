@@ -31,7 +31,7 @@ const resolveEditor = (mdl) => {
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
 }
 
-export const SuoritusEditor = React.createClass({
+export class SuoritusEditor extends React.Component {
   render() {
     const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
@@ -53,11 +53,12 @@ export const SuoritusEditor = React.createClass({
       <TilaJaVahvistusEditor model={model} />
       <div className="osasuoritukset">{editor}</div>
     </div>)
-  },
+  }
+
   shouldComponentUpdate(nextProps) {
     return Editor.shouldComponentUpdate.call(this, nextProps)
   }
-})
+}
 
 SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
@@ -65,7 +66,7 @@ SuoritusEditor.validateModel = (m) => {
   }
 }
 
-const TodistusLink = React.createClass({
+class TodistusLink extends React.Component {
   render() {
     let {suoritus} = this.props
     let oppijaOid = suoritus.context.oppijaOid
@@ -78,4 +79,4 @@ const TodistusLink = React.createClass({
       ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
       : null
   }
-})
+}

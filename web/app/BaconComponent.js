@@ -1,34 +1,17 @@
 import React from 'react'
-import R from 'ramda'
 import Bacon from 'baconjs'
 
-const BaconComponent = (props) => {
-  let givenWillMount = props.componentWillMount || function () {}
-  let givenWillUnmount = props.componentWillUnmount || function () {}
-  let givenWillReceiveProps = props.componentWillReceiveProps || function () {}
-  return React.createClass(R.mergeAll([{
-      getInitialState() {
-        return {}
-      }
-    },
-    props,
-    {
-      componentWillMount() {
-        this.unmountE = Bacon.Bus()
-        this.propsE = Bacon.Bus()
-        givenWillMount.call(this)
-        this.propsE.push(this.props)
-      },
-      componentWillUnmount() {
-        if (this.unmountE) this.unmountE.push()
-        givenWillUnmount.call(this)
-      },
+export default class BaconComponent extends React.Component {
+  componentWillMount() {
+    this.unmountE = Bacon.Bus()
+    this.propsE = Bacon.Bus()
+    this.propsE.push(this.props)
+  }
+  componentWillUnmount() {
+    if (this.unmountE) this.unmountE.push()
+  }
 
-      componentWillReceiveProps(newProps) {
-        this.propsE.push(newProps)
-        givenWillReceiveProps.call(this, newProps)
-      }
-    }
-  ]))
+  componentWillReceiveProps(newProps) {
+    this.propsE.push(newProps)
+  }
 }
-export default BaconComponent
