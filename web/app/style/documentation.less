@@ -1,331 +1,331 @@
 
-body {
-    font-family: Helvetica, Arial, sans-serif;
-    color: rgb(51, 51, 51);
-    font-size: 16px;
-}
 .logo {
     background: url("/koski/images/oph_fin_vaaka.png") 0 0 no-repeat;
     height: 70px;
     margin: 10px 0 10px 50px;
 }
 .content {
+    font-family: Helvetica, Arial, sans-serif;
+    color: rgb(51, 51, 51);
+    font-size: 16px;
+
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
     line-height: 1.3em;
     padding: 20px;
     background-color: #fafafa;
-}
-section:after {
-    content: '';
-    border: 1px solid #d9d9d9;
-    display: block;
-    width: 100%;
-    border-top-width: 0;
-    margin-bottom: 30px;
-}
-.preview-image-links {
-    text-align: center;
-    margin: 32px auto;
-    background: rgba(85, 85, 85, 0.1);
-    a {
-        display: inline-block;
-        padding: 27px 20px;
-        max-width: 24%;
-        vertical-align: top;
+
+    section:after {
+        content: '';
+        border: 1px solid #d9d9d9;
+        display: block;
+        width: 100%;
+        border-top-width: 0;
+        margin-bottom: 30px;
     }
-    .img-wrapper {
-        height: 270px;
-        img {
-            border: 2px solid;
-            max-height: 280px;
-            margin-bottom: 13px;
-            max-width: 300px;
+    .preview-image-links {
+        text-align: center;
+        margin: 32px auto;
+        background: rgba(85, 85, 85, 0.1);
+        a {
+            display: inline-block;
+            padding: 27px 20px;
+            max-width: 24%;
+            vertical-align: top;
+        }
+        .img-wrapper {
+            height: 270px;
+            img {
+                border: 2px solid;
+                max-height: 280px;
+                margin-bottom: 13px;
+                max-width: 300px;
+            }
+        }
+        p {
+            font-size: 0.8em;
+            color: black;
         }
     }
-    p {
-        font-size: 0.8em;
-        color: black;
+
+    small {
+        font-size: 10px;
     }
-}
 
-small {
-    font-size: 10px;
-}
-
-.metadata {
-    font-family: arial;
-}
-.object,.array {
-    color: rgb(51, 51, 51);
-}
-.metadata > span:after {
-    display: inline;
-    content: ". ";
-}
-a, a:visited {
-    text-decoration: none;
-    color: #4194bf;
-    cursor: pointer;
-}
-
-span.indent:after {
-    display: inline-block;
-    content: "\a0\a0";
-}
-
-table, th, td {
-    border: 1px solid #cccccc;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-th, td {
-    position: relative;
-}
-
-td {
-    padding: 2px 10px;
-}
-
-th {
-    background-color: #f5f5f5;
-    padding: 9px 10px;
-}
-
-a.close {
-    display: block;
-    text-align: right;
-    margin-bottom: 10px;
-}
-
-.hidden {
-    display: none;
-}
-
-.button.blue {
-    background: #4194bf;
-    color: #fff;
-}
-
-.button {
-    height: 35px;
-    font-size: 1pc;
-    border: none;
-    padding: 0 20px;
-    display: inline-block;
-    text-align: center;
-    line-height: 35px;
-    cursor: pointer;
-}
-
-.button:disabled {
-    background-color: #E6E6E6;
-}
-
-
-.api-operation {
-    border: 1px solid #d9d9d9;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    padding-bottom: 10px;
-    .api-method {
-        display: inline-block;
-        height: 30px;
-        margin-right: 10px;
-        color: white;
-        background: #4194bf;
-        line-height: 30px;
-        border-top-left-radius: 5px;
-        padding-left: 5px;
-        padding-right: 5px;
+    .metadata {
+        font-family: arial;
     }
-    &:not(.expanded) {
-        .api-details > * {
-            display: none;
-        }
+    .object,.array {
+        color: rgb(51, 51, 51);
     }
-    &.expanded {
-        .toggle-details {
-            background-position: 0 -18px;
-        }
+    .metadata > span:after {
+        display: inline;
+        content: ". ";
     }
-    h3 {
-        margin-top: 0;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        line-height: 30px;
-        margin-bottom: 10px;
-        background-color: #f5f5f5;
-        border-bottom: 1px solid #d9d9d9;
-        font-weight: 500;
+    a, a:visited {
+        text-decoration: none;
         color: #4194bf;
         cursor: pointer;
     }
 
-
-    .api-details > * {
+    span.indent:after {
+        display: inline-block;
+        content: "\a0\a0";
     }
 
-    > p, > div {
-        margin-left: 10px;
+    table, th, td {
+        border: 1px solid #cccccc;
+        border-collapse: collapse;
+        text-align: left;
     }
 
-    .api-tester {
-        margin: 0 20px;
-        input {
-            width: 300px;
+    th, td {
+        position: relative;
+    }
+
+    td {
+        padding: 2px 10px;
+    }
+
+    th {
+        background-color: #f5f5f5;
+        padding: 9px 10px;
+    }
+
+    a.close {
+        display: block;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .button.blue {
+        background: #4194bf;
+        color: #fff;
+    }
+
+    .button {
+        height: 35px;
+        font-size: 1pc;
+        border: none;
+        padding: 0 20px;
+        display: inline-block;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+    }
+
+    .button:disabled {
+        background-color: #E6E6E6;
+    }
+
+
+    .api-operation {
+        border: 1px solid #d9d9d9;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        padding-bottom: 10px;
+        .api-method {
+            display: inline-block;
             height: 30px;
-            font-size: 14px;
-            padding-left: 10px;
+            margin-right: 10px;
+            color: white;
+            background: #4194bf;
+            line-height: 30px;
+            border-top-left-radius: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
         }
-        .buttons, .result {
-            margin-top: 10px;
-        }
-
-        .result {
-            min-width: 500px;
-            pre {
-                max-height: 400px;
-                overflow-y: auto;
-                background: #dddddd;
-                font-size: 12px;
+        &:not(.expanded) {
+            .api-details > * {
+                display: none;
             }
         }
-
-        .examples {
+        &.expanded {
+            .toggle-details {
+                background-position: 0 -18px;
+            }
+        }
+        h3 {
+            margin-top: 0;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            line-height: 30px;
             margin-bottom: 10px;
-        }
-
-        .CodeMirror {
-            border: 1px solid black;
-            font-size: 12px;
-        }
-        .curl .line {
-            display: none;
-        }
-
-        .curl.open .line {
-            display: inline-block;
-        }
-
-        .curl.open .title {
-            display: none;
-        }
-
-        .curl {
-
-        }
-    }
-
-
-    .example-response .json-popup {
-        display: none;
-    }
-
-    .example-response.expanded .json-popup {
-        display: block;
-    }
-
-    .example-response.expanded a.show-json {
-        display: none;
-    }
-
-    .status-codes {
-        h4 {
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #d9d9d9;
+            font-weight: 500;
+            color: #4194bf;
             cursor: pointer;
         }
 
-        table {
-            display: none;
+
+        .api-details > * {
+        }
+
+        > p, > div {
+            margin-left: 10px;
+        }
+
+        .api-tester {
             margin: 0 20px;
-        }
-
-        &.expanded {
-            table {
-                display: block;
+            input {
+                width: 300px;
+                height: 30px;
+                font-size: 14px;
+                padding-left: 10px;
             }
-        }
-    }
-
-    .json-popup {
-        z-index: 10;
-        font-size: 0.85em;
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        padding: 20px;
-        background: white;
-        width: 60em;
-        box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-}
-
-table.json {
-    td {
-        vertical-align: top;
-        padding: 0px 10px;
-    }
-}
-.json {
-    font-family: monospace;
-    font-size: 12px;
-    line-height: 18px;
-}
-
-.json .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
-    color: rgb(165, 116, 28);
-}
-.json .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
-    color: green;
-}
-
-.example-list {
-    line-height: 1.5em;
-    padding-bottom: 20px;
-    list-style: none;
-    padding: 0;
-
-    .example-item table.json {
-        display: none;
-    }
-    .example-item.expanded table.json {
-        width: 100%;
-        display: inherit;
-        margin: 20px 0;
-    }
-
-    .example-as-json {
-        float: right;
-        font-size: smaller;
-    }
-
-    table.json {
-        border-collapse: collapse;
-        td:first-child {
-            width: 50%;
-        }
-        .json {
-            tr:hover {
-                background: #ffffbb;
+            .buttons, .result {
+                margin-top: 10px;
             }
 
-            .collapsed {
+            .result {
+                min-width: 500px;
+                pre {
+                    max-height: 400px;
+                    overflow-y: auto;
+                    background: #dddddd;
+                    font-size: 12px;
+                }
+            }
+
+            .examples {
+                margin-bottom: 10px;
+            }
+
+            .CodeMirror {
+                border: 1px solid black;
+                font-size: 12px;
+            }
+            .curl .line {
                 display: none;
             }
 
-            .collapsed-parent .collapsible:before {
-                content: '+';
+            .curl.open .line {
+                display: inline-block;
+            }
+
+            .curl.open .title {
+                display: none;
+            }
+
+            .curl {
+
+            }
+        }
+
+
+        .example-response .json-popup {
+            display: none;
+        }
+
+        .example-response.expanded .json-popup {
+            display: block;
+        }
+
+        .example-response.expanded a.show-json {
+            display: none;
+        }
+
+        .status-codes {
+            h4 {
                 cursor: pointer;
             }
 
-            .collapsible:before {
-                display: inline;
-                content: '-';
-                cursor: pointer;
-                margin-right: 5px;
+            table {
+                display: none;
+                margin: 0 20px;
+            }
+
+            &.expanded {
+                table {
+                    display: block;
+                }
+            }
+        }
+
+        .json-popup {
+            z-index: 10;
+            font-size: 0.85em;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 20px;
+            background: white;
+            width: 60em;
+            box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    table.json {
+        td {
+            vertical-align: top;
+            padding: 0px 10px;
+        }
+    }
+    .json {
+        font-family: monospace;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .json .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
+        color: rgb(165, 116, 28);
+    }
+    .json .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
+        color: green;
+    }
+
+    .example-list {
+        line-height: 1.5em;
+        padding-bottom: 20px;
+        list-style: none;
+        padding: 0;
+
+        .example-item table.json {
+            display: none;
+        }
+        .example-item.expanded table.json {
+            width: 100%;
+            display: inherit;
+            margin: 20px 0;
+        }
+
+        .example-as-json {
+            float: right;
+            font-size: smaller;
+        }
+
+        table.json {
+            border-collapse: collapse;
+            td:first-child {
+                width: 50%;
+            }
+            .json {
+                tr:hover {
+                    background: #ffffbb;
+                }
+
+                .collapsed {
+                    display: none;
+                }
+
+                .collapsed-parent .collapsible:before {
+                    content: '+';
+                    cursor: pointer;
+                }
+
+                .collapsible:before {
+                    display: inline;
+                    content: '-';
+                    cursor: pointer;
+                    margin-right: 5px;
+                }
             }
         }
     }

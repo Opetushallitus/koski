@@ -54,7 +54,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/pulssi", new PulssiHtmlServlet(application))
     mount("/todistus", new TodistusServlet(application))
     mount("/opintosuoritusote", new SuoritusServlet(application))
-    mount("/documentation", new DocumentationServlet(application.koodistoPalvelu))
+    mount("/api/documentation", new DocumentationServlet(application.koodistoPalvelu))
     mount("/api/editor", new EditorServlet(application))
     mount("/api/healthcheck", new HealthCheckApiServlet(application))
     mount("/api/henkilo", new HenkilötiedotServlet(application))

@@ -4,6 +4,7 @@ import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.http.ErrorCategory
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.ClassSchema
+import fi.oph.koski.json.Json
 
 import scala.xml.Elem
 
@@ -89,6 +90,21 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
   """
 
+  def examples = {
+    <div>
+      { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
+      { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
+      { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
+      { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
+      { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
+      { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
+      { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
+      { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
+      { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
+      { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
+    </div>
+  }
+
   def html = {
     <html>
       <head>
@@ -102,7 +118,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
       </head>
       <script src="/koski/js/koski-documentation.js"></script>
       <body>
-        <header><div class="logo"/></header>
+        <header id="topbar" class="local"></header>
         <div class="content">
           <section>
             {toXHTML( knockoff(general) )}
@@ -111,23 +127,23 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             {toXHTML( knockoff(rest_apis) )}
             { ApiTesterHtml.apiOperationsHtml }
           </section>
-        <section>
-          <h2>Esimerkkidata annotoituna</h2>
-          <p>
-            Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
-            Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
-          </p>
-          { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
-          { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
-          { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
-          { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
-          { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
-          { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
-          { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
-          { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
-          { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
-          { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
-        </section>
+          <section>
+            <h2>Esimerkkidata annotoituna</h2>
+            <p>
+              Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
+              Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
+            </p>
+            { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
+            { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
+            { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
+            { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
+            { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
+            { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
+            { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
+            { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
+            { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
+            { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
+          </section>
         </div>
       </body>
     </html>

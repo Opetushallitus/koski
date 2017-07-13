@@ -14,6 +14,10 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
     KoskiTiedonSiirtoHtml.html
   }
 
+  get("/examples") {
+    KoskiTiedonSiirtoHtml.examples
+  }
+
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
   }
