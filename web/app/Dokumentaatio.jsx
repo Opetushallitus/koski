@@ -1,22 +1,40 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
+import R from 'ramda'
 import Http from './http'
 import { contentWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
 
-const addScript = url => {
-  if (!document.querySelector('script[src="'+url+'"]')) {
-    var script = document.createElement('script')
-    script.src = url
-    script.async = true
-    document.body.appendChild(script)
-  }
+const JsonExampleTable = ({contents}) => {
+  return <table className="json expanded" dangerouslySetInnerHTML={{__html: (contents)}}></table>
 }
 
-export const dokumentaatioContentP = () => contentWithLoadingIndicator(sectionsP()).map(s => {
-  return ({
-    content: (
-      <div className='content-area'>
+const JsonExample = ({category, example}) => {
+  const expandedA = Atom(false)
+  const contentsA = Atom('...')
 
+
+  const contentsP = Http.cachedGet('/koski/api/documentation/categoryExamples/'+category+'/'+example.name+'/table.html')
+  contentsP.onValue(v => {
+    contentsA.set(v)
+  })
+
+  return (
+    <li className={expandedA.map(v => (v ? 'expanded' : '') + 'example-item')}>
+      <a className="example-link" onClick={() => expandedA.modify(v => !v)}>{example.description}</a>
+      <a className="example-as-json" href={example.link} target="_blank">{'lataa JSON'}</a>
+      {contentsA.map(c => <JsonExampleTable contents={c}/>)}
+    </li>
+  )
+}
+
+const DokumentaatioSivu = ({info}) => {
+  const categories = info[0]
+  const examples = info[1]
+
+  return (
+    <div className='content content-area'>
+      <section>
         <h1>{'Koski-tiedonsiirtoprotokolla'}</h1>
         <p>{'Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla. Lisätietoja Koski-järjestelmästä löydät '}<a href="https://confluence.csc.fi/display/OPHPALV/Koski">{'Opetushallituksen wiki-sivustolta'}</a>{'. Järjestelmän lähdekoodit ja kehitysdokumentaatio '}<a href="https://github.com/Opetushallitus/koski">{'Githubissa'}</a>{'.'}</p>
         <p>{'Protokolla, kuten Koski-järjestelmäkin, on työn alla, joten kaikki voi vielä muuttua.'}</p>
@@ -75,18 +93,38 @@ export const dokumentaatioContentP = () => contentWithLoadingIndicator(sectionsP
 
         <h2>{'Esimerkkidata annotoituna'}</h2>
         <p>{"Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon."}</p>
+      </section>
 
 
-        <div dangerouslySetInnerHTML={{__html: s}}></div>
-      </div>
-    ),
-    title: 'Tiedonsiirrot'
+      <section>
+        {R.map(c => (
+          <div>
+            <h1>{c}</h1>
+            <ul className="example-list">
+            {
+              R.map(e => <JsonExample category={c} example={e}/>, examples[c])
+            }
+            </ul>
+          </div>
+        ), categories)}
+      </section>
+
+    </div>
+  )
+}
+
+export const dokumentaatioContentP = () => contentWithLoadingIndicator(infoP).map(info => {
+  return ({
+    content: <DokumentaatioSivu info={info}/>,
+    title: 'Dokumentaatio'
   })
 })
 
 
-const sectionsP = () => Http.cachedGet('/koski/api/documentation/examples', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty()
+const categoryNamesE = () => Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([])
+const categoryExampleNamesE = () => Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({})
+const infoP = Bacon.zipAsArray(categoryNamesE(), categoryExampleNamesE())
 
-// <script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js'></script>
+//<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js'></script>
 //<script src='/koski/js/codemirror/codemirror.js'></script>
 //<script src='/koski/js/codemirror/javascript.js'></script>

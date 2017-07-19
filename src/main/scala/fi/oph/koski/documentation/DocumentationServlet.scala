@@ -6,16 +6,34 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.ApiServlet
 import fi.oph.scalaschema.ClassSchema
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.servlet.HtmlServlet
+import org.scalatra.ScalatraServlet
 
 import scala.Function.const
 
-class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
+class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated  {
+  get("/") {
+    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
+  }
+}
+
+
+class DocumentationApiServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
   get("/") {
     KoskiTiedonSiirtoHtml.html
   }
 
-  get("/examples") {
-    KoskiTiedonSiirtoHtml.examples
+  get("/categoryNames.json") {
+    KoskiTiedonSiirtoHtml.categoryNames
+  }
+
+  get("/categoryExampleMetadata.json") {
+    KoskiTiedonSiirtoHtml.categoryExampleMetadata
+  }
+
+  get("/categoryExamples/:category/:name/table.html") {
+    renderOption(KoskiErrorCategory.notFound)(KoskiTiedonSiirtoHtml.jsonTableHtmlContents(params("category"), params("name")))
   }
 
   get("/koski-oppija-schema.json") {

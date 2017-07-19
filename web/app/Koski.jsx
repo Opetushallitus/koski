@@ -3,6 +3,7 @@ import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
+import R from 'ramda'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error.jsx'
 import {userP} from './user'
 import {contentP, titleKeyP} from './router.jsx'
@@ -11,23 +12,25 @@ import {locationP} from './location.js'
 import LocalizationEditBar from './LocalizationEditBar.jsx'
 import {t} from './i18n'
 
+const noAccessControlPaths = ['/koski/dokumentaatio']
+
 const topBarP = Bacon.combineWith(userP, titleKeyP, locationP, (user, titleKey, location) => <TopBar user={user} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
 const allErrorsP = errorP(contentP)
 
 // Renderered Virtual DOM
-const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, user, content, error) =>
+const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, (topBar, user, content, error, location) =>
     <div>
       <Error error={error}/>
       {topBar}
       {
         isTopLevel(error)
           ? <TopLevelError error={error} />
-          : ( user
+          : (R.any(R.map(p => location.path.endsWith(p), noAccessControlPaths)) || user
             ? content
             : null
           )
       }
-      <LocalizationEditBar user={user}/>
+      { user && <LocalizationEditBar user={user}/> }
     </div>
 )
 

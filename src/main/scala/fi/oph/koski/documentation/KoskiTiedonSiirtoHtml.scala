@@ -90,7 +90,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
   """
 
-  def examples = {
+  def htmlExamples = {
     <div>
       { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
       { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
@@ -103,6 +103,49 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
       { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
       { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
     </div>
+  }
+
+  val categoryNames: Seq[String] = Seq(
+    "Esiopetus",
+    "Perusopetukseen valmistava opetus",
+    "Perusopetus",
+    "Perusopetuksen lisäopetus",
+    "Lukiokoulutus",
+    "IB-koulutus",
+    "Ammatillinen koulutus",
+    "Valmentava koulutus",
+    "Korkeakoulu (Virrasta)",
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)"
+  )
+
+  val categoryExamples: Map[String, Seq[Example]] = Map(
+    "Esiopetus" -> ExamplesEsiopetus.examples,
+    "Perusopetukseen valmistava opetus" -> ExamplesPerusopetukseenValmistavaOpetus.examples,
+    "Perusopetus" -> ExamplesPerusopetus.examples,
+    "Perusopetuksen lisäopetus" -> ExamplesPerusopetuksenLisaopetus.examples,
+    "Lukiokoulutus" -> (ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples),
+    "IB-koulutus" -> ExamplesIB.examples,
+    "Ammatillinen koulutus" -> ExamplesAmmatillinen.examples,
+    "Valmentava koulutus" -> (ExamplesValma.examples ++ ExamplesTelma.examples),
+    "Korkeakoulu (Virrasta)" -> ExamplesKorkeakoulu.examples,
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples
+  )
+
+  val categoryExampleMetadata: Map[String, Seq[_]] = {
+    categoryExamples.mapValues(_ map {e: Example =>
+      Map(
+        "name" -> e.name,
+        "link" -> s"/koski/api/documentation/examples/${e.name}.json",
+        "description" -> e.description
+      )
+    })
+  }
+
+  def jsonTableHtmlContents(categoryName: String, exampleName: String): Option[String] = {
+    categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)) map {e: Example =>
+      val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], e.data)
+      rows.map(_.toString()).mkString("")
+    }
   }
 
   def html = {
@@ -147,6 +190,19 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         </div>
       </body>
     </html>
+  }
+
+  def examplesJson(examples: List[Example], title: String) = {
+    Map(
+      "title" -> title,
+      "examples" -> examples.map { e: Example =>
+        Map (
+          "link" -> s"/koski/documentation/examples/${e.name}.json",
+          "description" -> e.description,
+          "jsontable" -> <table class="json">{SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], e.data).map(_.toString()).toVector}</table>
+        )
+      }.toVector
+    )
   }
 
   def examplesHtml(examples: List[Example], title: String) = {
