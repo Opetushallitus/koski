@@ -2,11 +2,222 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
+import Highlight from 'react-highlight'
 import Http from './http'
+import Dropdown from './Dropdown.jsx'
 import { contentWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
 
+
+function selectElementContents(el) {
+  var range = document.createRange()
+  range.selectNodeContents(el)
+  var sel = window.getSelection()
+  sel.removeAllRanges()
+  sel.addRange(range)
+}
+
+const apiBaseUrl = () => document.location.protocol + '//' + document.location.host
+
+const queryParameters = inputs => inputs.reduce((query, v) => {
+  return v.value ? query + (query ? '&' : '?') + encodeURIComponent(v.name) + '=' + encodeURIComponent(v.value) : query
+},'')
+
+const makeApiUrl = (basePath, params) => {
+  let path = basePath
+  R.filter(p => p.type === 'path', params).forEach(function(input) {
+    path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
+  })
+  return apiBaseUrl() + path + queryParameters(R.filter(p => p.type === 'query', params))
+}
+
+const curlCommand = (method, url) => {
+  var curl = 'curl "' + url + '" --user kalle:kalle'
+  if (method != 'GET') {
+    curl += ' -X ' + method
+  }
+  if (method == 'POST' || method == 'PUT') {
+    curl += ' -H "content-type: application/json" -d @curltestdata.json'
+  }
+  return curl
+}
+
+
+const QueryParameters = ({operation, collectorBus}) => {
+  const valueAList = R.map(p => Atom({name: p.name, value: p.examples[0], type: p.type}), operation.parameters)
+
+  collectorBus.push(valueAList)
+
+  R.forEach(v => {
+    v.changes().onValue(() => collectorBus.push(valueAList))
+  }, valueAList)
+
+
+  return (
+    <div className="parameters">
+      <h4>{'Parametrit'}</h4>
+      <table>
+        <thead>
+        <tr>
+          <th>{'Nimi'}</th>
+          <th>{'Merkitys'}</th>
+          <th>{'Arvo'}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {R.map(([parameter, selectedValueA]) => (
+          <tr>
+            <td>
+              {parameter.name}
+            </td>
+            <td>
+              {parameter.description}
+            </td>
+            <td>
+              {parameter.examples.length > 1
+                ? (
+                  <Dropdown options={parameter.examples} keyValue={R.identity} displayValue={R.identity} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
+                )
+                : <input value={selectedValueA} onChange={e => selectedValueA.set(e.target.value)}/>
+              }
+            </td>
+          </tr>
+        ), R.zip(operation.parameters, R.map(v => v.view('value'), valueAList)))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const PostDataExamples = ({operation}) => {
+  return (
+    <div className="postdata">
+      <h4>{'Syötedata'}</h4>
+      <div className="examples">
+        <label>{'Esimerkkejä'}
+          <select>
+            {R.map(example => (
+              <option data-exampledata={JSON.stringify(example.data, null, 2)}>{example.name}</option>
+            ), operation.examples)}
+          </select>
+        </label>
+      </div>
+      <textarea cols="80" rows="50">
+
+      </textarea>
+    </div>
+  )
+}
+
+const ApiOperationTesterParameters = ({operation, collectorBus}) => {
+  if (operation.examples.length > 0) {
+    return <PostDataExamples operation={operation}/>
+  } else if (operation.parameters.length > 0) {
+    return <QueryParameters operation={operation} collectorBus={collectorBus}/>
+  } else {
+    return <div></div>
+  }
+}
+
+const ApiOperationTester = ({operation}) => {
+  const curlVisibleA = Atom(false)
+  const curlValueA = Atom('')
+  const collectorBus = Bacon.Bus()
+
+  collectorBus.onValue(v => {
+    const data = R.map(x => x.get(), v)
+    curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, data)))
+  })
+
+
+  return (
+    <div className="api-tester">
+      <div className="buttons">
+        <button className="try button blue">{'Kokeile'}</button>
+        <button className="try-newwindow button blue">{'Uuteen ikkunaan'}</button>
+        <button className="curl button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
+      </div>
+      <div>{curlVisibleA.map(v => v ? <code ref={e => e && selectElementContents(e)} className="curlcmd" onClick={e => selectElementContents(e.target)}>{curlValueA}</code> : '')}</div>
+      <div className="result"></div>
+      <ApiOperationTesterParameters operation={operation} collectorBus={collectorBus}/>
+    </div>
+  )
+}
+
+const ApiOperationStatusCodeRow = ({errorCategory}) => {
+  const expandedA = Atom(false)
+
+  return (
+    <tr>
+      <td>
+        {errorCategory.statusCode}
+      </td>
+      <td>
+        {errorCategory.statusCode != 200 ? errorCategory.key : ''}
+      </td>
+      <td>
+        {errorCategory.message}
+      </td>
+      <td>
+        <span className={expandedA.map(v => (v ? 'expanded' : '') + ' example-response')}>
+          <a className="show-json" onClick={() => expandedA.modify(v => !v)}>{'Näytä JSON'}</a>
+          <span className="json-popup">
+            <a className="close" onClick={() => expandedA.set(false)}>{'Sulje'}</a>
+            <Highlight className="json">{JSON.stringify(errorCategory.exampleResponse, null, 2)}</Highlight>
+          </span>
+        </span>
+      </td>
+    </tr>
+  )
+}
+const ApiOperationStatusCodes = ({errorCategories}) => {
+  return (
+    <table>
+      <thead>
+      <tr>
+        <th>{'HTTP-status'}</th>
+        <th>{'Virhekoodi'}
+          <small>{'(JSON-vastauksen sisällä)'}</small>
+        </th>
+        <th>{'Tilanne'}</th>
+        <th>{'Esimerkkivastaus'}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {R.map(ec => <ApiOperationStatusCodeRow errorCategory={ec}/>, errorCategories)}
+      </tbody>
+    </table>
+  )
+}
+
+const ApiOperation = ({operation}) => {
+  const expandedA = Atom(false)
+  const statusCodesExpandedA = Atom(false)
+
+  return (
+    <div className={expandedA.map(v => (v ? 'expanded' : '') + ' api-operation')}>
+      <h3 onClick={() => expandedA.modify(v => !v)}>
+        <span className="api-method">{operation.method}</span>{operation.path}
+      </h3>
+      <div className="summary">{operation.summary}</div>
+      <div className="api-details">
+        <div dangerouslySetInnerHTML={{__html: operation.doc}}></div>
+        <div className={statusCodesExpandedA.map(v => (v ? 'expanded' : '') + ' status-codes')}>
+          <h4 onClick={() => statusCodesExpandedA.modify(v => !v)}><a>{'Vastaukset ja paluukoodit'}</a></h4>
+          <ApiOperationStatusCodes errorCategories={operation.errorCategories}/>
+        </div>
+        <h4>{'Kokeile heti'}</h4>
+        <ApiOperationTester operation={operation}/>
+      </div>
+    </div>
+  )
+}
+
+const ApiOperations = ({operations}) => {
+  return <div>{R.map(operation => <ApiOperation operation={operation}/>, operations)}</div>
+}
+
 const JsonExampleTable = ({contents}) => {
-  return <table className="json expanded" dangerouslySetInnerHTML={{__html: (contents)}}></table>
+  return <table className="json" dangerouslySetInnerHTML={{__html: (contents)}}></table>
 }
 
 const JsonExample = ({category, example}) => {
@@ -20,7 +231,7 @@ const JsonExample = ({category, example}) => {
   })
 
   return (
-    <li className={expandedA.map(v => (v ? 'expanded' : '') + 'example-item')}>
+    <li className={expandedA.map(v => (v ? 'expanded' : '') + ' example-item')}>
       <a className="example-link" onClick={() => expandedA.modify(v => !v)}>{example.description}</a>
       <a className="example-as-json" href={example.link} target="_blank">{'lataa JSON'}</a>
       {contentsA.map(c => <JsonExampleTable contents={c}/>)}
@@ -31,6 +242,7 @@ const JsonExample = ({category, example}) => {
 const DokumentaatioSivu = ({info}) => {
   const categories = info[0]
   const examples = info[1]
+  const apiOperations = info[2]
 
   return (
     <div className='content content-area'>
@@ -83,20 +295,22 @@ const DokumentaatioSivu = ({info}) => {
 
         <p>{'Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa '}<a href="https://github.com/Opetushallitus/koodisto">{'Koodistopalvelua'}</a>{'. Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen '}<a href="/koski/documentation/koodisto/koulutus/latest">{'koulutuskoodi'}</a>{'.'}</p>
         <p>{'Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä '}<a href="https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/schema/Oppija.scala">{'scheman'}</a>{', että '}<a href="https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/documentation/Examples.scala">{'esimerkkien'}</a>{' lähdekoodit.'}</p>
+      </section>
 
-
+      <section>
         <h2>{'REST-rajapinnat'}</h2>
 
         <p>{'Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.'}</p>
         <p>{'Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin '}<a href="/koski">{'kirjautumassa sisään'}</a>{' järjestelmään. Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.'}</p>
         <p>{'Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin. Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.'}</p>
 
-        <h2>{'Esimerkkidata annotoituna'}</h2>
-        <p>{"Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon."}</p>
+        <ApiOperations operations={apiOperations}/>
       </section>
 
-
       <section>
+        <h2>{'Esimerkkidata annotoituna'}</h2>
+        <p>{"Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon."}</p>
+
         {R.map(c => (
           <div>
             <h1>{c}</h1>
@@ -121,10 +335,11 @@ export const dokumentaatioContentP = () => contentWithLoadingIndicator(infoP).ma
 })
 
 
-const categoryNamesE = () => Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([])
-const categoryExampleNamesE = () => Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({})
-const infoP = Bacon.zipAsArray(categoryNamesE(), categoryExampleNamesE())
+const infoP = Bacon.zipAsArray(
+  Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
+  Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
+  Http.cachedGet('/koski/api/documentation/apiOperations.json').startWith([])
+)
 
-//<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js'></script>
 //<script src='/koski/js/codemirror/codemirror.js'></script>
 //<script src='/koski/js/codemirror/javascript.js'></script>

@@ -36,6 +36,14 @@ class DocumentationApiServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiS
     renderOption(KoskiErrorCategory.notFound)(KoskiTiedonSiirtoHtml.jsonTableHtmlContents(params("category"), params("name")))
   }
 
+  get("/apiOperations.json") {
+    KoskiTiedonSiirtoHtml.apiOperations
+  }
+
+  get("/apiTester.html") {
+    KoskiTiedonSiirtoHtml.apiTesterHtml
+  }
+
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
   }

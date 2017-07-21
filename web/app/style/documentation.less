@@ -184,6 +184,11 @@
             }
             .buttons, .result {
                 margin-top: 10px;
+                vertical-align: middle;
+
+                .button {
+                    margin-right: 10px;
+                }
             }
 
             .result {
@@ -204,23 +209,16 @@
                 border: 1px solid black;
                 font-size: 12px;
             }
-            .curl .line {
-                display: none;
-            }
-
-            .curl.open .line {
-                display: inline-block;
-            }
-
-            .curl.open .title {
-                display: none;
-            }
-
-            .curl {
-
-            }
         }
 
+        code.curlcmd {
+            display: block;
+            margin-top: 20px;
+            padding: 5px;
+            font-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, monospace;
+            background: #333;
+            color: #eee;
+        }
 
         .example-response .json-popup {
             display: none;

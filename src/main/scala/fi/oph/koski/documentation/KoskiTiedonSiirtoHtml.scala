@@ -141,12 +141,50 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
     })
   }
 
+  val jsonTableHtmlContentsCache: collection.mutable.Map[(String, String), String] = collection.mutable.Map()
+
   def jsonTableHtmlContents(categoryName: String, exampleName: String): Option[String] = {
-    categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)) map {e: Example =>
-      val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], e.data)
-      rows.map(_.toString()).mkString("")
+    val key = (categoryName, exampleName)
+    if (!jsonTableHtmlContentsCache.contains(key)) {
+      categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)) match {
+        case Some(v) => {
+          val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], v.data)
+          val result = rows.map(_.toString()).mkString("")
+          jsonTableHtmlContentsCache.update(key, result)
+        }
+        case None => return None
+      }
+    }
+    jsonTableHtmlContentsCache.get(key)
+  }
+
+  val apiOperations = {
+    KoskiApiOperations.operations.map {operation =>
+      Map(
+        "method" -> operation.method,
+        "path" -> operation.path,
+        "operation" -> operation.path,
+        "summary" -> operation.summary,
+        "doc" -> operation.doc.toString(),
+        "errorCategories" -> operation.statusCodes.flatMap(_.flatten),
+        "examples" -> operation.examples,
+        "parameters" -> operation.parameters.map {parameter => Map(
+          "name" -> parameter.name,
+          "description" -> parameter.description,
+          "examples" -> parameter.examples,
+          "type" -> {
+            val par = parameter // XXX: Fixes a weird type error
+            par match {
+              case p: QueryParameter => "query"
+              case p: PathParameter => "path"
+            }
+          }
+        )}
+      )
     }
   }
+
+  val apiTesterHtml = ApiTesterHtml.apiOperationsHtml
 
   def html = {
     <html>
