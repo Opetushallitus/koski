@@ -89,10 +89,10 @@ const QueryParameters = ({operation, collectorBus}) => {
 
 
 const PostDataExamples = ({operation, collectorBus}) => {
-  const codeA = Atom(JSON.stringify(operation.examples[0].data, null, 2))
   const selectedValueA = Atom(operation.examples[0])
+  const codeA = Atom(JSON.stringify(selectedValueA.get().data, null, 2))
 
-  collectorBus.push(codeA.get())
+  collectorBus.push(selectedValueA.get().data)
 
   selectedValueA.changes().onValue(v => {
     codeA.set(JSON.stringify(v.data, null, 2))
@@ -107,7 +107,7 @@ const PostDataExamples = ({operation, collectorBus}) => {
           <Dropdown options={operation.examples} keyValue={v => v.name} displayValue={v => v.name} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
         </label>
       </div>
-      <textarea cols="80" rows="50" value={codeA} onChange={c => codeA.set(c)} style={{'font-family': 'monospace'}}></textarea>
+      <textarea cols="80" rows="50" value={codeA} onChange={c => {codeA.set(c.target.value)}} style={{'font-family': 'monospace'}}></textarea>
     </div>
   )
 }
@@ -138,8 +138,9 @@ const ApiOperationTester = ({operation}) => {
     let options = {credentials: 'include', method: operation.method, headers: {'Content-Type': 'application/json'}}
 
     const pd = postDataA.get()
+    console.log('pd', pd)
     if (pd !== undefined) {
-      options.body = pd
+      options.body = JSON.stringify(pd)
     }
 
     fetch(makeApiUrl(operation.path, parametersA.get()), options).then(response => {
@@ -165,6 +166,7 @@ const ApiOperationTester = ({operation}) => {
   postCollectorBus.onValue(v => postDataA.set(v))
 
   parametersA.changes().onValue(v => {
+    console.log('v', v)
     curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
   })
 
