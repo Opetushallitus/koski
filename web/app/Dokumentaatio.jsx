@@ -138,7 +138,6 @@ const ApiOperationTester = ({operation}) => {
     let options = {credentials: 'include', method: operation.method, headers: {'Content-Type': 'application/json'}}
 
     const pd = postDataA.get()
-    console.log('pd', pd)
     if (pd !== undefined) {
       options.body = JSON.stringify(pd)
     }
@@ -159,6 +158,10 @@ const ApiOperationTester = ({operation}) => {
     })
   }
 
+  const tryRequestNewWindow = () => {
+    window.open(makeApiUrl(operation.path, parametersA.get()))
+  }
+
   queryCollectorBus.onValue(v => {
     parametersA.set(R.map(x => x.get(), v))
   })
@@ -166,7 +169,6 @@ const ApiOperationTester = ({operation}) => {
   postCollectorBus.onValue(v => postDataA.set(v))
 
   parametersA.changes().onValue(v => {
-    console.log('v', v)
     curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
   })
 
@@ -174,7 +176,9 @@ const ApiOperationTester = ({operation}) => {
     <div className="api-tester">
       <div className="buttons">
         <button disabled={loadingA} className="try button blue" onClick={tryRequest}>{'Kokeile'}</button>
-        <button disabled={loadingA} className="try-newwindow button blue">{'Uuteen ikkunaan'}</button>
+        {operation.method === 'GET' &&
+          <button disabled={loadingA} className="try-newwindow button blue" onClick={tryRequestNewWindow}>{'Uuteen ikkunaan'}</button>
+        }
         <button className="curl button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
       </div>
       <div>{curlVisibleA.map(v => v ? <code ref={e => e && selectElementContents(e)} className="curlcmd" onClick={e => selectElementContents(e.target)}>{curlValueA}</code> : '')}</div>
