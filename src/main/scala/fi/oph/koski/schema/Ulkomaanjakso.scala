@@ -11,6 +11,7 @@ case class Ulkomaanjakso(
   alku: LocalDate,
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
   loppu: Option[LocalDate],
+  @Description("Missä maassa jakso on suoritettu")
   @KoodistoUri("maatjavaltiot2")
   maa: Koodistokoodiviite,
   @Description("Kuvaus ulkomaanjakson sisällöstä. Esimerkiksi tieto siitä, että opiskeleeko oppija ulkomaisessa oppilaitoksessa vai onko työharjoittelussa tai työssäoppimisessa.")
