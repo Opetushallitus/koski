@@ -126,11 +126,21 @@ const ApiOperationTester = ({operation}) => {
   const parametersA = Atom([])
   const loadingA = Atom(false)
   const curlVisibleA = Atom(false)
-  const curlValueA = Atom('')
+  const curlValueA = Atom(curlCommand(operation.method, makeApiUrl(operation.path, [])))
   const postDataA = Atom()
   const resultA = Atom('')
   const queryCollectorBus = Bacon.Bus()
   const postCollectorBus = Bacon.Bus()
+
+  queryCollectorBus.onValue(v => {
+    parametersA.set(R.map(x => x.get(), v))
+  })
+
+  postCollectorBus.onValue(v => postDataA.set(v))
+
+  parametersA.changes().onValue(v => {
+    curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
+  })
 
   const tryRequest = () => {
     loadingA.set(true)
@@ -161,16 +171,6 @@ const ApiOperationTester = ({operation}) => {
   const tryRequestNewWindow = () => {
     window.open(makeApiUrl(operation.path, parametersA.get()))
   }
-
-  queryCollectorBus.onValue(v => {
-    parametersA.set(R.map(x => x.get(), v))
-  })
-
-  postCollectorBus.onValue(v => postDataA.set(v))
-
-  parametersA.changes().onValue(v => {
-    curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
-  })
 
   return (
     <div className="api-tester">
