@@ -88,22 +88,22 @@ const QueryParameters = ({operation, collectorBus}) => {
   )
 }
 
+
 const PostDataExamples = ({operation}) => {
+  const codeA = Atom(JSON.stringify(operation.examples[0].data, null, 2))
+  const selectedValueA = Atom(operation.examples[0])
+
+  selectedValueA.changes().doLog('x').onValue(v => codeA.set(JSON.stringify(v.data, null, 2)))
+
   return (
     <div className="postdata">
       <h4>{'Syötedata'}</h4>
       <div className="examples">
         <label>{'Esimerkkejä'}
-          <select>
-            {R.map(example => (
-              <option data-exampledata={JSON.stringify(example.data, null, 2)}>{example.name}</option>
-            ), operation.examples)}
-          </select>
+          <Dropdown options={operation.examples} keyValue={v => v.name} displayValue={v => v.name} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
         </label>
       </div>
-      <textarea cols="80" rows="50">
-
-      </textarea>
+      <textarea cols="80" rows="50" value={codeA} onChange={c => codeA.set(c)} style={{"font-family": "monospace"}}></textarea>
     </div>
   )
 }
