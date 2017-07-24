@@ -1,6 +1,5 @@
 package fi.oph.koski.oppija
 
-import java.net.InetAddress
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
@@ -82,7 +81,7 @@ class OppijaServlet(val application: KoskiApplication)
 
   private def withTracking[T](f: => T) = {
     if (koskiSession.isPalvelukäyttäjä) {
-      trackIPAddress()
+      application.ipService.trackIPAddress(koskiSession)
     }
     try {
       f
@@ -90,17 +89,6 @@ class OppijaServlet(val application: KoskiApplication)
       case e: Exception =>
         application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), KoskiErrorCategory.internalError().errors)))
         throw e
-    }
-  }
-
-  private def trackIPAddress() {
-    val ip = application.ipService.getIP(koskiSession.username)
-
-    if (!ip.contains(InetAddress.getByName(koskiSession.clientIp))) {
-      if (ip.nonEmpty) {
-        logger(koskiSession).error(s"IP-osoite on muuttunut, vanha: ${ip.get.getHostAddress}, uusi: ${koskiSession.clientIp}")
-      }
-      application.ipService.setIP(koskiSession.username, koskiSession.clientIp)
     }
   }
 }
