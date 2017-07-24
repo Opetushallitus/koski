@@ -41,7 +41,6 @@ const curlCommand = (method, url) => {
   return curl
 }
 
-
 const QueryParameters = ({operation, collectorBus}) => {
   const valueAList = R.map(p => Atom({name: p.name, value: p.examples[0], type: p.type}), operation.parameters)
 
@@ -89,11 +88,16 @@ const QueryParameters = ({operation, collectorBus}) => {
 }
 
 
-const PostDataExamples = ({operation}) => {
+const PostDataExamples = ({operation, collectorBus}) => {
   const codeA = Atom(JSON.stringify(operation.examples[0].data, null, 2))
   const selectedValueA = Atom(operation.examples[0])
 
-  selectedValueA.changes().doLog('x').onValue(v => codeA.set(JSON.stringify(v.data, null, 2)))
+  collectorBus.push(codeA.get())
+
+  selectedValueA.changes().onValue(v => {
+    codeA.set(JSON.stringify(v.data, null, 2))
+    collectorBus.push(v.data)
+  })
 
   return (
     <div className="postdata">
@@ -103,42 +107,77 @@ const PostDataExamples = ({operation}) => {
           <Dropdown options={operation.examples} keyValue={v => v.name} displayValue={v => v.name} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
         </label>
       </div>
-      <textarea cols="80" rows="50" value={codeA} onChange={c => codeA.set(c)} style={{"font-family": "monospace"}}></textarea>
+      <textarea cols="80" rows="50" value={codeA} onChange={c => codeA.set(c)} style={{'font-family': 'monospace'}}></textarea>
     </div>
   )
 }
 
-const ApiOperationTesterParameters = ({operation, collectorBus}) => {
+const ApiOperationTesterParameters = ({operation, queryCollectorBus, postCollectorBus}) => {
   if (operation.examples.length > 0) {
-    return <PostDataExamples operation={operation}/>
+    return <PostDataExamples operation={operation} collectorBus={postCollectorBus}/>
   } else if (operation.parameters.length > 0) {
-    return <QueryParameters operation={operation} collectorBus={collectorBus}/>
+    return <QueryParameters operation={operation} collectorBus={queryCollectorBus}/>
   } else {
     return <div></div>
   }
 }
 
 const ApiOperationTester = ({operation}) => {
+  const parametersA = Atom([])
+  const loadingA = Atom(false)
   const curlVisibleA = Atom(false)
   const curlValueA = Atom('')
-  const collectorBus = Bacon.Bus()
+  const postDataA = Atom()
+  const resultA = Atom('')
+  const queryCollectorBus = Bacon.Bus()
+  const postCollectorBus = Bacon.Bus()
 
-  collectorBus.onValue(v => {
-    const data = R.map(x => x.get(), v)
-    curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, data)))
+  const tryRequest = () => {
+    loadingA.set(true)
+
+    let options = {credentials: 'include', method: operation.method, headers: {'Content-Type': 'application/json'}}
+
+    const pd = postDataA.get()
+    if (pd !== undefined) {
+      options.body = pd
+    }
+
+    fetch(makeApiUrl(operation.path, parametersA.get()), options).then(response => {
+      return response.text().then(function(text) {
+        loadingA.set(false)
+        if (response.status == 401) {
+          resultA.set(<div>{response.status + ' ' + response.statusText + ' '}<a href="/koski" target="_new">{'Login'}</a></div>)
+        } else if (text) {
+          resultA.set(<div>{response.status + ' ' + response.statusText}<Highlight className="json">{JSON.stringify(JSON.parse(text), null, 2)}</Highlight></div>)
+        } else {
+          resultA.set(<div>{response.status + ' ' + response.statusText}</div>)
+        }
+      }).catch(function(error) {
+        console.error(error)
+      })
+    })
+  }
+
+  queryCollectorBus.onValue(v => {
+    parametersA.set(R.map(x => x.get(), v))
   })
 
+  postCollectorBus.onValue(v => postDataA.set(v))
+
+  parametersA.changes().onValue(v => {
+    curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
+  })
 
   return (
     <div className="api-tester">
       <div className="buttons">
-        <button className="try button blue">{'Kokeile'}</button>
-        <button className="try-newwindow button blue">{'Uuteen ikkunaan'}</button>
+        <button disabled={loadingA} className="try button blue" onClick={tryRequest}>{'Kokeile'}</button>
+        <button disabled={loadingA} className="try-newwindow button blue">{'Uuteen ikkunaan'}</button>
         <button className="curl button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
       </div>
       <div>{curlVisibleA.map(v => v ? <code ref={e => e && selectElementContents(e)} className="curlcmd" onClick={e => selectElementContents(e.target)}>{curlValueA}</code> : '')}</div>
-      <div className="result"></div>
-      <ApiOperationTesterParameters operation={operation} collectorBus={collectorBus}/>
+      <div className="result">{resultA}</div>
+      <ApiOperationTesterParameters operation={operation} queryCollectorBus={queryCollectorBus} postCollectorBus={postCollectorBus}/>
     </div>
   )
 }
