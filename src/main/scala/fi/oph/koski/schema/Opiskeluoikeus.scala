@@ -79,9 +79,9 @@ trait OpiskeluoikeudenTila {
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
 
-@Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain")
+@Description("Opiskeluoikeuden tilahistoria (Läsnä, Eronnut, Valmistunut...) jaksoittain")
 trait Opiskeluoikeusjakso extends Alkupäivällinen {
-  @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
+  @Description("Opiskeluoikeuden tila (Läsnä, Eronnut, Valmistunut...) jaksottain")
   def tila: Koodistokoodiviite
   def opiskeluoikeusPäättynyt: Boolean
 }
