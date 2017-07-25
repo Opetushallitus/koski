@@ -326,7 +326,6 @@ const DokumentaatioSivu = ({info}) => {
 }
 
 export const dokumentaatioContentP = () => {
-  console.log('loglog')
   const infoP = Bacon.zipAsArray(
     Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
     Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
