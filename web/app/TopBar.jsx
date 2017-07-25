@@ -15,7 +15,7 @@ const NavList = (location) => {
   return (<ul>
     <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
     <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '')}</li>
-    <li>{naviLink('/koski/dokumentaatio', 'Dokumentaatio', location.path, '')}</li>
+    <li>{naviLink('/koski/documentation', 'Dokumentaatio', location.path, '')}</li>
   </ul>)
 }
 
