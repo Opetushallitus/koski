@@ -29,6 +29,10 @@ class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
     renderOption(KoskiErrorCategory.notFound)(KoskiTiedonSiirtoHtml.jsonTableHtmlContents(params("category"), params("name")))
   }
 
+  get("/introSection.html") {
+    KoskiTiedonSiirtoHtml.introSectionHtml
+  }
+
   get("/apiOperations.json") {
     KoskiTiedonSiirtoHtml.apiOperations
   }
@@ -40,6 +44,10 @@ class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
   get("/examples/:name.json") {
     renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }
+
+  get("/koski-oppija-schema.json") {
+    KoskiSchema.schemaJson
+  }
 }
 
 
@@ -48,10 +56,6 @@ class DocumentationServlet(val application: KoskiApplication) extends ScalatraSe
 
   get("/") {
     htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
-  }
-
-  get("/koski-oppija-schema.json") {
-    KoskiSchema.schemaJson
   }
 
   get("/koski-oppija-schema.html") {

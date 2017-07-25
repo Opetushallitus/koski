@@ -11,7 +11,7 @@ import scala.xml.Elem
 object KoskiTiedonSiirtoHtml {
   private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"
   private val schemaDocumentUrl = "/koski/documentation/koski-oppija-schema.html"
-  private val schemaFileUrl = "/koski/documentation/koski-oppija-schema.json"
+  private val schemaFileUrl = "/koski/api/documentation/koski-oppija-schema.json"
   private def general =s"""
 
 # Koski-tiedonsiirtoprotokolla
@@ -183,6 +183,8 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
       )
     }
   }
+
+  val introSectionHtml = toXHTML(knockoff(general)).toString()
 
   val apiTesterHtml = ApiTesterHtml.apiOperationsHtml
 
