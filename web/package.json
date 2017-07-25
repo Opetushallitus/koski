@@ -23,6 +23,7 @@
     "react-codemirror": "github:skidding/react-codemirror#106-fix-update",
     "react-day-picker": "^3.1.1",
     "react-dom": "~15.4.2",
+    "react-highlight": "^0.10.0",
     "react-highlighter": "github:Dentosal/react-highlighter",
     "whatwg-fetch": "^0.9"
   },
