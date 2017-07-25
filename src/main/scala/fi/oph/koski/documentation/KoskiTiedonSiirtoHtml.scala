@@ -193,49 +193,6 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
 
   val htmlTextSections = Vector(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
 
-  def __html = {
-    <html>
-      <head>
-        <title>Dokumentaatio - Koski - Opintopolku.fi</title>
-        <meta charset="UTF-8"></meta>
-        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
-        <script src="/koski/js/codemirror/codemirror.js"></script>
-        <script src="/koski/js/codemirror/javascript.js"></script>
-      </head>
-      <script src="/koski/js/koski-documentation.js"></script>
-      <body>
-        <header id="topbar" class="local"></header>
-        <div class="content">
-          <section>
-            {toXHTML( knockoff(general) )}
-          </section>
-          <section>
-            {toXHTML( knockoff(rest_apis) )}
-            { ApiTesterHtml.apiOperationsHtml }
-          </section>
-          <section>
-            <h2>Esimerkkidata annotoituna</h2>
-            <p>
-              Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
-              Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
-            </p>
-            { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
-            { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
-            { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
-            { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
-            { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
-            { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
-            { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
-            { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
-            { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
-            { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
-          </section>
-        </div>
-      </body>
-    </html>
-  }
 
   def examplesJson(examples: List[Example], title: String) = {
     Map(
