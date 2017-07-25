@@ -22,6 +22,7 @@ import fi.oph.koski.organisaatio.OrganisaatioServlet
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
+import fi.oph.koski.servlet.RedirectServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
@@ -55,7 +56,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/todistus", new TodistusServlet(application))
     mount("/opintosuoritusote", new SuoritusServlet(application))
     mount("/dokumentaatio", new DocumentationServlet(application))
-    mount("/api/documentation", new DocumentationApiServlet(application.koodistoPalvelu))
+    mount("/documentation", new RedirectServlet("/dokumentaatio", true))
+    mount("/api/documentation", new DocumentationApiServlet())
     mount("/api/editor", new EditorServlet(application))
     mount("/api/healthcheck", new HealthCheckApiServlet(application))
     mount("/api/henkilo", new HenkilötiedotServlet(application))

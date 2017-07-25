@@ -12,14 +12,7 @@ import org.scalatra.ScalatraServlet
 
 import scala.Function.const
 
-class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated  {
-  get("/") {
-    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
-  }
-}
-
-
-class DocumentationApiServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
+class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
   get("/") {
     KoskiTiedonSiirtoHtml.html
   }
@@ -44,6 +37,19 @@ class DocumentationApiServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiS
     KoskiTiedonSiirtoHtml.apiTesterHtml
   }
 
+  get("/examples/:name.json") {
+    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
+  }
+}
+
+
+class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
+  val koodistoPalvelu = application.koodistoPalvelu
+
+  get("/") {
+    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
+  }
+
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
   }
@@ -61,10 +67,6 @@ class DocumentationApiServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiS
         shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName }
       )
     }
-  }
-
-  get("/examples/:name.json") {
-    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }
 
   get("/koodisto/:name/:version") {
