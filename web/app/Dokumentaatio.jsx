@@ -287,25 +287,27 @@ const DokumentaatioSivu = ({info}) => {
   const categories = info[0]
   const examples = info[1]
   const apiOperations = info[2]
-  const introSectionHtml = info[3]
+  const htmlSections = info[3]
+
+  // Sections having any content are considered loaded, so the loading message is hidden when page is useful
+  const stillLoading = R.reduce(R.or, false, [categories, apiOperations].concat(htmlSections).map(c => c.length === 0))
 
   return (
     <div className='content content-area'>
-      <section dangerouslySetInnerHTML={{__html: introSectionHtml}}></section>
+      {stillLoading &&
+        <section><h1>{'Ladataan...'}</h1></section>
+      }
+
+      <section dangerouslySetInnerHTML={{__html: htmlSections[0]}}></section>
 
       <section>
-        <h2>{'REST-rajapinnat'}</h2>
-
-        <p>{'Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.'}</p>
-        <p>{'Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin '}<a href="/koski">{'kirjautumassa sisään'}</a>{' järjestelmään. Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.'}</p>
-        <p>{'Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin. Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.'}</p>
+        <div dangerouslySetInnerHTML={{__html: htmlSections[1]}}></div>
 
         <ApiOperations operations={apiOperations}/>
       </section>
 
       <section>
-        <h2>{'Esimerkkidata annotoituna'}</h2>
-        <p>{"Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon."}</p>
+        <div dangerouslySetInnerHTML={{__html: htmlSections[2]}}></div>
 
         {R.map(c => (
           <div>
@@ -324,17 +326,16 @@ const DokumentaatioSivu = ({info}) => {
 }
 
 export const dokumentaatioContentP = () => {
+  console.log('loglog')
   const infoP = Bacon.zipAsArray(
     Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
     Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
     Http.cachedGet('/koski/api/documentation/apiOperations.json').startWith([]),
-    Http.cachedGet('/koski/api/documentation/introSection.html').startWith([])
+    Http.cachedGet('/koski/api/documentation/sections.html').startWith(['', '', ''])
   )
 
-  return infoP.map(info => {
-    return ({
-      content: <DokumentaatioSivu info={info}/>,
-      title: 'Dokumentaatio'
-    })
+  return ({
+    content: <DokumentaatioSivu baret-lift info={infoP}/>,
+    title: 'Dokumentaatio'
   })
 }

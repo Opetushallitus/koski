@@ -90,6 +90,13 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
   """
 
+  def annotated_data="""
+## Esimerkkidata annotoituna
+
+Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
+Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
+    """
+
   def htmlExamples = {
     <div>
       { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
@@ -184,11 +191,9 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
     }
   }
 
-  val introSectionHtml = toXHTML(knockoff(general)).toString()
+  val htmlTextSections = Vector(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
 
-  val apiTesterHtml = ApiTesterHtml.apiOperationsHtml
-
-  def html = {
+  def __html = {
     <html>
       <head>
         <title>Dokumentaatio - Koski - Opintopolku.fi</title>

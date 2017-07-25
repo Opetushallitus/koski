@@ -13,10 +13,6 @@ import org.scalatra.ScalatraServlet
 import scala.Function.const
 
 class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
-  get("/") {
-    KoskiTiedonSiirtoHtml.html
-  }
-
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }
@@ -29,16 +25,12 @@ class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
     renderOption(KoskiErrorCategory.notFound)(KoskiTiedonSiirtoHtml.jsonTableHtmlContents(params("category"), params("name")))
   }
 
-  get("/introSection.html") {
-    KoskiTiedonSiirtoHtml.introSectionHtml
+  get("/sections.html") {
+    KoskiTiedonSiirtoHtml.htmlTextSections
   }
 
   get("/apiOperations.json") {
     KoskiTiedonSiirtoHtml.apiOperations
-  }
-
-  get("/apiTester.html") {
-    KoskiTiedonSiirtoHtml.apiTesterHtml
   }
 
   get("/examples/:name.json") {
