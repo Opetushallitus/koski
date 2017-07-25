@@ -1734,5 +1734,19 @@
     "modified": 1392744764216,
     "modifiedBy": "1.2.246.562.24.54037785580",
     "value": "Suoritus valmis"
+  },
+  {
+    "accesscount": 0,
+    "created": 1389371731204,
+    "locale": "fi",
+    "key": "Dokumentaatio",
+    "id": 122,
+    "category": "koski",
+    "force": false,
+    "accessed": 1392980291143,
+    "createdBy": "1.2.246.562.24.54037785580",
+    "modified": 1392744764216,
+    "modifiedBy": "1.2.246.562.24.54037785580",
+    "value": "Dokumentaatio"
   }
 ]
