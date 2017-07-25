@@ -372,19 +372,17 @@ const DokumentaatioSivu = ({info}) => {
   )
 }
 
-export const dokumentaatioContentP = () => contentWithLoadingIndicator(infoP).map(info => {
-  return ({
-    content: <DokumentaatioSivu info={info}/>,
-    title: 'Dokumentaatio'
+export const dokumentaatioContentP = () => {
+  const infoP = Bacon.zipAsArray(
+    Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
+    Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
+    Http.cachedGet('/koski/api/documentation/apiOperations.json').startWith([])
+  )
+
+  return infoP.map(info => {
+    return ({
+      content: <DokumentaatioSivu info={info}/>,
+      title: 'Dokumentaatio'
+    })
   })
-})
-
-
-const infoP = Bacon.zipAsArray(
-  Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
-  Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
-  Http.cachedGet('/koski/api/documentation/apiOperations.json').startWith([])
-)
-
-//<script src='/koski/js/codemirror/codemirror.js'></script>
-//<script src='/koski/js/codemirror/javascript.js'></script>
+}
