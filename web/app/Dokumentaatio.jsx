@@ -156,7 +156,7 @@ const ApiOperationTester = ({operation}) => {
       return response.text().then(function(text) {
         loadingA.set(false)
         if (response.status == 401) {
-          resultA.set(<div>{response.status + ' ' + response.statusText + ' '}<a href="/koski" target="_new">{'Login'}</a></div>)
+          resultA.set(<div>{response.status + ' ' + response.statusText + ' (Kirjaudu sisään esin: '}<a href="/koski" target="_new">{'Login'}</a>{')'}</div>)
         } else if (text) {
           resultA.set(<div>{response.status + ' ' + response.statusText}<Highlight className="json">{JSON.stringify(JSON.parse(text), null, 2)}</Highlight></div>)
         } else {
