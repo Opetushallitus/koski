@@ -75,6 +75,14 @@ Esimerkkirivi:
 
 Samat metriikkatiedot lähetetään myös Prometheus-monitorintijärjestelmään, josta ne visualisoidaan Grafanalla.
 
+## IP-seurantalogi `koski-ip-tracking.log`
+
+Logi, johon tallennetaan tiedonsiirtoon oikeutettujen käyttäjien IP-osoitteiden muutokset.
+
+Esimerkkirivi:
+
+    2017-07-25 12:21:30 oppilaitos-integraattori(1.2.246.562.10.50363000001), vanha: 10.222.22.1, uusi: 10.222.23.1
+
 ## Sovelluslogi `koski.log`
 
 Logi, johon tuotetaan yksityiskohtaista tietoa muista tapahtumista, sekä mahdolliset sovellusvirheet ja varoitukset.
