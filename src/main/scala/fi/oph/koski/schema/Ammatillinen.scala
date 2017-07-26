@@ -273,7 +273,7 @@ case class Työssäoppimisjakso(
 ) extends Jakso
 
 @Title("Ammatillinen tutkintokoulutus")
-@Description("Ammatillisen tutkinnon tunnistetiedot")
+@Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet.")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
