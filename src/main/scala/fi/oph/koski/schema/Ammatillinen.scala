@@ -88,6 +88,32 @@ case class Poissaolojakso(
   syy: Koodistokoodiviite
 ) extends Jakso
 
+@Description("Ammatillisen opiskeluoikeuden tilat:<br/>- läsnä: opiskelijan opiskelu-oikeus on voimassa " + 
+             " (Ammatillisesta peruskoulutuksesta annetun lain 34 §:n mukaan opiskelijan tulee osallistua opetukseen, " +
+             " jollei hänelle ole myönnetty siitä vapautusta. Ammatillisesta aikuiskoulutuksesta annetun lain 11 §:n (952/2011) 1" +
+             " momentin 13 kohdan mukaan ammatilliseen aikuiskoulutukseen sovelletaan ammatillisesta peruskoulutuksesta annetun lain 34 §:n " + 
+             " säännöksiä opiskelijan velvollisuuksista. Ammatillisesta peruskoulutuksesta annetun lain 34 §:n 1 momentin mukaan opiskelijan " +
+             " tulee osallistua opetukseen, jollei hänelle ole myönnetty siitä vapautusta. Mikäli opiskelija on hakenut opiskeluoikeuden " +
+             " palauttamista (Laki ammatillisesta peruskoulutuksesta (630/1998), 32 b §.) on opiskelijan tilana tuolloin läsnä.) <br/> " +
+             " - väliaikainen keskeytyminen: Ammatillisesta peruskoulutuksesta annetun lain 34 §:n mukaan opiskelijan tulee osallistua " +
+             " opetukseen, jollei hänelle ole myönnetty siitä vapautusta. Opiskelija voi myös väliaikaisesti keskeyttää koulutuksen, jos " +
+             " hänelle on myönnetty vapautus opetukseen osallistumisesta. Väliaikaisella keskeyttämisellä tarkoitettaisiin käytännössä tilanteita," +
+             " joissa opiskelija on luvallisesti poissa koulutuksesta tai opiskelija on luvatta koulutuksesta tai opiskelija on erotettu määräajaksi" +
+             " (pidätetty määräajaksi poissa koulutuksesta). Määräaikainen erottaminen voi olla maksimissaan 12 kk. (35 § 5 mom.) " + 
+             " Opetushallituksella voi määrätä tietojen sisällöstä 12 § mukaisest (laki ammatillisesta peruskoulutuksesta 34 §) opiskelija " +
+             " on erotettu koulutuksen järjestäjän toimesta (kurinpidolliset menettelyt) Keskeyttäminen voi tulla kyseeseen opiskelijan omasta " +
+             " ilmoituksesta. Opiskelija on keskeyttäynyt opiskelunsa väliaikaisesti omasta ilmoituksesta (Opintotukilaki 25 a) <br/> " +
+             " - valmistunut: opiskelijan opiskelu-oikeus on päättynyt (tutkinto on valmis) (Ammatillisesta peruiskoulutuksesta annetun lain " +
+             " (630/1998) 31 §:ssä (246/2015) säädetään opiskeluajasta. Ammatillinen perustutkinto tulee suorittaa enintään yhtä vuotta tutkinnon " +
+             " laajuudeksi määriteltyä aikaa pidemmässä ajassa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä.) <br/>" +
+             " - eronnut: opiskelija on eronnut koulutuksesta omasta ilmoituksestaan \n - katsotaan eronneeksi: Ammatillisesta peruskoulutuksesta " +
+             " annetun lain 31 §:n 4 momentin mukaan opiskelija, joka ei ole suorittanut tutkintoa tai koulutusta 1—3 momentissa säädetyssä ajassa, " +
+             " katsotaan eronneeksi. Eronneeksi katsotaan myös sellainen opiskelija, joka pätevää syytä ilmoittamatta on poissa opetuksesta, jos " +
+             " on ilmeistä, ettei hänen tarkoituksenaan ole jatkaa opintoja. Laki ammatillisesta peruskoulutuksesta (630/1998), 31 §. " + 
+             " Ammatillisesta aikuiskoulutuksesta annetun lain (631/1998) 11 §:n 1 momentin 8 kohdan (247/2015) mukaan ammatilliseen " +
+             " aikuiskoulutukseen sovelletaan ammatillisesta peruskoulutuksesta annetun lain 31 §:n 4 momentin toisen virkkeen säännöksiä" +
+             " siitä, milloin opiskelija voidaan katsoa eronneeksi. Eronneeksi katsotaan sellainen opiskelija, joka pätevää syytä " +
+             " ilmoittamatta on poissa opetuksesta, jos on ilmeistä, ettei hänen tarkoituksenaan ole jatkaa opintoja.")
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
@@ -145,6 +171,7 @@ case class AmmatillisenTutkinnonSuoritus(
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
+  @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä.")
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[Henkilövahvistus] = None,
@@ -153,7 +180,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,
-  @Description("Koulutuksen järjestämismuoto")
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -290,7 +317,7 @@ case class Työssäoppimisjakso(
 ) extends Jakso
 
 @Title("Ammatillinen tutkintokoulutus")
-@Description("Ammatillisen tutkinnon tunnistetiedot")
+@Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet.")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
