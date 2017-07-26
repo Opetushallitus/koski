@@ -6,6 +6,7 @@ import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
+import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -85,5 +86,6 @@ export const editorMapping = {
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
-  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor
+  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
+  'naytto': AmmatillinenNäyttöEditor
 }
