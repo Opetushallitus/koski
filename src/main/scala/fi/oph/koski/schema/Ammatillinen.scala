@@ -20,6 +20,7 @@ case class AmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
+  @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
@@ -37,31 +38,32 @@ trait Työssäoppimisjaksollinen {
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
+@Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (hojks), täytetään tämä tieto. Kentän puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
   hojks: Option[Hojks],
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Onko oppija vaikeasti vammainen (kyllä/ei)")
+  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
-  @Description("Onko oppija vammainen ja hänellä on avustaja")
+  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
-  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja.")
+  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. . Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
+  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja.")
+  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus.")
+  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
-  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus")
+  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   vankilaopetuksessa: Boolean = false,
-  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %.")
+  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %. Rahoituksen laskennassa käytettävä tieto.")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
@@ -71,11 +73,13 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   poissaolojaksot: Option[List[Poissaolojakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
+@Description("Majoitusjakson pituus (alku- ja loppupäivämäärä).")
 case class Majoitusjakso (
   alku: LocalDate,
   loppu: Option[LocalDate]
 ) extends Jakso
 
+@Description("Tieto siitä kun kyseessä on on yli 4 vk kestävä poissaolojakso.")
 case class Poissaolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
