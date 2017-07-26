@@ -9,11 +9,19 @@
     ul {
       list-style-type: none;
 
+      li > div:first-child {
+        vertical-align: middle;
+
+        a {
+          line-height: 23px;
+        }
+      }
+
       li > div:first-child > span {
         margin-left: 4%;
 
-        &:first-child {
-          margin-left: 2%;
+        &:first-of-type {
+          margin-left: 1%;
         }
       }
     }
