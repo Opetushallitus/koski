@@ -137,6 +137,7 @@ case class NäyttötutkintoonValmistavaKoulutus(
   def laajuus = None
 }
 
+@Description("Suoritettavan ammatillisen tutkinnon tiedot")
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
@@ -237,6 +238,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Title("Osa-alueet")
+  @Description("Ammatillisen tutkinnon osan osa-alueiden suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus {
@@ -356,6 +358,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
 ) extends Suoritus with VahvistuksetonSuoritus
 
 @Title("Ammatillisen tutkinnon osan osa-alueen suoritus")
+@Description("Ammatillisen tutkinnon osan osa-alueen suorituksen tiedot")
 case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   @Title("Osa-alue")
   @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
@@ -372,6 +375,7 @@ case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
 ) extends Suoritus with VahvistuksetonSuoritus
 
+@Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
   @Description("Opintokokonaisuuden kuvaus")
@@ -471,6 +475,7 @@ case class NäytönSuorituspaikka(
   kuvaus: LocalizedString
 )
 
+@Description("Näyttötilaisuuden ajankohta")
 case class NäytönSuoritusaika(
   @Description("Näyttötilaisuuden alkamispäivämäärä. Muoto YYYY-MM-DD")
   alku: LocalDate,
@@ -478,6 +483,7 @@ case class NäytönSuoritusaika(
   loppu: LocalDate
 )
 
+@Description("Näytön arvioinnin lisätiedot.")
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
@@ -498,6 +504,7 @@ case class NäytönArviointi (
   hylkäyksenPeruste: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi
 
+@Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
 case class NäytönArviointikohde(
   @Description("Arviointikohteen tunniste")
   @KoodistoUri("ammatillisennaytonarviointikohde")
@@ -509,6 +516,7 @@ case class NäytönArviointikohde(
   arvosana: Koodistokoodiviite
 )
 
+@Description("Näytön arvioineet henkilöt")
 case class NäytönArvioitsija(
   @Representative
   nimi: String,
