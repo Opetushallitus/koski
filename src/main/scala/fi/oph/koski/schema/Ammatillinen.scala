@@ -224,6 +224,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjak
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
@@ -247,6 +248,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
@@ -528,6 +530,7 @@ trait Järjestämismuoto {
 
 @Description("Järjestämismuoto ilman lisätietoja")
 case class JärjestämismuotoIlmanLisätietoja(
+  @Description("Koulutuksen järjestämismuodon tunniste.")
   @KoodistoUri("jarjestamismuoto")
   @Representative
   tunniste: Koodistokoodiviite
@@ -535,6 +538,7 @@ case class JärjestämismuotoIlmanLisätietoja(
 
 @Description("Koulutuksen järjestäminen oppisopimuskoulutuksena. Sisältää oppisopimuksen lisätiedot")
 case class OppisopimuksellinenJärjestämismuoto(
+  @Description("Koulutuksen järjestämismuodon tunniste.")
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
