@@ -76,10 +76,11 @@ case class Majoitusjakso (
   loppu: Option[LocalDate]
 ) extends Jakso
 
-
+@Description("Tieto siitä kun kyseessä on on yli 4 vk kestävä poissaolojakso. Koodisto (kesälomakeskeytys, Oma ilmoitus, muu syy)")
 case class Poissaolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
+  @Description("Poissaolon syy.")
   @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
 ) extends Jakso
