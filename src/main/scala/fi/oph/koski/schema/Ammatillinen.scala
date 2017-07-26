@@ -51,7 +51,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
-  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. . Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Majoitusjakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
@@ -546,6 +546,7 @@ case class OppisopimuksellinenJärjestämismuoto(
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
+  @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija).")
   @KoodistoUri("opetusryhma")
   opetusryhmä: Koodistokoodiviite,
   @Description("Alkamispäivämäärä. Muoto YYYY-MM-DD")
