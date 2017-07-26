@@ -38,6 +38,7 @@ case class OidOrganisaatio(
 case class Koulutustoimija(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
+  @Description("Koulutustoimijan Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
   @Title("Y-tunnus")
@@ -55,6 +56,7 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
+  @Description("Organisaation kotipaikka.")
   nimi: Option[LocalizedString] = None,
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
@@ -93,7 +95,7 @@ case class Tutkintotoimikunta(
 }
 
 trait OrganisaatioWithOid extends Organisaatio {
-  @Description("Organisaation tunniste Opintopolku-palvelussa")
+  @Description("Organisaation tunniste Opintopolku-palvelussa. Oid numero, joka on kaikilla organisaatiotasoilla: toimipisteen oid, koulun oid, koulutuksen järjestäjän oid.")
   @RegularExpression("""1\.2\.246\.562\.10\.\d{11,24}""")
   @Discriminator
   def oid: String
