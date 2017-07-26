@@ -339,6 +339,7 @@ case class PaikallinenTutkinnonOsa(
 @Description("Muiden kuin yhteisten tutkinnon osien osasuoritukset")
 case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @Title("Kokonaisuus")
+  @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
@@ -355,6 +356,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
 @Title("Ammatillisen tutkinnon osan osa-alueen suoritus")
 case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
   @Title("Osa-alue")
+  @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
@@ -385,6 +387,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan osa-alueen kuvaus")
   kuvaus: LocalizedString,
+  @Description("Onko pakollinen tutkinnossa (true/false).")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
@@ -394,6 +397,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
+  @Description("Onko pakollinen tutkinnossa (true/false).")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
@@ -408,6 +412,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   @KoodistoUri("kielivalikoima")
   @Discriminator
   kieli: Koodistokoodiviite,
+  @Description("Onko pakollinen tutkinnossa (true/false).")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
@@ -423,6 +428,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   @Discriminator
   kieli: Koodistokoodiviite,
+  @Description("Onko pakollinen tutkinnossa (true/false).")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli{
@@ -556,6 +562,7 @@ case class LaajuusOsaamispisteissä(
 
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
+  @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot.")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -603,6 +610,7 @@ case class ValmaKoulutuksenSuoritus(
 @Title("Valma-koulutuksen osan suoritus")
 case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
+  @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: ValmaKoulutuksenOsa,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],
@@ -665,6 +673,7 @@ case class TelmaKoulutuksenSuoritus(
 @Title("Telma-koulutuksen osan suoritus")
 case class TelmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
+  @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot.")
   koulutusmoduuli: TelmaKoulutuksenOsa,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],
