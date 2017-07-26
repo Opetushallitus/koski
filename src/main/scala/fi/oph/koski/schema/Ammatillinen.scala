@@ -33,7 +33,6 @@ case class AmmatillinenOpiskeluoikeus(
 sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen
 
 trait Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
