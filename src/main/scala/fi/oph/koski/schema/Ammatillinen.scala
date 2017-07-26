@@ -79,7 +79,7 @@ case class Majoitusjakso (
   loppu: Option[LocalDate]
 ) extends Jakso
 
-@Description("Tieto siitä kun kyseessä on on yli 4 vk kestävä poissaolojakso.")
+@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso.")
 case class Poissaolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
@@ -102,6 +102,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
   opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
+@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot.")
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
@@ -221,6 +222,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjak
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus
 }
 
+@Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus.")
 @Title("Yhteisen tutkinnon osan suoritus")
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
@@ -245,7 +247,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
 }
 
-
+@Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus.")
 @Title("Muun tutkinnon osan suoritus")
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
@@ -573,6 +575,7 @@ case class LaajuusOsaamispisteissä(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
 ) extends Laajuus
 
+@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot.")
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot.")
@@ -602,7 +605,7 @@ trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with 
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
-@Title("Valma-koulutuksen suoritus")
+@Title("VALMA-koulutuksen suoritus")
 case class ValmaKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: ValmaKoulutus,
@@ -620,7 +623,8 @@ case class ValmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Title("Valma-koulutuksen osan suoritus")
+@Description("Suoritettavan VALMA-koulutuksen osan tiedot.")
+@Title("VALMA-koulutuksen osan suoritus")
 case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
@@ -665,7 +669,7 @@ case class PaikallinenValmaKoulutuksenOsa(
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus with ValmaKoulutuksenOsa
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
-@Title("Telma-koulutuksen suoritus")
+@Title("TELMA-koulutuksen suoritus")
 case class TelmaKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: TelmaKoulutus,
@@ -683,7 +687,8 @@ case class TelmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Title("Telma-koulutuksen osan suoritus")
+@Title("TELMA-koulutuksen osan suoritus")
+@Description("Suoritettavan TELMA-koulutuksen osan tiedot.")
 case class TelmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot.")
@@ -739,6 +744,7 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
   }
 }
 
+@Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class AmmatillinenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
