@@ -67,6 +67,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
 
+@Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot")
 case class SisältäväOpiskeluoikeus(
   @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto")
   oppilaitos: Oppilaitos,
