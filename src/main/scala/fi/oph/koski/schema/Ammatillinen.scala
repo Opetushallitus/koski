@@ -20,7 +20,6 @@ case class AmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
-  @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
