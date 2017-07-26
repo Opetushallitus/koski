@@ -154,7 +154,7 @@ object KoskiSchemaDocumentHtml {
   private def descriptionHtml(p: Property): List[Elem] = descriptionHtml((p.metadata ++ p.schema.metadata))
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
   private def descriptionHtml(metadata: List[Metadata]): List[Elem] = metadata flatMap {
-    case Description(desc) => Some(<span class="description">{terminateWithComma(desc)}</span>)
+    case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{desc}</div>)
     case _ => None
   }
@@ -168,5 +168,8 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private def terminateWithComma(s: String) = if (s.endsWith(".")) { s } else { s + "." }
+  private def formatDescription(s: String) = {
+    val v = if (s.endsWith(".")) { s } else { s + "." }
+    v.split("\n").flatMap(v => Vector(v, <br/>)).init
+  }
 }
