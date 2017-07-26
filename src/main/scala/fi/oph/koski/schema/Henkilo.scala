@@ -12,7 +12,7 @@ object Henkilö {
   def isHenkilöOid(s: String) = s.matches("""1\.2\.246\.562\.24\.\d{11}""")
 }
 
-@Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
+@Description("Henkilötiedot. Syötettäessä vaaditaan joko oppijanumero `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö
 
 object TäydellisetHenkilötiedot {
@@ -28,7 +28,7 @@ case class TäydellisetHenkilötiedot(
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String,
-  @Description("Opiskelijan äidinkieli")
+  @Description("Opiskelijan äidinkieli (vrkn mukainen äidinkieli)")
   @KoodistoUri("kieli")
   äidinkieli: Option[Koodistokoodiviite],
   @Description("Opiskelijan kansalaisuudet")
@@ -83,7 +83,7 @@ trait NimellinenHenkilö {
 case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
 
 trait HenkilöWithOid extends Henkilö {
-  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
+  @Description("Oppijanumero on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa.")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   def oid: String
