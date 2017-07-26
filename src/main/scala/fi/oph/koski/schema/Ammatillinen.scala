@@ -132,6 +132,7 @@ case class AmmatillisenTutkinnonSuoritus(
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
+  @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä.")
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[Henkilövahvistus] = None,
@@ -140,7 +141,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,
-  @Description("Koulutuksen järjestämismuoto")
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
