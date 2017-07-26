@@ -43,17 +43,25 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @Description("Onko oppija vaikeasti vammainen (kyllä/ei)")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
+  @Description("Onko oppija vammainen ja hänellä on avustaja")
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
+  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja.")
   majoitus: Option[List[Majoitusjakso]] = None,
+  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
+  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja.")
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
+  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus.")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
+  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus")
   @DefaultValue(false)
   vankilaopetuksessa: Boolean = false,
+  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %.")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
