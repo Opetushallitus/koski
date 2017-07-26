@@ -34,7 +34,7 @@ case class OidOrganisaatio(
   def toOppilaitos = None
 }
 
-@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen organisaatio.")
+@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen, oppilaitoksen ylätasolla oleva organisaatio. Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
 case class Koulutustoimija(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
