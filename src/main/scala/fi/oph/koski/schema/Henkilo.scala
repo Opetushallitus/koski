@@ -49,7 +49,7 @@ case class HenkilötiedotJaOid(
   sukunimi: String
 ) extends HenkilöWithOid with Henkilötiedot
 
-@Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
+@Description("Henkilö, jonka oppijanumero 'oid' ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(
   hetu: Option[String],
   etunimet:String,
@@ -58,7 +58,7 @@ case class UusiHenkilö(
 ) extends Henkilö with Henkilötiedot
 
 @Title("Henkilö-OID")
-@Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
+@Description("Henkilö, jonka oppijanumero 'oid' on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
   oid: String
 ) extends HenkilöWithOid
@@ -83,7 +83,7 @@ trait NimellinenHenkilö {
 case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
 
 trait HenkilöWithOid extends Henkilö {
-  @Description("Oppijanumero on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa.")
+  @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa.")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   def oid: String
