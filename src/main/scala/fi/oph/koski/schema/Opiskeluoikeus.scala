@@ -67,10 +67,11 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }
 
+@Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182.")
 case class SisältäväOpiskeluoikeus(
-  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto")
+  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto.")
   oppilaitos: Oppilaitos,
-  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden yksilöivä tunniste")
+  @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden yksilöivä tunniste.")
   id: Int
 )
 

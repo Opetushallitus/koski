@@ -53,6 +53,7 @@ trait PaikallinenArviointi extends Arviointi {
   def arvosanaKirjaimin = arvosana.nimi
 }
 
+@Description("Arvioitsijan tiedot.")
 trait SuorituksenArvioitsija {
   @Description("Henkilön koko nimi")
   def nimi: String
