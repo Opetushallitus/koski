@@ -15,8 +15,11 @@ case class AmmatillinenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   override val sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
   alkamispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
   arvioituPäättymispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
