@@ -272,7 +272,7 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
 }
 
-@Description("Työssäoppimisjakson tiedot (aika, paikka, työtehtävät, laajuus)")
+@Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
