@@ -345,12 +345,10 @@ case class PaikallinenTutkinnonOsa(
 @Description("Muiden kuin yhteisten tutkinnon osien osasuoritukset")
 case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @Title("Kokonaisuus")
-  @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   override val alkamispäivä: Option[LocalDate] = None,
-  @Description("Jos kokonaisuus on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -741,7 +739,6 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
   }
 }
 
-@Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class AmmatillinenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
