@@ -490,7 +490,6 @@ case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
-  @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   @Tabular
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
