@@ -489,7 +489,6 @@ case class NäytönSuoritusaika(
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
-  @Description("Näytön arvioineet henkilöt")
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   @Tabular
@@ -518,7 +517,6 @@ case class NäytönArviointikohde(
   arvosana: Koodistokoodiviite
 )
 
-@Description("Näytön arvioineet henkilöt")
 case class NäytönArvioitsija(
   @Representative
   nimi: String,
