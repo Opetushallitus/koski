@@ -35,8 +35,6 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Option[Oppilaitos]
-  @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
-  @ReadOnly("Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
   @Hidden
   def koulutustoimija: Option[Koulutustoimija]
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
