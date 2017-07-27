@@ -209,7 +209,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjak
   def arviointi: Option[List[AmmatillinenArviointi]]
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
   def alkamispäivä: Option[LocalDate]
-  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
@@ -237,7 +236,6 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Title("Osa-alueet")
-  @Description("Ammatillisen tutkinnon osan osa-alueiden suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus {
