@@ -43,6 +43,7 @@ case class Koulutustoimija(
   @Discriminator
   @Title("Y-tunnus")
   yTunnus: Option[String] = None,
+  @Description("Koulutustoimijan kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
