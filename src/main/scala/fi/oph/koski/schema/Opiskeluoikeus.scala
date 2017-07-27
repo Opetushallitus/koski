@@ -27,11 +27,11 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
     "Tällä menettelyllä esimerkiksi käyttöliittymässä varmistetaan, ettei tehdä päivityksiä vanhentuneeseen dataan.")
   @Hidden
   def versionumero: Option[Int]
-  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate]
-  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Muoto YYYY-MM-DD")
   def arvioituPäättymispäivä: Option[LocalDate]
-  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Muoto YYYY-MM-DD")
   def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Option[Oppilaitos]
