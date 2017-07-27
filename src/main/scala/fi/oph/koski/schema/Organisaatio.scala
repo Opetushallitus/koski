@@ -29,12 +29,13 @@ object OrganisaatioOid {
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
+  @Description("Organisaation kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
 
-@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen organisaatio.")
+@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen, oppilaitoksen ylätasolla oleva organisaatio. Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
 case class Koulutustoimija(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
@@ -43,6 +44,7 @@ case class Koulutustoimija(
   @Discriminator
   @Title("Y-tunnus")
   yTunnus: Option[String] = None,
+  @Description("Koulutustoimijan kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -56,7 +58,7 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
-  @Description("Organisaation kotipaikka.")
+  @Description("Oppilaitoksen kotipaikka.")
   nimi: Option[LocalizedString] = None,
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
@@ -68,6 +70,7 @@ case class Oppilaitos(
 case class Toimipiste(
   oid: String,
   nimi: Option[LocalizedString] = None,
+  @Description("Toimipisteen kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -78,6 +81,7 @@ case class Yritys(
   @Title("Yritys")
   nimi: LocalizedString,
   @Title("Y-tunnus")
+  @Description("Yrityksen Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
   yTunnus: String
@@ -88,6 +92,7 @@ case class Yritys(
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
+  @Description("Tutkintotoimikunnan numero")
   @Discriminator
   tutkintotoimikunnanNumero: String
 ) extends Organisaatio {

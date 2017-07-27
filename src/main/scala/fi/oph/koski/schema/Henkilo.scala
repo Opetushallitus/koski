@@ -24,6 +24,7 @@ object TäydellisetHenkilötiedot {
 case class TäydellisetHenkilötiedot(
   oid: Henkilö.Oid,
   hetu: Option[Henkilö.Hetu],
+  @Description("Henkilön syntymäaika. Muoto YYYY-MM-DD.")
   syntymäaika: Option[LocalDate],
   etunimet:String,
   kutsumanimi: String,

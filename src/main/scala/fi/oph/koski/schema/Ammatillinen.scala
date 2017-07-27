@@ -23,7 +23,6 @@ case class AmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
-  @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
@@ -37,16 +36,14 @@ case class AmmatillinenOpiskeluoikeus(
 sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen
 
 trait Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
 @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
-  @Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (hojks), täytetään tämä tieto. Kentän puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
   hojks: Option[Hojks],
+  @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
@@ -72,7 +69,6 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")
   osaAikaisuus: Option[Int] = None,
-  @Description("Yli 4 viikon poissaolot")
   poissaolojaksot: Option[List[Poissaolojakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
@@ -91,32 +87,7 @@ case class Poissaolojakso(
   syy: Koodistokoodiviite
 ) extends Jakso
 
-@Description("Ammatillisen opiskeluoikeuden tilat:<br/>- läsnä: opiskelijan opiskelu-oikeus on voimassa " + 
-             " (Ammatillisesta peruskoulutuksesta annetun lain 34 §:n mukaan opiskelijan tulee osallistua opetukseen, " +
-             " jollei hänelle ole myönnetty siitä vapautusta. Ammatillisesta aikuiskoulutuksesta annetun lain 11 §:n (952/2011) 1" +
-             " momentin 13 kohdan mukaan ammatilliseen aikuiskoulutukseen sovelletaan ammatillisesta peruskoulutuksesta annetun lain 34 §:n " + 
-             " säännöksiä opiskelijan velvollisuuksista. Ammatillisesta peruskoulutuksesta annetun lain 34 §:n 1 momentin mukaan opiskelijan " +
-             " tulee osallistua opetukseen, jollei hänelle ole myönnetty siitä vapautusta. Mikäli opiskelija on hakenut opiskeluoikeuden " +
-             " palauttamista (Laki ammatillisesta peruskoulutuksesta (630/1998), 32 b §.) on opiskelijan tilana tuolloin läsnä.) <br/> " +
-             " - väliaikainen keskeytyminen: Ammatillisesta peruskoulutuksesta annetun lain 34 §:n mukaan opiskelijan tulee osallistua " +
-             " opetukseen, jollei hänelle ole myönnetty siitä vapautusta. Opiskelija voi myös väliaikaisesti keskeyttää koulutuksen, jos " +
-             " hänelle on myönnetty vapautus opetukseen osallistumisesta. Väliaikaisella keskeyttämisellä tarkoitettaisiin käytännössä tilanteita," +
-             " joissa opiskelija on luvallisesti poissa koulutuksesta tai opiskelija on luvatta koulutuksesta tai opiskelija on erotettu määräajaksi" +
-             " (pidätetty määräajaksi poissa koulutuksesta). Määräaikainen erottaminen voi olla maksimissaan 12 kk. (35 § 5 mom.) " + 
-             " Opetushallituksella voi määrätä tietojen sisällöstä 12 § mukaisest (laki ammatillisesta peruskoulutuksesta 34 §) opiskelija " +
-             " on erotettu koulutuksen järjestäjän toimesta (kurinpidolliset menettelyt) Keskeyttäminen voi tulla kyseeseen opiskelijan omasta " +
-             " ilmoituksesta. Opiskelija on keskeyttäynyt opiskelunsa väliaikaisesti omasta ilmoituksesta (Opintotukilaki 25 a) <br/> " +
-             " - valmistunut: opiskelijan opiskelu-oikeus on päättynyt (tutkinto on valmis) (Ammatillisesta peruiskoulutuksesta annetun lain " +
-             " (630/1998) 31 §:ssä (246/2015) säädetään opiskeluajasta. Ammatillinen perustutkinto tulee suorittaa enintään yhtä vuotta tutkinnon " +
-             " laajuudeksi määriteltyä aikaa pidemmässä ajassa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä.) <br/>" +
-             " - eronnut: opiskelija on eronnut koulutuksesta omasta ilmoituksestaan \n - katsotaan eronneeksi: Ammatillisesta peruskoulutuksesta " +
-             " annetun lain 31 §:n 4 momentin mukaan opiskelija, joka ei ole suorittanut tutkintoa tai koulutusta 1—3 momentissa säädetyssä ajassa, " +
-             " katsotaan eronneeksi. Eronneeksi katsotaan myös sellainen opiskelija, joka pätevää syytä ilmoittamatta on poissa opetuksesta, jos " +
-             " on ilmeistä, ettei hänen tarkoituksenaan ole jatkaa opintoja. Laki ammatillisesta peruskoulutuksesta (630/1998), 31 §. " + 
-             " Ammatillisesta aikuiskoulutuksesta annetun lain (631/1998) 11 §:n 1 momentin 8 kohdan (247/2015) mukaan ammatilliseen " +
-             " aikuiskoulutukseen sovelletaan ammatillisesta peruskoulutuksesta annetun lain 31 §:n 4 momentin toisen virkkeen säännöksiä" +
-             " siitä, milloin opiskelija voidaan katsoa eronneeksi. Eronneeksi katsotaan sellainen opiskelija, joka pätevää syytä " +
-             " ilmoittamatta on poissa opetuksesta, jos on ilmeistä, ettei hänen tarkoituksenaan ole jatkaa opintoja.")
+@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen")
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
@@ -135,7 +106,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
-  @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, joihin valmistava koulutus tähtää")
+  @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, johon valmistava koulutus tähtää")
   tutkinto: AmmatillinenTutkintoKoulutus,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
@@ -150,7 +121,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @Description("Valmistavan koulutuksen osat")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -242,7 +212,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjak
   def arviointi: Option[List[AmmatillinenArviointi]]
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
   def alkamispäivä: Option[LocalDate]
-  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
@@ -270,7 +239,6 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @Title("Osa-alueet")
-  @Description("Ammatillisen tutkinnon osan osa-alueiden suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus {
@@ -302,7 +270,7 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
 }
 
-@Description("Työssäoppimisjakson tiedot (aika, paikka, työtehtävät, laajuus)")
+@Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
@@ -375,12 +343,10 @@ case class PaikallinenTutkinnonOsa(
 @Description("Muiden kuin yhteisten tutkinnon osien osasuoritukset")
 case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @Title("Kokonaisuus")
-  @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   override val alkamispäivä: Option[LocalDate] = None,
-  @Description("Jos kokonaisuus on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -519,9 +485,7 @@ case class NäytönSuoritusaika(
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
-  @Description("Näytön arvioineet henkilöt")
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
-  @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   @Tabular
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
@@ -548,7 +512,6 @@ case class NäytönArviointikohde(
   arvosana: Koodistokoodiviite
 )
 
-@Description("Näytön arvioineet henkilöt")
 case class NäytönArvioitsija(
   @Representative
   nimi: String,
@@ -587,7 +550,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
-@Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija).")
@@ -613,7 +576,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -645,7 +607,6 @@ case class ValmaKoulutuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[ValmaKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
@@ -653,7 +614,7 @@ case class ValmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Description("Suoritettavan VALMA-koulutuksen osan tiedot.")
+@Description("Suoritettavan VALMA-koulutuksen osan / osien tiedot.")
 @Title("VALMA-koulutuksen osan suoritus")
 case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
@@ -664,7 +625,6 @@ case class ValmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -728,14 +688,12 @@ case class TelmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -774,7 +732,6 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
   }
 }
 
-@Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class AmmatillinenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
