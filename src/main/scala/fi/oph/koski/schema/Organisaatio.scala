@@ -29,6 +29,7 @@ object OrganisaatioOid {
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
+  @Description("Organisaation kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -57,7 +58,7 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
-  @Description("Organisaation kotipaikka.")
+  @Description("Oppilaitoksen kotipaikka.")
   nimi: Option[LocalizedString] = None,
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
@@ -69,6 +70,7 @@ case class Oppilaitos(
 case class Toimipiste(
   oid: String,
   nimi: Option[LocalizedString] = None,
+  @Description("Toimipisteen kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
