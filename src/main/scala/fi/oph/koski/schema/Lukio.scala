@@ -14,8 +14,11 @@ case class LukionOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   alkamispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   arvioituPäättymispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
@@ -29,6 +32,7 @@ case class LukionOpiskeluoikeus(
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[LukionPäätasonSuoritus]])
 }
 
+@Description("Lukion opiskeluoikeuden lisätiedot")
 case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
   pidennettyPäättymispäivä: Boolean = false,
@@ -44,14 +48,15 @@ case class LukionOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 case class ErityisenKoulutustehtävänJakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson alkupäivämäärä")
   alku: LocalDate,
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson loppupäivämäärä")
   loppu: Option[LocalDate],
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
@@ -316,6 +321,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
 
+@Description("Ks. tarkemmin lukion opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Lukiokoulutus")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
