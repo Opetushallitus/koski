@@ -151,7 +151,7 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private def descriptionHtml(p: Property): List[Elem] = descriptionHtml((p.metadata ++ p.schema.metadata))
+  private def descriptionHtml(p: Property): List[Elem] = descriptionHtml(p.metadata.reverse ++ p.schema.metadata)
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
   private def descriptionHtml(metadata: List[Metadata]): List[Elem] = metadata flatMap {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
