@@ -38,10 +38,9 @@ trait Työssäoppimisjaksollinen {
 
 @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
-  @Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (hojks), täytetään tämä tieto. Kentän puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
   hojks: Option[Hojks],
+  @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
@@ -67,7 +66,6 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")
   osaAikaisuus: Option[Int] = None,
-  @Description("Yli 4 viikon poissaolot")
   poissaolojaksot: Option[List[Poissaolojakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
@@ -105,7 +103,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
-  @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, joihin valmistava koulutus tähtää")
+  @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, johon valmistava koulutus tähtää")
   tutkinto: AmmatillinenTutkintoKoulutus,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
@@ -120,7 +118,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @Description("Valmistavan koulutuksen osat")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -552,7 +549,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
-@Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija).")
@@ -578,7 +575,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -610,7 +606,6 @@ case class ValmaKoulutuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[ValmaKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
@@ -618,7 +613,7 @@ case class ValmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Description("Suoritettavan VALMA-koulutuksen osan tiedot.")
+@Description("Suoritettavan VALMA-koulutuksen osan / osien tiedot.")
 @Title("VALMA-koulutuksen osan suoritus")
 case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
@@ -629,7 +624,6 @@ case class ValmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -693,14 +687,12 @@ case class TelmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
-  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
