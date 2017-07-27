@@ -81,6 +81,7 @@ case class Yritys(
   @Title("Yritys")
   nimi: LocalizedString,
   @Title("Y-tunnus")
+  @Description("Yrityksen Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
   yTunnus: String
@@ -91,6 +92,7 @@ case class Yritys(
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
+  @Description("Tutkintotoimikunnan numero")
   @Discriminator
   tutkintotoimikunnanNumero: String
 ) extends Organisaatio {
