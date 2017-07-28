@@ -5,13 +5,16 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
+@Description("Perusopetukseen valmistavan opetuksen opiskeluoikeuden tiedot")
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Description("oppijan oppimäärän alkamispäivä")
   alkamispäivä: Option[LocalDate],
+  @Description("oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
@@ -27,6 +30,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   override def lisätiedot = None
 }
 
+@Description("Perusopetukseen valmistavan opetuksen suorituksen tiedot")
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
@@ -43,6 +47,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
 ) extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with MonikielinenSuoritus
 
+@Description("Perusopetukseen valmistavan opetuksen oppiaineen suoritustiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
