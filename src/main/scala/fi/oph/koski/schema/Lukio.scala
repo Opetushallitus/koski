@@ -181,6 +181,7 @@ case class LukionKurssinSuoritus(
 
 @Description("Lukion oppiaineen arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class LukionOppiaineenArviointi(
+  @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle.")
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate]
