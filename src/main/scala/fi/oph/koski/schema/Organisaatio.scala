@@ -58,8 +58,8 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
-  @Description("Oppilaitoksen kotipaikka.")
   nimi: Option[LocalizedString] = None,
+  @Description("Oppilaitoksen kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = Some(this)

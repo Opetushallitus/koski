@@ -399,6 +399,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Valtakunnallinen tutkinnon osan osa-alue")
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+  @Description("Valtakunnallisen tutkinnon osan osa-alueen tunniste.")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
   @Description("Onko pakollinen tutkinnossa (true/false).")
