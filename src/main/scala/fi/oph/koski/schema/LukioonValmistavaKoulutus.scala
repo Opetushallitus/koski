@@ -42,7 +42,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto)).")
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
+  @Description("Lukioon valmistavaan koulutukseen sisältyvien oppiaineiden ja niiden kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("luva")
@@ -60,9 +60,11 @@ case class LukioonValmistavaKoulutus(
 
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 
+@Description("Lukioon valmistavan koulutuksen oppiaineen suoritustiedot LUVA-koulutuksessa")
 case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,
+  @Description("Suoritetun oppiaineen tunnistetiedot. Voi olla joko paikallinen tai lukioon valmistavan koulutuksen oppiaine")
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -74,6 +76,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
 
 @Title("Lukion oppiaineen opintojen suoritus")
+@Description("Lukion oppiaineen opintojen suoritustiedot LUVA-koulutuksessa")
 case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
