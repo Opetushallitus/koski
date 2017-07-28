@@ -76,6 +76,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
 
 ) extends OpiskeluoikeudenLisätiedot
 
+@Description("Oppivelvollisen erityisen tuen päätöstiedot")
 case class ErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   alku: Option[LocalDate],
