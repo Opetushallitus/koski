@@ -4,6 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
+import com.tristanhunt.knockoff.DefaultDiscounter._
 
 import scala.Function.const
 import scala.collection.mutable.ArrayBuffer
@@ -170,6 +171,6 @@ object KoskiSchemaDocumentHtml {
 
   private def formatDescription(s: String) = {
     val v = if (s.endsWith(".")) { s } else { s + "." }
-    v.split("\n").flatMap(v => Vector(v, <br/>)).init
+    v.split("\n").map(line => toXHTML(knockoff(line)))
   }
 }
