@@ -60,6 +60,7 @@ case class ErityisenKoulutustehtävänJakso(
   alku: LocalDate,
   @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson loppupäivämäärä")
   loppu: Option[LocalDate],
+  @Description("Erityinen koulutustehtävä. Koodisto.")
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
   tehtävä: Koodistokoodiviite
