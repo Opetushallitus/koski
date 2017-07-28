@@ -91,7 +91,7 @@ const createState = (oppijaOid) => {
       changeBuffer = changeBuffer.concat(firstBatch)
       return Bacon.never()
     } else {
-      //console.log('start batch', firstBatch)
+      console.log('start batch', firstBatch)
       changeBuffer = firstBatch
       return Bacon.once(oppijaBeforeChange => {
         let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(saveChangesBus).take(1) : Bacon.once()
@@ -101,7 +101,7 @@ const createState = (oppijaOid) => {
 
           let batch = changeBuffer
           changeBuffer = null
-          //console.log("Apply", batch.length / 2, "changes:", batch)
+          console.log("Apply", batch.length / 2, "changes:", batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
           return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusId})
         })
@@ -142,6 +142,7 @@ const createState = (oppijaOid) => {
   const stateP = oppijaP.map('.event').mapError(() => 'dirty').slidingWindow(2).flatMapLatest(events => {
     let prev = events[0]
     let next = events.last()
+    console.log(prev + ' --> ' + next)
     if(prev === 'saved' && next === 'view') {
       return Bacon.later(2000, 'view')
     }

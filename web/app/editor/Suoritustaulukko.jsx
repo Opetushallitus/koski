@@ -10,52 +10,77 @@ import {hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 
-export const Suoritustaulukko = ({suoritukset}) => {
-  let { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } = accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
-  let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5' )(suoritukset)))
-  let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>]))
+export const Suoritustaulukko = React.createClass({
+  getInitialState() {
+    const suoritukset = this.props.suoritukset
+    return {
+      expanded: accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
+    }
+  },
+  render() {
+    const {suoritukset} = this.props
+    const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = this.state.expanded
+    let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5')(suoritukset)))
+    let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') ||
+    <Text name='Muut suoritukset'/>]))
 
-  let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-  let showArvosana = suoritukset.find(hasArvosana) !== undefined
-  let samaLaajuusYksikkö = suoritukset.every( (s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') )
-  let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
-  let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
-  let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-  return suoritukset.length > 0 && (<div className="suoritus-taulukko">
-      <table>
-        <thead><tr>
-          <th className="suoritus">
-            {modelProperty(suoritukset[0], 'koulutusmoduuli').title}
-            { showExpandAll &&
-            <div>
-              { allExpandedP.map( allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
-                  <Text name={ allExpanded ? 'Sulje kaikki' : 'Avaa kaikki' }/>
-                </a>
-              )}
-            </div>
-            }
-          </th>
-          {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
-          {showLaajuus && <th className="laajuus"><Text name="Laajuus"/>{((samaLaajuusYksikkö && laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
-          {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
-        </tr></thead>
-        {
-          grouped.length > 1
-            ? grouped.flatMap(([groupId, ryhmänSuoritukset], i) => [
-            <tbody key={'group-' + i} className="group-header"><tr><td colSpan="4">{groupTitles[groupId]}</td></tr></tbody>,
-            ryhmänSuoritukset.map((suoritus, j) => {
-              let key = i*100 + j
-              return <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus} showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key} grouped={true}/>
-            })
-          ])
-            : grouped[0][1].map((suoritus, i) =>
-            <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus} showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö} expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
-          )
-        }
-      </table>
-    </div>)
+    let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
+    let showArvosana = suoritukset.find(hasArvosana) !== undefined
+    let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
+    let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
+    let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
+    let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
-}
+    return suoritukset.length > 0 && (
+      <div className="suoritus-taulukko">
+        <table>
+          <thead>
+          <tr>
+            <th className="suoritus">
+              {modelProperty(suoritukset[0], 'koulutusmoduuli').title}
+              {showExpandAll &&
+              <div>
+                {allExpandedP.map(allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
+                                                    onClick={toggleExpandAll}>
+                    <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
+                  </a>
+                )}
+              </div>
+              }
+            </th>
+            {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
+            {showLaajuus && <th className="laajuus"><Text
+              name="Laajuus"/>{((samaLaajuusYksikkö && laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
+            {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
+          </tr>
+          </thead>
+          {
+            grouped.length > 1
+              ? grouped.flatMap(([groupId, ryhmänSuoritukset], i) => [
+                <tbody key={'group-' + i} className="group-header">
+                <tr>
+                  <td colSpan="4">{groupTitles[groupId]}</td>
+                </tr>
+                </tbody>,
+                ryhmänSuoritukset.map((suoritus, j) => {
+                  let key = i * 100 + j
+                  return (<SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
+                                         showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
+                                         expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
+                                         grouped={true}/>)
+                })
+              ])
+              : grouped[0][1].map((suoritus, i) =>
+                <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
+                                showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
+                                expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
+              )
+          }
+        </table>
+      </div>
+    )
+  }
+})
 
 const SuoritusEditor = React.createClass({
   render() {

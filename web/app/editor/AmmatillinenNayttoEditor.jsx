@@ -1,11 +1,11 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import R from 'ramda'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
+import { Editor } from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelData, modelTitle} from './EditorModel.js'
+import {modelData, modelTitle, modelLookup} from './EditorModel.js'
 import {ISO2FinnishDate} from '../date'
 
 const UusiNäyttöPopup = ({model, doneCallback}) => {
@@ -18,9 +18,44 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
   })
 
   return (
-    <ModalDialog className="lisaa-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen näyttö"/></h2>
-      <p>{'..FIELDS..'}</p>
+      <div className="properties">
+        <table>
+          <tbody>
+            <tr className="property">
+              <td className="label"><Text name="Kuvaus"/></td>
+              <td><Editor model={modelLookup(model, 'kuvaus')}/></td>
+            </tr>
+            <tr className="property">
+              <td className="label"><Text name="Suorituspaikka"/></td>
+              <td>
+                <table><tbody><tr>
+                  <td><Editor model={modelLookup(model, 'suorituspaikka.tunniste')}/></td>
+                  <td><Editor model={modelLookup(model, 'suorituspaikka.kuvaus')}/></td>
+                </tr></tbody></table>
+              </td>
+            </tr>
+            <tr className="property">
+              <td className="label"><Text name="Työssäoppimisen yhteydessä"/></td>
+              <td><Editor model={modelLookup(model, 'työssäoppimisenYhteydessä')}/></td>
+            </tr>
+            <tr className="property">
+              <td className="label"><Text name="Suoritusaika"/></td>
+              <td><Editor model={modelLookup(model, 'suoritusaika')}/></td>
+            </tr>
+            <tr className="property">
+              <td className="label"><Text name="Arviointi"/></td>
+              <td>
+                <table><tbody><tr>
+                  <td><Editor model={modelLookup(model, 'arviointi.päivä')}/></td>
+                  <td><Editor model={modelLookup(model, 'arviointi.arvosana')}/></td>
+                </tr></tbody></table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </ModalDialog>
   )
 }
@@ -45,32 +80,39 @@ const YksittäinenNäyttöEditor = ({edit, wm}) => {
   </li>)
 }
 
-export const AmmatillinenNäyttöEditor = ({model}) => {
-  const popupVisibleA = Atom(false)
+export const AmmatillinenNäyttöEditor = React.createClass({
+  getInitialState() {
+    return {
+      popupVisibleA: Atom(false)
+    }
+  },
+  render() {
+    const model = this.props.model
+    const popupVisibleA = this.state.popupVisibleA
 
-  const edit = model.context.edit
-  let wrappedModel = wrapOptional({model})
+    const edit = model.context.edit
+    let wrappedModel = wrapOptional({model})
 
-  console.log(wrappedModel)
-  let data = modelData(wrappedModel, 'kuvaus')
+    let data = modelData(wrappedModel, 'kuvaus')
 
-  let sections = []
-  if (data !== undefined) {
-    sections.push(<YksittäinenNäyttöEditor edit={edit} wm={wrappedModel}/>)
-  }
+    let sections = []
+    if (data !== undefined) {
+      sections.push(<YksittäinenNäyttöEditor edit={edit} wm={wrappedModel}/>)
+    }
 
-  return (
-    <div>
-      {popupVisibleA.map(visible => visible
-        ? <UusiNäyttöPopup edit={edit} model={model} doneCallback={() => popupVisibleA.set(false)}/>
-        : '')
-      }
-      <ul>{sections}</ul>
-      {edit &&
+    return (
+      <div>
+        {popupVisibleA.map(visible => visible
+          ? <UusiNäyttöPopup edit={edit} model={model} doneCallback={() => popupVisibleA.set(false)}/>
+          : '')
+        }
+        <ul>{sections}</ul>
+        {edit &&
         <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
-      }
-    </div>
-  )
-}
+        }
+      </div>
+    )
+  }
+})
 
 AmmatillinenNäyttöEditor.handlesOptional = () => true

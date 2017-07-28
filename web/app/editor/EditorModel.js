@@ -308,7 +308,7 @@ export const modelErrorMessages = (model, context) => {
 export const applyChanges = (modelBeforeChange, changes) => {
   let basePath = toPath(modelBeforeChange.path)
   var withAppliedChanges = changes.reduce((acc, change) => {
-    //console.log('apply', change, 'to', acc)
+    console.log('apply', change, 'to', acc)
 
     let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
     let actualLens = modelLens(subPath)
@@ -506,6 +506,9 @@ const validateModel = (model, context, results = {}, path = []) => {
   }
   modelPropertiesRaw(model).forEach(p => validateModel(p.model, context, results, path.concat(p.key)))
   modelItemsRaw(model).forEach((item, i) => validateModel(item, context, results, path.concat(i)))
+  if (Object.keys(results).length !== 0) {
+    console.log('!OK')
+  }
   return results
 }
 
