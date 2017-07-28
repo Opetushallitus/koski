@@ -40,6 +40,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto)).")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
@@ -165,6 +166,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka.")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
