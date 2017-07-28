@@ -6,15 +6,19 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
+@Description("Perusopetuksen lisäopetuksen opiskeluoikeus")
 case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
+  @Description("Oppijan oppimäärän alkamispäivä")
   alkamispäivä: Option[LocalDate],
+  @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
+  @Description("Perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedot")
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[PerusopetuksenLisäopetuksenSuoritus],
@@ -28,6 +32,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   override def arvioituPäättymispäivä = None
 }
 
+@Description("Perusopetuksen lisäopetuksen suoritustiedot")
 case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PerusopetuksenLisäopetus,
