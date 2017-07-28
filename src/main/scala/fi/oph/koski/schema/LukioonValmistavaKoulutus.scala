@@ -63,9 +63,10 @@ trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 @Description("Lukioon valmistavan koulutuksen oppiaineen suoritustiedot LUVA-koulutuksessa")
 case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Title("Oppiaine")
-  koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,
   @Description("Suoritetun oppiaineen tunnistetiedot. Voi olla joko paikallinen tai lukioon valmistavan koulutuksen oppiaine")
+  koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,  
   tila: Koodistokoodiviite,
+  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty).")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -81,6 +82,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
   tila: Koodistokoodiviite,
+  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty).")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -98,6 +100,7 @@ trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinna
 
 @Title("Äidinkieli ja kirjallisuus")
 case class LukioonValmistavaÄidinkieliJaKirjallisuus(
+  @Description("Oppiaineen tunniste.")
   @KoodistoKoodiarvo("LVAIK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
@@ -113,6 +116,7 @@ case class LukioonValmistavaÄidinkieliJaKirjallisuus(
 }
 
 case class MuutKielet(
+  @Description("Oppiaineen tunniste.")
   @KoodistoKoodiarvo("LVMUUTK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
@@ -126,6 +130,7 @@ case class MuutKielet(
 }
 
 case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(
+  @Description("Oppiaineen tunniste.")
   @KoodistoKoodiarvo("LVMALUO")
   @KoodistoKoodiarvo("LVYHKU")
   @KoodistoKoodiarvo("LVOPO")
@@ -147,6 +152,7 @@ case class LukioonValmistavanKurssinSuoritus(
   @Flatten
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   tila: Koodistokoodiviite,
+  @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
   @Flatten
   arviointi: Option[List[LukionKurssinArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
