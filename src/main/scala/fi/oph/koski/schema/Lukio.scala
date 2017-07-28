@@ -14,8 +14,11 @@ case class LukionOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   alkamispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   arvioituPäättymispäivä: Option[LocalDate] = None,
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
@@ -29,6 +32,7 @@ case class LukionOpiskeluoikeus(
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[LukionPäätasonSuoritus]])
 }
 
+@Description("Lukion opiskeluoikeuden lisätiedot")
 case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
   pidennettyPäättymispäivä: Boolean = false,
@@ -44,15 +48,19 @@ case class LukionOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
+
+@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.).")
 case class ErityisenKoulutustehtävänJakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson alkupäivämäärä")
   alku: LocalDate,
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson loppupäivämäärä")
   loppu: Option[LocalDate],
+  @Description("Erityinen koulutustehtävä. Koodisto.")
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
   tehtävä: Koodistokoodiviite
@@ -60,6 +68,7 @@ case class ErityisenKoulutustehtävänJakso(
 
 trait LukionPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
 
+@Description("Lukion oppimäärän suoritustiedot")
 case class LukionOppimääränSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: LukionOppimäärä,
@@ -74,12 +83,14 @@ case class LukionOppimääränSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen
 
+@Description("Lukion oppiaineen oppimäärän suoritustiedot")
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
   @Flatten
@@ -93,6 +104,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
@@ -134,6 +146,7 @@ case class MuuLukioOpinto(
   laajuus: Option[LaajuusKursseissa] = None
 ) extends KoodistostaLöytyväKoulutusmoduuli
 
+@Description("Lukion oppiaineen suoritustiedot")
 case class LukionOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
@@ -147,6 +160,7 @@ case class LukionOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus
 
+@Description("Lukion kurssin suoritustiedot")
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
   @Title("Kurssi")
@@ -165,6 +179,7 @@ case class LukionKurssinSuoritus(
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus
 
+@Description("Lukion oppiaineen arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class LukionOppiaineenArviointi(
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
@@ -316,6 +331,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
 
+@Description("Ks. tarkemmin lukion opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Lukiokoulutus")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
