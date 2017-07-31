@@ -307,7 +307,8 @@ object PerusopetuksenLuokkaAste {
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
 trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaarinumerollinen {
-  @Title("Oppiaineen tunnistetiedot")
+  @Description("Oppiaineen tunnistetiedot")
+  @Title("Oppiaine")
   def tunniste: KoodiViite
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
