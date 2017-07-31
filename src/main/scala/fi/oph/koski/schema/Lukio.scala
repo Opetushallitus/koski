@@ -237,7 +237,7 @@ case class PaikallinenLukionKurssi(
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
-@Description("Lukion oppiaineen tunnistetiedot")
+@Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
