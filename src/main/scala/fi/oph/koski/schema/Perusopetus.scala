@@ -47,30 +47,30 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
-  @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
+  @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
-  @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
+  @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa.""")
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
   joustavaPerusopetus: Option[Päätösjakso] = None,
-  @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa.""")
+  @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.""")
   kotiopetus: Option[Päätösjakso] = None,
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("""Oppilas on vaikeasti vammainen (true/false)""")
+  @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
-  @Description("""Oppilaalla on majoitusetu""")
+  @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
   majoitusetu: Option[Päätösjakso] = None,
-  @Description("""Oppilaalla on kuljetusetu""")
+  @Description("""Oppilaalla on kuljetusetu. Rahoituksen laskennassa käytettävä tieto.""")
   kuljetusetu: Option[Päätösjakso] = None,
-  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan""")
+  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.""")
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None
 
 
