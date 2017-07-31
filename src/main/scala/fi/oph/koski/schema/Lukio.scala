@@ -48,7 +48,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
