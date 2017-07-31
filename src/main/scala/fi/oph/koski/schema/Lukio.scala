@@ -45,7 +45,6 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false)")
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
-  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton asuntolapaikka")
   @DefaultValue(false)
