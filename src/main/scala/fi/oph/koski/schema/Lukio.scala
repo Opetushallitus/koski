@@ -44,7 +44,6 @@ case class LukionOpiskeluoikeudenLisätiedot(
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false)")
   yksityisopiskelija: Boolean = false,
-  @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
@@ -54,7 +53,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot
 
 
-@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.).")
+@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti.")
 case class ErityisenKoulutustehtävänJakso(
   @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson alkupäivämäärä")
   alku: LocalDate,
