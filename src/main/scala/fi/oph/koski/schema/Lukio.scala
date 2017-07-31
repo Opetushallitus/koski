@@ -211,9 +211,9 @@ sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def kurssinTyyppi: Koodistokoodiviite
 }
 
-@Description("Valtakunnallisen lukion kurssin tunnistetiedot")
+@Description("Valtakunnallisen lukion/IB-lukion kurssin tunnistetiedot")
 case class ValtakunnallinenLukionKurssi(
-  @Description("Lukion kurssi")
+  @Description("Lukion/IB-lukion kurssi")
   @KoodistoUri("lukionkurssit")
   @KoodistoUri("lukionkurssitops2004aikuiset")
   @KoodistoUri("lukionkurssitops2003nuoret")
@@ -227,7 +227,7 @@ case class ValtakunnallinenLukionKurssi(
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-@Description("Paikallisen lukion kurssin tunnistetiedot")
+@Description("Paikallisen lukion/IB-lukion kurssin tunnistetiedot")
 case class PaikallinenLukionKurssi(
   @Flatten
   tunniste: PaikallinenKoodi,
