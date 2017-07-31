@@ -114,13 +114,12 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "AI",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
           },
           "kieli" : {
             "koodiarvo" : "AI1",
             "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
-          },
-          "pakollinen" : true
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -333,6 +332,138 @@
             "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
             "koodistoUri" : "suorituksentyyppi"
           }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI3",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI4",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI5",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI6",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
@@ -342,13 +473,12 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "A1",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
           },
           "kieli" : {
             "koodiarvo" : "EN",
             "koodistoUri" : "kielivalikoima"
-          },
-          "pakollinen" : true
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -460,9 +590,8 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "MA",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -552,9 +681,8 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "YH",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -622,9 +750,8 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "YL",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -670,9 +797,8 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TE",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
@@ -718,9 +844,8 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "OP",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
         },
         "yksilöllistettyOppimäärä" : false,
         "painotettuOpetus" : false,
