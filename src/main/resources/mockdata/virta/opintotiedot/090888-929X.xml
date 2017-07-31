@@ -3100,7 +3100,7 @@
               </virta:Jakso>
               <virta:Ensisijaisuus>
                 <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+                <virta:LoppuPvm>2030-07-31</virta:LoppuPvm>
               </virta:Ensisijaisuus>
               <virta:Koulutusala versio="opm95opa">89</virta:Koulutusala>
               <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="10895924"/>
