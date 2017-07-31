@@ -54,9 +54,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
 
 @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti.")
 case class ErityisenKoulutustehtävänJakso(
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson alkupäivämäärä")
   alku: LocalDate,
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson loppupäivämäärä")
   loppu: Option[LocalDate],
   @Description("Erityinen koulutustehtävä. Koodisto.")
   @KoodistoUri("erityinenkoulutustehtava")
