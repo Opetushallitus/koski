@@ -1,47 +1,14 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.{KoodistoKoodiMetadata, KoodistoPalvelu}
-import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.{Henkilö, KoskiSchema, OsaamisenTunnustaminen}
-import fi.oph.koski.servlet.ApiServlet
-import fi.oph.scalaschema.ClassSchema
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koodisto.KoodistoKoodiMetadata
+import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
-
 import scala.Function.const
-
-class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
-  get("/categoryNames.json") {
-    KoskiTiedonSiirtoHtml.categoryNames
-  }
-
-  get("/categoryExampleMetadata.json") {
-    KoskiTiedonSiirtoHtml.categoryExampleMetadata
-  }
-
-  get("/categoryExamples/:category/:name/table.html") {
-    renderOption(KoskiErrorCategory.notFound)(KoskiTiedonSiirtoHtml.jsonTableHtmlContents(params("category"), params("name")))
-  }
-
-  get("/sections.html") {
-    KoskiTiedonSiirtoHtml.htmlTextSections
-  }
-
-  get("/apiOperations.json") {
-    KoskiTiedonSiirtoHtml.apiOperations
-  }
-
-  get("/examples/:name.json") {
-    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
-  }
-
-  get("/koski-oppija-schema.json") {
-    KoskiSchema.schemaJson
-  }
-}
-
 
 class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
