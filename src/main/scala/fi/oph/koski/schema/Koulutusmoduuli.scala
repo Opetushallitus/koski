@@ -21,7 +21,7 @@ trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
 }
 
 trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
-  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
+  @Description("Tutkinnon 6-numeroinen tutkintokoodi. Sama kuin tilastokeskuksen koulutuskoodi.")
   @KoodistoUri("koulutus")
   @OksaUri("tmpOKSAID560", "tutkinto")
   def tunniste: Koodistokoodiviite

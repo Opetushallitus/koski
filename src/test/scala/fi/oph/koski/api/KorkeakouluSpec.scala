@@ -106,7 +106,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
         opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.56753942459") should equal(
           """|Ensisijainen opinto-oikeus
             |Tavoitetutkinto Tekn. kand., kemian tekniikka
-            |Voimassa 1.8.2008 - 31.7.2017
+            |Voimassa 1.8.2008 - 31.7.2030
             |Suoritetut tutkinnot
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm

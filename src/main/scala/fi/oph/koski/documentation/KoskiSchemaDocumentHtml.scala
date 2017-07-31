@@ -4,6 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
+import com.tristanhunt.knockoff.DefaultDiscounter._
 
 import scala.Function.const
 import scala.collection.mutable.ArrayBuffer
@@ -151,10 +152,10 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private def descriptionHtml(p: Property): List[Elem] = descriptionHtml((p.metadata ++ p.schema.metadata))
+  private def descriptionHtml(p: Property): List[Elem] = descriptionHtml(p.metadata.reverse ++ p.schema.metadata)
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
   private def descriptionHtml(metadata: List[Metadata]): List[Elem] = metadata flatMap {
-    case Description(desc) => Some(<span class="description">{terminateWithComma(desc)}</span>)
+    case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{desc}</div>)
     case _ => None
   }
@@ -168,5 +169,8 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private def terminateWithComma(s: String) = if (s.endsWith(".")) { s } else { s + "." }
+  private def formatDescription(s: String) = {
+    val v = if (s.endsWith(".")) { s } else { s + "." }
+    v.split("\n").map(line => toXHTML(knockoff(line)))
+  }
 }

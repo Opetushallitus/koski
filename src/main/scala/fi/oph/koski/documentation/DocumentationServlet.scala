@@ -1,21 +1,20 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.{KoodistoKoodiMetadata, KoodistoPalvelu}
+import fi.oph.koski.koodisto.KoodistoKoodiMetadata
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.{Henkilö, KoskiSchema, OsaamisenTunnustaminen}
-import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
+import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.scalaschema.ClassSchema
-
+import org.scalatra.ScalatraServlet
 import scala.Function.const
 
-class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
-  get("/") {
-    KoskiTiedonSiirtoHtml.html
-  }
+class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
+  val koodistoPalvelu = application.koodistoPalvelu
 
-  get("/koski-oppija-schema.json") {
-    KoskiSchema.schemaJson
+  get("/") {
+    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
   }
 
   get("/koski-oppija-schema.html") {
@@ -31,10 +30,6 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
         shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName }
       )
     }
-  }
-
-  get("/examples/:name.json") {
-    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }
 
   get("/koodisto/:name/:version") {

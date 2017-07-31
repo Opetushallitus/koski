@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.Description
 
-@Description("Aiemmin hankitun osaamisen tunnustaminen")
+@Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
 @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
 case class OsaamisenTunnustaminen(
   @Description("Aiemman, korvaavan suorituksen tiedot")

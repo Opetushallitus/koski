@@ -29,19 +29,22 @@ object OrganisaatioOid {
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
+  @Description("Organisaation kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
 }
 
-@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen organisaatio.")
+@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen, oppilaitoksen ylätasolla oleva organisaatio. Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
 case class Koulutustoimija(
   oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
+  @Description("Koulutustoimijan Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
   @Title("Y-tunnus")
   yTunnus: Option[String] = None,
+  @Description("Koulutustoimijan kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -56,6 +59,7 @@ case class Oppilaitos(
   @Discriminator
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
   nimi: Option[LocalizedString] = None,
+  @Description("Oppilaitoksen kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = Some(this)
@@ -66,6 +70,7 @@ case class Oppilaitos(
 case class Toimipiste(
   oid: String,
   nimi: Option[LocalizedString] = None,
+  @Description("Toimipisteen kotipaikka.")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
@@ -76,6 +81,7 @@ case class Yritys(
   @Title("Yritys")
   nimi: LocalizedString,
   @Title("Y-tunnus")
+  @Description("Yrityksen Y-tunnus")
   @RegularExpression("\\d{7}-\\d")
   @Discriminator
   yTunnus: String
@@ -86,6 +92,7 @@ case class Yritys(
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
+  @Description("Tutkintotoimikunnan numero")
   @Discriminator
   tutkintotoimikunnanNumero: String
 ) extends Organisaatio {
@@ -93,7 +100,7 @@ case class Tutkintotoimikunta(
 }
 
 trait OrganisaatioWithOid extends Organisaatio {
-  @Description("Organisaation tunniste Opintopolku-palvelussa")
+  @Description("Organisaation tunniste Opintopolku-palvelussa. Oid numero, joka on kaikilla organisaatiotasoilla: toimipisteen oid, koulun oid, koulutuksen järjestäjän oid.")
   @RegularExpression("""1\.2\.246\.562\.10\.\d{11,24}""")
   @Discriminator
   def oid: String

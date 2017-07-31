@@ -16,7 +16,9 @@ case class PerusopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Description("Oppijan oppimäärän alkamispäivä")
   alkamispäivä: Option[LocalDate] = None,
+  @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate] = None,
   tila: PerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
@@ -61,10 +63,14 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Description("""Oppilas on vaikeasti vammainen (true/false)""")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
+  @Description("""Oppilaalla on majoitusetu""")
   majoitusetu: Option[Päätösjakso] = None,
+  @Description("""Oppilaalla on kuljetusetu""")
   kuljetusetu: Option[Päätösjakso] = None,
+  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan""")
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None
 
 
@@ -98,8 +104,10 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
   toimipiste: OrganisaatioWithOid,
+  @Description("Vuosiluokan alkamispäivä")
   override val alkamispäivä: Option[LocalDate] = None,
   tila: Koodistokoodiviite,
+  @Description("Varsinaisen todistuksen saantipäivämäärä.")
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -107,6 +115,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
+  @Description("Tieto siitä, että oppilas jää luokalle.")
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
@@ -147,6 +156,7 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @Description("Vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
@@ -168,8 +178,9 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with Mahdolli
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
+  @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   yksilöllistettyOppimäärä: Boolean = false,
-  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
+  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false). Painotettu opetus (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
   painotettuOpetus: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
@@ -180,6 +191,7 @@ case class PerusopetuksenOppiaineenSuoritus(
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(
+  @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää. Toiminta-alueesta muodostuu oppiaineen kaltaisia suorituksia.")
   @Title("Toiminta-alue")
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
   tila: Koodistokoodiviite,
@@ -358,6 +370,7 @@ case class LaajuusVuosiviikkotunneissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus
 
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
 case class PerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[PerusopetuksenOpiskeluoikeusjakso]
@@ -380,9 +393,9 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   def päättötodistuksenSuoritukset(suorituksenTyyppi: String, toimintaAlueittain: Boolean) = {
     suorituksenTyyppi match {
       case "perusopetuksenoppimaara" =>
-        if (toimintaAlueittain) {
-          toimintaAlueidenSuoritukset
-        } else {
+    if (toimintaAlueittain) {
+      toimintaAlueidenSuoritukset
+    } else {
           päättötodistuksenOppiaineet.map(nuortenSuoritus)
         }
       case "aikuistenperusopetuksenoppimaara" =>
@@ -404,50 +417,50 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   }
 
   private lazy val luokkaAsteiden3_6Oppiaineet = List(
-    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
-    MuuPeruskoulunOppiaine(aine("MA")),
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+        MuuPeruskoulunOppiaine(aine("MA")),
     MuuPeruskoulunOppiaine(aine("YL")),
-    MuuPeruskoulunOppiaine(aine("KT")),
-    MuuPeruskoulunOppiaine(aine("HI")),
-    MuuPeruskoulunOppiaine(aine("YH")),
-    MuuPeruskoulunOppiaine(aine("MU")),
-    MuuPeruskoulunOppiaine(aine("KU")),
-    MuuPeruskoulunOppiaine(aine("KS")),
-    MuuPeruskoulunOppiaine(aine("LI")),
-    MuuPeruskoulunOppiaine(aine("OP"))
+        MuuPeruskoulunOppiaine(aine("KT")),
+        MuuPeruskoulunOppiaine(aine("HI")),
+        MuuPeruskoulunOppiaine(aine("YH")),
+        MuuPeruskoulunOppiaine(aine("MU")),
+        MuuPeruskoulunOppiaine(aine("KU")),
+        MuuPeruskoulunOppiaine(aine("KS")),
+        MuuPeruskoulunOppiaine(aine("LI")),
+        MuuPeruskoulunOppiaine(aine("OP"))
   )
 
   private lazy val päättötodistuksenOppiaineet = List(
-    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
     PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
     PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
-    MuuPeruskoulunOppiaine(aine("MA")),
+        MuuPeruskoulunOppiaine(aine("MA")),
     MuuPeruskoulunOppiaine(aine("BI")),
     MuuPeruskoulunOppiaine(aine("GE")),
     MuuPeruskoulunOppiaine(aine("FY")),
     MuuPeruskoulunOppiaine(aine("KE")),
     MuuPeruskoulunOppiaine(aine("TE")),
-    MuuPeruskoulunOppiaine(aine("KT")),
+        MuuPeruskoulunOppiaine(aine("KT")),
     MuuPeruskoulunOppiaine(aine("HI")),
     MuuPeruskoulunOppiaine(aine("YH")),
-    MuuPeruskoulunOppiaine(aine("MU")),
-    MuuPeruskoulunOppiaine(aine("KU")),
-    MuuPeruskoulunOppiaine(aine("KS")),
-    MuuPeruskoulunOppiaine(aine("LI")),
+        MuuPeruskoulunOppiaine(aine("MU")),
+        MuuPeruskoulunOppiaine(aine("KU")),
+        MuuPeruskoulunOppiaine(aine("KS")),
+        MuuPeruskoulunOppiaine(aine("LI")),
     MuuPeruskoulunOppiaine(aine("KO")),
-    MuuPeruskoulunOppiaine(aine("OP"))
+        MuuPeruskoulunOppiaine(aine("OP"))
   )
 
   private lazy val luokkaAsteiden1_2Oppiaineet = List(
-    PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-    MuuPeruskoulunOppiaine(aine("MA")),
-    MuuPeruskoulunOppiaine(aine("YL")),
-    MuuPeruskoulunOppiaine(aine("KT")),
-    MuuPeruskoulunOppiaine(aine("MU")),
-    MuuPeruskoulunOppiaine(aine("KU")),
-    MuuPeruskoulunOppiaine(aine("KS")),
-    MuuPeruskoulunOppiaine(aine("LI")),
-    MuuPeruskoulunOppiaine(aine("OP"))
+        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        MuuPeruskoulunOppiaine(aine("MA")),
+        MuuPeruskoulunOppiaine(aine("YL")),
+        MuuPeruskoulunOppiaine(aine("KT")),
+        MuuPeruskoulunOppiaine(aine("MU")),
+        MuuPeruskoulunOppiaine(aine("KU")),
+        MuuPeruskoulunOppiaine(aine("KS")),
+        MuuPeruskoulunOppiaine(aine("LI")),
+        MuuPeruskoulunOppiaine(aine("OP"))
   )
-}
+    }

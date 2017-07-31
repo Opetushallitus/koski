@@ -4,13 +4,14 @@ import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.http.ErrorCategory
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.ClassSchema
+import fi.oph.koski.json.Json
 
 import scala.xml.Elem
 
 object KoskiTiedonSiirtoHtml {
   private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"
   private val schemaDocumentUrl = "/koski/documentation/koski-oppija-schema.html"
-  private val schemaFileUrl = "/koski/documentation/koski-oppija-schema.json"
+  private val schemaFileUrl = "/koski/api/documentation/koski-oppija-schema.json"
   private def general =s"""
 
 # Koski-tiedonsiirtoprotokolla
@@ -89,49 +90,122 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
   """
 
-  def html = {
-    <html>
-      <head>
-        <title>Dokumentaatio - Koski - Opintopolku.fi</title>
-        <meta charset="UTF-8"></meta>
-        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
-        <script src="/koski/js/codemirror/codemirror.js"></script>
-        <script src="/koski/js/codemirror/javascript.js"></script>
-      </head>
-      <script src="/koski/js/koski-documentation.js"></script>
-      <body>
-        <header><div class="logo"/></header>
-        <div class="content">
-          <section>
-            {toXHTML( knockoff(general) )}
-          </section>
-          <section>
-            {toXHTML( knockoff(rest_apis) )}
-            { ApiTesterHtml.apiOperationsHtml }
-          </section>
-        <section>
-          <h2>Esimerkkidata annotoituna</h2>
-          <p>
-            Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
-            Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
-          </p>
-          { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
-          { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
-          { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
-          { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
-          { examplesHtml(ExamplesAikuistenPerusopetus.examples, "Aikuisten perusopetus") }
-          { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
-          { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
-          { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
-          { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
-          { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
-          { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
-        </section>
-        </div>
-      </body>
-    </html>
+  def annotated_data="""
+## Esimerkkidata annotoituna
+
+Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
+Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
+    """
+
+  def htmlExamples = {
+    <div>
+      { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
+      { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
+      { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
+      { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
+      { examplesHtml(ExamplesAikuistenPerusopetus.examples, "Aikuisten perusopetus") }
+      { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
+      { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
+      { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
+      { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
+      { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
+      { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
+    </div>
+  }
+
+  val categoryNames: Seq[String] = Seq(
+    "Esiopetus",
+    "Perusopetukseen valmistava opetus",
+    "Perusopetus",
+    "Perusopetuksen lisäopetus",
+    "Lukiokoulutus",
+    "IB-koulutus",
+    "Ammatillinen koulutus",
+    "Valmentava koulutus",
+    "Korkeakoulu (Virrasta)",
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)"
+  )
+
+  val categoryExamples: Map[String, Seq[Example]] = Map(
+    "Esiopetus" -> ExamplesEsiopetus.examples,
+    "Perusopetukseen valmistava opetus" -> ExamplesPerusopetukseenValmistavaOpetus.examples,
+    "Perusopetus" -> ExamplesPerusopetus.examples,
+    "Perusopetuksen lisäopetus" -> ExamplesPerusopetuksenLisaopetus.examples,
+    "Lukiokoulutus" -> (ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples),
+    "IB-koulutus" -> ExamplesIB.examples,
+    "Ammatillinen koulutus" -> ExamplesAmmatillinen.examples,
+    "Valmentava koulutus" -> (ExamplesValma.examples ++ ExamplesTelma.examples),
+    "Korkeakoulu (Virrasta)" -> ExamplesKorkeakoulu.examples,
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples
+  )
+
+  val categoryExampleMetadata: Map[String, Seq[_]] = {
+    categoryExamples.mapValues(_ map {e: Example =>
+      Map(
+        "name" -> e.name,
+        "link" -> s"/koski/api/documentation/examples/${e.name}.json",
+        "description" -> e.description
+      )
+    })
+  }
+
+  val jsonTableHtmlContentsCache: collection.mutable.Map[(String, String), String] = collection.mutable.Map()
+
+  def jsonTableHtmlContents(categoryName: String, exampleName: String): Option[String] = {
+    val key = (categoryName, exampleName)
+    if (!jsonTableHtmlContentsCache.contains(key)) {
+      categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)) match {
+        case Some(v) => {
+          val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], v.data)
+          val result = rows.map(_.toString()).mkString("")
+          jsonTableHtmlContentsCache.update(key, result)
+        }
+        case None => return None
+      }
+    }
+    jsonTableHtmlContentsCache.get(key)
+  }
+
+  val apiOperations = {
+    KoskiApiOperations.operations.map {operation =>
+      Map(
+        "method" -> operation.method,
+        "path" -> operation.path,
+        "operation" -> operation.path,
+        "summary" -> operation.summary,
+        "doc" -> operation.doc.toString(),
+        "errorCategories" -> operation.statusCodes.flatMap(_.flatten),
+        "examples" -> operation.examples,
+        "parameters" -> operation.parameters.map {parameter => Map(
+          "name" -> parameter.name,
+          "description" -> parameter.description,
+          "examples" -> parameter.examples,
+          "type" -> {
+            val par = parameter // XXX: Fixes a weird type error
+            par match {
+              case p: QueryParameter => "query"
+              case p: PathParameter => "path"
+            }
+          }
+        )}
+      )
+    }
+  }
+
+  val htmlTextSections = Vector(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
+
+
+  def examplesJson(examples: List[Example], title: String) = {
+    Map(
+      "title" -> title,
+      "examples" -> examples.map { e: Example =>
+        Map (
+          "link" -> s"/koski/documentation/examples/${e.name}.json",
+          "description" -> e.description,
+          "jsontable" -> <table class="json">{SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], e.data).map(_.toString()).toVector}</table>
+        )
+      }.toVector
+    )
   }
 
   def examplesHtml(examples: List[Example], title: String) = {

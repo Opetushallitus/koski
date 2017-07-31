@@ -5,7 +5,7 @@ import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.{DocumentationServlet, KoodistoServlet}
+import fi.oph.koski.documentation.{DocumentationServlet, DocumentationApiServlet, KoodistoServlet}
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
@@ -22,6 +22,7 @@ import fi.oph.koski.organisaatio.OrganisaatioServlet
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
+import fi.oph.koski.servlet.RedirectServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
@@ -53,7 +54,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/pulssi", new PulssiHtmlServlet(application))
     mount("/todistus", new TodistusServlet(application))
     mount("/opintosuoritusote", new SuoritusServlet(application))
-    mount("/documentation", new DocumentationServlet(application.koodistoPalvelu))
+    mount("/dokumentaatio", new RedirectServlet("/documentation", true))
+    mount("/documentation", new DocumentationServlet(application))
+    mount("/api/documentation", new DocumentationApiServlet())
     mount("/api/editor", new EditorServlet(application))
     mount("/api/healthcheck", new HealthCheckApiServlet(application))
     mount("/api/henkilo", new HenkilötiedotServlet(application))

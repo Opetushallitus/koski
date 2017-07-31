@@ -51,7 +51,7 @@ describe('Tiedonsiirrot', function() {
 
   function insertExample(name) {
     return function() {
-      return getJson('/koski/documentation/examples/' + name).then(function(data) {
+      return getJson('/koski/api/documentation/examples/' + name).then(function(data) {
         return putJson('/koski/api/oppija', data).catch(function(){})
       })
     }

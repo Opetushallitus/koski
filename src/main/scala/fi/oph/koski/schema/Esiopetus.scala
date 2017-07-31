@@ -11,10 +11,15 @@ case class EsiopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Description("Oppijan esiopetuksen lukuvuoden alkamisaika. Esiopetuksen alkamisaika 1.8.")
   alkamispäivä: Option[LocalDate] = None,
+  @Description("Oppijan opinto-oikeuden arvioitu päättymispäivä esiopetuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
+  @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen.")
   päättymispäivä: Option[LocalDate] = None,
+  @Description("Tila-tieto/tiedot oppijan läsnäolosta. https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus")
   tila: PerusopetuksenOpiskeluoikeudenTila,
+  @Description("Esiopetuksen opiskeluoikeuden lisätiedot.")
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[EsiopetuksenSuoritus],
@@ -54,7 +59,7 @@ case class Esiopetus(
   perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
-  @Description("Kuvaus esiopetuksesta")
+  @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta.")
   kuvaus: Option[LocalizedString] = None
 ) extends DiaarinumerollinenKoulutus {
   override def laajuus: Option[Laajuus] = None
