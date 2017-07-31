@@ -170,6 +170,7 @@ case class IBOppiaineenArviointi(
   predicted: Boolean = true,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
+  @Description("Arviointipäivämäärä.")
   päivä: Option[LocalDate]
 ) extends IBArviointi {
   override def arviointipäivä: Option[LocalDate] = päivä
@@ -189,7 +190,6 @@ case class PreIBKurssinSuoritus(
 
 @Title("IB-kurssin suoritus")
 case class IBKurssinSuoritus(
-  @Description("IB kurssin tunnistetiedot")
   @Title("Kurssi")
   koulutusmoduuli: IBKurssi,
   tila: Koodistokoodiviite,
@@ -234,12 +234,13 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
   }
 }
 
-@Title("IB Core Requiremenst -arviointi")
+@Title("IB Core Requirements-arviointi")
 case class IBCoreRequirementsArviointi(
   @KoodistoUri("arviointiasteikkocorerequirementsib")
   arvosana: Koodistokoodiviite,
-  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
+  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa.")
   predicted: Boolean = true,
+  @Description("Arviointipäivämäärä.")
   päivä: Option[LocalDate]
 ) extends IBArviointi {
   override def arviointipäivä: Option[LocalDate] = päivä
@@ -266,24 +267,31 @@ trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
 
 @Title("Muu IB-oppiaine")
 case class IBOppiaineMuu(
+  @Description("IB-lukion oppiaineen tunnistetiedot.")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
+  @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL).")
   taso: Option[Koodistokoodiviite],
+  @Description("Oppiaineen aineryhmä (1-6).")
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine
 
 @Title("IB-kielioppiaine")
 case class IBOppiaineLanguage(
+  @Description("IB-lukion kielioppiaineen tunnistetiedot.")
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
+  @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL).")
   taso: Option[Koodistokoodiviite],
   @KoodistoUri("kielivalikoima")
   @Discriminator
+  @Description("Mikä kieli on kyseessä.")
   kieli: Koodistokoodiviite,
+  @Description("Oppiaineen aineryhmä (1-6).")
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine {
