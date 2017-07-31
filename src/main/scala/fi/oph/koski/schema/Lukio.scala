@@ -221,6 +221,7 @@ case class ValtakunnallinenLukionKurssi(
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],
+  @Description("Valtakunnallisen kurssin tyyppi voi olla joko pakollinen tai syventävä.")
   @KoodistoKoodiarvo("pakollinen")
   @KoodistoKoodiarvo("syventava")
   kurssinTyyppi: Koodistokoodiviite
@@ -232,6 +233,7 @@ case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
+  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä tai soveltava.")
   @KoodistoKoodiarvo("syventava")
   @KoodistoKoodiarvo("soveltava")
   kurssinTyyppi: Koodistokoodiviite
