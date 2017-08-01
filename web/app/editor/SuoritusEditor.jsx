@@ -37,7 +37,7 @@ export const SuoritusEditor = React.createClass({
 
     let {model} = this.props
     model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
-    const editor = resolveEditor(this.props.model)
+    const editor = resolveEditor(model)
 
     let className = 'suoritus ' + model.value.classes.join(' ')
 
