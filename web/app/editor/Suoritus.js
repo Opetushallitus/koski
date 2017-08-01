@@ -1,6 +1,7 @@
-import {modelData, modelLens, modelSetValue, modelItems} from './EditorModel'
+import {modelData, modelItems, modelLens, modelSetValue} from './EditorModel'
 import * as L from 'partial.lenses'
-import {t} from '../i18n'
+import R from 'ramda'
+import {suorituksentilaKoodisto} from '../koodistot'
 
 export const suoritusValmis = (suoritus) => suorituksenTila(suoritus) === 'VALMIS'
 export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKEN'
@@ -25,8 +26,4 @@ const createTila = (koodiarvo) => {
   return tilat[koodiarvo]
 }
 
-const tilat = {
-  VALMIS: { data: { koodiarvo: 'VALMIS', koodistoUri: 'suorituksentila' }, title: t('Suoritus valmis') },
-  KESKEN: { data: { koodiarvo: 'KESKEN', koodistoUri: 'suorituksentila' }, title: t('Suoritus kesken') },
-  KESKEYTYNYT: { data: { koodiarvo: 'KESKEYTYNYT', koodistoUri: 'suorituksentila' }, title: t('Suoritus keskeytynyt') }
-}
+const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, { data: { koodiarvo: key, koodistoUri: 'suorituksentila' }, title: value }])))

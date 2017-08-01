@@ -9,7 +9,7 @@ import {accumulateExpandedState} from './ExpandableItems'
 import {hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {ammatillisentutkinnonosanryhma} from '../koodistot'
+import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
 
 export const Suoritustaulukko = React.createClass({
   render() {
@@ -25,8 +25,8 @@ export const Suoritustaulukko = React.createClass({
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
 
     if (edit) {
-      groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhma).concat(groupIds))
-      groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhma)
+      groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
+      groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhmaKoodisto)
     }
 
     let showGrouped = groupIds.length > 1
