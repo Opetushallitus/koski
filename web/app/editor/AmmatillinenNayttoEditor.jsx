@@ -60,13 +60,14 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
   )
 }
 
-const YksittäinenNäyttöEditor = ({edit, wm}) => {
+const YksittäinenNäyttöEditor = ({edit, wm, popupVisibleA}) => {
   let alku  = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.alku'))
   let loppu = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.loppu'))
 
   return (<div>
     <div>
       {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wm)}></a>}
+      {edit && <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
       {alku === loppu
         ? <span className="pvm">{alku}</span>
         : <span><span className="alku pvm">{alku}</span>{' - '}<span className="loppu pvm">{loppu}</span></span>
@@ -87,24 +88,24 @@ export const AmmatillinenNäyttöEditor = React.createClass({
     }
   },
   render() {
-    const popupVisibleA = this.state.popupVisibleA
     const model = this.props.model
+    const popupVisibleA = this.state.popupVisibleA
     const edit = model.context.edit
 
     const wrappedModel = wrapOptional({model})
-    const data = modelData(wrappedModel, 'kuvaus')
+    const hasData = !!modelData(wrappedModel, 'kuvaus')
 
     return (
       <div>
         {popupVisibleA.map(visible => visible
-          ? <UusiNäyttöPopup edit={edit} model={model} doneCallback={() => popupVisibleA.set(false)}/>
+          ? <UusiNäyttöPopup edit={edit} model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/>
           : '')
         }
-        {data && <YksittäinenNäyttöEditor edit={edit} wm={wrappedModel}/>}
-        {edit &&
-          <a onClick={() => popupVisibleA.set(true)}><Text name={
-            data ? 'Muokkaa' : 'Lisää ammattiosaamisen näyttö'
-          }/></a>
+        {hasData &&
+          <YksittäinenNäyttöEditor edit={edit} wm={wrappedModel} popupVisibleA={popupVisibleA}/>
+        }
+        {edit && !hasData &&
+          <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
         }
       </div>
     )
