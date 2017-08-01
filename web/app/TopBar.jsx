@@ -11,10 +11,11 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
   )
 }
 
-const NavList = (location) => {
+const NavList = ({location}) => {
   return (<ul>
-    <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
-    <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '')}</li>
+    <li>{naviLink('/koski/', 'Opiskelijat', location.path, '', (path, loc) => loc == path || loc.startsWith('/koski/oppija'))}</li>
+    <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
+    <li>{naviLink('/koski/validointi', 'Validointi', location.path, '')}</li>
     <li>{naviLink('/koski/documentation', 'Dokumentaatio', location.path, '')}</li>
   </ul>)
 }
