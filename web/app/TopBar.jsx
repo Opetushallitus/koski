@@ -38,9 +38,3 @@ const LocalTopBar = ({location, user, titleKey}) => {
     </header>
   )
 }
-
-const navLinks = (location) => (<ul>
-    <li>{naviLink('/koski/', 'Opiskelijat', location.path, '')}</li>
-    <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
-    <li>{naviLink('/koski/validointi', 'Validointi', location.path, '')}</li>
-  </ul>)
