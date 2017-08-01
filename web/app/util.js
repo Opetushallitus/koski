@@ -1,5 +1,4 @@
 import Bacon from 'baconjs'
-import R from 'ramda'
 
 export const doActionWhileMounted = (stream, action) => stream.doAction(action).map(null).toProperty().startWith(null)
 
