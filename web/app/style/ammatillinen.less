@@ -3,7 +3,7 @@
     margin-left: 1em;
   }
 
-  .näyttö {
+  .näyttö, .tunnustettu {
     margin-bottom: 5px;
 
     .kuvaus {
@@ -18,14 +18,15 @@
       }
     }
 
-    div:first-child > span {
+    div > div:first-child > span {
       margin-left: 4%;
 
       &:first-of-type {
-        margin-left: 1%;
+        margin-left: 2%;
       }
     }
 
+    .lisää-tunnustettu-modal .modal-content,
     .lisää-näyttö-modal .modal-content {
       min-width: 40vw;
 

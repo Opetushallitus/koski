@@ -3,22 +3,16 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
-import { Editor } from './Editor.jsx'
+import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {modelData, modelTitle, modelLookup, resetOptionalModel} from './EditorModel.js'
 import {ISO2FinnishDate} from '../date'
 
 const UusiNäyttöPopup = ({model, doneCallback}) => {
   let validP = Bacon.constant(true)
-  let submitBus = Bacon.Bus()
-
-  submitBus.onValue(() => {
-    // TODO
-    doneCallback()
-  })
 
   return (
-    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={doneCallback} okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen näyttö"/></h2>
       <div className="properties">
         <table>
@@ -60,23 +54,23 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
   )
 }
 
-const YksittäinenNäyttöEditor = ({edit, wm, popupVisibleA}) => {
-  let alku  = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.alku'))
-  let loppu = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.loppu'))
+const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
+  let alku  = ISO2FinnishDate(modelTitle(model, 'suoritusaika.alku'))
+  let loppu = ISO2FinnishDate(modelTitle(model, 'suoritusaika.loppu'))
 
   return (<div>
     <div>
-      {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wm)}></a>}
+      {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(model)}></a>}
       {edit && <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
       {alku === loppu
         ? <span className="pvm">{alku}</span>
         : <span><span className="alku pvm">{alku}</span>{' - '}<span className="loppu pvm">{loppu}</span></span>
       }
-      <span>{'Työpaikka: '}{modelTitle(wm, 'suorituspaikka.kuvaus')}</span>
-      <span>{modelTitle(wm, 'arviointi.arvosana')}</span>
+      <span>{'Työpaikka: '}{modelTitle(model, 'suorituspaikka.kuvaus')}</span>
+      <span>{modelTitle(model, 'arviointi.arvosana')}</span>
     </div>
     <div>
-      <p className="kuvaus">{modelTitle(wm, 'kuvaus')}</p>
+      <p className="kuvaus">{modelTitle(model, 'kuvaus')}</p>
     </div>
   </div>)
 }
@@ -102,7 +96,7 @@ export const AmmatillinenNäyttöEditor = React.createClass({
           : '')
         }
         {hasData &&
-          <YksittäinenNäyttöEditor edit={edit} wm={wrappedModel} popupVisibleA={popupVisibleA}/>
+          <YksittäinenNäyttöEditor edit={edit} model={wrappedModel} popupVisibleA={popupVisibleA}/>
         }
         {edit && !hasData &&
           <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
