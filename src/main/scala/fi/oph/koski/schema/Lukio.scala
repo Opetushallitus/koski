@@ -44,21 +44,17 @@ case class LukionOpiskeluoikeudenLisätiedot(
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false)")
   yksityisopiskelija: Boolean = false,
-  @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
-  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 
-@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.).")
+@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti.")
 case class ErityisenKoulutustehtävänJakso(
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson alkupäivämäärä")
   alku: LocalDate,
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen jakson loppupäivämäärä")
   loppu: Option[LocalDate],
   @Description("Erityinen koulutustehtävä. Koodisto.")
   @KoodistoUri("erityinenkoulutustehtava")
@@ -173,7 +169,6 @@ case class LukionKurssinSuoritus(
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
-@Description("Lukion oppiaineen arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
 case class LukionOppiaineenArviointi(
   @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle.")
   arvosana: Koodistokoodiviite,
@@ -206,9 +201,9 @@ sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def kurssinTyyppi: Koodistokoodiviite
 }
 
-@Description("Valtakunnallisen lukion kurssin tunnistetiedot")
+@Description("Valtakunnallisen lukion/IB-lukion kurssin tunnistetiedot")
 case class ValtakunnallinenLukionKurssi(
-  @Description("Lukion kurssi")
+  @Description("Lukion/IB-lukion kurssi")
   @KoodistoUri("lukionkurssit")
   @KoodistoUri("lukionkurssitops2004aikuiset")
   @KoodistoUri("lukionkurssitops2003nuoret")
@@ -216,23 +211,25 @@ case class ValtakunnallinenLukionKurssi(
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],
+  @Description("Valtakunnallisen kurssin tyyppi voi olla joko pakollinen tai syventävä.")
   @KoodistoKoodiarvo("pakollinen")
   @KoodistoKoodiarvo("syventava")
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-@Description("Paikallisen lukion kurssin tunnistetiedot")
+@Description("Paikallisen lukion/IB-lukion kurssin tunnistetiedot")
 case class PaikallinenLukionKurssi(
   @Flatten
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
+  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä tai soveltava.")
   @KoodistoKoodiarvo("syventava")
   @KoodistoKoodiarvo("soveltava")
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
-@Description("Lukion oppiaineen tunnistetiedot")
+@Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
@@ -326,7 +323,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
 
-@Description("Ks. tarkemmin lukion opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Lukiokoulutus")
+@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-LukioIBkoulutus")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
