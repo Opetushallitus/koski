@@ -6,7 +6,6 @@ import Http from '../http'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import Text from '../Text.jsx'
 import Dropdown from '../Dropdown.jsx'
-import {splitName, capitalizeName} from '../util.js'
 
 export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')
@@ -21,13 +20,13 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   const existingHenkilöP = hetu ? Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0') : Http.cachedGet('/koski/api/henkilo/oid/' + oid).map('.0')
   existingHenkilöP.filter(R.identity).onValue((henkilö) => henkilöAtom.set(henkilö))
 
-  const kutsumanimiChoicesP = etunimetAtom.skipErrors().skipDuplicates().map(capitalizeName).map(splitName)
+  const kutsumanimiChoicesP = etunimetAtom.skipErrors().skipDuplicates().map(sanitizeFirstnames).map(splitName)
   kutsumanimiChoicesP.changes().onValue(x => kutsumanimiChoices.set(x))
 
   Bacon.combineAsArray(etunimetAtom, kutsumanimiAtom, kutsumanimiManuallySetAtom).changes().onValue(v => {
-    let nameParts = splitName(capitalizeName(v[0]))
+    let nameParts = splitName(sanitizeFirstnames(v[0]))
     let defaultName = nameParts[0]
-    if (!v[2] || (v[1] && !nameParts.includes(capitalizeName(v[1])))) {
+    if (!v[2] || (v[1] && !nameParts.includes(sanitizeFirstnames(v[1])))) {
       kutsumanimiAtom.set(defaultName)
       kutsumanimiManuallySetAtom.set(false)
     }
@@ -65,8 +64,17 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
 
 const NameInputOrValue = ({ existing, atom }) => existing
   ? <input type="text" disabled value={ atom.or('') }></input>
-  : <input type="text" value={ atom.or('') } onChange={ e => atom.set(e.target.value)} onBlur={ e => atom.set(capitalizeName(e.target.value))}></input>
+  : <input type="text" value={ atom.or('') } onChange={ e => atom.set(e.target.value)} onBlur={ e => atom.set(sanitizeFirstnames(e.target.value))}></input>
 
 const ValueSelect = ({ existing, atom, items, manuallySetAtom}) => existing
   ? <input type="text" disabled value={ atom.or('') }></input>
   : <Dropdown options={items} keyValue={R.identity} displayValue={R.identity} selected={atom} onSelectionChanged={value => {manuallySetAtom && manuallySetAtom.set(true); atom.set(value)}}/>
+
+const splitName = (name) => {
+  let n = name.trim().split().join('')
+  return R.filter(R.identity, R.uniq(n.split(/\s/g).concat(n.split(/[\s\-]/g))))
+}
+
+const sanitizeFirstnames = (name) => {
+  return name.trim().replace(/\s+/g, ' ').replace(/\s*-\s*/g, '-')
+}
