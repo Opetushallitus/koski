@@ -2,6 +2,7 @@
     @page { margin: 1.6cm; }
     body  { margin: 0; }
     table, .entity { page-break-inside: avoid; }
+    a, a:visited { color: black; text-decoration: none; }
 }
 
 body {
