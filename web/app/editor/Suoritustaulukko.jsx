@@ -109,7 +109,7 @@ const SuoritusEditor = React.createClass({
     {
       expanded && hasProperties && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} properties={propertiesWithoutOsasuoritukset} />
+          <PropertiesEditor model={model} properties={propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key))}/>
         </td>
       </tr>)
     }

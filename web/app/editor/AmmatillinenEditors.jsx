@@ -2,7 +2,6 @@ import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
@@ -79,7 +78,6 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
 }
 
 export const editorMapping = {
-  'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,

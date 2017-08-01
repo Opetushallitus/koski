@@ -172,7 +172,7 @@ const Oppiainetaulukko = React.createClass({
         )}
         <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
                                             pakollinen={pakolliset} resultCallback={addOppiaine}
-                                            organisaatioOid={modelData(model.context.toimipiste).oid}
+                                            organisaatioOid={modelData(model.context.toimipiste).oid} // FIXME: no toimipiste in model.context
                                             placeholder={placeholder}/>
       </section>
     )
