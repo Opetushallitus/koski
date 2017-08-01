@@ -5,7 +5,7 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import { Editor } from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelData, modelTitle, modelLookup} from './EditorModel.js'
+import {modelData, modelTitle, modelLookup, resetOptionalModel} from './EditorModel.js'
 import {ISO2FinnishDate} from '../date'
 
 const UusiNäyttöPopup = ({model, doneCallback}) => {
@@ -13,7 +13,7 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
   let submitBus = Bacon.Bus()
 
   submitBus.onValue(() => {
-    console.log('sb')
+    // TODO
     doneCallback()
   })
 
@@ -64,9 +64,9 @@ const YksittäinenNäyttöEditor = ({edit, wm}) => {
   let alku  = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.alku'))
   let loppu = ISO2FinnishDate(modelTitle(wm, 'suoritusaika.loppu'))
 
-  return (<li>
+  return (<div>
     <div>
-      {edit && <a className="remove-value fa fa-times-circle-o"></a>}
+      {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wm)}></a>}
       {alku === loppu
         ? <span className="pvm">{alku}</span>
         : <span><span className="alku pvm">{alku}</span>{' - '}<span className="loppu pvm">{loppu}</span></span>
@@ -75,9 +75,9 @@ const YksittäinenNäyttöEditor = ({edit, wm}) => {
       <span>{modelTitle(wm, 'arviointi.arvosana')}</span>
     </div>
     <div>
-      <p>{modelTitle(wm, 'kuvaus')}</p>
+      <p className="kuvaus">{modelTitle(wm, 'kuvaus')}</p>
     </div>
-  </li>)
+  </div>)
 }
 
 export const AmmatillinenNäyttöEditor = React.createClass({
@@ -87,18 +87,12 @@ export const AmmatillinenNäyttöEditor = React.createClass({
     }
   },
   render() {
-    const model = this.props.model
     const popupVisibleA = this.state.popupVisibleA
-
+    const model = this.props.model
     const edit = model.context.edit
-    let wrappedModel = wrapOptional({model})
 
-    let data = modelData(wrappedModel, 'kuvaus')
-
-    let sections = []
-    if (data !== undefined) {
-      sections.push(<YksittäinenNäyttöEditor edit={edit} wm={wrappedModel}/>)
-    }
+    const wrappedModel = wrapOptional({model})
+    const data = modelData(wrappedModel, 'kuvaus')
 
     return (
       <div>
@@ -106,9 +100,11 @@ export const AmmatillinenNäyttöEditor = React.createClass({
           ? <UusiNäyttöPopup edit={edit} model={model} doneCallback={() => popupVisibleA.set(false)}/>
           : '')
         }
-        <ul>{sections}</ul>
+        {data && <YksittäinenNäyttöEditor edit={edit} wm={wrappedModel}/>}
         {edit &&
-        <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
+          <a onClick={() => popupVisibleA.set(true)}><Text name={
+            data ? 'Muokkaa' : 'Lisää ammattiosaamisen näyttö'
+          }/></a>
         }
       </div>
     )
