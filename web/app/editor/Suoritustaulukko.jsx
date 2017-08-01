@@ -1,18 +1,15 @@
 import React from 'baret'
-import {modelData, modelTitle, modelLookup} from './EditorModel.js'
+import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
-import {shouldShowProperty, PropertiesEditor} from './PropertiesEditor.jsx'
-import {modelProperties, modelProperty, modelItems} from './EditorModel'
+import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
+import {modelItems, modelProperties, modelProperty} from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {hasArvosana} from './Suoritus'
-import {t, lang} from '../i18n'
+import {t} from '../i18n'
 import Text from '../Text.jsx'
-import ryhmäKoodisto from '../../../src/main/resources/mockdata/koodisto/koodit/ammatillisentutkinnonosanryhma.json'
-
-const koodiMetadata = rawKoodi => rawKoodi.metadata.find(m => m.kieli.toLowerCase() == lang) || rawKoodi.metadata.find(m => m.kieli == 'FI') || rawKoodi.metadata[0]
-const readKoodisto = json => R.fromPairs(json.map(rawKoodi => ([ rawKoodi.koodiArvo, koodiMetadata(rawKoodi).nimi ])))
+import {ammatillisentutkinnonosanryhma} from '../koodistot'
 
 export const Suoritustaulukko = React.createClass({
   render() {
@@ -28,9 +25,8 @@ export const Suoritustaulukko = React.createClass({
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
 
     if (edit) {
-      let groupsFromKoodisto = readKoodisto(ryhmäKoodisto)
-      groupIds = R.uniq(R.keys(groupsFromKoodisto).concat(groupIds))
-      groupTitles = R.merge(groupTitles, groupsFromKoodisto)
+      groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhma).concat(groupIds))
+      groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhma)
     }
 
     let showGrouped = groupIds.length > 1
