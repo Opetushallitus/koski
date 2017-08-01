@@ -27,10 +27,18 @@ module.exports = {
           presets: ['es2015', 'react', 'stage-3']
         }
       },
-      {test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules/},
+      {
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      },
       {
         test: /\.less$/,
         loader: 'style!css!autoprefixer-loader?browsers=last 2 version!less'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   },

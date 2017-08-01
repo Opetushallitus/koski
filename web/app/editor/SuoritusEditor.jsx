@@ -17,7 +17,7 @@ const resolveEditor = (mdl) => {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
   if (mdl.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-    return <Suoritustaulukko suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
+    return <Suoritustaulukko suoritukset={modelItems(mdl, 'osasuoritukset') || []} context={mdl.context}/>
   }
   if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
     return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
