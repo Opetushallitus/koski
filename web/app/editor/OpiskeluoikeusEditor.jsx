@@ -216,8 +216,7 @@ const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return `${title}, osittainen` // TODO: i18n
-    case 'aikuistenperusopetuksenoppimaara':
-    case 'aikuistenperusopetuksenoppimaaranalkuvaihe': return modelTitle(suoritus, 'tyyppi')
+    case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
     default: return title
   }
 }
