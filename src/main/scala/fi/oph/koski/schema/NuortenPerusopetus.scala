@@ -82,10 +82,10 @@ case class ErityisenTuenPäätös(
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
   loppu: Option[LocalDate],
   @Description("""Oppilas opiskelee toiminta-alueittain (true/false).
-                 | Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain.
-                 | Tuolloin oppilaalla on aina erityisen tuen päätös.
-                 | Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.
-                 | huomautuksena: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
+Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain.
+Tuolloin oppilaalla on aina erityisen tuen päätös.
+Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.
+huomautuksena: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Title("Opiskelee toiminta-alueittain")
   opiskeleeToimintaAlueittain: Boolean = false,
   @Description("""Suorittaako erityisoppilas koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana""")
