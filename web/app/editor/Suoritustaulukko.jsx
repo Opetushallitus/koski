@@ -11,15 +11,13 @@ import {t} from '../i18n'
 import Text from '../Text.jsx'
 
 export const Suoritustaulukko = React.createClass({
-  getInitialState() {
-    const suoritukset = this.props.suoritukset
-    return {
-      expanded: accumulateExpandedState({suoritukset, filter: s => suoritusProperties(s).length > 0})
-    }
-  },
   render() {
     const {suoritukset} = this.props
-    const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = this.state.expanded
+    const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
+      suoritukset,
+      filter: s => suoritusProperties(s).length > 0,
+      component: this
+    })
     let grouped = R.sortBy(([groupId]) => groupId, R.toPairs(R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5')(suoritukset)))
     let groupTitles = R.fromPairs(grouped.map(([groupId, [s]]) => [groupId, modelTitle(s, 'tutkinnonOsanRyhmä') ||
     <Text name='Muut suoritukset'/>]))

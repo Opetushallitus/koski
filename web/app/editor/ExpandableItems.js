@@ -1,6 +1,7 @@
 import R from 'ramda'
 import Bacon from 'baconjs'
 
+/** component is used to persist state inside a React.createClass component */
 export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, filter, component}) => {
   let toggleExpandAllBus = Bacon.Bus()
   let setExpandedBus = Bacon.Bus()
@@ -11,7 +12,7 @@ export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, fi
   )
 
   stateP.onValue((state) => {
-    if (component && !R.equals(initialStateFromComponent(component), state)) {
+    if (!R.equals(initialStateFromComponent(component), state)) {
       component.setState(state)
     }
   })
@@ -27,7 +28,7 @@ export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, fi
 }
 
 let initialStateFromComponent = (component) => {
-  let { allExpandedToggle = false, expanded = [] } = component && component.state || {}
+  let { allExpandedToggle = false, expanded = [] } = component.state || {}
   return { allExpandedToggle, expanded }
 }
 
