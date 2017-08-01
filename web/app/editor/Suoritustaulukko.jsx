@@ -86,7 +86,8 @@ const SuoritusEditor = React.createClass({
     let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
-    let hasProperties = properties.length > 0
+    let displayProperties = propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key))
+    let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
@@ -109,7 +110,7 @@ const SuoritusEditor = React.createClass({
     {
       expanded && hasProperties && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} properties={propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key))}/>
+          <PropertiesEditor model={model} properties={displayProperties}/>
         </td>
       </tr>)
     }
