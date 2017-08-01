@@ -132,9 +132,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
 case class NäyttötutkintoonValmistavaKoulutus(
   @KoodistoKoodiarvo("999904")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999904", "koulutus")
-) extends Koulutus {
-  def laajuus = None
-}
+) extends Koulutus with Laajuudeton
 
 @Description("Suoritettavan ammatillisen tutkinnon tiedot")
 case class AmmatillisenTutkinnonSuoritus(
@@ -296,10 +294,7 @@ case class Työssäoppimisjakso(
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends DiaarinumerollinenKoulutus {
-  override def laajuus = None
-  override def isTutkinto = true
-}
+) extends DiaarinumerollinenKoulutus with Laajuudeton with Tutkinto
 
 sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
   def laajuus: Option[LaajuusOsaamispisteissä]
@@ -592,9 +587,7 @@ case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli with NäyttötutkintoonValmistavanKoulutuksenOsa{
-  def laajuus = None
-}
+) extends PaikallinenKoulutusmoduuli with NäyttötutkintoonValmistavanKoulutuksenOsa with Laajuudeton
 
 trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen {
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None

@@ -73,10 +73,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite
-) extends Koulutus  {
-  override def laajuus = None
-  override def isTutkinto = true
-}
+) extends Koulutus with Tutkinto with Laajuudeton
 
 @Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(

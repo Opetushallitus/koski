@@ -50,10 +50,9 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
 ) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
-sealed trait AikuistenPerusopetuksenAlkuvaiheenOppiaine extends Koulutusmoduuli {
+sealed trait AikuistenPerusopetuksenAlkuvaiheenOppiaine extends Koulutusmoduuli with Laajuudeton {
   @Title("Oppiaine")
   def tunniste: KoodiViite
-  def laajuus = None
 }
 
 trait AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with KoodistostaLöytyväKoulutusmoduuli {

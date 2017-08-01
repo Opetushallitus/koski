@@ -34,6 +34,14 @@ trait Diaarinumerollinen {
   def perusteenDiaarinumero: Option[String]
 }
 
+trait Laajuudeton extends Koulutusmoduuli {
+  override def laajuus: Option[Laajuus] = None
+}
+
+trait Tutkinto extends Koulutusmoduuli {
+  override def isTutkinto = true
+}
+
 trait DiaarinumerollinenKoulutus extends Koulutus with Diaarinumerollinen
 
 trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {

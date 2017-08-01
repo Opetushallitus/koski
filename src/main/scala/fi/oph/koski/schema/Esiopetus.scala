@@ -61,6 +61,4 @@ case class Esiopetus(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
   @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta.")
   kuvaus: Option[LocalizedString] = None
-) extends DiaarinumerollinenKoulutus {
-  override def laajuus: Option[Laajuus] = None
-}
+) extends DiaarinumerollinenKoulutus with Laajuudeton

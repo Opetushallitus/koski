@@ -76,19 +76,14 @@ case class PreIBKoulutusmoduuli(
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("preiboppimaara")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends KoodistostaLöytyväKoulutusmoduuli {
-  override def laajuus: Option[Laajuus] = None
-}
+) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
 @Title("IB-tutkinto")
 @Description("IB tutkinnon tunnistetiedot")
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus")
-) extends Koulutus {
-  override def laajuus = None
-  override def isTutkinto = true
-}
+) extends Koulutus with Laajuudeton with Tutkinto
 
 trait IBSuoritus extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
@@ -247,7 +242,6 @@ trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @KoodistoUri("oppiaineetib")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
-  def laajuus: Option[LaajuusTunneissa]
 }
 
 trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
@@ -299,9 +293,7 @@ case class IBOppiaineTheoryOfKnowledge(
   @KoodistoKoodiarvo("TOK")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "TOK", nimi = Some(english("Creativity, activity, service"))),
   pakollinen: Boolean = true
-) extends IBCoreElementOppiaine {
-  override def laajuus: Option[LaajuusTunneissa] = None
-}
+) extends IBCoreElementOppiaine with Laajuudeton
 
 @Title("IB-oppiaine Extended Essay")
 case class IBOppiaineExtendedEssay(
@@ -310,9 +302,7 @@ case class IBOppiaineExtendedEssay(
   aine: IBAineRyhmäOppiaine,
   aihe: LocalizedString,
   pakollinen: Boolean = true
-) extends IBCoreElementOppiaine {
-  override def laajuus: Option[LaajuusTunneissa] = None
-}
+) extends IBCoreElementOppiaine with Laajuudeton
 
 case class LaajuusTunneissa(
   arvo: Float,
