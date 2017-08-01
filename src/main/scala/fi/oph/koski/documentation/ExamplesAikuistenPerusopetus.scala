@@ -99,6 +99,7 @@ object ExamplesAikuistenPerusopetus {
 
   lazy val aikuistenPerusopetus2015 = AikuistenPerusopetus(Some("19/011/2015"))
   lazy val aikuistenPerusopetus2017 = AikuistenPerusopetus(Some("OPH-1280-2017"))
+  lazy val aikuistenPerusopetuksenAlkuvaihe2017 = AikuistenPerusopetuksenAlkuvaihe(Some("OPH-1280-2017"))
 
   lazy val oppiaineidenSuoritukset2015 = Some(
     List(
@@ -206,7 +207,7 @@ object ExamplesAikuistenPerusopetus {
   }
 
   def aikuistenPerusopetuksenAlkuvaiheenSuoritus = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
-    aikuistenPerusopetus2017,
+    aikuistenPerusopetuksenAlkuvaihe2017,
     suorituskieli = suomenKieli,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,

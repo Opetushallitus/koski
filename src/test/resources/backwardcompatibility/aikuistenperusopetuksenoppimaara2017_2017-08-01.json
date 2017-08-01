@@ -45,8 +45,8 @@
       "koulutusmoduuli" : {
         "perusteenDiaarinumero" : "OPH-1280-2017",
         "tunniste" : {
-          "koodiarvo" : "201101",
-          "koodistoUri" : "koulutus"
+          "koodiarvo" : "aikuistenperusopetuksenoppimaaranalkuvaihe",
+          "koodistoUri" : "suorituksentyyppi"
         }
       },
       "toimipiste" : {

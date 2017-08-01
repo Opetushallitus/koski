@@ -6,7 +6,7 @@ import LocalizedString._
 
 case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: AikuistenPerusopetus,
+  koulutusmoduuli: AikuistenPerusopetuksenAlkuvaihe,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -20,6 +20,14 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaaranalkuvaihe", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus
+
+@Description("Aikuisten perusopetuksen alkuvaiheen tunnistetiedot")
+case class AikuistenPerusopetuksenAlkuvaihe(
+ perusteenDiaarinumero: Option[String],
+ @KoodistoUri("suorituksentyyppi")
+ @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaaranalkuvaihe", koodistoUri = "suorituksentyyppi")
+) extends KoodistostaLöytyväKoulutusmoduuli with Diaarinumerollinen with Laajuudeton
 
 @Description("Oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän alkuvaiheen suoritusta")
 case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(

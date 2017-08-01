@@ -1,3 +1,7 @@
+## 1.8.2017
+
+- Käytetään aikuisten perusopetuksen alkuvaiheen koulutusmoduulissa suorituksentyyppi-koodiston koodia, jotta saadaan koulutusmoduulille eri koodi kuin perusopetuksen suorituksessa
+
 ## 6.7.2017
 
 - Lisätty aikuisten perusopetuksen alkuvaiheen opinnot
