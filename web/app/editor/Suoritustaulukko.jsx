@@ -135,6 +135,8 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   const tutkinnonOsatP = Bacon.once().flatMap(() => Http.cachedGet('/koski/api/editor/koodit/tutkinnonosat'))
     .toProperty() // TODO: hae koodiarvot koulutusmoduulin mukaisesti!
 
+  // TODO: paikallisen tutkinnon osan lisäys
+  
   let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
 
   selectedAtom.filter(R.identity).onValue(koodi => {
