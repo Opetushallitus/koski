@@ -103,9 +103,9 @@ export const Suoritustaulukko = React.createClass({
           <tr> <td colSpan="4">{groupTitles[groupId]}</td> </tr>
         </tbody>,
         items.map((suoritus, j) => {
-          return suoritusEditor(suoritus, i * 100 + j)
+          return suoritusEditor(suoritus, i * 100 + j, groupId)
         }),
-        context.edit && <tbody className="uusi-tutkinnon-osa">
+        context.edit && <tbody className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
             <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
@@ -113,11 +113,11 @@ export const Suoritustaulukko = React.createClass({
       ]
     }
 
-    function suoritusEditor(suoritus, key) {
+    function suoritusEditor(suoritus, key, groupId) {
       return (<SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
                              showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
                              expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
-                             grouped={showGrouped}/>)
+                             grouped={showGrouped} groupId={groupId}/>)
     }
 
     function addTutkinnonOsa(koulutusmoduuli, groupId) {
@@ -161,7 +161,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
 
 const SuoritusEditor = React.createClass({
   render() {
-    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped} = this.props
+    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
     let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
@@ -170,7 +170,7 @@ const SuoritusEditor = React.createClass({
     let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
-    return (<tbody className={buildClassNames([(!grouped && 'alternating'), (expanded && 'expanded')])}>
+    return (<tbody className={buildClassNames(['tutkinnon-osa', (!grouped && 'alternating'), (expanded && 'expanded'), (groupId)])}>
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>

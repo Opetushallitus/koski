@@ -352,6 +352,16 @@ describe('Ammatillinen koulutus', function() {
         expect(opinnot.lisääSuoritusVisible()).to.equal(false)
       })
     })
+
+    describe('Tutkinnon osat', function() {
+      describe('Tutkinnon osan lisääminen', function() {
+        before(editor.edit)
+        before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'))
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        })
+      })
+    })
   })
 
   describe('Ammatillinen perustutkinto', function() {

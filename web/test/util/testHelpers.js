@@ -16,6 +16,7 @@ function S(selector) {
 }
 
 function findSingle(selector, base) {
+  base = toElement(base)
   var result = base ? base.find(selector) : S(selector)
   if (result.length == 0) {
     var context = base ? htmlOf(base) : "document"
@@ -25,15 +26,6 @@ function findSingle(selector, base) {
     throw new Error(result.length + " instances of " + selector + " found")
   }
   return result
-}
-
-function isVisibleBy(finder) {
-  try{
-    return finder().is(":visible")
-  } catch (e) {
-    if (e.message.indexOf('not found') > 0) return false
-    throw e
-  }
 }
 
 wait = {
@@ -74,6 +66,9 @@ wait = {
   },
   forAjax: function() {
     return wait.forMilliseconds(1)().then(wait.until(isNotLoading)).then(wait.forMilliseconds(1))
+  },
+  untilVisible: function(el) {
+    return wait.until(function() { return isElementVisible(el) })
   }
 }
 
@@ -132,7 +127,7 @@ function goForward() {
 }
 
 function triggerEvent(element, eventName) {
-  element = S(element)
+  element = toElement(element)
   if (!element.length) {
     throw new Error("triggerEvent: element not visible")
   }
@@ -253,10 +248,21 @@ function toArray(elements) {
 }
 
 function isElementVisible(el) {
-  if (el.get) el = el.get(0)  // <- extract HTML element from jQuery object
-  if (!el) return false; // <- `undefined` -> invisible
+  try{
+    el = toElement(el)
+    if (el.get) el = el.get(0)  // <- extract HTML element from jQuery object
+    if (!el) return false; // <- `undefined` -> invisible
+    return $(el).is(":visible")
+  } catch (e) {
+    if (e.message.indexOf('not found') > 0) return false
+    throw e
+  }
+}
 
-  return $(el).is(":visible")
+function toElement(el) {
+  if (!el) return el
+  if (typeof el == 'function') el = el()
+  return S(el)
 }
 
 (function improveMocha() {
@@ -284,7 +290,6 @@ function debug(x) {
   console.log(x)
   return x
 }
-
 
 function resetFixtures() {
   return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post'}))
