@@ -1,3 +1,7 @@
+## 2.8.2017
+
+- Lisätty perusopetuksen opiskeluoikeuden lisätietoihin kenttä `sisäoppilaitosmainenMajoitus` samoin kuin ammatillisen opiskeluoikeuden lisätiedoissa.
+
 ## 1.8.2017
 
 - Käytetään aikuisten perusopetuksen alkuvaiheen koulutusmoduulissa suorituksentyyppi-koodiston koodia, jotta saadaan koulutusmoduulille eri koodi kuin perusopetuksen suorituksessa

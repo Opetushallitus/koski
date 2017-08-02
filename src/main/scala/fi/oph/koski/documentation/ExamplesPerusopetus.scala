@@ -106,7 +106,8 @@ object ExamplesPerusopetus {
         vaikeastiVammainen = true,
         majoitusetu = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
         kuljetusetu = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
-        oikeusMaksuttomaanAsuntolapaikkaan = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4))))
+        oikeusMaksuttomaanAsuntolapaikkaan = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4)))),
+        sisäoppilaitosmainenMajoitus = Some(List(Majoitusjakso(date(2012, 9, 1), Some(date(2013, 9, 1)))))
       ))
     ))
   )
