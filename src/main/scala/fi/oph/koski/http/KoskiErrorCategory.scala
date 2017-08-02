@@ -81,7 +81,7 @@ object KoskiErrorCategory {
         val tuntematonTutkinnonOsa = subcategory("tuntematonTutkinnonOsa", "Annettua tutkinnon osaa ei löydy rakenteesta.")
         val suoritustapaPuuttuu = subcategory("suoritustapaPuuttuu", "Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
         val suoritustapaaEiLöydyRakenteesta = subcategory("suoritustapaaEiLöydyRakenteesta", "Suoritustapaa ei löydy tutkinnon rakenteesta")
-        val diaariPuuttuu = subcategory("diaariPuuttuu", "Annettiin koulutus ilman perusteen diaarinumeroa.")
+        val diaariPuuttuu = subcategory("diaariPuuttuu", "Annettiin koulutus ilman perusteen diaarinumeroa. Diaarinumero on pakollinen päätason suorituksilla.")
         val tuntematonDiaari = subcategory("tuntematonDiaari", "Tutkinnon perustetta ei löydy diaarinumerolla.")
         val tuntematonOsaamisala = subcategory("tuntematonOsaamisala", "Annettua osaamisalaa ei löydy tutkinnon rakenteesta.")
         val vääräKoulutustyyppi = subcategory("vääräKoulutustyyppi", "Tutkinnon koulutustyyppi on väärä")
