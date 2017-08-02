@@ -110,7 +110,7 @@ object KoskiSchemaDocumentHtml {
   </div>
 
   def schemaTypeHtml(s: Schema, includedEntities: List[String]): Elem = s match {
-    case s: ClassSchema => <a href={if (includedEntities.contains(s.fullClassName)) {"#" + s.simpleName} else { "?entity=" + s.simpleName }}>{s.title}</a>
+    case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + s.simpleName}) + "#" + s.simpleName}>{s.title}</a>
     case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(resolveSchema(a), includedEntities))}</span>
     case s: StringSchema => <span>merkkijono</span> // TODO: schemarajoitukset annotaatioista jne
     case s: NumberSchema => <span>numero</span>
