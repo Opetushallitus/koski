@@ -148,7 +148,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
     addTutkinnonOsa(modelSetValue(koulutusmoduuliProto, koodi, 'tunniste'), groupId)
   })
 
-  return <span>
+  return (<span>
     <Autocomplete
       fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
       resultAtom={ selectedAtom }
@@ -156,7 +156,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
       displayValue={ displayValue }
       selected = { selectedAtom }
     />
-  </span>
+  </span>)
 }
 
 const SuoritusEditor = React.createClass({
