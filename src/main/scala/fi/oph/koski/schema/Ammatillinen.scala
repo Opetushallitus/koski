@@ -212,6 +212,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with Työssäoppimisjak
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @KoodistoKoodiarvo("2") // Yhteiset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
@@ -233,8 +234,11 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
 
 @Title("Muun tutkinnon osan suoritus")
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
-  koulutusmoduuli: AmmatillisenTutkinnonOsa,
+  koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+  @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
+  @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   tila: Koodistokoodiviite,
@@ -296,6 +300,8 @@ trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa with Koodist
   def tunniste: Koodistokoodiviite
 }
 
+trait MuuKuinYhteinenTutkinnonOsa extends AmmatillisenTutkinnonOsa
+
 @Description("Yhteisen tutkinnon osan tunnistetiedot")
 case class YhteinenTutkinnonOsa(
   @KoodistoKoodiarvo("101053")
@@ -312,7 +318,7 @@ case class MuuValtakunnallinenTutkinnonOsa(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends ValtakunnallinenTutkinnonOsa
+) extends ValtakunnallinenTutkinnonOsa with MuuKuinYhteinenTutkinnonOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
@@ -321,7 +327,7 @@ case class PaikallinenTutkinnonOsa(
   kuvaus: LocalizedString,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli with Valinnaisuus
+) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli with Valinnaisuus with MuuKuinYhteinenTutkinnonOsa
 
 @Title("Ammatillisen tutkinnon osaa pienempi kokonaisuus")
 @Description("Muiden kuin yhteisten tutkinnon osien osasuoritukset")
