@@ -8,6 +8,7 @@
     "url": "https://github.com/Opetushallitus/koski.git"
   },
   "dependencies": {
+    "@skidding/react-codemirror": "^1.0.0",
     "bacon.atom": "^4.0.7",
     "baconjs": "^0.7.94",
     "baret": "^1.0.3",
@@ -20,7 +21,6 @@
     "partial.lenses": "^9.8",
     "ramda": "^0.22",
     "react": "~15.4.2",
-    "react-codemirror": "github:skidding/react-codemirror#106-fix-update",
     "react-day-picker": "^3.1.1",
     "react-dom": "~15.4.2",
     "react-highlight": "^0.10.0",

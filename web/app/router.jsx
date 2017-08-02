@@ -8,7 +8,7 @@ import {tiedonsiirtojenYhteenvetoContentP} from './TiedonsiirtojenYhteenveto.jsx
 import {omatTiedotContentP} from './OmatTiedot.jsx'
 import {oppijataulukkoContentP} from './Oppijataulukko.jsx'
 import {validointiContentP} from './Validointi.jsx'
-import {dokumentaatioContentP} from './Dokumentaatio.jsx'
+import {dokumentaatioContentP} from './dokumentaatio/Dokumentaatio.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
