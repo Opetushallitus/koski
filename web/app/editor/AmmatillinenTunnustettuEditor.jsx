@@ -5,28 +5,28 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {modelLookup, resetOptionalModel} from './EditorModel.js'
+import {modelLookup, accumulateModelStateAndValidity, pushModelValue, resetOptionalModel} from './EditorModel.js'
 import {wrapOptional} from './OptionalEditor.jsx'
 
 
 const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
-  let validP = Bacon.constant(true)
+  const {modelP, errorP} = accumulateModelStateAndValidity(model)
+  const validP = errorP.not()
+  const submitB = Bacon.Bus()
+
+  submitB.map(modelP).onValue(m => {
+    pushModelValue(model, modelLookup(m, 'selite').value, 'selite')
+    doneCallback()
+  })
 
   return (
-    <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={doneCallback}  okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()}  okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen tunnustaminen"/></h2>
-      <PropertiesEditor model={model} propertyFilter={p => p.key === 'selite'} />
-    </ModalDialog>
-  )
-}
+      <td>
+        <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
 
-const TunnustettuItemEditor = ({model, popupVisibleA}) => {
-  return (
-    <div>
-      <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(model)}></a>
-      <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>
-      <Editor model={modelLookup(model, 'selite')} edit={false}/>
-    </div>
+      </td>
+    </ModalDialog>
   )
 }
 
@@ -47,10 +47,12 @@ export const AmmatillinenTunnustettuEditor = React.createClass({
     return (
       <div>
         {popupVisibleA.map(v => v ? <AmmatillinenTunnustettuPopup model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/> : '')}
-        {edit && (hasData
-          ? <TunnustettuItemEditor model={wrappedModel} popupVisibleA={popupVisibleA}/>
-          : <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a>
-        )}
+        {edit && hasData && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wrappedModel)}></a>}
+        {edit && hasData && <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
+        <Editor model={modelLookup(wrappedModel, 'selite')} edit={false}/>
+        {edit && !hasData &&
+          <div><a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></div>
+        }
       </div>
     )
   }
