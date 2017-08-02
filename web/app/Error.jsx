@@ -44,7 +44,7 @@ export function requiresLogin(e) {
 
 const errorText = (error) => {
   return error.text ||
-    (error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation') && error.jsonMessage[0].message) ||
+    (error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation') && error.jsonMessage[0].message && error.jsonMessage[0].message[0].error.message) ||
     (error.httpStatus && <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>)
 }
 
