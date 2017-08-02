@@ -5,51 +5,38 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelData, modelTitle, modelLookup, resetOptionalModel} from './EditorModel.js'
+import {modelData, modelTitle, modelLookup, resetOptionalModel, accumulateModelStateAndValidity, pushModel} from './EditorModel.js'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {ISO2FinnishDate} from '../date'
 
 const UusiNäyttöPopup = ({model, doneCallback}) => {
-  let validP = Bacon.constant(true)
+  const {modelP, errorP} = accumulateModelStateAndValidity(model)
+  const validP = errorP.not()
+  const submitB = Bacon.Bus()
+
+  submitB.map(modelP).onValue(m => {
+    pushModel(m, model.context.changeBus)
+    doneCallback()
+  })
 
   return (
-    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={doneCallback} okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()} okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen näyttö"/></h2>
-      <div className="properties">
-        <table>
-          <tbody>
-            <tr className="property">
-              <td className="label"><Text name="Kuvaus"/></td>
-              <td><Editor model={modelLookup(model, 'kuvaus')}/></td>
-            </tr>
-            <tr className="property">
-              <td className="label"><Text name="Suorituspaikka"/></td>
-              <td>
-                <table><tbody><tr>
-                  <td><Editor model={modelLookup(model, 'suorituspaikka.tunniste')}/></td>
-                  <td><Editor model={modelLookup(model, 'suorituspaikka.kuvaus')}/></td>
-                </tr></tbody></table>
-              </td>
-            </tr>
-            <tr className="property">
-              <td className="label"><Text name="Työssäoppimisen yhteydessä"/></td>
-              <td><Editor model={modelLookup(model, 'työssäoppimisenYhteydessä')}/></td>
-            </tr>
-            <tr className="property">
-              <td className="label"><Text name="Suoritusaika"/></td>
-              <td><Editor model={modelLookup(model, 'suoritusaika')}/></td>
-            </tr>
-            <tr className="property">
-              <td className="label"><Text name="Arviointi"/></td>
-              <td>
-                <table><tbody><tr>
-                  <td><Editor model={modelLookup(model, 'arviointi.päivä')}/></td>
-                  <td><Editor model={modelLookup(model, 'arviointi.arvosana')}/></td>
-                </tr></tbody></table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+      <PropertiesEditor
+        baret-lift
+        model={modelP}
+        propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'arvioitsijat', 'arvioinnistaPäättäneet', 'arviointikeskusteluunOsallistuneet', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
+        getValueEditor={(p, getDefault) => {
+          if (p.key === 'suorituspaikka') {return (
+            <table><tbody><tr>
+              <td><Editor model={modelLookup(model, 'suorituspaikka.tunniste')}/></td>
+              <td><Editor model={modelLookup(model, 'suorituspaikka.kuvaus')}/></td>
+            </tr></tbody></table>
+          )}
+          return getDefault()
+        }}
+      />
     </ModalDialog>
   )
 }
