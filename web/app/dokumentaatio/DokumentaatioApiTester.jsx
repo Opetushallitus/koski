@@ -3,9 +3,8 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import Highlight from 'react-highlight'
-import Http from './http'
-import Dropdown from './Dropdown.jsx'
-
+import CodeMirror from '@skidding/react-codemirror'
+import Dropdown from '../Dropdown.jsx'
 
 function selectElementContents(el) {
   var range = document.createRange()
@@ -49,7 +48,6 @@ const QueryParameters = ({operation, collectorBus}) => {
     v.changes().onValue(() => collectorBus.push(valueAList))
   }, valueAList)
 
-
   return (
     <div className="parameters">
       <h4>{'Parametrit'}</h4>
@@ -86,17 +84,15 @@ const QueryParameters = ({operation, collectorBus}) => {
   )
 }
 
-
 const PostDataExamples = ({operation, collectorBus}) => {
   const selectedValueA = Atom(operation.examples[0])
-  const codeA = Atom(JSON.stringify(selectedValueA.get().data, null, 2))
+  const codeA = Atom(JSON.stringify(operation.examples[0].data, null, 2))
 
-  collectorBus.push(selectedValueA.get().data)
-
-  selectedValueA.changes().onValue(v => {
+  selectedValueA.onValue(v => {
     codeA.set(JSON.stringify(v.data, null, 2))
-    collectorBus.push(v.data)
   })
+
+  codeA.onValue(code => collectorBus.push(code))
 
   return (
     <div className="postdata">
@@ -106,7 +102,7 @@ const PostDataExamples = ({operation, collectorBus}) => {
           <Dropdown options={operation.examples} keyValue={v => v.name} displayValue={v => v.name} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
         </label>
       </div>
-      <textarea cols="80" rows="50" value={codeA} onChange={c => {codeA.set(c.target.value)}} style={{'font-family': 'monospace'}}></textarea>
+      <CodeMirror baret-lift value={codeA} onChange={c => codeA.set(c)} options={{mode: {name: 'javascript', json: true}}}/>
     </div>
   )
 }
@@ -148,7 +144,7 @@ const ApiOperationTester = ({operation}) => {
 
     const pd = postDataA.get()
     if (pd !== undefined) {
-      options.body = JSON.stringify(pd)
+      options.body = pd
     }
 
     fetch(makeApiUrl(operation.path, parametersA.get()), options).then(response => {
@@ -173,19 +169,20 @@ const ApiOperationTester = ({operation}) => {
 
   return (
     <div className="api-tester">
+      <ApiOperationTesterParameters operation={operation} queryCollectorBus={queryCollectorBus} postCollectorBus={postCollectorBus}/>
       <div className="buttons">
         <button disabled={loadingA} className="try button blue" onClick={tryRequest}>{'Kokeile'}</button>
         {operation.method === 'GET' &&
-          <button disabled={loadingA} className="try-newwindow button blue" onClick={tryRequestNewWindow}>{'Uuteen ikkunaan'}</button>
+        <button disabled={loadingA} className="try-newwindow button blue" onClick={tryRequestNewWindow}>{'Uuteen ikkunaan'}</button>
         }
         <button className="curl button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
       </div>
       <div>{curlVisibleA.map(v => v ? <code ref={e => e && selectElementContents(e)} className="curlcmd" onClick={e => selectElementContents(e.target)}>{curlValueA}</code> : '')}</div>
       <div className="result">{resultA}</div>
-      <ApiOperationTesterParameters operation={operation} queryCollectorBus={queryCollectorBus} postCollectorBus={postCollectorBus}/>
     </div>
   )
 }
+
 
 const ApiOperationStatusCodeRow = ({errorCategory}) => {
   const expandedA = Atom(false)
@@ -213,6 +210,7 @@ const ApiOperationStatusCodeRow = ({errorCategory}) => {
     </tr>
   )
 }
+
 const ApiOperationStatusCodes = ({errorCategories}) => {
   return (
     <table>
@@ -238,103 +236,26 @@ const ApiOperation = ({operation}) => {
   const statusCodesExpandedA = Atom(false)
 
   return (
-    <div className={expandedA.map(v => (v ? 'expanded' : '') + ' api-operation')}>
+    <div className="api-operation">
       <h3 onClick={() => expandedA.modify(v => !v)}>
         <span className="api-method">{operation.method}</span>{operation.path}
       </h3>
       <div className="summary">{operation.summary}</div>
-      <div className="api-details">
-        <div dangerouslySetInnerHTML={{__html: operation.doc}}></div>
-        <div className={statusCodesExpandedA.map(v => (v ? 'expanded' : '') + ' status-codes')}>
-          <h4 onClick={() => statusCodesExpandedA.modify(v => !v)}><a>{'Vastaukset ja paluukoodit'}</a></h4>
-          <ApiOperationStatusCodes errorCategories={operation.errorCategories}/>
-        </div>
-        <h4>{'Kokeile heti'}</h4>
-        <ApiOperationTester operation={operation}/>
-      </div>
-    </div>
-  )
-}
-
-const ApiOperations = ({operations}) => {
-  return <div>{R.map(operation => <ApiOperation operation={operation}/>, operations)}</div>
-}
-
-const JsonExampleTable = ({contents}) => {
-  return <table className="json" dangerouslySetInnerHTML={{__html: (contents)}}></table>
-}
-
-const JsonExample = ({category, example}) => {
-  const expandedA = Atom(false)
-  const contentsA = Atom('...')
-
-
-  const contentsP = Http.cachedGet('/koski/api/documentation/categoryExamples/'+category+'/'+example.name+'/table.html')
-  contentsP.onValue(v => {
-    contentsA.set(v)
-  })
-
-  return (
-    <li className={expandedA.map(v => (v ? 'expanded' : '') + ' example-item')}>
-      <a className="example-link" onClick={() => expandedA.modify(v => !v)}>{example.description}</a>
-      <a className="example-as-json" href={example.link} target="_blank">{'lataa JSON'}</a>
-      {contentsA.map(c => <JsonExampleTable contents={c}/>)}
-    </li>
-  )
-}
-
-const DokumentaatioSivu = ({info}) => {
-  const categories = info[0]
-  const examples = info[1]
-  const apiOperations = info[2]
-  const htmlSections = info[3]
-
-  // Sections having any content are considered loaded, so the loading message is hidden when page is useful
-  const stillLoading = R.reduce(R.or, false, [categories, apiOperations].concat(htmlSections).map(c => c.length === 0))
-
-  return (
-    <div className='content content-area'>
-      {stillLoading &&
-        <section><h1>{'Ladataan...'}</h1></section>
-      }
-
-      <section dangerouslySetInnerHTML={{__html: htmlSections[0]}}></section>
-
-      <section>
-        <div dangerouslySetInnerHTML={{__html: htmlSections[1]}}></div>
-
-        <ApiOperations operations={apiOperations}/>
-      </section>
-
-      <section>
-        <div dangerouslySetInnerHTML={{__html: htmlSections[2]}}></div>
-
-        {R.map(c => (
-          <div>
-            <h1>{c}</h1>
-            <ul className="example-list">
-            {
-              R.map(e => <JsonExample category={c} example={e}/>, examples[c])
-            }
-            </ul>
+      {expandedA.map(exp => exp ? (
+        <div className="api-details">
+          <div dangerouslySetInnerHTML={{__html: operation.doc}}></div>
+          <div className={statusCodesExpandedA.map(v => (v ? 'expanded' : '') + ' status-codes')}>
+            <h4 onClick={() => statusCodesExpandedA.modify(v => !v)}><a>{'Vastaukset ja paluukoodit'}</a></h4>
+            <ApiOperationStatusCodes errorCategories={operation.errorCategories}/>
           </div>
-        ), categories)}
-      </section>
-
+          <h4>{'Kokeile heti'}</h4>
+          <ApiOperationTester operation={operation}/>
+        </div>
+      ) : null)}
     </div>
   )
 }
 
-export const dokumentaatioContentP = () => {
-  const infoP = Bacon.zipAsArray(
-    Http.cachedGet('/koski/api/documentation/categoryNames.json').startWith([]),
-    Http.cachedGet('/koski/api/documentation/categoryExampleMetadata.json').startWith({}),
-    Http.cachedGet('/koski/api/documentation/apiOperations.json').startWith([]),
-    Http.cachedGet('/koski/api/documentation/sections.html').startWith(['', '', ''])
-  )
-
-  return ({
-    content: <DokumentaatioSivu baret-lift info={infoP}/>,
-    title: 'Dokumentaatio'
-  })
+export const ApiOperations = ({operations}) => {
+  return <div>{R.map(operation => <ApiOperation operation={operation}/>, operations)}</div>
 }

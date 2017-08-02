@@ -143,15 +143,8 @@
             padding-left: 5px;
             padding-right: 5px;
         }
-        &:not(.expanded) {
-            .api-details > * {
-                display: none;
-            }
-        }
-        &.expanded {
-            .toggle-details {
-                background-position: 0 -18px;
-            }
+        .toggle-details {
+            background-position: 0 -18px;
         }
         h3 {
             margin-top: 0;
@@ -289,9 +282,6 @@
         padding: 0;
 
         .example-item table.json {
-            display: none;
-        }
-        .example-item.expanded table.json {
             width: 100%;
             display: inherit;
             margin: 20px 0;
