@@ -9,3 +9,4 @@ const readKoodisto = json => R.fromPairs(json.map(rawKoodi => ([ rawKoodi.koodiA
 
 export const ammatillisentutkinnonosanryhmaKoodisto = readKoodisto(ammatillisentutkinnonosanryhmaRaw)
 export const suorituksentilaKoodisto = readKoodisto(suorituksentilaRaw)
+export const toKoodistoEnumValue = (koodistoUri, koodiarvo, nimi) => ({data: { koodiarvo, koodistoUri }, title: nimi})

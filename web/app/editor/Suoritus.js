@@ -1,7 +1,7 @@
 import {modelData, modelItems, modelLens, modelSetValue} from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
-import {suorituksentilaKoodisto} from '../koodistot'
+import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
 
 export const suoritusValmis = (suoritus) => suorituksenTila(suoritus) === 'VALMIS'
 export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKEN'
@@ -25,4 +25,4 @@ const createTila = (koodiarvo) => {
   return tilat[koodiarvo]
 }
 
-const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, { data: { koodiarvo: key, koodistoUri: 'suorituksentila' }, title: value }])))
+const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, toKoodistoEnumValue('suorituksentila', key, value)])))

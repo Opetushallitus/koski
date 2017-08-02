@@ -1,4 +1,4 @@
-import {modelData, modelItems, modelLookup, addContext} from './EditorModel'
+import {addContext, modelData, modelItems, modelLookup} from './EditorModel'
 import React from 'baret'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
@@ -9,7 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {suoritusValmis, arviointiPuuttuu} from './Suoritus'
+import {arviointiPuuttuu, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
@@ -17,7 +17,7 @@ const resolveEditor = (mdl) => {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
   if (mdl.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-    return <Suoritustaulukko suoritukset={modelItems(mdl, 'osasuoritukset') || []} context={mdl.context}/>
+    return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
     return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />

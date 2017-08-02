@@ -1,30 +1,51 @@
 import React from 'baret'
+import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
+import Http from '../http'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
-import {modelItems, modelProperties, modelProperty} from './EditorModel'
+import {
+  contextualizeSubModel,
+  ensureArrayKey,
+  modelItems,
+  modelProperties,
+  modelProperty,
+  modelSet,
+  modelSetValue,
+  oneOfPrototypes,
+  pushModel
+} from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
+import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
+import Autocomplete from '../Autocomplete.jsx'
+import {wrapOptional} from './OptionalEditor.jsx'
+import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
+
+const placeholderForNonGrouped = '999999'
 
 export const Suoritustaulukko = React.createClass({
   render() {
-    const {suoritukset, context: { edit }} = this.props
+    const {suorituksetModel} = this.props
+    let context = suorituksetModel.context
+    let suoritukset = modelItems(suorituksetModel) || []
+
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
       filter: s => suoritusProperties(s).length > 0,
       component: this
     })
 
-    let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || '5')(suoritukset)
+    let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
     let groupIds = R.keys(grouped).sort()
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
 
-    if (edit) {
+    if (context.edit) {
       groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
       groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhmaKoodisto)
     }
@@ -38,7 +59,7 @@ export const Suoritustaulukko = React.createClass({
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
-    return (suoritukset.length > 0 || edit) && (
+    return (suoritukset.length > 0 || context.edit) && (
       <div className="suoritus-taulukko">
         <table>
           <thead>
@@ -63,31 +84,73 @@ export const Suoritustaulukko = React.createClass({
           </thead>
           {
             showGrouped
-              ? groupIds.flatMap((groupId, i) => [
-                <tbody key={'group-' + i} className="group-header">
-                <tr>
-                  <td colSpan="4">{groupTitles[groupId]}</td>
-                </tr>
-                </tbody>,
-                (grouped[groupId] || []).map((suoritus, j) => {
-                  let key = i * 100 + j
-                  return (<SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
-                                         showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
-                                         expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
-                                         grouped={true}/>)
-                })
-              ])
-              : grouped[groupIds[0]].map((suoritus, i) =>
-                <SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
-                                showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
-                                expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={i}/>
-              )
+              ? groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
+              : grouped[groupIds[0]].map((suoritus, i) => suoritusEditor(suoritus, i))
           }
         </table>
       </div>
     )
+
+    function suoritusGroup(groupId, i) {
+      let items = (grouped[groupId] || [])
+      return [
+        <tbody key={'group-' + i} className="group-header">
+          <tr> <td colSpan="4">{groupTitles[groupId]}</td> </tr>
+        </tbody>,
+        items.map((suoritus, j) => {
+          return suoritusEditor(suoritus, i * 100 + j)
+        }),
+        context.edit && <tbody className="uusi-tutkinnon-osa">
+          <tr><td colSpan="4">
+            <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
+          </td></tr>
+        </tbody>
+      ]
+    }
+
+    function suoritusEditor(suoritus, key) {
+      return (<SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
+                             showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
+                             expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
+                             grouped={showGrouped}/>)
+    }
+
+    function addTutkinnonOsa(koulutusmoduuli, groupId) {
+      let suoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel), koulutusmoduuli, 'koulutusmoduuli')
+      if (groupId) {
+        suoritus = modelSetValue(suoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
+      }
+      pushModel(suoritus, context.changeBus)
+      ensureArrayKey(suoritus)
+      setExpanded(suoritus)(true)
+    }
   }
 })
+
+const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
+  let displayValue = item => item.data.koodiarvo + ' ' + item.title
+  let selectedAtom = Atom(undefined)
+  let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
+
+  const tutkinnonOsatP = Bacon.once().flatMap(() => Http.cachedGet('/koski/api/editor/koodit/tutkinnonosat'))
+    .toProperty() // TODO: hae koodiarvot koulutusmoduulin mukaisesti!
+
+  let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
+
+  selectedAtom.filter(R.identity).onValue(koodi => {
+    addTutkinnonOsa(modelSetValue(koulutusmoduuliProto, koodi, 'tunniste'), groupId)
+  })
+
+  return <span>
+    <Autocomplete
+      fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => displayValue(osa).toLowerCase().includes(query.toLowerCase())))}
+      resultAtom={ selectedAtom }
+      placeholder="Lisää tutkinnonosa"
+      displayValue={ displayValue }
+      selected = { selectedAtom }
+    />
+  </span>
+}
 
 const SuoritusEditor = React.createClass({
   render() {
@@ -97,7 +160,7 @@ const SuoritusEditor = React.createClass({
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
     let displayProperties = propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key))
     let hasProperties = displayProperties.length > 0
-    let nimi = modelTitle(model, 'koulutusmoduuli')
+    let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     return (<tbody className={buildClassNames([(!grouped && 'alternating'), (expanded && 'expanded')])}>
@@ -126,7 +189,7 @@ const SuoritusEditor = React.createClass({
     {
       expanded && osasuoritukset && osasuoritukset.value && (<tr className="osasuoritukset" key="osasuoritukset">
         <td colSpan="4">
-          <Suoritustaulukko suoritukset={ modelItems(osasuoritukset) }  context={model.context}/>
+          <Suoritustaulukko suorituksetModel={ osasuoritukset }/>
         </td>
       </tr>)
     }
@@ -148,4 +211,14 @@ export const suorituksenTilaSymbol = (tila) => {
     case 'KESKEN': return ''
     default: return ''
   }
+}
+
+let createTutkinnonOsanSuoritusPrototype = (osasuoritukset) => {
+  osasuoritukset = wrapOptional({model: osasuoritukset})
+  let newItemIndex = modelItems(osasuoritukset).length
+  let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
+  let preferredClass = 'muunammatillisentutkinnonosansuoritus' // TODO: yhteisille erilainen
+  let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
+  suoritusProto = oneOfPrototypes(suoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
+  return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
 }
