@@ -1,7 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Http from '../http'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
@@ -26,6 +25,7 @@ import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../ko
 import Autocomplete from '../Autocomplete.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
+import {EnumEditor} from './EnumEditor.jsx'
 
 const placeholderForNonGrouped = '999999'
 
@@ -102,7 +102,7 @@ export const Suoritustaulukko = React.createClass({
         }),
         context.edit && <tbody className="uusi-tutkinnon-osa">
           <tr><td colSpan="4">
-            <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
+            <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
         </tbody>
       ]
@@ -116,7 +116,7 @@ export const Suoritustaulukko = React.createClass({
     }
 
     function addTutkinnonOsa(koulutusmoduuli, groupId) {
-      let suoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel), koulutusmoduuli, 'koulutusmoduuli')
+      let suoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId), koulutusmoduuli, 'koulutusmoduuli')
       if (groupId) {
         suoritus = modelSetValue(suoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
       }
@@ -132,12 +132,12 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   let selectedAtom = Atom(undefined)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
-  const tutkinnonOsatP = Bacon.once().flatMap(() => Http.cachedGet('/koski/api/editor/koodit/tutkinnonosat'))
-    .toProperty() // TODO: hae koodiarvot koulutusmoduulin mukaisesti!
+  // TODO: rajaa ePerusteiden mukaisesti?
 
   // TODO: paikallisen tutkinnon osan lisäys
-  
+
   let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
+  const tutkinnonOsatP = EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste'))
 
   selectedAtom.filter(R.identity).onValue(koodi => {
     addTutkinnonOsa(modelSetValue(koulutusmoduuliProto, koodi, 'tunniste'), groupId)
@@ -145,7 +145,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
 
   return <span>
     <Autocomplete
-      fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => displayValue(osa).toLowerCase().includes(query.toLowerCase())))}
+      fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
       resultAtom={ selectedAtom }
       placeholder="Lisää tutkinnonosa"
       displayValue={ displayValue }
@@ -215,12 +215,13 @@ export const suorituksenTilaSymbol = (tila) => {
   }
 }
 
-let createTutkinnonOsanSuoritusPrototype = (osasuoritukset) => {
+let createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) => {
   osasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(osasuoritukset).length
   let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let preferredClass = 'muunammatillisentutkinnonosansuoritus' // TODO: yhteisille erilainen
+  let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
   let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
-  suoritusProto = oneOfPrototypes(suoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
+  let alternatives = oneOfPrototypes(suoritusProto)
+  suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
   return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
 }
