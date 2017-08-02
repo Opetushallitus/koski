@@ -46,8 +46,13 @@ export const Suoritustaulukko = React.createClass({
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
 
     if (context.edit) {
-      groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
-      groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhmaKoodisto)
+      let suoritusProto = createTutkinnonOsanSuoritusPrototype(suorituksetModel)
+      let ryhmäModel = modelLookup(suoritusProto, 'tutkinnonOsanRyhmä')
+      if (ryhmäModel) {
+        // Lisääminen mahdollista toistaiseksi vain ryhmitellyille suorituksille (== ammatilliset tutkinnon osat)
+        groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
+        groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhmaKoodisto)
+      }
     }
 
     let showGrouped = groupIds.length > 1
