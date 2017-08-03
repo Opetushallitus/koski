@@ -63,6 +63,9 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @DefaultValue(false)
+  vammainen: Boolean = false,
   @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,

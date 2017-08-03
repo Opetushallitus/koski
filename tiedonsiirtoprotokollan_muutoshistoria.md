@@ -1,3 +1,7 @@
+## 3.8.2017
+
+- Lisätty vammainen-kenttä perusopetuksen opiskeluoikeuden lisätietoihin
+
 ## 2.8.2017
 
 - Lisätty perusopetuksen opiskeluoikeuden lisätietoihin kenttä `sisäoppilaitosmainenMajoitus` samoin kuin ammatillisen opiskeluoikeuden lisätiedoissa.
