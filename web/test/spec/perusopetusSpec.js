@@ -201,7 +201,8 @@ describe('Perusopetus', function() {
             'Vaikeasti vammainen kyllä\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
-            'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016')
+            'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016\n' +
+            'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013')
         })
 
         it('näyttää suorituksen tiedot', function() {
