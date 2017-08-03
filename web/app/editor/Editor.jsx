@@ -92,14 +92,14 @@ const NullEditor = React.createClass({
   }
 })
 
-const getEditorFunction = (model) => {
+const getEditorFunction = (model) => { // TODO: refactor this garbage
   let editorByClass = filter => mdl => {
     if (!mdl || !mdl.value) {
       return undefined
     }
     for (var i in mdl.value.classes) {
       var editor = mdl.context.editorMapping[mdl.value.classes[i]]
-      if (editor && (!mdl.context.edit || filter(editor))) { return editor }
+      if (editor && (!mdl.context.edit || filter(editor)) && (mdl.context.edit || !editor.writeOnly)) { return editor }
     }
   }
 

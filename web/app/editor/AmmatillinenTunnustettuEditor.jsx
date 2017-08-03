@@ -48,14 +48,15 @@ export const AmmatillinenTunnustettuEditor = React.createClass({
       <div>
         {popupVisibleA.map(v => v ? <AmmatillinenTunnustettuPopup model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/> : null)}
         {edit && hasData && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wrappedModel)}></a>}
-        {edit && hasData && <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
+        {edit && hasData && <a className="edit-value fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
         <Editor model={modelLookup(wrappedModel, 'selite')} edit={false}/>
         {edit && !hasData &&
-          <div><a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></div>
+          <div><a className="add-value" onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></div>
         }
       </div>
     )
   }
 })
 AmmatillinenTunnustettuEditor.handlesOptional = () => true
+AmmatillinenTunnustettuEditor.writeOnly = true
 

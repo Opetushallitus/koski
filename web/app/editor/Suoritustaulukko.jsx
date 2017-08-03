@@ -10,7 +10,7 @@ import {
   modelItems,
   modelProperties,
   modelProperty,
-  modelSet,
+  modelSet, modelSetTitle,
   modelSetValue,
   oneOfPrototypes,
   pushModel
@@ -145,7 +145,7 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   const tutkinnonOsatP = EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste'))
 
   selectedAtom.filter(R.identity).onValue(koodi => {
-    addTutkinnonOsa(modelSetValue(koulutusmoduuliProto, koodi, 'tunniste'), groupId)
+    addTutkinnonOsa(modelSetValue(modelSetTitle(koulutusmoduuliProto, koodi.title), koodi, 'tunniste'), groupId)
   })
 
   return (<span>
@@ -165,9 +165,9 @@ const SuoritusEditor = React.createClass({
     let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
-    let displayProperties = propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key))
+    let displayProperties = model.context.edit ? propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key)) : propertiesWithoutOsasuoritukset
     let hasProperties = displayProperties.length > 0
-    let nimi = modelTitle(model, 'koulutusmoduuli.tunniste')
+    let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     return (<tbody className={buildClassNames(['tutkinnon-osa', (!grouped && 'alternating'), (expanded && 'expanded'), (groupId)])}>

@@ -94,3 +94,4 @@ export const AmmatillinenNäyttöEditor = React.createClass({
 })
 
 AmmatillinenNäyttöEditor.handlesOptional = () => true
+AmmatillinenNäyttöEditor.writeOnly = true

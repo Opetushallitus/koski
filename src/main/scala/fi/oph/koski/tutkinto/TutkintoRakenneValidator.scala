@@ -80,10 +80,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             // Validoidaan tutkintorakenteen mukaisesti
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
               case None =>
-                // TODO: maybe enable valdation? Disabled for UI testing.
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
                   "Tutkinnon osa " + osa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapaJaRakenne.suoritustapa.koodiarvo)
-                HttpStatus.ok
               case Some(tutkinnonOsa) =>
                 HttpStatus.ok
             }

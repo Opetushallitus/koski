@@ -16,7 +16,7 @@ describe('IB-tutkinto', function( ) {
     describe('Kaikki tiedot näkyvissä', function () {
       before(opinnot.expandAll)
       it('toimii', function () {
-        expect(S('.preibkurssinsuoritus:eq(0) .koulutusmoduuli .tunniste .value').text()).to.equal('Tekstit ja vuorovaikutus')
+        expect(S('.preibkurssinsuoritus:eq(0) .koulutusmoduuli .tunniste .enum').text()).to.equal('Tekstit ja vuorovaikutus')
       })
     })
   })
