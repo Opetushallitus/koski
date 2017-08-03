@@ -80,7 +80,7 @@ export const AmmatillinenNäyttöEditor = React.createClass({
       <div>
         {popupVisibleA.map(visible => visible
           ? <UusiNäyttöPopup edit={edit} model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/>
-          : '')
+          : null)
         }
         {hasData &&
           <YksittäinenNäyttöEditor edit={edit} model={wrappedModel} popupVisibleA={popupVisibleA}/>
