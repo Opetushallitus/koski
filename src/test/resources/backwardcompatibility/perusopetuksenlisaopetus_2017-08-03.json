@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -50,6 +49,7 @@
         "loppu" : "2016-06-04"
       },
       "vuosiluokkiinSitoutumatonOpetus" : false,
+      "vammainen" : false,
       "vaikeastiVammainen" : false
     },
     "suoritukset" : [ {
