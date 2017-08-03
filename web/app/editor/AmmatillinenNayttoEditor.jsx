@@ -70,6 +70,7 @@ export const AmmatillinenNäyttöEditor = React.createClass({
   },
   render() {
     const model = this.props.model
+    if (!model.context.edit) return <PropertiesEditor model={model}/>
     const popupVisibleA = this.state.popupVisibleA
     const edit = model.context.edit
 
