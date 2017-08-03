@@ -97,12 +97,16 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne)  =>
-        suoritus.tutkinto match {
-          case Some(tutkinto) =>
+        (suoritus.tutkinto, suoritus.tutkinnonOsanRyhmä) match {
+          case (Some(tutkinto), _) =>
             // Tutkinnon osa toisesta tutkinnosta.
             // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
             HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
-          case None =>
+          case (_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _))) if List("3", "4").contains(koodiarvo) =>
+            // Vapaavalintainen tai yksilöllisesti tutkintoa laajentava osa
+            // Ei validoida rakenteeseen kuuluvuutta
+            HttpStatus.ok
+          case (_, _) =>
             // Validoidaan tutkintorakenteen mukaisesti
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
               case None =>
