@@ -2153,6 +2153,7 @@ describe('Perusopetus', function() {
           'Aloittanut ennen oppivelvollisuutta ei\n' +
           'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
           'Vuosiluokkiin sitoutumaton opetus ei\n' +
+          'Vammainen ei\n' +
           'Vaikeasti vammainen ei')
       })
 
