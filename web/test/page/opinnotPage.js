@@ -150,9 +150,10 @@ function Oppiaineet() {
 }
 
 function TutkinnonOsat(groupId) {
+  function withSuffix(s) { return groupId ? s + '.' + groupId : s }
   return {
     tutkinnonOsa: function(tutkinnonOsaIndex) {
-      function el() { return findSingle('.tutkinnon-osa.' + groupId + ':eq(' + tutkinnonOsaIndex + ')') }
+      function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
       return {
         nimi: function() {
           return findSingle('.nimi', el).text()
@@ -161,7 +162,7 @@ function TutkinnonOsat(groupId) {
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {
-        var uusiTutkinnonOsaElement = findSingle('.uusi-tutkinnon-osa.' + groupId)
+        var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
         var pageApi = Page(uusiTutkinnonOsaElement)
         function selectedItem() { return findSingle('.results .selected', uusiTutkinnonOsaElement) }
 

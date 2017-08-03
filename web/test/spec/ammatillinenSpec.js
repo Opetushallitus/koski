@@ -354,11 +354,17 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Tutkinnon osat', function() {
+      var suoritustapa = editor.property('suoritustapa')
       describe('Tutkinnon osan lisääminen', function() {
-        before(editor.edit)
-        before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'))
+        before(
+          editor.edit,
+          suoritustapa.waitUntilLoaded,
+          suoritustapa.selectValue('Opetussuunnitelman mukainen'),
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'),
+          editor.saveChanges
+        )
         it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
         })
       })
     })
