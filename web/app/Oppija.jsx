@@ -218,6 +218,6 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   return (<div id="edit-bar" className={classNameP}>
     <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }><Text name="Peruuta"/></a>
     <button disabled={canSaveP.not()} onClick={saveChanges}><Text name="Tallenna"/></button>
-    <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : '')}</span>
+    <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : null)}</span>
   </div>)
 }

@@ -19,7 +19,7 @@ NäytönSuorituspaikkaEditor.readOnly = true
 export const NäytönArvioitsijaEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : ''}</span>
+    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : null}</span>
   }
 })
 NäytönArvioitsijaEditor.readOnly = true
