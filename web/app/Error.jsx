@@ -43,8 +43,8 @@ export function requiresLogin(e) {
 }
 
 const errorText = (error) => {
-  if (typeof error == "string") return error
-  if (typeof error == "array") return errorText(error[0])
+  if (typeof error == 'string') return error
+  if (typeof error == 'array') return errorText(error[0])
   let message
   if (error.error) message = errorText(error.error)
   else if (error.text) message =  errorText(error.text)
