@@ -1,5 +1,7 @@
 env = cloud
 cleandist = true
+mvn_argline =
+mvn_opts =
 
 help:
 	@echo ""
@@ -22,7 +24,7 @@ clean:
 
 ### Building the application
 
-build: logdir
+build: front
 	mvn compile
 	# Built the whole application, ready for running or testing
 front: logdir
@@ -35,8 +37,8 @@ source-to-image: build
 
 ### Running tests
 
-test: logdir
-	mvn test
+test: front
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
 testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
 js-unit-test:
