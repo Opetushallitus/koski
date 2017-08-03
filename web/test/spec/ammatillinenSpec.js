@@ -356,9 +356,35 @@ describe('Ammatillinen koulutus', function() {
     describe('Tutkinnon osat', function() {
       describe('Tutkinnon osan lisääminen', function() {
         before(editor.edit)
+        describe('Alussa', function () {
+          it('tyhjä', function() {
+            expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
+          })
+        })
+        describe('Lisäämisen jälkeen', function() {
+          before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'))
+          it('lisätty', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          })
+        })
+      })
+
+      describe('Tunnustamisen muokkaus', function() {
+        before(editor.cancelChanges)
+        before(editor.edit)
         before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'))
-        it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        describe('Alussa', function() {
+          it('ei tunnustusta', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
+          })
+        })
+
+        describe('Lisäämisen jälkeen', function() {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääTunnustaminen('Tunnustamisen esimerkkiselite'))
+          it('lisätty', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+          })
         })
       })
     })

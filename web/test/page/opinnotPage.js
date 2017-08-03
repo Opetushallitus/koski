@@ -151,11 +151,27 @@ function Oppiaineet() {
 
 function TutkinnonOsat(groupId) {
   return {
+    tyhjä: function() {
+      return S('.tutkinnon-osa.' + groupId).length === 0
+    },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
-      function el() { return findSingle('.tutkinnon-osa.' + groupId + ':eq(' + tutkinnonOsaIndex + ')') }
+      function elSelector() {return '.tutkinnon-osa.' + groupId + ':eq(' + tutkinnonOsaIndex + ')'}
+      function el() { return findSingle(elSelector()) }
       return {
         nimi: function() {
           return findSingle('.nimi', el).text()
+        },
+        tunnustaminen: function() {
+          var m = S('.tunnustettu .value a.fa + span', el)
+          if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
+          return m.length === 0 ? null : {selite: m.first().text()}
+        },
+        lisääTunnustaminen: function(selite) {
+          return function() {
+            triggerEvent(findSingle('.tunnustettu a:not(.fa)', el), 'click')
+            Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+            triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+          }
         }
       }
     },
