@@ -161,8 +161,8 @@ function TutkinnonOsat(groupId) {
         nimi: function() {
           return findSingle('.nimi', el).text()
         },
-        expand: function() {
-          triggerEvent(findSingle('.toggle-expand', el), 'click')
+        toggleExpand: function() {
+          triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
         },
         tunnustaminen: function() {
           var m = S('.tunnustettu .value a.edit-value + span', el)
