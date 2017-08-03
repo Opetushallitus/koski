@@ -7,6 +7,7 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import Text from './Text.jsx'
 import {ift} from './util'
+import {t} from './i18n'
 
 const logError = (error) => {
   console.log('ERROR', error)
@@ -42,16 +43,18 @@ export function requiresLogin(e) {
   return e.httpStatus == 401 || e.httpStatus == 403
 }
 
-const errorText = (error) => {
+const extractValidationErrorText = (error) => {
   if (typeof error == "string") return error
-  if (typeof error == "array") return errorText(error[0])
-  let message
-  if (error.error) message = errorText(error.error)
-  else if (error.text) message =  errorText(error.text)
-  else if (error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation')) message =  errorText(error.jsonMessage[0])
-  else if (error.message) message =  errorText(error.message)
-  if (message) return message
-  if (error.httpStatus) return <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>
+  if (typeof error == "array") return extractValidationErrorText(error[0])
+  if (error.error) return extractValidationErrorText(error.error)
+  else if (error.message) return extractValidationErrorText(error.message)
+  else return t('httpStatus.400')
+}
+
+const errorText = (error) => {
+  if (error.text) return error.text
+  else if (error.httpStatus == 400 && error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation')) return extractValidationErrorText(error.jsonMessage[0])
+  else if (error.httpStatus) return <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>
 }
 
 export const Error = ({error}) => {
