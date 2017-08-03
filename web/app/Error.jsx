@@ -44,8 +44,8 @@ export function requiresLogin(e) {
 }
 
 const extractValidationErrorText = (error) => {
-  if (typeof error == "string") return error
-  if (typeof error == "array") return extractValidationErrorText(error[0])
+  if (typeof error == 'string') return error
+  if (typeof error == 'array') return extractValidationErrorText(error[0])
   if (error.error) return extractValidationErrorText(error.error)
   else if (error.message) return extractValidationErrorText(error.message)
   else return t('httpStatus.400')
