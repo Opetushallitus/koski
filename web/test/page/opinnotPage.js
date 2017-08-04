@@ -88,6 +88,7 @@ function OpinnotPage() {
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
+    tutkinnonOsat: TutkinnonOsat,
     anythingEditable: function() {
       return Editor(function() { return findSingle('.content-area') } ).isEditable()
     },
@@ -144,6 +145,49 @@ function Oppiaineet() {
     uusiOppiaine: function(selector) {
       selector = selector || ""
       return OpinnotPage().opiskeluoikeusEditor().propertyBySelector(selector + ' .uusi-oppiaine')
+    }
+  }
+}
+
+function TutkinnonOsat(groupId) {
+  function withSuffix(s) { return groupId ? s + '.' + groupId : s }
+  return {
+    tyhjä: function() {
+      return S(withSuffix('.tutkinnon-osa')).length === 0
+    },
+    tutkinnonOsa: function(tutkinnonOsaIndex) {
+      function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
+      return {
+        nimi: function() {
+          return findSingle('.nimi', el).text()
+        },
+        toggleExpand: function() {
+          triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
+        },
+        tunnustaminen: function() {
+          var m = S('.tunnustettu .value a.edit-value + span', el)
+          if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
+          return m.length === 0 ? null : {selite: m.first().text()}
+        },
+        lisääTunnustaminen: function(selite) {
+          return function() {
+            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
+            Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+            triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+          }
+        }
+      }
+    },
+    lisääTutkinnonOsa: function(hakusana) {
+      return function() {
+        var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
+        var pageApi = Page(uusiTutkinnonOsaElement)
+        function selectedItem() { return findSingle('.results .selected', uusiTutkinnonOsaElement) }
+
+        return pageApi.setInputValue('.autocomplete input', hakusana)()
+          .then(wait.untilVisible(selectedItem))
+          .then(function() { triggerEvent(selectedItem, 'click')})
+      }
     }
   }
 }
@@ -269,7 +313,7 @@ function LisääSuoritusDialog() {
   function buttonElem() { return findSingle('button', elem())}
   var api = _.merge({
     isVisible: function() {
-      return isVisibleBy(elem)
+      return isElementVisible(elem)
     },
     isEnabled: function() {
       return !buttonElem().is(':disabled')
@@ -343,13 +387,13 @@ function Editor(elem) {
   function enabledSaveButton() { return findSingle('#edit-bar button:not(:disabled)') }
   return {
     edit: function() {
-      if (isVisibleBy(editButton)) {
+      if (isElementVisible(editButton)) {
         triggerEvent(editButton(), 'click')
       }
       return KoskiPage().verifyNoError()
     },
     canSave: function() {
-      return isVisibleBy(enabledSaveButton)
+      return isElementVisible(enabledSaveButton)
     },
     getEditBarMessage: function() {
       return findSingle('#edit-bar .state-indicator').text()
@@ -459,9 +503,9 @@ function Property(elem) {
       return toArray(elem().find('.value .array > li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
-      return isVisibleBy(function() { return findSingle('.value', elem())})
-        || isVisibleBy(function() { return findSingle('.dropdown', elem())})
-        || isVisibleBy(function() { return findSingle('input', elem())})
+      return isElementVisible(function() { return findSingle('.value', elem())})
+        || isElementVisible(function() { return findSingle('.dropdown', elem())})
+        || isElementVisible(function() { return findSingle('input', elem())})
     },
     isValid: function() {
       return !elem().find('.error').is(':visible')

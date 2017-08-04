@@ -2,11 +2,11 @@ import React from 'baret'
 import {Editor} from './Editor.jsx'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {modelData, lensedModel, modelLookup, hasModelProperty, modelSetValue, oneOfPrototypes} from './EditorModel'
+import {hasModelProperty, lensedModel, modelData, modelLookup, modelSetValue} from './EditorModel'
 import {sortLanguages} from '../sorting'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
-import {isPaikallinen} from './Koulutusmoduuli'
+import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 
@@ -62,4 +62,3 @@ let fixKuvaus = (oppiaine) => {
 }
 
 export const paikallinenOppiainePrototype = (oppiaineenSuoritus) => koulutusModuuliprototypes(oppiaineenSuoritus).find(isPaikallinen)
-export const koulutusModuuliprototypes = (oppiaineenSuoritus) => oneOfPrototypes(modelLookup(oppiaineenSuoritus, 'koulutusmoduuli'))

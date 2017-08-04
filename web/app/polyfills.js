@@ -20,6 +20,11 @@ if (!String.prototype.endsWith) {
     return lastIndex !== -1 && lastIndex === position
   }
 }
+if (!String.prototype.includes) {
+  String.prototype.includes = function (substring) {
+    return this.indexOf(substring) >= 0
+  }
+}
 function addArrayMethod(name, fn) {
   if (!Array.prototype[name]) {
     Object.defineProperty(Array.prototype, name, {

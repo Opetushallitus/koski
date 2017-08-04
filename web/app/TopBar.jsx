@@ -29,7 +29,7 @@ const LocalTopBar = ({location, user, titleKey}) => {
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
         <Link href="/koski/"><Text name="Koski"/></Link>
-        {titleKey ? <span>{' - '}<Text name={titleKey}/></span> : ''}
+        {titleKey ? <span>{' - '}<Text name={titleKey}/></span> : null}
       </h1>
       <UserInfo user={user}/>
       {(user !== null) &&

@@ -1,4 +1,4 @@
-import {modelData, modelItems, modelLookup, addContext} from './EditorModel'
+import {addContext, modelData, modelItems, modelLookup} from './EditorModel'
 import React from 'baret'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
@@ -9,33 +9,35 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {suoritusValmis, arviointiPuuttuu} from './Suoritus'
+import {arviointiPuuttuu, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
+
+const resolveEditor = (mdl) => {
+  if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
+    return <PerusopetuksenOppiaineetEditor model={mdl}/>
+  }
+  if (mdl.value.classes.includes('ammatillinenpaatasonsuoritus')) {
+    return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
+  }
+  if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
+    return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+  }
+  if (mdl.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
+    return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
+  }
+  if (mdl.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
+    return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
+  }
+  return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
+}
 
 export const SuoritusEditor = React.createClass({
   render() {
+    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
+
     let {model} = this.props
     model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
-    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
-
-    let resolveEditor = (mdl) => {
-      if (['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
-        return <PerusopetuksenOppiaineetEditor model={mdl}/>
-      }
-      if (model.value.classes.includes('ammatillinenpaatasonsuoritus')) {
-        return <Suoritustaulukko suoritukset={modelItems(model, 'osasuoritukset') || []}/>
-      }
-      if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
-        return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
-      }
-      if (mdl.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
-        return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
-      }
-      if (model.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
-        return <LuvaEditor suoritukset={modelItems(model, 'osasuoritukset') || []}/>
-      }
-      return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
-    }
+    const editor = resolveEditor(model)
 
     let className = 'suoritus ' + model.value.classes.join(' ')
 
@@ -49,7 +51,7 @@ export const SuoritusEditor = React.createClass({
           : getDefault() }
       />
       <TilaJaVahvistusEditor model={model} />
-      <div className="osasuoritukset">{resolveEditor(model)}</div>
+      <div className="osasuoritukset">{editor}</div>
     </div>)
   },
   shouldComponentUpdate(nextProps) {

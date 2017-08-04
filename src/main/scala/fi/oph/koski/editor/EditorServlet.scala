@@ -36,12 +36,12 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/koodit/:koodistoUri") {
-    getKoodit()
+    getKooditFromRequestParams()
   }
 
   get("/koodit/:koodistoUri/:koodiarvot") {
     val koodiarvot = params("koodiarvot").split(",").toSet
-    getKoodit().filter(v => koodiarvot.contains(v.value))
+    getKooditFromRequestParams().filter(v => koodiarvot.contains(v.value))
   }
 
   get("/organisaatiot") {
@@ -99,9 +99,11 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     renderEither(preferencesService.get(organisaatioOid, `type`)(koskiSession).right.map(_.map(buildModel(_, true))))
   }
 
-  private def getKoodit() = {
-    val koodistoUri = params("koodistoUri")
-    val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
+  private def getKooditFromRequestParams() = {
+    val koodistoUriParts = params("koodistoUri").split(",").toList
+    val koodit: List[Koodistokoodiviite] = koodistoUriParts flatMap {part: String =>
+      context.koodistoPalvelu.getLatestVersion(part).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
+    }
 
     koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
   }

@@ -2,10 +2,11 @@ import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
+import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
+import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -18,7 +19,7 @@ NäytönSuorituspaikkaEditor.readOnly = true
 export const NäytönArvioitsijaEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : ''}</span>
+    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : null}</span>
   }
 })
 NäytönArvioitsijaEditor.readOnly = true
@@ -78,12 +79,13 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
 }
 
 export const editorMapping = {
-  'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
   'naytonarvioitsija': NäytönArvioitsijaEditor,
   'naytonsuoritusaika': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
-  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor
+  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
+  'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
+  'naytto': AmmatillinenNäyttöEditor
 }

@@ -2,4 +2,52 @@
   .ammatillisentutkinnonosanlisatieto .kuvaus {
     margin-left: 1em;
   }
+
+  .value .span {
+    font-size: 15px;
+  }
+
+  .näyttö, .tunnustettu {
+    margin-bottom: 5px;
+
+    .kuvaus {
+      margin-left: 4%;
+    }
+
+    div:first-child {
+      vertical-align: middle;
+
+      a {
+        line-height: 23px;
+      }
+    }
+
+    div > div:first-child > span {
+      margin-left: 4%;
+
+      &:first-of-type {
+        margin-left: 2%;
+      }
+    }
+
+    .lisää-tunnustettu-modal .modal-content,
+    .lisää-näyttö-modal .modal-content {
+      min-width: 40vw;
+
+      table {
+        width: 100%;
+
+        td {
+          table {
+            table-layout: fixed;
+
+            td:first-of-type:not(:last-of-type) {
+              width: 30%;
+              padding-right: 5%;
+            }
+          }
+        }
+      }
+    }
+  }
 }

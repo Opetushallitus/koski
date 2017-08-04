@@ -1,17 +1,27 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
 import delays from './delays'
 import {t} from './i18n'
+import {toObservable} from './util'
 
+/*
+    disabled: true/false
+    placeholder: text
+    selected: currently selected item
+    resultCallback, resultBus or resultAtom
+    fetchItems: String -> Property [Item]
+    displayValue: Item -> String (if missing, items are expected to have a "nimi" field that's a localized text)
+ */
 export default BaconComponent({
   render() {
-    let {disabled, selected} = this.props
+    let {disabled, selected, placeholder, displayValue = (item => t(item.nimi))} = this.props
+    let selectedP = toObservable(selected)
     let {items, query, selectionIndex} = this.state
 
     let itemElems = items ? items.map((item, i) => {
         return (
-          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{item.nimi.fi}</li>
+          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{displayValue(item)}</li>
         )}
     ) : []
 
@@ -19,7 +29,13 @@ export default BaconComponent({
 
     return (
       <div ref='autocomplete' className='autocomplete'>
-        <input type="text" className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={(query ? query : (selected ? t(selected.nimi) : '')) || ''} disabled={disabled}></input>
+        <input type="text"
+               className='autocomplete-input'
+               placeholder={placeholder}
+               onKeyDown={this.onKeyDown}
+               onChange={this.handleInput}
+               value={ selectedP.map(s => query || (s ? displayValue(s) : '')) }
+               disabled={disabled}></input>
         {results}
       </div>
     )
@@ -42,8 +58,10 @@ export default BaconComponent({
       this.props.resultBus.push(value)
     } else if (this.props.resultAtom) {
       this.props.resultAtom.set(value)
+    } else if (this.props.resultCallback) {
+      this.props.resultCallback(value)
     } else {
-      throw 'resultBus, resultAtom missing'
+      throw 'resultBus/resultAtom/resultCallback missing'
     }
   },
 
