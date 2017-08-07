@@ -31,7 +31,7 @@ describe('Piwik-seuranta', function() {
         expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/')
       })
 
-      describe('Siirtyäessä oppijan tietoihin', function() {
+      describe('Siirryttäessä oppijan tietoihin', function() {
         var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+(\?.*)?$/
 
         before(
