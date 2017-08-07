@@ -41,7 +41,7 @@ object AuditLogMessage {
 
 object KoskiMessageField extends Enumeration {
   type KoskiMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio = Value
 }
 
 object KoskiOperation extends Enumeration {

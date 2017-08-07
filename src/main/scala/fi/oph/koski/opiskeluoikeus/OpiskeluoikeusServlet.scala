@@ -10,8 +10,8 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OpiskeluoikeusServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache {
-  get("/:id") {
-    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+  get("/:oid") {
+    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession)
     renderEither(result match {
       case Some(oo) =>
         AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> oo.oppijaOid)))

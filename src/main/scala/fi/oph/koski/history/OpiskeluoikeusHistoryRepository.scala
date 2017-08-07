@@ -17,8 +17,8 @@ import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods with Logging with JsonMethods {
-  def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluoikeusHistoryRow]] = {
-    val query = OpiskeluOikeudetWithAccessCheck.filter(_.id === id)
+  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluoikeusHistoryRow]] = {
+    val query = OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
       .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
       .map(_._2)
@@ -30,25 +30,25 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
     }
   }
 
-  def findVersion(id: Int, version: Int)(implicit user: KoskiSession): Either[HttpStatus, Opiskeluoikeus] = {
-    findByOpiskeluoikeusId(id, version) match {
+  def findVersion(oid: String, version: Int)(implicit user: KoskiSession): Either[HttpStatus, Opiskeluoikeus] = {
+    findByOpiskeluoikeusOid(oid, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {
-          Left(KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota " + version + " ei löydy opiskeluoikeuden " + id + " historiasta."))
+          Left(KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota " + version + " ei löydy opiskeluoikeuden " + oid + " historiasta."))
         } else {
-          val oikeusVersion = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
+          val oikeusVersion: JsonNode = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
             val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
             patch.apply(current)
           }
           try {
-            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), id, version))
+            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), diffs.head.opiskeluoikeusId, oid, version))
           } catch {
             case e: Exception =>
-              logger.error(e)(s"Opiskeluoikeuden $id version $version deserialisointi epäonnistui")
+              logger.error(e)(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui")
               Left(KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui"))
           }
         }
-      case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+      case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
     }
   }
 

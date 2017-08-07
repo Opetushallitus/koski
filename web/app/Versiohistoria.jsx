@@ -12,12 +12,12 @@ export default class Versiohistoria extends BaconComponent {
     this.state = this.initialState()
   }
   render() {
-    let { opiskeluoikeusId, oppijaOid } = this.props
+    let { opiskeluoikeusOid, oppijaOid } = this.props
     let { showHistory, history } = this.state
     let toggle = () => {
       let newShowHistory = !showHistory
       this.setState({showHistory: newShowHistory})
-      if (newShowHistory) this.fetchHistory(this.props.opiskeluoikeusId)
+      if (newShowHistory) this.fetchHistory(this.props.opiskeluoikeusOid)
       if (!newShowHistory && this.versionumero()) {
         navigateTo(`/koski/oppija/${oppijaOid}`)
       }
@@ -30,7 +30,7 @@ export default class Versiohistoria extends BaconComponent {
           history.map((version, i) =>
             <tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
               <td className="versionumero">{'v' + version.versionumero}</td>
-              <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
+              <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusOid}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
             </tr>
           )
         }</tbody></table>)
@@ -39,14 +39,14 @@ export default class Versiohistoria extends BaconComponent {
   }
   componentWillMount() {
     super.componentWillMount()
-    this.propsE.map('.opiskeluoikeusId').skipDuplicates().onValue((opiskeluoikeusId) => {
+    this.propsE.map('.opiskeluoikeusOid').skipDuplicates().onValue((opiskeluoikeusOid) => {
       this.setState(this.initialState())
-      if (this.state.showHistory) this.fetchHistory(opiskeluoikeusId)
+      if (this.state.showHistory) this.fetchHistory(opiskeluoikeusOid)
     })
     this.propsE.push(this.props)
   }
-  fetchHistory(opiskeluoikeusId) {
-    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`)
+  fetchHistory(opiskeluoikeusOid) {
+    Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusOid}`)
       .takeUntil(this.unmountE)
       .onValue(h => this.setState({history: h}))
   }

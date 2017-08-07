@@ -18,9 +18,9 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
-  def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
+  def findVersion(oid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     // TODO: tarkista, että opiskeluoikeus kuuluu tälle oppijalla
-    historyRepository.findVersion(opiskeluoikeusId, versionumero).right.flatMap { history =>
+    historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
       toOppija(_ => List(history))(user)(oid)
     }
   }

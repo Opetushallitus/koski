@@ -5,23 +5,18 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
-class OpiskeluoikeusGetByIdSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
-  "/api/opiskeluoikeus/:id" - {
+class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+  "/api/opiskeluoikeus/:oid" - {
     "GET" - {
-      "with valid id" in {
-        val id = lastOpiskeluoikeus(MockOppijat.eero.oid).id.get
+      "with valid oid" in {
+        val oid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
-        get("api/opiskeluoikeus/" + id, headers = authHeaders()) {
+        get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
           verifyResponseStatus(200)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
-      "with invalid id" in {
-        get("api/opiskeluoikeus/blerg", headers = authHeaders()) {
-          verifyResponseStatus(400)
-        }
-      }
-      "with unknown id" in {
+      "with unknown oid" in {
         get("api/opiskeluoikeus/0", headers = authHeaders()) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia"))
         }

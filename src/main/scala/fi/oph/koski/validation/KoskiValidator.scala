@@ -118,8 +118,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
-    case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), id)) if accessType == AccessType.write =>
-      opiskeluoikeudet.findById(id)(KoskiSession.systemUser) match {
+    case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
+      opiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {
         case Some(sisältäväOpiskeluoikeus) if (sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid) =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
         case Some(sisältäväOpiskeluoikeus) =>
@@ -141,7 +141,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
               HttpStatus.ok
           }
         case None =>
-          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy id-arvolla $id")
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
         case _ =>
           HttpStatus.ok
       }

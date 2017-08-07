@@ -23,9 +23,9 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
-    renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
-      case (Some(opiskeluoikeusId), Some(versionumero)) =>
-        findVersion(params("oid"), opiskeluoikeusId, versionumero, koskiSession)
+    renderEither((params.get("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
+      case (Some(opiskeluoikeusOid), Some(versionumero)) =>
+        findVersion(params("oid"), opiskeluoikeusOid, versionumero, koskiSession)
       case _ =>
         findByOid(params("oid"), koskiSession)
     })
@@ -116,9 +116,9 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     }
   }
 
-  private def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int, user: KoskiSession): Either[HttpStatus, EditorModel] = {
+  private def findVersion(oid: String, opiskeluoikeusOid: String, versionumero: Int, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      toEditorModel(application.oppijaFacade.findVersion(oid, opiskeluoikeusId, versionumero)(user), editable = false)
+      toEditorModel(application.oppijaFacade.findVersion(oid, opiskeluoikeusOid, versionumero)(user), editable = false)
     }
   }
 

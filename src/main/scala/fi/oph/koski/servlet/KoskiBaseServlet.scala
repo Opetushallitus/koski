@@ -28,6 +28,10 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  def getStringParam(name: String): String = {
+    params.get(name).getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing, "Missing " + name))
+  }
+
   def getOptionalIntegerParam(name: String) = params.get(name) map { _ =>
     getIntegerParam(name)
   }

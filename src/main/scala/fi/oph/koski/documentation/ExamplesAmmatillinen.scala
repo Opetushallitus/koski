@@ -130,7 +130,7 @@ object AmmatillinenPerustutkintoExample {
   )
 
   val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))).copy(
-    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), 1234567))
+    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), "1.2.246.562.15.84012103747"))
   ))
 
   lazy val osittainenPerustutkinto = Oppija(exampleHenkilö, List(osittainenPerustutkintoOpiskeluoikeus))

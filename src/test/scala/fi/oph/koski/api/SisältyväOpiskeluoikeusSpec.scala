@@ -16,7 +16,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
 
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
-        sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.id.get)),
+        sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
         suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
       )
     }
@@ -60,13 +60,13 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
     }
 
     "Kun sisältävä opiskeluoikeus ei löydy Koskesta -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(fixture.original.oppilaitos.get, 66666666)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy("Sisältävää opiskeluoikeutta ei löydy id-arvolla 66666666"))
+      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(fixture.original.oppilaitos.get, "66666666")))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy("Sisältävää opiskeluoikeutta ei löydy oid-arvolla 66666666"))
       }
     }
 
     "Kun sisältävän opiskeluoikeuden organisaatio ei täsmää -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), fixture.original.id.get)))) {
+      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), fixture.original.oid.get)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos())
       }
      }

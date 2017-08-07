@@ -135,7 +135,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
         "Tuntematon id" in {
           val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
-          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), versionumero = None)))) {
+          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), oid = None, versionumero = None)))) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 0 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }

@@ -19,7 +19,7 @@ import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, luokkaAste} from './Perusopetus'
 
 export const OpiskeluoikeusEditor = ({model}) => {
-  let id = modelData(model, 'id')
+  let oid = modelData(model, 'oid')
   model = addContext(model, {opiskeluoikeus: model})
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
     let context = mdl.context
@@ -48,7 +48,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             }
             <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
           </span>
-          <Versiohistoria opiskeluoikeusId={id} oppijaOid={context.oppijaOid}/>
+          <Versiohistoria opiskeluoikeusOid={oid} oppijaOid={context.oppijaOid}/>
           <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
@@ -87,7 +87,7 @@ const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
     sel.removeAllRanges()
     sel.addRange(range)
   }
-  return <span className="id"><Text name="Id"/>{': '}<span className="value" onClick={selectAllText}>{modelData(opiskeluoikeus, 'id')}</span></span>
+  return <span className="id"><Text name="Id"/>{': '}<span className="value" onClick={selectAllText}>{modelData(opiskeluoikeus, 'oid')}</span></span>
 }
 
 const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {

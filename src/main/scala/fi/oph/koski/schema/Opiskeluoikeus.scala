@@ -17,10 +17,12 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Hidden
   @Discriminator
   def tyyppi: Koodistokoodiviite
-  @Description("Opiskeluoikeuden yksilöivä tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
-    "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")
   @Hidden
   def id: Option[Int]
+  @Description("Opiskeluoikeuden yksilöivä tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
+    "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän oid:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")
+  @Hidden
+  def oid: Option[String]
   @Description("Versionumero, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Ensimmäinen tallennettu versio saa versionumeron 1, jonka jälkeen jokainen päivitys aiheuttaa versionumeron noston yhdellä. " +
     "Jos tietoja päivitettäessä käytetään versionumeroa, pitää sen täsmätä viimeisimpään tallennettuun versioon. " +
@@ -57,8 +59,8 @@ trait OpiskeluoikeudenLisätiedot
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   @MinItems(1)
   def suoritukset: List[PäätasonSuoritus]
-  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
-  def withVersion(version: Int) = this.withIdAndVersion(this.id, Some(version))
+  def withIdAndVersion(id: Option[Int], oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
+  def withVersion(version: Int) = this.withIdAndVersion(this.id, this.oid, Some(version))
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
@@ -69,7 +71,7 @@ case class SisältäväOpiskeluoikeus(
   @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto.")
   oppilaitos: Oppilaitos,
   @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden yksilöivä tunniste.")
-  id: Int
+  oid: String
 )
 
 trait OpiskeluoikeudenTila {

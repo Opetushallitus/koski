@@ -16,9 +16,9 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
         }
       }
       "with version number" in {
-        val opiskeluoikeusId = lastOpiskeluoikeus(MockOppijat.eero.oid).id.get.toString
+        val opiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
-        get("api/editor/" + MockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusId, "versionumero" -> "1"), headers = authHeaders()) {
+        get("api/editor/" + MockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusOid, "versionumero" -> "1"), headers = authHeaders()) {
           verifyResponseStatus(200)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }

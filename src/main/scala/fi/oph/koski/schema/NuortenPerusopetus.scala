@@ -12,6 +12,7 @@ import fi.oph.scalaschema.annotation._
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
+  oid: Option[String] = None,
   versionumero: Option[Int]  = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
@@ -26,7 +27,7 @@ case class PerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("perusopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
-  override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
+  override def withIdAndVersion(id: Option[Int], oid: Option[String], versionumero: Option[Int]) = this.copy(id = id, oid = oid, versionumero = versionumero)
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None

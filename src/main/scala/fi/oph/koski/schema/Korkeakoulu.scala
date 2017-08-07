@@ -9,6 +9,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
   id: Option[Int] = None,
+  oid: Option[String] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,

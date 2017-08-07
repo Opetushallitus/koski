@@ -27,7 +27,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     }
     "Validate single" in {
       val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
-      authGet("api/opiskeluoikeus/validate/" + oo.id.get) {
+      authGet("api/opiskeluoikeus/validate/" + oo.oid.get) {
         verifyResponseStatus(200)
         val result = Json.read[ValidationResult](body)
         checkValidity(result)

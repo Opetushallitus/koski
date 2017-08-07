@@ -63,6 +63,11 @@
       <version>4189c6b155cdfec189a097560c2c9a7b8bf17564</version>
     </dependency>
     <dependency>
+      <groupId>com.github.Opetushallitus.java-utils</groupId>
+      <artifactId>oid-generator</artifactId>
+      <version>f324e2c5168ef4cd68d08520294300a707adb833</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
       <version>2.5.0_2.12</version>

@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 import org.json4s.JValue
 
 trait OpiskeluoikeusRepository extends AuxiliaryOpiskeluoikeusRepository {
-  def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluoikeusRow]
+  def findByOid(oid: String)(implicit user: KoskiSession): Option[OpiskeluoikeusRow]
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus
   def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): Seq[HenkilötiedotJaOid]

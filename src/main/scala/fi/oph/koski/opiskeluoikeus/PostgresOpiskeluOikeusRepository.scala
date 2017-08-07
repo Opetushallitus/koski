@@ -20,6 +20,7 @@ import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
 import slick.lifted.Query
 import slick.{dbio, lifted}
+import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
@@ -45,6 +46,10 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluoikeusRow] = {
     runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id))).headOption
+  }
+
+  def findByOid(oid: String)(implicit user: KoskiSession): Option[OpiskeluoikeusRow] = {
+    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid))).headOption
   }
 
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus = {
@@ -133,7 +138,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
-        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(id = None, versionumero = None)
+        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(id = None, oid = None, versionumero = None)
         val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row

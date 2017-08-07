@@ -40,9 +40,9 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
     }
   }
 
-  get("/:id") {
+  get("/:oid") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
-    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession)
     renderEither(result match {
       case Some(oo) => Right(context.validateAll(oo))
       case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
@@ -58,7 +58,7 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
   def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
       val opiskeluoikeus = row.toOpiskeluoikeus
-      (historyRepository.findVersion(row.id, row.versionumero)(user) match {
+      (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {
             KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
