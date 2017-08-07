@@ -87,7 +87,7 @@ case class Poissaolojakso(
   syy: Koodistokoodiviite
 ) extends Jakso
 
-@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen")
+@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen)")
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
