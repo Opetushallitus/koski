@@ -100,7 +100,7 @@ export class Suoritustaulukko extends React.Component {
       let items = (grouped[groupId] || [])
       return [
         <tbody key={'group-' + i} className="group-header">
-          <tr> <td colSpan="4">{groupTitles[groupId]}</td> </tr>
+          <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
         items.map((suoritus, j) => {
           return suoritusEditor(suoritus, i * 100 + j, groupId)
