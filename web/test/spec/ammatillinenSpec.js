@@ -378,6 +378,13 @@ describe('Ammatillinen koulutus', function() {
           it('näyttää edelleen oikeat tiedot', function() {
             expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
           })
+
+          describe('Tutkinnon osan poistaminen', function() {
+            before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
+            it('toimii', function() {
+              expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+            })
+          })
         })
       })
 

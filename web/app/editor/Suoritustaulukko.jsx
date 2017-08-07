@@ -13,7 +13,7 @@ import {
   modelSet, modelSetTitle,
   modelSetValue,
   oneOfPrototypes,
-  pushModel
+  pushModel, pushRemoval
 } from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
@@ -185,6 +185,13 @@ class SuoritusEditor extends React.Component {
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
       {showArvosana && <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>}
+      {
+        model.context.edit && (
+          <td>
+            <a className="remove-value" onClick={() => pushRemoval(model)}>{''}</a>
+          </td>
+        )
+      }
     </tr>
     {
       expanded && hasProperties && (<tr className="details" key="details">

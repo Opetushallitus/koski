@@ -175,6 +175,9 @@ function TutkinnonOsat(groupId) {
             Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
             triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
           }
+        },
+        poistaTutkinnonOsa: function() {
+          triggerEvent(findSingle('.remove-value', el), 'click')
         }
       }
     },
