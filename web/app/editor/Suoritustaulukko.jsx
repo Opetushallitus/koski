@@ -105,7 +105,7 @@ export class Suoritustaulukko extends React.Component {
         items.map((suoritus, j) => {
           return suoritusEditor(suoritus, i * 100 + j, groupId)
         }),
-        context.edit && <tbody className={'uusi-tutkinnon-osa ' + groupId}>
+        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
             <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
