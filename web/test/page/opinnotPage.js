@@ -157,29 +157,31 @@ function TutkinnonOsat(groupId) {
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
-      return {
-        nimi: function() {
-          return findSingle('.nimi', el).text()
-        },
-        toggleExpand: function() {
-          triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
-        },
-        tunnustaminen: function() {
-          var m = S('.tunnustettu .value a.edit-value + span', el)
-          if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
-          return m.length === 0 ? null : {selite: m.first().text()}
-        },
-        lisääTunnustaminen: function(selite) {
-          return function() {
-            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
-            Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
-            triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+
+      return _.merge({
+          nimi: function() {
+            return findSingle('.nimi', el).text()
+          },
+          toggleExpand: function() {
+            triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
+          },
+          tunnustaminen: function() {
+            var m = S('.tunnustettu .value a.edit-value + span', el)
+            if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
+            return m.length === 0 ? null : {selite: m.first().text()}
+          },
+          lisääTunnustaminen: function(selite) {
+            return function() {
+              triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
+              Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+              triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+            }
+          },
+          poistaTutkinnonOsa: function() {
+            triggerEvent(findSingle('.remove-value', el), 'click')
           }
-        },
-        poistaTutkinnonOsa: function() {
-          triggerEvent(findSingle('.remove-value', el), 'click')
         }
-      }
+        , {}, Editor(el))
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {

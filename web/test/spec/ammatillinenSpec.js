@@ -366,23 +366,35 @@ describe('Ammatillinen koulutus', function() {
           before(
             suoritustapa.waitUntilLoaded,
             suoritustapa.selectValue('Opetussuunnitelman mukainen'),
-            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'),
+            wait.forAjax
           )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
           })
-        })
 
-        describe('Tallentamisen jälkeen', function() {
-          before(editor.saveChanges)
-          it('näyttää edelleen oikeat tiedot', function() {
-            expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          describe('Arvosanan lisääminen', function() {
+            before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
+            it('Toimii', function() {
+
+            })
+
+            it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
+              expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+            })
           })
 
-          describe('Tutkinnon osan poistaminen', function() {
-            before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
-            it('toimii', function() {
-              expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+          describe('Tallentamisen jälkeen', function() {
+            before(editor.saveChanges)
+            it('näyttää edelleen oikeat tiedot', function() {
+              expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+            })
+
+            describe('Tutkinnon osan poistaminen', function() {
+              before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
+              it('toimii', function() {
+                expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+              })
             })
           })
         })

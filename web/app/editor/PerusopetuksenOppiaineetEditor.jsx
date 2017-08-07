@@ -10,7 +10,6 @@ import * as L from 'partial.lenses'
 import {
   addContext,
   contextualizeSubModel,
-  createOptionalEmpty,
   ensureArrayKey,
   findModelProperty,
   lensedModel,
@@ -27,7 +26,7 @@ import {
   pushRemoval
 } from './EditorModel'
 import {sortGrades} from '../sorting'
-import {hasArvosana, lastArviointiLens, setTila, suoritusKesken, suoritusValmis} from './Suoritus'
+import {fixArvosana, fixTila, hasArvosana, lastArviointiLens, suoritusKesken, suoritusValmis} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
@@ -177,26 +176,6 @@ class Oppiainetaulukko extends React.Component {
       </section>
     )
   }
-}
-
-let fixTila = (model) => {
-  return lensedModel(model, L.rewrite(m => {
-    if (hasArvosana(m) && !suoritusValmis(m)) {
-      return setTila(m, 'VALMIS')
-    }
-    return m
-  }))
-}
-
-let fixArvosana = (model) => {
-  let arviointiLens = modelLens('arviointi')
-  return lensedModel(model, L.rewrite(m => {
-    var arviointiModel = L.get(arviointiLens, m)
-    if (!suoritusValmis(m)) {
-      return L.set(arviointiLens, createOptionalEmpty(arviointiModel), m)
-    }
-    return m
-  }))
 }
 
 let expandableProperties = (model) => {

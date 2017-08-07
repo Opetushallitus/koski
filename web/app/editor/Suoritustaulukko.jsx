@@ -18,7 +18,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {hasArvosana} from './Suoritus'
+import {fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
@@ -58,7 +58,7 @@ export class Suoritustaulukko extends React.Component {
     let showGrouped = groupIds.length > 1
 
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-    let showArvosana = suoritukset.find(hasArvosana) !== undefined
+    let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
@@ -162,7 +162,6 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
 class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
-    let arviointi = modelLookup(model, 'arviointi.-1')
     let properties = suoritusProperties(model)
     let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
     let displayProperties = model.context.edit ? propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key)) : propertiesWithoutOsasuoritukset
@@ -184,7 +183,7 @@ class SuoritusEditor extends React.Component {
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>}
+      {showArvosana && <td className="arvosana"><Editor model={fixTila(model)} path="arviointi.-1.arvosana"/></td>}
       {
         model.context.edit && (
           <td>
