@@ -2,6 +2,7 @@ import React from 'react'
 import {parseFinnishDate, formatFinnishDate} from './date.js'
 import DayPicker, {DateUtils} from 'react-day-picker'
 import {t} from './i18n'
+import PropTypes from 'prop-types'
 
 const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
   'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu',
@@ -9,7 +10,13 @@ const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
 
 const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map(t)
 
-var DateInput = React.createClass({
+class DateInput extends React.Component {
+  constructor(props) {
+    super(props)
+    let value = props.value
+    this.state = {value: value ? formatFinnishDate(value) : ''}
+  }
+
   render() {
     let {isAllowedDate = () => true, validityCallback = () => {}, valueCallback = () => {}, optional = false } = this.props
     let {invalidDate} = this.state
@@ -71,27 +78,27 @@ var DateInput = React.createClass({
         }
       </div>
     )
-  },
+  }
+
   removeListeners() {
     document.removeEventListener('click', this.handleClickOutside, false)
-  },
-  getInitialState() {
-    var value = this.props.value
-    return {value: value ? formatFinnishDate(value) : ''}
-  },
+  }
+
   handleClickOutside(e) {
     if(!(this.calendarInput && this.calendarInput.contains(e.target))) {
       this.removeListeners()
       this.setState({calendarOpen: false})
     }
-  },
+  }
+
   componentWillUnmount() {
     this.removeListeners()
   }
-})
+}
+
 DateInput.propTypes = {
-  isAllowedDate: React.PropTypes.func,
-  valueCallback: React.PropTypes.func,
-  validityCallback: React.PropTypes.func
+  isAllowedDate: PropTypes.func,
+  valueCallback: PropTypes.func,
+  validityCallback: PropTypes.func
 }
 export default DateInput

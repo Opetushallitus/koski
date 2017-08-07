@@ -6,7 +6,11 @@ import {currentLocation, navigateTo} from './location.js'
 import {ISO2FinnishDateTime} from './date.js'
 import Text from './Text.jsx'
 
-export default BaconComponent({
+export default class Versiohistoria extends BaconComponent {
+  constructor(props) {
+    super(props)
+    this.state = this.initialState()
+  }
   render() {
     let { opiskeluoikeusId, oppijaOid } = this.props
     let { showHistory, history } = this.state
@@ -32,22 +36,24 @@ export default BaconComponent({
         }</tbody></table>)
       }
     </div>)
-  },
-  getInitialState() {
-    return { showHistory: !!this.versionumero(), history: [] }
-  },
+  }
   componentWillMount() {
+    super.componentWillMount()
     this.propsE.map('.opiskeluoikeusId').skipDuplicates().onValue((opiskeluoikeusId) => {
-      this.setState(this.getInitialState())
-      if (this.getInitialState().showHistory) this.fetchHistory(opiskeluoikeusId)
+      this.setState(this.initialState())
+      if (this.state.showHistory) this.fetchHistory(opiskeluoikeusId)
     })
-  },
+    this.propsE.push(this.props)
+  }
   fetchHistory(opiskeluoikeusId) {
     Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${opiskeluoikeusId}`)
       .takeUntil(this.unmountE)
       .onValue(h => this.setState({history: h}))
-  },
+  }
+  initialState() {
+    return { showHistory: !!this.versionumero(), history: [] }
+  }
   versionumero() {
     return currentLocation().params.versionumero
   }
-})
+}

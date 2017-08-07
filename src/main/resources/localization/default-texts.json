@@ -344,5 +344,10 @@
   "Kaikki opiskeluoikeudet validoitu.": "Kaikki opiskeluoikeudet validoitu.",
   "Odota, tietoja validoidaan.": "Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.",
   "Yhteensä": "Yhteensä",
-  "Oppiaineen tunnistetiedot" : "Oppiaineen tunnistetiedot"
+  "Oppiaineen tunnistetiedot" : "Oppiaineen tunnistetiedot",
+  "Lisää tutkinnon osa": "Lisää tutkinnon osa",
+  "Lisää ammattiosaamisen tunnustaminen": "Lisää ammattiosaamisen tunnustaminen",
+  "Lisää ammattiosaamisen näyttö": "Lisää ammattiosaamisen näyttö",
+  "Ammattiosaamisen tunnustaminen": "Ammattiosaamisen tunnustaminen",
+  "Ammattiosaamisen näyttö": "Ammattiosaamisen näyttö"
 }

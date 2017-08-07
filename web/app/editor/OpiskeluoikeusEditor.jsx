@@ -174,7 +174,7 @@ SuoritusTabs.suoritusIndex = (model, suoritukset) => {
   }
   return index
 }
-const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
+class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   render() {
     let {opiskeluoikeus} = this.props
     let oppijaOid = opiskeluoikeus.context.oppijaOid
@@ -189,7 +189,7 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
       return null
     }
   }
-})
+}
 
 let näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
 

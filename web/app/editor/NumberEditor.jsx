@@ -3,7 +3,7 @@ import {modelData, pushModelValue} from './EditorModel.js'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {modelSetValue} from './EditorModel'
 
-export const NumberEditor = React.createClass({
+export class NumberEditor extends React.Component {
   render() {
     let {model} = this.props
     let wrappedModel = wrapOptional({model})
@@ -21,7 +21,7 @@ export const NumberEditor = React.createClass({
       ? <input type="number" min={minValue} max={maxValue} defaultValue={modelData(wrappedModel)} onChange={ onChange } className="editor-input inline number"/>
       : <span className="inline number">{value}</span>)
   }
-})
+}
 
 const wrapWithUnitOfMeasure = (unitOfMeasure, content) => unitOfMeasure ? <span>{content}<span className="unit-of-measure">{unitOfMeasure}</span></span> : content
 

@@ -4,7 +4,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {recursivelyEmpty} from './EditorModel'
 
-export const JaksoEditor = React.createClass({
+export class JaksoEditor extends React.Component {
   render() {
     let {model} = this.props
     let wrappedModel = wrapOptional({model: model})
@@ -15,7 +15,7 @@ export const JaksoEditor = React.createClass({
       </div>
     )
   }
-})
+}
 
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 JaksoEditor.isEmpty = recursivelyEmpty

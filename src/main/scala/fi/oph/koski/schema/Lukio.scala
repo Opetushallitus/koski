@@ -323,7 +323,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
 
-@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-LukioIBkoulutus")
+@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-LukioIBkoulutus)")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]

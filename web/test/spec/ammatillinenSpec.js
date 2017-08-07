@@ -355,6 +355,64 @@ describe('Ammatillinen koulutus', function() {
         expect(opinnot.lisääSuoritusVisible()).to.equal(false)
       })
     })
+
+    describe('Tutkinnon osat', function() {
+      var suoritustapa = editor.property('suoritustapa')
+      describe('Tutkinnon osan lisääminen', function() {
+        before(editor.edit)
+        describe('Alussa', function () {
+          it('tyhjä', function() {
+            expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
+          })
+        })
+        describe('Lisääminen', function() {
+          before(
+            suoritustapa.waitUntilLoaded,
+            suoritustapa.selectValue('Opetussuunnitelman mukainen'),
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+          )
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          })
+        })
+        // TODO: uncomment this after client-side validation has been fixed
+        // describe('Tallentamisen jälkeen', function() {
+        //   before(editor.saveChanges, editor.edit)
+        //   it('näyttää edelleen oikeat tiedot', function() {
+        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        //   })
+        // })
+      })
+
+      describe('Tunnustamisen muokkaus', function() {
+        before(
+          editor.cancelChanges,
+          editor.edit,
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+        )
+        describe('Alussa', function() {
+          it('ei tunnustusta', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
+          })
+        })
+
+        describe('Lisääminen', function()  {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääTunnustaminen('Tunnustamisen esimerkkiselite'))
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+          })
+        })
+        // TODO: uncomment this after client-side validation has been fixed
+        // describe('Tallentamisen jälkeen', function() {
+        //   before(editor.saveChanges, editor.edit)
+        //   it('näyttää edelleen oikeat tiedot', function() {
+        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+        //   })
+        // })
+      })
+    })
   })
 
   describe('Ammatillinen perustutkinto', function() {

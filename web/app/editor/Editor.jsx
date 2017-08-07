@@ -2,12 +2,13 @@ import React from 'react'
 import R from 'ramda'
 import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from './EditorModel'
 import {parseBool} from '../util'
+import PropTypes from 'prop-types'
 
 /*
  model: required model object
  path: optional path to actually used model. It's ok if the model cannot be found by path: a NullEditor will be used
  */
-export const Editor = React.createClass({
+export class Editor extends React.Component {
   render() {
     let { model, ...rest } = this.props
     if (!model) {
@@ -15,12 +16,12 @@ export const Editor = React.createClass({
     }
     model = Editor.setupContext(model, this.props)
     return getModelEditor(model, rest)
-  },
+  }
 
   shouldComponentUpdate(nextProps) {
     return Editor.shouldComponentUpdate.call(this, nextProps)
   }
-})
+}
 
 Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus, edit, path}) => {
   if (!model.context) {
@@ -80,26 +81,26 @@ let pathHash = (m) => {
   return hash
 }
 Editor.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: PropTypes.object.isRequired
 }
 Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
 Editor.handlesOptional = (model, modifier) => editorFunctionHandlesOptional(getEditorFunction(model), modifier)
 const editorFunctionHandlesOptional = (editor, modifier) => editor && (editor.handlesOptional || (() => false))(modifier)
 
-const NullEditor = React.createClass({
+class NullEditor extends React.Component {
   render() {
     return null
   }
-})
+}
 
-const getEditorFunction = (model) => {
+const getEditorFunction = (model) => { // TODO: refactor this garbage
   let editorByClass = filter => mdl => {
     if (!mdl || !mdl.value) {
       return undefined
     }
     for (var i in mdl.value.classes) {
       var editor = mdl.context.editorMapping[mdl.value.classes[i]]
-      if (editor && (!mdl.context.edit || filter(editor))) { return editor }
+      if (editor && (!mdl.context.edit || filter(editor)) && (mdl.context.edit || !editor.writeOnly)) { return editor }
     }
   }
 

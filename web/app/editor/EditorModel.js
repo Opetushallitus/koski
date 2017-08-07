@@ -143,6 +143,10 @@ export const modelSetData = (model, data, path) => {
   return modelSetValue(model, { data }, path)
 }
 
+export const modelSetTitle = (model, title, path) => {
+  return modelSetValue(model, L.set('title', title, model.value), path)
+}
+
 export const modelSetValue = (model, value, path) => {
   return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
 }

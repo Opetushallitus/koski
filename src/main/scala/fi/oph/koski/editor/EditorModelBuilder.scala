@@ -168,7 +168,7 @@ object KoodistoEnumModelBuilder {
 
 case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[Koodistokoodiviite] {
   val enumValues = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(throw new RuntimeException("@KoodistoUri -annotaatio puuttuu"))
-  val koodistoUri = enumValues.head.asInstanceOf[String]
+  val koodistoUri = enumValues.map(_.asInstanceOf[String]).mkString(",")
   val koodiarvot: List[String] = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(Nil).asInstanceOf[List[String]]
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"

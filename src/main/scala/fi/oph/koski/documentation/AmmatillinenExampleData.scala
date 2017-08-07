@@ -154,7 +154,7 @@ object AmmatillinenExampleData {
   }
 
   def tutkinnonOsanSuoritusTilassa(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], tila: Koodistokoodiviite, laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
-    val osa: ValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,
@@ -167,7 +167,7 @@ object AmmatillinenExampleData {
   }
 
   def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], arvosana: Koodistokoodiviite, laajuus: Option[Float] = None): MuunAmmatillisenTutkinnonOsanSuoritus = {
-    val osa: ValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     tutkinnonOsanSuoritus(arvosana, osa, ryhmä)
   }
 
@@ -176,7 +176,7 @@ object AmmatillinenExampleData {
     tutkinnonOsanSuoritus(arvosana, osa, ryhmä)
   }
 
-  def tutkinnonOsanSuoritus(arvosana: Koodistokoodiviite, osa: AmmatillisenTutkinnonOsa, ryhmä: Option[Koodistokoodiviite]): MuunAmmatillisenTutkinnonOsanSuoritus = {
+  def tutkinnonOsanSuoritus(arvosana: Koodistokoodiviite, osa: MuuKuinYhteinenTutkinnonOsa, ryhmä: Option[Koodistokoodiviite]): MuunAmmatillisenTutkinnonOsanSuoritus = {
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,

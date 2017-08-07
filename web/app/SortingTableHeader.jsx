@@ -2,7 +2,7 @@ import React from 'react'
 import { navigateWithQueryParams, currentLocation } from './location'
 import Text from './Text.jsx'
 
-export default React.createClass({
+export default class extends React.Component {
   render() {
     var { field, titleKey, defaultSort } = this.props
     let params = currentLocation().params
@@ -25,4 +25,4 @@ export default React.createClass({
       {this.props.children}
     </th>)
   }
-})
+}

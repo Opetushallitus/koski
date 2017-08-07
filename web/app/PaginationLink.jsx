@@ -4,13 +4,13 @@ import BaconComponent from './BaconComponent'
 import {addClass} from './classnames'
 import delays from './delays'
 
-export default BaconComponent({
+export default class PaginationLink extends BaconComponent {
   render() {
     const { pager } = this.props
     return pager.mayHaveMore()
       ? <div id="pagination-marker" onClick={pager.next} ref={(link) => {this.paginationMarker = link}}></div>
       : <span></span>
-  },
+  }
 
   componentDidMount() {
     Bacon.fromEvent(window, 'scroll')
@@ -22,7 +22,7 @@ export default BaconComponent({
         addClass(this.paginationMarker, 'loading')
       })
   }
-})
+}
 
 function isElementInViewport (el) {
   let rect = el.getBoundingClientRect()

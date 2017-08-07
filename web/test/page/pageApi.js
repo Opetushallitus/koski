@@ -66,7 +66,7 @@ function Page(mainElement) {
         return el().attr(name)
       },
       isVisible: function() {
-        return isVisibleBy(el)
+        return isElementVisible(el)
       },
       isEnabled: function () {
         return el().is(':enabled')

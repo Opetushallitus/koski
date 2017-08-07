@@ -1,36 +1,32 @@
 import React from 'baret'
-import Bacon from 'baconjs'
-import R from 'ramda'
-import * as L from 'partial.lenses'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import Text from '../Text.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
+import Text from '../Text.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
-import {lensedModel, modelSet, modelSetValue, oneOfPrototypes} from './EditorModel'
-import {EnumEditor} from './EnumEditor.jsx'
 import {SelectAlternativeByEnumValueEditor} from './SelectAlternativeByEnumValueEditor.jsx'
+import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
+import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
 
-export const NäytönSuorituspaikkaEditor = React.createClass({
+export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
     let {model} = this.props
     return <span>{modelTitle(model, 'kuvaus')}</span>
   }
-})
+}
 NäytönSuorituspaikkaEditor.readOnly = true
 
-export const NäytönArvioitsijaEditor = React.createClass({
+export class NäytönArvioitsijaEditor extends React.Component {
   render() {
     let {model} = this.props
-    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : ''}</span>
+    return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : null}</span>
   }
-})
+}
 NäytönArvioitsijaEditor.readOnly = true
 NäytönArvioitsijaEditor.canShowInline = () => true
 
-const OppisopimusEditor = React.createClass({
+class OppisopimusEditor extends React.Component {
   render() {
     let {model} = this.props
     return (<div className="oppisopimuksellinenjarjestamismuoto">
@@ -41,9 +37,9 @@ const OppisopimusEditor = React.createClass({
       />
     </div>)
   }
-})
+}
 
-const TutkinnonOsanLisätietoEditor = React.createClass({
+class TutkinnonOsanLisätietoEditor extends React.Component {
   render() {
     let {model} = this.props
     return (<div className="ammatillisentutkinnonosanlisatieto">
@@ -53,9 +49,9 @@ const TutkinnonOsanLisätietoEditor = React.createClass({
       </div>
     </div>)
   }
-})
+}
 
-export const JärjestämismuotojaksoEditor = React.createClass({
+export class JärjestämismuotojaksoEditor extends React.Component {
   render() {
     let {model} = this.props
 
@@ -76,10 +72,10 @@ export const JärjestämismuotojaksoEditor = React.createClass({
         </div>
     )
   }
-})
+}
 JärjestämismuotojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
-export const TyössäoppimisjaksoEditor = React.createClass({
+export class TyössäoppimisjaksoEditor extends React.Component {
   render() {
     let {model} = this.props
     return (
@@ -92,7 +88,7 @@ export const TyössäoppimisjaksoEditor = React.createClass({
       </div>
     )
   }
-})
+}
 TyössäoppimisjaksoEditor.readOnly = true
 TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
@@ -115,5 +111,7 @@ export const editorMapping = {
   'jarjestamismuotojakso': JärjestämismuotojaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
-  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor
+  'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
+  'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
+  'naytto': AmmatillinenNäyttöEditor
 }

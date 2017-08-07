@@ -101,7 +101,7 @@ const createState = (oppijaOid) => {
 
           let batch = changeBuffer
           changeBuffer = null
-          //console.log("Apply", batch.length / 2, "changes:", batch)
+          //console.log('Apply', batch.length, 'changes:', batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
           return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusId})
         })
@@ -163,7 +163,7 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
 
-export const ExistingOppija = React.createClass({
+export class ExistingOppija extends React.Component {
   render() {
     let {oppija, saveChangesBus, cancelChangesBus, stateP} = this.props
 
@@ -191,7 +191,7 @@ export const ExistingOppija = React.createClass({
         </div>
     )
   }
-})
+}
 
 const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
   .filter(e => (e.getModifierState('Meta') || e.getModifierState('Control')) && e.keyCode==83)
@@ -218,6 +218,6 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   return (<div id="edit-bar" className={classNameP}>
     <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }><Text name="Peruuta"/></a>
     <button disabled={canSaveP.not()} onClick={saveChanges}><Text name="Tallenna"/></button>
-    <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : '')}</span>
+    <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : null)}</span>
   </div>)
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import {modelTitle, modelItems, modelData} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 
-export const VahvistusEditor = React.createClass({
+export class VahvistusEditor extends React.Component {
   render() {
     let { model } = this.props
     return (<span className="vahvistus inline">
@@ -17,4 +17,4 @@ export const VahvistusEditor = React.createClass({
       }
     </span>)
   }
-})
+}
