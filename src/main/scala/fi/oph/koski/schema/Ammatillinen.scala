@@ -78,16 +78,16 @@ case class Majoitusjakso (
   loppu: Option[LocalDate]
 ) extends Jakso
 
-@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso.")
+@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso. Rahoituksen laskennassa käytettävä tieto.")
 case class Poissaolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Poissaolon syy.")
+  @Description("Poissaolon syy. Mikäli kysymys on koulutuksen järjestäjän päättämästä 4vk kestävästä kesäkeskeytyksestä, käytetään syykoodia 'Kesälomakeskeytys'.")
   @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
 ) extends Jakso
 
-@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen")
+@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen)")
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
@@ -166,7 +166,7 @@ case class AmmatillisenTutkinnonSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
-@Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa.")
+@Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta.")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
@@ -189,6 +189,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
+  @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
