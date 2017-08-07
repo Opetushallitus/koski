@@ -8,7 +8,7 @@ import {lensedModel, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 
 export const SelectAlternativeByEnumValueEditor = ({ model, path }) => {
-  return <span>
+  return (<span>
         {
           completeWithFieldAlternatives(oneOfPrototypes(model), path).map( protos => {
             let enumValues = protos.map(proto => modelLookup(proto, path).value)
@@ -23,5 +23,5 @@ export const SelectAlternativeByEnumValueEditor = ({ model, path }) => {
             return <EnumEditor model={ tunnisteModel } fetchAlternatives = { () => Bacon.constant(enumValues) }/>
           })
         }
-  </span>
+  </span>)
 }
