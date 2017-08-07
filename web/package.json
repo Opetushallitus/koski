@@ -25,6 +25,7 @@
     "react-day-picker": "^6",
     "react-dom": "~15.5.1",
     "react-highlight": "^0.10.0",
+    "react-highlighter": "github:Dentosal/react-highlighter",
     "whatwg-fetch": "^0.9"
   },
   "devDependencies": {

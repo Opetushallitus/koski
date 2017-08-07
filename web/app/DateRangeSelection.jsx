@@ -92,7 +92,6 @@ export default class DateRangeSelection extends React.Component {
   }
 
   handleRangeSelection(range) {
-    debugger
     this.setState(range, () => this.props.onSelectionChanged(range))
     this.setState({open: false})
   }
