@@ -1,10 +1,17 @@
-import React from 'react'
+import React from 'baret'
+import Bacon from 'baconjs'
+import R from 'ramda'
+import * as L from 'partial.lenses'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import Text from '../Text.jsx'
+import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
+import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
+import {lensedModel, modelSet, modelSetValue, oneOfPrototypes} from './EditorModel'
+import {EnumEditor} from './EnumEditor.jsx'
+import {SelectAlternativeByEnumValueEditor} from './SelectAlternativeByEnumValueEditor.jsx'
 
 export const NäytönSuorituspaikkaEditor = React.createClass({
   render() {
@@ -51,9 +58,13 @@ const TutkinnonOsanLisätietoEditor = React.createClass({
 export const JärjestämismuotojaksoEditor = React.createClass({
   render() {
     let {model} = this.props
+
     return (
         <div className="jarjestamismuotojakso">
-          <PäivämääräväliEditor model={model}/>{', '} { modelTitle(model, 'järjestämismuoto.tunniste')}
+
+          <PäivämääräväliEditor model={model}/>
+          {', '}
+          <SelectAlternativeByEnumValueEditor model={modelLookup(model, 'järjestämismuoto')} path="tunniste"/>
           <PropertiesEditor
               model = {modelLookup(model, 'järjestämismuoto')}
               propertyFilter={p => !['tunniste'].includes(p.key)}
@@ -66,7 +77,6 @@ export const JärjestämismuotojaksoEditor = React.createClass({
     )
   }
 })
-JärjestämismuotojaksoEditor.readOnly = true
 JärjestämismuotojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
 export const TyössäoppimisjaksoEditor = React.createClass({
