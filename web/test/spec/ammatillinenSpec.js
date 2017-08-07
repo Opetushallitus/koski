@@ -404,7 +404,7 @@ describe('Ammatillinen koulutus', function() {
               })
 
               describe('Tutkinnon osan poistaminen', function() {
-                before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
+                before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
                 it('toimii', function() {
                   expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
                 })
