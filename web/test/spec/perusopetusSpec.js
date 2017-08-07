@@ -743,7 +743,7 @@ describe('Perusopetus', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
           before(opinnot.valitseSuoritus(1, 'Päättötodistus'),
             editor.edit,
-            lisätiedot.setValue('Testitesti'),
+            lisätiedot.setValue('Testitesti2'),
             editor.saveChanges,
             wait.until(page.isSavedLabelShown),
             editor.edit,
@@ -801,9 +801,9 @@ describe('Perusopetus', function() {
         })
       })
       describe('Oppiaineen laajuuden muutos', function() {
-        before(editor.edit, editor.property('laajuus').setValue('2'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+        before(editor.edit, editor.property('laajuus').setValue('5'), editor.saveChanges, wait.until(page.isSavedLabelShown))
         it('muutettu laajuus näytetään', function() {
-          expect(editor.property('laajuus').getValue()).to.equal('2')
+          expect(editor.property('laajuus').getValue()).to.equal('5')
         })
       })
       describe('Oppiaineen arvosanan muutos', function() {
