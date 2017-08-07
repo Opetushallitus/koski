@@ -374,7 +374,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Tallentamisen jälkeen', function() {
-          before(editor.saveChanges, editor.edit)
+          before(editor.saveChanges)
           it('näyttää edelleen oikeat tiedot', function() {
             expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
           })
