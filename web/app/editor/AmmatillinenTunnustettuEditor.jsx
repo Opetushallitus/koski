@@ -30,12 +30,14 @@ const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
   )
 }
 
-export const AmmatillinenTunnustettuEditor = React.createClass({
-  getInitialState() {
-    return {
+export class AmmatillinenTunnustettuEditor extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       popupVisibleA: Atom(false)
     }
-  },
+  }
+
   render() {
     const model = this.props.model
     const popupVisibleA = this.state.popupVisibleA
@@ -56,7 +58,7 @@ export const AmmatillinenTunnustettuEditor = React.createClass({
       </div>
     )
   }
-})
+}
 AmmatillinenTunnustettuEditor.handlesOptional = () => true
 AmmatillinenTunnustettuEditor.writeOnly = true
 

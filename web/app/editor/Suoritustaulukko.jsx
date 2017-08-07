@@ -29,7 +29,7 @@ import {EnumEditor} from './EnumEditor.jsx'
 
 const placeholderForNonGrouped = '999999'
 
-export const Suoritustaulukko = React.createClass({
+export class Suoritustaulukko extends React.Component {
   render() {
     const {suorituksetModel} = this.props
     let context = suorituksetModel.context
@@ -130,7 +130,7 @@ export const Suoritustaulukko = React.createClass({
       setExpanded(suoritus)(true)
     }
   }
-})
+}
 
 const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
   let displayValue = item => item.data.koodiarvo + ' ' + item.title
