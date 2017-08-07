@@ -372,13 +372,13 @@ describe('Ammatillinen koulutus', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
           })
         })
-        // TODO: uncomment this after client-side validation has been fixed
-        // describe('Tallentamisen jälkeen', function() {
-        //   before(editor.saveChanges, editor.edit)
-        //   it('näyttää edelleen oikeat tiedot', function() {
-        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-        //   })
-        // })
+
+        describe('Tallentamisen jälkeen', function() {
+          before(editor.saveChanges, editor.edit)
+          it('näyttää edelleen oikeat tiedot', function() {
+            expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          })
+        })
       })
 
       describe('Tunnustamisen muokkaus', function() {
