@@ -12,14 +12,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
-            case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
-              KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
-            case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus => osaSuoritus.koulutusmoduuli match {
-              case osa: ValtakunnallinenTutkinnonOsa =>
-                validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa)
-              case osa: PaikallinenTutkinnonOsa =>
-                HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
-            }
+            case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
+              HttpStatus.validate(tutkintoSuoritus.suoritustapa.isDefined)(KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()).then(HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
+                case osa: ValtakunnallinenTutkinnonOsa =>
+                  validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa)
+                case osa: PaikallinenTutkinnonOsa =>
+                  HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+              }, validateTutkintoField(tutkintoSuoritus, osaSuoritus)))
           }))
       }
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
@@ -41,6 +40,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case _ =>
           HttpStatus.ok
       }
+  }
+
+  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, osaSuoritus: AmmatillisenTutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.tunniste, osaSuoritus.tutkinto.map(_.tunniste)) match {
+    case (tutkintoKoodi, Some(tutkinnonOsanTutkintoKoodi)) if (tutkintoKoodi.koodiarvo == tutkinnonOsanTutkintoKoodi.koodiarvo) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi(s"Tutkinnon osalle ${osaSuoritus.koulutusmoduuli.tunniste} on merkitty tutkinto, jossa on sama tutkintokoodi ${tutkintoKoodi} kuin tutkinnon suorituksessa")
+    case _ =>
+      HttpStatus.ok
   }
 
   private def validateKurssikoodisto(suoritus: AikuistenPerusopetuksenOppimääränSuoritus) = {

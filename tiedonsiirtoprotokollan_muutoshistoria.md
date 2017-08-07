@@ -1,3 +1,7 @@
+## 7.8.2017
+
+- Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa saa olla erillistä tutkintotietoa
+
 ## 3.8.2017
 
 - Lisätty vammainen-kenttä perusopetuksen opiskeluoikeuden lisätietoihin
