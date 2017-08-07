@@ -2,7 +2,7 @@ import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 
-class KurssiEditor extends React.Component {
+export class KurssiEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = { open: false, tooltipPosition: 'bottom' }
