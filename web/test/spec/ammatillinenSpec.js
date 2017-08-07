@@ -382,18 +382,32 @@ describe('Ammatillinen koulutus', function() {
             it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
               expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
             })
-          })
 
-          describe('Tallentamisen jälkeen', function() {
-            before(editor.saveChanges)
-            it('näyttää edelleen oikeat tiedot', function() {
-              expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-            })
+            describe('Tallentamisen jälkeen', function() {
+              before(editor.saveChanges)
 
-            describe('Tutkinnon osan poistaminen', function() {
-              before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
-              it('toimii', function() {
-                expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+              describe('Käyttöliittymän tila', function() {
+                it('näyttää edelleen oikeat tiedot', function() {
+                  expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+                })
+              })
+
+              describe('Suorituksen siirtäminen KESKEN-tilaan', function() {
+                before(
+                  editor.edit,
+                  opinnot.expandAll,
+                  opinnot.tutkinnonOsat().tutkinnonOsa(0).property('tila').setValue('Suoritus kesken')
+                )
+                it('Poistaa arvioinnin', function() {
+                  expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').getValue()).to.equal('Ei valintaa')
+                })
+              })
+
+              describe('Tutkinnon osan poistaminen', function() {
+                before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa)
+                it('toimii', function() {
+                  expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+                })
               })
             })
           })

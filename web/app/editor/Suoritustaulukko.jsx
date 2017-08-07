@@ -18,7 +18,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana} from './Suoritus'
+import {fixArvosana, fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
@@ -162,9 +162,9 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
 class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
+    model = fixArvosana(model)
     let properties = suoritusProperties(model)
-    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
-    let displayProperties = model.context.edit ? propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key)) : propertiesWithoutOsasuoritukset
+    let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -211,10 +211,13 @@ class SuoritusEditor extends React.Component {
 }
 
 const suoritusProperties = suoritus => {
-  return modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
+  let properties = suoritus.context.edit
+    ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
+    : modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
       .concat(modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key))))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
-      .filter(shouldShowProperty(suoritus.context))
+
+  return properties.filter(shouldShowProperty(suoritus.context))
 }
 
 export const suorituksenTilaSymbol = (tila) => {
