@@ -22,10 +22,7 @@ const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
   return (
     <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()}  okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen tunnustaminen"/></h2>
-      <td>
-        <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
-
-      </td>
+      <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
     </ModalDialog>
   )
 }
