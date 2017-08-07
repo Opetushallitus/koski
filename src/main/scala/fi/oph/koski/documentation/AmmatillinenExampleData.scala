@@ -52,8 +52,8 @@ object AmmatillinenExampleData {
     Some(kuvaus),
     Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
     Some(NäytönSuoritusaika(päivä, päivä)),
-    arviointi,
-    työssäoppimisenYhteydessä = false
+    false,
+    arviointi
   )
 
   lazy val suoritustapaNäyttö = Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1))

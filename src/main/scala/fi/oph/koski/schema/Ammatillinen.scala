@@ -463,11 +463,11 @@ case class Näyttö(
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
+  @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
+  työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
   @Flatten
   arviointi: Option[NäytönArviointi],
-  @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
-  työssäoppimisenYhteydessä: Boolean = false,
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä.")
   haluaaTodistuksen: Option[Boolean] = None
 )
