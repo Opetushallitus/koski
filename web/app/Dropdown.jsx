@@ -6,7 +6,20 @@ import {parseBool, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 import {t} from './i18n'
 
-export default ({options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem, isRemovable = () => false, onRemoval, removeText}) => {
+/*
+  options: [] or Observable []
+  keyValue: item => string
+  displayValue: item => string
+  selected: currently selected item or Observable
+  onSelectionChanged: callback
+  newItem: proto for new item
+  isRemovable: boolean
+  onRemoval: callback
+  removeText: string
+  enableFilter: boolean
+  selectionText: shown when no option is selected
+ */
+export default ({ options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem, isRemovable = () => false, onRemoval, removeText}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 
@@ -119,6 +132,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                   return (<li key={keyValue(o) || displayValue(o)}
                               className={className}
                               onMouseDown={(e) => {selectOption(e, o)}}
+                              onClick={(e) => {selectOption(e, o)}}
                               onMouseOver={() => handleMouseOver(allOptions, o)}>
                     {
                       isNew ?
@@ -127,6 +141,7 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
                           <span className="removable-option" title={removeText}>{displayValue(o)}
                             <a className="remove-value"
                                onMouseDown={(e) => {selectRemoval(e, o)}}
+                               onClick={(e) => {selectRemoval(e, o)}}
                                onMouseOver={() => removeIndexAtom.set(i)}
                                onMouseLeave={() => removeIndexAtom.set(undefined)}
                             >{''}</a>
@@ -147,5 +162,5 @@ export default ({options, keyValue = o => o.key, displayValue = o => o.value, se
 let queryFilter = (options, query, displayValue) => {
   if (!query) return options
   query = query.toLowerCase()
-  return options.filter(o => displayValue(o).toLowerCase().startsWith(query))
+  return options.filter(o => displayValue(o).toLowerCase().includes(query))
 }

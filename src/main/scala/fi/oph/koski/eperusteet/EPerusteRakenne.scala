@@ -16,7 +16,7 @@ case class EOsaamisalaViite(osaamisalakoodiArvo: String)
 case class ETutkinnonOsa(id: Long, nimi: Map[String, String], koodiArvo: String)
 
 sealed trait ERakenneOsa
-case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite]) extends ERakenneOsa
+case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: String) extends ERakenneOsa
 case class ERakenneTutkinnonOsa(_tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa
 
 object RakenneOsaSerializer extends Serializer[ERakenneOsa] {

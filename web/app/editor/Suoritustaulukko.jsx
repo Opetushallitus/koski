@@ -10,10 +10,12 @@ import {
   modelItems,
   modelProperties,
   modelProperty,
-  modelSet, modelSetTitle,
+  modelSet,
+  modelSetTitle,
   modelSetValue,
   oneOfPrototypes,
-  pushModel, pushRemoval
+  pushModel,
+  pushRemoval
 } from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
@@ -21,11 +23,13 @@ import {accumulateExpandedState} from './ExpandableItems'
 import {fixArvosana, fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
+import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
 import Autocomplete from '../Autocomplete.jsx'
+import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {EnumEditor} from './EnumEditor.jsx'
+import Http from '../http'
 
 const placeholderForNonGrouped = '999999'
 
@@ -107,7 +111,7 @@ export class Suoritustaulukko extends React.Component {
         }),
         context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
-            <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
+            <UusiTutkinnonOsa suoritus={context.suoritus} suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
         </tbody>
       ]
@@ -132,7 +136,7 @@ export class Suoritustaulukko extends React.Component {
   }
 }
 
-const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
+const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
   let displayValue = item => item.data.koodiarvo + ' ' + item.title
   let selectedAtom = Atom(undefined)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
@@ -142,20 +146,39 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   // TODO: paikallisen tutkinnon osan lisäys
 
   let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
-  const tutkinnonOsatP = EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste'))
+
+  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
+
+  if (!diaarinumero || !suoritustapa) return null
+
+  let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? [] : Bacon.Error(e) }
+  let osatP = Http
+    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(groupId)}`, map404ToEmpty)
 
   selectedAtom.filter(R.identity).onValue(koodi => {
     addTutkinnonOsa(modelSetValue(modelSetTitle(koulutusmoduuliProto, koodi.title), koodi, 'tunniste'), groupId)
   })
 
   return (<span>
-    <Autocomplete
-      fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
-      resultAtom={ selectedAtom }
-      placeholder="Lisää tutkinnonosa"
-      displayValue={ displayValue }
-      selected = { selectedAtom }
-    />
+    {
+      osatP.map(perusteistaLöytyvätOsat => perusteistaLöytyvätOsat.length
+        ? <KoodistoDropdown
+          options={perusteistaLöytyvätOsat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))}
+          selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
+          enableFilter="true"
+          selectionText={ t('Lisää tutkinnon osa')}
+          showKoodiarvo="true"
+          />
+        : <Autocomplete
+          fetchItems={ query => query.length < 3 ? Bacon.once([]) : EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste')).map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
+          resultAtom={ selectedAtom }
+          placeholder={t('Lisää tutkinnon osa')}
+          displayValue={ displayValue }
+          selected = { selectedAtom }
+        />
+      )
+    }
   </span>)
 }
 

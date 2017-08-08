@@ -135,10 +135,12 @@ object KoskiErrorCategory {
     val versiotaEiLöydy = subcategory("versiotaEiLöydy", "Haettua versiota ei löydy")
     val koodistoaEiLöydy = subcategory("koodistoaEiLöydy", "Pyydettyä koodistoa ei löydy.")
     val diaarinumeroaEiLöydy = subcategory("diaarinumeroaEiLöydy", "Tutkinnon rakennetta ei löydy annetulla diaarinumerolla.")
+    val suoritustapaaEiLöydy = subcategory("suoritustapaaEiLöydy", "Valittua suoritustapaa ei löydy annetulla diaarinumerolla.")
     val todistustaEiLöydy = subcategory("todistustaEiLöydy", "Pyydettyä todistusta ei löydy")
     val suoritustaEiLöydy = subcategory("suoritustaEiLöydy", "Pyydettyä suoritusta ei löydy")
     val oppilaitostaEiLöydy = subcategory("oppilaitostaEiLöydy", "Oppilaitosta ei löydy organisaatiopalvelusta.")
     val tutkintoaEiLöydy = subcategory("tutkintoaEiLöydy", "Tutkintoa ei löydy hakusanalla")
+    val ryhmääEiLöydyRakenteesta = subcategory("ryhmääEiLöydyRakenteesta", "Pyydettyä tutkinnon osien ryhmää ei löydy tutkintorakenteesta")
   }
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
