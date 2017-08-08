@@ -5,7 +5,7 @@ import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {parseBool} from '../util'
 import {t} from '../i18n'
-export const LaajuusEditor = React.createClass({
+export class LaajuusEditor extends React.Component {
   render() {
     let { model, compact, showReadonlyScope = true } = this.props
     let wrappedModel = wrapOptional({model: model})
@@ -18,7 +18,7 @@ export const LaajuusEditor = React.createClass({
       </span>
     )
   }
-})
+}
 LaajuusEditor.isEmpty = (m) => modelEmpty(m, 'arvo')
 LaajuusEditor.createEmpty = m => modelSetValue(m, undefined, 'arvo')
 LaajuusEditor.readOnly = false

@@ -1,5 +1,7 @@
 package fi.oph.koski.documentation
 
+import java.net.URLEncoder
+
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
@@ -76,7 +78,7 @@ object KoskiSchemaDocumentHtml {
 
 
   def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String]) = <div class="entity">
-    <h3 id={schema.simpleName}>{breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + bc.schema.simpleName}>{bc.schema.title}</a> &gt; </span>)}{schema.title}</h3>
+    <h3 id={schema.simpleName}>{breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + urlEncode(bc.schema.simpleName)}>{bc.schema.title}</a> &gt; </span>)}{schema.title}</h3>
     {descriptionHtml(schema)}
     <table>
       <thead>
@@ -109,8 +111,10 @@ object KoskiSchemaDocumentHtml {
     </table>
   </div>
 
+  def urlEncode(s: String) = URLEncoder.encode(s, "UTF-8")
+
   def schemaTypeHtml(s: Schema, includedEntities: List[String]): Elem = s match {
-    case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + s.simpleName}) + "#" + s.simpleName}>{s.title}</a>
+    case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + urlEncode(s.simpleName)}) + "#" + urlEncode(s.simpleName)}>{s.title}</a>
     case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(resolveSchema(a), includedEntities))}</span>
     case s: StringSchema => <span>merkkijono</span> // TODO: schemarajoitukset annotaatioista jne
     case s: NumberSchema => <span>numero</span>

@@ -5,7 +5,7 @@ import {currentLocation} from '../location'
 import Text from '../Text.jsx'
 import {modelData} from './EditorModel'
 
-export const TogglableEditor = React.createClass({
+export class TogglableEditor extends React.Component {
   render() {
     let { model, renderChild } = this.props
     let context = model.context
@@ -19,4 +19,4 @@ export const TogglableEditor = React.createClass({
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))
   }
-})
+}

@@ -13,7 +13,32 @@ import {toObservable} from './util'
     fetchItems: String -> Property [Item]
     displayValue: Item -> String (if missing, items are expected to have a "nimi" field that's a localized text)
  */
-export default BaconComponent({
+
+export default class Autocomplete extends BaconComponent {
+  constructor(props) {
+    super(props)
+    this.keyHandlers = {
+      ArrowUp() {
+        let {selectionIndex} = this.state
+        selectionIndex = selectionIndex === 0 ? 0 : selectionIndex - 1
+        this.setState({selectionIndex: selectionIndex})
+      },
+      ArrowDown() {
+        let {selectionIndex, items} = this.state
+        selectionIndex = selectionIndex === items.length - 1 ? selectionIndex : selectionIndex + 1
+        this.setState({selectionIndex: selectionIndex})
+      },
+      Enter(e) {
+        e.preventDefault()
+        let {selectionIndex, items} = this.state
+        this.handleSelect(items[selectionIndex])
+      },
+      Escape() {
+        this.setState({query: undefined, items: []})
+      }
+    }
+    this.state = {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
+  }
   render() {
     let {disabled, selected, placeholder, displayValue = (item => t(item.nimi))} = this.props
     let selectedP = toObservable(selected)
@@ -32,26 +57,26 @@ export default BaconComponent({
         <input type="text"
                className='autocomplete-input'
                placeholder={placeholder}
-               onKeyDown={this.onKeyDown}
-               onChange={this.handleInput}
+               onKeyDown={this.onKeyDown.bind(this)}
+               onChange={this.handleInput.bind(this)}
                value={ selectedP.map(s => query || (s ? displayValue(s) : '')) }
                disabled={disabled}></input>
         {results}
       </div>
     )
-  },
+  }
 
   handleInput(e) {
     let query = e.target.value
     this.setValue(undefined)
     this.state.inputBus.push(query)
     this.setState({query: query})
-  },
+  }
 
   handleSelect(selected) {
     this.setState({query: undefined, items: []})
     this.setValue(selected)
-  },
+  }
 
   setValue(value) {
     if (this.props.resultBus) {
@@ -63,14 +88,14 @@ export default BaconComponent({
     } else {
       throw 'resultBus/resultAtom/resultCallback missing'
     }
-  },
+  }
 
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]
     if(handler) {
       handler.call(this, e)
     }
-  },
+  }
 
   componentDidMount() {
     this.state.inputBus
@@ -78,30 +103,5 @@ export default BaconComponent({
       .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
       .takeUntil(this.unmountE)
       .onValue((items) => this.setState({ items: items, selectionIndex: 0 }))
-  },
-
-  getInitialState() {
-    return {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
-  },
-
-  keyHandlers: {
-    ArrowUp() {
-      let {selectionIndex} = this.state
-      selectionIndex = selectionIndex === 0 ? 0 : selectionIndex - 1
-      this.setState({selectionIndex: selectionIndex})
-    },
-    ArrowDown() {
-      let {selectionIndex, items} = this.state
-      selectionIndex = selectionIndex === items.length - 1 ? selectionIndex : selectionIndex + 1
-      this.setState({selectionIndex: selectionIndex})
-    },
-    Enter(e) {
-      e.preventDefault()
-      let {selectionIndex, items} = this.state
-      this.handleSelect(items[selectionIndex])
-    },
-    Escape() {
-      this.setState({query: undefined, items: []})
-    }
   }
-})
+}

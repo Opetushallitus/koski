@@ -163,7 +163,7 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
 }))
 
-export const ExistingOppija = React.createClass({
+export class ExistingOppija extends React.Component {
   render() {
     let {oppija, saveChangesBus, cancelChangesBus, stateP} = this.props
 
@@ -191,7 +191,7 @@ export const ExistingOppija = React.createClass({
         </div>
     )
   }
-})
+}
 
 const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
   .filter(e => (e.getModifierState('Meta') || e.getModifierState('Control')) && e.keyCode==83)

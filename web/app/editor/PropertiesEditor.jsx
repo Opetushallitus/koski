@@ -5,7 +5,7 @@ import { ArrayEditor } from './ArrayEditor.jsx'
 import {modelProperties} from './EditorModel'
 import Text from '../Text.jsx'
 
-export const PropertiesEditor = React.createClass({
+export class PropertiesEditor extends React.Component {
   render() {
     let defaultValueEditor = (prop, getDefault) => getDefault()
     let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true} = this.props
@@ -55,7 +55,7 @@ export const PropertiesEditor = React.createClass({
       </tbody></table>
     </div>)
   }
-})
+}
 PropertiesEditor.canShowInline = () => false
 
 export const shouldShowProperty = (context) => (property) => {
@@ -64,7 +64,7 @@ export const shouldShowProperty = (context) => (property) => {
   return true
 }
 
-export const TabularArrayEditor = React.createClass({
+export class TabularArrayEditor extends React.Component {
   render() {
     let {model} = this.props
     let items = modelItems(model)
@@ -90,4 +90,4 @@ export const TabularArrayEditor = React.createClass({
       </tbody>
     </table>)
   }
-})
+}

@@ -6,7 +6,26 @@ import './style/pulssi.less'
 import Text from './Text.jsx'
 import R from 'ramda'
 
-const Pulssi = React.createClass({
+class Pulssi extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      pulssi: {
+        opiskeluoikeudet: {
+          koulutusmuotoTilastot: []
+        },
+        metriikka: {
+          saavutettavuus: 0,
+          operaatiot: {}
+        },
+        oppilaitosMäärät: {
+          koulutusmuodoittain: []
+        }
+      }
+    }
+  }
+
   render() {
     let {pulssi} = this.state
     let opiskeluoikeudet = pulssi.opiskeluoikeudet
@@ -100,29 +119,14 @@ const Pulssi = React.createClass({
           </div>
         </div>
     )
-  },
+  }
+
   componentDidMount() {
     Http.cachedGet('/koski/api/pulssi').onValue(pulssi => this.setState({pulssi}))
     document.title = 'Koski - Pulssi'
 
-  },
-  getInitialState() {
-    return {
-      pulssi: {
-        opiskeluoikeudet: {
-          koulutusmuotoTilastot: []
-        },
-        metriikka: {
-          saavutettavuus: 0,
-          operaatiot: {}
-        },
-        oppilaitosMäärät: {
-          koulutusmuodoittain: []
-        }
-      }
-    }
   }
-})
+}
 
 const toPercent = x => Math.round(x * 100 * 10) / 10
 

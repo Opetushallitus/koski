@@ -22,19 +22,19 @@ const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
   return (
     <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()}  okTextKey="Lisää" validP={validP}>
       <h2><Text name="Ammattiosaamisen tunnustaminen"/></h2>
-      <td>
-        <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
-      </td>
+      <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
     </ModalDialog>
   )
 }
 
-export const AmmatillinenTunnustettuEditor = React.createClass({
-  getInitialState() {
-    return {
+export class AmmatillinenTunnustettuEditor extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       popupVisibleA: Atom(false)
     }
-  },
+  }
+
   render() {
     const model = this.props.model
     const popupVisibleA = this.state.popupVisibleA
@@ -55,7 +55,7 @@ export const AmmatillinenTunnustettuEditor = React.createClass({
       </div>
     )
   }
-})
+}
 AmmatillinenTunnustettuEditor.handlesOptional = () => true
 AmmatillinenTunnustettuEditor.writeOnly = true
 

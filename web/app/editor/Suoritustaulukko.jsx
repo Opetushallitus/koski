@@ -13,12 +13,12 @@ import {
   modelSet, modelSetTitle,
   modelSetValue,
   oneOfPrototypes,
-  pushModel
+  pushModel, pushRemoval
 } from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {hasArvosana} from './Suoritus'
+import {fixArvosana, fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
@@ -29,7 +29,7 @@ import {EnumEditor} from './EnumEditor.jsx'
 
 const placeholderForNonGrouped = '999999'
 
-export const Suoritustaulukko = React.createClass({
+export class Suoritustaulukko extends React.Component {
   render() {
     const {suorituksetModel} = this.props
     let context = suorituksetModel.context
@@ -58,7 +58,7 @@ export const Suoritustaulukko = React.createClass({
     let showGrouped = groupIds.length > 1
 
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-    let showArvosana = suoritukset.find(hasArvosana) !== undefined
+    let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
@@ -100,12 +100,12 @@ export const Suoritustaulukko = React.createClass({
       let items = (grouped[groupId] || [])
       return [
         <tbody key={'group-' + i} className="group-header">
-          <tr> <td colSpan="4">{groupTitles[groupId]}</td> </tr>
+          <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
         items.map((suoritus, j) => {
           return suoritusEditor(suoritus, i * 100 + j, groupId)
         }),
-        context.edit && <tbody className={'uusi-tutkinnon-osa ' + groupId}>
+        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
             <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
@@ -130,7 +130,7 @@ export const Suoritustaulukko = React.createClass({
       setExpanded(suoritus)(true)
     }
   }
-})
+}
 
 const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
   let displayValue = item => item.data.koodiarvo + ' ' + item.title
@@ -159,13 +159,12 @@ const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritu
   </span>)
 }
 
-const SuoritusEditor = React.createClass({
+class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
-    let arviointi = modelLookup(model, 'arviointi.-1')
+    model = fixArvosana(model)
     let properties = suoritusProperties(model)
-    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
-    let displayProperties = model.context.edit ? propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key)) : propertiesWithoutOsasuoritukset
+    let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -184,7 +183,14 @@ const SuoritusEditor = React.createClass({
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>}
+      {showArvosana && <td className="arvosana"><Editor model={fixTila(model)} path="arviointi.-1.arvosana"/></td>}
+      {
+        model.context.edit && (
+          <td>
+            <a className="remove-value" onClick={() => pushRemoval(model)}>{''}</a>
+          </td>
+        )
+      }
     </tr>
     {
       expanded && hasProperties && (<tr className="details" key="details">
@@ -202,13 +208,16 @@ const SuoritusEditor = React.createClass({
     }
     </tbody>)
   }
-})
+}
 
 const suoritusProperties = suoritus => {
-  return modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
+  let properties = suoritus.context.edit
+    ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
+    : modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
       .concat(modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key))))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
-      .filter(shouldShowProperty(suoritus.context))
+
+  return properties.filter(shouldShowProperty(suoritus.context))
 }
 
 export const suorituksenTilaSymbol = (tila) => {

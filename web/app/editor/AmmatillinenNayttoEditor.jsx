@@ -63,12 +63,14 @@ const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
   </div>)
 }
 
-export const AmmatillinenNäyttöEditor = React.createClass({
-  getInitialState() {
-    return {
+export class AmmatillinenNäyttöEditor extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       popupVisibleA: Atom(false)
     }
-  },
+  }
+
   render() {
     const model = this.props.model
     const popupVisibleA = this.state.popupVisibleA
@@ -92,7 +94,7 @@ export const AmmatillinenNäyttöEditor = React.createClass({
       </div>
     )
   }
-})
+}
 
 AmmatillinenNäyttöEditor.handlesOptional = () => true
 AmmatillinenNäyttöEditor.writeOnly = true

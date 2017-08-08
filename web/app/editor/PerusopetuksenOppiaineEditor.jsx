@@ -10,7 +10,7 @@ import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 
-export const PerusopetuksenOppiaineEditor = React.createClass({
+export class PerusopetuksenOppiaineEditor extends React.Component {
   render() {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
@@ -43,7 +43,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
         })
       }
   </span>)
-  },
+  }
 
   componentWillReceiveProps(newProps) {
     let currentData = modelData(this.props.oppiaine)
@@ -52,7 +52,7 @@ export const PerusopetuksenOppiaineEditor = React.createClass({
       this.setState({ changed: true})
     }
   }
-})
+}
 
 let fixKuvaus = (oppiaine) => {
   return lensedModel(oppiaine, L.rewrite(m => {

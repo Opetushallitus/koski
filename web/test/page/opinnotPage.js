@@ -157,7 +157,7 @@ function TutkinnonOsat(groupId) {
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
-      return {
+      return _.merge({
         nimi: function() {
           return findSingle('.nimi', el).text()
         },
@@ -177,9 +177,13 @@ function TutkinnonOsat(groupId) {
         },
         lisääTunnustaminen: function(selite) {
           return function() {
+            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
             Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
             triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
           }
+        },
+        poistaTutkinnonOsa: function() {
+          triggerEvent(findSingle('.remove-value', el), 'click')
         },
         näyttö: function() {
           var m = S('.näyttö .value a.edit-value', el)
@@ -198,17 +202,17 @@ function TutkinnonOsat(groupId) {
           }
         },
         lisääNäyttö: function(tiedot) {
-          return function() {
+          return function () {
             triggerEvent(findSingle('.näyttö .modal-content .arviointi .add-value', el), 'click')
-            return wait.forAjax().then(function() {
-              Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact=true)
+            return wait.forAjax().then(function () {
+              Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
               // Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
               Page(el).getInput('.näyttö .modal-content .kuvaus .value input').setValue(tiedot.kuvaus)
-              tiedot.arvioinnistaPäättäneet.map(function(v) {
-                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:last-child .dropdown').setValue(v, exact=true)
+              tiedot.arvioinnistaPäättäneet.map(function (v) {
+                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:last-child .dropdown').setValue(v, exact = true)
               })
-              tiedot.arviointikeskusteluunOsallistuneet.map(function(v) {
-                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:last-child .dropdown').setValue(v, exact=true)
+              tiedot.arviointikeskusteluunOsallistuneet.map(function (v) {
+                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:last-child .dropdown').setValue(v, exact = true)
               })
               // Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
               // Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
@@ -220,7 +224,7 @@ function TutkinnonOsat(groupId) {
             }).then(wait.forAjax)
           }
         }
-      }
+      }, {}, Editor(el))
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {

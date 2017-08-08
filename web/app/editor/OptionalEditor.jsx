@@ -5,7 +5,7 @@ import {Editor} from './Editor.jsx'
 import {lensedModel, optionalModelLens, optionalPrototypeModel, pushModel, resetOptionalModel} from './EditorModel'
 import Text from '../Text.jsx'
 
-export const OptionalEditor = React.createClass({
+export class OptionalEditor extends React.Component {
   render() {
     let {model} = this.props
     let prototype = () => optionalPrototypeModel(model)
@@ -35,7 +35,7 @@ export const OptionalEditor = React.createClass({
       }
     </span>)
   }
-})
+}
 OptionalEditor.canShowInline = () => true
 
 // TODO: remove object wrapping

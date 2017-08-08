@@ -3,7 +3,7 @@ import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {Editor} from './Editor.jsx'
 import {t} from '../i18n.js'
 
-export const KoulutusmoduuliEditor = React.createClass({
+export class KoulutusmoduuliEditor extends React.Component {
   render() {
     let { model } = this.props
     let overrideEdit = model.context.editAll ? true : false
@@ -15,4 +15,4 @@ export const KoulutusmoduuliEditor = React.createClass({
       <PropertiesEditor model={model} propertyFilter={p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key)} />
     </span>)
   }
-})
+}

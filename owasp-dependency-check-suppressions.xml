@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
-        <notes><![CDATA[
-      file name: mailapi-1.4.3.jar
-      ]]></notes>
+        <notes><![CDATA[file name: mailapi-1.4.3.jar]]></notes>
         <gav regex="true">^javax\.mail:mailapi:.*$</gav>
         <cpe>cpe:/a:sun:javamail</cpe>
     </suppress>
@@ -11,5 +9,12 @@
         <notes><![CDATA[core, databind and annotations]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-.*:2\.8\..*$</gav>
         <cve>CVE-2016-7051</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: alpn-api-1.1.2.v20150522.jar
+   ]]></notes>
+        <gav regex="true">^org\.eclipse\.jetty\.alpn:alpn-api:.*$</gav>
+        <cpe>cpe:/a:eclipse:jetty</cpe>
     </suppress>
 </suppressions>

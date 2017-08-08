@@ -5,7 +5,7 @@ import Link from './Link.jsx'
 import {t} from './i18n'
 import Text from './Text.jsx'
 
-export const Tiedonsiirtotaulukko = React.createClass({
+export class Tiedonsiirtotaulukko extends React.Component {
   render() {
     const { rivit, showError, pager } = this.props
 
@@ -29,9 +29,9 @@ export const Tiedonsiirtotaulukko = React.createClass({
       <PaginationLink pager={pager}/>
     </div>)
   }
-})
+}
 
-const Lokiriviryhmä = React.createClass({
+class Lokiriviryhmä extends React.Component {
   render() {
     let { oppijaRivi, i, showError } = this.props
 
@@ -53,9 +53,9 @@ const Lokiriviryhmä = React.createClass({
       }
     </tbody>)
   }
-})
+}
 
-const Lokirivi = React.createClass({
+class Lokirivi extends React.Component {
   render() {
     const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
     const dataToBeShown = this.state && this.state.dataToBeShown
@@ -110,9 +110,9 @@ const Lokirivi = React.createClass({
       </td>
     </tr>)
   }
-})
+}
 
-const LokirivinData = React.createClass({
+class LokirivinData extends React.Component {
   render() {
     const { details, showData } = this.props
     return (<div className="lokirividata-popup">
@@ -120,4 +120,4 @@ const LokirivinData = React.createClass({
       <pre>{JSON.stringify(details, null, 2)}</pre>
     </div>)
   }
-})
+}

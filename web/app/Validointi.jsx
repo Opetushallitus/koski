@@ -5,7 +5,14 @@ import Bacon from 'baconjs'
 import delays from './delays'
 import Text from './Text.jsx'
 
-const ValidointiTaulukko = React.createClass({
+class ValidointiTaulukko extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { expandedJsonKeys: [], expandedIdsKeys: []}
+  }
+
+
   render() {
     let { validationStatus } = this.props
     let { expandedJsonKeys, expandedIdsKeys, message } = this.state
@@ -48,16 +55,16 @@ const ValidointiTaulukko = React.createClass({
           </tbody>
         </table>
       </div>)
-  },
+  }
+
   componentDidMount() {
     document.addEventListener('keyup', this.showSelection)
-  },
+  }
+
   componentWillUnmount() {
     document.removeEventListener('keyup', this.showSelection)
-  },
-  getInitialState() {
-    return { expandedJsonKeys: [], expandedIdsKeys: []}
-  },
+  }
+
   showSelection(e) {
     if (e.keyCode == 27) { // esc
       this.setState({ message: null })
@@ -79,8 +86,8 @@ const ValidointiTaulukko = React.createClass({
       messageElem.textContent='(' + selectedIds.map((id) => '\'' + id + '\'').join(', ') + ')'
       window.getSelection().selectAllChildren(messageElem)
     }
-  }
-})
+  };
+}
 
 export const validointiContentP = (query) => {
   let oboeBus = Bacon.Bus()
