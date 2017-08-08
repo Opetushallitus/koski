@@ -197,8 +197,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             }
 
             "Vahvistus puuttuu" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, arviointiHyvä(), None)) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+              "palautetaan HTTP 200 (vahvistus vaaditaan vain päätason tutkintosuoritukselta)" in (put(copySuoritus(tilaValmis, arviointiHyvä(), None)) (
+                verifyResponseStatus(200)
               ))
             }
 
