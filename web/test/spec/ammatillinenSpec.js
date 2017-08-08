@@ -481,13 +481,6 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
-      describe('Muokkaaminen', function() {
-        before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttöModalSetValues())
-        it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
-        })
-      })
-
       describe('Poistaminen', function() {
         before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö())
         it('toimii', function() {
