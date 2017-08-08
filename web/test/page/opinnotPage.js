@@ -223,6 +223,12 @@ function TutkinnonOsat(groupId) {
               triggerEvent(findSingle('.näyttö .modal-content button', el), 'click')
             }).then(wait.forAjax)
           }
+        },
+        poistaNäyttö: function() {
+          return function() {
+            triggerEvent(findSingle('.näyttö .remove-value', el), 'click')
+            return wait.forAjax
+          }
         }
       }, {}, Editor(el))
     },

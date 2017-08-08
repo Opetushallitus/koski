@@ -480,6 +480,20 @@ describe('Ammatillinen koulutus', function() {
           expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
         })
       })
+
+      describe('Muokkaaminen', function() {
+        before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttöModalSetValues())
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+        })
+      })
+
+      describe('Poistaminen', function() {
+        before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö())
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+        })
+      })
       // TODO: uncomment this after client-side validation has been fixed
       // describe('Tallentamisen jälkeen', function() {
       //   before(editor.saveChanges, editor.edit)
