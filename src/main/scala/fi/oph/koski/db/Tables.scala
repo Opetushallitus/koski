@@ -30,10 +30,10 @@ object Tables {
   object OpiskeluoikeusTable {
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schema).copy(validate = false)
 
-    def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(
-        opiskeluoikeus.id.getOrElse(0),
-        opiskeluoikeus.oid.getOrElse(generateOID(15)),
+        0,
+        opiskeluoikeusOid,
         oppijaOid,
         opiskeluoikeus.getOppilaitos.oid,
         opiskeluoikeus.koulutustoimija.map(_.oid),

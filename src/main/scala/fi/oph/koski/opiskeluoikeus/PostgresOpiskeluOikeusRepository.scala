@@ -15,14 +15,14 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
+import fi.oph.koski.util.OidGenerator
 import org.json4s.JArray
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
 import slick.lifted.Query
 import slick.{dbio, lifted}
-import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 
-class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater, oidGenerator: OidGenerator) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     val query: lifted.Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -44,10 +44,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid)).map(rows => rows.map(_.toOpiskeluoikeus)))
   }
 
-  def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluoikeusRow] = {
-    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id))).headOption
-  }
-
   def findByOid(oid: String)(implicit user: KoskiSession): Option[OpiskeluoikeusRow] = {
     runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid))).headOption
   }
@@ -61,16 +57,29 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
+    def createOrUpdateWithRetry: Either[HttpStatus, CreateOrUpdateResult] = {
+      val result = try {
+        runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
+      } catch {
+        case e: SQLException if e.getSQLState == "23505" => // 23505 = Unique constraint violation
+          if (e.getMessage.contains("""duplicate key value violates unique constraint "opiskeluoikeus_oid_key"""")) {
+            Left(KoskiErrorCategory.conflict("duplicate oid"))
+          } else {
+            Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
+          }
+      }
+
+      if (result.left.exists(_ == KoskiErrorCategory.conflict("duplicate oid"))) {
+        createOrUpdateWithRetry
+      } else {
+        result
+      }
+    }
+
     if (!allowUpdate && opiskeluoikeus.id.isDefined) {
       Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja id-kenttään"))
     } else {
-      try {
-        runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
-      } catch {
-        case e:SQLException if e.getSQLState == "23505" =>
-          // 23505 = Unique constraint violation
-          Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
-      }
+      createOrUpdateWithRetry
     }
   }
 
@@ -139,7 +148,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(id = None, oid = None, versionumero = None)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oidGenerator.generateOid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))

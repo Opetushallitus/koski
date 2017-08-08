@@ -17,12 +17,13 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSearchIndex}
+import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
+import fi.oph.koski.util.OidGenerator
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}
@@ -55,7 +56,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
   lazy val henkilöCacheUpdater = new KoskiHenkilöCacheUpdater(masterDatabase.db, henkilöRepository)
-  lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCacheUpdater))
+  lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCacheUpdater, oidGenerator))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, henkilöRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
@@ -76,4 +77,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
   lazy val localizationRepository = LocalizationRepository(config)
+  lazy val oidGenerator = OidGenerator(config)
 }
