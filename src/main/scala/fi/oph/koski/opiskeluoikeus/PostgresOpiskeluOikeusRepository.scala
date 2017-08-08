@@ -36,7 +36,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluoikeus)))
+    runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
@@ -76,8 +76,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       }
     }
 
-    if (!allowUpdate && opiskeluoikeus.id.isDefined) {
-      Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja id-kenttään"))
+    if (!allowUpdate && opiskeluoikeus.oid.isDefined) {
+      Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja oid-kenttään"))
     } else {
       createOrUpdateWithRetry
     }
@@ -87,26 +87,24 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
   }
 
-  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = identifier match{
-    case PrimaryKey(id) => {
-      findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map { rows =>
+  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = {
+    identifier match {
+      case OpiskeluoikeusOid(oid) => findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)).map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(List(oikeus))
-          case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+          case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
         }
       }
-    }
 
-    case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) => {
-      findByOppijaOidAction(oppijaOid).map(_.filter { row =>
-        row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
-      }).map(_.toList).map(Right(_))
-    }
+      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) =>
+        findByOppijaOidAction(oppijaOid).map(_.filter { row =>
+          row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
+        }).map(_.toList).map(Right(_))
 
-    case i:OppijaOidOrganisaatioJaTyyppi => {
-      findByOppijaOidAction(i.oppijaOid).map(_.filter { row =>
-        OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
-      }).map(_.toList).map(Right(_))
+      case i:OppijaOidOrganisaatioJaTyyppi =>
+        findByOppijaOidAction(i.oppijaOid).map(_.filter { row =>
+          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
+        }).map(_.toList).map(Right(_))
     }
   }
 
@@ -147,20 +145,20 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
-        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(id = None, oid = None, versionumero = None)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oidGenerator.generateOid(oppijaOid), tallennettavaOpiskeluoikeus)
+        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withOidAndVersion(oid = Some(oidGenerator.generateOid(oppijaOid)), versionumero = None)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, tallennettavaOpiskeluoikeus.oid.get, VERSIO_1, diff, row.data))
         }
     }
   }
 
   private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
-    val (id, versionumero) = (oldRow.id, oldRow.versionumero)
+    val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
     val nextVersionumero = versionumero + 1
 
     uusiOpiskeluoikeus.versionumero match {
@@ -176,7 +174,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val diff: JArray = Json.jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
-            DBIO.successful(Right(NotChanged(id, versionumero, diff, newData)))
+            DBIO.successful(Right(NotChanged(id, oid, versionumero, diff, newData)))
           case _ =>
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
@@ -185,7 +183,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                    case 1 => Right(Updated(id, oid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }

@@ -61,7 +61,7 @@ const createState = (oppijaOid) => {
   const editingP = locationP.skipErrors().filter(loc => loc.path.startsWith('/koski/oppija/')).map(loc => !!loc.params.edit).skipDuplicates()
 
   cancelChangesBus.onValue(() => navigateWithQueryParams({edit: false}))
-  editBus.onValue((opiskeluoikeusId) => navigateWithQueryParams({edit: opiskeluoikeusId}))
+  editBus.onValue((opiskeluoikeusOid) => navigateWithQueryParams({edit: opiskeluoikeusOid}))
 
   const queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
 
@@ -97,13 +97,13 @@ const createState = (oppijaOid) => {
         let batchEndE = shouldThrottle(firstBatch) ? Bacon.later(delays().stringInput).merge(saveChangesBus).take(1) : Bacon.once()
         return batchEndE.flatMap(() => {
           let opiskeluoikeusPath = getPathFromChange(firstBatch[0]).slice(0, 6).join('.')
-          let opiskeluoikeusId = modelData(oppijaBeforeChange, opiskeluoikeusPath).id
+          let opiskeluoikeusOid = modelData(oppijaBeforeChange, opiskeluoikeusPath).oid
 
           let batch = changeBuffer
           changeBuffer = null
           //console.log('Apply', batch.length, 'changes:', batch)
           let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
-          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusId})
+          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusOid: opiskeluoikeusOid})
         })
       })
     }
@@ -111,9 +111,10 @@ const createState = (oppijaOid) => {
 
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
     var oppijaData = modelData(oppijaBeforeSave)
-    let opiskeluoikeusId = oppijaBeforeSave.opiskeluoikeusId
+    let opiskeluoikeusOid = oppijaBeforeSave.opiskeluoikeusOid
     let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
-    let opiskeluoikeus = opiskeluoikeudet.find(x => x.id == opiskeluoikeusId)
+    let opiskeluoikeus = opiskeluoikeudet.find(x => x.oid == opiskeluoikeusOid)
+    console.log(opiskeluoikeus)
 
     let oppijaUpdate = {
       henkilö: {oid: oppijaOid},

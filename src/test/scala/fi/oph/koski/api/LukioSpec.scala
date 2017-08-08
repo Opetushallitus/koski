@@ -168,6 +168,6 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
 
   def opintosuoritusote(henkilö: TäydellisetHenkilötiedot): String = {
     resetFixtures
-    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, getOpiskeluoikeus(henkilö.oid, "lukiokoulutus").id.get)
+    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, getOpiskeluoikeus(henkilö.oid, "lukiokoulutus").oid.get)
   }
 }

@@ -135,18 +135,18 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
       }
 
-      "Päivitettäessä opiskeluoikeus käyttäen sen id:tä" - {
-        "Id ok" in {
+      "Päivitettäessä opiskeluoikeus käyttäen sen oid:ia" - {
+        "Oid ok" in {
           val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
           putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus))) {
             verifyResponseStatus(200)
           }
         }
 
-        "Tuntematon id" in {
+        "Tuntematon oid" in {
           val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
-          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), oid = None, versionumero = None)))) {
-            verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 0 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withOidAndVersion(oid = Some("1.2.246.562.15.15285175178"), versionumero = None)))) {
+            verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 1.2.246.562.15.15285175178 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }
       }

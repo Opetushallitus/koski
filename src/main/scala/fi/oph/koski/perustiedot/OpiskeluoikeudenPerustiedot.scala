@@ -11,12 +11,12 @@ import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.{JArray, JValue}
 
-trait WithId {
-  def id: Int
+trait Oidillinen {
+  def oid: String
 }
 
 case class OpiskeluoikeudenPerustiedot(
-  id: Int,
+  oid: String,
   henkilö: NimitiedotJaOid,
   oppilaitos: Oppilaitos,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
@@ -30,10 +30,10 @@ case class OpiskeluoikeudenPerustiedot(
   tilat: Option[List[OpiskeluoikeusJaksonPerustiedot]], // Optionality can be removed after re-indexing
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
-) extends WithId
+) extends Oidillinen
 
 case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
-case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
+case class Henkilötiedot(oid: String, henkilö: NimitiedotJaOid) extends Oidillinen
 
 case class OpiskeluoikeusJaksonPerustiedot(
   alku: LocalDate,
@@ -45,14 +45,14 @@ object OpiskeluoikeudenPerustiedot {
   import PerustiedotSearchIndex._
 
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(row.id, row.data, row.luokka, henkilöRow.toHenkilötiedot)
+    makePerustiedot(row.oid, row.data, row.luokka, henkilöRow.toHenkilötiedot)
   }
 
-  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(id, Json.toJValue(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
+  def makePerustiedot(oid: String, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
+    makePerustiedot(oid, Json.toJValue(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
   }
 
-  def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
+  def makePerustiedot(oid: String, data: JValue, luokka: Option[String], henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
     val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
       .map { suoritus =>
         SuorituksenPerustiedot(
@@ -66,7 +66,7 @@ object OpiskeluoikeudenPerustiedot {
       }
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
-      id,
+      oid,
       toNimitiedotJaOid(henkilö),
       (data \ "oppilaitos").extract[Oppilaitos],
       (data \ "sisältyyOpiskeluoikeuteen").extract[Option[SisältäväOpiskeluoikeus]],

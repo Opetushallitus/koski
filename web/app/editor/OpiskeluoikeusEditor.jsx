@@ -160,7 +160,7 @@ const SuoritusTabs = ({ model, suoritukset }) => {
 )}
 
 SuoritusTabs.urlForTab = (model, i) => currentLocation().addQueryParams({[SuoritusTabs.suoritusQueryParam(model.context)]: i}).toString()
-SuoritusTabs.suoritusQueryParam = context => (modelData(context.opiskeluoikeus, 'id') || context.opiskeluoikeusIndex) + '.suoritus'
+SuoritusTabs.suoritusQueryParam = context => (modelData(context.opiskeluoikeus, 'oid') || context.opiskeluoikeusIndex) + '.suoritus'
 SuoritusTabs.suoritusIndex = (model, suoritukset) => {
   let paramName = SuoritusTabs.suoritusQueryParam(model.context)
   let selectedTabName = currentLocation().params[paramName]
@@ -180,7 +180,7 @@ class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
     let oppijaOid = opiskeluoikeus.context.oppijaOid
     var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
     if (opiskeluoikeusTyyppi === 'lukiokoulutus' || opiskeluoikeusTyyppi === 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')
+      let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'oid')
       return <a className="opintosuoritusote" href={href}><Text name="näytä opintosuoritusote"/></a>
     } else if (opiskeluoikeusTyyppi === 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(opiskeluoikeus, 'oppilaitos').oid

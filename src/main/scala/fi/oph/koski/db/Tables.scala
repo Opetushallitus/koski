@@ -7,7 +7,6 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
-import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 import org.json4s._
 
 object Tables {
@@ -30,10 +29,10 @@ object Tables {
   object OpiskeluoikeusTable {
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schema).copy(validate = false)
 
-    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: Opiskeluoikeus) = {
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(
         0,
-        opiskeluoikeusOid,
+        opiskeluoikeus.oid.get,
         oppijaOid,
         opiskeluoikeus.getOppilaitos.oid,
         opiskeluoikeus.koulutustoimija.map(_.oid),
@@ -43,14 +42,14 @@ object Tables {
         Json.toJValue(opiskeluoikeus),
         opiskeluoikeus.luokka)
     }
-    def readData(data: JValue, id: Int, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
+    def readData(data: JValue, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       SchemaValidatingExtractor.extract[Opiskeluoikeus](data) match {
-        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), oid = Some(oid), versionumero = Some(versionumero))
+        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withOidAndVersion(oid = Some(oid), versionumero = Some(versionumero))
         case Left(errors) => throw new RuntimeException("Deserialization errors: " + errors)
       }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, oid = None, versionumero = None))
+      val data = Json.toJValue(opiskeluoikeus.withOidAndVersion(oid = opiskeluoikeus.oid, versionumero = None))
       (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
     }
   }
@@ -168,7 +167,7 @@ case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitos
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
       import fi.oph.koski.db.Tables.OpiskeluoikeusTable
-      OpiskeluoikeusTable.readData(data, id, oid, versionumero)
+      OpiskeluoikeusTable.readData(data, oid, versionumero)
     } catch {
       case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
     }

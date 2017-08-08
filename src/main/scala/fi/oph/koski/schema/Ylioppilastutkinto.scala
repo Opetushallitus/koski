@@ -15,7 +15,6 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def arvioituPäättymispäivä = None
   override def alkamispäivä = None
   override def päättymispäivä = None
-  override def id = None
   override def oid = None
   override def versionumero = None
   override def lisätiedot = None

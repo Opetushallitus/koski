@@ -24,19 +24,19 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
     "Kun sisältävä opiskeluoikeus löytyy Koskesta" - {
       lazy val sisältyvä = createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja)
       "Lisäys onnistuu" in {
-        sisältyvä.id.isDefined should equal(true)
+        sisältyvä.oid.isDefined should equal(true)
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla on katseluoikeudet sisältyvään opiskeluoikeuteen" in {
-        val ids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.stadinAmmattiopistoTallentaja).flatMap(_.id)
-        ids should contain(fixture.original.id.get)
-        ids should contain(sisältyvä.id.get)
+        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.stadinAmmattiopistoTallentaja).flatMap(_.oid)
+        oids should contain(fixture.original.oid.get)
+        oids should contain(sisältyvä.oid.get)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatiolla ei ole oikeuksia sisältävään opiskeluoikeuteen" in {
-        val ids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.omniaKatselija).flatMap(_.id)
-        ids should contain(sisältyvä.id.get)
-        ids should not contain(fixture.original.id)
+        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.omniaKatselija).flatMap(_.oid)
+        oids should contain(sisältyvä.oid.get)
+        oids should not contain(fixture.original.oid)
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla ei ole kirjoitusoikeuksia sisältyvään opiskeluoikeuteen" in {
@@ -49,13 +49,13 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       }
 
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(fixture.original.id.get)
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyvä.id.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.stadinAmmattiopistoTallentaja).map(_.oid) should contain(fixture.original.oid.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.stadinAmmattiopistoTallentaja).map(_.oid) should contain(sisältyvä.oid.get)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatio ei löydä sisältävää opiskeluoikeutta hakutoiminnolla" in {
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id) should equal(Nil)
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.omniaKatselija).map(_.id) should contain(sisältyvä.id.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.oid) should equal(Nil)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.omniaKatselija).map(_.oid) should contain(sisältyvä.oid.get)
       }
     }
 

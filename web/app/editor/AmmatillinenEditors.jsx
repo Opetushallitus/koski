@@ -100,7 +100,7 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
         }}/>
     )
   }
-  return <span><span className="id"><Editor model={model} path="id"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
+  return <span><span className="id"><Editor model={model} path="oid"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
 }
 
 export const editorMapping = {

@@ -9,12 +9,12 @@ export class TogglableEditor extends React.Component {
   render() {
     let { model, renderChild } = this.props
     let context = model.context
-    let opiskeluoikeusId = modelData(model.context.opiskeluoikeus, 'id')
-    let edit = opiskeluoikeusId && currentLocation().params.edit == opiskeluoikeusId
+    let opiskeluoikeusOid = modelData(model.context.opiskeluoikeus, 'oid')
+    let edit = opiskeluoikeusOid && currentLocation().params.edit == opiskeluoikeusOid
     let editingAny = !!currentLocation().params.edit
     let modifiedContext = R.merge(context, { edit })
     let editLink = model.editable && !editingAny
-      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusId)}><Text name="muokkaa"/></button>
+      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
       : null
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))

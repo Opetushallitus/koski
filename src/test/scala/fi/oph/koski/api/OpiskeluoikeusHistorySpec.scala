@@ -68,7 +68,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
       "Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia" - {
         "Palautetaan 404" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
-          authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get, MockUsers.omniaPalvelukäyttäjä) {
+          authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, MockUsers.omniaPalvelukäyttäjä) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
           }
         }
@@ -86,7 +86,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     "Versiohistorian hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
-        authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.id.get) {
+        authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
           getHistory(opiskeluoikeus.oid.get)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }

@@ -160,9 +160,9 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
           }
         }
       }
-      "opiskeluoikeus-id:tä käytettäessä muutos estetään" in {
-        val id = haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).id.get
-        putOpiskeluoikeus(opiskeluoikeusOmnia.copy(id = Some(id)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
+      "opiskeluoikeus-oid:ia käytettäessä muutos estetään" in {
+        val oid = haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).oid.get
+        putOpiskeluoikeus(opiskeluoikeusOmnia.copy(oid = Some(oid)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi muuttaa."))
         }
       }

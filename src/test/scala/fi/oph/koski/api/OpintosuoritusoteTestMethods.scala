@@ -12,7 +12,7 @@ trait OpintosuoritusoteTestMethods extends SearchTestMethods {
     }.headOption.getOrElse("")
   }
 
-  def opintosuoritusoteOpiskeluoikeudelle(oppijaOid: String, opiskeluoikeus: Int) = {
+  def opintosuoritusoteOpiskeluoikeudelle(oppijaOid: String, opiskeluoikeus: String) = {
     opintosuoritusote(s"opintosuoritusote/${oppijaOid}?opiskeluoikeus=${opiskeluoikeus}")
   }
 

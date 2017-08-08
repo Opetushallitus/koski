@@ -207,7 +207,7 @@ object ExamplesLukio {
 
   val aineopiskelija =
     LukionOpiskeluoikeus(
-      id = None,
+      oid = None,
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2015, 9, 1)),
@@ -239,7 +239,7 @@ object ExamplesLukio {
 
   val lukioKesken =
     LukionOpiskeluoikeus(
-      id = None,
+      oid = None,
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2012, 9, 1)),
@@ -350,7 +350,7 @@ object LukioExampleData {
 
 
   def lukionOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
-    id = None,
+    oid = None,
     versionumero = None,
     lähdejärjestelmänId = None,
     alkamispäivä = Some(date(2012, 9, 1)),

@@ -172,6 +172,6 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
   }
 
   def ibOpiskeluoikeus = {
-    getOpiskeluoikeus(MockOppijat.ibPredicted.oid, "ibtutkinto").id.get
+    getOpiskeluoikeus(MockOppijat.ibPredicted.oid, "ibtutkinto").oid.get
   }
 }

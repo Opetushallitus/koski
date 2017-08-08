@@ -11,6 +11,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedot, OpiskeluoikeusJaksonPerustiedot}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
+import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification {
@@ -52,8 +53,8 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
 
   private def generatePerustiedotIntoElastic(count: Int, name: String, oppilaitos: Oppilaitos): List[Oid] = {
     val tyyppi = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
-    val tiedot = 0 to count map { i =>
-      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(s"1.2.246.562.24.000000000000$i", name, name, name), stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, tilaKesken))), None)
+    val tiedot = 0 to count map { _ =>
+      OpiskeluoikeudenPerustiedot(generateOID(15), NimitiedotJaOid(generateOID(15), name, name, name), stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, tilaKesken))), None)
     }
     KoskiApplicationForTests.perustiedotIndexer.updateBulk(tiedot, replaceDocument = true)
     KoskiApplicationForTests.elasticSearch.refreshIndex

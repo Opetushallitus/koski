@@ -47,7 +47,7 @@ class ValidointiTaulukko extends React.Component {
                   ? <div>
                     <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}><Text name="Yhteensä"/>{' ' + oids.length}</a>
                     <ul className="oids">
-                    { oids.map((oid, i) => <li key={i}><Link href={ '/koski/oppija/' + oid.henkilöOid }>{oid.opiskeluoikeusId}</Link></li>)}
+                    { oids.map((oid, i) => <li key={i}><Link href={ '/koski/oppija/' + oid.henkilöOid }>{oid.opiskeluoikeusOid}</Link></li>)}
                     </ul></div>
                   : <a onClick={() => this.setState({ expandedIdsKeys: expandedIdsKeys.concat(key)})}>{oids.length}</a>
               }
@@ -100,13 +100,13 @@ export const validointiContentP = (query) => {
   let oboeBus = Bacon.Bus()
   startedAtom.changes().filter(R.identity).onValue(() =>
     Oboe('/koski/api/opiskeluoikeus/validate' + query)
-      .node('{errors opiskeluoikeusId}', (x) => oboeBus.push(x))
+      .node('{errors opiskeluoikeusOid}', (x) => oboeBus.push(x))
       .done(() => oboeBus.end())
       .fail((e) => oboeBus.error(e))
   )
 
   var keyCounter = 0
-  let oidsOf = ({ henkilöOid, opiskeluoikeusId }) => ({henkilöOid, opiskeluoikeusId})
+  let oidsOf = ({ henkilöOid, opiskeluoikeusOid }) => ({henkilöOid, opiskeluoikeusOid})
   let validationStatusP = oboeBus.scan([], (grouped, validationResult) => {
     for (var i in grouped) {
       if (R.equals(grouped[i].errors, validationResult.errors)) {
