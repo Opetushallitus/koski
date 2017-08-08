@@ -8,7 +8,9 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {modelData, modelLookup, resetOptionalModel, accumulateModelStateAndValidity, pushModel} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 
-const UusiNäyttöPopup = ({model, doneCallback}) => {
+const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
+  console.log(hasOldData)
+
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
   const validP = errorP.not()
   const submitB = Bacon.Bus()
@@ -19,7 +21,7 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
   })
 
   return (
-    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()} okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()} okTextKey={hasOldData ? 'Päivitä' : 'Lisää'} validP={validP}>
       <h2><Text name="Ammattiosaamisen näyttö"/></h2>
 
       <PropertiesEditor
@@ -77,12 +79,12 @@ export class AmmatillinenNäyttöEditor extends React.Component {
     const edit = model.context.edit
 
     const wrappedModel = wrapOptional({model})
-    const hasData = !!modelData(wrappedModel, 'kuvaus')
+    const hasData = model.modelId !== 0
 
     return (
       <div>
         {popupVisibleA.map(visible => visible
-          ? <UusiNäyttöPopup edit={edit} model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/>
+          ? <NäyttöPopup edit={edit} hasOldData={hasData} model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/>
           : null)
         }
         {hasData &&
