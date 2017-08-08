@@ -9,8 +9,6 @@ import {modelData, modelLookup, resetOptionalModel, accumulateModelStateAndValid
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 
 const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
-  console.log(hasOldData)
-
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
   const validP = errorP.not()
   const submitB = Bacon.Bus()
