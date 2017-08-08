@@ -21,7 +21,7 @@ export const JääLuokalleTaiSiirretäänEditor = ({model}) => {
       let invert = L.iso(invertModelValue, invertModelValue)
       return <label className="jaa-tai-siirretaan"><Editor model={lensedModel(jääLuokalleModel, invert)} /> <Text name="Siirretään seuraavalle luokalle"/></label>
     } else {
-      if (jääLuokalle === true) {
+      if (jääLuokalle === true) {
         return <div className="jaa-tai-siirretaan"><Text name="Ei siirretä seuraavalle luokalle"/></div>
       } else if (jääLuokalle === false) {
         return <div className="jaa-tai-siirretaan"><Text name="Siirretään seuraavalle luokalle"/></div>

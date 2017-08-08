@@ -181,9 +181,7 @@ let getUsedModelForOptionalModel = (m, {model} = {}) => {
   }
   let createEmpty = (editor && editor.createEmpty) || R.identity
   let emptyModel = createEmpty(prototypeModel || model)
-  if (emptyModel == undefined) {
-    debugger
-  }
+
   return emptyModel
 }
 

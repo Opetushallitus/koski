@@ -87,7 +87,7 @@ const createState = (oppijaOid) => {
   }
 
   const localModificationE = changeBus.flatMap(firstBatch => {
-    if (changeBuffer) {
+    if (changeBuffer) {
       changeBuffer = changeBuffer.concat(firstBatch)
       return Bacon.never()
     } else {

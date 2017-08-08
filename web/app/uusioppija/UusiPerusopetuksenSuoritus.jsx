@@ -31,7 +31,7 @@ export default ({suoritusAtom, oppilaitosAtom}) => {
     }
   }).toProperty()
 
-  const oppiaineetP = Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101`).map(modelData)
+  const oppiaineetP = Http.cachedGet('/koski/api/editor/suoritukset/prefill/koulutus/201101').map(modelData)
 
   const makeSuoritus = (oppilaitos, oppimäärä, opetussuunnitelma, peruste, oppiaineenSuoritus, oppiaineet) => {
     if (oppilaitos && opetussuunnitelma && peruste && koodiarvoMatch('perusopetuksenoppimaara')(oppimäärä)) {

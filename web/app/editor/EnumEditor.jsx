@@ -37,12 +37,12 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
             {
               alternativesP.map(alternatives =>
                 alternatives.map(alternative =>
-                  <li key={ alternative.value }>
+                  (<li key={ alternative.value }>
                     <label className={labelClass(alternative)}>
                       <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
                       {alternative.title}
                     </label>
-                  </li>
+                  </li>)
                 )
               )
             }
@@ -75,7 +75,7 @@ EnumEditor.fetchAlternatives = (model) => {
   }
 }
 
-EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
+EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
 
 EnumEditor.canShowInline = () => true
 EnumEditor.handlesOptional = () => true

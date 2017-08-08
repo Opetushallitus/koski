@@ -118,7 +118,7 @@ class LukionKurssiEditor extends React.Component {
   removeListeners() {
     document.removeEventListener('click', this.handleClickOutside, false)
     document.removeEventListener('keyup', this.handleEsc)
-  };
+  }
 
   handleClickOutside(e) {
     if (!this.kurssiElement.querySelector('.details').contains(e.target)) {

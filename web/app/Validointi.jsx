@@ -86,7 +86,7 @@ class ValidointiTaulukko extends React.Component {
       messageElem.textContent='(' + selectedIds.map((id) => '\'' + id + '\'').join(', ') + ')'
       window.getSelection().selectAllChildren(messageElem)
     }
-  };
+  }
 }
 
 export const validointiContentP = (query) => {

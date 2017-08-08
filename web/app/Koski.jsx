@@ -19,7 +19,7 @@ const allErrorsP = errorP(contentP)
 
 // Renderered Virtual DOM
 const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, (topBar, user, content, error, location) =>
-    <div>
+    (<div>
       <Error error={error}/>
       {topBar}
       {
@@ -31,7 +31,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, 
           )
       }
       { user && <LocalizationEditBar user={user}/> }
-    </div>
+    </div>)
 )
 
 // Render to DOM

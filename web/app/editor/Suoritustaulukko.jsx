@@ -73,10 +73,10 @@ export class Suoritustaulukko extends React.Component {
               {suoritukset[0] && modelProperty(suoritukset[0], 'koulutusmoduuli').title}
               {showExpandAll &&
               <div>
-                {allExpandedP.map(allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
+                {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
                                                     onClick={toggleExpandAll}>
                     <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
-                  </a>
+                  </a>)
                 )}
               </div>
               }

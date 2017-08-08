@@ -10,7 +10,7 @@ import PropTypes from 'prop-types'
  */
 export class Editor extends React.Component {
   render() {
-    let { model, ...rest } = this.props
+    let { model, ...rest } = this.props
     if (!model) {
       throw new Error('model missing')
     }

@@ -72,7 +72,7 @@ const ValueSelect = ({ existing, atom, items, manuallySetAtom}) => existing
 
 const splitName = (name) => {
   let n = name.trim().split().join('')
-  return R.filter(R.identity, R.uniq(n.split(/\s/g).concat(n.split(/[\s\-]/g))))
+  return R.filter(R.identity, R.uniq(n.split(/\s/g).concat(n.split(/[\s-]/g))))
 }
 
 const sanitizeFirstnames = (name) => {

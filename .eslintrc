@@ -8,20 +8,6 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "forOf": true,
-    "generators": true,
-    "modules": true,
-    "spread": true,
-    "superInFunctions": true,
-    "templateStrings": true,
-    "jsx": true
-  },
   "env": {
     "browser": true,
     "node": true,
@@ -33,12 +19,17 @@
     "curly": [2, "multi-line"],
     "quotes": [1, "single", "avoid-escape"],
     "semi": [1, "never"],
+    "no-extra-semi": 1,
     "no-undef": 2,
     "no-unreachable": 2,
     "no-unused-vars": 1,
     "no-trailing-spaces": 1,
     "no-multiple-empty-lines": 1,
     "no-constant-condition": 1,
+    "no-irregular-whitespace": 1,
+    "no-useless-escape": 1,
+    "no-dupe-keys": 1,
+    "no-debugger": 1,
     "react/jsx-no-undef": 1,
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
@@ -48,8 +39,11 @@
     "no-shadow": 2,
     "react/no-unknown-property": 1,
     "react/react-in-jsx-scope": 1,
-    "react/self-closing-comp": 1,
-    "react/wrap-multilines": 1
+    "react/self-closing-comp": [1, {
+      "component": true,
+      "html": false
+    }],
+    "react/jsx-wrap-multilines": 1
   },
   "plugins": [
     "react"

@@ -63,9 +63,9 @@ class Pulssi extends React.Component {
                   <ul className="metric-details">
                     {
                       opiskeluoikeudet.koulutusmuotoTilastot && opiskeluoikeudet.koulutusmuotoTilastot.map((stat, i) =>
-                          <li key={i}>
+                          (<li key={i}>
                             <span>{stat.koulutusmuoto}</span><span className="metric-value">{stat.opiskeluoikeuksienMäärä}</span>
-                          </li>
+                          </li>)
                       )
                     }
                   </ul>
