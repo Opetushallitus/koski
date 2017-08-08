@@ -24,7 +24,6 @@ const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
       <h2><Text name="Ammattiosaamisen tunnustaminen"/></h2>
       <td>
         <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
-
       </td>
     </ModalDialog>
   )

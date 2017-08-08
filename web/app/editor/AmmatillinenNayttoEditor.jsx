@@ -5,9 +5,8 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelData, modelTitle, modelLookup, resetOptionalModel, accumulateModelStateAndValidity, pushModel} from './EditorModel.js'
+import {modelData, modelLookup, resetOptionalModel, accumulateModelStateAndValidity, pushModel} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {ISO2FinnishDate} from '../date'
 
 const UusiNäyttöPopup = ({model, doneCallback}) => {
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
@@ -26,12 +25,16 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
       <PropertiesEditor
         baret-lift
         model={modelP}
-        propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'arvioitsijat', 'arvioinnistaPäättäneet', 'arviointikeskusteluunOsallistuneet', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
+        propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'arvioitsijat', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
         getValueEditor={(p, getDefault) => {
           if (p.key === 'suorituspaikka') {return (
             <table><tbody><tr>
-              <td><Editor model={modelLookup(model, 'suorituspaikka.tunniste')}/></td>
-              <td><Editor model={modelLookup(model, 'suorituspaikka.kuvaus')}/></td>
+              {
+                modelP.map(m => [
+                  <td><Editor model={modelLookup(m, 'suorituspaikka.tunniste')}/></td>,
+                  <td><Editor model={modelLookup(m, 'suorituspaikka.kuvaus')}/></td>
+                ])
+              }
             </tr></tbody></table>
           )}
           return getDefault()
@@ -42,22 +45,20 @@ const UusiNäyttöPopup = ({model, doneCallback}) => {
 }
 
 const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
-  let alku  = ISO2FinnishDate(modelTitle(model, 'suoritusaika.alku'))
-  let loppu = ISO2FinnishDate(modelTitle(model, 'suoritusaika.loppu'))
+  const hasSuoritusaika = !!modelData(model, 'suoritusaika')
+  const hasTyöpaikka = !!modelData(model, 'suorituspaikka.kuvaus')
+  const hasArvosana = !!modelData(model, 'arviointi.arvosana')
 
   return (<div>
     <div>
       {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(model)}></a>}
-      {edit && <a className="fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
-      {alku === loppu
-        ? <span className="pvm">{alku}</span>
-        : <span><span className="alku pvm">{alku}</span>{' - '}<span className="loppu pvm">{loppu}</span></span>
-      }
-      <span>{'Työpaikka: '}{modelTitle(model, 'suorituspaikka.kuvaus')}</span>
-      <span>{modelTitle(model, 'arviointi.arvosana')}</span>
+      {edit && <a className="edit-value fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
+      {hasSuoritusaika && <span className="suoritusaika"><Editor model={modelLookup(model, 'suoritusaika')} edit={false}/></span>}
+      {hasTyöpaikka && <span>{'Työpaikka: '}<Editor className="työpaikka" model={modelLookup(model, 'suorituspaikka.kuvaus')} edit={false}/></span>}
+      {hasArvosana && <span className="arvosana"><Editor className="arvosana" model={modelLookup(model, 'arviointi.arvosana')} edit={false}/></span>}
     </div>
     <div>
-      <p className="kuvaus">{modelTitle(model, 'kuvaus')}</p>
+      <p className="kuvaus"><Editor className="kuvaus" model={modelLookup(model, 'kuvaus')} edit={false}/></p>
     </div>
   </div>)
 }
@@ -83,10 +84,10 @@ export const AmmatillinenNäyttöEditor = React.createClass({
           : null)
         }
         {hasData &&
-          <YksittäinenNäyttöEditor edit={edit} model={wrappedModel} popupVisibleA={popupVisibleA}/>
+          <YksittäinenNäyttöEditor edit={edit} model={model} popupVisibleA={popupVisibleA}/>
         }
         {edit && !hasData &&
-          <a onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
+          <a className="add-value" onClick={() => popupVisibleA.set(true)}><Text name="Lisää ammattiosaamisen näyttö"/></a>
         }
       </div>
     )
