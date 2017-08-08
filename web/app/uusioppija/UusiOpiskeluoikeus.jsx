@@ -71,12 +71,12 @@ const Oppilaitos = ({oppilaitosAtom}) => {
   </label>)
 }
 
-const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown
+const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => (<KoodistoDropdown
   className="opiskeluoikeudentyyppi"
   title="Opiskeluoikeus"
   options={opiskeluoikeustyypitP}
   selected={opiskeluoikeudenTyyppiAtom}
-/>
+/>)
 
 const Aloituspäivä = ({dateAtom}) => {
   return (<label className='aloituspaiva'><Text name="Aloituspäivä"/>
