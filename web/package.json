@@ -26,7 +26,7 @@
     "react-dom": "^15.6.1",
     "react-highlight": "^0.10.0",
     "react-highlighter": "github:Dentosal/react-highlighter",
-    "whatwg-fetch": "^0.9"
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1",
