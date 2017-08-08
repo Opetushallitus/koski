@@ -97,25 +97,7 @@ object AmmatillinenPerustutkintoExample {
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
     oppilaitos = Some(stadinAmmattiopisto),
-    suoritukset = List(AmmatillisenTutkinnonOsittainenSuoritus(
-      koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-        Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
-        Some("62/011/2014")
-      ),
-      tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
-      toinenTutkintonimike = true,
-      osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-      toinenOsaamisala = true,
-      järjestämismuoto = Some(järjestämismuotoOppilaitos),
-      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
-      tila = tilaValmis,
-      alkamispäivä = None,
-      toimipiste = stadinToimipiste,
-      osasuoritukset = Some(List(
-        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", None, k3, 35)
-      )),
-      todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
-    )),
+    suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),

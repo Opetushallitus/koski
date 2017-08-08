@@ -1,3 +1,7 @@
+## 8.8.2017
+
+- Lisätty puuttuvat rakennevalidoinnit (diaarinumero) ammatillisen tutkinnon osittaiselle suoritukselle
+
 ## 4.7.2017
 
 - Lisätty tutkintonimikkeet ja toinenTutkintonimike-flägi osittaisen ammatillisen tutkinnon suoritukseen
