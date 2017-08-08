@@ -1,12 +1,11 @@
 package fi.oph.koski.util
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.KoskiDatabaseConfig
-import fi.oph.koski.fixture.Fixtures
+import fi.oph.koski.henkilo.MockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 
 object OidGenerator {
-  def apply(config: Config): OidGenerator = if (Fixtures.shouldUseFixtures(config)) {
+  def apply(config: Config): OidGenerator = if (config.hasPath("mockoidgenerator") && config.getBoolean("mockoidgenerator")) {
     new MockOidGenerator
   } else {
     new OidGenerator
@@ -14,14 +13,17 @@ object OidGenerator {
 }
 
 class OidGenerator {
-  def generateOid: String = generateOID(15)
+  def generateOid(oppijaOid: String): String = generateOID(15)
 }
 
-// Gives twice the same oid
+// Gives twice the same oid for MockOppijat.opiskeluoikeudenOidKonflikti
 class MockOidGenerator extends OidGenerator {
   private var previousOid: String = ""
-  override def generateOid: String = this.synchronized {
-    if (previousOid.isEmpty) {
+
+  override def generateOid(oppijaOid: String): String = this.synchronized {
+    if (oppijaOid != MockOppijat.opiskeluoikeudenOidKonflikti.oid) {
+      super.generateOid("")
+    } else if (previousOid.isEmpty) {
       getAndStore
     } else {
       getAndEmpty
@@ -29,7 +31,7 @@ class MockOidGenerator extends OidGenerator {
   }
 
   private def getAndStore: String = {
-    previousOid = super.generateOid
+    previousOid = super.generateOid("")
     previousOid
   }
 

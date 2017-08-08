@@ -105,7 +105,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 }
 
 object TestConfig {
-  val overrides = Map("db.name" -> "koskitest", "fixtures.use" -> "true", "authenticationFailed.initialDelay" -> "1s", "authenticationFailed.resetAfter" -> "1s")
+  val overrides = Map("db.name" -> "koskitest", "fixtures.use" -> "true", "authenticationFailed.initialDelay" -> "1s", "authenticationFailed.resetAfter" -> "1s", "mockoidgenerator" -> "true")
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, TestConfig.overrides)

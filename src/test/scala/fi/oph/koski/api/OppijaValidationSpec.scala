@@ -6,6 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
@@ -21,6 +22,15 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
+          verifyResponseStatus(200)
+        }
+      }
+
+      "opiskeluoikeuden oid tunnisteen konflikti" in {
+        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = opiskeluoikeudenOidKonflikti) {
+          verifyResponseStatus(200)
+        }
+        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu))), henkilö = opiskeluoikeudenOidKonflikti) {
           verifyResponseStatus(200)
         }
       }
