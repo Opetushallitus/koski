@@ -430,11 +430,31 @@ describe('Ammatillinen koulutus', function() {
         describe('Lisääminen', function()  {
           before(
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääTunnustaminen('Tunnustamisen esimerkkiselite'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen esimerkkiselite'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
           )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+          })
+        })
+
+        describe('Muokkaus', function()  {
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen muokattu esimerkkiselite'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
+          )
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen muokattu esimerkkiselite')
+          })
+        })
+
+        describe('Poistaminen', function()  {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTunnustaminen())
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
           })
         })
         // TODO: uncomment this after client-side validation has been fixed

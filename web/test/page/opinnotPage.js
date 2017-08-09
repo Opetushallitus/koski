@@ -171,15 +171,26 @@ function TutkinnonOsat(groupId) {
         },
         avaaTunnustaminenModal: function() {
           return function() {
-            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
+            var valueExists = !!el().find('.tunnustettu .edit-value').length
+            triggerEvent(findSingle('.tunnustettu .'+(valueExists?'edit':'add')+'-value', el), 'click')
             return wait.untilVisible(S('.lisää-tunnustettu-modal', el))
           }
         },
-        lisääTunnustaminen: function(selite) {
+        asetaTunnustamisenSelite: function(selite) {
           return function() {
-            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
             Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+          }
+        },
+        painaOkTunnustaminenModal: function() {
+          return function() {
             triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+            return wait.forAjax
+          }
+        },
+        poistaTunnustaminen: function() {
+          return function() {
+            triggerEvent(findSingle('.tunnustettu .remove-value', el), 'click')
+            return wait.forAjax
           }
         },
         poistaTutkinnonOsa: function() {
