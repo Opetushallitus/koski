@@ -593,6 +593,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
             'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
             'Suoritusaika 1.2.2016 — 1.2.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -603,7 +604,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -617,6 +617,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
             'Suorituspaikka Sastamalan kunta\n' +
             'Suoritusaika 1.3.2016 — 1.3.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -627,7 +628,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -637,6 +637,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
             'Suorituspaikka Vesipojat Oy\n' +
             'Suoritusaika 1.4.2016 — 1.4.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -647,7 +648,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Kokonaisuus\n' +
             'Sulje kaikki Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
