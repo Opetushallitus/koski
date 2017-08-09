@@ -197,13 +197,17 @@ function TutkinnonOsat(groupId) {
         },
         avaaNäyttöModal: function() {
           return function() {
-            triggerEvent(findSingle('.näyttö .add-value', el), 'click')
+            var valueExists = !!el().find('.näyttö .edit-value').length
+            triggerEvent(findSingle('.näyttö .'+(valueExists?'edit':'add')+'-value', el), 'click')
             return wait.untilVisible(S('.lisää-näyttö-modal', el))
           }
         },
-        lisääNäyttö: function(tiedot) {
+        asetaNäytönTiedot: function(tiedot) {
           return function () {
-            triggerEvent(findSingle('.näyttö .modal-content .arviointi .add-value', el), 'click')
+            var addVButton = el().find('.näyttö .modal-content .arviointi .add-value')
+            if (addVButton.length) {
+              triggerEvent(addVButton, 'click')
+            }
             return wait.forAjax().then(function () {
               Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
               // Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
@@ -220,8 +224,13 @@ function TutkinnonOsat(groupId) {
               if (findSingle('.näyttö .modal-content button', el).prop('disabled')) {
                 throw new Error('Invalid model')
               }
-              triggerEvent(findSingle('.näyttö .modal-content button', el), 'click')
-            }).then(wait.forAjax)
+            })
+          }
+        },
+        painaOkNäyttöModal: function() {
+          return function() {
+            triggerEvent(findSingle('.näyttö .modal-content button', el), 'click')
+            return wait.forAjax
           }
         },
         poistaNäyttö: function() {

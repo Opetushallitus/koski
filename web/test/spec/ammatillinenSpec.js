@@ -464,7 +464,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Lisääminen', function()  {
         before(
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääNäyttö({
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
             kuvaus: 'Näytön esimerkkikuvaus',
             suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
             työssäoppimisenYhteydessä: true,
@@ -472,12 +472,34 @@ describe('Ammatillinen koulutus', function() {
             arvioinnistaPäättäneet: ['Opettaja'],
             arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
             arviointipäivä: '1.2.2017'
-          })
+          }),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
         )
         it('toimii', function() {
           expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
           expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('3')
           expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
+        })
+      })
+
+      describe('Muokkaus', function()  {
+        before(
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
+            kuvaus: 'Näytön muokattu esimerkkikuvaus',
+            suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+            työssäoppimisenYhteydessä: true,
+            arvosana: '2',
+            arvioinnistaPäättäneet: ['Opettaja'],
+            arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
+            arviointipäivä: '1.2.2017'
+          }),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+        )
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
         })
       })
 
