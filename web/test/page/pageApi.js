@@ -23,7 +23,7 @@ function Page(mainElement) {
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(function() {input.setValue(value, exact)})
+          .then(function() {return input.setValue(value, exact)})
           .then(wait.forAjax)
       }
     },
@@ -125,6 +125,13 @@ function Page(mainElement) {
               triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
             }
             break
+          case 'AUTOCOMPLETE': // Autocomplete.jsx
+            function selectedItem() { return findSingle('.results .selected', input) }
+
+            return Page(input).setInputValue('input', value)()
+              .then(wait.untilVisible(selectedItem))
+              .then(function() { triggerEvent(selectedItem, 'click')})
+
 				  default:
 						throw new Error('Unknown input type: ' + inputType(input))
         }
@@ -145,6 +152,8 @@ function Page(mainElement) {
         return el.prop('tagName')
       else if ($(el).hasClass('dropdown')) // Dropdown.jsx
         return 'DROPDOWN'
+      else if ($(el).hasClass('autocomplete')) // Autocomplete.jsx
+        return 'AUTOCOMPLETE'
       else
         return el.prop('type').toUpperCase()
     }
