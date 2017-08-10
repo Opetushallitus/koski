@@ -474,6 +474,7 @@ describe('Ammatillinen koulutus', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
           })
         })
+
         // TODO: uncomment this after client-side validation has been fixed
         // describe('Tallentamisen jälkeen', function() {
         //   before(editor.saveChanges, editor.edit)
@@ -546,9 +547,9 @@ describe('Ammatillinen koulutus', function() {
             var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
             expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
             expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+            expect(näyttö.arvosana).to.equal('2')
             expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
             expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
-            expect(näyttö.arvosana).to.equal('2')
             expect(näyttö.arviointipäivä).to.equal('1.2.2017')
           })
           after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
@@ -561,9 +562,10 @@ describe('Ammatillinen koulutus', function() {
           expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
         })
       })
+
       // TODO: uncomment this after client-side validation has been fixed
       // describe('Tallentamisen jälkeen', function() {
-      //   before(editor.saveChanges, editor.edit)
+      //   before(editor.saveChanges, editor.edit, opinnot.expandAll)
       //   it('näyttää edelleen oikeat tiedot', function() {
       //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
       //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
