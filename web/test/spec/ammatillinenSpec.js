@@ -356,21 +356,25 @@ describe('Ammatillinen koulutus', function() {
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Tutkinnon osan lisääminen', function() {
-        before(editor.edit)
+        before(
+          editor.edit,
+          suoritustapa.waitUntilLoaded,
+          suoritustapa.selectValue('Opetussuunnitelman mukainen')
+        )
         describe('Alussa', function () {
           it('tyhjä', function() {
             expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
           })
         })
-        describe('Lisääminen', function() {
+        describe('Pakollisen tutkinnon osan lisääminen', function() {
           before(
-            suoritustapa.waitUntilLoaded,
-            suoritustapa.selectValue('Opetussuunnitelman mukainen'),
-            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt'),
-            wait.forAjax
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
           )
-          it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+
+          describe('Lisäyksen jälkeen', function () {
+            it('lisätty osa näytetään', function() {
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+            })
           })
 
           describe('Arvosanan lisääminen', function() {
@@ -409,6 +413,19 @@ describe('Ammatillinen koulutus', function() {
                   expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
                 })
               })
+            })
+          })
+        })
+
+        describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            it('lisätty osa näytetään', function() {
+              expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
             })
           })
         })

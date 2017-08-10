@@ -255,12 +255,8 @@ function TutkinnonOsat(groupId) {
     lisääTutkinnonOsa: function(hakusana) {
       return function() {
         var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
-        var pageApi = Page(uusiTutkinnonOsaElement)
-        function selectedItem() { return findSingle('.results .selected, .options .selected', uusiTutkinnonOsaElement) }
-
-        return pageApi.setInputValue('.autocomplete input, .dropdown input', hakusana)()
-          .then(wait.untilVisible(selectedItem))
-          .then(function() { triggerEvent(selectedItem, 'click')})
+        return Page(uusiTutkinnonOsaElement).setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
       }
     }
   }
