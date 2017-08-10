@@ -13,7 +13,7 @@
     "baconjs": "^0.7.94",
     "baret": "^1.0.3",
     "codemirror": "^5.28.0",
-    "es6-promise": "^3",
+    "es6-promise": "^4.1.1",
     "fecha": "^2.3.1",
     "immutable": "^3.7.5",
     "js-cookie": "^2.1.4",

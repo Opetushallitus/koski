@@ -1,6 +1,6 @@
 import './polyfill-bind.js'
 import 'whatwg-fetch'
-import 'es6-promise'
+import 'es6-promise/auto'
 import './window-error-handler.js'
 import './polyfills/closest.js'
 if (!String.prototype.startsWith) {
