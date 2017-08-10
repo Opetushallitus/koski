@@ -33,7 +33,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
           case None =>
             renderStatus(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
           case Some(rakennemoduuli) =>
-            findTutkinnonOsat(rakennemoduuli).map(_.tunniste)
+            findTutkinnonOsat(rakennemoduuli).map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
         }
     }
   }
