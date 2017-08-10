@@ -18,9 +18,9 @@
     "immutable": "^3.7.5",
     "js-cookie": "^2.1.4",
     "oboe": "^2.1.3",
-    "partial.lenses": "^9.8",
+    "partial.lenses": "^11.17.0",
     "prop-types": "^15.5.10",
-    "ramda": "^0.22",
+    "ramda": "^0.24.1",
     "react": "^15.6.1",
     "react-day-picker": "^6",
     "react-dom": "^15.6.1",
@@ -50,7 +50,7 @@
     "phantomjs": "2.1.7",
     "reporter-file": "^1.0.0",
     "snyk": "^1.36.2",
-    "style-loader": "^0.12",
+    "style-loader": "^0.18",
     "webpack": "^1.15"
   },
   "scripts": {
