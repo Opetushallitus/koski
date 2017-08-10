@@ -505,7 +505,7 @@ describe('Ammatillinen koulutus', function() {
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
             kuvaus: 'Näytön esimerkkikuvaus',
             suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
-            työssäoppimisenYhteydessä: true,
+            työssäoppimisenYhteydessä: false,
             arvosana: '3',
             arvioinnistaPäättäneet: ['Opettaja'],
             arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
@@ -526,7 +526,7 @@ describe('Ammatillinen koulutus', function() {
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
             kuvaus: 'Näytön muokattu esimerkkikuvaus',
             suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
-            työssäoppimisenYhteydessä: false,
+            työssäoppimisenYhteydessä: true,
             arvosana: '2',
             arvioinnistaPäättäneet: ['Opettaja'],
             arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
@@ -547,6 +547,7 @@ describe('Ammatillinen koulutus', function() {
             var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
             expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
             expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+            expect(näyttö.työssäoppimisenYhteydessä).to.equal(true)
             expect(näyttö.arvosana).to.equal('2')
             expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
             expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
