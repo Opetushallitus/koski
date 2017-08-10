@@ -60,6 +60,11 @@ function Page(mainElement) {
         return el()
       },
       value: function() {
+        var e = el()
+        var ic = e.find('.input-container input')
+        if (ic.length !== 0) {
+          return ic.val()
+        }
         return el().val()
       },
       attr: function(name) {

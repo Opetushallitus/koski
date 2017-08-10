@@ -525,7 +525,7 @@ describe('Ammatillinen koulutus', function() {
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
             kuvaus: 'Näytön muokattu esimerkkikuvaus',
             suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
-            työssäoppimisenYhteydessä: true,
+            työssäoppimisenYhteydessä: false,
             arvosana: '2',
             arvioinnistaPäättäneet: ['Opettaja'],
             arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
@@ -533,10 +533,25 @@ describe('Ammatillinen koulutus', function() {
           }),
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
         )
-        it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+        describe('Näyttää oikeat tiedot', function() {
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+          })
+        })
+        describe('Oikeat tiedot säilyvät modalissa', function() {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal())
+          it('toimii', function() {
+            var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
+            expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+            expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+            expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
+            expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
+            expect(näyttö.arvosana).to.equal('2')
+            expect(näyttö.arviointipäivä).to.equal('1.2.2017')
+          })
+          after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
         })
       })
 
