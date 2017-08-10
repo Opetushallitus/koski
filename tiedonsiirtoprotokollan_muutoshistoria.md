@@ -1,3 +1,7 @@
+## 10.8.2017
+
+- Opiskeluoikeuden kenttä "id" (kokonaisluku) muutettu merkkijonotyyppiseksi kentäksi "oid"
+
 ## 7.8.2017
 
 - Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa saa olla erillistä tutkintotietoa
