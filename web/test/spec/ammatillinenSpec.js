@@ -435,7 +435,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           editor.cancelChanges,
           editor.edit,
-          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
 
         describe('Alussa', function() {
@@ -489,7 +489,7 @@ describe('Ammatillinen koulutus', function() {
       before(
         editor.cancelChanges,
         editor.edit,
-        opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+        opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
       )
 
       describe('Alussa', function() {
