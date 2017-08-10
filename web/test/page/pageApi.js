@@ -63,9 +63,12 @@ function Page(mainElement) {
         var e = el()
         var ic = e.find('.input-container input')
         if (ic.length !== 0) {
-          return ic.val()
+          e = ic
         }
-        return el().val()
+        if (inputType(e) === 'CHECKBOX') {
+          return e.is(':checked')
+        }
+        return e.val()
       },
       attr: function(name) {
         return el().attr(name)
