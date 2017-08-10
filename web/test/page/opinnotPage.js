@@ -215,19 +215,29 @@ function TutkinnonOsat(groupId) {
         },
         asetaNäytönTiedot: function(tiedot) {
           return function () {
-            var addVButton = el().find('.näyttö .modal-content .arviointi .add-value')
-            if (addVButton.length) {
-              triggerEvent(addVButton, 'click')
-            }
-            return wait.forAjax().then(function () {
+            return wait.forAjax().then(function() {
+              // Normalize state
+              var addVButton = el().find('.näyttö .modal-content .arviointi .add-value')
+              if (addVButton.length) {
+                triggerEvent(addVButton, 'click')
+              }
+              else {
+                el().find('.näyttö .modal-content .arvioinnistaPäättäneet .value li .remove-item:visible').each(function(i, e) {
+                  triggerEvent(e, 'click')
+                })
+                el().find('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li .remove-item:visible').each(function(i, e) {
+                  triggerEvent(e, 'click')
+                })
+              }
+            }).then(wait.forAjax).then(function () {
               Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
               // Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
               Page(el).getInput('.näyttö .modal-content .kuvaus .value input').setValue(tiedot.kuvaus)
-              tiedot.arvioinnistaPäättäneet.map(function (v) {
-                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:last-child .dropdown').setValue(v, exact = true)
+              tiedot.arvioinnistaPäättäneet.map(function (v, i) {
+                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
               })
-              tiedot.arviointikeskusteluunOsallistuneet.map(function (v) {
-                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:last-child .dropdown').setValue(v, exact = true)
+              tiedot.arviointikeskusteluunOsallistuneet.map(function (v, i) {
+                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
               })
               // Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
               // Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
