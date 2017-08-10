@@ -1,6 +1,7 @@
 const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
   entry: {
@@ -12,33 +13,52 @@ module.exports = {
     path: __dirname + '/../target/webapp',
     filename: 'js/koski-[name].js'
   },
-  eslint: {
-    failOnWarning: !!process.env.failOnWarning,
-    failOnError: true
+  stats: {
+    minimal: true
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loader: 'babel',
-        include: [ __dirname + '/app' ],
-        query: {
-          cacheDirectory: true,
-          presets: ['es2015', 'react', 'stage-3']
+        include: [__dirname + '/app'],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            presets: ['es2015', 'react', 'stage-3']
+          }
         }
       },
       {
         test: /\.jsx?$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        options: {
+          failOnWarning: !!process.env.failOnWarning,
+          failOnError: true
+        }
       },
       {
         test: /\.less$/,
-        loader: 'style!css!autoprefixer-loader?browsers=last 2 version!less'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return [autoprefixer('last 2 versions')]
+              }
+            }
+          },
+          {
+            loader: "less-loader"
+          }
+        ]
       }
     ]
   },
@@ -50,12 +70,12 @@ module.exports = {
     }),
     new CopyWebpackPlugin(
       [
-        { from: 'static'},
-        { from: 'test', to: 'test'},
-        { from: 'WEB-INF', to: 'WEB-INF'},
-        { from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror' },
-        { from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror' },
-        { from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror' }
+        {from: 'static'},
+        {from: 'test', to: 'test'},
+        {from: 'WEB-INF', to: 'WEB-INF'},
+        {from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror'},
+        {from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror'},
+        {from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror'}
       ]
     )
   ]
