@@ -13,6 +13,7 @@ import {
   modelSet,
   modelSetTitle,
   modelSetValue,
+  modelSetValues,
   oneOfPrototypes,
   pushModel,
   pushRemoval
@@ -137,13 +138,13 @@ export class Suoritustaulukko extends React.Component {
 }
 
 const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
-  let displayValue = item => item.data.koodiarvo + ' ' + item.title
+  let displayValue = item => item.newItem ? 'Lisää uusi: ' + item.title : item.data.koodiarvo + ' ' + item.title
   let selectedAtom = Atom(undefined)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
-  // TODO: paikallisen tutkinnon osan lisäys
+  let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
 
-  let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
+  let [[paikallinenKoulutusmoduuli], [koulutusmoduuliProto]] = R.partition(isPaikallinen, koulutusModuuliprotos)
 
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
@@ -154,8 +155,10 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
   let osatP = Http
     .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(groupId)}`, map404ToEmpty)
 
-  selectedAtom.filter(R.identity).onValue(koodi => {
-    addTutkinnonOsa(modelSetValue(modelSetTitle(koulutusmoduuliProto, koodi.title), koodi, 'tunniste'), groupId)
+  selectedAtom.filter(R.identity).onValue(newItem => {
+    addTutkinnonOsa(modelSetTitle(newItem.newItem
+      ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
+      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId)
   })
 
   return (<span>
@@ -174,6 +177,7 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
           placeholder={t('Lisää tutkinnon osa')}
           displayValue={ displayValue }
           selected = { selectedAtom }
+          createNewItem = { query => paikallinenKoulutusmoduuli && query.length ? { newItem: true, title: query} : null }
         />
       )
     }
@@ -232,12 +236,12 @@ class SuoritusEditor extends React.Component {
 }
 
 const suoritusProperties = suoritus => {
-  let properties = suoritus.context.edit
-    ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
-    : modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
-      .concat(modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key))))
+  let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
+    suoritus.context.edit
+      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
+      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
-
+  )
   return properties.filter(shouldShowProperty(suoritus.context))
 }
 

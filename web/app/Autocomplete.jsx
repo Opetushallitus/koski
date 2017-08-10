@@ -12,6 +12,7 @@ import {toObservable} from './util'
     resultCallback, resultBus or resultAtom
     fetchItems: String -> Property [Item]
     displayValue: Item -> String (if missing, items are expected to have a "nimi" field that's a localized text)
+    createNewItem: query -> proto for new item
  */
 
 export default class Autocomplete extends BaconComponent {
@@ -40,17 +41,16 @@ export default class Autocomplete extends BaconComponent {
     this.state = {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
   }
   render() {
-    let {disabled, selected, placeholder, displayValue = (item => t(item.nimi))} = this.props
+    let {disabled, selected, placeholder, displayValue = (item => t(item.nimi)), createNewItem} = this.props
     let selectedP = toObservable(selected)
     let {items, query, selectionIndex} = this.state
-
-    let itemElems = items ? items.map((item, i) => {
-        return (
-          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{displayValue(item)}</li>
-        )}
-    ) : []
-
-    let results = items.length ? <ul className='results'>{itemElems}</ul> : null
+    let createItemElement = (item, i) => (<li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>
+      {i >= items.length && <span className="plus">{''}</span>}
+      {displayValue(item)}
+    </li>)
+    let newItem = createNewItem(query || '')
+    let itemElems = items.concat(newItem ? [newItem] : []).map(createItemElement)
+    let results = itemElems.length ? <ul className='results'>{itemElems}</ul> : null
 
     return (
       <div ref='autocomplete' className='autocomplete'>

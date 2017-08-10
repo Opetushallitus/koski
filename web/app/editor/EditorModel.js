@@ -151,6 +151,14 @@ export const modelSetValue = (model, value, path) => {
   return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
 }
 
+export const modelSetValues = (model, pathsAndValues) => {
+  return R.reduce(
+    (m, [path, value]) => modelSetValue(m, value, path),
+    model,
+    R.toPairs(pathsAndValues)
+  )
+}
+
 let modelValueLens = ({model} = {}) => L.lens(
   (m) => {
     if (!m) {

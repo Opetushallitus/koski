@@ -19,7 +19,11 @@ import {t} from './i18n'
   enableFilter: boolean
   selectionText: shown when no option is selected
  */
-export default ({ options, keyValue = o => o.key, displayValue = o => o.value, selected, onSelectionChanged, selectionText = t('Valitse...'), enableFilter = false, newItem, isRemovable = () => false, onRemoval, removeText}) => {
+export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
+                  selected, onSelectionChanged, selectionText = t('Valitse...'),
+                  enableFilter = false,
+                  newItem,
+                  isRemovable = () => false, onRemoval, removeText}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 
