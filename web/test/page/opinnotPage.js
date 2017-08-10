@@ -206,6 +206,23 @@ function TutkinnonOsat(groupId) {
             kuvaus: el().find('p').first().text()
           }
         },
+        lueNäyttöModal: function() {
+          function extractDropdownArray(elem) {
+            return elem.find('ul.array > li').map(function() {return Page(this).getInput('.dropdown').value()}).get().slice(0, -1)
+          }
+          return {
+            arvosana: Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').value(),
+            arviointipäivä: Page(el).getInput('.näyttö .modal-content .päivä .value input').value(),
+            kuvaus: Page(el).getInput('.näyttö .modal-content .kuvaus .value input').value(),
+            arvioinnistaPäättäneet: extractDropdownArray(S('.näyttö .modal-content .arvioinnistaPäättäneet .value', el)),
+            arviointikeskusteluunOsallistuneet: extractDropdownArray(S('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value', el)),
+            suorituspaikka: [
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').value(),
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').value()
+            ],
+            työssäoppimisenYhteydessä: Page(el).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').value()
+          }
+        },
         avaaNäyttöModal: function() {
           return function() {
             var valueExists = !!el().find('.näyttö .edit-value').length
