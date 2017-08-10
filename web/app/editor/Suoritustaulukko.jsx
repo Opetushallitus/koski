@@ -141,8 +141,6 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
   let selectedAtom = Atom(undefined)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
-  // TODO: rajaa ePerusteiden mukaisesti?
-
   // TODO: paikallisen tutkinnon osan lisäys
 
   let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
