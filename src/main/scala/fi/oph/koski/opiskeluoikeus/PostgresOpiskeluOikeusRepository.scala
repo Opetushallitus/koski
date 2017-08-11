@@ -44,9 +44,14 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid)).map(rows => rows.map(_.toOpiskeluoikeus)))
   }
 
-  def findByOid(oid: String)(implicit user: KoskiSession): Option[OpiskeluoikeusRow] = {
-    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid))).headOption
-  }
+  override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] =
+    if (oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")) {
+      runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)))
+        .headOption
+        .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    } else {
+      Left(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
+    }
 
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus = {
     runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.id === id).delete) match {

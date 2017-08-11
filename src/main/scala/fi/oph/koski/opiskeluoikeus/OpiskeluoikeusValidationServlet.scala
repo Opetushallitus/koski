@@ -42,11 +42,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
 
   get("/:oid") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
-    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession)
-    renderEither(result match {
-      case Some(oo) => Right(context.validateAll(oo))
-      case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
-    })
+    renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession).map(context.validateAll))
   }
 }
 

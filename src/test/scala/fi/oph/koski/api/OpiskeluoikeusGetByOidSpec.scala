@@ -17,8 +17,13 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         }
       }
       "with unknown oid" in {
-        get("api/opiskeluoikeus/0", headers = authHeaders()) {
+        get("api/opiskeluoikeus/1.2.246.562.15.63039018849", headers = authHeaders()) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia"))
+        }
+      }
+      "with invalid oid" in {
+        get("api/opiskeluoikeus/0", headers = authHeaders()) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: 0. Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
         }
       }
     }

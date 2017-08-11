@@ -120,9 +120,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
       opiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {
-        case Some(sisältäväOpiskeluoikeus) if (sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid) =>
+        case Right(sisältäväOpiskeluoikeus) if sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
-        case Some(sisältäväOpiskeluoikeus) =>
+        case Right(sisältäväOpiskeluoikeus) =>
           val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
             case None => Left(HttpStatus.ok)
             case Some(h: HenkilöWithOid) => Right(h.oid)
@@ -133,17 +133,15 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           }
 
           löydettyHenkilö match {
-            case Right(löydettyHenkilöOid) if (löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid) =>
+            case Right(löydettyHenkilöOid) if löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid =>
               KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
             case Left(status) =>
               status
             case _ =>
               HttpStatus.ok
           }
-        case None =>
-          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
         case _ =>
-          HttpStatus.ok
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
       }
     case _ => HttpStatus.ok
   }

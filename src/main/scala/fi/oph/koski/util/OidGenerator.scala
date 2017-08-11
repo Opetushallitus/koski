@@ -13,6 +13,7 @@ object OidGenerator {
 }
 
 class OidGenerator {
+  // Generates oids of format 1.2.246.562.15.*
   def generateOid(oppijaOid: String): String = generateOID(15)
 }
 

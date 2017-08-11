@@ -1,6 +1,8 @@
 package fi.oph.koski.opiskeluoikeus
 
+import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.PaginationSettings
@@ -14,7 +16,7 @@ class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: Lis
     }._2
   }
 
-  override def findByOid(oid: String)(implicit user: KoskiSession) = main.findByOid(oid)
+  override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = main.findByOid(oid)
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate)
 
