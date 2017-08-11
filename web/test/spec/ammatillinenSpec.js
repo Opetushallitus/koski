@@ -610,7 +610,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreSpaces(
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines(
             'Tutkinnon osa\n' +
             'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
             'Ammatilliset tutkinnon osat\n' +
@@ -765,7 +765,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreSpaces(
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Tutkinnon osa\n' +
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Moottorin ja voimansiirron huolto ja korjaus ei 15 Hyväksytty\n' +
@@ -843,7 +843,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function() {
-        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreSpaces(
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Tutkinnon osa\n' +
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ympäristön hoitaminen kyllä 35 3\n' +
@@ -878,7 +878,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreSpaces(
+          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
             'Koulutuksen osa\n' +
             'Sulje kaikki Pakollisuus Laajuus\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
@@ -920,7 +920,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreSpaces(
+          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
             'Tutkinnon osa\n' +
             'Sulje kaikki Pakollisuus Arvosana\n' +
             'Johtaminen ja henkilöstön kehittäminen kyllä Hyväksytty\n' +
@@ -973,7 +973,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function() {
-        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreSpaces(
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Koulutuksen osa\n' +
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
