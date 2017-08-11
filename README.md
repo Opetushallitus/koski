@@ -34,7 +34,7 @@ tarpeen mukaan.
 - PostgreSQL 9.6 -tietokanta
 - Elasticsearch 5.1.1 -hakuindeksi
 - Palvelinteknologiat
-  - Scala 2.11.4 ohjelmointikieli ja kääntäjä
+  - Scala 2.12 -ohjelmointikieli ja -kääntäjä
   - Scalatra web framework
   - Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjasto
   - Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
@@ -42,7 +42,7 @@ tarpeen mukaan.
   - Mvn-riippuvuuksien lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
   - Integraatiot Opintopolku-palveluihin, kuten organisaatio- ja henkilöpalveluun REST-rajpinnoilla, käyttäen http4s-clienttiä
 - Web-sovelluksen frontend-teknologiat
-  - NPM riippuvuuksien hakuun   
+  - NPM riippuvuuksien hakuun
   - Webpack frontend bundlen rakentamiseen
   - React
   - Bacon.js
@@ -71,7 +71,7 @@ eri taskit on helppo suorittaa. Ks [`Makefile`](Makefile)-tiedosto.
 
 Buildaa koko systeemi
 
-    make build    
+    make build
 
 Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
@@ -369,5 +369,3 @@ JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa,
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
 
 > https://github.com/Opetushallitus/json-schema-viewer
-
-Mon Apr 18 14:18:11 EEST 2016
