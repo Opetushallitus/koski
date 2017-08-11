@@ -64,7 +64,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     suoritus.koulutusmoduuli.perusteenDiaarinumero match {
       case Some("OPH-1280-2017") =>
         verifyKurssikoodisto("2017", "aikuistenperusopetuksenpaattovaiheenkurssit2017")
-      case Some("19/011/2015") => HttpStatus.ok
+      case Some("19/011/2015") =>
         verifyKurssikoodisto("2015", "aikuistenperusopetuksenkurssit2015")
       case _ => HttpStatus.ok
     }
