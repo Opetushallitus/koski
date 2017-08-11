@@ -257,5 +257,5 @@ const ApiOperation = ({operation}) => {
 }
 
 export const ApiOperations = ({operations}) => {
-  return <div>{R.map(operation => <ApiOperation operation={operation}/>, operations)}</div>
+  return <div>{R.addIndex(R.map)((operation, key) => <ApiOperation key={key} operation={operation}/>, operations)}</div>
 }
