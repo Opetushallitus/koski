@@ -21,7 +21,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixArvosana, fixTila, hasArvosana} from './Suoritus'
+import {fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
@@ -187,12 +187,12 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
 class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
-    model = fixArvosana(model)
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
+    let arvosanaModel = modelLookup(fixTila(model), 'arviointi.-1.arvosana')
 
     return (<tbody className={buildClassNames(['tutkinnon-osa', (!grouped && 'alternating'), (expanded && 'expanded'), (groupId)])}>
     <tr>
@@ -208,7 +208,7 @@ class SuoritusEditor extends React.Component {
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && <td className="arvosana"><Editor model={fixTila(model)} path="arviointi.-1.arvosana"/></td>}
+      {showArvosana && <td className="arvosana"><Editor model={ arvosanaModel } showEmptyOption="true"/></td>}
       {
         model.context.edit && (
           <td>
@@ -238,7 +238,7 @@ class SuoritusEditor extends React.Component {
 const suoritusProperties = suoritus => {
   let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
     suoritus.context.edit
-      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
+      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu'].includes(p.key))
       : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
   )

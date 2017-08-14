@@ -158,6 +158,9 @@ function TutkinnonOsat(groupId) {
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
       return _.merge({
+        tila: function() {
+          return findSingle('.tila', el).attr('title')
+        },
         nimi: function() {
           return findSingle('.nimi', el).text()
         },

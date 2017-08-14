@@ -396,14 +396,14 @@ describe('Ammatillinen koulutus', function() {
                 })
               })
 
-              describe('Suorituksen siirtäminen KESKEN-tilaan', function() {
+              describe('Arvosanan poistaminen', function() {
                 before(
                   editor.edit,
-                  opinnot.expandAll,
-                  opinnot.tutkinnonOsat().tutkinnonOsa(0).property('tila').setValue('Suoritus kesken')
+                  opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
+                  editor.saveChanges
                 )
-                it('Poistaa arvioinnin', function() {
-                  expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').getValue()).to.equal('Ei valintaa')
+                it('Tallennus onnistuu ja suoritus siirtyy tilaan KESKEN', function() {
+                  expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).tila()).to.equal('Suoritus kesken')
                 })
               })
 
