@@ -187,7 +187,6 @@ describe('Perusopetus', function() {
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
             'Perusopetuksen aloittamista lykätty kyllä\n' +
-            'Aloittanut ennen oppivelvollisuutta ei\n' +
             'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
             'Tukimuodot Osa-aikainen erityisopetus\n' +
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
@@ -2044,11 +2043,7 @@ describe('Perusopetus', function() {
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
-          'Perusopetuksen aloittamista lykätty ei\n' +
-          'Aloittanut ennen oppivelvollisuutta ei\n' +
-          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
-          'Vuosiluokkiin sitoutumaton opetus ei\n' +
-          'Vaikeasti vammainen ei')
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016')
       })
 
       it('näyttää suorituksen tiedot', function() {

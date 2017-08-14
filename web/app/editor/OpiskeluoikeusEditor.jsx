@@ -64,7 +64,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
                 : getDefault() }
              />
             {
-              modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" />
+              modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" propertyFilter={prop => context.edit || modelData(prop.model) !== false} />
             }
           </div>
           <div className="suoritukset">

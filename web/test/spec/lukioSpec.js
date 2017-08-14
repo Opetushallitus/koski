@@ -49,10 +49,7 @@ describe('Lukiokoulutus', function( ){
           'Tila 1.6.2016 Valmistunut\n' +
           '1.9.2012 Läsnä\n' +
           'Lisätiedot\n' +
-          'Pidennetty päättymispäivä ei\n' +
-          'Ulkomainen vaihto-opiskelija ei\n' +
           'Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa Pikkuvanha yksilö\n' +
-          'Yksityisopiskelija ei\n' +
           'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2012\n' +
           'Tehtävä Erityisenä koulutustehtävänä taide\n' +
           'Ulkomaanjaksot 1.9.2012 — 1.9.2013\n' +
