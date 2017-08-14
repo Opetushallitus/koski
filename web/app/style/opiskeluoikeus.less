@@ -42,28 +42,46 @@
     }
 
     .versiohistoria {
+      -webkit-touch-callout: none;
+        -webkit-user-select: none;
+         -khtml-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+
       display: inline-block;
       float: right;
       position: relative;
       z-index: @z-index-base + 2;
+
+      &.open {
+        background: @color-dark-blue;
+        border: 1px solid black;
+        margin: 0;
+        a {
+          padding-bottom: 5px;
+        }
+      }
+
       > * {
         font-size: 0.8em;
       }
       > a {
-        text-decoration: underline;
+        display: block;
         color: white;
+        text-decoration: underline;
+        text-align: center;
         vertical-align: top;
       }
       table {
         background: @color-dark-blue;
-        padding: 4px;
+        padding: 5px;
         vertical-align: middle;
         display: inline-block;
-        margin-left: 14px;
         tr, tr a {
           color: white;
         }
-        tr.selected, tr.selected a {
+        tr.selected {
           background: @color-link-blue;
         }
         td.versionumero {

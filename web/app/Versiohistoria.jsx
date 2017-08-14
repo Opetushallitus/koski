@@ -23,19 +23,21 @@ export default class Versiohistoria extends BaconComponent {
       }
     }
     let selectedVersion = this.versionumero() || history.length
-    return (<div className="versiohistoria">
-      <a onClick={toggle}><Text name="versiohistoria"/></a>
-      {
-        showHistory && (<table><tbody>{
-          history.map((version, i) =>
-            (<tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
-              <td className="versionumero">{'v' + version.versionumero}</td>
-              <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
-            </tr>)
-          )
-        }</tbody></table>)
-      }
-    </div>)
+    return (
+      <div className={(showHistory ? 'open ' : '') + 'versiohistoria'}>
+        <a onClick={toggle}><Text name={showHistory ? 'Sulje' : 'Versiohistoria'}/></a>
+        {
+          showHistory && (<table><tbody>{
+            history.map((version, i) =>
+              (<tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
+                <td className="versionumero">{'v' + version.versionumero}</td>
+                <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
+              </tr>)
+            )
+          }</tbody></table>)
+        }
+      </div>
+    )
   }
   componentWillMount() {
     super.componentWillMount()
