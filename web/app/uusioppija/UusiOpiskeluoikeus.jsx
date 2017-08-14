@@ -7,7 +7,7 @@ import DateInput from '../DateInput.jsx'
 import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
 import UusiPerusopetuksenSuoritus from './UusiPerusopetuksenSuoritus.jsx'
 import UusiAmmatillisenKoulutuksenSuoritus from './UusiAmmatillisenKoulutuksenSuoritus.jsx'
-import KoodistoDropdown from './KoodistoDropdown.jsx'
+import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus.jsx'
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
@@ -78,7 +78,12 @@ const Oppilaitos = ({oppilaitosAtom}) => {
 }
 
 const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title="Suorituskieli" atom={suorituskieliAtom} optionsP={suorituskieletP}/>
-const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => <KoodistoDropdown className="opiskeluoikeudentyyppi" title="Opiskeluoikeus" optionsP={opiskeluoikeustyypitP} atom={opiskeluoikeudenTyyppiAtom}/>
+const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => (<KoodistoDropdown
+  className="opiskeluoikeudentyyppi"
+  title="Opiskeluoikeus"
+  options={opiskeluoikeustyypitP}
+  selected={opiskeluoikeudenTyyppiAtom}
+/>)
 
 const Aloituspäivä = ({dateAtom}) => {
   return (<label className='aloituspaiva'><Text name="Aloituspäivä"/>
@@ -90,8 +95,8 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
   return (<KoodistoDropdown
     className="opiskeluoikeudentila"
     title="Opiskeluoikeuden tila"
-    optionsP={opiskeluoikeudenTilatP}
-    atom={tilaAtom}/>)
+    options={opiskeluoikeudenTilatP}
+    selected={tilaAtom}/>)
 }
 
 var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila) => {

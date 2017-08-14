@@ -33,7 +33,7 @@ const curlCommand = (method, url) => {
   if (method != 'GET') {
     curl += ' -X ' + method
   }
-  if (method == 'POST' || method == 'PUT') {
+  if (method == 'POST' || method == 'PUT') {
     curl += ' -H "content-type: application/json" -d @curltestdata.json'
   }
   return curl
@@ -257,5 +257,5 @@ const ApiOperation = ({operation}) => {
 }
 
 export const ApiOperations = ({operations}) => {
-  return <div>{R.map(operation => <ApiOperation operation={operation}/>, operations)}</div>
+  return <div>{R.addIndex(R.map)((operation, key) => <ApiOperation key={key} operation={operation}/>, operations)}</div>
 }

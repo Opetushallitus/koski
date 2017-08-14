@@ -26,7 +26,7 @@ describe('Telma', function() {
       })
 
       it('näyttää koulutuksen osat', function() {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Koulutuksen osa\n' +
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Toimintakyvyn vahvistaminen kyllä 18 Hyväksytty\n' +

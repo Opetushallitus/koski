@@ -53,11 +53,11 @@ const DokumentaatioSivu = ({info}) => {
         <div dangerouslySetInnerHTML={{__html: htmlSections[2]}}></div>
 
         {R.map(c => (
-          <div>
+          <div key={c}>
             <h1>{c}</h1>
             <ul className="example-list">
             {
-              R.map(e => <JsonExample category={c} example={e}/>, examples[c])
+              R.addIndex(R.map)((e, idx) => <JsonExample key={idx} category={c} example={e}/>, examples[c])
             }
             </ul>
           </div>

@@ -359,37 +359,88 @@ describe('Ammatillinen koulutus', function() {
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Tutkinnon osan lisääminen', function() {
-        before(editor.edit)
+        before(
+          editor.edit,
+          suoritustapa.waitUntilLoaded,
+          suoritustapa.selectValue('Opetussuunnitelman mukainen')
+        )
         describe('Alussa', function () {
           it('tyhjä', function() {
             expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
           })
         })
-        describe('Lisääminen', function() {
+        describe('Pakollisen tutkinnon osan lisääminen', function() {
           before(
-            suoritustapa.waitUntilLoaded,
-            suoritustapa.selectValue('Opetussuunnitelman mukainen'),
-            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
           )
-          it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+
+          describe('Lisäyksen jälkeen', function () {
+            it('lisätty osa näytetään', function() {
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+            })
+          })
+
+          describe('Arvosanan lisääminen', function() {
+            before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
+            it('Toimii', function() {
+
+            })
+
+            it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
+              expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+            })
+
+            describe('Tallentamisen jälkeen', function() {
+              before(editor.saveChanges)
+
+              describe('Käyttöliittymän tila', function() {
+                it('näyttää edelleen oikeat tiedot', function() {
+                  expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+                })
+              })
+
+              describe('Suorituksen siirtäminen KESKEN-tilaan', function() {
+                before(
+                  editor.edit,
+                  opinnot.expandAll,
+                  opinnot.tutkinnonOsat().tutkinnonOsa(0).property('tila').setValue('Suoritus kesken')
+                )
+                it('Poistaa arvioinnin', function() {
+                  expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').getValue()).to.equal('Ei valintaa')
+                })
+              })
+
+              describe('Tutkinnon osan poistaminen', function() {
+                before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
+                it('toimii', function() {
+                  expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+                })
+              })
+            })
           })
         })
-        // TODO: uncomment this after client-side validation has been fixed
-        // describe('Tallentamisen jälkeen', function() {
-        //   before(editor.saveChanges, editor.edit)
-        //   it('näyttää edelleen oikeat tiedot', function() {
-        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-        //   })
-        // })
+
+        describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            it('lisätty osa näytetään', function() {
+              expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+            })
+          })
+        })
       })
 
       describe('Tunnustamisen muokkaus', function() {
         before(
           editor.cancelChanges,
           editor.edit,
-          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('huolto- ja korjaustyöt')
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
+
         describe('Alussa', function() {
           it('ei tunnustusta', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
@@ -397,12 +448,36 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Lisääminen', function()  {
-          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääTunnustaminen('Tunnustamisen esimerkkiselite'))
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen esimerkkiselite'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
+          )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
           })
         })
+
+        describe('Muokkaus', function()  {
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen muokattu esimerkkiselite'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
+          )
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen muokattu esimerkkiselite')
+          })
+        })
+
+        describe('Poistaminen', function()  {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTunnustaminen())
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
+          })
+        })
+
         // TODO: uncomment this after client-side validation has been fixed
         // describe('Tallentamisen jälkeen', function() {
         //   before(editor.saveChanges, editor.edit)
@@ -412,6 +487,94 @@ describe('Ammatillinen koulutus', function() {
         //   })
         // })
       })
+    })
+
+    describe('Näytön muokkaus', function() {
+      before(
+        editor.cancelChanges,
+        editor.edit,
+        opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
+      )
+
+      describe('Alussa', function() {
+        it('ei näyttöä', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+        })
+      })
+
+      describe('Lisääminen', function()  {
+        before(
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
+            kuvaus: 'Näytön esimerkkikuvaus',
+            suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+            työssäoppimisenYhteydessä: false,
+            arvosana: '3',
+            arvioinnistaPäättäneet: ['Opettaja'],
+            arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
+            arviointipäivä: '1.2.2017'
+          }),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+        )
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('3')
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
+        })
+      })
+
+      describe('Muokkaus', function()  {
+        before(
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
+            kuvaus: 'Näytön muokattu esimerkkikuvaus',
+            suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+            työssäoppimisenYhteydessä: true,
+            arvosana: '2',
+            arvioinnistaPäättäneet: ['Opettaja'],
+            arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
+            arviointipäivä: '1.2.2017'
+          }),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+        )
+        describe('Näyttää oikeat tiedot', function() {
+          it('toimii', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+          })
+        })
+        describe('Oikeat tiedot säilyvät modalissa', function() {
+          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal())
+          it('toimii', function() {
+            var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
+            expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+            expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+            expect(näyttö.työssäoppimisenYhteydessä).to.equal(true)
+            expect(näyttö.arvosana).to.equal('2')
+            expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
+            expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
+            expect(näyttö.arviointipäivä).to.equal('1.2.2017')
+          })
+          after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
+        })
+      })
+
+      describe('Poistaminen', function() {
+        before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö())
+        it('toimii', function() {
+          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+        })
+      })
+
+      // TODO: uncomment this after client-side validation has been fixed
+      // describe('Tallentamisen jälkeen', function() {
+      //   before(editor.saveChanges, editor.edit, opinnot.expandAll)
+      //   it('näyttää edelleen oikeat tiedot', function() {
+      //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+      //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+      //   })
+      // })
     })
   })
 
@@ -454,7 +617,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal(
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines(
             'Tutkinnon osa\n' +
             'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
             'Ammatilliset tutkinnon osat\n' +
@@ -468,6 +631,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
             'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
             'Suoritusaika 1.2.2016 — 1.2.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -478,7 +642,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -492,6 +655,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
             'Suorituspaikka Sastamalan kunta\n' +
             'Suoritusaika 1.3.2016 — 1.3.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -502,7 +666,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -512,6 +675,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
             'Suorituspaikka Vesipojat Oy\n' +
             'Suoritusaika 1.4.2016 — 1.4.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -522,7 +686,6 @@ describe('Ammatillinen koulutus', function() {
             'Elinikäisen oppimisen avaintaidot 3\n' +
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
             'Kokonaisuus\n' +
             'Sulje kaikki Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
@@ -606,8 +769,9 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
+          'Tutkinnon osa\n' +
+          'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Moottorin ja voimansiirron huolto ja korjaus ei 15 Hyväksytty\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2013 Reijo Reksi , rehtori\n' +
@@ -683,8 +847,9 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function() {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
-         'Tutkinnon osa\nSulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
+          'Tutkinnon osa\n' +
+          'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ympäristön hoitaminen kyllä 35 3\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
@@ -718,7 +883,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
             'Koulutuksen osa\n' +
             'Sulje kaikki Pakollisuus Laajuus\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
@@ -764,8 +929,9 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equal(
-            'Tutkinnon osa\nSulje kaikki Pakollisuus Arvosana\n' +
+          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
+            'Tutkinnon osa\n' +
+            'Sulje kaikki Pakollisuus Arvosana\n' +
             'Johtaminen ja henkilöstön kehittäminen kyllä Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -817,7 +983,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       it('näyttää tutkinnon osat', function() {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Koulutuksen osa\n' +
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +

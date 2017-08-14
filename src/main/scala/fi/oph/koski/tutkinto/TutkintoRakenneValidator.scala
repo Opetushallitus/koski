@@ -23,6 +23,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       }
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)))).then { validateKurssikoodisto(suoritus) }
+    case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
+      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)))
+        .then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(validateTutkinnonOsanTutkinto)))
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: AikuistenPerusopetus =>
@@ -99,6 +102,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     })
   }
 
+  private def validateTutkinnonOsanTutkinto(suoritus: AmmatillisenTutkinnonOsanSuoritus) = {
+    suoritus.tutkinto match {
+      case Some(tutkinto) => HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
+      case None => HttpStatus.ok
+    }
+  }
+
   private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: ValtakunnallinenTutkinnonOsa, rakenne: TutkintoRakenne, suoritustapa: Option[Koodistokoodiviite]): HttpStatus = {
     val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
     suoritustapaJaRakenne match {
@@ -107,7 +117,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case (Some(tutkinto), _) =>
             // Tutkinnon osa toisesta tutkinnosta.
             // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
-            HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
+            validateTutkinnonOsanTutkinto(suoritus)
           case (_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _))) if List("3", "4").contains(koodiarvo) =>
             // Vapaavalintainen tai yksilöllisesti tutkintoa laajentava osa
             // Ei validoida rakenteeseen kuuluvuutta

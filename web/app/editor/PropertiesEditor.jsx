@@ -1,6 +1,6 @@
 import React from 'react'
 import { modelEmpty, modelItems, addContext } from './EditorModel.js'
-import { Editor } from './Editor.jsx'
+import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
 import {modelProperties} from './EditorModel'
 import Text from '../Text.jsx'

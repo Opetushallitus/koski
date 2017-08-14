@@ -26,7 +26,7 @@ export const OppijaEditor = ({model}) => {
 
     let canAddOpiskeluoikeusP = userP.map(u => !!u.hasWriteAccess)
     let addOpiskeluoikeus = (opiskeluoikeus) => {
-      if (!opiskeluoikeus) {
+      if (!opiskeluoikeus) {
         addingAtom.set(false)
       } else {
         var oppija = {
@@ -54,13 +54,13 @@ export const OppijaEditor = ({model}) => {
                 <ul className="oppilaitokset">
                   {
                     modelItems(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
-                      <li key={oppilaitosIndex}>
+                      (<li key={oppilaitosIndex}>
                         <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
                         <ul className="opiskeluoikeudet">
                           {
                             modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
                               näytettävätPäätasonSuoritukset(opiskeluoikeus).map((suoritusRyhmä, suoritusIndex) =>
-                                <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
+                                (<li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
                                   <span className="koulutus inline-text">{ modelTitle(suoritusRyhmä.suoritukset[0], 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
                                     ? <span className="inline-text">
@@ -70,12 +70,12 @@ export const OppijaEditor = ({model}) => {
                                     : null
                                   }
                                   <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                                </li>
+                                </li>)
                               )
                             )
                           }
                         </ul>
-                      </li>
+                      </li>)
                     )
                   }
                 </ul>
@@ -101,11 +101,11 @@ export const OppijaEditor = ({model}) => {
           {
             modelItems(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
               return modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
+                (<li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                   <OpiskeluoikeusEditor
                     model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid, opiskeluoikeusIndex }) }
                   />
-                </li>
+                </li>)
               )
             })
           }

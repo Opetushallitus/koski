@@ -55,8 +55,8 @@ object AmmatillinenExampleData {
     Some(kuvaus),
     Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
     Some(NäytönSuoritusaika(päivä, päivä)),
-    arviointi,
-    työssäoppimisenYhteydessä = false
+    false,
+    arviointi
   )
 
   lazy val suoritustapaNäyttö = Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1))
@@ -341,4 +341,24 @@ object AmmatillinenExampleData {
       ).map(_.toimipisteellä(toimipiste)))
     )
   }
+
+  def ammatillisenTutkinnonOsittainenSuoritus = AmmatillisenTutkinnonOsittainenSuoritus(
+    koulutusmoduuli = AmmatillinenTutkintoKoulutus(
+      Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
+      Some("62/011/2014")
+    ),
+    tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+    toinenTutkintonimike = true,
+    osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
+    toinenOsaamisala = true,
+    järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
+    suorituskieli = suomenKieli,
+    tila = tilaValmis,
+    alkamispäivä = None,
+    toimipiste = stadinToimipiste,
+    osasuoritukset = Some(List(
+      tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35)
+    )),
+    todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
+  )
 }

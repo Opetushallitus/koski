@@ -10,7 +10,7 @@ import Text from './Text.jsx'
 import {parseBool} from './util'
 import {parseLocation} from './location'
 
-let findSingleResult = (shouldShowOrg = () => true, canSelectOrg = () => true) => (organisaatiot) => {
+let findSingleResult = (canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
     let thisSelectable = canSelectOrg(org) ? [org] : []
     let selectableChildren = org.children.flatMap(selectableOrgs)
@@ -46,7 +46,7 @@ export default class OrganisaatioPicker extends BaconComponent {
     let renderTree = (orgs) => {
       let filteredOrgs = orgs.filter(shouldShowOrg)
       return filteredOrgs.map((org, i) =>
-        <li key={i}>
+        (<li key={i}>
           {
             canSelectOrg(org)
               ? <a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}>{orgName(org)}</a>
@@ -55,7 +55,7 @@ export default class OrganisaatioPicker extends BaconComponent {
           <ul className="aliorganisaatiot">
             { renderTree(org.children) }
           </ul>
-        </li>
+        </li>)
       )
     }
 
@@ -112,7 +112,7 @@ export default class OrganisaatioPicker extends BaconComponent {
     searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))
     if (this.props.preselectSingleOption) {
       this.searchStringBus.push('')
-      searchResult.filter(r => r.searchString == '').take(1).map('.organisaatiot').map(findSingleResult(this.props.shouldShowOrg, this.props.canSelectOrg)).filter(R.identity).onValue( singleResult => {
+      searchResult.filter(r => r.searchString == '').take(1).map('.organisaatiot').map(findSingleResult(this.props.canSelectOrg)).filter(R.identity).onValue( singleResult => {
         this.setState({singleResult})
         this.props.onSelectionChanged(singleResult)
       })

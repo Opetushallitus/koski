@@ -2,6 +2,27 @@ var expect = chai.expect
 chai.should()
 chai.config.truncateThreshold = 0; // disable truncating
 
+chai.equalIgnoreNewlines = function (str1, str2) {
+  if (typeof str1 !== 'string' || typeof str2 !== 'string') {
+    return false
+  }
+  return str1.replace(/\r?\n|\r/g, ' ') === str2.replace(/\r?\n|\r/g, ' ')
+}
+
+chai.Assertion.addChainableMethod('equalIgnoreNewlines', function (expected) {
+  var actual = this._obj
+
+  return this.assert(
+    chai.equalIgnoreNewlines(actual, expected),
+    "expected '" + this._obj + "' to equal '" + expected + "' ignoring newlines",
+    "expected '" + this._obj + "' not to equal '" + expected + "' ignoring newlines"
+  )
+})
+
+chai.assert.equalIgnoreNewlines = function (val, exp, msg) {
+  new chai.Assertion(val, msg).to.be.equalIgnoreNewlines(exp)
+}
+
 function S(selector) {
   try {
     if (!testFrame() || !testFrame().jQuery) {

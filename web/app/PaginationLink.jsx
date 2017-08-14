@@ -6,7 +6,7 @@ import delays from './delays'
 
 export default class PaginationLink extends BaconComponent {
   render() {
-    const { pager } = this.props
+    const { pager } = this.props
     return pager.mayHaveMore()
       ? <div id="pagination-marker" onClick={pager.next} ref={(link) => {this.paginationMarker = link}}></div>
       : <span></span>

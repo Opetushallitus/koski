@@ -9,7 +9,7 @@ import {accumulateModelState, modelLookup, modelData, modelSet, modelValid} from
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
-import KoodistoDropdown from './KoodistoDropdown.jsx'
+import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {koodistoValues, koodiarvoMatch} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
@@ -66,8 +66,8 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
     <KoodistoDropdown
       className="oppimaara"
       title="Oppimäärä"
-      optionsP = { oppimäärätP }
-      atom = {oppimääräAtom}
+      options = { oppimäärätP }
+      selected = {oppimääräAtom}
     />
   </div> )
 }

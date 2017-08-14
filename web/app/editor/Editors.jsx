@@ -46,7 +46,6 @@ export const editorMapping = R.mergeAll([{
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
   'peruste': PerusteEditor,
   // Perusopetus
-  'erityisentuenpaatos': JaksoEditor,
   'perusopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor
 

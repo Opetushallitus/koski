@@ -9,7 +9,7 @@ import {modelLookup, accumulateModelStateAndValidity, pushModelValue, resetOptio
 import {wrapOptional} from './OptionalEditor.jsx'
 
 
-const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
+const TunnustettuPopup = ({model, hasOldData, doneCallback}) => {
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
   const validP = errorP.not()
   const submitB = Bacon.Bus()
@@ -20,12 +20,9 @@ const AmmatillinenTunnustettuPopup = ({model, doneCallback}) => {
   })
 
   return (
-    <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()}  okTextKey="Lisää" validP={validP}>
+    <ModalDialog className="lisää-tunnustettu-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()}  okTextKey={hasOldData ? 'Päivitä' : 'Lisää'} validP={validP}>
       <h2><Text name="Ammattiosaamisen tunnustaminen"/></h2>
-      <td>
-        <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
-
-      </td>
+      <PropertiesEditor baret-lift model={modelP} propertyFilter={p => p.key === 'selite'}/>
     </ModalDialog>
   )
 }
@@ -48,7 +45,7 @@ export class AmmatillinenTunnustettuEditor extends React.Component {
 
     return (
       <div>
-        {popupVisibleA.map(v => v ? <AmmatillinenTunnustettuPopup model={wrappedModel} doneCallback={() => popupVisibleA.set(false)}/> : null)}
+        {popupVisibleA.map(v => v ? <TunnustettuPopup model={wrappedModel} hasOldData={hasData} doneCallback={() => popupVisibleA.set(false)}/> : null)}
         {edit && hasData && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(wrappedModel)}></a>}
         {edit && hasData && <a className="edit-value fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
         {hasData && <Editor model={modelLookup(wrappedModel, 'selite')} edit={false}/>}

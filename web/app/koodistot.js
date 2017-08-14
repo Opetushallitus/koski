@@ -1,4 +1,5 @@
-import {lang} from './i18n'
+import {lang, t} from './i18n'
+import * as L from 'partial.lenses'
 import R from 'ramda'
 
 import ammatillisentutkinnonosanryhmaRaw from '../../src/main/resources/mockdata/koodisto/koodit/ammatillisentutkinnonosanryhma.json'
@@ -10,3 +11,6 @@ const readKoodisto = json => R.fromPairs(json.map(rawKoodi => ([ rawKoodi.koodiA
 export const ammatillisentutkinnonosanryhmaKoodisto = readKoodisto(ammatillisentutkinnonosanryhmaRaw)
 export const suorituksentilaKoodisto = readKoodisto(suorituksentilaRaw)
 export const toKoodistoEnumValue = (koodistoUri, koodiarvo, nimi) => ({data: { koodiarvo, koodistoUri }, title: nimi})
+export const koodiviiteToEnumValue = (koodiviite) => ({data: koodiviite, title: t(koodiviite.nimi)})
+export const enumValueToKoodiviite = (enumValue) => enumValue && enumValue.data
+export const enumValueToKoodiviiteLens = L.iso(enumValueToKoodiviite, koodiviiteToEnumValue)

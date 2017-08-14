@@ -23,7 +23,7 @@ function Page(mainElement) {
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(function() {input.setValue(value, exact)})
+          .then(function() {return input.setValue(value, exact)})
           .then(wait.forAjax)
       }
     },
@@ -60,7 +60,15 @@ function Page(mainElement) {
         return el()
       },
       value: function() {
-        return el().val()
+        var e = el()
+        var ic = e.find('.input-container input')
+        if (ic.length !== 0) {
+          e = ic
+        }
+        if (inputType(e) === 'CHECKBOX') {
+          return e.is(':checked')
+        }
+        return e.val()
       },
       attr: function(name) {
         return el().attr(name)
@@ -79,7 +87,14 @@ function Page(mainElement) {
           case 'NUMBER':
           case 'PASSWORD':
           case 'TEXTAREA':
-            input.val(value)
+            if (window.callPhantom) {
+              input.val(value)
+            } else {
+              var domElem = el()[0]
+              // Workaround for react-dom > 15.6
+              // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
+              Object.getOwnPropertyDescriptor(Object.getPrototypeOf(domElem), 'value').set.call(domElem, value)
+            }
             triggerEvent(input, 'input')
             break
           case 'CHECKBOX':
@@ -118,6 +133,13 @@ function Page(mainElement) {
               triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
             }
             break
+          case 'AUTOCOMPLETE': // Autocomplete.jsx
+            function selectedItem() { return findSingle('.results .selected', input) }
+
+            return Page(input).setInputValue('input', value)()
+              .then(wait.untilVisible(selectedItem))
+              .then(function() { triggerEvent(selectedItem, 'click')})
+
 				  default:
 						throw new Error('Unknown input type: ' + inputType(input))
         }
@@ -138,6 +160,8 @@ function Page(mainElement) {
         return el.prop('tagName')
       else if ($(el).hasClass('dropdown')) // Dropdown.jsx
         return 'DROPDOWN'
+      else if ($(el).hasClass('autocomplete')) // Autocomplete.jsx
+        return 'AUTOCOMPLETE'
       else
         return el.prop('type').toUpperCase()
     }

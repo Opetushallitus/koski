@@ -10,22 +10,27 @@ import {
   modelItems,
   modelProperties,
   modelProperty,
-  modelSet, modelSetTitle,
+  modelSet,
+  modelSetTitle,
   modelSetValue,
+  modelSetValues,
   oneOfPrototypes,
-  pushModel
+  pushModel,
+  pushRemoval
 } from './EditorModel'
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {hasArvosana} from './Suoritus'
+import {fixArvosana, fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {ammatillisentutkinnonosanryhmaKoodisto, toKoodistoEnumValue} from '../koodistot'
+import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
 import Autocomplete from '../Autocomplete.jsx'
+import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {EnumEditor} from './EnumEditor.jsx'
+import Http from '../http'
 
 const placeholderForNonGrouped = '999999'
 
@@ -58,7 +63,7 @@ export class Suoritustaulukko extends React.Component {
     let showGrouped = groupIds.length > 1
 
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-    let showArvosana = suoritukset.find(hasArvosana) !== undefined
+    let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
@@ -73,10 +78,10 @@ export class Suoritustaulukko extends React.Component {
               {suoritukset[0] && modelProperty(suoritukset[0], 'koulutusmoduuli').title}
               {showExpandAll &&
               <div>
-                {allExpandedP.map(allExpanded => <a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
+                {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
                                                     onClick={toggleExpandAll}>
                     <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
-                  </a>
+                  </a>)
                 )}
               </div>
               }
@@ -100,14 +105,14 @@ export class Suoritustaulukko extends React.Component {
       let items = (grouped[groupId] || [])
       return [
         <tbody key={'group-' + i} className="group-header">
-          <tr> <td colSpan="4">{groupTitles[groupId]}</td> </tr>
+          <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
         items.map((suoritus, j) => {
           return suoritusEditor(suoritus, i * 100 + j, groupId)
         }),
-        context.edit && <tbody className={'uusi-tutkinnon-osa ' + groupId}>
+        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
-            <UusiTutkinnonOsa suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
+            <UusiTutkinnonOsa suoritus={context.suoritus} suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
           </td></tr>
         </tbody>
       ]
@@ -132,40 +137,59 @@ export class Suoritustaulukko extends React.Component {
   }
 }
 
-const UusiTutkinnonOsa = ({ groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
-  let displayValue = item => item.data.koodiarvo + ' ' + item.title
+const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
+  let displayValue = item => item.newItem ? 'Lisää uusi: ' + item.title : item.data.koodiarvo + ' ' + item.title
   let selectedAtom = Atom(undefined)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
-  // TODO: rajaa ePerusteiden mukaisesti?
+  let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
 
-  // TODO: paikallisen tutkinnon osan lisäys
+  let [[paikallinenKoulutusmoduuli], [koulutusmoduuliProto]] = R.partition(isPaikallinen, koulutusModuuliprotos)
 
-  let koulutusmoduuliProto = koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))[0]
-  const tutkinnonOsatP = EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste'))
+  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
-  selectedAtom.filter(R.identity).onValue(koodi => {
-    addTutkinnonOsa(modelSetValue(modelSetTitle(koulutusmoduuliProto, koodi.title), koodi, 'tunniste'), groupId)
+  if (!diaarinumero || !suoritustapa) return null
+
+  let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? [] : Bacon.Error(e) }
+  let osatP = Http
+    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(groupId)}`, map404ToEmpty)
+
+  selectedAtom.filter(R.identity).onValue(newItem => {
+    addTutkinnonOsa(modelSetTitle(newItem.newItem
+      ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
+      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId)
   })
 
   return (<span>
-    <Autocomplete
-      fetchItems={ query => query.length < 3 ? Bacon.once([]) : tutkinnonOsatP.map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
-      resultAtom={ selectedAtom }
-      placeholder="Lisää tutkinnonosa"
-      displayValue={ displayValue }
-      selected = { selectedAtom }
-    />
+    {
+      osatP.map(perusteistaLöytyvätOsat => perusteistaLöytyvätOsat.length
+        ? <KoodistoDropdown
+          options={perusteistaLöytyvätOsat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))}
+          selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
+          enableFilter="true"
+          selectionText={ t('Lisää tutkinnon osa')}
+          showKoodiarvo="true"
+          />
+        : <Autocomplete
+          fetchItems={ query => query.length < 3 ? Bacon.once([]) : EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste')).map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
+          resultAtom={ selectedAtom }
+          placeholder={t('Lisää tutkinnon osa')}
+          displayValue={ displayValue }
+          selected = { selectedAtom }
+          createNewItem = { query => paikallinenKoulutusmoduuli && query.length ? { newItem: true, title: query} : null }
+        />
+      )
+    }
   </span>)
 }
 
 class SuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
-    let arviointi = modelLookup(model, 'arviointi.-1')
+    model = fixArvosana(model)
     let properties = suoritusProperties(model)
-    let propertiesWithoutOsasuoritukset = properties.filter(p => p.key !== 'osasuoritukset')
-    let displayProperties = model.context.edit ? propertiesWithoutOsasuoritukset.filter(p => ['näyttö', 'tunnustettu'].includes(p.key)) : propertiesWithoutOsasuoritukset
+    let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -184,7 +208,14 @@ class SuoritusEditor extends React.Component {
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && <td className="arvosana">{modelTitle(arviointi, 'arvosana')}</td>}
+      {showArvosana && <td className="arvosana"><Editor model={fixTila(model)} path="arviointi.-1.arvosana"/></td>}
+      {
+        model.context.edit && (
+          <td>
+            <a className="remove-value" onClick={() => pushRemoval(model)}>{''}</a>
+          </td>
+        )
+      }
     </tr>
     {
       expanded && hasProperties && (<tr className="details" key="details">
@@ -205,10 +236,13 @@ class SuoritusEditor extends React.Component {
 }
 
 const suoritusProperties = suoritus => {
-  return modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
-      .concat(modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key))))
+  let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
+    suoritus.context.edit
+      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'tila'].includes(p.key))
+      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
-      .filter(shouldShowProperty(suoritus.context))
+  )
+  return properties.filter(shouldShowProperty(suoritus.context))
 }
 
 export const suorituksenTilaSymbol = (tila) => {

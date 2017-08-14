@@ -162,7 +162,7 @@ function TutkinnonOsat(groupId) {
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
-      return {
+      return _.merge({
         nimi: function() {
           return findSingle('.nimi', el).text()
         },
@@ -174,24 +174,122 @@ function TutkinnonOsat(groupId) {
           if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
           return m.length === 0 ? null : {selite: m.first().text()}
         },
-        lisääTunnustaminen: function(selite) {
+        avaaTunnustaminenModal: function() {
           return function() {
-            triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
+            var valueExists = !!el().find('.tunnustettu .edit-value').length
+            triggerEvent(findSingle('.tunnustettu .'+(valueExists?'edit':'add')+'-value', el), 'click')
+            return wait.untilVisible(S('.lisää-tunnustettu-modal', el))
+          }
+        },
+        asetaTunnustamisenSelite: function(selite) {
+          return function() {
             Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+          }
+        },
+        painaOkTunnustaminenModal: function() {
+          return function() {
             triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
+            return wait.forAjax
+          }
+        },
+        poistaTunnustaminen: function() {
+          return function() {
+            triggerEvent(findSingle('.tunnustettu .remove-value', el), 'click')
+            return wait.forAjax
+          }
+        },
+        poistaTutkinnonOsa: function() {
+          triggerEvent(findSingle('.remove-value', el), 'click')
+        },
+        näyttö: function() {
+          var m = S('.näyttö .value a.edit-value', el)
+          if (m.length > 1) throw new Error('Multiple "näyttö" found')
+          return m.length === 0 ? null : {
+            paikka: el().find('.työpaikka').text(),
+            arvosana: el().find('.näyttö .arvosana span').text(),
+            arviointipäivä: el().find('.pvm').first().text(),
+            kuvaus: el().find('p').first().text()
+          }
+        },
+        lueNäyttöModal: function() {
+          function extractDropdownArray(elem) {
+            return elem.find('ul.array > li').map(function() {return Page(this).getInput('.dropdown').value()}).get().slice(0, -1)
+          }
+          return {
+            arvosana: Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').value(),
+            arviointipäivä: Page(el).getInput('.näyttö .modal-content .päivä .value input').value(),
+            kuvaus: Page(el).getInput('.näyttö .modal-content .kuvaus .value input').value(),
+            arvioinnistaPäättäneet: extractDropdownArray(S('.näyttö .modal-content .arvioinnistaPäättäneet .value', el)),
+            arviointikeskusteluunOsallistuneet: extractDropdownArray(S('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value', el)),
+            suorituspaikka: [
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').value(),
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').value()
+            ],
+            työssäoppimisenYhteydessä: Page(el).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').value()
+          }
+        },
+        avaaNäyttöModal: function() {
+          return function() {
+            var valueExists = !!el().find('.näyttö .edit-value').length
+            triggerEvent(findSingle('.näyttö .'+(valueExists?'edit':'add')+'-value', el), 'click')
+            return wait.untilVisible(S('.lisää-näyttö-modal', el))
+          }
+        },
+        asetaNäytönTiedot: function(tiedot) {
+          return function () {
+            return wait.forAjax().then(function() {
+              // Normalize state
+              var addVButton = el().find('.näyttö .modal-content .arviointi .add-value')
+              if (addVButton.length) {
+                triggerEvent(addVButton, 'click')
+              }
+              else {
+                el().find('.näyttö .modal-content .arvioinnistaPäättäneet .value li .remove-item:visible').each(function(i, e) {
+                  triggerEvent(e, 'click')
+                })
+                el().find('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li .remove-item:visible').each(function(i, e) {
+                  triggerEvent(e, 'click')
+                })
+              }
+            }).then(wait.forAjax).then(function () {
+              Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
+              Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
+              Page(el).getInput('.näyttö .modal-content .kuvaus .value input').setValue(tiedot.kuvaus)
+              tiedot.arvioinnistaPäättäneet.map(function (v, i) {
+                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+              })
+              tiedot.arviointikeskusteluunOsallistuneet.map(function (v, i) {
+                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+              })
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
+              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
+              Page(el).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
+
+              if (findSingle('.näyttö .modal-content button', el).prop('disabled')) {
+                throw new Error('Invalid model')
+              }
+            })
+          }
+        },
+        painaOkNäyttöModal: function() {
+          return function() {
+            triggerEvent(findSingle('.näyttö .modal-content button', el), 'click')
+            return wait.forAjax
+          }
+        },
+        poistaNäyttö: function() {
+          return function() {
+            triggerEvent(findSingle('.näyttö .remove-value', el), 'click')
+            return wait.forAjax
           }
         }
-      }
+      }, {}, Editor(el))
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {
         var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
-        var pageApi = Page(uusiTutkinnonOsaElement)
-        function selectedItem() { return findSingle('.results .selected', uusiTutkinnonOsaElement) }
-
-        return pageApi.setInputValue('.autocomplete input', hakusana)()
-          .then(wait.untilVisible(selectedItem))
-          .then(function() { triggerEvent(selectedItem, 'click')})
+        return Page(uusiTutkinnonOsaElement).setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
       }
     }
   }

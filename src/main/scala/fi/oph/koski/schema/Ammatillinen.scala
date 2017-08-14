@@ -208,6 +208,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def toimipiste: Option[OrganisaatioWithOid]
   def tila: Koodistokoodiviite
   def arviointi: Option[List[AmmatillinenArviointi]]
+  @Description("Tutkinnon osalta ei vaadita vahvistusta, mikäli se sisältyy ammatillisen tutkinnon suoritukseen (jolla puolestaan on VALMIS-tilassa oltava vahvistus)")
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
   def alkamispäivä: Option[LocalDate]
   @ComplexObject
@@ -463,11 +464,11 @@ case class Näyttö(
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
+  @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
+  työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
   @Flatten
   arviointi: Option[NäytönArviointi],
-  @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
-  työssäoppimisenYhteydessä: Boolean = false,
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä.")
   haluaaTodistuksen: Option[Boolean] = None
 )

@@ -140,7 +140,7 @@ export class Oppijataulukko extends React.Component {
                 <td className="tyyppi">{t(opiskeluoikeus.tyyppi.nimi)}</td>
                 <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{t(suoritus.tyyppi.nimi)}</li>) }</ul></td>
                 <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                  <ul className="cell-listing" key={j}>
+                  (<ul className="cell-listing" key={j}>
                     {
                       <li className="koulutusmoduuli"><Highlight search={params['tutkintohaku'] || ''}>{t(suoritus.koulutusmoduuli.tunniste.nimi)}</Highlight></li>
                     }
@@ -150,7 +150,7 @@ export class Oppijataulukko extends React.Component {
                     {
                       (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}><Highlight search={params['tutkintohaku'] || ''}>{t(nimike.nimi)}</Highlight></li>)
                     }
-                  </ul>
+                  </ul>)
                 )}
                 </td>
                 <td className="tila">{t(L.get(['tilat', 0, 'tila', 'nimi'], opiskeluoikeus))}</td>

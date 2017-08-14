@@ -18,6 +18,19 @@
     }
   }
 
+  /* Fix linebreak and alignment issues with add-value links in optional fields in tutkinnon osa table */
+  tbody.tutkinnon-osa > tr.details > td > .properties > table {
+    width: 100%;
+
+    &> tbody > tr > td:not(.complex) {
+      display: block;
+
+      &.value {
+        padding-left: 20px;
+      }
+    }
+  }
+
   .value .span {
     font-size: 15px;
   }

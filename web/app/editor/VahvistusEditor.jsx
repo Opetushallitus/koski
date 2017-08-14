@@ -10,9 +10,9 @@ export class VahvistusEditor extends React.Component {
       <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
         (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
-            <span key={i}>
+            (<span key={i}>
               <Editor model={henkilö} path="nimi"/>{(modelData(henkilö, 'titteli') || model.context.edit) && <span>{', '}<Editor model={henkilö} path="titteli"/></span>}
-            </span>
+            </span>)
         )
       }
     </span>)

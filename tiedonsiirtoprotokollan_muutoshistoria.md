@@ -2,6 +2,10 @@
 
 - Opiskeluoikeuden kenttä "id" (kokonaisluku) muutettu merkkijonotyyppiseksi kentäksi "oid"
 
+## 8.8.2017
+
+- Lisätty puuttuvat rakennevalidoinnit (diaarinumero) ammatillisen tutkinnon osittaiselle suoritukselle
+
 ## 7.8.2017
 
 - Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa saa olla erillistä tutkintotietoa
