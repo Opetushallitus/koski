@@ -22,17 +22,19 @@ export class NumberEditor extends React.Component {
 const wrapWithUnitOfMeasure = (unitOfMeasure, content) => unitOfMeasure ? <span>{content}<span className="unit-of-measure">{unitOfMeasure}</span></span> : content
 
 NumberEditor.handlesOptional = () => true
+NumberEditor.isEmpty = m => !modelData(m)
 NumberEditor.createEmpty = (m) => modelSetValue(m, undefined)
 NumberEditor.validateModel = model => {
   let value = modelData(model)
-  if (value != undefined) {
+  if (value == undefined) {
+    if (!model.optional) return [{key: 'missing'}]
+  } else {
     if (typeof value !== 'number'
       || (model.minValue !== undefined && value < model.minValue)
       || (model.minValueExclusive !== undefined && value <= model.minValueExclusive)
       || (model.maxValue !== undefined && value > model.maxValue)
       || (model.maxValueExclusive !== undefined && value >= model.maxValueExclusive)
     ) {
-      console.log('invalid')
       return [{key: 'invalid.number'}]
     }
   }
