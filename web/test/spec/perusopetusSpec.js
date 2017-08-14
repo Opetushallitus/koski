@@ -1696,60 +1696,67 @@ describe('Perusopetus', function() {
                             opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
                             tilaJaVahvistus.merkitseValmiiksi,
                             dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
-                            myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
                             dialogEditor.property('päivä').setValue('11.4.2017'),
-                            dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
-                            dialog.merkitseValmiiksi
+                            dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk')
                           )
 
-                          it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
-                            // implicitly tested
+                          describe('Myöntäjät-lista', function() {
+                            it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
+                              expect(myöntäjät.getOptions()).to.deep.equal(['Reijo Reksi, rehtori', 'Lisää henkilö'])
+                            })
                           })
 
-                          it('Tila on "valmis" ja vahvistus näytetään', function() {
-                            expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
-                          })
+                          describe('Kun jatketaan valmiiksi merkintää', function() {
+                            before(
+                              myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
+                              dialog.merkitseValmiiksi
+                            )
 
-                          describe('Seuraavan luokka-asteen lisäyksessä', function() {
-                            before(opinnot.lisääSuoritus)
-                            it('On mahdollista lisätä sama luokka-aste uudelleen', function() {
-                              expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
+                            it('Tila on "valmis" ja vahvistus näytetään', function() {
+                              expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
                             })
 
-                            describe('Lisättäessä toinen 2. luokan suoritus', function() {
-                              before(lisääSuoritus.property('luokka').setValue('2x'), lisääSuoritus.lisääSuoritus)
-                              it('Uusi suoritus tulee valituksi', function() {
-                                expect(editor.property('luokka').getValue()).to.equal('2x')
+                            describe('Seuraavan luokka-asteen lisäyksessä', function() {
+                              before(opinnot.lisääSuoritus)
+                              it('On mahdollista lisätä sama luokka-aste uudelleen', function() {
+                                expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
                               })
 
-                              describe('Tallennettaessa', function() {
-                                before(editor.saveChanges)
-                                it('Uusi suoritus on edelleen valittu', function() {
+                              describe('Lisättäessä toinen 2. luokan suoritus', function() {
+                                before(lisääSuoritus.property('luokka').setValue('2x'), lisääSuoritus.lisääSuoritus)
+                                it('Uusi suoritus tulee valituksi', function() {
                                   expect(editor.property('luokka').getValue()).to.equal('2x')
                                 })
 
-                                it('Uusi suoritus on täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
-                                  expect(opinnot.suoritusTabIndex(1)).to.equal(1)
-                                })
-
-                                describe('Kun kaikki luokka-asteet on lisätty', function() {
-                                  before(editor.edit)
-                                  for (var i = 3; i <= 9; i++) {
-                                    before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
-                                  }
-
-                                  it('Suorituksia ei voi enää lisätä', function() {
-                                    expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                                describe('Tallennettaessa', function() {
+                                  before(editor.saveChanges)
+                                  it('Uusi suoritus on edelleen valittu', function() {
+                                    expect(editor.property('luokka').getValue()).to.equal('2x')
                                   })
 
-                                  it('9. luokalle ei esitäytetä oppiaineita', function() {
-                                    expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+                                  it('Uusi suoritus on täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
+                                    expect(opinnot.suoritusTabIndex(1)).to.equal(1)
                                   })
 
-                                  describe('Uudempi 2.luokan suoritus', function() {
-                                    before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
-                                    it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
-                                      expect(editor.property('luokka').getValue()).to.equal('2x')
+                                  describe('Kun kaikki luokka-asteet on lisätty', function() {
+                                    before(editor.edit)
+                                    for (var i = 3; i <= 9; i++) {
+                                      before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
+                                    }
+
+                                    it('Suorituksia ei voi enää lisätä', function() {
+                                      expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                                    })
+
+                                    it('9. luokalle ei esitäytetä oppiaineita', function() {
+                                      expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+                                    })
+
+                                    describe('Uudempi 2.luokan suoritus', function() {
+                                      before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
+                                      it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
+                                        expect(editor.property('luokka').getValue()).to.equal('2x')
+                                      })
                                     })
                                   })
                                 })

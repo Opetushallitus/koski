@@ -221,7 +221,7 @@ function textsOf(elements) {
 }
 
 function sanitizeText(text) {
-  return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/|||/g, "")
+  return text.replace(/ *\n+ */g, "\n").replace(/ +/g, " ").replace(/||||/g, "")
 }
 
 function extractAsText(el, subElement) {
