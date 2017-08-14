@@ -13,7 +13,7 @@ import {t} from './i18n'
   selected: currently selected item or Observable
   onSelectionChanged: callback
   newItem: proto for new item
-  isRemovable: boolean
+  isRemovable: item => boolean
   onRemoval: callback
   removeText: string
   enableFilter: boolean
@@ -22,8 +22,7 @@ import {t} from './i18n'
 export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                   selected, onSelectionChanged, selectionText = t('Valitse...'),
                   enableFilter = false,
-                  newItem,
-                  isRemovable = () => false, onRemoval, removeText}) => {
+                  newItem, isRemovable = () => false, onRemoval, removeText}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
 
