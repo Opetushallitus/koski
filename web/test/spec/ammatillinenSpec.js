@@ -418,14 +418,29 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
-          before(
-            editor.edit,
-            opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
-          )
+          describe('Valtakunnallinen tutkinnon osa', function() {
+            before(
+              editor.edit,
+              opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+            )
 
-          describe('Lisäyksen jälkeen', function () {
-            it('lisätty osa näytetään', function() {
-              expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+            describe('Lisäyksen jälkeen', function () {
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+              })
+
+              describe('Kun lisätään paikallinen tutkinnon osa', function() {
+                before(
+                  editor.edit,
+                  opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Hassut temput')
+                )
+
+                describe('Lisäyksen jälkeen', function () {
+                  it('lisätty osa näytetään', function() {
+                    expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                  })
+                })
+              })
             })
           })
         })
