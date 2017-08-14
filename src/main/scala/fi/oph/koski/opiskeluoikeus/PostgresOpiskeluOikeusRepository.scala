@@ -150,14 +150,15 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
-        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(oid = Some(oidGenerator.generateOid(oppijaOid)), id = None, versionumero = None)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
+        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(oid = None, id = None, versionumero = None)
+        val oid = oidGenerator.generateOid(oppijaOid)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, tallennettavaOpiskeluoikeus.oid.get, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, VERSIO_1, diff, row.data))
         }
     }
   }
