@@ -138,6 +138,7 @@ class Oppiainetaulukko extends React.Component {
     let edit = model.context.edit
     let showLaajuus = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) || edit && !pakolliset
     let showFootnotes = !edit && !!suoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä') ||modelData(s, 'painotettuOpetus') || modelData(s, 'korotus'))
+
     let addOppiaine = oppiaine => {
       var suoritusUudellaOppiaineella = modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli')
       pushModel(suoritusUudellaOppiaineella, model.context.changeBus)
@@ -162,7 +163,7 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
+              suoritukset.filter(s => edit || modelData(s, 'tila.koodiarvo') === 'VALMIS' ).map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
                                                                        key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
                                                                        expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
                                                                        showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
