@@ -77,7 +77,7 @@ const Oppilaitos = ({oppilaitosAtom}) => {
   </label>)
 }
 
-const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title="Suorituskieli" atom={suorituskieliAtom} optionsP={suorituskieletP}/>
+const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title="Suorituskieli" selected={suorituskieliAtom} options={suorituskieletP}/>
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => (<KoodistoDropdown
   className="opiskeluoikeudentyyppi"
   title="Opiskeluoikeus"

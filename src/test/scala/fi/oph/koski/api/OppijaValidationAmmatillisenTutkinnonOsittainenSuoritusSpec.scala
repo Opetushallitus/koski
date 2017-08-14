@@ -111,8 +111,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
           "Kun tutkinnolla ei ole diaarinumeroa" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None), johtaminenJaHenkilöstönKehittäminen)
-            "palautetaan HTTP 200 (diaarinumeroa ei vaadita)" in (putTutkinnonOsaSuoritus(suoritus)(
-                verifyResponseStatus(200)))
+            "palautetaan HTTP 400 (diaarinumero vaaditaan)" in (putTutkinnonOsaSuoritus(suoritus)(
+                verifyResponseStatus(400)))
           }
 
           "Kun tutkinnon diaarinumero on virheellinen" - {
@@ -305,7 +305,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     koulutusmoduuli = tutkinnonOsa,
     tila = tilaKesken,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-    arviointi = arviointiHyvä()
+    arviointi = arviointiHyvä(),
+    tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
   )
 
   private lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(
@@ -316,7 +317,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     koulutusmoduuli = paikallinenTutkinnonOsa,
     tila = tilaKesken,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-    arviointi = arviointiHyvä()
+    arviointi = arviointiHyvä(),
+    tutkinnonOsanRyhmä = vapaavalintaisetTutkinnonOsat
   )
 
   private def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => A) = {
@@ -331,7 +333,12 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus))), headers)(f)
   }
 
-  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(osittainenSuoritusKesken.copy(koulutusmoduuli = osittainenSuoritusKesken.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
+  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(osittainenSuoritusKesken.copy(
+    koulutusmoduuli = osittainenSuoritusKesken.koulutusmoduuli.copy(perusteenDiaarinumero = diaari),
+    osasuoritukset = Some(List(
+      tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", None, k3, 35)
+    ))
+  )))
 
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
   def eperusteistaLöytymätönValidiDiaarinumero: String = "13/011/2009"
