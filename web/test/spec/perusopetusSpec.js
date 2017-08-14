@@ -1547,6 +1547,8 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun painetaan Lisää-nappia', function() {
+            var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+            var arvosana = äidinkieli.propertyBySelector('.arvosana')
             before(lisääSuoritus.lisääSuoritus)
             describe('Käyttöliittymän tila', function() {
               it('Näytetään uusi suoritus', function() {
@@ -1566,8 +1568,6 @@ describe('Perusopetus', function() {
               })
             })
             describe('Annettaessa oppiaineelle arvosana', function() {
-              var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
-              var arvosana = äidinkieli.propertyBySelector('.arvosana')
               before(editor.edit, arvosana.selectValue('5'), editor.saveChanges)
               it('muutettu arvosana näytetään', function() {
                 expect(arvosana.getValue()).to.equal('5')
@@ -1576,31 +1576,18 @@ describe('Perusopetus', function() {
                 expect(äidinkieli.elem().hasClass('valmis')).to.equal(true)
               })
 
-              describe('Siirrettäessä suoritus KESKEN-tilaan', function() {
-                before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+              describe('Poistettaessa arvosana', function() {
+                before(editor.edit, opinnot.expandAll, arvosana.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
                 it('Arvosana poistetaan', function() {
                   // Koko arvosanataulukko piilotetaan, koska kaikki oppiaineet KESKEN-tilassa
                   expect(opinnot.oppiaineet.isVisible()).to.equal(false)
-                })
-
-                describe('Siirrettäessä VALMIS-tilaan ilman arvosanaa', function() {
-                  before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus valmis'))
-                  describe('Käyttöliittymän tila', function( ){
-                    it('Tallennus on estetty', function() {
-                      expect(editor.canSave()).to.equal(false)
-                    })
-                  })
-                  describe('Lisättäessä arvosana', function() {
-                    before(arvosana.selectValue('5'))
-                    it('Tallennus on sallittu', function() {
-                      expect(editor.canSave()).to.equal(true)
-                    })
-                  })
                 })
               })
             })
 
             describe('Merkitseminen valmiiksi', function() {
+              before(editor.edit)
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
                 it('Tila on "kesken"', function() {
@@ -1660,15 +1647,18 @@ describe('Perusopetus', function() {
                       describe('Kun merkitään keskeytyneeksi', function() {
                         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
 
-                        before(opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), tilaJaVahvistus.merkitseKeskeytyneeksi)
-
+                        before(
+                          opinnot.expandAll,
+                          arvosana.selectValue('Ei valintaa'),
+                          tilaJaVahvistus.merkitseKeskeytyneeksi
+                        )
 
                         it('Tila on "keskeytynyt"', function() {
                           expect(tilaJaVahvistus.text()).to.equal('Suoritus : KESKEYTYNYT')
                         })
 
                         it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
-                          expect(äidinkieli.property('tila').getValue()).to.equal('Suoritus keskeytynyt')
+                          expect(äidinkieli.elem().hasClass('keskeytynyt')).to.equal(true)
                         })
                       })
                     })

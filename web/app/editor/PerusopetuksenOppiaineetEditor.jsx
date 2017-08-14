@@ -26,7 +26,7 @@ import {
   pushRemoval
 } from './EditorModel'
 import {sortGrades} from '../sorting'
-import {fixArvosana, fixTila, hasArvosana, lastArviointiLens, suoritusKesken, suoritusValmis} from './Suoritus'
+import {fixTila, suoritusKesken, suoritusValmis} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
@@ -183,13 +183,13 @@ let expandableProperties = (model) => {
   let oppiaine = modelLookup(model, 'koulutusmoduuli')
 
   let extraPropertiesFilter = p => {
-    if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'tila', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
-    if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero'].includes(p.key)) return false // these are never shown
+    if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
+    if (['koulutusmoduuli', 'arviointi', 'tila', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero'].includes(p.key)) return false // these are never shown
     return shouldShowProperty(model.context)(p)
   }
 
   return modelProperties(oppiaine)
-    .concat(modelProperties(fixArvosana(model)))
+    .concat(modelProperties(model))
     .filter(extraPropertiesFilter)
 
 }
@@ -220,7 +220,7 @@ export class OppiaineenSuoritusEditor extends React.Component {
 
       </td>
       <td className="arvosana">
-        <span className="value"><ArvosanaEditor model={ lensedModel(fixTila(model), lastArviointiLens) } /></span>
+        <span className="value"><ArvosanaEditor model={ model } /></span>
       </td>
       {
         showLaajuus && (<td className="laajuus">
@@ -260,32 +260,39 @@ export class OppiaineenSuoritusEditor extends React.Component {
 }
 
 OppiaineenSuoritusEditor.validateModel = (m) => {
-  if (suoritusValmis(m) && !hasArvosana(m)) {
-    return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
-  }
   if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
     return [{key: 'osasuorituksenTilla', message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}]
   }
 }
 
 const ArvosanaEditor = ({model}) => {
-  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model})), 'arvosana').startWith([])
+  model = fixTila(model)
+  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model: modelLookup(model, 'arviointi.-1')})), 'arvosana').startWith([])
   let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
   return (<span>{
     alternativesP.map(alternatives => {
-      let arvosanaLens = modelLens('arvosana')
+      let arvosanaLens = modelLens('arviointi.-1.arvosana')
       let coolLens = L.lens(
-        (m) => L.get(arvosanaLens, m),
+        (m) => {
+          return L.get(arvosanaLens, m)
+        },
         (v, m) => {
-          let found = alternatives.find(alt => {
-            return modelData(alt, 'arvosana').koodiarvo == modelData(v).koodiarvo
-          })
-          return modelSetValue(m, found.value)
+          if (modelData(v)) {
+            // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
+            let valittuKoodiarvo = modelData(v).koodiarvo
+            let found = alternatives.find(alt => {
+              return modelData(alt, 'arvosana').koodiarvo == valittuKoodiarvo
+            })
+            return modelSetValue(m, found.value, 'arviointi.-1')
+          } else {
+            // Ei arvosanaa -> poistetaan arviointi kokonaan
+            return modelSetValue(m, undefined, 'arviointi')
+          }
         }
       )
       let arvosanaModel = lensedModel(model, coolLens)
       // Use key to ensure re-render when alternatives are supplied
-      return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP}/>
+      return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
     })
   }</span>)
 }
