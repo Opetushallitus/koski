@@ -10,6 +10,7 @@ import fi.oph.scalaschema.annotation._
 @Description("IB-tutkinnon opiskeluoikeus")
 @Title("IB-tutkinnon opiskeluoikeus")
 case class IBOpiskeluoikeus(
+  id: Option[Int] = None,
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
@@ -25,7 +26,7 @@ case class IBOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi"),
   override val lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
-  override def withOidAndVersion(oid: Option[String], versionumero: Option[Int]) = this.copy(oid = oid, versionumero = versionumero)
+  override def withIdAndVersion(id: Option[Int], oid: Option[String], versionumero: Option[Int]) = this.copy(id = id, oid = oid, versionumero = versionumero)
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[IBPäätasonSuoritus]])

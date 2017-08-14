@@ -104,7 +104,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         val oo = opiskeluoikeus
 
         if (result.changed) {
-          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.oid, result.data, oo.luokka.orElse(oo.ryhmä), nimitiedotJaOid)
+          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, oo.luokka.orElse(oo.ryhmä), nimitiedotJaOid)
           perustiedotIndexer.update(perustiedot)
         }
 
@@ -119,7 +119,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       case Some(oppija) =>
         findFunc(oppija.oid) match {
           case Nil => notFound
-          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet))
+          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet.sortBy(_.id)))
         }
       case None => notFound
     }

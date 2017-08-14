@@ -41,7 +41,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
             patch.apply(current)
           }
           try {
-            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), oid, version))
+            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), diffs.head.opiskeluoikeusId, oid, version))
           } catch {
             case e: Exception =>
               logger.error(e)(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui")

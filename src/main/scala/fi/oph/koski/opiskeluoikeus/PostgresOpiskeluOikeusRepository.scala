@@ -36,7 +36,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluoikeus)))
   }
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
@@ -81,8 +81,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       }
     }
 
-    if (!allowUpdate && opiskeluoikeus.oid.isDefined) {
-      Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja oid-kenttään"))
+    if (!allowUpdate && (opiskeluoikeus.oid.isDefined || opiskeluoikeus.id.isDefined)) {
+      Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja oid ja id-kenttiin"))
     } else {
       createOrUpdateWithRetry
     }
@@ -150,7 +150,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
-        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withOidAndVersion(oid = Some(oidGenerator.generateOid(oppijaOid)), versionumero = None)
+        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(oid = Some(oidGenerator.generateOid(oppijaOid)), id = None, versionumero = None)
         val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row

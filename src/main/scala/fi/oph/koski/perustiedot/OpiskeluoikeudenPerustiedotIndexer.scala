@@ -53,20 +53,20 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
    *
    * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
    */
-  def updateBulk(items: Seq[Oidillinen], replaceDocument: Boolean): Either[HttpStatus, Int] = {
+  def updateBulk(items: Seq[WithId], replaceDocument: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }
     val jsonLines: Seq[Map[String, Any]] = items.flatMap { perustiedot =>
       List(
-        Map("update" -> Map("_id" -> perustiedot.oid, "_index" -> "koski", "_type" -> "perustiedot")),
+        Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
     }
     val response = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
     val errors = (response \ "errors").extract[Boolean]
     if (errors) {
-      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.oid)}: ${Json.writePretty(response)}"
+      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${Json.writePretty(response)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {

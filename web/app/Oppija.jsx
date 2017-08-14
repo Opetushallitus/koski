@@ -114,7 +114,6 @@ const createState = (oppijaOid) => {
     let opiskeluoikeusOid = oppijaBeforeSave.opiskeluoikeusOid
     let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
     let opiskeluoikeus = opiskeluoikeudet.find(x => x.oid == opiskeluoikeusOid)
-    console.log(opiskeluoikeus)
 
     let oppijaUpdate = {
       henkilö: {oid: oppijaOid},

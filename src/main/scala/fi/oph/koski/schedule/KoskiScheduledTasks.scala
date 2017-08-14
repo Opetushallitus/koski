@@ -42,7 +42,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
     if (foundFromKoski.isEmpty) {
       HenkilöUpdateContext(lastModified)
     } else {
-      val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(foundFromKoski).map(p => Henkilötiedot(p.oid, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
+      val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(foundFromKoski).map(p => Henkilötiedot(p.id, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
       application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {
         case Right(updatedCount) => {
           logger.info(s"Updated ${foundFromKoski.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
