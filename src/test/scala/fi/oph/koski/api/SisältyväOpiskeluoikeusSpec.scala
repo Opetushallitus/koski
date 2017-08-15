@@ -1,5 +1,8 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
@@ -7,22 +10,24 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluOikeudet
 
-class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification {
+class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
-      val original: AmmatillinenOpiskeluoikeus = päivitäId(createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja))
+      val original: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja)
 
-      val sisältyvä: AmmatillinenOpiskeluoikeus = päivitäId(defaultOpiskeluoikeus.copy(
+      val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
         suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
-      ))
+      )
     }
 
     "Kun sisältävä opiskeluoikeus löytyy Koskesta" - {
-      lazy val sisältyvä = päivitäId(createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja))
+      lazy val sisältyvä = createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja)
       "Lisäys onnistuu" in {
         sisältyvä.oid.isDefined should equal(true)
       }
@@ -49,13 +54,13 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       }
 
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(fixture.original.id.get)
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyvä.id.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(opiskeluoikeusId(fixture.original).get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.stadinAmmattiopistoTallentaja).map(_.id) should contain(opiskeluoikeusId(sisältyvä).get)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatio ei löydä sisältävää opiskeluoikeutta hakutoiminnolla" in {
         searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id) should equal(Nil)
-        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.omniaKatselija).map(_.id) should contain(sisältyvä.id.get)
+        searchForPerustiedot(Map("toimipiste" -> MockOrganisaatiot.omnia), MockUsers.omniaKatselija).map(_.id) should contain(opiskeluoikeusId(sisältyvä).get)
       }
     }
 
@@ -77,4 +82,9 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       }
     }
   }
+
+  def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
+    oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).headOption)
+
+  override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 }

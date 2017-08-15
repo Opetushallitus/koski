@@ -44,12 +44,12 @@ object Tables {
     }
     def readData(data: JValue, id: Int, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       SchemaValidatingExtractor.extract[Opiskeluoikeus](data) match {
-        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), oid = Some(oid), versionumero = Some(versionumero))
+        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withOidAndVersion(oid = Some(oid), versionumero = Some(versionumero))
         case Left(errors) => throw new RuntimeException("Deserialization errors: " + errors)
       }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, oid = None, versionumero = None))
+      val data = Json.toJValue(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
       (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
     }
   }

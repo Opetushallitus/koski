@@ -119,7 +119,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       case Some(oppija) =>
         findFunc(oppija.oid) match {
           case Nil => notFound
-          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet.sortBy(_.id)))
+          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet))
         }
       case None => notFound
     }

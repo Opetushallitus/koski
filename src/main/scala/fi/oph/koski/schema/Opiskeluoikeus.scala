@@ -12,8 +12,6 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-object OpiskeluoikeusSerializer extends FieldSerializer[Opiskeluoikeus](FieldSerializer.ignore("id"))
-
 trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiittyvä {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
@@ -21,8 +19,6 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Hidden
   @Discriminator
   def tyyppi: Koodistokoodiviite
-  @Hidden
-  def id: Option[Int]
   @Description("Opiskeluoikeuden yksilöivä tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän oid:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")
   @Hidden
@@ -63,8 +59,8 @@ trait OpiskeluoikeudenLisätiedot
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   @MinItems(1)
   def suoritukset: List[PäätasonSuoritus]
-  def withIdAndVersion(id: Option[Int], oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
-  def withVersion(version: Int) = this.withIdAndVersion(this.id, this.oid, Some(version))
+  def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
+  def withVersion(version: Int) = this.withOidAndVersion(this.oid, Some(version))
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
