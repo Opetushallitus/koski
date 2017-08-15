@@ -31,7 +31,7 @@ export default class Versiohistoria extends BaconComponent {
             history.map((version, i) =>
               (<tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
                 <td className="versionumero">{'v' + version.versionumero}</td>
-                <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusOidd}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
+                <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusOid}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
               </tr>)
             )
           }</tbody></table>)
