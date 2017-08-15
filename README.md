@@ -290,22 +290,17 @@ Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedost
 (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina,
 esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
-### Henkilötiedot
+### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
-Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/koski/oppija/HenkilöRepository.scala)
+Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://confluence.csc.fi/display/OPHPALV/Oppijanumerorekisteri) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
 
-Kun Koskessa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluoikeusRepository.scala#L8)
-Koskessa olevien opinto-oikeuksien perusteella.
+Kun käyttäjä hakee henkilön tietoja esimerkiksi sukunimellä, hakee Koski listan mahdollisista henkilöistä ensin oppinumerorekisteristä, jonka jälkeen Koski suodattaa hakutuloksen Koskessa olevien opinto-oikeuksien perusteella ([toteutus](src/main/scala/fi/oph/koski/henkilo/HenkilötiedotFacade.scala)).
 
-Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/koski/user/RemoteUserRepository.scala)
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Koski hakee henkilön organisaatioliitokset [organisaatiopalvelusta](https://confluence.csc.fi/display/OPHPALV/Organisaatiotietojen+hallintapalvelu) ja käyttöoikeudet [käyttöoikeuspalvelusta](https://confluence.csc.fi/pages/viewpage.action?pageId=68725146).
 
-Esimerkkihaku: haetaan organisaatiopuurakenne.
+Esimerkki [organisaatiohierarkian](https://testi.virkailija.opintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 
-> https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
-
-Henkilöpalvelun swagger:
-
-> https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
+> curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
 
 ### ePerusteet
 
