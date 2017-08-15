@@ -57,7 +57,7 @@ describe('Perusopetus', function() {
             'Oppiaine Arvosana Laajuus\n' +
             'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
@@ -121,7 +121,7 @@ describe('Perusopetus', function() {
             'Oppiaine Arvosana Laajuus\n' +
             'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
@@ -187,7 +187,6 @@ describe('Perusopetus', function() {
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
             'Perusopetuksen aloittamista lykätty kyllä\n' +
-            'Aloittanut ennen oppivelvollisuutta ei\n' +
             'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
             'Tukimuodot Osa-aikainen erityisopetus\n' +
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
@@ -1292,7 +1291,7 @@ describe('Perusopetus', function() {
             'Oppiaine Arvosana Laajuus\n' +
             'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
@@ -1640,6 +1639,8 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun painetaan Lisää-nappia', function() {
+            var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+            var arvosana = äidinkieli.propertyBySelector('.arvosana')
             before(lisääSuoritus.lisääSuoritus)
             describe('Käyttöliittymän tila', function() {
               it('Näytetään uusi suoritus', function() {
@@ -1659,8 +1660,6 @@ describe('Perusopetus', function() {
               })
             })
             describe('Annettaessa oppiaineelle arvosana', function() {
-              var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
-              var arvosana = äidinkieli.propertyBySelector('.arvosana')
               before(editor.edit, arvosana.selectValue('5'), editor.saveChanges)
               it('muutettu arvosana näytetään', function() {
                 expect(arvosana.getValue()).to.equal('5')
@@ -1669,31 +1668,18 @@ describe('Perusopetus', function() {
                 expect(äidinkieli.elem().hasClass('valmis')).to.equal(true)
               })
 
-              describe('Siirrettäessä suoritus KESKEN-tilaan', function() {
-                before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+              describe('Poistettaessa arvosana', function() {
+                before(editor.edit, opinnot.expandAll, arvosana.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
                 it('Arvosana poistetaan', function() {
                   // Koko arvosanataulukko piilotetaan, koska kaikki oppiaineet KESKEN-tilassa
                   expect(opinnot.oppiaineet.isVisible()).to.equal(false)
-                })
-
-                describe('Siirrettäessä VALMIS-tilaan ilman arvosanaa', function() {
-                  before(editor.edit, opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus valmis'))
-                  describe('Käyttöliittymän tila', function( ){
-                    it('Tallennus on estetty', function() {
-                      expect(editor.canSave()).to.equal(false)
-                    })
-                  })
-                  describe('Lisättäessä arvosana', function() {
-                    before(arvosana.selectValue('5'))
-                    it('Tallennus on sallittu', function() {
-                      expect(editor.canSave()).to.equal(true)
-                    })
-                  })
                 })
               })
             })
 
             describe('Merkitseminen valmiiksi', function() {
+              before(editor.edit)
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
                 it('Tila on "kesken"', function() {
@@ -1753,15 +1739,18 @@ describe('Perusopetus', function() {
                       describe('Kun merkitään keskeytyneeksi', function() {
                         var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
 
-                        before(opinnot.expandAll, äidinkieli.property('tila').setValue('Suoritus kesken'), tilaJaVahvistus.merkitseKeskeytyneeksi)
-
+                        before(
+                          opinnot.expandAll,
+                          arvosana.selectValue('Ei valintaa'),
+                          tilaJaVahvistus.merkitseKeskeytyneeksi
+                        )
 
                         it('Tila on "keskeytynyt"', function() {
                           expect(tilaJaVahvistus.text()).to.equal('Suoritus : KESKEYTYNYT')
                         })
 
                         it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
-                          expect(äidinkieli.property('tila').getValue()).to.equal('Suoritus keskeytynyt')
+                          expect(äidinkieli.elem().hasClass('keskeytynyt')).to.equal(true)
                         })
                       })
                     })
@@ -1800,60 +1789,82 @@ describe('Perusopetus', function() {
                             opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
                             tilaJaVahvistus.merkitseValmiiksi,
                             dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
-                            myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
                             dialogEditor.property('päivä').setValue('11.4.2017'),
-                            dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk'),
-                            dialog.merkitseValmiiksi
+                            dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk')
                           )
 
-                          it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
-                            // implicitly tested
+                          describe('Myöntäjät-lista', function() {
+                            it('Edellisen suorituksen vahvistaja löytyy listalta', function() {
+                              expect(myöntäjät.getOptions()).to.deep.equal(['Reijo Reksi, rehtori', 'Lisää henkilö'])
+                            })
                           })
 
-                          it('Tila on "valmis" ja vahvistus näytetään', function() {
-                            expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
-                          })
+                          describe('Kun jatketaan valmiiksi merkintää käyttäen edellistä myöntäjä-henkilöä', function() {
+                            before(
+                              myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
+                              dialog.merkitseValmiiksi
+                            )
 
-                          describe('Seuraavan luokka-asteen lisäyksessä', function() {
-                            before(opinnot.lisääSuoritus)
-                            it('On mahdollista lisätä sama luokka-aste uudelleen', function() {
-                              expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
+                            it('Tila on "valmis" ja vahvistus näytetään', function() {
+                              expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
                             })
 
-                            describe('Lisättäessä toinen 2. luokan suoritus', function() {
-                              before(lisääSuoritus.property('luokka').setValue('2x'), lisääSuoritus.lisääSuoritus)
-                              it('Uusi suoritus tulee valituksi', function() {
-                                expect(editor.property('luokka').getValue()).to.equal('2x')
+                            describe('Seuraavan luokka-asteen lisäyksessä', function() {
+                              before(opinnot.lisääSuoritus)
+                              it('On mahdollista lisätä sama luokka-aste uudelleen', function() {
+                                expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
                               })
 
-                              describe('Tallennettaessa', function() {
-                                before(editor.saveChanges)
-                                it('Uusi suoritus on edelleen valittu', function() {
+                              describe('Lisättäessä toinen 2. luokan suoritus', function() {
+                                before(lisääSuoritus.property('luokka').setValue('2x'), lisääSuoritus.lisääSuoritus)
+                                it('Uusi suoritus tulee valituksi', function() {
                                   expect(editor.property('luokka').getValue()).to.equal('2x')
                                 })
 
-                                it('Uusi suoritus on täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
-                                  expect(opinnot.suoritusTabIndex(1)).to.equal(1)
-                                })
-
-                                describe('Kun kaikki luokka-asteet on lisätty', function() {
-                                  before(editor.edit)
-                                  for (var i = 3; i <= 9; i++) {
-                                    before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
-                                  }
-
-                                  it('Suorituksia ei voi enää lisätä', function() {
-                                    expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                                describe('Tallennettaessa', function() {
+                                  before(editor.saveChanges)
+                                  it('Uusi suoritus on edelleen valittu', function() {
+                                    expect(editor.property('luokka').getValue()).to.equal('2x')
                                   })
 
-                                  it('9. luokalle ei esitäytetä oppiaineita', function() {
-                                    expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+                                  it('Uusi suoritus on täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
+                                    expect(opinnot.suoritusTabIndex(1)).to.equal(1)
                                   })
 
-                                  describe('Uudempi 2.luokan suoritus', function() {
-                                    before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
-                                    it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
-                                      expect(editor.property('luokka').getValue()).to.equal('2x')
+                                  describe('Kun kaikki luokka-asteet on lisätty', function() {
+                                    before(editor.edit)
+                                    for (var i = 3; i <= 9; i++) {
+                                      before(opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
+                                    }
+
+                                    it('Suorituksia ei voi enää lisätä', function() {
+                                      expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                                    })
+
+                                    it('9. luokalle ei esitäytetä oppiaineita', function() {
+                                      expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([])
+                                    })
+
+                                    describe('Uudempi 2.luokan suoritus', function() {
+                                      before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
+                                      it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
+                                        expect(editor.property('luokka').getValue()).to.equal('2x')
+                                      })
+                                    })
+
+                                    describe('Kun poistetaan myöntäjä listalta', function() {
+                                      before(
+                                        opinnot.valitseSuoritus(1, '2. vuosiluokka'),
+                                        editor.edit,
+                                        opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                                        tilaJaVahvistus.merkitseValmiiksi,
+                                        myöntäjät.removeFromDropdown('Reijo Reksi'),
+                                        dialog.peruuta,
+                                        tilaJaVahvistus.merkitseValmiiksi
+                                      )
+                                      it('Uudelleen avattaessa myöntäjää ei enää ole listalla', function() {
+                                        expect(myöntäjät.getOptions()).to.deep.equal(['Lisää henkilö'])
+                                      })
                                     })
                                   })
                                 })
@@ -2149,12 +2160,7 @@ describe('Perusopetus', function() {
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
-          'Perusopetuksen aloittamista lykätty ei\n' +
-          'Aloittanut ennen oppivelvollisuutta ei\n' +
-          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
-          'Vuosiluokkiin sitoutumaton opetus ei\n' +
-          'Vammainen ei\n' +
-          'Vaikeasti vammainen ei')
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016')
       })
 
       it('näyttää suorituksen tiedot', function() {

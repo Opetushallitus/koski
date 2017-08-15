@@ -338,11 +338,7 @@ describe('Ammatillinen koulutus', function() {
           'Ulkomaanjaksot 22.6.2017 —\n' +
             'Maa Algeria\n' +
             'Kuvaus Testing\n' +
-          'Vaikeasti vammainen ei\n' +
-          'Vammainen ja avustaja ei\n' +
           'Majoitus 22.6.2017 — 1.1.2099\n' +
-          'Henkilöstökoulutus ei\n' +
-          'Vankilaopetuksessa ei\n' +
           'Osa-aikaisuus 50 %\n' +
           'Poissaolojaksot 22.6.2017 —\n' +
             'Syy Oma ilmoitus')
@@ -399,14 +395,14 @@ describe('Ammatillinen koulutus', function() {
                 })
               })
 
-              describe('Suorituksen siirtäminen KESKEN-tilaan', function() {
+              describe('Arvosanan poistaminen', function() {
                 before(
                   editor.edit,
-                  opinnot.expandAll,
-                  opinnot.tutkinnonOsat().tutkinnonOsa(0).property('tila').setValue('Suoritus kesken')
+                  opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
+                  editor.saveChanges
                 )
-                it('Poistaa arvioinnin', function() {
-                  expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').getValue()).to.equal('Ei valintaa')
+                it('Tallennus onnistuu ja suoritus siirtyy tilaan KESKEN', function() {
+                  expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).tila()).to.equal('Suoritus kesken')
                 })
               })
 
@@ -421,14 +417,29 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
-          before(
-            editor.edit,
-            opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
-          )
+          describe('Valtakunnallinen tutkinnon osa', function() {
+            before(
+              editor.edit,
+              opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+            )
 
-          describe('Lisäyksen jälkeen', function () {
-            it('lisätty osa näytetään', function() {
-              expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+            describe('Lisäyksen jälkeen', function () {
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+              })
+
+              describe('Kun lisätään paikallinen tutkinnon osa', function() {
+                before(
+                  editor.edit,
+                  opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Hassut temput')
+                )
+
+                describe('Lisäyksen jälkeen', function () {
+                  it('lisätty osa näytetään', function() {
+                    expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                  })
+                })
+              })
             })
           })
         })

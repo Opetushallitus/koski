@@ -162,11 +162,18 @@ export const modelSetValues = (model, pathsAndValues) => {
 let modelValueLens = ({model} = {}) => L.lens(
   (m) => {
     if (!m) {
-      throw new Error('model missing')
+      return undefined
     }
     return m.value
   },
   (v, m) => {
+    if (!m) {
+      if (v) {
+        throw new Error('trying to set value of null model to a non-null value', v)
+      } else {
+        return m
+      }
+    }
     let plainOptional = (m.optional && !m.type)
     let usedModel = plainOptional ? getUsedModelForOptionalModel(m, {model}) : m
     return L.set('value', v, usedModel)

@@ -7,7 +7,7 @@ import {navigateWithQueryParams, currentLocation} from '../location'
 import {parseBool} from '../util'
 import Text from '../Text.jsx'
 
-export const ExpandablePropertiesEditor = ({model, propertyName}) => {
+export const ExpandablePropertiesEditor = ({model, propertyName, propertyFilter = () => true}) => {
   let propertyModel = modelLookup(model, propertyName)
   let edit = model.context.edit
   let paramName = propertyName + '-expanded'
@@ -22,7 +22,7 @@ export const ExpandablePropertiesEditor = ({model, propertyName}) => {
       <a className={expanded ? 'open expandable' : 'expandable'} onClick={toggleOpen}><Text name={modelProperty(model, propertyName).title}/></a>
       { expanded ?
         <div className="value">
-          <PropertiesEditor model={wrappedModel} />
+          <PropertiesEditor model={wrappedModel} propertyFilter={propertyFilter}/>
         </div> : null
       }
     </div> : null

@@ -78,7 +78,7 @@ case class ModelBuilderContext(
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
-  override def getPrototypeData = 0
+  override def getPrototypeData = Float.NaN
 }
 
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {

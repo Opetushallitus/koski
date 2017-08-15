@@ -1,10 +1,10 @@
 package fi.oph.koski.preferences
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.editor.KeyValue
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import org.json4s.JValue
 
 class PreferencesServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   private val service = PreferencesService(application.masterDatabase.db)
@@ -32,3 +32,5 @@ class PreferencesServlet(val application: KoskiApplication) extends ApiServlet w
     renderEither(service.get(organisaatioOid, `type`)(koskiSession))
   }
 }
+
+case class KeyValue(key: String, value: JValue)

@@ -7,16 +7,18 @@ import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
 import {t} from '../i18n.js'
+import {parseBool} from '../util'
 
-export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives }) => {
+export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption }) => {
   if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional({model})
+  showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
   let classNameP = alternativesP.startWith([]).map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
 
-  let alternativesWithZeroValueP = alternativesP.map(xs => wrappedModel.optional ? R.prepend(zeroValue, xs) : xs)
+  let alternativesWithZeroValueP = alternativesP.map(xs => showEmptyOption ? R.prepend(zeroValue, xs) : xs)
 
   let defaultValue = wrappedModel.value || zeroValue
 

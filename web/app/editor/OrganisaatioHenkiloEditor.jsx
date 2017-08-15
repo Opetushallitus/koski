@@ -5,23 +5,30 @@ import * as L from 'partial.lenses'
 import {Editor} from './Editor.jsx'
 import Dropdown from '../Dropdown.jsx'
 import {pushModelValue, modelData, modelSetValue} from './EditorModel'
-import {getOrganizationalPreferences} from '../organizationalPreferences'
+import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {t} from '../i18n'
+
+let preferenceKey = 'myöntäjät'
+let nimi = h => modelData(h, 'nimi')
+let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + t(modelData(h, 'titteli')))
+let queryFilter = q => o => nimi(o).toLowerCase().indexOf(q.toLowerCase()) >= 0
+var newItemLens = L.compose('value', 'newItem')
 
 export const OrganisaatioHenkilöEditor = ({model}) => {
   let query = Atom('')
+  let removeBus = Bacon.Bus()
 
   let myöntäjäOrganisaatio = model.context.myöntäjäOrganisaatio
   let organisaatioOid = modelData(myöntäjäOrganisaatio).oid
 
-  let nimi = h => modelData(h, 'nimi')
-  let nimiJaTitteli = h => nimi(h) && (modelData(h, 'nimi') + ', ' + t(modelData(h, 'titteli')))
-  let queryFilter = q => o => nimi(o).toLowerCase().indexOf(q.toLowerCase()) >= 0
-  var newItemLens = L.compose('value', 'newItem')
   let newItem = modelSetValue(L.set(newItemLens, true, model), myöntäjäOrganisaatio.value, 'organisaatio')
   let isNewItem = (o) => L.get(newItemLens, o)
-  let kaikkiMyöntäjätP = getOrganizationalPreferences(organisaatioOid, 'myöntäjät')
-    .map(myöntäjät => myöntäjät.map(m => modelSetValue(model, m.value)))
+
+  let myöntäjätPreferenceListP = getOrganizationalPreferences(organisaatioOid, preferenceKey)
+    .concat(removeBus.flatMap(poistettavaNimi => deleteOrganizationalPreference(organisaatioOid, preferenceKey, poistettavaNimi)))
+
+  let kaikkiMyöntäjätP = myöntäjätPreferenceListP
+    .map('.map', m => modelSetValue(model, m.value))
 
   let myöntäjätP = Bacon.combineWith(kaikkiMyöntäjätP, query, (xs, q) => !q ? xs : xs.filter(queryFilter(q)))
     .startWith([])
@@ -35,6 +42,8 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
       selected={model}
       onSelectionChanged={h => pushModelValue(model, h.value)}
       newItem={newItem}
+      isRemovable={() => true}
+      onRemoval={poistettavaNimi => removeBus.push(poistettavaNimi)}
     />
     {
       isNewItem(model) && (<span className="uusi-henkilo">

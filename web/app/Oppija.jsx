@@ -82,7 +82,7 @@ const createState = (oppijaOid) => {
 
   const shouldThrottle = (batch) => {
     let model = getModelFromChange(batch[0])
-    var willThrottle = model && (model.type == 'string' || model.type == 'date' || model.oneOfClass == 'localizedstring')
+    var willThrottle = model && (model.type == 'string' || model.type == 'date' || model.type == 'number' || model.oneOfClass == 'localizedstring')
     return willThrottle
   }
 

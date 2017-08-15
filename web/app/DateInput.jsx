@@ -15,6 +15,8 @@ class DateInput extends React.Component {
     super(props)
     let value = props.value
     this.state = {value: value ? formatFinnishDate(value) : ''}
+    this.handleClickOutside = this.handleClickOutside.bind(this)
+    this.removeListeners = this.removeListeners.bind(this)
   }
 
   render() {
@@ -38,7 +40,7 @@ class DateInput extends React.Component {
       handleDaySelection(date, valid, stringInput)
     }
 
-    let handleDayClick = (e, date, { disabled }) => {
+    let handleDayClick = (date, { disabled }) => {
       if (disabled) {
         return
       }

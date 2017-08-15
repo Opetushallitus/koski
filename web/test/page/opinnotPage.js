@@ -163,6 +163,9 @@ function TutkinnonOsat(groupId) {
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
       return _.merge({
+        tila: function() {
+          return findSingle('.tila', el).attr('title')
+        },
         nimi: function() {
           return findSingle('.nimi', el).text()
         },
@@ -396,6 +399,9 @@ function MerkitseValmiiksiDialog() {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
       triggerEvent(buttonElem(), 'click')
       return wait.forAjax()
+    },
+    peruuta: function() {
+      triggerEvent(findSingle('.peruuta', elem), 'click')
     },
     organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
     editor: Editor(elem),
