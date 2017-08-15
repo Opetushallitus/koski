@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation._
+import org.json4s.FieldSerializer
 
 object Opiskeluoikeus {
   type Id = Int
@@ -10,6 +11,8 @@ object Opiskeluoikeus {
   type Versionumero = Int
   val VERSIO_1 = 1
 }
+
+object OpiskeluoikeusSerializer extends FieldSerializer[Opiskeluoikeus](FieldSerializer.ignore("id"))
 
 trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiittyvä {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")

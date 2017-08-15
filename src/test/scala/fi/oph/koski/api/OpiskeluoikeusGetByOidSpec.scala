@@ -13,6 +13,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
           verifyResponseStatus(200)
+          readOpiskeluoikeus.id should equal(None)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
