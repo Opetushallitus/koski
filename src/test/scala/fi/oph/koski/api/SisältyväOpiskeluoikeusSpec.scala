@@ -12,17 +12,17 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
-      val original: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja)
+      val original: AmmatillinenOpiskeluoikeus = päivitäId(createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja))
 
-      val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+      val sisältyvä: AmmatillinenOpiskeluoikeus = päivitäId(defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
         suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
-      )
+      ))
     }
 
     "Kun sisältävä opiskeluoikeus löytyy Koskesta" - {
-      lazy val sisältyvä = createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja)
+      lazy val sisältyvä = päivitäId(createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja))
       "Lisäys onnistuu" in {
         sisältyvä.oid.isDefined should equal(true)
       }
