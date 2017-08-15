@@ -8,13 +8,13 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.schema.HenkilötiedotJaOid
 
-case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) {
+case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusRepository) {
   // Hakee oppijoita kyselyllä. Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus, johon käyttäjällä katseluoikeus
   def findHenkilötiedot(queryString: String)(implicit user: KoskiSession): Seq[HenkilötiedotJaOid] = {
     // TODO: ei löydä nimihaulla henkilöitä, joilla on opiskeluoikeuksia vain Koskessa (vs. Virta, YTR)
     val oppijat: List[HenkilötiedotJaOid] = henkilöRepository.findOppijat(queryString)
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> queryString)))
-    val filtered = OpiskeluoikeusRepository.filterOppijat(oppijat)
+    val filtered = opiskeluoikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
 
