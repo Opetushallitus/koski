@@ -7,6 +7,7 @@ const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
 
 export const navigateTo = function (path, event) {
+  if (event && (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)) return
   const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc

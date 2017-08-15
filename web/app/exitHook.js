@@ -22,17 +22,17 @@ export const checkExitHook = () => {
 }
 
 export const withExitHook = (f, useExitHook = true) => (e) => {
-  e.preventDefault()
   if (useExitHook) {
     if (currentHook) {
       let result = confirm(currentHook({}))
       if (!result) {
+        if (e) e.preventDefault()
         return
       }
     }
     removeExitHook()
   }
-  f(e)
+  return f(e)
 }
 
 export const navigateWithExitHook = (href, useExitHook = true) => withExitHook(e => navigateTo(href, e), useExitHook)
