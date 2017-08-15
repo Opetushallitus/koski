@@ -105,7 +105,7 @@ object KoskiApiOperations extends ApiGroup {
         <p>
           Lisättävä/muokattava opiskeluoikeus tunnistetaan seuraavasti:
           <ol>
-            <li>Jos opiskeluoikeudessa on id-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta</li>
+            <li>Jos opiskeluoikeudessa on oid-kenttä, päivitetään tällä oid:llä löytyvää opiskeluoikeutta</li>
             <li>Jos opiskeluoikeudessa on lähdejärjestelmänId-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
             <li>Jos opiskeluoikeudessa ei ole kumpaakaan em. kentistä, päivitetään samalla oppilaitos-oidilla ja tyypillä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
           </ol>
@@ -162,11 +162,11 @@ object KoskiApiOperations extends ApiGroup {
 
   object opiskeluoikeus extends ApiGroup {
     val getById = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/{id}",
+      "GET", "/koski/api/opiskeluoikeus/{oid}",
       "Palauttaa opiskeluoikeuden tiedot",
       <p>Palauttaa opiskeluoikeuden tiedot</p>,
       Nil,
-      List(PathParameter("id", "Opiskeluoikeuden id", List("8942345"))),
+      List(PathParameter("oid", "Opiskeluoikeuden oid", List("1.2.246.562.15.82898400641"))),
       List(
         KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi.opiskeluoikeudet(0)),
         KoskiErrorCategory.unauthorized,
@@ -192,11 +192,11 @@ object KoskiApiOperations extends ApiGroup {
     ))
 
     val validateById = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/validate/{id}",
+      "GET", "/koski/api/opiskeluoikeus/validate/{oid}",
       "Validoi opiskeluoikeuden datan oikeellisuuden",
       <p>Validoi opiskeluoikeuden datan oikeellisuuden</p>,
       Nil,
-      List(PathParameter("id", "Opiskeluoikeuden id", List("8942345"))),
+      List(PathParameter("oid", "Opiskeluoikeuden oid", List("1.2.246.562.15.82898400641"))),
       List(
         KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, 8942345, List())),
         KoskiErrorCategory.unauthorized,
@@ -206,11 +206,11 @@ object KoskiApiOperations extends ApiGroup {
     ))
 
     val historyById = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_id}",
+      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_oid}",
       "Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset",
       <p></p>,
       Nil,
-      List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", List("354"))),
+      List(PathParameter("opiskeluoikeus_oid", "Opiskeluoikeuden tunniste", List("1.2.246.562.15.82898400641"))),
       List(
         KoskiErrorCategory.ok.searchOk.copy(exampleResponse = List(OpiskeluoikeusHistoryRow(8942345, 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject()))),
         KoskiErrorCategory.unauthorized,
@@ -219,12 +219,12 @@ object KoskiApiOperations extends ApiGroup {
     ))
 
     val historyVersion = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_id}/{versionumero}",
+      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_oid}/{versionumero}",
       "Palauttaa opiskeluoikeuden tiedot tietyssä versiossa",
       <p></p>,
       Nil,
       List(
-        PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", List("354")),
+        PathParameter("opiskeluoikeus_oid", "Opiskeluoikeuden tunniste", List("1.2.246.562.15.82898400641")),
         PathParameter("versionumero", "Opiskeluoikeuden versio", List("2"))
       ),
       List(

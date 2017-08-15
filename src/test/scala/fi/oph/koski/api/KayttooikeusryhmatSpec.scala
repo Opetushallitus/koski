@@ -149,7 +149,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
       val oppija = MockOppijat.tyhjä
-      "ilman opiskeluoikeuden id:tä luodaan uusi opiskeluoikeus" in {
+      "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
         resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
