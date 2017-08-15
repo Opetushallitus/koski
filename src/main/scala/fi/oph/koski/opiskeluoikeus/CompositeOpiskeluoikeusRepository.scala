@@ -3,15 +3,16 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
-import fi.oph.koski.util.PaginationSettings
+
+import scala.collection.mutable.ListBuffer
 
 class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: List[AuxiliaryOpiskeluoikeusRepository]) extends OpiskeluoikeusRepository {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
-    (main :: aux).foldLeft((oppijat, Nil: Seq[HenkilötiedotJaOid])) { case ((left, found), repo) =>
+    (main :: aux).foldLeft((oppijat, ListBuffer.empty[HenkilötiedotJaOid])) { case ((left, found), repo) =>
       val newlyFound = repo.filterOppijat(left)
       val stillLeft = left.diff(newlyFound)
-      (stillLeft, found ++ newlyFound)
-    }._2
+      (stillLeft, found ++= newlyFound)
+    }._2.toList
   }
 
   override def findById(id: Int)(implicit user: KoskiSession) = main.findById(id)
