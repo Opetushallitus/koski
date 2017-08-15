@@ -332,7 +332,7 @@ describe('Perusopetus', function() {
           'Oppiaine Arvosana Laajuus\n' +
           'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
           'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-          'Valinnainen liikunta S 0.5 vuosiviikkotuntia\n' +
+          'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
           'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
           'Tietokoneen hyötykäyttö 9\n' +
           'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
