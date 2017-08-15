@@ -395,6 +395,9 @@ function MerkitseValmiiksiDialog() {
       triggerEvent(buttonElem(), 'click')
       return wait.forAjax()
     },
+    peruuta: function() {
+      triggerEvent(findSingle('.peruuta', elem), 'click')
+    },
     organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
     editor: Editor(elem),
     myöntäjät: Editor(elem).property('myöntäjäHenkilöt'),

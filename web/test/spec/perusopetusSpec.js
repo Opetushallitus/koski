@@ -1706,7 +1706,7 @@ describe('Perusopetus', function() {
                             })
                           })
 
-                          describe('Kun jatketaan valmiiksi merkintää', function() {
+                          describe('Kun jatketaan valmiiksi merkintää käyttäen edellistä myöntäjä-henkilöä', function() {
                             before(
                               myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
                               dialog.merkitseValmiiksi
@@ -1756,6 +1756,21 @@ describe('Perusopetus', function() {
                                       before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
                                       it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
                                         expect(editor.property('luokka').getValue()).to.equal('2x')
+                                      })
+                                    })
+
+                                    describe('Kun poistetaan myöntäjä listalta', function() {
+                                      before(
+                                        opinnot.valitseSuoritus(1, '2. vuosiluokka'),
+                                        editor.edit,
+                                        opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                                        tilaJaVahvistus.merkitseValmiiksi,
+                                        myöntäjät.removeFromDropdown('Reijo Reksi'),
+                                        dialog.peruuta,
+                                        tilaJaVahvistus.merkitseValmiiksi
+                                      )
+                                      it('Uudelleen avattaessa myöntäjää ei enää ole listalla', function() {
+                                        expect(myöntäjät.getOptions()).to.deep.equal(['Lisää henkilö'])
                                       })
                                     })
                                   })

@@ -10,7 +10,7 @@
   "dependencies": {
     "@skidding/react-codemirror": "^1.0.0",
     "bacon.atom": "^4.0.7",
-    "baconjs": "^0.7.94",
+    "baconjs": "^0.7.95",
     "baret": "^1.0.3",
     "codemirror": "^5.28.0",
     "es6-promise": "^4.1.1",
