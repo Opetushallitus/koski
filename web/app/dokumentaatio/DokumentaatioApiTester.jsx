@@ -225,7 +225,7 @@ const ApiOperationStatusCodes = ({errorCategories}) => {
       </tr>
       </thead>
       <tbody>
-      {R.map(ec => <ApiOperationStatusCodeRow errorCategory={ec}/>, errorCategories)}
+      {errorCategories.map((ec, i) => <ApiOperationStatusCodeRow key={i} errorCategory={ec}/>)}
       </tbody>
     </table>
   )
