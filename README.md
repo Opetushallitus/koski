@@ -206,14 +206,18 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 ## Testiympäristö
 
-### URLit
+### Palvelut
 
-Selitys | URL | Muuta
+Kuvaus | URL | Muuta
 --------|-----|-------
-Testiympäristön Koski | https://dev.koski.opintopolku.fi/koski/
-Ympäristöön kuuluvat Opintopolku-palvelun osat | https://dev.koski.opintopolku.fi/authentication-service/swagger/index.html | Esim. henkilöpalvelu
-ePerusteet | https://eperusteet.opintopolku.fi/ | Tuotantoversio
-Koodisto | https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu | Opintopolun QA-ympäristöstä
+Koski | [hallinta-ui](https://dev.koski.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://dev.koski.opintopolku.fi/koski/pulssi) |
+Vanha henkilöpalvelu | [yleiskuvaus](https://confluence.csc.fi/pages/viewpage.action?pageId=68725146) [api](https://dev.koski.opintopolku.fi/authentication-service/swagger/index.html) | Koski käyttää vain [henkilo](https://dev.koski.opintopolku.fi/authentication-service/swagger/index.html#!/henkilo)-resurssia tiedonsiirron virheen lähettämiseksi organistaatiolle.
+Oppijanumerorekisteri | [api](https://dev.koski.opintopolku.fi/oppijanumerorekisteri-service/swagger-ui.html) | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti.
+Käyttöoikeuspalvelu | [yleiskuvaus](https://confluence.csc.fi/pages/viewpage.action?pageId=68725146) [api](https://dev.koski.opintopolku.fi/kayttooikeus-service/swagger-ui.html) | Käyttäjän käyttöoikeusryhmien haku.
+Organisaatiopalvelu | [yleiskuvaus](https://confluence.csc.fi/display/OPHPALV/Organisaatiotietojen+hallintapalvelu) [api](https://dev.koski.opintopolku.fi/organisaatio-service/swagger/index.html) | Organisaation tai -hierarkian haku.
+Koodistopalvelu | [yleiskuvaus](https://confluence.csc.fi/display/OPHPALV/Koodistopalvelu) [api][koodisto-api] [hallinta-ui](https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu) | Koodien ja metatietojen haku ja luonti.
+ePerusteet | [yleiskuvaus](https://confluence.csc.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://confluence.csc.fi/display/oppija/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | Tuotantoversio
+Viestintä / Ryhmäsähköposti | [yleiskuvaus](https://confluence.csc.fi/pages/viewpage.action?pageId=65923709) [api](https://testi.virkailija.opintopolku.fi/ryhmasahkoposti-service/swagger/index.html) |
 
 ### Sovelluksen asennus pilviympäristöön
 
@@ -300,67 +304,49 @@ Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen
 
 Esimerkki [organisaatiohierarkian](https://testi.virkailija.opintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 
-> curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
-
-### ePerusteet
-
-Tällä hetkellä Koskeen voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opiskeluoikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
-ePerusteista ja [Opiskeluoikeuden](src/main/scala/fi/oph/koski/opiskeluoikeus/Opiskeluoikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/koski/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
-
-EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/koski/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala)
-
-EPerusteiden Swagger-dokumentaatio:
-
-> https://eperusteet.opintopolku.fi/eperusteet-service/
-
-Pari testiurlia:
-
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
+    curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
 
 ### Koodistopalvelu
 
 Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) mm. tutkintoihin liittyvien arviointiasteikkojen hakemiseen.
 
-Koodistopalvelun Swagger-dokumentaatio:
-
-> https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
-
-Pari testiurlia Koodistopalveluun:
+Testiurleja ([api][koodisto-api]):
 
 > https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 > https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 
 Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`.
 
+### ePerusteet
+
+Tällä hetkellä Koskeen voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opiskeluoikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
+ePerusteista ja opiskeluoikeuden ([toteutus](src/main/scala/fi/oph/koski/schema/Opiskeluoikeus.scala)) sisältämään tutkinto-osioon tallennetaan tieto ePerusteet-linkityksestä.
+
+ePerusteista haetaan myös tutkinnon hierarkkinen rakenne ([toteutus](src/main/scala/fi/oph/koski/tutkinto/TutkintoRakenne.scala)), joka kuvaa, mistä tutkinnon osista tutkinto koostuu.
+
+Integraation [toteutus](src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala).
+
+Testiurleja ([api][eperusteet-api]):
+
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
+
 ### LDAP
 
 Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 
-### REST-endpointit
+### Virta ja YTR
 
-Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
-
-| URL                                                                   | Käyttötarkoitus                                        |
-|-----------------------------------------------------------------------|--------------------------------------------------------|
-| `GET /authentication-service/resources/henkilo?no=true&count=0&q=${query}`  | Oppijan haku nimellä tai hetulla (oid, nimi, hetu) |
-| `POST /authentication-service/resources/s2s/koski/henkilotByHenkiloOidList`  | Oppijoiden haku oid-listan perusteella (oid, nimi, hetu, äidinkieli, kansalaisuudet) |
-| `POST /authentication-service/resources/s2s/koski/henkilo` | Oppijan luonti tai päivitys |
-| `GET /authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}` | Käyttäjän käyttöoikeusryhmien haku organisaatioittain (organisaatio-oid, ryhmä-id) |
-| `GET /organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}` | Organisaatiohiearkian haku (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
-| `GET /organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}` | Organisaation hakeminen oppilaitosnumerolla (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
-| `GET /koodisto-service/rest/codeelement/codes/${koodisto.koodistoUri}/${koodisto.versio} ` | Koodiston koodien haku (koodiuri, koodiarvo, nimi, lyhytnimi, kuvaus, versio, voimassaalkupvm) |
-| `GET /koodisto-service/rest/codes/${koodisto} ` | Koodiston tietojen haku (koodistouri, versio, nimi, kuvaus, koodistoryhmä, voimassaalkupvm) |
+Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta](https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu) ([api-dokumentaatio](https://confluence.csc.fi/display/VIRTA/WS-rajapinta)) ja Ylioppilastutkintorekisteristä.
 
 ## Rajapinta-dokumentaatio
 
-Koski-järjestelmän rajapinta-dokumentaatio generoidaan lähdekoodista sekä testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
+Koski-järjestelmän [rajapinta-dokumentaatio][koski-api] generoidaan lähdekoodista sekä testidatasta.
 
-> https://dev.koski.opintopolku.fi/koski/documentation
+JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia [muutoksia](https://github.com/Opetushallitus/json-schema-viewer).
 
-JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia.
-Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
-
-> https://github.com/Opetushallitus/json-schema-viewer
+[koski-api]: https://dev.koski.opintopolku.fi/koski/documentation
+[koodisto-api]: https://dev.koski.opintopolku.fi/koodisto-service/swagger/index.html
+[eperusteet-api]: https://eperusteet.opintopolku.fi/eperusteet-service/
