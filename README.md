@@ -1,15 +1,13 @@
 # Koski
 
 Koski tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin:
-
-> https://confluence.csc.fi/display/OPHPALV/Koski
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan [wikiin](https://confluence.csc.fi/display/OPHPALV/Koski).
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
 
 Koski on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. Koski-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
 
-Huom! Koski-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
+*Huom!* Koski-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
 
 ## Käsitteet
 
@@ -35,20 +33,20 @@ tarpeen mukaan.
 - Elasticsearch 5.1.1 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
-  - Scalatra web framework
-  - Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjasto
-  - Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
-  - Maven build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
-  - Mvn-riippuvuuksien lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
+  - Scalatra-web-framework
+  - [Slick](http://slick.typesafe.com/doc/3.0.1/index.html)-relaatiokantakirjasto
+  - Flyway-migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
+  - Maven-build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
+  - Maven-riippuvuuksien lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
   - Integraatiot Opintopolku-palveluihin, kuten organisaatio- ja henkilöpalveluun REST-rajpinnoilla, käyttäen http4s-clienttiä
 - Web-sovelluksen frontend-teknologiat
-  - NPM riippuvuuksien hakuun
-  - Webpack frontend bundlen rakentamiseen
+  - npm riippuvuuksien hakuun
+  - Webpack frontent-bundlen rakentamiseen
   - React
   - Bacon.js
   - LESS
   - Selainyhteensopivuus IE10-selaimesta moderneihin selaimiin
-- Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja NPM
+- Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja npm
 
 ## Kehitystyökalut
 
@@ -66,94 +64,113 @@ Minimissään tarvitset nämä:
 
 ## Buildi ja ajaminen
 
-Koski:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
-eri taskit on helppo suorittaa. Ks [`Makefile`](Makefile)-tiedosto.
+Kosken buildiin kuuluu frontin buildaus (npm ja webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla eri taskit on helppo suorittaa. Katso [Makefile](Makefile)-tiedosto.
 
 Buildaa koko systeemi
 
-    make build
+``` shell
+make build
+```
 
 Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
-    make watch
+``` shell
+make watch
+```
 
-Staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/)
+Staattinen analyysi ([ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/)):
 
-    make lint
+``` shell
+make lint
+```
 
-### Koski-sovelluksen ajaminen kehitystyöasemalla
+Kosken versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hakemistoon `target/dist` ja buildaamalla applikaatio uudelleen siellä ([dist.sh](scripts/dist.sh)). War-pakettiin päätyy siis lopulta `target/dist/target/webapp`-hakemiston sisältö.
+
+### Koski-sovelluksen ajaminen paikallisesti
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä Koski vaihtoehtoisesti komentoriviltä
 
-    make build
-    make run
+``` shell
+make build
+make run
+```
 
-Avaa selaimessa
-
-> [http://localhost:7021/koski](http://localhost:7021/koski)
-
-Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
+Avaa selaimessa [http://localhost:7021/koski](http://localhost:7021/koski). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
 Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-indeksiä, jotka se myös itse käynnistää. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
-### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
+Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
+hakemistosta [`web/`](web/) ja sen alihakemistoista.
 
-Ilman parametrejä ajettaessa Koski käyttää mockattuja ulkoisia riippuvuuksia.
+Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
+Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](src/main/scala/ScalatraBootstrap.scala) ja [IndexServlet](src/main/scala/fi/oph/koski/servlet/IndexServlet.scala).
 
-Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa Koski:lle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
+### Ajaminen paikallisesti käyttäen ulkoisia palveluja
 
-    -Dconfig.resource=qa.conf
+Ilman parametrejä ajettaessa Koski käyttää mockattuja versioita ulkoisista riippuvuuksista.
+
+Ottaaksesi käyttöön ulkoiset integraatiot, kuten Oppijanumerorekisterin, voit antaa Koskelle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
+
+```
+-Dconfig.resource=qa.conf
+```
 
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
 
-## Paikallinen PostgreSQL-tietokanta
+### Paikallinen PostgreSQL-tietokanta
 
-Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän
-automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
+Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
 
-Paikallisen kannan konfiguraatio on tiedostossa [`postgresql/postgresql.conf`](postgresql/postgresql.conf) ja tietokannan datahakemisto on [`postgresql/data`](postgresql/data).
+Paikallisen kannan konfiguraatio on tiedostossa [postgresql/postgresql.conf] ja tietokannan datahakemisto on [postgresql/data].
 
 Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
-    make postgres
+``` shell
+make postgres
+```
 
-PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
+PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla Ctrl-C.
 
 Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
 
-Kehityksessä käytetään kahta kantaa: `koski` jota käytetään normaalisti ja `koskitest` jota käytetään automaattisissa
-testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `koski` -skeeman, ja sijaitsevat
-fyysisesti samassa datahakemistossa.
+Kehityksessä käytetään kahta kantaa: `koski` jota käytetään normaalisti ja `koskitest` jota käytetään automaattisissa testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `koski` -skeeman, ja sijaitsevat fyysisesti samassa datahakemistossa.
 
-## Paikallinen Elasticsearch-kanta
+### Paikallinen Elasticsearch-kanta
 
-Koski-sovellus käynnistää paikallisen Elasticseach-serverin käynnistyessään, ellei serveriä löydy portista 9200.
+Koski-sovellus käynnistää paikallisen Elasticseach-serverin käynnistyessään, jos serveriä ei löydy portista 9200.
 
 Jos haluat pitää Elasticsearching käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
-    make elastic
+``` shell
+make elastic
+```
 
 Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
 
 ### SQL-yhteys paikalliseen kantaan
 
-Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
+Jos haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
-    psql -h localhost koski koski
-    psql -h localhost koskitest koski
+``` shell
+psql -h localhost koski koski
+psql -h localhost koskitest koski
+```
 
-Peruskomennot
+Peruskomennot:
 
-    \dt    listaa taulut
-    \q     poistuu psql:stä
+* `\dt` - listaa taulut
+* `\q` - poistu psql:stä
+```
 
-Sitten vaikka
+Näytä arviointi-taulun koko sisältö:
 
-    select * from arviointi;
+``` sql
+select * from arviointi;
+```
 
-### Kantamigraatiot
+### Tietokantamigraatiot
 
-Tietokannan rakenne luodaan ja päivitetään Flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
+Tietokannan rakenne luodaan ja päivitetään Flywayn migraatioskripteillä, jotka ovat hakemistossa [src/main/resources/db/migration](src/main/resources/db/migration).
 
 Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
@@ -161,19 +178,21 @@ Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
 Buildaa ja aja kaikki testit
 
-    make test
+``` shell
+make test
+```
 
-Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa selaimessa osoitteessa
+Kun applikaatio pyörii paikallisesti (katso ohjeet yllä), voi Mocha-testit ajaa [selaimessa](http://localhost:7021/koski/test/runner.html).
 
-> [http://localhost:7021/koski/test/runner.html](http://localhost:7021/koski/test/runner.html)
+Mocha-testit voi ajaa myös nopeasti komentoriviltä:
 
-Mocha-testit voi ajaa myös nopeasti komentoriviltä
-
-    make fronttest
+``` shell
+make fronttest
+```
 
 ## CI-palvelin
 
-Koski:n Jenkins CI-palvelin palvelee osoitteessa https://dev.koski.opintopolku.fi/jenkins/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
+Kosken [Jenkins CI-palveluun](https://dev.koski.opintopolku.fi/jenkins/) on rajoitettu pääsy käyttäjätunnuksella ja salasanalla.
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
@@ -204,9 +223,9 @@ Loggaus on konfiguroitu tiedostolla `log4j.properties`, joka määrittää logga
 
 Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovellusloggaus käyttäen `Logging`-luokkaa, jolta sovelluskoodi saa käyttöönsä loggerin, joka automaattisesti liittää logiviesteihin käyttäjä- ja IP-osoitetiedot.
 
-## Testiympäristö
+## Palvelut
 
-### Palvelut
+### OPH:n palvelut
 
 Kuvaus | URL | Muuta
 --------|-----|-------
@@ -217,7 +236,16 @@ Käyttöoikeuspalvelu | [palvelukortti](https://confluence.csc.fi/pages/viewpage
 Organisaatiopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Organisaatiotietojen+hallintapalvelu) [api](https://dev.koski.opintopolku.fi/organisaatio-service/swagger/index.html) | Organisaation tai -hierarkian haku.
 Koodistopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Koodistopalvelu) [api][koodisto-api] [hallinta-ui](https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu) | Koodien ja metatietojen haku ja luonti.
 ePerusteet | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://confluence.csc.fi/display/oppija/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | Tuotantoversio
-Viestintä / Ryhmäsähköposti | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=65923709) [api](https://testi.virkailija.opintopolku.fi/ryhmasahkoposti-service/swagger/index.html) |
+Viestintä / Ryhmäsähköposti | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=65923709) [api](https://testi.virkailija.opintopolku.fi/ryhmasahkoposti-service/swagger/index.html) | Ilmoituksen lähetys tiedonsiirtovirheen tapahtuessa.
+
+### Kolmansien osapuolten palvelut
+
+Kuvaus | URL | Yhteystiedot
+---|---|---
+CSC Virta | [kuvaus](https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu) [api-dokumentaatio](https://confluence.csc.fi/display/VIRTA/WS-rajapinta) | virta@csc.fi [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)
+Ylioppilastutkintorekisteri (YTR) | | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta)
+
+## Testiympäristö
 
 ### Sovelluksen asennus pilviympäristöön
 
@@ -230,49 +258,49 @@ Jotta voit asentaa sovelluksen pilviympäristöön, tarvitset erillisen ympäris
 
 Ajamalla
 
-    make dist version=local
+``` shell
+make dist version=local
+```
 
 muodostuu uusi lokaali asennuspaketti applikaatiosta. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
 Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
 
-    make deploy version=local
+``` shell
+make deploy version=local
+```
 
 Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
 
-    make dist deploy version=local
+``` shell
+make dist deploy version=local
+```
 
 #### Versioidun paketin asentaminen
 
 Ajamalla
 
-    make dist version=<versio>
+``` shell
+make dist version=<versio>
+```
 
-muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla.
-Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
+muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
 Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
 
-    make deploy version=<versio>
+``` shell
+make deploy version=<versio>
+```
 
 Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
 
-    make dist deploy version=<versio>
+``` shell
+make dist deploy version=<versio>
+```
 
+### Pilviasennuksen operointi
 
-### Pilviasennuksen operoiminen
-
-Ks. https://github.com/Opetushallitus/koski-env
-
-## Build-prosessi ja hakemistot
-
-Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp` jonka sisältyy muodostuu webpack-buildilla, ks [webpack.config.js](web/webpack.config.js), joka muun muassa kopioi staattisia resursseja paikoilleen
-hakemistosta [`web/`](web/) ja sen alihakemistoista.
-
-Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
-Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](src/main/scala/ScalatraBootstrap.scala) ja [IndexServlet](src/main/scala/fi/oph/koski/servlet/IndexServlet.scala).
-
-Versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hakemistoon [target/dist] ja buildaamalla applikaatio uudelleen siellä (ks [scripts/dist.sh]. War-pakettiin päätyy siis lopulta [target/dist/target/webapp] -hakemiston sisältö.
+Katso [pilviympäristön dokumentaatio](https://github.com/Opetushallitus/koski-env/blob/master/README.md).
 
 ## Toteutus ja integraatiot
 
@@ -281,7 +309,7 @@ Versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hake
 Sovellus käyttää konfigurointiin [Typesafe Config](https://github.com/typesafehub/config) -kirjastoa,
 jonka avulla tarvittavat asetukset haetaan tiedostoista ja/tai komentoriviltä.
 
-Sovelluksen oletusasetukset ovat tiedostossa [`src/main/resources/reference.conf`](src/main/resources/reference.conf).
+Sovelluksen oletusasetukset ovat tiedostossa [reference.conf](src/main/resources/reference.conf).
 Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näillä asetuksilla
 ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan,
 eikä ota yhteyttä ulkoisiin järjestelmiin.
@@ -290,9 +318,7 @@ Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski
 järjestelmiin. Pilviympäristössä käytetään tällä hetkellä `cloud/restart.sh` -skriptiä, jolla annetaan
 tarvittavat asetukset.
 
-Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa `src/main/resources/koskidev.conf`
-(ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina,
-esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
+Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa `src/main/resources/koskidev.conf` (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina, esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
 ### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
@@ -304,7 +330,9 @@ Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen
 
 Esimerkki [organisaatiohierarkian](https://testi.virkailija.opintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 
-    curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
+``` shell
+curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
+```
 
 ### Koodistopalvelu
 
@@ -340,6 +368,7 @@ Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia 
 ### Virta ja YTR
 
 Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta](https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu) ([api-dokumentaatio](https://confluence.csc.fi/display/VIRTA/WS-rajapinta)) ja Ylioppilastutkintorekisteristä.
+
 
 ## Rajapinta-dokumentaatio
 
