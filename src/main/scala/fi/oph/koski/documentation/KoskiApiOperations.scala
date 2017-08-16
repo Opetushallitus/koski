@@ -164,7 +164,7 @@ object KoskiApiOperations extends ApiGroup {
     val getById = add(ApiOperation(
       "GET", "/koski/api/opiskeluoikeus/{oid}",
       "Palauttaa opiskeluoikeuden tiedot",
-      <p>Palauttaa opiskeluoikeuden tiedot</p>,
+      <p></p>,
       Nil,
       List(PathParameter("oid", "Opiskeluoikeuden oid", List("1.2.246.562.15.82898400641"))),
       List(
