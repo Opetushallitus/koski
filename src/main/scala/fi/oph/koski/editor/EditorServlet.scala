@@ -77,7 +77,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
       case ("koulutus", "201101") =>
         toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>
-        println((params("koodistoUri") + "/" + params("koodiarvo")))
+        logger.error(s"Prefill failed for unexpected code ${params("koodistoUri")}/${params("koodiarvo")}")
         haltWithStatus(KoskiErrorCategory.notFound())
     }
   }

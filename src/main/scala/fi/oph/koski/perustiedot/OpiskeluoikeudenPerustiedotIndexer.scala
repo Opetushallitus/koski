@@ -19,7 +19,6 @@ object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
   timed("Reindex") {
     perustiedotIndexer.reIndex(None).toBlocking.last
-    println("done")
   }
 }
 

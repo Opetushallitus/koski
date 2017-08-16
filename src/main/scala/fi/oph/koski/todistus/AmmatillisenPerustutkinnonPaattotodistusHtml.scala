@@ -50,7 +50,6 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
             <tbody>
               {
                 grouped.flatMap { case (ryhmä, osat) =>
-                  println(ryhmä.nimi + " " + osat.length)
                   val groupHeader = if (grouped.length > 1) { List(<tr class="rakennemoduuli"><td class="nimi">{i(ryhmä.nimi)}</td></tr>) } else { Nil }
                   groupHeader ++ osat.map { osasuoritus =>
                     val lisätiedot = osasuoritus.lisätiedot.toList.flatten
