@@ -384,7 +384,7 @@ describe('Ammatillinen koulutus', function() {
             })
 
             describe('Tallentamisen jälkeen', function() {
-              before(editor.saveChanges)
+              before(editor.saveChanges, wait.forAjax)
 
               describe('Käyttöliittymän tila', function() {
                 it('näyttää edelleen oikeat tiedot', function() {
@@ -479,6 +479,14 @@ describe('Ammatillinen koulutus', function() {
           })
         })
 
+        describe('Tallentamisen jälkeen', function() {
+          before(editor.saveChanges, editor.edit, opinnot.expandAll)
+          it('näyttää edelleen oikeat tiedot', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen muokattu esimerkkiselite')
+          })
+        })
+
         describe('Poistaminen', function()  {
           before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTunnustaminen())
           it('toimii', function() {
@@ -486,103 +494,112 @@ describe('Ammatillinen koulutus', function() {
           })
         })
 
-        // TODO: uncomment this after client-side validation has been fixed
-        // describe('Tallentamisen jälkeen', function() {
-        //   before(editor.saveChanges, editor.edit)
-        //   it('näyttää edelleen oikeat tiedot', function() {
-        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
-        //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
-        //   })
-        // })
-      })
-    })
-
-    describe('Näytön muokkaus', function() {
-      before(
-        editor.cancelChanges,
-        editor.edit,
-        opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
-      )
-
-      describe('Alussa', function() {
-        it('ei näyttöä', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+        describe('Tallentamisen jälkeen', function() {
+          before(editor.saveChanges, editor.edit)
+          it('poistettu', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
+          })
         })
       })
 
-      describe('Lisääminen', function()  {
+      describe('Näytön muokkaus', function() {
         before(
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
-            kuvaus: 'Näytön esimerkkikuvaus',
-            suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
-            työssäoppimisenYhteydessä: false,
-            arvosana: '3',
-            arvioinnistaPäättäneet: ['Opettaja'],
-            arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
-            arviointipäivä: '1.2.2017'
-          }),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+          editor.edit,
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
+          editor.saveChanges,
+          wait.forAjax,
+          editor.edit,
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
-        it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('3')
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
-        })
-      })
 
-      describe('Muokkaus', function()  {
-        before(
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
-            kuvaus: 'Näytön muokattu esimerkkikuvaus',
-            suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
-            työssäoppimisenYhteydessä: true,
-            arvosana: '2',
-            arvioinnistaPäättäneet: ['Opettaja'],
-            arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
-            arviointipäivä: '1.2.2017'
-          }),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
-        )
-        describe('Näyttää oikeat tiedot', function() {
+        describe('Alussa', function() {
+          it('ei näyttöä', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+          })
+        })
+
+        describe('Lisääminen', function()  {
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
+              kuvaus: 'Näytön esimerkkikuvaus',
+              suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+              työssäoppimisenYhteydessä: false,
+              arvosana: '3',
+              arvioinnistaPäättäneet: ['Opettaja'],
+              arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
+              arviointipäivä: '1.2.2017'
+            }),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+          )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('3')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
+          })
+        })
+
+        describe('Muokkaus', function()  {
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
+              kuvaus: 'Näytön muokattu esimerkkikuvaus',
+              suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+              työssäoppimisenYhteydessä: true,
+              arvosana: '2',
+              arvioinnistaPäättäneet: ['Opettaja'],
+              arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
+              arviointipäivä: '1.2.2017'
+            }),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+          )
+          describe('Näyttää oikeat tiedot', function() {
+            it('toimii', function() {
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+            })
+          })
+          describe('Oikeat tiedot säilyvät modalissa', function() {
+            before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal())
+            it('toimii', function() {
+              var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
+              expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+              expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+              expect(näyttö.työssäoppimisenYhteydessä).to.equal(true)
+              expect(näyttö.arvosana).to.equal('2')
+              expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
+              expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
+              expect(näyttö.arviointipäivä).to.equal('1.2.2017')
+            })
+            after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
+          })
+        })
+
+        describe('Tallentamisen jälkeen', function() {
+          before(editor.saveChanges, editor.edit, opinnot.expandAll)
+          it('näyttää edelleen oikeat tiedot', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
           })
         })
-        describe('Oikeat tiedot säilyvät modalissa', function() {
-          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal())
+
+        describe('Poistaminen', function() {
+          before(
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö()
+          )
           it('toimii', function() {
-            var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
-            expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
-            expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
-            expect(näyttö.työssäoppimisenYhteydessä).to.equal(true)
-            expect(näyttö.arvosana).to.equal('2')
-            expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
-            expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
-            expect(näyttö.arviointipäivä).to.equal('1.2.2017')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
           })
-          after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
+        })
+
+        describe('Tallentamisen jälkeen', function() {
+          before(editor.saveChanges, editor.edit, opinnot.expandAll)
+          it('näyttää edelleen oikeat tiedot', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+          })
         })
       })
-
-      describe('Poistaminen', function() {
-        before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö())
-        it('toimii', function() {
-          expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
-        })
-      })
-
-      // TODO: uncomment this after client-side validation has been fixed
-      // describe('Tallentamisen jälkeen', function() {
-      //   before(editor.saveChanges, editor.edit, opinnot.expandAll)
-      //   it('näyttää edelleen oikeat tiedot', function() {
-      //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
-      //     expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
-      //   })
-      // })
     })
   })
 
