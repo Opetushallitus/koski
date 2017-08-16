@@ -160,7 +160,6 @@ Peruskomennot:
 
 * `\dt` - listaa taulut
 * `\q` - poistu psql:stä
-```
 
 Näytä arviointi-taulun koko sisältö:
 
@@ -242,7 +241,7 @@ Viestintä / Ryhmäsähköposti | [palvelukortti](https://confluence.csc.fi/page
 
 Kuvaus | URL | Yhteystiedot
 ---|---|---
-CSC Virta | [kuvaus](https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu) [api-dokumentaatio](https://confluence.csc.fi/display/VIRTA/WS-rajapinta) | virta@csc.fi [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)
+CSC Virta | [kuvaus][virta-api] [api-dokumentaatio][virta-api] | virta@csc.fi, [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)
 Ylioppilastutkintorekisteri (YTR) | | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta)
 
 ## Testiympäristö
@@ -340,7 +339,7 @@ Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) 
 
 Testiurleja ([api][koodisto-api]):
 
-> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1<br>
 > https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 
 Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`.
@@ -356,19 +355,18 @@ Integraation [toteutus](src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetR
 
 Testiurleja ([api][eperusteet-api]):
 
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh<br>
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059<br>
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki<br>
 > https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
 
 ### LDAP
 
 Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 
-### Virta ja YTR
+### Virta ja Ylioppilastutkintorekisteri
 
-Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta](https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu) ([api-dokumentaatio](https://confluence.csc.fi/display/VIRTA/WS-rajapinta)) ja Ylioppilastutkintorekisteristä.
-
+Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta][virta-description] ([api-dokumentaatio][virta-api] ja Ylioppilastutkintorekisteristä (YTR).
 
 ## Rajapinta-dokumentaatio
 
@@ -379,3 +377,5 @@ JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa,
 [koski-api]: https://dev.koski.opintopolku.fi/koski/documentation
 [koodisto-api]: https://dev.koski.opintopolku.fi/koodisto-service/swagger/index.html
 [eperusteet-api]: https://eperusteet.opintopolku.fi/eperusteet-service/
+[virta-description]: https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
+[virta-api]: https://confluence.csc.fi/display/VIRTA/WS-rajapinta
