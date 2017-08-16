@@ -2,14 +2,14 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
-import fi.oph.koski.db.OpiskeluoikeusHistoryRow
 import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import org.scalatest.FreeSpec
 
 class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -114,15 +114,15 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     }
   }
 
-  def getHistory(opiskeluoikeusOid: String): List[OpiskeluoikeusHistoryRow] = {
+  def getHistory(opiskeluoikeusOid: String): List[OpiskeluoikeusHistory] = {
     authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid) {
       verifyResponseStatus(200)
-      Json.read[List[OpiskeluoikeusHistoryRow]](body)
+      Json.read[List[OpiskeluoikeusHistory]](body)
     }
   }
 
   def verifyHistory(oppija: Henkilö, opiskeluoikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
-    val historia: List[OpiskeluoikeusHistoryRow] = getHistory(opiskeluoikeus.oid.get)
+    val historia: List[OpiskeluoikeusHistory] = getHistory(opiskeluoikeus.oid.get)
     historia.map(_.versionumero) should equal(versions)
 
     markup("Validoidaan versiohistorian eheys")

@@ -1,12 +1,14 @@
 package fi.oph.koski.history
 
+import java.sql.Timestamp
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, Tables}
+import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, OpiskeluoikeusRow, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
@@ -17,16 +19,16 @@ import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods with Logging with JsonMethods {
-  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluoikeusHistoryRow]] = {
+
+  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluoikeusHistory]] = {
     val query = OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
       .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
-      .map(_._2)
-      .sortBy(_.versionumero.asc)
+      .sortBy(_._2.versionumero.asc)
 
-    runDbSync(query.result) match {
+    runDbSync(query.result).map(toOpiskeluoikeusHistory) match {
       case Nil => None
-      case rows: Seq[OpiskeluoikeusHistoryRow] => Some(rows)
+      case rows: Seq[OpiskeluoikeusHistory] => Some(rows)
     }
   }
 
@@ -41,7 +43,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
             patch.apply(current)
           }
           try {
-            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), diffs.head.opiskeluoikeusId, oid, version))
+            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), oid, version))
           } catch {
             case e: Exception =>
               logger.error(e)(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui")
@@ -57,5 +59,8 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
       (row.opiskeluoikeusId, row.kayttajaOid, row.muutos, row.versionumero)
     } +=(opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
   }
+
+  def toOpiskeluoikeusHistory(row: (OpiskeluoikeusRow, OpiskeluoikeusHistoryRow)) = OpiskeluoikeusHistory(row._1.oid, row._2.versionumero, row._2.aikaleima, row._2.kayttajaOid, row._2.muutos)
 }
 
+case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
