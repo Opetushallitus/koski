@@ -344,5 +344,7 @@
   "Lisää ammattiosaamisen näyttö": "Lisää ammattiosaamisen näyttö",
   "Ammattiosaamisen tunnustaminen": "Ammattiosaamisen tunnustaminen",
   "Ammattiosaamisen näyttö": "Ammattiosaamisen näyttö",
-  "Päivitä": "Päivitä"
+  "Päivitä": "Päivitä",
+  "Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.": "Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.",
+  "Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.": "Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia."
 }

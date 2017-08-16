@@ -48,7 +48,7 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
     pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
   }
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
-  return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on "Valmistunut".') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
+  return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
 }
 
 const MerkitseKeskeytyneeksiButton = ({model}) => {
