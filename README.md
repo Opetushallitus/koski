@@ -339,7 +339,8 @@ Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) 
 
 Testiurleja ([api][koodisto-api]):
 
-> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1<br>
+> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+>
 > https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 
 Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`.
@@ -355,9 +356,12 @@ Integraation [toteutus](src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetR
 
 Testiurleja ([api][eperusteet-api]):
 
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh<br>
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059<br>
-> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki<br>
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
+>
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+>
+> https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
+>
 > https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
 
 ### LDAP
@@ -366,7 +370,7 @@ Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia 
 
 ### Virta ja Ylioppilastutkintorekisteri
 
-Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta][virta-description] ([api-dokumentaatio][virta-api] ja Ylioppilastutkintorekisteristä (YTR).
+Koski osaa hakea oppijoiden tietoja kahdesta ulkoisesta järjestelmästä: CSC:n [Virrasta][virta-description] ([api-dokumentaatio][virta-api]) ja Ylioppilastutkintorekisteristä (YTR).
 
 ## Rajapinta-dokumentaatio
 
