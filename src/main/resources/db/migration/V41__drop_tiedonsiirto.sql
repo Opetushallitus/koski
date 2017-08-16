@@ -1,0 +1,1 @@
+DROP TABLE tiedonsiirto CASCADE;
