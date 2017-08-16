@@ -16,7 +16,8 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         <p><Text name="Opiskelija poistuu virhelistalta"/></p>
         <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager}/>
       </div>),
-      title: 'Tiedonsiirtovirheet'
+      title: 'Tiedonsiirtovirheet',
+      reloadBus: pager.reloadBus
     }))
   )
 }
