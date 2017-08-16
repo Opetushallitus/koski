@@ -19,6 +19,7 @@ import {
 } from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
+import {t} from '../i18n'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
@@ -46,7 +47,8 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   let merkitseKeskeneräiseksi = () => {
     pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
   }
-  return <button className="merkitse-kesken" disabled={opiskeluoikeudenTila == 'valmistunut'} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
+  let valmistunut = opiskeluoikeudenTila === 'valmistunut'
+  return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on "Valmistunut"') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
 }
 
 const MerkitseKeskeytyneeksiButton = ({model}) => {
