@@ -64,6 +64,7 @@
         right: 10px;
         top: 50px;
         margin: 0;
+        min-width: 250px;
         box-sizing: border-box;
         border-radius: 2px;
         box-shadow: 0 1px 3px rgba(0,0,0,.3);
@@ -99,10 +100,13 @@
           overflow-y: scroll;
 
           li:not(:first-child) {
-            padding-top: 0.5em;
+            margin-top: 0.5em;
           }
           li.selected {
-            text-decoration: underline;
+            background: @color-link-blue;
+            & span {
+              color: @color-white;
+            }
           }
           li > a {
             display: block;
