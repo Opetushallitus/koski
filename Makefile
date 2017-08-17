@@ -12,6 +12,8 @@ help:
 	@echo "make run	- Run previously built application in local environment"
 	@echo "make postgres	- Run local postgres server"
 	@echo "make watch	- Watch for changes in webapp files"
+	@echo "make clean	- Remove generated build data"
+	@echo "make purge	- Remove all local data, including postgresql and elasticsearch databases"
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make dist version=<version> - Tag and deploy application to artifactory."
 	@echo "make deploy env=<env> version=<version>	- Install deployed version to env."
@@ -21,6 +23,11 @@ logdir:
 clean:
 	mvn clean
 	rm -fr web/target
+purge:
+	mvn clean
+	rm -fr web/target
+	rm -fr elasticsearch/data
+	rm -fr postgresql/data
 
 ### Building the application
 

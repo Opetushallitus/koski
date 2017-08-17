@@ -60,8 +60,8 @@ const QueryParameters = ({operation, collectorBus}) => {
         </tr>
         </thead>
         <tbody>
-        {R.map(([parameter, selectedValueA]) => (
-          <tr>
+        {R.zip(operation.parameters, R.map(v => v.view('value'), valueAList)).map(([parameter, selectedValueA], i) => (
+          <tr key={i}>
             <td>
               {parameter.name}
             </td>
@@ -77,7 +77,7 @@ const QueryParameters = ({operation, collectorBus}) => {
               }
             </td>
           </tr>
-        ), R.zip(operation.parameters, R.map(v => v.view('value'), valueAList)))}
+        ))}
         </tbody>
       </table>
     </div>
@@ -225,7 +225,7 @@ const ApiOperationStatusCodes = ({errorCategories}) => {
       </tr>
       </thead>
       <tbody>
-      {R.map(ec => <ApiOperationStatusCodeRow errorCategory={ec}/>, errorCategories)}
+      {errorCategories.map((ec, i) => <ApiOperationStatusCodeRow key={i} errorCategory={ec}/>)}
       </tbody>
     </table>
   )
