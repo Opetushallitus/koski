@@ -29,7 +29,7 @@
     padding: 17px 27px 17px 17px;
     background: @color-dark-blue 100%;
     font-size: 18px;
-    color: #FFFFFF;
+    color: @color-white;
     letter-spacing: 0;
     font-weight: normal;
     border-top-left-radius: 2px;
@@ -42,51 +42,103 @@
     }
 
     .versiohistoria {
-      -webkit-touch-callout: none;
-        -webkit-user-select: none;
-         -khtml-user-select: none;
-           -moz-user-select: none;
-            -ms-user-select: none;
-                user-select: none;
-
       display: inline-block;
       float: right;
-      position: relative;
-      z-index: @z-index-base + 2;
+      overflow: hidden;
 
-      &.open {
-        background: @color-dark-blue;
-        border: 1px solid black;
+      &.open:after {
+        content: "";
+        .Triangle(10px, @color-white, bottom);
+        position: relative;
+        margin: 0 auto;
+        bottom: 3px;
+        z-index: @z-index-base + 5;
+      }
+
+      .modal {
+        position: absolute;
+        right: 10px;
+        top: 50px;
         margin: 0;
-        a {
-          padding-bottom: 5px;
+        box-sizing: border-box;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,.3);
+        background: @color-white;
+        z-index: @z-index-base + 4;
+
+        .close-modal {
+          cursor: pointer;
+          position: absolute;
+          top: 0;
+          right: 0;
+          float: right;
+          color: black;
+          padding: 0 5px;
+          font-size: 1.5em;
+          &:before {
+            /* lighter */
+            content: '\00d7';
+          }
+        }
+
+        ol {
+          box-sizing: content-box;
+          display: block;
+          left: 0;
+          right: 0;
+          margin: 20px 30px;
+          padding: 5px;
+          list-style-type: none;
+          font-size: 0.9em;
+          text-align: center;
+          max-height: 50vh;
+          overflow-y: scroll;
+
+          li:not(:first-child) {
+            padding-top: 0.5em;
+          }
+          li.selected {
+            text-decoration: underline;
+          }
+          li > a {
+            display: block;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            &> span {
+              padding: 0;
+              margin: 0;
+            }
+          }
+          span.versionumero {
+            display: inline-block;
+            width: 20%;
+            padding-right: 0.3em;
+            text-align: right;
+          }
+          span.aikaleima {
+            display: inline-block;
+            width: 80%;
+            text-align: left;
+          }
         }
       }
 
-      > * {
-        font-size: 0.8em;
-      }
       > a {
         display: block;
         color: white;
         text-decoration: underline;
         text-align: center;
         vertical-align: top;
-      }
-      table {
-        background: @color-dark-blue;
-        padding: 5px;
-        vertical-align: middle;
-        display: inline-block;
-        tr, tr a {
-          color: white;
-        }
-        tr.selected {
-          background: @color-link-blue;
-        }
-        td.versionumero {
-          padding-right: 0.3em;
-        }
+        font-size: 0.8em;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
     }
   }
