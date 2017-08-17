@@ -8,10 +8,20 @@ let pagerCache = {} // URL -> pages
 
 export default (baseUrl, rowsLens = L.identity) => {
   let nextPageBus = Bacon.Bus()
+  let reloadBus = Bacon.Bus()
   let cachedPages = pagerCache[baseUrl] || []
   pagerCache[baseUrl] = cachedPages
 
-  let pageNumberP = Bacon.update(cachedPages.length, nextPageBus, (prev) => prev + 1)
+  reloadBus.onValue(() => {
+    cachedPages = []
+    nextPageBus.push()
+  })
+
+  let pageNumberP = Bacon.update(
+    cachedPages.length,
+    nextPageBus, (prev) => prev + 1,
+    reloadBus, () => 0
+  )
 
   let pageDataE = pageNumberP.skip(cachedPages.length ? 1 : 0).flatMap((pageNumber) =>
     Http.get(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize}))
@@ -38,6 +48,7 @@ export default (baseUrl, rowsLens = L.identity) => {
   rowsP.onValue()
 
   return {
+    reloadBus,
     rowsP,
     mayHaveMore: () => mayHaveMore,
     next: () => fetchingP.take(1).filter((fetching) => !fetching).onValue(() => nextPageBus.push())
