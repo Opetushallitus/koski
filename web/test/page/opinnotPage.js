@@ -327,20 +327,20 @@ function Opiskeluoikeudet() {
 function Versiohistoria() {
   function elem() { return S('.versiohistoria') }
   function versiot() {
-    return elem().find('td.versionumero')
+    return elem().find('.versionumero')
   }
 
   var api = {
     avaa: function () {
-      if (!S('.versiohistoria > table').is(':visible')) {
+      if (!S('.versiohistoria > .modal').is(':visible')) {
         triggerEvent(findSingle('> a', elem()), 'click')
       }
       return wait.until(function(){
-        return elem().find('tr.selected').is(':visible')
+        return elem().find('li.selected').is(':visible')
       })().then(wait.forAjax)
     },
     sulje: function () {
-      if (S('.versiohistoria > table').is(':visible')) {
+      if (S('.versiohistoria > .modal').is(':visible')) {
         triggerEvent(findSingle('> a', elem()), 'click')
       }
     },
@@ -348,11 +348,11 @@ function Versiohistoria() {
       return textsOf(versiot())
     },
     valittuVersio: function() {
-      return elem().find('.selected').find('td.versionumero').text()
+      return elem().find('.selected').find('.versionumero').text()
     },
     valitse: function(versio) {
       return function() {
-        triggerEvent(findSingle('td.versionumero:contains('+ versio +')', elem()).next('td.aikaleima').find('a'), 'click')
+        triggerEvent(findSingle('.versionumero:contains('+ versio +')', elem()).parent(), 'click')
         return wait.until(function() { return api.valittuVersio() == versio })()
       }
     }

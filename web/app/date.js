@@ -14,7 +14,7 @@ export const parseFinnishDate = (dateStr) => {
     }
   }
 }
-export const parseISODateTime = (date) => fecha.parse(date, 'YYYY-MM-DDThh:mm')
+export const parseISODateTime = (date) => fecha.parse(date, 'YYYY-MM-DDThh:mmZZ')
 export const formatFinnishDateTime = (date) => format(date, 'D.M.YYYY H:mm')
 export const ISO2FinnishDateTime = (date) => formatFinnishDateTime(parseISODateTime(date))
 export const parseISODate = (date) => fecha.parse(date, 'YYYY-MM-DD')

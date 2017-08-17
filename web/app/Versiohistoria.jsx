@@ -14,8 +14,8 @@ export default class Versiohistoria extends BaconComponent {
   render() {
     let { opiskeluoikeusOid, oppijaOid } = this.props
     let { showHistory, history } = this.state
-    let toggle = () => {
-      let newShowHistory = !showHistory
+    let toggle = (newState) => {
+      let newShowHistory = newState === undefined ? !showHistory : newState
       this.setState({showHistory: newShowHistory})
       if (newShowHistory) this.fetchHistory(this.props.opiskeluoikeusOid)
       if (!newShowHistory && this.versionumero()) {
@@ -24,18 +24,23 @@ export default class Versiohistoria extends BaconComponent {
     }
     let selectedVersion = this.versionumero() || history.length
     return (
-      <div className={(showHistory ? 'open ' : '') + 'versiohistoria'}>
-        <a onClick={toggle}><Text name={showHistory ? 'Sulje' : 'Versiohistoria'}/></a>
-        {
-          showHistory && (<table><tbody>{
-            history.map((version, i) =>
-              (<tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
-                <td className="versionumero">{'v' + version.versionumero}</td>
-                <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusOid}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
-              </tr>)
-            )
-          }</tbody></table>)
-        }
+      <div className={'versiohistoria'+(showHistory?' open':'')}>
+        <a onClick={() => toggle()}><Text name="Versiohistoria"/></a>
+        {showHistory && (
+          <div className="modal">
+            <i onClick={() => toggle(false)} className="close-modal fa fa-times fa-2x"></i>
+            <ol>{
+              history.map((version, i) =>
+                (<li key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
+                  <Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluoikeusOid}&versionumero=${version.versionumero}`}>
+                    <span className="versionumero">{'v' + version.versionumero}</span>
+                    <span className="aikaleima">{ISO2FinnishDateTime(version.aikaleima)}</span>
+                  </Link>
+                </li>)
+              )
+            }</ol>
+          </div>
+        )}
       </div>
     )
   }
