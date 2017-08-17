@@ -19,6 +19,9 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
     if (tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
       return '22'
     }
+    if (tyyppi.koodiarvo == 'esiopetuksensuoritus') {
+      return '15'
+    }
   }).skipDuplicates()
 
   let diaarinumerotP = koulutustyyppiP.flatMapLatest(tyyppi => tyyppi

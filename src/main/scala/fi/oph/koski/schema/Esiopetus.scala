@@ -60,5 +60,6 @@ case class Esiopetus(
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
   @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta.")
+  @MultiLineString(4)
   kuvaus: Option[LocalizedString] = None
 ) extends DiaarinumerollinenKoulutus with Laajuudeton

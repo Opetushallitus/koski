@@ -17,7 +17,15 @@ function AddOppijaPage() {
     enterValidDataPerusopetus: function(params) {
       params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
       return function() {
-        return api.enterData(params)().then(wait.forAjax)
+        return api.enterData(params)()
+          .then(wait.forAjax)
+      }
+    },
+    enterValidDataEsiopetus: function(params) {
+      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Esiopetus'))
       }
     },
     enterHenkilötiedot: function(params) {
