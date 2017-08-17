@@ -151,6 +151,16 @@
       .oppilaitos {
         margin-left: 20px;
       }
+      .properties {
+        display: inline-block;
+      }
+      .property > .value {
+        width: 300px;
+        input {
+          width: 100%;
+          margin: 0;
+        }
+      }
     }
 
     .opiskeluoikeuden-tiedot {
@@ -339,6 +349,10 @@
         color: @color-disabled;
       }
 
+      .properties > table .property > .value {
+        width: 100%;
+      }
+
       .suoritus-tabs {
         padding: 0;
         list-style: none;
@@ -458,7 +472,6 @@
 
     .properties {
       position: relative;
-      width: 100%;
       > table {
         font-size: 1em;
         tr:not(:first-child) {
@@ -481,10 +494,6 @@
           padding-right: 20px;
           color: @color-label;
           white-space: nowrap;
-        }
-
-        .property > .value {
-          width: 100%;
         }
 
         table.tabular-array {
