@@ -11,14 +11,14 @@ object InvalidDataFixer extends App with DefaultHttpTester with Logging {
     val results = Json.read[List[ValidationResult]](body).filter(!_.isOk)
     println(s"Löytyi ${results.length} rikkinäistä opiskeluoikeutta")
     results.foreach { result =>
-      println("FAIL id=" + result.opiskeluoikeusId + " " + result.errors)
+      println("FAIL oid=" + result.opiskeluoikeusOid + " " + result.errors)
     }
     println("Hit ENTER to try to fix all")
     readLine()
     println("Starting")
     results.foreach { result =>
-      authGet("api/opiskeluoikeus/" + result.opiskeluoikeusId) {
-        println("FIXING id=" + result.opiskeluoikeusId + " " + result.errors)
+      authGet("api/opiskeluoikeus/" + result.opiskeluoikeusOid) {
+        println("FIXING oid=" + result.opiskeluoikeusOid + " " + result.errors)
         val found = Json.read[Opiskeluoikeus](body)
         println("Deserialized OK")
         val oppija = Oppija(

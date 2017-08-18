@@ -61,12 +61,12 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
           }
         case Left(error) => error
       }) match {
-        case HttpStatus.ok => ValidationResult(row.oppijaOid, row.id, Nil)
-        case status: HttpStatus => ValidationResult(row.oppijaOid, row.id, status.errors)
+        case HttpStatus.ok => ValidationResult(row.oppijaOid, row.oid, Nil)
+        case status: HttpStatus => ValidationResult(row.oppijaOid, row.oid, status.errors)
       }
     } catch {
       case e: MappingException =>
-        ValidationResult(row.oppijaOid, row.id, List(s"Opiskeluoikeuden ${row.id} deserialisointi epäonnistui"))
+        ValidationResult(row.oppijaOid, row.oid, List(s"Opiskeluoikeuden ${row.oid} deserialisointi epäonnistui"))
     }
   }
 
@@ -74,16 +74,16 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
     val validationResult: Either[HttpStatus, Opiskeluoikeus] = validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read)
     validationResult match {
       case Right(oppija) =>
-        ValidationResult(row.oppijaOid, row.id, Nil)
+        ValidationResult(row.oppijaOid, row.oid, Nil)
       case Left(status) =>
-        ValidationResult(row.oppijaOid, row.id, status.errors)
+        ValidationResult(row.oppijaOid, row.oid, status.errors)
     }
   }
 
   def validateHenkilö(row: OpiskeluoikeusRow): ValidationResult = {
     henkilöRepository.findByOid(row.oppijaOid) match {
-      case Some(h) => ValidationResult(row.oppijaOid, row.id, Nil)
-      case None => ValidationResult(row.oppijaOid, row.id, List(s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta"))
+      case Some(h) => ValidationResult(row.oppijaOid, row.oid, Nil)
+      case None => ValidationResult(row.oppijaOid, row.oid, List(s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta"))
     }
   }
 
@@ -92,9 +92,9 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
   }
 }
 
-case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusId: Int, errors: List[AnyRef]) {
+case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String, errors: List[AnyRef]) {
   def isOk = errors.isEmpty
-  def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusId, errors ++ other.errors)
+  def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
 
 case class HistoryInconsistency(message: String, diff: JValue)

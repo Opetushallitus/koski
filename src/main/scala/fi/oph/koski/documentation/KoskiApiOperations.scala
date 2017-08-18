@@ -2,13 +2,12 @@ package fi.oph.koski.documentation
 
 import java.sql.Timestamp
 
-import fi.oph.koski.db.OpiskeluoikeusHistoryRow
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
-import fi.oph.koski.schema.HenkilötiedotJaOid
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
@@ -184,7 +183,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false")), QueryParameter("henkilö", "Validoidaanko henkilö", List("false"))) ++ hakuParametrit,
       List(
-        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, 8942345, List()))),
+        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, "1.2.246.562.15.82898400641", List()))),
         KoskiErrorCategory.badRequest.format.pvm,
         KoskiErrorCategory.badRequest.queryParam.unknown,
         KoskiErrorCategory.unauthorized
@@ -198,7 +197,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(PathParameter("oid", "Opiskeluoikeuden oid", List("1.2.246.562.15.82898400641"))),
       List(
-        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, 8942345, List())),
+        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, "1.2.246.562.15.82898400641", List())),
         KoskiErrorCategory.unauthorized,
         KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid,
         KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
@@ -212,7 +211,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(PathParameter("opiskeluoikeus_oid", "Opiskeluoikeuden tunniste", List("1.2.246.562.15.82898400641"))),
       List(
-        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = List(OpiskeluoikeusHistoryRow(8942345, 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject()))),
+        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = List(OpiskeluoikeusHistory("1.2.246.562.15.82898400641", 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject()))),
         KoskiErrorCategory.unauthorized,
         KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
       )
