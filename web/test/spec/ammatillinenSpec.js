@@ -5,8 +5,8 @@ describe('Ammatillinen koulutus', function() {
   var page = KoskiPage()
   var login = LoginPage()
   var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero (010101-123N)'
-  
+  var editor = opinnot.opiskeluoikeusEditor()
+
   function addNewOppija(username, hetu, oppijaData) {
     return function() {
       return prepareForNewOppija(username, hetu)()
@@ -268,7 +268,6 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    var editor = opinnot.opiskeluoikeusEditor()
     before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
 
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
@@ -369,6 +368,10 @@ describe('Ammatillinen koulutus', function() {
           before(
             opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
           )
+
+          it('Näytetään pakollisten tutkinnon osien otsikkorivi', function() {
+            expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(true)
+          })
 
           describe('Lisäyksen jälkeen', function () {
             it('lisätty osa näytetään', function() {
@@ -983,6 +986,23 @@ describe('Ammatillinen koulutus', function() {
         before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
           expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
+        })
+      })
+
+      describe('Tutkinnon osat', function() {
+        before(TodistusPage().close, editor.edit)
+        it('Tutkinnon osia ei ryhmitellä', function() {
+          expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
+        })
+
+        before(
+          opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt')
+        )
+
+        describe('Lisäyksen jälkeen', function () {
+          it('lisätty osa näytetään', function() {
+            expect(opinnot.tutkinnonOsat().tutkinnonOsa(5).nimi()).to.equal('Huolto- ja korjaustyöt')
+          })
         })
       })
     })

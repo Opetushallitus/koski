@@ -160,6 +160,9 @@ function TutkinnonOsat(groupId) {
     tyhjä: function() {
       return S(withSuffix('.tutkinnon-osa')).length === 0
     },
+    isGroupHeaderVisible: function() {
+      return S(withSuffix('.group-header')).is(':visible')
+    },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
       return _.merge({
@@ -494,12 +497,16 @@ function OpiskeluoikeusDialog() {
 function Editor(elem) {
   function editButton() { return findSingle('.toggle-edit', elem()) }
   function enabledSaveButton() { return findSingle('#edit-bar button:not(:disabled)') }
-  return {
+  var api = {
+    isVisible: function() {
+      return isElementVisible(elem)
+    },
     edit: function() {
-      if (isElementVisible(editButton)) {
-        triggerEvent(editButton(), 'click')
-      }
-      return KoskiPage().verifyNoError()
+      return wait.until(api.isVisible)().then(function() {
+        if (isElementVisible(editButton)) {
+          triggerEvent(editButton(), 'click')
+        }
+      }).then(KoskiPage().verifyNoError)
     },
     canSave: function() {
       return isElementVisible(enabledSaveButton)
@@ -536,6 +543,7 @@ function Editor(elem) {
     },
     elem: elem
   }
+  return api
 }
 
 function Property(elem) {

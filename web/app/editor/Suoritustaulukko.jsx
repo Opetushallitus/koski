@@ -49,8 +49,10 @@ export class Suoritustaulukko extends React.Component {
     let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
     let groupIds = R.keys(grouped).sort()
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
+    let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
+    let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
-    if (context.edit) {
+    if (context.edit && isAmmatillinenPerustutkinto) {
       let suoritusProto = createTutkinnonOsanSuoritusPrototype(suorituksetModel)
       let ryhmäModel = modelLookup(suoritusProto, 'tutkinnonOsanRyhmä')
       if (ryhmäModel) {
@@ -68,8 +70,9 @@ export class Suoritustaulukko extends React.Component {
     let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
+    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
 
-    return (suoritukset.length > 0 || context.edit) && (
+    return (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
       <div className="suoritus-taulukko">
         <table>
           <thead>
@@ -93,9 +96,7 @@ export class Suoritustaulukko extends React.Component {
           </tr>
           </thead>
           {
-            showGrouped
-              ? groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
-              : grouped[groupIds[0]].map((suoritus, i) => suoritusEditor(suoritus, i))
+            groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
           }
         </table>
       </div>
@@ -104,7 +105,7 @@ export class Suoritustaulukko extends React.Component {
     function suoritusGroup(groupId, i) {
       let items = (grouped[groupId] || [])
       return [
-        <tbody key={'group-' + i} className="group-header">
+        showGrouped && <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
         items.map((suoritus, j) => {
@@ -112,7 +113,7 @@ export class Suoritustaulukko extends React.Component {
         }),
         context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr><td colSpan="4">
-            <UusiTutkinnonOsa suoritus={context.suoritus} suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId != placeholderForNonGrouped && groupId}/>
+            <UusiTutkinnonOsa suoritus={context.suoritus} suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId}/>
           </td></tr>
         </tbody>
       ]
@@ -153,7 +154,7 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
 
   let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? [] : Bacon.Error(e) }
   let osatP = Http
-    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(groupId)}`, map404ToEmpty)
+    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}}` + (groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)), map404ToEmpty)
 
   selectedAtom.filter(R.identity).onValue(newItem => {
     addTutkinnonOsa(modelSetTitle(newItem.newItem
