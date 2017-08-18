@@ -1,4 +1,5 @@
 {
+  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
