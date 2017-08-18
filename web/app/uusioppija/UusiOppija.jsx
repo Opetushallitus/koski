@@ -28,7 +28,7 @@ export const UusiOppija = ({hetu, oid}) => {
 
   const submitEnabledP = henkilöValidAtom.and(inProgressP.not()).and(opiskeluoikeusValidP)
 
-  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lisää henkilö' : 'Lisätään...'}/>)
+  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lisää opiskelija' : 'Lisätään...'}/>)
 
   return (
     <div className='content-area'>
