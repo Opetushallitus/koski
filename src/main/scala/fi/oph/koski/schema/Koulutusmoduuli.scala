@@ -24,6 +24,10 @@ trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
   @KoodistoUri("koulutus")
   @OksaUri("tmpOKSAID560", "tutkinto")
   def tunniste: Koodistokoodiviite
+  @KoodistoUri("koulutustyyppi")
+  @Hidden
+  @ReadOnly("Koulutustyypin koodia ei tarvita syöttövaiheessa; Koski päättelee sen automaattisesti koulutuskoodin perusteella.")
+  def koulutustyyppi: Option[Koodistokoodiviite]
 }
 
 trait Diaarinumerollinen {

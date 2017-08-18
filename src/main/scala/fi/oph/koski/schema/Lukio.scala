@@ -110,7 +110,8 @@ case class LukionOppiaineenOppimääränSuoritus(
 case class LukionOppimäärä(
  @KoodistoKoodiarvo("309902")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("309902", koodistoUri = "koulutus"),
- perusteenDiaarinumero: Option[String]
+ perusteenDiaarinumero: Option[String],
+ koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
 trait LukionOppimääränOsasuoritus extends Suoritus

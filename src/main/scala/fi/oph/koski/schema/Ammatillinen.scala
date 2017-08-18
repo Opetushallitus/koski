@@ -131,7 +131,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
 @Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
 case class NäyttötutkintoonValmistavaKoulutus(
   @KoodistoKoodiarvo("999904")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("999904", "koulutus")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999904", "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Koulutus with Laajuudeton
 
 @Description("Suoritettavan ammatillisen tutkinnon tiedot")
@@ -295,7 +296,8 @@ case class Työssäoppimisjakso(
 @Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet.")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
- perusteenDiaarinumero: Option[String]
+ perusteenDiaarinumero: Option[String],
+ koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Laajuudeton with Tutkinto
 
 sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
@@ -642,7 +644,8 @@ case class ValmaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
-  laajuus: Option[LaajuusOsaamispisteissä] = None
+  laajuus: Option[LaajuusOsaamispisteissä] = None,
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus
 
 trait ValmaKoulutuksenOsa extends Koulutusmoduuli
@@ -703,7 +706,8 @@ case class TelmaKoulutus(
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
-  laajuus: Option[LaajuusOsaamispisteissä] = None
+  laajuus: Option[LaajuusOsaamispisteissä] = None,
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus
 
 trait TelmaKoulutuksenOsa extends Koulutusmoduuli

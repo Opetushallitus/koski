@@ -72,7 +72,8 @@ case class KorkeakoulunOpintojaksonSuoritus(
 
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Koulutus with Tutkinto with Laajuudeton
 
 @Description("Korkeakoulun opintojakson tunnistetiedot")

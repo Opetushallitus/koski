@@ -17,6 +17,8 @@ object Koulutustyyppi {
   val aikuistenLukiokoulutus = apply(14)
   val perusopetus = apply(16)
   val aikuistenPerusopetus = apply(17)
+  val valma = apply(18)
+  val valmaErityisopetuksena = apply(19)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(numero.toString, "koulutustyyppi")).get
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")

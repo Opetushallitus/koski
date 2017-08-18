@@ -262,7 +262,8 @@ case class PerusopetuksenToiminta_Alue(
 case class NuortenPerusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus"),
+ koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Perusopetus
 
 trait Perusopetus extends Koulutus with Laajuudeton with Tutkinto with PerusopetuksenDiaarinumerollinenKoulutus
@@ -274,7 +275,8 @@ case class PerusopetuksenLuokkaAste(
  @KoodistoUri("perusopetuksenluokkaaste")
  @Title("Luokka-aste")
  tunniste: Koodistokoodiviite,
- perusteenDiaarinumero: Option[String]
+ perusteenDiaarinumero: Option[String],
+ koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton with PerusopetuksenDiaarinumerollinenKoulutus {
   override def laajuus = None
   def luokkaAste = tunniste.koodiarvo

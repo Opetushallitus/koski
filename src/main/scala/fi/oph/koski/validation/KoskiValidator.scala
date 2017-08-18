@@ -82,7 +82,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    addOppilaitos(oo).right.flatMap(addKoulutustoimija)
+    addOppilaitos(oo).right.flatMap(addKoulutustoimija).map(addKoulutustyyppi)
   }
 
   def addOppilaitos(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
@@ -114,6 +114,21 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case _ =>
         logger.warn(s"Koulutustoimijaa ei löydy oppilaitokselle ${oo.oppilaitos}")
         Right(oo)
+    }
+  }
+
+  def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    val t = traversal[KoskeenTallennettavaOpiskeluoikeus]
+      .field[List[PäätasonSuoritus]]("suoritukset")
+      .items
+      .field[Koulutusmoduuli]("koulutusmoduuli")
+      .ifInstanceOf[Koulutus]
+
+    t.modify(oo) { koulutus =>
+      val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersion("koulutustyyppi").get
+      val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
+      val koulutustyyppi = koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
+      lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
     }
   }
 

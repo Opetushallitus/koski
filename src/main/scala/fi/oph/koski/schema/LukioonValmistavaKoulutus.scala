@@ -52,7 +52,8 @@ case class LukioonValmistavanKoulutuksenSuoritus(
 case class LukioonValmistavaKoulutus(
   @KoodistoKoodiarvo("999906")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999906", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String]
+  perusteenDiaarinumero: Option[String],
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus {
   def laajuus = None
 }

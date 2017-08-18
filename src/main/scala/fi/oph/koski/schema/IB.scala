@@ -82,7 +82,8 @@ case class PreIBKoulutusmoduuli(
 @Description("IB tutkinnon tunnistetiedot")
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Koulutus with Laajuudeton with Tutkinto
 
 trait IBSuoritus extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen

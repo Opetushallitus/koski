@@ -104,7 +104,8 @@ case class MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(
 case class PerusopetuksenLisäopetus(
   @KoodistoKoodiarvo("020075")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String]
+  perusteenDiaarinumero: Option[String],
+  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus {
   def laajuus = None
 }
