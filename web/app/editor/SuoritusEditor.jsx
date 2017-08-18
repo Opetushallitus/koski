@@ -16,6 +16,9 @@ const resolveEditor = (mdl) => {
   if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
+  if (['esiopetuksensuoritus'].includes(mdl.value.classes[0])) {
+    return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
+  }
   if (mdl.value.classes.includes('ammatillinenpaatasonsuoritus')) {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
