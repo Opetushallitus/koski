@@ -17,6 +17,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
+import mojave._
 
 class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {

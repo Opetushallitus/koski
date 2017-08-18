@@ -22,7 +22,8 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
 case class AikuistenPerusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus"),
+ koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Perusopetus
 
 @Description("Perusopetuksen oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän suoritusta")
