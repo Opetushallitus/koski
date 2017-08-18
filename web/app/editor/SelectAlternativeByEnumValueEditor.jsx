@@ -11,7 +11,7 @@ export const SelectAlternativeByEnumValueEditor = ({ model, path }) => {
   return (<span>
         {
           completeWithFieldAlternatives(oneOfPrototypes(model), path).map( protos => {
-            let enumValues = protos.map(proto => modelLookup(proto, path).value)
+            let enumValues = R.uniqBy(R.prop('value'), protos.map(proto => modelLookup(proto, path).value))
             let tunnisteModel = lensedModel(model, L.lens(
               (m) => modelLookup(m, path),
               (enumModel, m) => {
