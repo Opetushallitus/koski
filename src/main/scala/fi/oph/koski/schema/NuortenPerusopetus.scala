@@ -30,7 +30,6 @@ case class PerusopetuksenOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
-  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[PerusopetuksenPäätasonSuoritus]])
 }
 
 case class PerusopetuksenOpiskeluoikeudenLisätiedot(

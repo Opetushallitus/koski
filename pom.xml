@@ -195,6 +195,12 @@
       <version>3.2.1</version>
     </dependency>
     <dependency>
+      <groupId>com.github.raimohanska</groupId>
+      <artifactId>mojave</artifactId>
+      <version>bb97a02</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
       <version>1.3.0</version>

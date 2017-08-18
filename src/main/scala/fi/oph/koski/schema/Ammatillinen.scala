@@ -6,6 +6,7 @@ import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import mojave._
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluoikeus(
@@ -30,7 +31,6 @@ case class AmmatillinenOpiskeluoikeus(
   override def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = this.copy(oid = oid, versionumero = versionumero)
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
-  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[AmmatillinenPäätasonSuoritus]])
 }
 
 sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen with Suorituskielellinen
@@ -216,7 +216,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def suorituskieli: Option[Koodistokoodiviite]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   def tyyppi: Koodistokoodiviite
-  def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus
+  def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus = lens[AmmatillisenTutkinnonOsanSuoritus].field[Option[OrganisaatioWithOid]]("toimipiste").set(this)(Some(toimipiste))
 }
 
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus.")
@@ -239,9 +239,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends AmmatillisenTutkinnonOsanSuoritus {
-  def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
-}
+) extends AmmatillisenTutkinnonOsanSuoritus
 
 @Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus.")
 @Title("Muun tutkinnon osan suoritus")
@@ -266,9 +264,7 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends AmmatillisenTutkinnonOsanSuoritus {
-  def toimipisteellä(toimipiste: OrganisaatioWithOid) = copy(toimipiste = Some(toimipiste))
-}
+) extends AmmatillisenTutkinnonOsanSuoritus
 
 case class Järjestämismuotojakso(
   alku: LocalDate,

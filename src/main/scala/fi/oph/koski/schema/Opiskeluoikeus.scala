@@ -57,11 +57,14 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
 trait OpiskeluoikeudenLisätiedot
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+  import mojave._
   @MinItems(1)
   def suoritukset: List[PäätasonSuoritus]
   def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
   def withVersion(version: Int) = this.withOidAndVersion(this.oid, Some(version))
-  def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
+  final def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus = {
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
+  }
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
 }

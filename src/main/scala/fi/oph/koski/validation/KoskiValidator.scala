@@ -14,7 +14,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
-import fi.oph.koski.tutkinto.{Koulutustyyppi, TutkintoRakenneValidator, TutkintoRepository}
+import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
 

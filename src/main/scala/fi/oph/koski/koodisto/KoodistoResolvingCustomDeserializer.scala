@@ -31,5 +31,5 @@ case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePal
     }
   }
 
-  def isApplicable(schema: SchemaWithClassName): Boolean = schema.fullClassName == classOf[Koodistokoodiviite].getName
+  def isApplicable(schema: SchemaWithClassName): Boolean = schema.appliesToClass(classOf[Koodistokoodiviite])
 }
