@@ -58,4 +58,17 @@ describe('Esiopetus', function() {
       })
     })
   })
+
+  describe('Tietojen muuttaminen', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
+
+    describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
+      var kuvaus = editor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
+
+      before(editor.edit, opinnot.expandAll, kuvaus.setValue('Uusi kuvaus'), editor.saveChanges, opinnot.expandAll)
+      it('Toimii', function() {
+        expect(kuvaus.getValue()).to.equal('Uusi kuvaus')
+      })
+    })
+  })
 })
