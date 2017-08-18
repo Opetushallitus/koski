@@ -51,7 +51,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
   private lazy val validatedOpiskeluoikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
     validator.validateAsJson(Oppija(henkilö, List(oikeus))) match {
       case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
-      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.oid +  " with data " + Json.write(oikeus) + ": " + status)
+      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.kokonimi +  " with data " + Json.write(oikeus) + ": " + status)
     }
   }
 
