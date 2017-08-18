@@ -40,6 +40,7 @@ export class Suoritustaulukko extends React.Component {
     let context = suorituksetModel.context
     let suoritukset = modelItems(suorituksetModel) || []
 
+
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
       filter: s => suoritusProperties(s).length > 0,
@@ -49,6 +50,7 @@ export class Suoritustaulukko extends React.Component {
     let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
     let groupIds = R.keys(grouped).sort()
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
+    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
     let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
@@ -70,7 +72,6 @@ export class Suoritustaulukko extends React.Component {
     let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
     let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
 
     return (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
       <div className="suoritus-taulukko">
