@@ -9,9 +9,10 @@ export class KoulutusmoduuliEditor extends React.Component {
     let { model } = this.props
     let overrideEdit = model.context.editAll ? true : false
     let suoritusTyyppi = suorituksenTyyppi(model.context.suoritus)
+    let isEsiopetus = suoritusTyyppi === 'esiopetuksensuoritus'
     let propertyFilter  = p => {
       let excludedProperties = ['tunniste', 'perusteenDiaarinumero', 'pakollinen']
-      let esiopetusKuvaus = suoritusTyyppi === 'esiopetuksensuoritus' && p.key === 'kuvaus'
+      let esiopetusKuvaus = isEsiopetus && p.key === 'kuvaus'
       return !excludedProperties.includes(p.key) && !esiopetusKuvaus
     }
     return (<span className="koulutusmoduuli">
@@ -23,7 +24,7 @@ export class KoulutusmoduuliEditor extends React.Component {
         }
       </span>
       <span className="diaarinumero"><span className="value">
-        <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')}/>
+        <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')} edit={model.context.edit && !isEsiopetus} />
       </span></span>
       <PropertiesEditor model={model} propertyFilter={propertyFilter} />
     </span>)
