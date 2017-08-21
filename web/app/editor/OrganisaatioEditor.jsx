@@ -3,7 +3,7 @@ import {modelData, modelSetValue, pushModel} from './EditorModel'
 import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
 import {t} from '../i18n'
 export const OrganisaatioEditor = ({model, organisaatioTyypit, showAll}) => {
-  let canSelectOrg = org => organisaatioTyypit ? org.organisaatiotyypit.some(tyyppi => organisaatioTyypit.includes(tyyppi)) : true
+  let canSelectOrg = org => organisaatioTyypit ? org.organisaatiotyypit.some(tyyppi => organisaatioTyypit.map(ot => ot.toLowerCase()).includes(tyyppi.toLowerCase())) : true
   return model.context.edit
     ? <OrganisaatioPicker
         selectedOrg={ modelData(model) }
