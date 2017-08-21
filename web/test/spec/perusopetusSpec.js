@@ -385,7 +385,7 @@ describe('Perusopetus', function() {
     describe('Opiskeluoikeuden tiedot', function() {
       it('Alkutila', function() {
         expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('4.6.2016')
-        expect(opinnot.opiskeluoikeusEditor().subEditor('.property.tila').propertyBySelector('label.tila:contains("Valmistunut")').isVisible()).to.equal(false)
+        expect(opinnot.opiskeluoikeusEditor().subEditor('.property.tila').propertyBySelector('label.tila:contains("Valmistunut")').isVisible()).to.equal(true)
       })
 
       describe('Opiskeluoikeuden tila', function() {
