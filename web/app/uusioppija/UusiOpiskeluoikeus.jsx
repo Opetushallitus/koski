@@ -10,11 +10,11 @@ import UusiAmmatillisenKoulutuksenSuoritus from './UusiAmmatillisenKoulutuksenSu
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus.jsx'
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus.jsx'
-import UusiEsiopetuksenSuoritus from './UusiEsiopetuksenSuoritus.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {sortLanguages} from '../sorting'
+import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -49,7 +49,7 @@ export default ({opiskeluoikeusAtom}) => {
       {
         tyyppiAtom.map('.koodiarvo').map(tyyppi => {
           if (tyyppi == 'perusopetus') return <UusiPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-          if (tyyppi == 'esiopetus') return <UusiEsiopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
           if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
           if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
           if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />

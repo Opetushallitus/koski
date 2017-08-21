@@ -1,10 +1,8 @@
-import React from 'baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
-import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
-import Text from '../Text.jsx'
+import {diaarinumerot} from '../editor/PerusteDropdown.jsx'
 
-export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
+export const esiopetuksenSuoritus = (suoritusAtom, oppilaitosAtom, suorituskieliAtom) => {
   const perusteAtom = Atom()
   const makeSuoritus = (oppilaitos, peruste, suorituskieli) => {
     if (oppilaitos) {
@@ -23,9 +21,15 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
       }
     }
   }
+
   let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
+  diaarinumerot(suoritusP.map('.tyyppi')).map(options => options[0]).map('.koodiarvo').onValue(peruste => {
+    let current = perusteAtom.get()
+    if (!current || peruste !== current) {
+      perusteAtom.set(peruste)
+    }
+  })
+
   suoritusP.filter('.koulutusmoduuli.perusteenDiaarinumero').onValue(suoritus => suoritusAtom.set(suoritus))
-  return <Peruste {...{suoritusTyyppiP: suoritusP.map('.tyyppi'), perusteAtom}} />
 }
 
-const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>
