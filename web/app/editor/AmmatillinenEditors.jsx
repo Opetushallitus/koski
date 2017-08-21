@@ -96,7 +96,7 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
   if (model.context.edit) {
     return (
         <PropertiesEditor model={model} getValueEditor={(p, getDefault) => {
-          return p.key === 'oppilaitos' ? <OrganisaatioEditor model={p.model} showAll={true} organisaatioTyypit={["OPPILAITOS"]}/> : getDefault()
+          return p.key === 'oppilaitos' ? <OrganisaatioEditor model={p.model} showAll={true} organisaatioTyypit={['OPPILAITOS']}/> : getDefault()
         }}/>
     )
   }
