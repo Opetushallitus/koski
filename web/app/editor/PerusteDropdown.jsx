@@ -39,7 +39,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
     }
   })
   return (<span>
-    { elementWithLoadingIndicator(diaarinumerotP.map(diaarinumerot => diaarinumerot.length
+    { elementWithLoadingIndicator(diaarinumerotP.map(diaarinumerot => diaarinumerot.length && diaarinumerot.length !== 1
         ? <Dropdown
             options={diaarinumerotP}
             keyValue={option => option.koodiarvo}
