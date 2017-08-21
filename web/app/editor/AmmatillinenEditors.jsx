@@ -8,6 +8,7 @@ import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 import {SelectAlternativeByEnumValueEditor} from './SelectAlternativeByEnumValueEditor.jsx'
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
 import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
+import {TutkinnonOsanSuoritusEditor} from './Suoritustaulukko.jsx'
 
 export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
@@ -113,5 +114,6 @@ export const editorMapping = {
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
   'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
   'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
-  'naytto': AmmatillinenNäyttöEditor
+  'naytto': AmmatillinenNäyttöEditor,
+  'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor
 }

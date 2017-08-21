@@ -258,7 +258,7 @@ export class OppiaineenSuoritusEditor extends React.Component {
     }
     <PerusopetuksenKurssitEditor model={model}/>
     {
-      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="4" className="error">{error}</td></tr>)
+      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }
     </tbody>)
   }

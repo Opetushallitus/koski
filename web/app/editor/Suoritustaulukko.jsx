@@ -6,7 +6,7 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {
   contextualizeSubModel,
-  ensureArrayKey,
+  ensureArrayKey, modelErrorMessages,
   modelItems,
   modelProperties,
   modelProperty,
@@ -21,7 +21,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana} from './Suoritus'
+import {fixTila, hasArvosana, suoritusKesken, suoritusValmis} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
@@ -121,10 +121,10 @@ export class Suoritustaulukko extends React.Component {
     }
 
     function suoritusEditor(suoritus, key, groupId) {
-      return (<SuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
-                             showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
-                             expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
-                             grouped={showGrouped} groupId={groupId}/>)
+      return (<TutkinnonOsanSuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
+                                           showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
+                                           expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
+                                           grouped={showGrouped} groupId={groupId}/>)
     }
 
     function addTutkinnonOsa(koulutusmoduuli, groupId) {
@@ -186,7 +186,7 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
   </span>)
 }
 
-class SuoritusEditor extends React.Component {
+export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
     let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
     let properties = suoritusProperties(model)
@@ -233,7 +233,16 @@ class SuoritusEditor extends React.Component {
         </td>
       </tr>)
     }
+    {
+      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
+    }
     </tbody>)
+  }
+}
+
+TutkinnonOsanSuoritusEditor.validateModel = (m) => {
+  if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
+    return [{key: 'osasuorituksenTilla', message: <Text name='Tutkinnon osan suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}]
   }
 }
 
