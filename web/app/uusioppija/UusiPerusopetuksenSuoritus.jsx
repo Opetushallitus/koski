@@ -5,7 +5,7 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from '../http'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
-import {accumulateModelState, modelLookup, modelData, modelSet, modelValid} from '../editor/EditorModel'
+import {accumulateModelState, modelLookup, modelData, modelSet, modelValid, validateModel} from '../editor/EditorModel'
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
@@ -39,11 +39,11 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
       return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
     } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus && suorituskieli) {
-      var suoritusTapaJaToimipiste = {
+      var suorituskieliJaToimipiste = {
         toimipiste: oppilaitos,
         suorituskieli : suorituskieli
       }
-      return R.merge(oppiaineenSuoritus, suoritusTapaJaToimipiste)
+      return R.merge(oppiaineenSuoritus, suorituskieliJaToimipiste)
     }
   }
 
@@ -104,7 +104,9 @@ const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => 
           return oppiainePrototype && accumulateModelState(modelSet(oppiaineenSuoritus, oppiainePrototype, 'koulutusmoduuli'))
         }).toProperty()
 
-        let suoritusDataP = suoritusModelP.map(model => model && modelValid(model) ? modelData(model) : null)
+        // TODO: tässä validoidaan vain koulutusmoduuli, koska suorituksesta puuttuu tässä kohtaa "toimipiste", joka voitaisiin toimittaa yltä.
+        // huomaa, että ylempänä toimipiste lisätään dataan erikseen...
+        let suoritusDataP = suoritusModelP.map(model => model && modelValid(validateModel(modelLookup(model, 'koulutusmoduuli'))) ? modelData(model) : null)
 
         let suoritusP = Bacon.combineWith(suoritusDataP, perusteAtom, (suoritus, diaarinumero) => {
           if (suoritus && diaarinumero) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)

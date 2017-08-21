@@ -14,7 +14,11 @@ export const setTila = (suoritus, koodiarvo) => {
   return L.set(tilaLens, tila, suoritus)
 }
 export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
-  return modelItems(suoritus, 'osasuoritukset').find(suoritusKesken) != undefined
+  return keskeneräisetOsasuoritukset(suoritus).length > 0
+}
+
+export const keskeneräisetOsasuoritukset = (suoritus) => {
+  return modelItems(suoritus, 'osasuoritukset').filter(suoritusKesken)
 }
 
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo

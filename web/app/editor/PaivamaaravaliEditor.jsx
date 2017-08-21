@@ -6,7 +6,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 
 export const PäivämääräväliEditor = ({model}) => {
   let wrappedModel = wrapOptional({model})
-  let validRange = modelValid(wrappedModel)
+  let validRange = modelValid(wrappedModel, false)
 
   return (<span className={validRange ? 'date-range' : 'date-range error'}>
     <span className="alku"><Editor model={wrappedModel} path="alku"/></span>{' — '}<span className="loppu"><Editor model={wrappedModel} path="loppu"/></span>

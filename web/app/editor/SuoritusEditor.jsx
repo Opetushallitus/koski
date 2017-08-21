@@ -9,7 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {arviointiPuuttuu, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, keskeneräisetOsasuoritukset, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
@@ -66,6 +66,11 @@ export class SuoritusEditor extends React.Component {
 SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
+  }
+  if (suoritusValmis(m)) {
+    return keskeneräisetOsasuoritukset(m).map((osasuoritus, i) => {
+      return {path: ['osasuoritukset', i], key: 'osasuorituksenTila', message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}
+    })
   }
 }
 

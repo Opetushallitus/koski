@@ -27,7 +27,7 @@ import {
   pushRemoval
 } from './EditorModel'
 import {sortGrades} from '../sorting'
-import {fixTila, suoritusKesken, suoritusValmis} from './Suoritus'
+import {fixTila, suoritusKesken} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
@@ -272,12 +272,6 @@ const PerusopetuksenKurssitEditor = ({model}) => {
       <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>
     )
   }</ul></td></tr>)
-}
-
-OppiaineenSuoritusEditor.validateModel = (m) => {
-  if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
-    return [{key: 'osasuorituksenTilla', message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}]
-  }
 }
 
 const ArvosanaEditor = ({model}) => {

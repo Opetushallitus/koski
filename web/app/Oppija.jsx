@@ -2,12 +2,12 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Http from './http'
 import {
-  modelTitle,
-  modelLookup,
-  modelData,
-  applyChanges,
+  applyChangesAndValidate,
   getModelFromChange,
   getPathFromChange,
+  modelData,
+  modelLookup,
+  modelTitle,
   modelValid
 } from './editor/EditorModel'
 import {editorMapping} from './editor/Editors.jsx'
@@ -16,9 +16,9 @@ import R from 'ramda'
 import {currentLocation} from './location.js'
 import {OppijaHaku} from './OppijaHaku.jsx'
 import Link from './Link.jsx'
-import {increaseLoading, decreaseLoading} from './loadingFlag'
+import {decreaseLoading, increaseLoading} from './loadingFlag'
 import delays from './delays'
-import {navigateToOppija, navigateWithQueryParams, locationP, showError} from './location'
+import {locationP, navigateToOppija, navigateWithQueryParams, showError} from './location'
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
 import {listviewPath} from './Oppijataulukko.jsx'
@@ -102,8 +102,9 @@ const createState = (oppijaOid) => {
           let batch = changeBuffer
           changeBuffer = null
           //console.log('Apply', batch.length, 'changes:', batch)
-          let locallyModifiedOppija = applyChanges(oppijaBeforeChange, batch)
-          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusOid: opiskeluoikeusOid})
+          let locallyModifiedOppija = applyChangesAndValidate(oppijaBeforeChange, batch)
+
+          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusOid: opiskeluoikeusOid })
         })
       })
     }

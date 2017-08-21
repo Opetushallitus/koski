@@ -310,19 +310,32 @@ export const addContext = (model, additionalContext) => {
   return contextualizeModel(model, R.merge(model.context, additionalContext))
 }
 
-export const modelValid = (model, context) => {
-  var errors = validateModel(model, context)
+export const modelValid = (model, recursive = true) => {
+  let errors = modelErrors(model, recursive)
   let valid = R.keys(errors).length == 0
   //if (!valid) console.log("errors", errors)
   return valid
 }
 
-export const modelErrorMessages = (model, context) => {
-  var errors = validateModel(model, context)
-  return R.values(errors).flatten().filter(e => e.message).map(e => e.message)
+export const modelErrorMessages = (model, recursive = true) => {
+  return R.values(modelErrors(model, recursive)).flatten().filter(e => e.message).map(e => e.message)
 }
 
-export const applyChanges = (modelBeforeChange, changes) => {
+const modelErrors = (model, recursive = true) => {
+  let context = model.context
+
+  let pathString = justPath(model.path).join('.')
+  let keyMatch = ([key]) => recursive ? R.startsWith(pathString, key) : pathString == key
+
+  let validationResult = context.validationResult || {}
+
+  return pathString.length
+    ? R.fromPairs(R.toPairs(validationResult).filter(keyMatch))
+    : validationResult
+}
+
+
+export const applyChangesAndValidate = (modelBeforeChange, changes) => {
   let basePath = toPath(modelBeforeChange.path)
   var withAppliedChanges = changes.reduce((acc, change) => {
     //console.log('apply', change, 'to', acc)
@@ -332,8 +345,35 @@ export const applyChanges = (modelBeforeChange, changes) => {
 
     return L.set(actualLens, getModelFromChange(change), acc)
   }, modelBeforeChange)
-  return withAppliedChanges
+
+
+  return validateModel(withAppliedChanges)
 }
+
+// adds validationResult to model.context
+export const validateModel = (mainModel) => {
+  let context = mainModel.context
+  if (!context) throw new Error('context missing')
+  const validateInner = (model, results) => {
+    let validator = getValidator(model, context)
+    if (validator) {
+      let myResult = validator(model)
+      if (myResult) {
+        myResult.forEach(error => {
+          let path = justPath(model.path)
+          let fullPath = path.concat(error.path || []).join('.')
+          results[fullPath] ? results[fullPath].push(error) : results[fullPath] = [error]
+        })
+      }
+    }
+    modelProperties(model).forEach(p => validateInner(p.model, results))
+    modelItems(model).forEach(item => validateInner(item, results))
+    return results
+  }
+  let validationResult = validateInner(mainModel, {})
+  return addContext(mainModel, { validationResult })
+}
+
 
 export const getPathFromChange = (change) => {
   let modelForPath = change._remove ? change._remove : change
@@ -354,9 +394,9 @@ export const accumulateModelStateAndValidity = (model, changeBus = Bacon.Bus()) 
 }
 
 export const accumulateModelState = (model, changeBus = Bacon.Bus()) => {
-  return changeBus.scan(addContext(model, {changeBus}), (m, changes) => applyChanges(m, changes))
+  let validatedInitialModel = validateModel(addContext(model, {changeBus}))
+  return changeBus.scan(validatedInitialModel, (m, changes) => applyChangesAndValidate(m, changes))
 }
-
 
 export const pushModelValue = (model, value, path) => pushModel(modelSetValue(model, value, path))
 export const pushModel = (model, changeBus) => getChangeBus(model, changeBus).push([model])
@@ -510,22 +550,6 @@ const getEditor = (model, context) => {
   return editorMapping[model.type]
 }
 
-const validateModel = (model, context, results = {}, path = []) => {
-  if (!context) context = model.context
-  if (!context) throw new Error('context missing')
-
-  let validator = getValidator(model, context)
-  if (validator) {
-    let myResult = validator(model)
-    if (myResult && myResult.length) {
-      results[path.join('.')] = myResult
-    }
-  }
-  modelPropertiesRaw(model).forEach(p => validateModel(p.model, context, results, path.concat(p.key)))
-  modelItemsRaw(model).forEach((item, i) => validateModel(item, context, results, path.concat(i)))
-  return results
-}
-
 const getChangeBus = (model, changeBus) => changeBus || model.context.changeBus
 
 const valueEmpty = (value) => {
@@ -563,6 +587,9 @@ const toPath = (path) => {
   }
   throw new Error('Not a path: ' + path)
 }
+
+// removes function/lenses, leaving just the data path
+const justPath = path => toPath(path).filter(pathElem => typeof pathElem != 'function')
 
 const objectLens = (path) => {
 

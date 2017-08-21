@@ -6,7 +6,8 @@ import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {
   contextualizeSubModel,
-  ensureArrayKey, modelErrorMessages,
+  ensureArrayKey,
+  modelErrorMessages,
   modelItems,
   modelProperties,
   modelProperty,
@@ -21,7 +22,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana, suoritusKesken, suoritusValmis} from './Suoritus'
+import {fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
@@ -237,12 +238,6 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }
     </tbody>)
-  }
-}
-
-TutkinnonOsanSuoritusEditor.validateModel = (m) => {
-  if (suoritusKesken(m) && m.context && m.context.suoritus && suoritusValmis(m.context.suoritus)) {
-    return [{key: 'osasuorituksenTilla', message: <Text name='Tutkinnon osan suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}]
   }
 }
 
