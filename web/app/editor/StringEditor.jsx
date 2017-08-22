@@ -15,7 +15,7 @@ export const StringEditor = ({model, placeholder}) => {
     : <span className="inline string">{!data ? '' : splitToRows(data)}</span>
 }
 
-let splitToRows = (data) => data.split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
+let splitToRows = (data) => data.replace(/\r\n*/g, '\n').split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
 const buildRegex = model => new RegExp(model.regularExpression.replace(/\\/g, '\\'))
 
