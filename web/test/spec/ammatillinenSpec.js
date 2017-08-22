@@ -360,11 +360,23 @@ describe('Ammatillinen koulutus', function() {
           suoritustapa.selectValue('Opetussuunnitelman mukainen')
         )
         describe('Alussa', function () {
-          it('Taulukko on tyhjä', function() {
-            expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
+          describe('Kun suoritustapa on valittu', function() {
+            it('Taulukko on tyhjä', function() {
+              expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
+            })
+            it('Näytetään laajuussarake ja -yksikkö muokattaessa', function() {
+              expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+            })
           })
-          it('Näytetään laajuussarake ja -yksikkö muokattaessa', function() {
-            expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+          describe('Kun suoritustapa ei ole valittuna', function() {
+            before(suoritustapa.selectValue('Ei valintaa'))
+            it('Suoritustaulukko ei ole näkyvissä', function() {
+              expect(opinnot.tutkinnonOsat().isSuoritusTaulukkoVisible()).to.equal(false)
+            })
+            it('Kehoittaa valitsemaan suoritustavan ensin', function() {
+              expect(opinnot.tutkinnonOsat().valitseSuoritustapaTeksti()).to.equal('Valitse ensin tutkinnon suoritustapa, jos haluat lisätä tutkinnonosan suorituksia')
+            })
+            after(suoritustapa.selectValue('Opetussuunnitelman mukainen'))
           })
         })
         describe('Pakollisen tutkinnon osan lisääminen', function() {

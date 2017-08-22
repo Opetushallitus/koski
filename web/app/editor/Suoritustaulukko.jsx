@@ -41,17 +41,18 @@ export class Suoritustaulukko extends React.Component {
     let context = suorituksetModel.context
     let suoritukset = modelItems(suorituksetModel) || []
 
-
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
       filter: s => suoritusProperties(s).length > 0,
       component: this
     })
+
     let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
     let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
     let groupIds = R.keys(grouped).sort()
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
     let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
+    let suoritustapa = modelData(context.suoritus, 'suoritustapa')
     let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
@@ -73,39 +74,40 @@ export class Suoritustaulukko extends React.Component {
     if (laajuusModel && laajuusModel.optional && !modelData(laajuusModel)) laajuusModel = optionalPrototypeModel(laajuusModel)
     let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
     let showLaajuus = context.edit
-      ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') != null
+      ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
       : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
-    return (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
-      <div className="suoritus-taulukko">
-        <table>
-          <thead>
-          <tr>
-            <th className="suoritus">
-              {suoritusProto && modelProperty(suoritusProto, 'koulutusmoduuli').title}
-              {showExpandAll &&
-              <div>
-                {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
-                                                    onClick={toggleExpandAll}>
-                    <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
-                  </a>)
-                )}
-              </div>
+    return !suoritustapa && context.edit && isAmmatillinenTutkinto
+        ? <Text name="Valitse ensin tutkinnon suoritustapa" />
+        : (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
+          <div className="suoritus-taulukko">
+            <table>
+              <thead>
+              <tr>
+                <th className="suoritus">
+                  {suoritusProto && modelProperty(suoritusProto, 'koulutusmoduuli').title}
+                  {showExpandAll &&
+                  <div>
+                    {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
+                                                        onClick={toggleExpandAll}>
+                        <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
+                      </a>)
+                    )}
+                  </div>
+                  }
+                </th>
+                {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
+                {showLaajuus && <th className="laajuus"><Text
+                  name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
+                {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
+              </tr>
+              </thead>
+              {
+                groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
               }
-            </th>
-            {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
-            {showLaajuus && <th className="laajuus"><Text
-              name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
-            {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
-          </tr>
-          </thead>
-          {
-            groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
-          }
-        </table>
-      </div>
-    )
+            </table>
+          </div>)
 
     function suoritusGroup(groupId, i) {
       let items = (grouped[groupId] || [])

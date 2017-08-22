@@ -304,6 +304,12 @@ function TutkinnonOsat(groupId) {
     },
     laajuudenOtsikko: function() {
       return S('.suoritus-taulukko:eq(0) th.laajuus').text()
+    },
+    isSuoritusTaulukkoVisible: function() {
+      return S('.suoritus-taulukko:eq(0)').is(':visible')
+    },
+    valitseSuoritustapaTeksti: function() {
+      return S('.osasuoritukset').text()
     }
   }
 }
