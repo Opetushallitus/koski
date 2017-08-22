@@ -301,6 +301,9 @@ function TutkinnonOsat(groupId) {
     },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
+    },
+    laajuudenOtsikko: function() {
+      return S('.suoritus-taulukko:eq(0) th.laajuus').text()
     }
   }
 }
