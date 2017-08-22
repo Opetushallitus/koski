@@ -5,7 +5,10 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from '../http'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
-import {accumulateModelState, modelLookup, modelData, modelSet, modelValid, validateModel} from '../editor/EditorModel'
+import {
+  accumulateModelState, modelLookup, modelData, modelSet, modelValid, validateModel,
+  modelSetValues
+} from '../editor/EditorModel'
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
@@ -38,12 +41,8 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
     if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
       return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
-    } else if (oppilaitos && koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus && suorituskieli) {
-      var suorituskieliJaToimipiste = {
-        toimipiste: oppilaitos,
-        suorituskieli : suorituskieli
-      }
-      return R.merge(oppiaineenSuoritus, suorituskieliJaToimipiste)
+    } else if (koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
+      return oppiaineenSuoritus
     }
   }
 
@@ -55,7 +54,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     {
       oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä)
         ? <Peruste {...{suoritusTyyppiP: oppimääräAtom, perusteAtom}} />
-        : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom}/>
+        : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom} oppilaitos={oppilaitosAtom} suorituskieli={suorituskieliAtom}/>
       )
     }
   </span>)
@@ -92,21 +91,24 @@ let makePerusopetuksenOppimääränSuoritus = (oppilaitos, oppimäärä, peruste
 
 const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>
 
-const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
+const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppilaitos, suorituskieli}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
   return (<span>
     {
-      suoritusPrototypeP.map(oppiaineenSuoritus => {
-        let oppiainePrototypeAtom = Atom(undefined) // Valittu oppiaine/koulutusmoduuliprototyyppi
+      Bacon.combineWith(suoritusPrototypeP, oppilaitos, suorituskieli, (oppiaineenSuoritus, toimipiste, kieli) => {
         if (!oppiaineenSuoritus) return null
-        oppiaineenSuoritus = Editor.setupContext(oppiaineenSuoritus, {edit:true, editorMapping})
+
+        oppiaineenSuoritus = modelSetValues(Editor.setupContext(oppiaineenSuoritus, {edit:true, editorMapping}), {
+          toimipiste: { data: toimipiste },
+          suorituskieli: { data: kieli}
+        })
+
+        let oppiainePrototypeAtom = Atom(undefined) // Valittu oppiaine/koulutusmoduuliprototyyppi
 
         let suoritusModelP = oppiainePrototypeAtom.flatMapLatest(oppiainePrototype => {
           return oppiainePrototype && accumulateModelState(modelSet(oppiaineenSuoritus, oppiainePrototype, 'koulutusmoduuli'))
         }).toProperty()
 
-        // TODO: tässä validoidaan vain koulutusmoduuli, koska suorituksesta puuttuu tässä kohtaa "toimipiste", joka voitaisiin toimittaa yltä.
-        // huomaa, että ylempänä toimipiste lisätään dataan erikseen...
-        let suoritusDataP = suoritusModelP.map(model => model && modelValid(validateModel(modelLookup(model, 'koulutusmoduuli'))) ? modelData(model) : null)
+        let suoritusDataP = suoritusModelP.map(model => model && modelValid(validateModel(model)) ? modelData(model) : null)
 
         let suoritusP = Bacon.combineWith(suoritusDataP, perusteAtom, (suoritus, diaarinumero) => {
           if (suoritus && diaarinumero) return L.set(L.compose('koulutusmoduuli', 'perusteenDiaarinumero'), diaarinumero, suoritus)
