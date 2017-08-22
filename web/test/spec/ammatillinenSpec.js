@@ -417,6 +417,13 @@ describe('Ammatillinen koulutus', function() {
               })
             })
           })
+
+          describe('Laajuus', function() {
+            // TODO: tallennettuna puuttuvalla laajuudella: ei näytetä laajuutta
+            // TODO: muokattaessa näytetään laajuuden yksikkö
+            // TODO: tallennettuna näytetään laajuus ja yksikkö
+            // TODO: laajuuden poistaminen
+          })
         })
 
         describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {

@@ -15,7 +15,7 @@ import {
   modelSetTitle,
   modelSetValue,
   modelSetValues,
-  oneOfPrototypes,
+  oneOfPrototypes, optionalPrototypeModel,
   pushModel,
   pushRemoval
 } from './EditorModel'
@@ -47,7 +47,7 @@ export class Suoritustaulukko extends React.Component {
       filter: s => suoritusProperties(s).length > 0,
       component: this
     })
-
+    let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
     let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
     let groupIds = R.keys(grouped).sort()
     let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
@@ -56,7 +56,6 @@ export class Suoritustaulukko extends React.Component {
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
     if (context.edit && isAmmatillinenPerustutkinto) {
-      let suoritusProto = createTutkinnonOsanSuoritusPrototype(suorituksetModel)
       let ryhmäModel = modelLookup(suoritusProto, 'tutkinnonOsanRyhmä')
       if (ryhmäModel) {
         // Lisääminen mahdollista toistaiseksi vain ryhmitellyille suorituksille (== ammatilliset tutkinnon osat)
@@ -70,8 +69,12 @@ export class Suoritustaulukko extends React.Component {
     let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
     let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
-    let laajuusYksikkö = t(modelData(suoritukset[0], 'koulutusmoduuli.laajuus.yksikkö.lyhytNimi'))
-    let showLaajuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
+    let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
+    if (laajuusModel && laajuusModel.optional && !modelData(laajuusModel)) laajuusModel = optionalPrototypeModel(laajuusModel)
+    let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
+    let showLaajuus = context.edit
+      ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') != null
+      : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
     return (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
@@ -80,7 +83,7 @@ export class Suoritustaulukko extends React.Component {
           <thead>
           <tr>
             <th className="suoritus">
-              {suoritukset[0] && modelProperty(suoritukset[0], 'koulutusmoduuli').title}
+              {suoritusProto && modelProperty(suoritusProto, 'koulutusmoduuli').title}
               {showExpandAll &&
               <div>
                 {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
@@ -93,7 +96,7 @@ export class Suoritustaulukko extends React.Component {
             </th>
             {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
             {showLaajuus && <th className="laajuus"><Text
-              name="Laajuus"/>{((samaLaajuusYksikkö && laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
+              name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
             {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
           </tr>
           </thead>
