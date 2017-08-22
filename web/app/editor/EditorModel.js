@@ -174,6 +174,11 @@ let modelValueLens = ({model} = {}) => L.lens(
         return m
       }
     }
+    if (m.type == 'prototype') {
+      if (v) {
+        throw new Error(`trying to set value of an unresolved prototype model (${m.key}) to a non-null value`, v)
+      }
+    }
     let plainOptional = (m.optional && !m.type)
     let usedModel = plainOptional ? getUsedModelForOptionalModel(m, {model}) : m
     return L.set('value', v, usedModel)
@@ -501,6 +506,7 @@ const childPath = (model, ...pathElems) => {
 const resolvePrototype = (model, context) => {
   if (model && model.type === 'prototype') {
     // Some models are delivered as prototype references and are replaced with the actual prototype found in the context
+    if (!context) throw new Error(`Cannot resolve prototype ${model.key} without context`)
     let foundProto = context.prototypes[model.key]
     if (!foundProto) {
       console.error('Prototype not found: ' + model.key)
