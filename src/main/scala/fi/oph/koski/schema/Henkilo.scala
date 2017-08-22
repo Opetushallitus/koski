@@ -86,6 +86,6 @@ case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) e
 trait HenkilöWithOid extends Henkilö {
   @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa.")
   @OksaUri("tmpOKSAID760", "oppijanumero")
-  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
+  @RegularExpression("""^1\.2\.246\.562\.24\.\d{11}$""")
   def oid: String
 }
