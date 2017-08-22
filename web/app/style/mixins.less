@@ -23,3 +23,27 @@
   width: 11px;
   text-align: center;
 }
+
+.RemoveSymbol {
+  &:before {
+    .FontAwesomeSymbol;
+    font-size: 15px;
+    color: #dc6f6f;
+    content: "\f00d";
+  }
+}
+
+.EditSymbol {
+  &:before {
+    .FontAwesomeSymbol;
+    content: "\f044";
+  }
+}
+
+.CloseSymbol {
+  &:before {
+    color: @color-darkgray;
+    font-size: 18px;
+    content: "✕";
+  }
+}

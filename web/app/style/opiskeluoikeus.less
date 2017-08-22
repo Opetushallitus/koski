@@ -76,18 +76,11 @@
         z-index: @z-index-base + 4;
 
         .close-modal {
+          .CloseSymbol;
           cursor: pointer;
           position: absolute;
-          top: 0;
-          right: 0;
-          float: right;
-          color: black;
-          padding: 0 5px;
-          font-size: 1.5em;
-          &:before {
-            /* lighter */
-            content: '\00d7';
-          }
+          top: 6px;
+          right: 10px;
         }
 
         ol {
@@ -558,8 +551,7 @@
       }
 
       > li > a.remove-item {
-        .FontAwesomeSymbol;
-        color: #dc6f6f;
+        .RemoveSymbol;
         margin-left: 6px;
         margin-top: 0;
       }
@@ -591,19 +583,16 @@
     li {
       clear: both;
       line-height: 23px;
-
-      &.add-item {
-        a {
-          font-size: 12px;
-        }
-      }
     }
 
     a.remove-value {
-      .FontAwesomeSymbol;
-      color: #dc6f6f;
+      .RemoveSymbol;
       vertical-align: top;
       margin-left: 6px;
+    }
+
+    a.edit-value {
+      .EditSymbol;
     }
 
     .removable-option a.remove-value {

@@ -30,7 +30,7 @@ export const ArrayEditor = ({model, reverse}) => {
         items.map((item) => {
           return (<li key={item.arrayKey}>
             <Editor model = {item} />
-            {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}>{''}</a>}
+            {item.context.edit && items.length > minItems && <a className="remove-item" onClick={() => pushRemoval(item)}/>}
           </li>)
         })
       }

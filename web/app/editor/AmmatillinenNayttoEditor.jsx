@@ -51,8 +51,8 @@ const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
 
   return (<div>
     <div>
-      {edit && <a className="remove-value fa fa-times-circle-o" onClick={() => resetOptionalModel(model)}></a>}
-      {edit && <a className="edit-value fa fa-pencil-square-o" onClick={() => popupVisibleA.set(true)}></a>}
+      {edit && <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>}
+      {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}></a>}
       {hasSuoritusaika && <span className="suoritusaika"><Editor model={modelLookup(model, 'suoritusaika')} edit={false}/></span>}
       {hasTyöpaikka && <span>{'Työpaikka: '}<Editor className="työpaikka" model={modelLookup(model, 'suorituspaikka.kuvaus')} edit={false}/></span>}
       {hasArvosana && <span className="arvosana"><Editor className="arvosana" model={modelLookup(model, 'arviointi.arvosana')} edit={false}/></span>}

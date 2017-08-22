@@ -31,7 +31,7 @@ export class OptionalEditor extends React.Component {
           : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
       }
       {
-        canRemove && <a className="remove-value" onClick={removeValue}>{''}</a>
+        canRemove && <a className="remove-value" onClick={removeValue}/>
       }
     </span>)
   }

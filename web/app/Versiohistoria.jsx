@@ -28,7 +28,7 @@ export default class Versiohistoria extends BaconComponent {
         <a onClick={() => toggle()}><Text name="Versiohistoria"/></a>
         {showHistory && (
           <div className="modal">
-            <i onClick={() => toggle(false)} className="close-modal fa fa-times fa-2x"></i>
+            <a onClick={() => toggle(false)} className="close-modal"></a>
             <ol>{
               history.map((version, i) =>
                 (<li key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>

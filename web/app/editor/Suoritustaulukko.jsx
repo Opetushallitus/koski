@@ -218,7 +218,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       {
         model.context.edit && (
           <td>
-            <a className="remove-value" onClick={() => pushRemoval(model)}>{''}</a>
+            <a className="remove-value" onClick={() => pushRemoval(model)}/>
           </td>
         )
       }

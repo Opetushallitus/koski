@@ -43,7 +43,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
                   <label className="date"><Editor model={item} path="alku" edit={false}/></label>
                   <label className="tila">{modelTitle(item, 'tila')}</label>
                 </div>
-                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}>{''}</a>}
+                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}/>}
               </li>)
             })
           }
