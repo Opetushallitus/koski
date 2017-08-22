@@ -156,6 +156,8 @@ function Oppiaineet() {
 
 function TutkinnonOsat(groupId) {
   function withSuffix(s) { return groupId ? s + '.' + groupId : s }
+  function uusiTutkinnonOsaElement() { return findSingle(withSuffix('.uusi-tutkinnon-osa')) }
+
   return {
     tyhjä: function() {
       return S(withSuffix('.tutkinnon-osa')).length === 0
@@ -293,10 +295,12 @@ function TutkinnonOsat(groupId) {
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {
-        var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
         return Page(uusiTutkinnonOsaElement).setInputValue(".dropdown, .autocomplete", hakusana)()
           .then(wait.forAjax)
       }
+    },
+    tutkinnonosavaihtoehdot: function() {
+      return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
     }
   }
 }
