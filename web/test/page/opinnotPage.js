@@ -191,7 +191,7 @@ function TutkinnonOsat(groupId) {
         },
         asetaTunnustamisenSelite: function(selite) {
           return function() {
-            Page(el).getInput('.tunnustettu .modal-content .selite .value input').setValue(selite)
+            Page(el).getInput('.tunnustettu .modal-content .selite .value textarea').setValue(selite)
           }
         },
         painaOkTunnustaminenModal: function() {
@@ -226,7 +226,7 @@ function TutkinnonOsat(groupId) {
           return {
             arvosana: Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').value(),
             arviointipäivä: Page(el).getInput('.näyttö .modal-content .päivä .value input').value(),
-            kuvaus: Page(el).getInput('.näyttö .modal-content .kuvaus .value input').value(),
+            kuvaus: Page(el).getInput('.näyttö .modal-content .kuvaus .value textarea').value(),
             arvioinnistaPäättäneet: extractDropdownArray(S('.näyttö .modal-content .arvioinnistaPäättäneet .value', el)),
             arviointikeskusteluunOsallistuneet: extractDropdownArray(S('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value', el)),
             suorituspaikka: [
@@ -262,7 +262,7 @@ function TutkinnonOsat(groupId) {
             }).then(wait.forAjax).then(function () {
               Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
               Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
-              Page(el).getInput('.näyttö .modal-content .kuvaus .value input').setValue(tiedot.kuvaus)
+              Page(el).getInput('.näyttö .modal-content .kuvaus .value textarea').setValue(tiedot.kuvaus)
               tiedot.arvioinnistaPäättäneet.map(function (v, i) {
                 Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
               })

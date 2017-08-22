@@ -534,9 +534,13 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Tunnustamisen muokkaus', function() {
+        var suoritustapa = editor.property('suoritustapa')
+
         before(
           editor.cancelChanges,
           editor.edit,
+          suoritustapa.waitUntilLoaded,
+          suoritustapa.selectValue('Opetussuunnitelman mukainen'),
           opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
 
@@ -594,8 +598,12 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Näytön muokkaus', function() {
+        var suoritustapa = editor.property('suoritustapa')
+
         before(
           editor.edit,
+          suoritustapa.waitUntilLoaded,
+          suoritustapa.selectValue('Opetussuunnitelman mukainen'),
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
           editor.saveChanges,
           wait.forAjax,
