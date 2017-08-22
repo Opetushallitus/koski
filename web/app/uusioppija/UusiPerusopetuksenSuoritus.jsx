@@ -1,19 +1,23 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from '../http'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
 import {
-  accumulateModelState, modelLookup, modelData, modelSet, modelValid, validateModel,
-  modelSetValues
+  accumulateModelState,
+  modelData,
+  modelLookup,
+  modelSet,
+  modelSetValues,
+  modelValid,
+  validateModel
 } from '../editor/EditorModel'
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
-import {koodistoValues, koodiarvoMatch} from './koodisto'
+import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
 
