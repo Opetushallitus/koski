@@ -72,7 +72,9 @@ case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[PerusopetukseenValmistavanKoulutuksenLaajuus],
   opetuksenSisältö: Option[LocalizedString]
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuli {
+  def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
+}
 
 case class PerusopetukseenValmistavanKoulutuksenLaajuus(
   arvo: Float,

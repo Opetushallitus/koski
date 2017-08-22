@@ -50,6 +50,8 @@ trait DiaarinumerollinenKoulutus extends Koulutus with Diaarinumerollinen
 trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: PaikallinenKoodi
   def nimi = tunniste.nimi
+  @MultiLineString(5)
+  def kuvaus: LocalizedString
 }
 
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")

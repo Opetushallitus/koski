@@ -12,5 +12,6 @@ case class OsaamisenTunnustaminen(
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
   @Representative
+  @MultiLineString(5)
   selite: LocalizedString
 )

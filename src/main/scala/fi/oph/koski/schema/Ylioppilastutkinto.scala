@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
@@ -66,4 +67,5 @@ case class YlioppilasTutkinnonKoe(
   tunniste: PaikallinenKoodi
 ) extends PaikallinenKoulutusmoduuli {
   def laajuus = None
+  def kuvaus: LocalizedString = LocalizedString.empty
 }

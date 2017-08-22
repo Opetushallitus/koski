@@ -115,7 +115,9 @@ case class PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(
   @Flatten
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli
+) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli {
+  def kuvaus: LocalizedString = LocalizedString.empty
+}
 
 @Title("Aikuisten perusopetuksen opetussuunnitelman 2017 mukainen kurssi")
 case class ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(

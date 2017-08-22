@@ -457,6 +457,7 @@ case class AmmatillisenTutkinnonOsanLisätieto(
 @Description("Näytön kuvaus")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
+  @MultiLineString(5)
   kuvaus: Option[LocalizedString],
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
