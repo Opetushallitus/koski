@@ -7,8 +7,8 @@ import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.js
 import {lensedModel, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 
-export const SelectAlternativeByEnumValueEditor = ({ model, path }) => {
-  return (<span>
+export const SelectAlternativeByEnumValueEditor = ({ model, path, className }) => {
+  return (<span className={className}>
         {
           completeWithFieldAlternatives(oneOfPrototypes(model), path).map( protos => {
             let enumValues = R.uniqBy(R.prop('value'), protos.map(proto => modelLookup(proto, path).value))

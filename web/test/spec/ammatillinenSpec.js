@@ -308,6 +308,43 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Järjestämismuodot', function() {
+      var järjestämismuodot = editor.property('järjestämismuodot')
+      before(
+        editor.edit,
+        järjestämismuodot.addItem,
+        järjestämismuodot.propertyBySelector('.järjestämismuoto').setValue('Koulutuksen järjestäminen oppisopimuskoulutuksena'),
+        järjestämismuodot.property('nimi').setValue('Virheellinen'),
+        järjestämismuodot.property('yTunnus').setValue('123')
+      )
+
+      it('Ei anna tallentaa virheellistä y-tunnusta', function() {
+        expect(opinnot.onTallennettavissa()).to.equal(false)
+      })
+
+      describe('Validi y-tunnus', function() {
+        before(
+          editor.cancelChanges,
+          editor.edit,
+          järjestämismuodot.addItem,
+          järjestämismuodot.propertyBySelector('.järjestämismuoto').setValue('Koulutuksen järjestäminen oppisopimuskoulutuksena'),
+          järjestämismuodot.property('nimi').setValue('Autohuolto oy'),
+          järjestämismuodot.property('yTunnus').setValue('1629284-5'),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+
+        it('Toimii', function() {
+          expect(page.isSavedLabelShown()).to.equal(true)
+          expect(extractAsText(S('.järjestämismuodot'))).to.equal(
+            'Järjestämismuodot 22.8.2017 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
+            'Yritys Autohuolto oy\n' +
+            'Y-tunnus 1629284-5'
+          )
+        })
+      })
+    })
+
     describe('Opiskeluoikeuden lisätiedot', function() {
       before(
         editor.edit,
