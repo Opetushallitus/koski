@@ -17,9 +17,18 @@ export const StringEditor = ({model, placeholder}) => {
 
 let splitToRows = (data) => data.split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
+const buildRegex = model => new RegExp(model.regularExpression.replace(/\\/g, '\\'))
+
 StringEditor.handlesOptional = () => true
 StringEditor.isEmpty = m => !modelData(m)
 StringEditor.canShowInline = () => true
 StringEditor.validateModel = (model) => {
-  return !model.optional && !modelData(model) ? [{key: 'missing'}] : []
+  let data = modelData(model)
+  if (!model.optional && !data) {
+    return [{key: 'missing'}]
+  }
+
+  if (data && model.regularExpression && !buildRegex(model).test(data)) {
+    return [{key: 'invalid.format'}]
+  }
 }
