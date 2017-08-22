@@ -19,7 +19,7 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
   })
 
   return (
-    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()} okTextKey={hasOldData ? 'Päivitä' : 'Lisää'} validP={validP}>
+    <ModalDialog className="lisää-näyttö-modal" onDismiss={doneCallback} onSubmit={() => submitB.push()} submitOnEnterKey="false" okTextKey={hasOldData ? 'Päivitä' : 'Lisää'} validP={validP}>
       <h2><Text name="Ammattiosaamisen näyttö"/></h2>
 
       <PropertiesEditor
