@@ -87,7 +87,7 @@ const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
     sel.removeAllRanges()
     sel.addRange(range)
   }
-  return <span className="id"><Text name="Id"/>{': '}<span className="value" onClick={selectAllText}>{modelData(opiskeluoikeus, 'oid')}</span></span>
+  return <span className="id"><Text name="Oid"/>{': '}<span className="value" onClick={selectAllText}>{modelData(opiskeluoikeus, 'oid')}</span></span>
 }
 
 const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
