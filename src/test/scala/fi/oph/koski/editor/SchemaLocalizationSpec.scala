@@ -12,17 +12,23 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
       val newStuff = findMissingLocalizedTextsInSchema
       if (newStuff.nonEmpty) {
         println("Missing localized strings found in Koski schema. Copy these into /localization/default-texts.json")
-        println(Json.writePretty(newStuff))
+
+        val missingKeys = newStuff.map(_._2).toSet
+
+        println(Json.writePretty(missingKeys.zip(missingKeys).toMap))
+
+        println("Missing properties by class: " + newStuff.map { case (schema, title) => schema.simpleName + "." + title }.toList.mkString("\n"))
 
         fail(newStuff.size +  " missing schema localizations. Copy the above JSON snippet into /localization/default-texts.json")
       }
     }
   }
 
-  private def findMissingLocalizedTextsInSchema = {
-    val keys = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect { case s: ClassSchema => s.properties.map(_.title) }.flatten.toSet
-    val keyValueMap = keys.zip(keys).toMap
-    keyValueMap -- DefaultLocalizations.defaultFinnishTexts.keys
+  private def findMissingLocalizedTextsInSchema: Set[(ClassSchema, String)] = {
+    val propertyTitles: Set[(ClassSchema, String)] = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect { case s: ClassSchema => s.properties.map(p => (s, p.title)) }.flatten.toSet
+    val existingKeys = DefaultLocalizations.defaultFinnishTexts.keys.toSet
+
+    propertyTitles.filterNot{ case (schema, title) => existingKeys.contains(title) }
   }
 
   private def allSchemas(schema: Schema)(implicit factory: SchemaFactory, classesCovered: collection.mutable.Set[String]): List[Schema] = schema match {
