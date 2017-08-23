@@ -1,8 +1,9 @@
+const isInTestFrame = window.self !== window.top
+const delay = isInTestFrame ? (() => 0) : (d => d)
+
 export default () => {
-  let delay = isInTestFrame() ? (() => 0) : (d => d)
   return {
     stringInput: delay(1000),
     delay
   }
 }
-const isInTestFrame = () => !!window.parent
