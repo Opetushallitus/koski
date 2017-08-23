@@ -1117,12 +1117,18 @@ describe('Ammatillinen koulutus', function() {
         })
 
         before(
-          opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt')
+          opinnot.tutkinnonOsat().lisääTutkinnonOsa('Tekniikan asiantuntemus')
         )
 
         describe('Lisäyksen jälkeen', function () {
           it('lisätty osa näytetään', function() {
-            expect(opinnot.tutkinnonOsat().tutkinnonOsa(5).nimi()).to.equal('Huolto- ja korjaustyöt')
+            expect(opinnot.tutkinnonOsat().tutkinnonOsa(5).nimi()).to.equal('Tekniikan asiantuntemus')
+          })
+          describe('kun tallennetaan', function() {
+            before(opinnot.tutkinnonOsat().tutkinnonOsa(5).propertyBySelector('.arvosana').setValue('3'), editor.saveChanges)
+            it('tallennus onnistuu', function() {
+              expect(page.isSavedLabelShown()).to.equal(true)
+            })
           })
         })
       })

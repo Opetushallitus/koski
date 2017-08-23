@@ -104,7 +104,7 @@ export class Suoritustaulukko extends React.Component {
               </tr>
               </thead>
               {
-                groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
+                groupIds.length > 0 ? groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i)) : uusiTutkinnonOsa(0, placeholderForNonGrouped, [])
               }
             </table>
           </div>)
@@ -115,15 +115,21 @@ export class Suoritustaulukko extends React.Component {
         showGrouped && <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
-        items.map((suoritus, j) => {
-          return suoritusEditor(suoritus, i * 100 + j, groupId)
-        }),
-        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
-          <tr><td colSpan="4">
-            <UusiTutkinnonOsa suoritus={context.suoritus} suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)} suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId}/>
-          </td></tr>
-        </tbody>
+        items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
+        context.edit && uusiTutkinnonOsa(i, groupId, items)
       ]
+    }
+
+    function uusiTutkinnonOsa(i, groupId, items) {
+      return (<tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
+      <tr>
+        <td colSpan="4">
+          <UusiTutkinnonOsa suoritus={context.suoritus}
+                            suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
+                            suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId}/>
+        </td>
+      </tr>
+      </tbody>)
     }
 
     function suoritusEditor(suoritus, key, groupId) {
@@ -166,7 +172,7 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
   selectedAtom.filter(R.identity).onValue(newItem => {
     addTutkinnonOsa(modelSetTitle(newItem.newItem
       ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
-      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId)
+      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId == placeholderForNonGrouped ? undefined : groupId)
   })
 
   return (<span>
