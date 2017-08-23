@@ -75,6 +75,7 @@ trait Ryhmällinen {
 trait PäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
+  @MultiLineString(3)
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 
