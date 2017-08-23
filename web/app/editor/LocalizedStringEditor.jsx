@@ -31,7 +31,8 @@ let localizedStringLens = (model) => {
     (m) => modelLookup(m, usedLanguage),
     (v, m) => {
       let protoForUsedLanguage = oneOfPrototypes(m).find(proto => proto.value.properties[0].key == usedLanguage)
-      return modelSetValue(protoForUsedLanguage, v.value, usedLanguage)
+      let modelToPush = modelSetValue(protoForUsedLanguage, v.value, usedLanguage)
+      return modelToPush
     }
   )
 }

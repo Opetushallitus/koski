@@ -224,12 +224,18 @@ export const optionalModelLens = ({model}) => {
   )
 }
 
+const preparePrototypeModel = (prototypeModel, parentModel) => {
+  let contextualizedProto = contextualizeSubModel(prototypeModel, parentModel)
+  let mergedModel = R.merge(parentModel, contextualizedProto) // includes all attributes from parent model (like maxLines etc that come from property annotations)
+  return mergedModel
+}
+
 export const optionalPrototypeModel = (model) => {
-  let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
+  let prototype = model.optionalPrototype && preparePrototypeModel(model.optionalPrototype, model)
   if (!prototype) return prototype
   if (prototype.oneOfPrototypes && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
-    prototype = contextualizeSubModel(prototype.oneOfPrototypes[0], model)
+    prototype = preparePrototypeModel(prototype.oneOfPrototypes[0], model)
   }
   return R.merge(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
 }
@@ -288,7 +294,7 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
 export const oneOfPrototypes = (model) => {
   if (!model) return []
   return model.oneOfPrototypes
-    ? model.oneOfPrototypes.map(proto => contextualizeSubModel(proto, model))
+    ? model.oneOfPrototypes.map(proto => preparePrototypeModel(proto, model))
     : [model]
 }
 
