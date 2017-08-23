@@ -159,7 +159,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     import fi.oph.koski.date.DateOrdering._
     var ordering = sorting.field match {
-      case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin}
+      case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
       case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
     }
     if (sorting.descending) ordering = ordering.reverse
@@ -212,7 +212,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
         siirretyt = (lähdejärjestelmäResults \ "doc_count").extract[Int]
         epäonnistuneet = (lähdejärjestelmäResults \ "fail" \ "doc_count").extract[Int]
         onnistuneet = siirretyt - epäonnistuneet
-        viimeisin = new Timestamp((lähdejärjestelmäResults \ "viimeisin" \ "value").extract[Long]).toLocalDateTime
+        viimeisin = new Timestamp((lähdejärjestelmäResults \ "viimeisin" \ "value").extract[Long])
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
@@ -299,7 +299,7 @@ case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq
 case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], virhe: List[ErrorDetail], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: LocalDateTime, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
