@@ -475,33 +475,6 @@ describe('Perusopetus', function() {
           })
         })
 
-        describe('Erotettu', function() {
-          before(page.oppijaHaku.searchAndSelect('220109-784L'), editor.edit)
-          it('Alkutila', function() {
-            expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
-          })
-
-          describe('Kun lisätään', function() {
-            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="erotettu"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
-
-            it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
-            })
-
-            it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
-              expect(isElementVisible(S('.opiskeluoikeuden-tiedot .add-item a'))).to.equal(false)
-            })
-          })
-
-          describe('Kun poistetaan', function() {
-            before(editor.edit, editor.property('tila').removeItem(0), editor.saveChanges)
-
-            it('Opiskeluoikeuden päättymispäivä poistetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
-            })
-          })
-        })
-
         describe('Peruutettu', function() {
           before(editor.edit)
           it('Alkutila', function() {

@@ -1,3 +1,7 @@
+## 29.5.2017
+
+- Poistettu opiskeluoikeuden tila Erotettu
+
 ## 10.8.2017
 
 - Opiskeluoikeuden kenttä "id" (kokonaisluku) muutettu merkkijonotyyppiseksi kentäksi "oid"
