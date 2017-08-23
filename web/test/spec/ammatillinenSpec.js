@@ -327,6 +327,7 @@ describe('Ammatillinen koulutus', function() {
           editor.cancelChanges,
           editor.edit,
           järjestämismuodot.addItem,
+          järjestämismuodot.propertyBySelector('.alku').setValue('22.8.2017'),
           järjestämismuodot.propertyBySelector('.järjestämismuoto').setValue('Koulutuksen järjestäminen oppisopimuskoulutuksena'),
           järjestämismuodot.property('nimi').setValue('Autohuolto oy'),
           järjestämismuodot.property('yTunnus').setValue('1629284-5'),
