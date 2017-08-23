@@ -1133,6 +1133,26 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
+
+    describe('Uusi erikoisammattitutkinto', function() {
+      before(page.openPage, addNewOppija('kalle', '250858-5188', {  oppilaitos: 'Stadin', tutkinto: 'Autoalan työnjohdon erikoisammattitutkinto'}))
+      describe('Uuden tutkinnonosan lisääminen', function() {
+        before(
+            editor.edit,
+            editor.property('suoritustapa').selectValue('Näyttö'),
+            opinnot.tutkinnonOsat().lisääTutkinnonOsa('Tekniikan asiantuntemus'),
+            opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+        )
+        it('onnistuu', function() {
+          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
+              'Tutkinnon osa Pakollisuus Arvosana\n' +
+              'Tekniikan asiantuntemus ei 3'
+          )
+        })
+      })
+    })
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
