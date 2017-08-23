@@ -143,7 +143,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     val documentId = org.oid + "_" + idValue
     val json = Map("doc_as_upsert" -> true, "doc" -> document)
 
-    val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update", json)(Json4sHttp4s.json4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
+    val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update?retry_on_conflict=5", json)(Json4sHttp4s.json4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
 
     val result = (response \ "result").extract[String]
     if (!(List("created", "updated", "noop").contains(result))) {
