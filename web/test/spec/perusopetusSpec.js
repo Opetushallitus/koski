@@ -476,7 +476,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Peruutettu', function() {
-          before(editor.edit)
+          before(page.oppijaHaku.searchAndSelect('220109-784L'), editor.edit)
           it('Alkutila', function() {
             expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
           })
