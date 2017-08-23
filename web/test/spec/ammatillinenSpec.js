@@ -430,6 +430,38 @@ describe('Ammatillinen koulutus', function() {
                   })
                 })
 
+                describe('Laajuus', function() {
+                  describe('Kun siirrytään muokkaamaan tietoja', function() {
+                    before(editor.edit)
+                    it('Laajuussarake ja laajuuden yksikkö näytetään', function() {
+                      expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+                    })
+
+                    describe('Kun syötetään laajuus ja tallennetaan', function() {
+                      before(
+                        opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue('10'),
+                        editor.saveChanges
+                      )
+                      it('Näytetään laajuus', function() {
+                        expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+                      })
+
+                      describe('Kun poistetaan laajuus ja tallennetaan', function() {
+                        before(
+                          editor.edit,
+                          opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue(''),
+                          editor.saveChanges
+                        )
+
+                        it('Laajuussarake piilotetaan', function() {
+                          expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('')
+                        })
+                      })
+                    })
+                  })
+
+                })
+
                 describe('Tutkinnon osan poistaminen', function() {
                   before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
                   it('toimii', function() {
@@ -437,46 +469,6 @@ describe('Ammatillinen koulutus', function() {
                   })
                 })
               })
-            })
-
-            describe('Laajuus', function() {
-              before(editor.saveChanges)
-
-              describe('Kun ei olla muokkaamassa ja laajuutta ei ole syötetty', function() {
-                it('Laajuussaraketta ei näytetä', function() {
-                  expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('')
-                })
-              })
-
-              describe('Kun siirrytään muokkaamaan tietoja', function() {
-                before(editor.edit)
-                it('Laajuussarake ja laajuuden yksikkö näytetään', function() {
-                  expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
-                })
-
-                describe('Kun syötetään laajuus ja tallennetaan', function() {
-                  before(
-                    opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue('10'),
-                    editor.saveChanges
-                  )
-                  it('Näytetään laajuus', function() {
-                    expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
-                  })
-
-                  describe('Kun poistetaan laajuus ja tallennetaan', function() {
-                    before(
-                      editor.edit,
-                      opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue(''),
-                      editor.saveChanges
-                    )
-
-                    it('Laajuussarake piilotetaan', function() {
-                      expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('')
-                    })
-                  })
-                })
-              })
-
             })
           })
         })
