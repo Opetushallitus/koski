@@ -177,34 +177,12 @@ function TutkinnonOsat(groupId) {
         toggleExpand: function() {
           triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
         },
-        tunnustaminen: function() {
-          var m = S('.tunnustettu .value a.edit-value + span', el)
-          if (m.length > 1) throw new Error('Multiple "tunnustaminen" found')
-          return m.length === 0 ? null : {selite: m.first().text()}
+        lisääOsaamisenTunnustaminen: function() {
+          triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
         },
-        avaaTunnustaminenModal: function() {
-          return function() {
-            var valueExists = !!el().find('.tunnustettu .edit-value').length
-            triggerEvent(findSingle('.tunnustettu .'+(valueExists?'edit':'add')+'-value', el), 'click')
-            return wait.untilVisible(S('.lisää-tunnustettu-modal', el))
-          }
-        },
-        asetaTunnustamisenSelite: function(selite) {
-          return function() {
-            Page(el).getInput('.tunnustettu .modal-content .selite .value textarea').setValue(selite)
-          }
-        },
-        painaOkTunnustaminenModal: function() {
-          return function() {
-            triggerEvent(findSingle('.tunnustettu .modal-content button', el), 'click')
-            return wait.forAjax
-          }
-        },
-        poistaTunnustaminen: function() {
-          return function() {
-            triggerEvent(findSingle('.tunnustettu .remove-value', el), 'click')
-            return wait.forAjax
-          }
+        poistaOsaamisenTunnustaminen: function() {
+          triggerEvent(findSingle('.tunnustettu .remove-value', el), 'click')
+          return wait.forAjax()
         },
         poistaTutkinnonOsa: function() {
           triggerEvent(findSingle('.remove-value', el), 'click')

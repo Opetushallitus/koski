@@ -563,8 +563,9 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
-      describe('Tunnustamisen muokkaus', function() {
+      describe('Osaamisen tunnustamisen muokkaus', function() {
         var suoritustapa = editor.property('suoritustapa')
+        var tunnustaminen = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).property('tunnustettu')
 
         before(
           editor.cancelChanges,
@@ -575,56 +576,53 @@ describe('Ammatillinen koulutus', function() {
         )
 
         describe('Alussa', function() {
-          it('ei tunnustusta', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
+          it('Ei osaamisen tunnustamistietoa, lisäysmahdollisuus', function() {
+            expect(tunnustaminen.getValue()).to.equal('Lisää ammattiosaamisen tunnustaminen')
           })
         })
 
         describe('Lisääminen', function()  {
           before(
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen esimerkkiselite'),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääOsaamisenTunnustaminen,
+            tunnustaminen.setValue('Tunnustamisen esimerkkiselite'),
+            editor.saveChanges,
+            opinnot.expandAll
           )
-          it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen esimerkkiselite')
+
+          describe('Tallennuksen jälkeen', function() {
+            it('Osaamisen tunnustamisen selite näytetään', function() {
+              expect(tunnustaminen.getValue()).to.equal('Tunnustamisen esimerkkiselite')
+            })
+          })
+
+          describe('Muokkaus', function()  {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              tunnustaminen.setValue('Tunnustamisen muokattu esimerkkiselite'),
+              editor.saveChanges,
+              opinnot.expandAll
+            )
+            it('toimii', function() {
+              expect(tunnustaminen.getValue()).to.equal('Tunnustamisen muokattu esimerkkiselite')
+            })
+          })
+
+          describe('Poistaminen', function()  {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaOsaamisenTunnustaminen,
+              editor.saveChanges,
+              editor.edit,
+              opinnot.expandAll
+            )
+            it('toimii', function() {
+              expect(tunnustaminen.getValue()).to.equal('Lisää ammattiosaamisen tunnustaminen')
+            })
           })
         })
 
-        describe('Muokkaus', function()  {
-          before(
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaTunnustaminenModal(),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaTunnustamisenSelite('Tunnustamisen muokattu esimerkkiselite'),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkTunnustaminenModal()
-          )
-          it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen muokattu esimerkkiselite')
-          })
-        })
-
-        describe('Tallentamisen jälkeen', function() {
-          before(editor.saveChanges, editor.edit, opinnot.expandAll)
-          it('näyttää edelleen oikeat tiedot', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen().selite).to.equal('Tunnustamisen muokattu esimerkkiselite')
-          })
-        })
-
-        describe('Poistaminen', function()  {
-          before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTunnustaminen())
-          it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
-          })
-        })
-
-        describe('Tallentamisen jälkeen', function() {
-          before(editor.saveChanges, editor.edit)
-          it('poistettu', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).tunnustaminen()).to.equal(null)
-          })
-        })
       })
 
       describe('Näytön muokkaus', function() {
