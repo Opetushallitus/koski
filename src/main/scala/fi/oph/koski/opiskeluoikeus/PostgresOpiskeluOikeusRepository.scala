@@ -81,7 +81,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       }
     }
 
-    if (!allowUpdate && (opiskeluoikeus.oid.isDefined)) {
+    if (!allowUpdate && opiskeluoikeus.oid.isDefined) {
       Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja oid-kenttään"))
     } else {
       createOrUpdateWithRetry
