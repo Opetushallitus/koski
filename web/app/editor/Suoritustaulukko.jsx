@@ -56,7 +56,7 @@ export class Suoritustaulukko extends React.Component {
     let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
-    if (context.edit && isAmmatillinenPerustutkinto) {
+    if (context.edit && isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo == 'ops') {
       let ryhmäModel = modelLookup(suoritusProto, 'tutkinnonOsanRyhmä')
       if (ryhmäModel) {
         // Lisääminen mahdollista toistaiseksi vain ryhmitellyille suorituksille (== ammatilliset tutkinnon osat)

@@ -283,6 +283,7 @@ describe('Ammatillinen koulutus', function() {
           expect(suoritustapa.isVisible()).to.equal(true)
           expect(page.isSavedLabelShown()).to.equal(true)
         })
+
         it('Näytetään muuttuneet tiedot', function() {
           expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
         })
@@ -304,6 +305,33 @@ describe('Ammatillinen koulutus', function() {
         before(editor.edit, suoritustapa.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
         it('Näytetään muuttuneet tiedot', function() {
           expect(suoritustapa.isVisible()).to.equal(false)
+        })
+      })
+
+      describe('Kun suoritustapana on näyttö', function() {
+        before(
+          editor.edit,
+          suoritustapa.selectValue('Näyttö')
+        )
+
+        it('Tutkinnon osia ei ryhmitellä', function() {
+          expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
+        })
+
+        describe('Tutkinnon osan lisääminen', function() {
+          before(
+            opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+            editor.saveChanges
+          )
+          it('toimii', function() {
+          })
+
+          describe('Tutkinnon osan poistaminen', function() {
+            before(editor.edit, opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
+            it('toimii', function() {
+              expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+            })
+          })
         })
       })
     })
@@ -440,7 +468,6 @@ describe('Ammatillinen koulutus', function() {
             })
           })
 
-
           describe('Lisäyksen jälkeen', function () {
             before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'))
             it('lisätty osa näytetään', function() {
@@ -576,7 +603,6 @@ describe('Ammatillinen koulutus', function() {
         var tunnustaminen = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).property('tunnustettu')
 
         before(
-          editor.cancelChanges,
           editor.edit,
           suoritustapa.waitUntilLoaded,
           suoritustapa.selectValue('Opetussuunnitelman mukainen'),
