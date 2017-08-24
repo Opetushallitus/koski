@@ -51,7 +51,7 @@ function AddOppijaPage() {
           .then(api.selectOppilaitos(params.oppilaitos))
           .then(function() {
             if (params.suorituskieli) {
-              api.selectSuorituskieli(params.suorituskieli)()
+              return api.selectSuorituskieli(params.suorituskieli)()
             }
           })
       }
