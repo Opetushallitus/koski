@@ -103,7 +103,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
     onRemoval(keyValue(option))
   }
   return (<span>{
-    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
+    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '1' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
             enableFilter ?
               <div className="input-container" onClick={toggleOpen}>
