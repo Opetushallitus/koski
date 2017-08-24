@@ -31,3 +31,6 @@ case class MultiLineString(lineCount: Int) extends RepresentationalMetadata
 
 /* Tags a numeric field with a unit of measure */
 case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
+
+/* An example of the data */
+case class Example(text: String) extends RepresentationalMetadata

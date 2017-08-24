@@ -318,8 +318,16 @@ describe('Ammatillinen koulutus', function() {
         järjestämismuodot.property('yTunnus').setValue('123')
       )
 
-      it('Ei anna tallentaa virheellistä y-tunnusta', function() {
-        expect(opinnot.onTallennettavissa()).to.equal(false)
+      it('Aluksi näyttää y-tunnuksen esimerkin', function() {
+        expect(järjestämismuodot.propertyBySelector('.yTunnus input').elem()[0].placeholder, 'Esimerkki: 1234567-8')
+      })
+
+      describe('Epävalidi y-tunnus', function() {
+        before(järjestämismuodot.property('nimi').setValue('Virheellinen'), järjestämismuodot.property('yTunnus').setValue('123'))
+
+        it('Ei anna tallentaa virheellistä y-tunnusta', function() {
+          expect(opinnot.onTallennettavissa()).to.equal(false)
+        })
       })
 
       describe('Validi y-tunnus', function() {

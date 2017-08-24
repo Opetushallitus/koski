@@ -2,16 +2,19 @@ import React from 'react'
 import {modelData} from './EditorModel.js'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {pushModelValue, modelValid} from './EditorModel'
+import {t} from '../i18n'
 
 export const StringEditor = ({model, placeholder}) => {
+  placeholder = !placeholder && model.example ? `${t('Esimerkki')}: ${model.example}` : placeholder
   let wrappedModel = wrapOptional({model})
   let onChange = (event) => pushModelValue(wrappedModel, { data: event.target.value })
   let data = modelData(model)
   let error = !modelValid(model)
+  let className = 'editor-input ' + (error ? 'error' : 'valid')
   return model.context.edit
     ? (model.maxLines
-      ? <textarea className={error ? 'editor-input error' : 'editor-input valid'} defaultValue={data} placeholder={placeholder} onChange={ onChange } rows={ model.maxLines }></textarea>
-      : <input className={error ? 'editor-input error' : 'editor-input valid'} type="text" defaultValue={data} placeholder={placeholder} onChange={ onChange }></input>)
+      ? <textarea className={className} defaultValue={data} placeholder={placeholder} onChange={ onChange } rows={ model.maxLines }></textarea>
+      : <input className={className} type="text" defaultValue={data} placeholder={placeholder} onChange={ onChange }></input>)
     : <span className="inline string">{!data ? '' : splitToRows(data)}</span>
 }
 

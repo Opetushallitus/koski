@@ -135,6 +135,7 @@ object MetadataToModel {
     metadata.collect { case MultiLineString(x) => props += ("maxLines" -> x)}
     metadata.collect { case UnitOfMeasure(u) => props += ("unitOfMeasure" -> u)}
     metadata.collect { case RegularExpression(pattern) => props += ("regularExpression" -> pattern)}
+    metadata.collect { case Example(text) => props += ("example" -> text)}
     props
   }
 

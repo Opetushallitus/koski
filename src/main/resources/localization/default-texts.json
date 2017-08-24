@@ -355,5 +355,6 @@
   "Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.": "Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.",
   "Koulutustyyppi" : "Koulutustyyppi",
   "Valitse ensin tutkinnon suoritustapa": "Valitse ensin tutkinnon suoritustapa, jos haluat lisätä tutkinnonosan suorituksia",
-  "Id" : "Id"
+  "Id" : "Id",
+  "Esimerkki" : "Esimerkki"
 }

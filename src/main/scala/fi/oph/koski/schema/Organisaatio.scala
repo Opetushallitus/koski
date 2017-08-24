@@ -41,6 +41,7 @@ case class Koulutustoimija(
   nimi: Option[LocalizedString] = None,
   @Description("Koulutustoimijan Y-tunnus")
   @RegularExpression("^\\d{7}-\\d$")
+  @Example("1234567-8")
   @Discriminator
   @Title("Y-tunnus")
   yTunnus: Option[String] = None,
@@ -83,6 +84,7 @@ case class Yritys(
   @Title("Y-tunnus")
   @Description("Yrityksen Y-tunnus")
   @RegularExpression("^\\d{7}-\\d$")
+  @Example("1234567-8")
   @Discriminator
   yTunnus: String
 ) extends Organisaatio {
