@@ -150,6 +150,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
   suoritustapa: Option[Koodistokoodiviite] = None,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")

@@ -275,68 +275,6 @@ describe('Ammatillinen koulutus', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
 
-    describe('Kun valitaan suoritustapa', function() {
-      var suoritustapa = editor.property('suoritustapa')
-      before(editor.edit, suoritustapa.waitUntilLoaded, suoritustapa.selectValue('Opetussuunnitelman mukainen'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-
-      describe('Muutosten näyttäminen', function() {
-        it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
-          expect(suoritustapa.isVisible()).to.equal(true)
-          expect(page.isSavedLabelShown()).to.equal(true)
-        })
-
-        it('Näytetään muuttuneet tiedot', function() {
-          expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
-        })
-      })
-
-      describe('Kun sivu ladataan uudelleen', function() {
-        before(
-          page.openPage,
-          page.oppijaHaku.search('Tunkkila-Fagerlund'),
-          page.oppijaHaku.selectOppija('Tunkkila-Fagerlund')
-        )
-
-        it('Muuttuneet tiedot on tallennettu', function() {
-          expect(suoritustapa.getValue()).to.equal('Opetussuunnitelman mukainen')
-        })
-      })
-
-      describe('Kun poistetaan suoritustapa', function() {
-        before(editor.edit, suoritustapa.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
-        it('Näytetään muuttuneet tiedot', function() {
-          expect(suoritustapa.isVisible()).to.equal(false)
-        })
-      })
-
-      describe('Kun suoritustapana on näyttö', function() {
-        before(
-          editor.edit,
-          suoritustapa.selectValue('Näyttö')
-        )
-
-        it('Tutkinnon osia ei ryhmitellä', function() {
-          expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
-        })
-
-        describe('Tutkinnon osan lisääminen', function() {
-          before(
-            opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
-            editor.saveChanges
-          )
-          it('toimii', function() {
-          })
-
-          describe('Tutkinnon osan poistaminen', function() {
-            before(editor.edit, opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
-            it('toimii', function() {
-              expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
-            })
-          })
-        })
-      })
-    })
-
     describe('Järjestämismuodot', function() {
       var järjestämismuodot = editor.property('järjestämismuodot')
       before(
@@ -428,14 +366,12 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
-      describe('Tutkinnon osan lisääminen', function() {
-        before(
-          editor.edit,
-          suoritustapa.waitUntilLoaded,
-          suoritustapa.selectValue('Opetussuunnitelman mukainen')
-        )
-        describe('Alussa', function () {
-          describe('Kun suoritustapa on valittu', function() {
+      describe('Kun suoritustapa on opetussuunnitelman mukainen', function() {
+        describe('Tutkinnon osan lisääminen', function() {
+          before(
+            editor.edit
+          )
+          describe('Aluksi', function () {
             it('Taulukko on tyhjä', function() {
               expect(opinnot.tutkinnonOsat('1').tyhjä()).to.equal(true)
             })
@@ -443,154 +379,144 @@ describe('Ammatillinen koulutus', function() {
               expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
             })
           })
-          describe('Kun suoritustapa ei ole valittuna', function() {
-            before(suoritustapa.selectValue('Ei valintaa'))
-            it('Suoritustaulukko ei ole näkyvissä', function() {
-              expect(opinnot.tutkinnonOsat().isSuoritusTaulukkoVisible()).to.equal(false)
-            })
-            it('Kehoittaa valitsemaan suoritustavan ensin', function() {
-              expect(opinnot.tutkinnonOsat().valitseSuoritustapaTeksti()).to.equal('Valitse ensin tutkinnon suoritustapa, jos haluat lisätä tutkinnonosan suorituksia')
-            })
-            after(suoritustapa.selectValue('Opetussuunnitelman mukainen'))
-          })
-        })
-        describe('Pakollisen tutkinnon osan lisääminen', function() {
-          before(
-            editor.edit
-          )
+          describe('Pakollisen tutkinnon osan lisääminen', function() {
+            before(
+              editor.edit
+            )
 
-          describe('Ennen lisäystä', function() {
-            it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
-              expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(43)
-            })
-
-            it('Näytetään pakollisten tutkinnon osien otsikkorivi', function() {
-              expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(true)
-            })
-          })
-
-          describe('Lisäyksen jälkeen', function () {
-            before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'))
-            it('lisätty osa näytetään', function() {
-              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-            })
-            describe('Arvosanan lisääminen', function() {
-              before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
-              it('Toimii', function() {
-
+            describe('Ennen lisäystä', function() {
+              it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
+                expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(43)
               })
 
-              it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
-                expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+              it('Näytetään pakollisten tutkinnon osien otsikkorivi', function() {
+                expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(true)
               })
+            })
 
-              describe('Tallentamisen jälkeen', function() {
-                before(editor.saveChanges, wait.forAjax)
+            describe('Lisäyksen jälkeen', function () {
+              before(opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'))
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+              })
+              describe('Arvosanan lisääminen', function() {
+                before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
+                it('Toimii', function() {
 
-                describe('Käyttöliittymän tila', function() {
-                  it('näyttää edelleen oikeat tiedot', function() {
-                    expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-                  })
                 })
 
-                describe('Arvosanan poistaminen', function() {
-                  before(
-                    editor.edit,
-                    opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
-                    editor.saveChanges
-                  )
-                  it('Tallennus onnistuu ja suoritus siirtyy tilaan KESKEN', function() {
-                    expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).tila()).to.equal('Suoritus kesken')
-                  })
+                it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
+                  expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
                 })
 
-                describe('Laajuus', function() {
-                  describe('Kun siirrytään muokkaamaan tietoja', function() {
-                    before(editor.edit)
-                    it('Laajuussarake ja laajuuden yksikkö näytetään', function() {
-                      expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+                describe('Tallentamisen jälkeen', function() {
+                  before(editor.saveChanges, wait.forAjax)
+
+                  describe('Käyttöliittymän tila', function() {
+                    it('näyttää edelleen oikeat tiedot', function() {
+                      expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
                     })
+                  })
 
-                    describe('Kun syötetään laajuus ja tallennetaan', function() {
-                      before(
-                        opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue('10'),
-                        editor.saveChanges
-                      )
-                      it('Näytetään laajuus', function() {
+                  describe('Arvosanan poistaminen', function() {
+                    before(
+                      editor.edit,
+                      opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
+                      editor.saveChanges
+                    )
+                    it('Tallennus onnistuu ja suoritus siirtyy tilaan KESKEN', function() {
+                      expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).tila()).to.equal('Suoritus kesken')
+                    })
+                  })
+
+                  describe('Laajuus', function() {
+                    describe('Kun siirrytään muokkaamaan tietoja', function() {
+                      before(editor.edit)
+                      it('Laajuussarake ja laajuuden yksikkö näytetään', function() {
                         expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
                       })
 
-                      describe('Kun poistetaan laajuus ja tallennetaan', function() {
+                      describe('Kun syötetään laajuus ja tallennetaan', function() {
                         before(
-                          editor.edit,
-                          opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue(''),
+                          opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue('10'),
                           editor.saveChanges
                         )
+                        it('Näytetään laajuus', function() {
+                          expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+                        })
 
-                        it('Laajuussarake piilotetaan', function() {
-                          expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('')
+                        describe('Kun poistetaan laajuus ja tallennetaan', function() {
+                          before(
+                            editor.edit,
+                            opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue(''),
+                            editor.saveChanges
+                          )
+
+                          it('Laajuussarake piilotetaan', function() {
+                            expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('')
+                          })
                         })
                       })
                     })
+
                   })
 
-                })
-
-                describe('Tutkinnon osan poistaminen', function() {
-                  before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
-                  it('toimii', function() {
-                    expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+                  describe('Tutkinnon osan poistaminen', function() {
+                    before(editor.edit, opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
+                    it('toimii', function() {
+                      expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+                    })
                   })
                 })
               })
             })
           })
-        })
 
-        describe('Yhteisen tutkinnon osan lisääminen', function() {
-          before(
-            editor.edit
-          )
-
-          describe('Ennen lisäystä', function() {
-            it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
-              expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([ '101054 Matemaattis-luonnontieteellinen osaaminen',
-                '101056 Sosiaalinen ja kulttuurinen osaaminen',
-                '101053 Viestintä- ja vuorovaikutusosaaminen',
-                '101055 Yhteiskunnassa ja työelämässä tarvittava osaaminen' ])
-            })
-          })
-
-          describe('Lisäyksen jälkeen', function () {
+          describe('Yhteisen tutkinnon osan lisääminen', function() {
             before(
-              opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
+              editor.edit
             )
-            it('lisätty osa näytetään', function() {
-              expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
+
+            describe('Ennen lisäystä', function() {
+              it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
+                expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([ '101054 Matemaattis-luonnontieteellinen osaaminen',
+                  '101056 Sosiaalinen ja kulttuurinen osaaminen',
+                  '101053 Viestintä- ja vuorovaikutusosaaminen',
+                  '101055 Yhteiskunnassa ja työelämässä tarvittava osaaminen' ])
+              })
             })
-          })
-        })
-        describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
-          describe('Valtakunnallinen tutkinnon osa', function() {
-            before(
-              editor.edit,
-              opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
-            )
 
             describe('Lisäyksen jälkeen', function () {
+              before(
+                opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
+              )
               it('lisätty osa näytetään', function() {
-                expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+                expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
               })
+            })
+          })
+          describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
+            describe('Valtakunnallinen tutkinnon osa', function() {
+              before(
+                editor.edit,
+                opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+              )
 
-              describe('Kun lisätään paikallinen tutkinnon osa', function() {
-                before(
-                  editor.edit,
-                  opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Hassut temput')
-                )
+              describe('Lisäyksen jälkeen', function () {
+                it('lisätty osa näytetään', function() {
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+                })
 
-                describe('Lisäyksen jälkeen', function () {
-                  it('lisätty osa näytetään', function() {
-                    expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                describe('Kun lisätään paikallinen tutkinnon osa', function() {
+                  before(
+                    editor.edit,
+                    opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Hassut temput')
+                  )
+
+                  describe('Lisäyksen jälkeen', function () {
+                    it('lisätty osa näytetään', function() {
+                      expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                    })
                   })
                 })
               })
@@ -600,13 +526,10 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Osaamisen tunnustamisen muokkaus', function() {
-        var suoritustapa = editor.property('suoritustapa')
         var tunnustaminen = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).property('tunnustettu')
 
         before(
           editor.edit,
-          suoritustapa.waitUntilLoaded,
-          suoritustapa.selectValue('Opetussuunnitelman mukainen'),
           opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
 
@@ -661,12 +584,8 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Näytön muokkaus', function() {
-        var suoritustapa = editor.property('suoritustapa')
-
         before(
           editor.edit,
-          suoritustapa.waitUntilLoaded,
-          suoritustapa.selectValue('Opetussuunnitelman mukainen'),
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
           editor.saveChanges,
           wait.forAjax,
@@ -759,6 +678,35 @@ describe('Ammatillinen koulutus', function() {
           before(editor.saveChanges, editor.edit, opinnot.expandAll)
           it('näyttää edelleen oikeat tiedot', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+          })
+        })
+      })
+
+      describe('Kun suoritustapana on näyttö', function() {
+        before(
+          resetFixtures,
+          page.openPage,
+          addNewOppija('kalle', '280608-6619', { suoritustapa: 'Näyttö'} ),
+          editor.edit
+        )
+
+        it('Tutkinnon osia ei ryhmitellä', function() {
+          expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
+        })
+
+        describe('Tutkinnon osan lisääminen', function() {
+          before(
+            opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+            editor.saveChanges
+          )
+          it('toimii', function() {
+          })
+
+          describe('Tutkinnon osan poistaminen', function() {
+            before(editor.edit, opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa, editor.saveChanges)
+            it('toimii', function() {
+              expect(opinnot.tutkinnonOsat().tyhjä()).to.equal(true)
+            })
           })
         })
       })
@@ -1177,7 +1125,6 @@ describe('Ammatillinen koulutus', function() {
       describe('Uuden tutkinnonosan lisääminen', function() {
         before(
             editor.edit,
-            editor.property('suoritustapa').selectValue('Näyttö'),
             opinnot.tutkinnonOsat().lisääTutkinnonOsa('Tekniikan asiantuntemus'),
             opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'),
             editor.saveChanges,
