@@ -5,6 +5,15 @@ import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 import {t} from './i18n'
 import {parseBool, toObservable} from './util'
 
+/*
+  className
+  title (TODO: should be a localization key)
+  options: Property<Koodiarvo>
+  selected: Atom representing current selection
+  enableFilter: true/false
+  selectionText: shown when no selection
+  showKoodiarvo: true/false
+ */
 export default ({ className, title, options, selected, enableFilter, selectionText, showKoodiarvo = false}) => {
   showKoodiarvo = parseBool(showKoodiarvo)
   options = toObservable(options)
@@ -13,7 +22,7 @@ export default ({ className, title, options, selected, enableFilter, selectionTe
   return (<label className={className}>{title}{
     elementWithLoadingIndicator(Bacon.combineWith(options, selected, (opts, sel) =>
     {
-      if (sel && opts.length == 1) return <input type="text" className={className} disabled value={selected.map(koodi => t(koodi.nimi)).map(x => x || '')}></input>
+      if (sel && opts.length == 1) return <input type="text" className={className} disabled value={t(sel.nimi) || ''}></input>
       return (<Dropdown
         options={options}
         keyValue={option => option.koodiarvo}

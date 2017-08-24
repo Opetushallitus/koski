@@ -37,11 +37,12 @@ function AddOppijaPage() {
       }
     },
     enterValidDataAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
+      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Opetussuunnitelman mukainen'}, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
           .then(api.selectTutkinto(params.tutkinto))
+          .then(api.selectSuoritustapa(params.suoritustapa))
       }
     },
     enterData: function(params) {
@@ -76,6 +77,12 @@ function AddOppijaPage() {
             .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
             .then(function() {triggerEvent(selectedTutkinto(), 'click')})
       }
+    },
+    selectSuoritustapa: function(suoritustapa) {
+      if (suoritustapa)
+        return selectFromDropdown('.suoritustapa .dropdown', suoritustapa)
+      else
+        return function() {}
     },
     selectAloituspäivä: function(date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
@@ -141,7 +148,7 @@ function AddOppijaPage() {
   }
   function selectFromDropdown(selector, value) {
     return function () {
-      return wait.until(pageApi.getInput(selector).isVisible)().then(
+      return wait.until(pageApi.getInput(selector).isVisible)().then(wait.forAjax).then(
         pageApi.setInputValue(selector, value)
       )
     }

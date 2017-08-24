@@ -4,13 +4,31 @@ import Atom from 'bacon.atom'
 import Autocomplete from '../Autocomplete.jsx'
 import Http from '../http'
 import Text from '../Text.jsx'
+import KoodistoDropdown from '../KoodistoDropdown.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const tutkintoAtom = Atom()
+  const suoritustapaAtom = Atom()
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
-  const makeSuoritus = (oppilaitos, tutkinto, suorituskieli) => {
-    if (tutkinto && oppilaitos) {
+  let suoritustavatP = tutkintoAtom.flatMapLatest( tutkinto => tutkinto
+    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/suoritustavat/${encodeURIComponent(tutkinto.diaarinumero)}`)
+    : []
+  ).toProperty()
+
+  Bacon.onValues(suoritustapaAtom, suoritustavatP, (suoritustapa, suoritustavat) => {
+    let currentOneFound = suoritustapa && suoritustavat.map(k => k.koodiarvo).includes(suoritustapa.koodiarvo)
+    if (!currentOneFound) {
+      if (suoritustavat.length == 1) {
+        suoritustapaAtom.set(suoritustavat[0])
+      } else if (suoritustapa) {
+        suoritustapaAtom.set(undefined)
+      }
+    }
+  })
+
+  const makeSuoritus = (oppilaitos, tutkinto, suorituskieli, suoritustapa) => {
+    if (tutkinto && oppilaitos && suoritustapa) {
       return {
         koulutusmoduuli: {
           tunniste: {
@@ -22,12 +40,16 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
         toimipiste : oppilaitos,
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'},
+        suoritustapa: suoritustapa,
         suorituskieli : suorituskieli
       }
     }
   }
-  Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
-  return <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
+  Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
+  return <div>
+    <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
+    <Suoritustapa suoritustavatP={suoritustavatP} suoritustapaAtom={suoritustapaAtom}/>
+  </div>
 }
 
 const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
@@ -35,16 +57,30 @@ const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
     {
       Bacon.combineWith(oppilaitosP, tutkintoAtom, (oppilaitos, tutkinto) =>
         oppilaitos && (
-          <label className='tutkinto'><Text name="Tutkinto"/><Autocomplete
-            resultAtom={tutkintoAtom}
-            fetchItems={(value) => (value.length >= 3)
-                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value)
-                : Bacon.constant([])}
-            disabled={!oppilaitos}
-            selected={tutkinto}
-          /></label>
+          <label className='tutkinto'>
+            <Text name="Tutkinto"/>
+            <Autocomplete
+              resultAtom={tutkintoAtom}
+              fetchItems={(value) => (value.length >= 3)
+                  ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value)
+                  : Bacon.constant([])}
+              disabled={!oppilaitos}
+              selected={tutkinto}
+            />
+          </label>
         )
       )
     }
   </div> )
+}
+
+const Suoritustapa = ({suoritustapaAtom, suoritustavatP}) => {
+  return (<div>
+    <KoodistoDropdown
+      className="suoritustapa"
+      title="Suoritustapa"
+      options={suoritustavatP}
+      selected={suoritustapaAtom}
+    />
+  </div>)
 }

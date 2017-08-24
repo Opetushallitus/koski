@@ -164,7 +164,8 @@ describe('Ammatillinen koulutus', function() {
               prepareForNewOppija('omnia-palvelukäyttäjä', '230872-7258'),
               addOppija.enterHenkilötiedot(),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-              addOppija.selectTutkinto('auto')
+              addOppija.selectTutkinto('auto'),
+              addOppija.selectSuoritustapa('Opetussuunnitelman mukainen')
             )
             it('Vaihtoehto on valmiiksi valittu', function() {
               expect(addOppija.oppilaitos()).to.deep.equal('Omnian ammattiopisto')
@@ -207,7 +208,7 @@ describe('Ammatillinen koulutus', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
           describe('Tutkinnon valinnan jälkeen', function() {
-            before(addOppija.selectTutkinto('auto'))
+            before(addOppija.selectTutkinto('auto'), addOppija.selectSuoritustapa('Opetussuunnitelman mukainen'))
             it('Lisää-nappi on enabloitu', function() {
               expect(addOppija.isEnabled()).to.equal(true)
             })
@@ -1169,7 +1170,10 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Uusi erikoisammattitutkinto', function() {
-      before(page.openPage, addNewOppija('kalle', '250858-5188', {  oppilaitos: 'Stadin', tutkinto: 'Autoalan työnjohdon erikoisammattitutkinto'}))
+      before(
+        page.openPage,
+        addNewOppija('kalle', '250858-5188', {  oppilaitos: 'Stadin', tutkinto: 'Autoalan työnjohdon erikoisammattitutkinto', suoritustapa: ''})
+      )
       describe('Uuden tutkinnonosan lisääminen', function() {
         before(
             editor.edit,

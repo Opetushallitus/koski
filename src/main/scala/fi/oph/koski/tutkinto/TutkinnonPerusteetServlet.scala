@@ -45,6 +45,14 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     }
   }
 
+  get("/suoritustavat/:diaari") {
+    val diaari = params("diaari")
+    tutkintoRepository.findPerusteRakenne(diaari) match {
+      case None => renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Rakennetta ei löydy diaarinumerolla $diaari"))
+      case Some(rakenne) => rakenne.suoritustavat.map(_.suoritustapa)
+    }
+  }
+
   private def perusteenTutkinnonosat(f:  Option[RakenneOsa] => Either[HttpStatus, List[TutkinnonOsa]]) = {
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
