@@ -392,14 +392,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None)).copy(suoritustapa = Some(suoritustapaOps))
         "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta"))))
       }
-
-      "Suoritustapa puuttuu" - {
-        val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None)).copy(suoritustapa = None)
-        "täydennetään suoritustapa automaattisesti" in {
-          putTutkintoSuoritus(suoritus)(verifyResponseStatus(200))
-          lastOpiskeluoikeusByHetu(defaultHenkilö, defaultUser).suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].suoritustapa.map(_.koodiarvo) should equal(Some("naytto"))
-        }
-      }
     }
 
     "Oppisopimus" - {
