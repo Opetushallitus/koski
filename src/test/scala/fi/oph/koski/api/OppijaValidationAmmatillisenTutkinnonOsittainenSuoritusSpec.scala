@@ -43,10 +43,15 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
       "Tutkinnon osat ja arvionnit" - {
         val johtaminenJaHenkilöstönKehittäminen = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
 
-        "OPS-perusteinen tutkinnonosa" - {
+        "Valtakunnallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus) (verifyResponseStatus(200)))
           }
+
+          "Ilman tutkinnon osan ryhmätietoa" - {
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None)) (verifyResponseStatus(200)))
+          }
+
 
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
             "palautetaan HTTP 200 (osittaisissa suorituksissa ei validoida rakennetta)" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen))(

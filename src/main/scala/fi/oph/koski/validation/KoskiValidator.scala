@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{AmmatillisenTutkinnonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
@@ -213,7 +213,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateStatus(suoritus, parent)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
-        :: validateTutkinnonosanRyhmä(suoritus)
+        :: validateTutkinnonosanRyhmä(suoritus, parent)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
   }
@@ -283,25 +283,34 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     suoritus.koulutusmoduuli.tunniste
   }
 
-  def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
-
-    def validateTutkinnonosaSuoritus(suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
+  def validateTutkinnonosanRyhmä(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+    def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
-        suoritus.tutkinnonOsanRyhmä
-          .map(_ => HttpStatus.ok)
-          .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
+        if (tutkinnonSuoritus.suoritustapa.map(_.koodiarvo) == Some("ops")) {
+          // OPS-suoritustapa => vaaditaan ryhmittely
+          suoritus.tutkinnonOsanRyhmä
+            .map(_ => HttpStatus.ok)
+            .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille, kun suoritustapa on opetussuunnitelman mukainen." ))
+        } else {
+          // Näyttö-suoritustapa => ei vaadita ryhmittelyä
+          HttpStatus.ok
+        }
       } else {
+        // Ei ammatillinen perustutkinto => ryhmittely ei sallittu
         suoritus.tutkinnonOsanRyhmä
           .map(_ => KoskiErrorCategory.badRequest.validation.rakenne.koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä("Tutkinnonosalle " + suoritus.koulutusmoduuli.tunniste + " on määritetty tutkinnonosan ryhmä, vaikka kyseessä ei ole ammatillinen perustutkinto."))
           .getOrElse(HttpStatus.ok)
       }
     }
 
-    def validateTutkinnonosaSuoritukset(tutkinto: AmmatillinenTutkintoKoulutus, suoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]]) = {
-      koulutustyyppi(tutkinto.perusteenDiaarinumero.get)
-        .map(tyyppi => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(s, tyyppi))))
+    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]]) = {
+      koulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
+        .map(tyyppi => tutkinnonSuoritus match {
+          case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))
+          case _ => HttpStatus.ok
+        })
         .getOrElse {
-          logger.warn("Ammatilliselle tutkintokoulutukselle " + tutkinto.perusteenDiaarinumero.get + " ei löydy koulutustyyppiä e-perusteista.")
+          logger.warn("Ammatilliselle tutkintokoulutukselle " + tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get + " ei löydy koulutustyyppiä e-perusteista.")
           HttpStatus.ok
         }
     }
@@ -309,8 +318,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
 
     suoritus match {
-      case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s.koulutusmoduuli, s.osasuoritukset)
-      case s: AmmatillisenTutkinnonOsittainenSuoritus => validateTutkinnonosaSuoritukset(s.koulutusmoduuli, s.osasuoritukset)
+      case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
+      case s: AmmatillisenTutkinnonOsittainenSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
       case _ => HttpStatus.ok
     }
   }

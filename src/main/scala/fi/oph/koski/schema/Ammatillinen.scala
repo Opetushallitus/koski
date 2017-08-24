@@ -162,7 +162,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
 @Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta.")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
@@ -191,7 +191,11 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with VahvistuksetonSuoritus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with VahvistuksetonSuoritus
+
+trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
+  def koulutusmoduuli: AmmatillinenTutkintoKoulutus
+}
 
 trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
