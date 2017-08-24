@@ -46,10 +46,10 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   }
   Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
-  return <div>
+  return (<div>
     <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
     <Suoritustapa suoritustavatP={suoritustavatP} suoritustapaAtom={suoritustapaAtom}/>
-  </div>
+  </div>)
 }
 
 const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
