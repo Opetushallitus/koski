@@ -139,6 +139,11 @@ case class NäyttötutkintoonValmistavaKoulutus(
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
+  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
+  suoritustapa: Option[Koodistokoodiviite] = None,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
@@ -147,11 +152,6 @@ case class AmmatillisenTutkinnonSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
-  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
-  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
-  suoritustapa: Option[Koodistokoodiviite] = None,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,

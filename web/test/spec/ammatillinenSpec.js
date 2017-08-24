@@ -738,10 +738,10 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+            'Suoritustapa Opetussuunnitelman mukainen\n' +
             'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
-            'Suoritustapa Opetussuunnitelman mukainen\n' +
             'Järjestämismuodot 1.9.2013 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
             'Työssäoppimispaikka Sortti-asema\n' +
@@ -895,10 +895,10 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function () {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Autoalan perustutkinto 39/011/2014\n' +
+          'Suoritustapa Näyttö\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
           'Suorituskieli suomi\n' +
-          'Suoritustapa Näyttö\n' +
           'Suoritus : KESKEN'
         )
       })
@@ -1051,9 +1051,9 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
+            'Suoritustapa Näyttö\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
-            'Suoritustapa Näyttö\n' +
             'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
             'Yritys Autokorjaamo Oy\n' +
