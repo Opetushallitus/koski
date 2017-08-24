@@ -13,7 +13,7 @@ export default ({ className, title, options, selected, enableFilter, selectionTe
   return (<label className={className}>{title}{
     elementWithLoadingIndicator(Bacon.combineWith(options, selected, (opts, sel) =>
     {
-      if (sel && opts.length == 1) return <input type="text" className={className} disabled value={selected.map('.nimi.fi').map(x => x || '')}></input>
+      if (sel && opts.length == 1) return <input type="text" className={className} disabled value={selected.map(koodi => t(koodi.nimi)).map(x => x || '')}></input>
       return (<Dropdown
         options={options}
         keyValue={option => option.koodiarvo}

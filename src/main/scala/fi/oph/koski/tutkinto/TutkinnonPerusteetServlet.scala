@@ -1,6 +1,6 @@
 package fi.oph.koski.tutkinto
 
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.Koodistokoodiviite
@@ -20,21 +20,40 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
   }
 
+  get("/tutkinnonosat/:diaari/:suoritustapa") {
+    perusteenTutkinnonosat { osa =>
+      Right(osa match {
+        case None => List.empty
+        case Some(rakenneModuuli) => rakenneModuuli match {
+          case osa: TutkinnonOsa => List(osa)
+          case moduuli: RakenneModuuli => findTutkinnonOsat(moduuli)
+        }
+      })
+    }
+  }
+
   get("/tutkinnonosat/:diaari/:suoritustapa/:ryhma") {
-    val diaari = params("diaari")
-    val suoritustapa = params("suoritustapa")
     val ryhmä = params("ryhma")
     val ryhmäkoodi = koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+    perusteenTutkinnonosat { osa =>
+      osa.flatMap(findRyhmä(ryhmäkoodi, _)) match {
+        case None =>
+          Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
+        case Some(rakennemoduuli) =>
+          Right(findTutkinnonOsat(rakennemoduuli))
+      }
+    }
+  }
+
+  private def perusteenTutkinnonosat(f:  Option[RakenneOsa] => Either[HttpStatus, List[TutkinnonOsa]]) = {
+    val diaari = params("diaari")
+    val suoritustapa = params("suoritustapa")
+
     tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
       case None =>
         renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
       case Some(suoritustapaJaRakenne) =>
-        suoritustapaJaRakenne.rakenne.flatMap(findRyhmä(ryhmäkoodi, _)) match {
-          case None =>
-            renderStatus(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
-          case Some(rakennemoduuli) =>
-            findTutkinnonOsat(rakennemoduuli).map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
-        }
+        f(suoritustapaJaRakenne.rakenne).right.map(_.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang))))
     }
   }
 
