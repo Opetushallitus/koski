@@ -147,7 +147,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                                onClick={(e) => {selectRemoval(e, o)}}
                                onMouseOver={() => removeIndexAtom.set(i)}
                                onMouseLeave={() => removeIndexAtom.set(undefined)}
-                            >{''}</a>
+                            />
                           </span> :
                           displayValue(o)
                     }
