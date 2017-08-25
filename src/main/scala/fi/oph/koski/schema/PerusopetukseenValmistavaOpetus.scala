@@ -12,6 +12,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("oppijan oppimäärän alkamispäivä")
   alkamispäivä: Option[LocalDate],
   @Description("oppijan oppimäärän päättymispäivä")

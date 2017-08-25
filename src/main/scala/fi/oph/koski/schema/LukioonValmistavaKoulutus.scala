@@ -14,6 +14,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Opiskelijan opiskeluoikeuden alkamisaika lukiokoulutukseen valmistavassa koulutuksessa")
   alkamispäivä: Option[LocalDate],
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä")

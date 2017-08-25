@@ -268,10 +268,16 @@ object ExamplesLukio {
       )
     )
 
+
+  val sisältyvä = lukioKesken.copy(
+    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(ressunLukio, "1.2.246.562.15.97433262579"))
+  )
+
   val examples = List(
     Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", oppija(lukionOpiskeluoikeus())),
     Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", oppija(päättötodistus())),
-    Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", oppija(aineopiskelija))
+    Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", oppija(aineopiskelija)),
+    Example("lukio - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", oppija(sisältyvä), statusCode = 400)
   )
 }
 

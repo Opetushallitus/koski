@@ -24,6 +24,7 @@ case class KorkeakoulunOpiskeluoikeus(
 ) extends Opiskeluoikeus {
   override def versionumero = None
   override def lisätiedot = None
+  override def sisältyyOpiskeluoikeuteen = None
 }
 
 @Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän.")

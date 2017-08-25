@@ -8,5 +8,6 @@ object YleissivistavakoulutusExampleData {
   implicit def int2String(int: Int) = int.toString
 
   lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(Koodistokoodiviite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
+  lazy val ressunLukio: Oppilaitos = Oppilaitos(MockOrganisaatiot.ressunLukio, Some(Koodistokoodiviite("00082", None, "oppilaitosnumero", None)), Some("Ressun lukio"))
   lazy val kulosaarenAlaAste: Oppilaitos = Oppilaitos(MockOrganisaatiot.kulosaarenAlaAste, Some(Koodistokoodiviite("03016", None, "oppilaitosnumero", None)), Some("Kulosaaren ala-aste"))
 }
