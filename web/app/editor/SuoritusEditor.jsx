@@ -9,7 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {arviointiPuuttuu, keskeneräisetOsasuoritukset, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
@@ -67,10 +67,18 @@ SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
+
   if (suoritusValmis(m)) {
-    return keskeneräisetOsasuoritukset(m).map((osasuoritus, i) => {
-      return {path: ['osasuoritukset', i], key: 'osasuorituksenTila', message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>}
-    })
+    return modelItems(m, 'osasuoritukset')
+        .map((osasuoritus, i) => [osasuoritus, i])
+        .filter(([osasuoritus]) => suoritusKesken(osasuoritus))
+        .map(([, i]) => {
+          return {
+            path: ['osasuoritukset', i],
+            key: 'osasuorituksenTila',
+            message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>
+          }
+        })
   }
 }
 
@@ -83,8 +91,12 @@ class TodistusLink extends React.Component {
     let koulutusmoduuliKoodiarvo = modelData(suoritus, 'koulutusmoduuli').tunniste.koodiarvo
     let suoritusTila = modelData(suoritus, 'tila').koodiarvo
     let href = '/koski/todistus/' + oppijaOid + '?suoritustyyppi=' + suoritustyyppi + '&koulutusmoduuli=' + koulutusmoduuliKoodistoUri + '/' + koulutusmoduuliKoodiarvo
-    return suoritusTila == 'VALMIS' && suoritustyyppi != 'korkeakoulututkinto' && suoritustyyppi != 'preiboppimaara' && suoritustyyppi != 'esiopetuksensuoritus' && !(koulutusmoduuliKoodistoUri == 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo == '9')
-      ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
-      : null
+    return suoritusTila === 'VALMIS'
+           && suoritustyyppi !== 'korkeakoulututkinto'
+           && suoritustyyppi !== 'preiboppimaara'
+           && suoritustyyppi !== 'esiopetuksensuoritus'
+           && !(koulutusmoduuliKoodistoUri === 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo === '9')
+        ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
+        : null
   }
 }

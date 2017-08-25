@@ -341,7 +341,7 @@ const modelErrors = (model, recursive = true) => {
   let context = model.context
 
   let pathString = justPath(model.path).join('.')
-  let keyMatch = ([key]) => recursive ? R.startsWith(pathString, key) : pathString == key
+  let keyMatch = ([key]) => recursive ? pathString === key || R.startsWith(pathString + '.', key) : pathString === key
 
   let validationResult = context.validationResult || {}
 
