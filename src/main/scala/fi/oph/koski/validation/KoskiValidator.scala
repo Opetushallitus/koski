@@ -63,19 +63,19 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       fillMissingOrganisations(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus.getOppilaitos)
           .then { validateLähdejärjestelmä(opiskeluoikeus) }
+          .then {
+            HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validateTutkintoRakenne(_)))
+          })
           .then { HttpStatus.fold(
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
-          )}
-          .then {
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validateTutkintoRakenne(_)))
-          }) match {
+          )} match {
             case HttpStatus.ok => Right(opiskeluoikeus)
             case status =>
               Left(status)
-        }
+          }
       }
 
     case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
