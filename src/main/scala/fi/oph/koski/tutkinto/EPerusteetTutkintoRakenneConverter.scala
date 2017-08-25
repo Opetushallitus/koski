@@ -17,7 +17,8 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
           case x: ERakenneModuuli => RakenneModuuli(
             nimi = LocalizedString.sanitizeRequired(x.nimi.getOrElse(Map.empty), LocalizedString.missingString),
             osat = x.osat.map(osa => convertRakenneOsa(osa, suoritustapa)),
-            määrittelemätön = x.rooli != "määritelty"
+            määrittelemätön = x.rooli != "määritelty",
+            laajuus = x.muodostumisSaanto.flatMap(_.laajuus)
           )
           case x: ERakenneTutkinnonOsa => suoritustapa.tutkinnonOsaViitteet.toList.flatten.find(v => v.id.toString == x._tutkinnonOsaViite) match {
             case Some(tutkinnonOsaViite) =>

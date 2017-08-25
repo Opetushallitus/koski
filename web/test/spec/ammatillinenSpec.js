@@ -825,6 +825,7 @@ describe('Ammatillinen koulutus', function() {
             'Sulje kaikki Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
             'Kuvaus Hoitotarpeen määrittäminen\n' +
+            'Yhteensä 135 / 135 osp\n' +
             'Yhteiset tutkinnon osat\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -858,16 +859,19 @@ describe('Ammatillinen koulutus', function() {
             'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Yhteensä 35 / 35 osp\n' +
             'Vapaavalintaiset tutkinnon osat\n' +
             'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
             'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Yhteensä 5 / 10 osp\n' +
             'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
             'Matkailuenglanti ei 5 3\n' +
             'Kuvaus Matkailuenglanti\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Yhteensä 5 osp'
           )
         })
       })

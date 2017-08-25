@@ -10,13 +10,22 @@ case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: St
 }
 
 case class ESuoritustapa(suoritustapakoodi: String, laajuusYksikko: Option[String], rakenne: Option[ERakenneOsa], tutkinnonOsaViitteet: Option[List[ETutkinnonOsaViite]])
-case class ETutkinnonOsaViite(id: Long, laajuus: Option[Float], _tutkinnonOsa: String)
+case class ETutkinnonOsaViite(id: Long, _tutkinnonOsa: String)
 case class EOsaamisala(nimi: Map[String, String], arvo: String)
 case class EOsaamisalaViite(osaamisalakoodiArvo: String)
 case class ETutkinnonOsa(id: Long, nimi: Map[String, String], koodiArvo: String)
 
+case class ELaajuus(minimi: Option[Long], maksimi: Option[Long], yksikko: Option[String]) {
+  def mapping: (Option[Long], Option[Long]) = (this.minimi, this.maksimi)
+}
+object ELaajuus {
+  def unknown: (Option[Long], Option[Long]) = (None, None)
+}
+case class EKoko(minimi: Option[Long], maksimi: Option[Long])
+case class EMuodostumisSaanto(laajuus: Option[ELaajuus], koko: Option[EKoko])
+
 sealed trait ERakenneOsa
-case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: String) extends ERakenneOsa
+case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: String, muodostumisSaanto: Option[EMuodostumisSaanto]) extends ERakenneOsa
 case class ERakenneTutkinnonOsa(_tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa
 
 object RakenneOsaSerializer extends Serializer[ERakenneOsa] {

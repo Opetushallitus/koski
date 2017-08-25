@@ -65,6 +65,26 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     }
   }
 
+  get("/tutkinnonosat/:diaari/:suoritustapa/laajuus") {
+    val diaari = params("diaari")
+    val suoritustapa = params("suoritustapa")
+
+    tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
+      case None =>
+        renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
+      case Some(suoritustapaJaRakenne) => {
+        suoritustapaJaRakenne.rakenne match {
+          case Some(rakennemoduuli: RakenneModuuli) => {
+            val rakenneLaajuudet = rakennemoduuli.tutkinnonRakenneLaajuudet
+            rakenneLaajuudet.mapValues(v => Map("min" -> v._1.getOrElse(null), "max" -> v._2.getOrElse(null)))
+          }
+          case _ =>
+            renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Diaarinumerolla $diaari ja suoritustavalla $suoritustapa löytyvä rakenne ei ole kelvollinen"))
+        }
+      }
+    }
+  }
+
   private def findRyhmä(ryhmä: Koodistokoodiviite, rakenneOsa: RakenneOsa): Option[RakenneModuuli] = {
     rakenneOsa match {
       case r: RakenneModuuli if r.nimi.get("fi").toLowerCase == ryhmä.nimi.map(_.get("fi")).getOrElse("").toLowerCase =>

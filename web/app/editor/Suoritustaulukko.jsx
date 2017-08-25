@@ -86,11 +86,11 @@ export class Suoritustaulukko extends React.Component {
               <thead>
               <tr>
                 <th className="suoritus">
-                  {suoritusProto && modelProperty(suoritusProto, 'koulutusmoduuli').title}
+                  {suoritukset[0] && modelProperty(suoritukset[0], 'koulutusmoduuli').title}
                   {showExpandAll &&
                   <div>
-                    {allExpandedP.map(allExpanded => (<a className={'expand-all button' + (allExpanded ? ' expanded' : '')}
-                                                        onClick={toggleExpandAll}>
+                    {allExpandedP.map(allExpanded => (
+                      <a className={'expand-all button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
                         <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
                       </a>)
                     )}
@@ -98,8 +98,8 @@ export class Suoritustaulukko extends React.Component {
                   }
                 </th>
                 {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
-                {showLaajuus && <th className="laajuus"><Text
-                  name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
+                {showLaajuus &&
+                  <th className="laajuus"><Text name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
                 {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
               </tr>
               </thead>
@@ -110,13 +110,19 @@ export class Suoritustaulukko extends React.Component {
           </div>)
 
     function suoritusGroup(groupId, i) {
-      let items = (grouped[groupId] || [])
+      const items = (grouped[groupId] || [])
+
       return [
         showGrouped && <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
-        context.edit && uusiTutkinnonOsa(i, groupId, items)
+        context.edit && uusiTutkinnonOsa(i, groupId, items),
+        <tbody key={'group- '+ i + '-footer'}>
+          <tr><td>
+            <YhteensäSuoritettu suoritus={context.suoritus} osasuoritukset={items} groupTitle={groupTitles[groupId]} laajuusYksikkö={laajuusYksikkö}/>
+          </td></tr>
+        </tbody>
       ]
     }
 
@@ -149,6 +155,59 @@ export class Suoritustaulukko extends React.Component {
       setExpanded(suoritus)(true)
     }
   }
+}
+
+const laajuus = (suoritus) => {
+  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
+
+  let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? null : Bacon.Error(e) }
+  let laajuudetP = Http.cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/laajuus`, map404ToEmpty)
+  return laajuudetP
+}
+
+const laajuusRange = (l) => {
+  if (l === null || (l.min === null && l.max === null)) {
+    return null
+  }
+  else if (l.min !== null && l.max !== null) {
+    if (l.min === l.max) {
+      return l.max.toString()
+    }
+    else {
+      return l.min.toString() + '–' + l.max.toString()
+    }
+  }
+  else {
+    return (l.min !== null ? l.max : l.min).toString()
+  }
+}
+
+const YhteensäSuoritettu = ({suoritus, osasuoritukset, groupTitle, laajuusYksikkö=null}) => {
+  const laajuudetYhteensäP = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
+
+  let laajuudetP
+
+  if (typeof groupTitle === 'string') {
+    laajuudetP = laajuus(suoritus).map(v => v[groupTitle.replace('Vapaavalintaiset', 'Vapaasti valittavat')]) // Hyi
+  }
+  else {
+    laajuudetP = Bacon.constant(null)
+  }
+
+  return (
+    <div>
+      <Text name="Yhteensä"/>
+      {' '}
+      <span>
+        <span>{laajuudetYhteensäP}</span>
+        {laajuudetP.map(v => (v === null || v.min === null || v.max === null) ? null : ' / ')}
+        <span>{laajuudetP.map(v => laajuusRange(v))}</span>
+        {' '}
+        {laajuusYksikkö}
+      </span>
+    </div>
+  )
 }
 
 const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
