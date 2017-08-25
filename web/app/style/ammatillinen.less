@@ -19,7 +19,7 @@
     }
   }
 
-  table {
+  &> table {
     tbody.tutkinnon-osa:not(:first-of-type):not(.uusi-tutkinnon-osa) {
       border-top: 1px solid #eee;
     }
@@ -81,6 +81,10 @@
 
       table {
         width: 100%;
+
+        tr:not(:last-of-type) {
+          border-bottom: 10px solid transparent;
+        }
 
         td {
           table {
