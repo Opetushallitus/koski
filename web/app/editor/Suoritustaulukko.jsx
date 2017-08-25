@@ -161,9 +161,12 @@ const laajuus = (suoritus) => {
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
+  if (suoritustapa === undefined) {
+    return Bacon.constant(null)
+  }
+
   let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? null : Bacon.Error(e) }
-  let laajuudetP = Http.cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/laajuus`, map404ToEmpty)
-  return laajuudetP
+  return Http.cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/laajuus`, map404ToEmpty)
 }
 
 const laajuusRange = (l) => {
@@ -189,7 +192,7 @@ const YhteensäSuoritettu = ({suoritus, osasuoritukset, groupTitle, laajuusYksik
   let laajuudetP
 
   if (typeof groupTitle === 'string') {
-    laajuudetP = laajuus(suoritus).map(v => v[groupTitle.replace('Vapaavalintaiset', 'Vapaasti valittavat')]) // Hyi
+    laajuudetP = laajuus(suoritus).map(v => v && v[groupTitle.replace('Vapaavalintaiset', 'Vapaasti valittavat')]) // Hyi
   }
   else {
     laajuudetP = Bacon.constant(null)
