@@ -825,6 +825,7 @@ describe('Ammatillinen koulutus', function() {
             'Sulje kaikki Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
             'Kuvaus Hoitotarpeen määrittäminen\n' +
+            'Yhteensä 0 osp\n' +
             'Yhteensä 135 / 135 osp\n' +
             'Yhteiset tutkinnon osat\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
@@ -835,6 +836,7 @@ describe('Ammatillinen koulutus', function() {
             'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
             'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
             'Vieraat kielet, englanti kyllä 2 3\n' +
+            'Yhteensä 11 osp\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -853,6 +855,7 @@ describe('Ammatillinen koulutus', function() {
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+            'Yhteensä 9 osp\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -925,7 +928,8 @@ describe('Ammatillinen koulutus', function() {
           'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
           'Suoritusaika 20.4.2002 — 20.4.2002\n' +
           'Työssäoppimisen yhteydessä ei\n' +
-          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)'
+          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\n' +
+          'Yhteensä 15 osp'
         )
       })
     })
@@ -991,7 +995,8 @@ describe('Ammatillinen koulutus', function() {
           'Sulje kaikki Pakollisuus Laajuus (osp) Arvosana\n' +
           'Ympäristön hoitaminen kyllä 35 3\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-          'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
+          'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+          'Yhteensä 35 osp'
         )
       })
     })
@@ -1027,7 +1032,8 @@ describe('Ammatillinen koulutus', function() {
             'Sulje kaikki Pakollisuus Laajuus\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
             'Kuvaus Johtamisen ja henkilöstön kehittämisen valmistava koulutus\n' +
-            'Auton lisävarustetyöt ei 15 osp'
+            'Auton lisävarustetyöt ei 15 osp\n' +
+            'Yhteensä 15'
           )
         })
       })
@@ -1085,7 +1091,8 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Yrittäjyys kyllä Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Yhteensä 0 osp'
           )
         })
       })
@@ -1137,7 +1144,8 @@ describe('Ammatillinen koulutus', function() {
         it('onnistuu', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
               'Tutkinnon osa Pakollisuus Arvosana\n' +
-              'Tekniikan asiantuntemus ei 3'
+              'Tekniikan asiantuntemus ei 3\n' +
+              'Yhteensä 0 osp'
           )
         })
       })
@@ -1185,7 +1193,8 @@ describe('Ammatillinen koulutus', function() {
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Tila Suoritus valmis\n' +
           'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
-          'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta'
+          'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+          'Yhteensä 60 osp'
         )
       })
     })

@@ -46,7 +46,8 @@ describe('Telma', function() {
           'Kuvaus Kurssilla harjoitellaan vedessä liikkumista ja perehdytään vesiturvallisuuden perusteisiin. Kurssilla käytäviä asioita: - uinnin hengitystekniikka - perehdytystä uinnin eri tekniikoihin - allasturvallisuuden perustiedot\n' +
           'Tunnustettu\n' +
           'Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
-          'Auton lisävarustetyöt ei 15 Hyväksytty'
+          'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
+          'Yhteensä 75 osp'
         )
       })
     })
