@@ -96,6 +96,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
     e.preventDefault()
     e.stopPropagation()
     onSelectionChanged(option)
+    openAtom.set(false)
   }
   let selectRemoval = (e, option) => {
     e.preventDefault()
