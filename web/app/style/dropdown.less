@@ -1,7 +1,6 @@
 .dropdown {
   position: relative;
   outline: none;
-  cursor: pointer;
 
   &:focus {
     .select {
@@ -25,6 +24,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    cursor: default;
   }
 
   .select:after, .input-container:after {
@@ -37,6 +37,7 @@
     width: 6px;
     height: 6px;
     top: ~"calc(50% - 4px)";
+    pointer-events: none;
   }
 
   .input-container {
