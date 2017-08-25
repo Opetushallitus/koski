@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -36,6 +35,14 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
@@ -52,14 +59,6 @@
           "fi" : "suomi"
         },
         "koodistoUri" : "kieli"
-      },
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {

@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -29,12 +28,17 @@
       "koulutusmoduuli" : {
         "tunniste" : {
           "koodiarvo" : "351301",
-          "nimi" : {
-            "fi" : "Autoalan perustutkinto"
-          },
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
@@ -46,6 +50,7 @@
         "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"
       },
+      "alkamispäivä" : "2016-09-01",
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -53,31 +58,21 @@
         },
         "koodistoUri" : "kieli"
       },
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
-      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "104052",
-            "koodistoUri" : "tutkinnonosat"
+            "koodiarvo" : "123456789",
+            "nimi" : {
+              "fi" : "Pintavauriotyöt"
+            }
           },
-          "pakollinen" : true
-        },
-        "tutkinto" : {
-          "tunniste" : {
-            "koodiarvo" : "357305",
-            "koodistoUri" : "koulutus"
+          "kuvaus" : {
+            "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
           },
-          "perusteenDiaarinumero" : "40/011/2001"
+          "pakollinen" : false
         },
         "tutkinnonOsanRyhmä" : {
-          "koodiarvo" : "4",
+          "koodiarvo" : "1",
           "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
@@ -92,17 +87,25 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "3",
+            "koodiarvo" : "Hyväksytty",
             "nimi" : {
-              "fi" : "K3"
+              "fi" : "Hyväksytty"
             },
-            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
           },
-          "päivä" : "2014-10-20",
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
         "vahvistus" : {
-          "päivä" : "2014-11-08",
+          "päivä" : "2013-05-31",
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -129,6 +132,29 @@
               }
             }
           } ]
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Pintavaurioiden korjausta"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          },
+          "suoritusaika" : {
+            "alku" : "2013-05-20",
+            "loppu" : "2013-05-20"
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

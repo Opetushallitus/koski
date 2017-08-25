@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "oid" : "1.2.246.562.24.00000000001"
   },
@@ -64,6 +63,14 @@
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "tutkintonimike" : [ {
         "koodiarvo" : "10024",
@@ -142,14 +149,6 @@
           "fi" : "suomi"
         },
         "koodistoUri" : "kieli"
-      },
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
       },
       "järjestämismuodot" : [ {
         "alku" : "2012-09-01",
