@@ -1170,7 +1170,7 @@ describe('Ammatillinen koulutus', function() {
           'Laajuus 60 osp\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
+          'Suoritus : VALMIS Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
         )
       })
 
@@ -1203,7 +1203,7 @@ describe('Ammatillinen koulutus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in ValmaSpec.scala
-        expect(TodistusPage().vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
+        expect(TodistusPage().vahvistus()).to.equal('4.6.2016 Reijo Reksi rehtori')
       })
     })
   })
