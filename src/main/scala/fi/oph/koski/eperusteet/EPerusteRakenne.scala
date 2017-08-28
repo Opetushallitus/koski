@@ -15,12 +15,7 @@ case class EOsaamisala(nimi: Map[String, String], arvo: String)
 case class EOsaamisalaViite(osaamisalakoodiArvo: String)
 case class ETutkinnonOsa(id: Long, nimi: Map[String, String], koodiArvo: String)
 
-case class ELaajuus(minimi: Option[Long], maksimi: Option[Long], yksikko: Option[String]) {
-  def mapping: (Option[Long], Option[Long]) = (this.minimi, this.maksimi)
-}
-object ELaajuus {
-  def unknown: (Option[Long], Option[Long]) = (None, None)
-}
+case class ELaajuus(minimi: Option[Long], maksimi: Option[Long], yksikko: Option[String])
 case class EKoko(minimi: Option[Long], maksimi: Option[Long])
 case class EMuodostumisSaanto(laajuus: Option[ELaajuus], koko: Option[EKoko])
 

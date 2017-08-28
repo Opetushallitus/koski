@@ -31,6 +31,7 @@ import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {EnumEditor} from './EnumEditor.jsx'
+import {YhteensäSuoritettu} from './YhteensäSuoritettu.jsx'
 import Http from '../http'
 
 const placeholderForNonGrouped = '999999'
@@ -120,7 +121,7 @@ export class Suoritustaulukko extends React.Component {
         context.edit && uusiTutkinnonOsa(i, groupId, items),
         <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu suoritus={context.suoritus} osasuoritukset={items} groupTitle={groupTitles[groupId]} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu suoritus={context.suoritus} osasuoritukset={items} group={groupId} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]
@@ -155,62 +156,6 @@ export class Suoritustaulukko extends React.Component {
       setExpanded(suoritus)(true)
     }
   }
-}
-
-const laajuus = (suoritus) => {
-  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
-  let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
-
-  if (suoritustapa === undefined) {
-    return Bacon.constant(null)
-  }
-
-  let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? null : Bacon.Error(e) }
-  return Http.cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/laajuus`, map404ToEmpty)
-}
-
-const laajuusRange = (l) => {
-  if (l === null || (l.min === null && l.max === null)) {
-    return null
-  }
-  else if (l.min !== null && l.max !== null) {
-    if (l.min === l.max) {
-      return l.max.toString()
-    }
-    else {
-      return l.min.toString() + '–' + l.max.toString()
-    }
-  }
-  else {
-    return (l.min !== null ? l.max : l.min).toString()
-  }
-}
-
-const YhteensäSuoritettu = ({suoritus, osasuoritukset, groupTitle, laajuusYksikkö=null}) => {
-  const laajuudetYhteensäP = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
-
-  let laajuudetP
-
-  if (typeof groupTitle === 'string') {
-    laajuudetP = laajuus(suoritus).map(v => v && v[groupTitle.replace('Vapaavalintaiset', 'Vapaasti valittavat')]) // Hyi
-  }
-  else {
-    laajuudetP = Bacon.constant(null)
-  }
-
-  return (
-    <div>
-      <Text name="Yhteensä"/>
-      {' '}
-      <span>
-        <span>{laajuudetYhteensäP}</span>
-        {laajuudetP.map(v => (v === null || v.min === null || v.max === null) ? null : ' / ')}
-        <span>{laajuudetP.map(v => laajuusRange(v))}</span>
-        {' '}
-        {laajuusYksikkö}
-      </span>
-    </div>
-  )
 }
 
 const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {

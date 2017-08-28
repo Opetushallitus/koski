@@ -868,7 +868,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Yhteensä 5 / 10 osp\n' +
+            'Yhteensä 5 osp\n' +
             'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
             'Matkailuenglanti ei 5 3\n' +
             'Kuvaus Matkailuenglanti\n' +

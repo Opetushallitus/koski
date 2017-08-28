@@ -12,16 +12,17 @@ case class TutkintoRakenne(diaarinumero: String, koulutustyyppi: Koulutustyyppi,
 }
 
 case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: Option[RakenneOsa])
+case class TutkinnonOsanLaajuus(min: Option[Long], max: Option[Long])
 
 sealed trait RakenneOsa
 
-case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määrittelemätön: Boolean, laajuus: Option[ELaajuus]) extends RakenneOsa {
+case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määrittelemätön: Boolean, laajuus: Option[TutkinnonOsanLaajuus]) extends RakenneOsa {
   def tutkinnonOsat: List[TutkinnonOsa] = osat flatMap {
     case m: RakenneModuuli => m.tutkinnonOsat
     case o: TutkinnonOsa => List(o)
   }
-  def tutkinnonRakenneLaajuudet: Map[String, (Option[Long], Option[Long])] = {
-    osat.collect({case a: RakenneModuuli => a }).map(m => m.nimi.get("fi") -> m.laajuus.map(_.mapping).getOrElse(ELaajuus.unknown)).toMap
+  def tutkinnonRakenneLaajuus: TutkinnonOsanLaajuus = {
+    this.laajuus.getOrElse(TutkinnonOsanLaajuus(None, None))
   }
 }
 case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString) extends RakenneOsa

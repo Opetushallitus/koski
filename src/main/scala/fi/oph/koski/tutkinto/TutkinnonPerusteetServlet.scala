@@ -3,6 +3,7 @@ package fi.oph.koski.tutkinto
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
@@ -53,6 +54,19 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     }
   }
 
+  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhma") {
+    val ryhmä = params("ryhma")
+    val ryhmäkoodi = koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+    perusteenTutkinnononLaajuus {osa =>
+      findRyhmä(ryhmäkoodi, osa) match {
+        case None => Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
+        case Some(rakennemoduuli) => {
+          Right(rakennemoduuli.asInstanceOf[RakenneModuuli].tutkinnonRakenneLaajuus)
+        }
+      }
+    }
+  }
+
   private def perusteenTutkinnonosat(f:  Option[RakenneOsa] => Either[HttpStatus, List[TutkinnonOsa]]) = {
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
@@ -65,29 +79,28 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     }
   }
 
-  get("/tutkinnonosat/:diaari/:suoritustapa/laajuus") {
+  private def perusteenTutkinnononLaajuus(f:  RakenneOsa => Either[HttpStatus, TutkinnonOsanLaajuus]) = {
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
     tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
       case None =>
-        renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
-      case Some(suoritustapaJaRakenne) => {
-        suoritustapaJaRakenne.rakenne match {
-          case Some(rakennemoduuli: RakenneModuuli) => {
-            val rakenneLaajuudet = rakennemoduuli.tutkinnonRakenneLaajuudet
-            rakenneLaajuudet.mapValues(v => Map("min" -> v._1.getOrElse(null), "max" -> v._2.getOrElse(null)))
-          }
-          case _ =>
-            renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Diaarinumerolla $diaari ja suoritustavalla $suoritustapa löytyvä rakenne ei ole kelvollinen"))
-        }
+        Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
+      case Some(suoritustapaJaRakenne) => suoritustapaJaRakenne.rakenne match {
+        case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
+        case Some(v) => Right(f(v))
       }
     }
   }
 
   private def findRyhmä(ryhmä: Koodistokoodiviite, rakenneOsa: RakenneOsa): Option[RakenneModuuli] = {
+    def nameMatches(nimi: LocalizedString): Boolean = {
+      def normalize(n: String): String = n.toLowerCase.replace("Vapaavalintaiset", "Vapaasti valittavat")
+      normalize(nimi.get("fi")) == normalize(ryhmä.nimi.map(_.get("fi")).getOrElse(""))
+    }
+
     rakenneOsa match {
-      case r: RakenneModuuli if r.nimi.get("fi").toLowerCase == ryhmä.nimi.map(_.get("fi")).getOrElse("").toLowerCase =>
+      case r: RakenneModuuli if nameMatches(r.nimi) =>
         Some(r)
       case r: RakenneModuuli =>
         r.osat.flatMap(findRyhmä(ryhmä, _)).headOption
