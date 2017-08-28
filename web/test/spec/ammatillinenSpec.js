@@ -849,7 +849,6 @@ describe('Ammatillinen koulutus', function() {
             'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
             'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
             'Vieraat kielet, englanti kyllä 2 3\n' +
-            'Yhteensä 11 osp\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
             'Oppilaitos / toimipiste\n' +
             'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -874,7 +873,6 @@ describe('Ammatillinen koulutus', function() {
             'Lisätiedot\n' +
             'Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Yhteensä 9 osp\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 3\n' +
             'Oppilaitos / toimipiste\n' +
             'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
