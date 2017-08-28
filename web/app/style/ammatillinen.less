@@ -27,10 +27,6 @@
     td, td .remove-value {
       line-height: 35px;
       vertical-align: middle;
-
-      input[type=checkbox] {
-        transform: translateZ(0) scale(1.2);
-      }
     }
 
     tbody.uusi-tutkinnon-osa input {
@@ -56,19 +52,21 @@
     font-size: 15px;
   }
 
+  .tunnustettu {
+    .remove-value {
+      position: absolute;
+    }
+  }
+
   .näyttö, .tunnustettu {
     margin-bottom: 5px;
 
     div:first-child {
-      vertical-align: middle;
-
       a {
         line-height: 23px;
       }
     }
 
-
-    .lisää-tunnustettu-modal .modal-content,
     .lisää-näyttö-modal .modal-content {
       min-width: 40vw;
 
@@ -90,6 +88,28 @@
           }
         }
       }
+    }
+  }
+}
+
+.opiskeluoikeus-content.editing {
+  .työssäoppimisjaksot > .value > .array > li:not(.add-item) {
+    background: #f5f5f5;
+    padding: 12px;
+    margin-bottom: 10px;
+
+    .properties {
+      padding: 0;
+      > table {
+        width: 100%;
+      }
+    }
+
+    .remove-item {
+      position: absolute;
+      margin: 0;
+      top: 5px;
+      right: 5px;
     }
   }
 }

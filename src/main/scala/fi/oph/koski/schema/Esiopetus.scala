@@ -11,6 +11,7 @@ case class EsiopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
+  @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Oppijan esiopetuksen lukuvuoden alkamisaika. Esiopetuksen alkamisaika 1.8.")
   alkamispäivä: Option[LocalDate] = None,

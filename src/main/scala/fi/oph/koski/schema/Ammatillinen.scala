@@ -115,7 +115,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
   val päättymispäivä: Option[LocalDate],
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
@@ -612,7 +612,7 @@ case class ValmaKoulutuksenSuoritus(
   koulutusmoduuli: ValmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -673,7 +673,7 @@ case class TelmaKoulutuksenSuoritus(
   koulutusmoduuli: TelmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,

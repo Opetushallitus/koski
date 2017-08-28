@@ -1,4 +1,9 @@
-## 29.5.2017
+## 28.8.2017
+
+- Lisätty sisältyyOpiskeluoikeuteen-kenttä kaikkiin opiskeluoikeuksiin
+- Muutettu näyttötutkintoon valmistavan koulutuksen suorituksen sekä VALMA- ja TELMA-suoritusten vahvistuksen paikkakunta valinnaiseksi
+
+## 23.8.2017
 
 - Poistettu opiskeluoikeuden tila Erotettu
 
