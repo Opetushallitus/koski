@@ -1040,38 +1040,40 @@ describe('Perusopetus', function() {
             it('Toimii', function () {
               expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
             })
-          })
 
-          describe('Lisäyksen jälkeen', function() {
-            var tanssi = editor.subEditor('.valinnainen.TNS')
-            before(editor.edit)
-            it('Uusi oppiaine ei löydy listalta (koska on jo suorituksissa)', function() {
-              expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
-            })
-
-            describe('Poistettaessa suoritus', function() {
-              before(tanssi.propertyBySelector('>tr:first-child').removeValue)
-              it('Uusi oppiaine löytyy listalta', function() {
-                expect(uusiOppiaine.getOptions()).to.include('Tanssi')
+            describe('Lisäyksen jälkeen', function() {
+              var tanssi = editor.subEditor('.valinnainen.TNS')
+              before(editor.edit)
+              it('Uusi oppiaine ei löydy pudotusvalikosta (koska on jo suorituksissa)', function() {
+                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
               })
 
-              describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
-                before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('7'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.saveChanges, editor.edit)
+              describe('Poistettaessa suoritus', function() {
                 before(tanssi.propertyBySelector('>tr:first-child').removeValue)
-
-                it('Muutettu oppiaine löytyy listalta', function() {
-                  expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+                it('Uusi oppiaine löytyy pudotusvalikosta', function() {
+                  expect(uusiOppiaine.getOptions()).to.include('Tanssi')
                 })
 
-                describe('Poistettaessa oppiaine', function() {
-                  before(uusiOppiaine.removeFromDropdown('Tanssi ja liike'))
+                describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
+                  before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('7'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.saveChanges, editor.edit)
+                  before(tanssi.propertyBySelector('>tr:first-child').removeValue)
 
-                  it('Oppiainetta ei löydy enää listalta', function() {
-                    expect(uusiOppiaine.getOptions()).to.not.include('Tanssi ja liike')
+                  describe('Käyttöliittymän tila', function() {
+                    it('Muutettu oppiaine löytyy pudotusvalikosta', function() {
+                      expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+                    })
                   })
-                })
 
-                after(editor.cancelChanges)
+                  describe('Poistettaessa oppiaine pudotusvalikosta', function() {
+                    before(uusiOppiaine.removeFromDropdown('Tanssi ja liike'))
+
+                    it('Oppiainetta ei löydy enää pudotusvalikosta', function() {
+                      expect(uusiOppiaine.getOptions()).to.not.include('Tanssi ja liike')
+                    })
+                  })
+
+                  after(editor.cancelChanges)
+                })
               })
             })
           })

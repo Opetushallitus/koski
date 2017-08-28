@@ -38,16 +38,16 @@ const placeholderForNonGrouped = '999999'
 
 export class Suoritustaulukko extends React.Component {
   render() {
-    const {suorituksetModel} = this.props
+    let {suorituksetModel, parentSuoritus, nested} = this.props
     let context = suorituksetModel.context
+    parentSuoritus = parentSuoritus || context.suoritus
     let suoritukset = modelItems(suorituksetModel) || []
 
     let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
-    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
-    let suoritustapa = modelData(context.suoritus, 'suoritustapa')
-    let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
+    let koulutustyyppi = modelData(parentSuoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
+    let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
+    let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     if (suoritukset.length == 0 && !(context.edit && isAmmatillinenTutkinto)) return null
-    let isTutkinnonOsanSuoritukset = suoritusProto.value.classes.includes('ammatillisentutkinnonosansuoritus')
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
@@ -58,7 +58,7 @@ export class Suoritustaulukko extends React.Component {
 
     let grouped, groupIds, groupTitles
 
-    if (isAmmatillinenPerustutkinto && isTutkinnonOsanSuoritukset && suoritustapa && suoritustapa.koodiarvo == 'ops') {
+    if (isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo == 'ops') {
       grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
       groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
       groupIds = R.keys(grouped).sort()
@@ -124,9 +124,9 @@ export class Suoritustaulukko extends React.Component {
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
         context.edit && uusiTutkinnonOsa(i, groupId, items),
-          isTutkinnonOsanSuoritukset && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+          !nested && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu suoritus={context.suoritus} osasuoritukset={items} group={groupId} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu suoritus={parentSuoritus} osasuoritukset={items} group={groupId} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]
@@ -136,7 +136,7 @@ export class Suoritustaulukko extends React.Component {
       return (<tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
       <tr>
         <td colSpan="4">
-          <UusiTutkinnonOsa suoritus={context.suoritus}
+          <UusiTutkinnonOsa suoritus={parentSuoritus}
                             suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
                             suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId}/>
         </td>
@@ -253,7 +253,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     {
       expanded && osasuoritukset && osasuoritukset.value && (<tr className="osasuoritukset" key="osasuoritukset">
         <td colSpan="4">
-          <Suoritustaulukko suorituksetModel={ osasuoritukset }/>
+          <Suoritustaulukko parentSuoritus={model} nested={true} suorituksetModel={ osasuoritukset }/>
         </td>
       </tr>)
     }

@@ -59,13 +59,12 @@ const http = (url, optionsForFetch, options = {}) => {
     }
   }
   increaseLoading()
-  let promise = doHttp(url, optionsForFetch)
-  promise.then(reqComplete, reqComplete)
   let result = Bacon
-    .fromPromise(promise)
+    .fromPromise(doHttp(url, optionsForFetch))
     .mapError({status: 503, url: url})
     .flatMap(parseResponseFor(url))
     .toProperty()
+  result.onEnd(reqComplete)
   if (options.errorMapper) { // errors are mapped to values or other Error events and will be handled
     result = result.flatMapError(options.errorMapper).toProperty()
   } else if (options.errorHandler) { // explicit error handler given
