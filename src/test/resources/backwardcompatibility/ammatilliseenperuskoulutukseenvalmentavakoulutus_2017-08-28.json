@@ -49,7 +49,7 @@
         },
         "perusteenDiaarinumero" : "5/011/2015",
         "laajuus" : {
-          "arvo" : 60.0,
+          "arvo" : 65.0,
           "yksikkö" : {
             "koodiarvo" : "6",
             "nimi" : {
@@ -305,6 +305,37 @@
           } ],
           "hyväksytty" : true
         } ],
+        "tyyppi" : {
+          "koodiarvo" : "valmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ATK",
+            "nimi" : {
+              "fi" : "Tietokoneen käyttäjän AB-kortti"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tietokoneen käyttäjän AB-kortti"
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "pakollinen" : false
+        },
+        "tila" : {
+          "koodiarvo" : "KESKEYTYNYT",
+          "koodistoUri" : "suorituksentila"
+        },
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"

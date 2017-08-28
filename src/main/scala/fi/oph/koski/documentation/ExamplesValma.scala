@@ -25,13 +25,14 @@ object ExamplesValma {
           tila = tilaValmis,
           vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(60)), perusteenDiaarinumero = Some("5/011/2015")),
+          koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("5/011/2015")),
           suorituskieli = suomenKieli,
           osasuoritukset = Some(List(
             valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = true),
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
+            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, None, pakollinen = false).copy(tila = tilaKeskeytynyt),
             ValmaKoulutuksenOsanSuoritus(
               tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),

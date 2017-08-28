@@ -234,7 +234,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && <td className="arvosana"><Editor model={ arvosanaModel } showEmptyOption="true"/></td>}
+      {showArvosana && arvosanaModel && <td className="arvosana"><Editor model={ arvosanaModel } showEmptyOption="true"/></td>}
       {
         model.context.edit && (
           <td>

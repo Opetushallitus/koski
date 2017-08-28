@@ -14,12 +14,13 @@ class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
           |
           |Pakolliset koulutuksen osat 10 osp
           |Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen 10 Hyväksytty
-          |Valinnaiset koulutuksen osat 50 osp
+          |Valinnaiset koulutuksen osat 55 osp
           |Opiskeluvalmiuksien vahvistaminen 10 Hyväksytty
           |Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen 15 Hyväksytty
           |Arjen taitojen ja hyvinvoinnin vahvistaminen 10 Hyväksytty
+          |Tietokoneen käyttäjän AB-kortti 5
           |Auton lisävarustetyöt 1) 15 Hyväksytty
-          |Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä 60
+          |Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä 65
           |Lisätietoja:
           |1)Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta (3.10.2015, 39/011/2014), Stadin ammattiopisto""".stripMargin)
     }

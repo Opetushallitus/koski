@@ -18,6 +18,7 @@ object MockUsers {
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
+  val stadinAmmattiopistoKatselija = MockUser("katselija", "katselija", "1.2.246.562.24.99999999985", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosKatselija)))
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.helsinginKaupunki, vastuukäyttäjä)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
@@ -33,6 +34,7 @@ object MockUsers {
     viranomainen,
     helsinginKaupunkiPalvelukäyttäjä,
     stadinAmmattiopistoTallentaja,
+    stadinAmmattiopistoKatselija,
     kahdenOrganisaatioPalvelukäyttäjä,
     omattiedot,
     stadinVastuukäyttäjä

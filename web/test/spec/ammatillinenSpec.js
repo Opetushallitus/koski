@@ -1177,7 +1177,8 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus VALMA', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
+    // testaa editable = false ja osasuoritus ilman arvosanaa kombo
+    before(Authentication().logout, Authentication().login('katselija'), page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
@@ -1191,7 +1192,7 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) 5/011/2015\n' +
-          'Laajuus 60 osp\n' +
+          'Laajuus 65 osp\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
           'Suorituskieli suomi\n' +
           'Suoritus : VALMIS Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
@@ -1201,15 +1202,17 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää tutkinnon osat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
           'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus (osp) Arvosana\n' +
-          'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
+          'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 osp Hyväksytty\n' +
           'Kuvaus Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen\n' +
-          'Opiskeluvalmiuksien vahvistaminen ei 10 Hyväksytty\n' +
+          'Opiskeluvalmiuksien vahvistaminen ei 10 osp Hyväksytty\n' +
           'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
-          'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 Hyväksytty\n' +
+          'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 osp Hyväksytty\n' +
           'Kuvaus Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen\n' +
-          'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 Hyväksytty\n' +
+          'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 osp Hyväksytty\n' +
           'Kuvaus Arjen taitojen ja hyvinvoinnin vahvistaminen\n' +
-          'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
+          'Tietokoneen käyttäjän AB-kortti ei 5 osp\n' +
+          'Kuvaus Tietokoneen käyttäjän AB-kortti\n' +
+          'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
           'Tunnustettu\n' +
           'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
           'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
@@ -1217,7 +1220,7 @@ describe('Ammatillinen koulutus', function() {
           'Tila Suoritus valmis\n' +
           'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
           'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
-          'Yhteensä 60 osp'
+          'Yhteensä 65 osp'
         )
       })
     })
