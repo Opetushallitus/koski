@@ -22,7 +22,7 @@ export class AmmatillinenTunnustettuEditor extends React.Component {
       <div>
         {
           hasData
-            ? <span><Editor model={seliteModel}/><a className="remove-value" onClick={() => resetOptionalModel(model)}></a></span>
+            ? <span><Editor model={seliteModel} autoFocus={true}/><a className="remove-value" onClick={() => resetOptionalModel(model)}></a></span>
             : <span><a className="add-value" onClick={() => pushModel(optionalPrototypeModel(model))}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></span>
         }
       </div>
