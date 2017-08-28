@@ -195,6 +195,8 @@ const laajuusRange = (l) => {
 const YhteensäSuoritettu = ({suoritus, osasuoritukset, groupTitle, laajuusYksikkö=null}) => {
   const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
 
+  if (laajuudetYhteensä == 0) return null
+
   let laajuudetP
 
   if (typeof groupTitle === 'string') {

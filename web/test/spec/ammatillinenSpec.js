@@ -837,7 +837,6 @@ describe('Ammatillinen koulutus', function() {
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
             'Kuvaus\n' +
             'Hoitotarpeen määrittäminen\n' +
-            'Yhteensä 0 osp\n' +
             'Yhteensä 135 / 135 osp\n' +
             'Yhteiset tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
@@ -1117,8 +1116,7 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Yrittäjyys kyllä Hyväksytty\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Yhteensä 0 osp'
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori'
           )
         })
       })
@@ -1170,8 +1168,7 @@ describe('Ammatillinen koulutus', function() {
         it('onnistuu', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
               'Tutkinnon osa Pakollisuus Arvosana\n' +
-              'Tekniikan asiantuntemus ei 3\n' +
-              'Yhteensä 0 osp'
+              'Tekniikan asiantuntemus ei 3'
           )
         })
       })
