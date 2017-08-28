@@ -892,6 +892,7 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Yhteensä 5 osp\n' +
             'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
+            'Pakollisuus Laajuus (osp) Arvosana\n' +
             'Matkailuenglanti ei 5 3\n' +
             'Kuvaus\n' +
             'Matkailuenglanti\n' +
