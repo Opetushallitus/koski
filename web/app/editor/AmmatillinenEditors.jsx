@@ -9,6 +9,8 @@ import {SelectAlternativeByEnumValueEditor} from './SelectAlternativeByEnumValue
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
 import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
 import {TutkinnonOsanSuoritusEditor} from './Suoritustaulukko.jsx'
+import {PropertyEditor} from './PropertyEditor.jsx'
+import {JaksoEditor} from './JaksoEditor.jsx'
 
 export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
@@ -76,6 +78,38 @@ export class JärjestämismuotojaksoEditor extends React.Component {
 }
 JärjestämismuotojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
+export class UlkomaanjaksoEditor extends React.Component {
+  render() {
+    let {model} = this.props
+    return (
+        <div className="ulkomaanjakso">
+          {
+            model.context.edit
+                ? <span><PäivämääräväliEditor model={model}/><PropertyEditor model={modelLookup(model)} propertyName="maa"/><PropertyEditor model={model} propertyName="kuvaus"/></span>
+                : <JaksoEditor model={model} />
+          }
+        </div>
+    )
+  }
+}
+UlkomaanjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
+
+export class PoissaolojaksoEditor extends React.Component {
+  render() {
+    let {model} = this.props
+    return (
+        <div className="poissaolojakso">
+          {
+            model.context.edit
+                ? <span><PäivämääräväliEditor model={model}/><PropertyEditor model={modelLookup(model)} propertyName="syy"/></span>
+                : <JaksoEditor model={model} />
+          }
+        </div>
+    )
+  }
+}
+PoissaolojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
+
 export class TyössäoppimisjaksoEditor extends React.Component {
   render() {
     let {model} = this.props
@@ -115,5 +149,7 @@ export const editorMapping = {
   'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
   'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
   'naytto': AmmatillinenNäyttöEditor,
-  'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor
+  'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor,
+  'ulkomaanjakso': UlkomaanjaksoEditor,
+  'poissaolojakso': PoissaolojaksoEditor
 }

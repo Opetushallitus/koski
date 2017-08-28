@@ -41,35 +41,35 @@ trait Työssäoppimisjaksollinen {
 
 @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
-  hojks: Option[Hojks],
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
-  @DefaultValue(false)
-  vaikeastiVammainen: Boolean = false,
-  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto.")
-  @DefaultValue(false)
-  vammainenJaAvustaja: Boolean = false,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Majoitusjakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto.")
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  poissaolojaksot: Option[List[Poissaolojakso]] = None,
+  hojks: Option[Hojks],
+  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
-  henkilöstökoulutus: Boolean = false,
-  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto.")
+  vaikeastiVammainen: Boolean = false,
+  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
-  vankilaopetuksessa: Boolean = false,
+  vammainenJaAvustaja: Boolean = false,
   @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %. Rahoituksen laskennassa käytettävä tieto.")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")
   osaAikaisuus: Option[Int] = None,
-  poissaolojaksot: Option[List[Poissaolojakso]] = None
+  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto.")
+  @DefaultValue(false)
+  henkilöstökoulutus: Boolean = false,
+  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto.")
+  @DefaultValue(false)
+  vankilaopetuksessa: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 @Description("Majoitusjakson pituus (alku- ja loppupäivämäärä).")
