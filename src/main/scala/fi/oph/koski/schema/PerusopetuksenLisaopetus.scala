@@ -13,6 +13,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
+  @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Oppijan oppimäärän alkamispäivä")
   alkamispäivä: Option[LocalDate],
