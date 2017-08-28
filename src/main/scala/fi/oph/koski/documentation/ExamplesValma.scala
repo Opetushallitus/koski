@@ -23,7 +23,7 @@ object ExamplesValma {
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(ValmaKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
+          vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(60)), perusteenDiaarinumero = Some("5/011/2015")),
           suorituskieli = suomenKieli,
