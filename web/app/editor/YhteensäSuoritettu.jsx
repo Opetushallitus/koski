@@ -21,7 +21,7 @@ const laajuus = (suoritus, group) => {
 }
 
 const laajuusRange = (l) => {
-  if (l === null || (l.min === null && l.max === null)) {
+  if (!l || (l.min === null && l.max === null)) {
     return null
   }
   else if (l.min !== null && l.max !== null) {
@@ -38,21 +38,18 @@ const laajuusRange = (l) => {
 }
 
 export const YhteensäSuoritettu = ({suoritus, osasuoritukset, group, laajuusYksikkö=null}) => {
-  const laajuudetYhteensäP = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
-
+  const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
   let laajuudetP = laajuus(suoritus, group)
 
   return (
     <div>
       <Text name="Yhteensä"/>
       {' '}
-      <span>
-        <span>{laajuudetYhteensäP}</span>
-        {laajuudetP.map(v => (v === null || v.min === null || v.max === null) ? null : ' / ')}
-        <span>{laajuudetP.map(v => laajuusRange(v))}</span>
-        {' '}
-        {laajuusYksikkö}
-      </span>
+      <span className="laajuudet-yhteensä">{laajuudetYhteensä}</span>
+      <span className="separator">{laajuudetP.map(v => (!v || v.min === null || v.max === null) ? null : ' / ')}</span>
+      <span className="laajuus-range">{laajuudetP.map(v => laajuusRange(v))}</span>
+      {' '}
+      {laajuusYksikkö}
     </div>
   )
 }
