@@ -41,33 +41,39 @@ export class Suoritustaulukko extends React.Component {
     let context = suorituksetModel.context
     let suoritukset = modelItems(suorituksetModel) || []
 
+    let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
+    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
+    let suoritustapa = modelData(context.suoritus, 'suoritustapa')
+    let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
+    if (suoritukset.length == 0 && !(context.edit && isAmmatillinenTutkinto)) return null
+    let isTutkinnonOsanSuoritukset = suoritusProto.value.classes.includes('ammatillisentutkinnonosansuoritus')
+    let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
+
+
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
       filter: s => suoritusProperties(s).length > 0,
       component: this
     })
 
-    let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
-    let grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
-    let groupIds = R.keys(grouped).sort()
-    let groupTitles = R.fromPairs(groupIds.map(groupId => { let first = grouped[groupId][0]; return [groupId, modelTitle(first, 'tutkinnonOsanRyhmä') || <Text name='Muut suoritukset'/>] }))
-    let koulutustyyppi = modelData(context.suoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
-    let suoritustapa = modelData(context.suoritus, 'suoritustapa')
-    let isAmmatillinenTutkinto = context.suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
-    let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
+    let grouped, groupIds, groupTitles
 
-    if (context.edit && isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo == 'ops') {
-      let ryhmäModel = modelLookup(suoritusProto, 'tutkinnonOsanRyhmä')
-      if (ryhmäModel) {
-        // Lisääminen mahdollista toistaiseksi vain ryhmitellyille suorituksille (== ammatilliset tutkinnon osat)
+    if (isAmmatillinenPerustutkinto && isTutkinnonOsanSuoritukset && suoritustapa && suoritustapa.koodiarvo == 'ops') {
+      grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
+      groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
+      groupIds = R.keys(grouped).sort()
+      if (context.edit) {
+        // Show the empty groups too
         groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
-        groupTitles = R.merge(groupTitles, ammatillisentutkinnonosanryhmaKoodisto)
       }
+    } else {
+      grouped = { [placeholderForNonGrouped] : suoritukset }
+      groupTitles = { [placeholderForNonGrouped] : modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title }
+      groupIds = [placeholderForNonGrouped]
     }
 
-    let showGrouped = groupIds.length > 1
 
-    let showPakollisuus = suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
+    let showPakollisuus = modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
     let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
@@ -86,7 +92,6 @@ export class Suoritustaulukko extends React.Component {
               <thead>
               <tr>
                 <th className="suoritus">
-                  {suoritukset[0] && modelProperty(suoritukset[0], 'koulutusmoduuli').title}
                   {showExpandAll &&
                   <div>
                     {allExpandedP.map(allExpanded => (
@@ -97,14 +102,10 @@ export class Suoritustaulukko extends React.Component {
                   </div>
                   }
                 </th>
-                {showPakollisuus && <th className="pakollisuus"><Text name="Pakollisuus"/></th>}
-                {showLaajuus &&
-                  <th className="laajuus"><Text name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>}
-                {showArvosana && <th className="arvosana"><Text name="Arvosana"/></th>}
               </tr>
               </thead>
               {
-                groupIds.length > 0 ? groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i)) : uusiTutkinnonOsa(0, placeholderForNonGrouped, [])
+                groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
               }
             </table>
           </div>)
@@ -113,8 +114,13 @@ export class Suoritustaulukko extends React.Component {
       const items = (grouped[groupId] || [])
 
       return [
-        showGrouped && <tbody key={'group-' + i} className={`group-header ${groupId}`}>
-          <tr><td colSpan="4">{groupTitles[groupId]}</td></tr>
+        <tbody key={'group-' + i} className={`group-header ${groupId}`}>
+          <tr>
+            <td>{groupTitles[groupId]}</td>
+            {showPakollisuus && <td className="pakollisuus"><Text name="Pakollisuus"/></td>}
+            {showLaajuus && <td className="laajuus"><Text name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</td>}
+            {showArvosana && <td className="arvosana"><Text name="Arvosana"/></td>}
+          </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
         context.edit && uusiTutkinnonOsa(i, groupId, items),
@@ -142,7 +148,7 @@ export class Suoritustaulukko extends React.Component {
       return (<TutkinnonOsanSuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
                                            showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
                                            expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
-                                           grouped={showGrouped} groupId={groupId}/>)
+                                           groupId={groupId}/>)
     }
 
     function addTutkinnonOsa(koulutusmoduuli, groupId) {
@@ -262,7 +268,7 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
-    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, grouped, groupId} = this.props
+    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, groupId} = this.props
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
@@ -270,7 +276,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let arvosanaModel = modelLookup(fixTila(model), 'arviointi.-1.arvosana')
 
-    return (<tbody className={buildClassNames(['tutkinnon-osa', (!grouped && 'alternating'), (expanded && 'expanded'), (groupId)])}>
+    return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
