@@ -345,15 +345,16 @@ describe('Ammatillinen koulutus', function() {
 
       it('Toimii', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
-          'Hojks Opetusryhmä Erityisopetusryhmä\n' +
           'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
-          'Ulkomaanjaksot 22.6.2017 —\n' +
-            'Maa Algeria\n' +
-            'Kuvaus Testing\n' +
           'Majoitus 22.6.2017 — 1.1.2099\n' +
-          'Osa-aikaisuus 50 %\n' +
+          'Ulkomaanjaksot 22.6.2017 —\n' +
+          'Maa Algeria\n' +
+          'Kuvaus Testing\n' +
           'Poissaolojaksot 22.6.2017 —\n' +
-            'Syy Oma ilmoitus')
+          'Syy Oma ilmoitus\n' +
+          'Hojks Opetusryhmä Erityisopetusryhmä\n' +
+          'Osa-aikaisuus 50 %'
+          )
       })
     })
 
@@ -965,18 +966,21 @@ describe('Ammatillinen koulutus', function() {
 
       it('näytetään', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot > .lisätiedot'))).to.equal('Lisätiedot\n' +
-          'Hojks Opetusryhmä Yleinen opetusryhmä\nOikeus maksuttomaan asuntolapaikkaan kyllä\n' +
-          'Ulkomaanjaksot 1.9.2012 — 1.9.2013\n' +
-          'Maa Ruotsi\n' +
-          'Kuvaus Harjoittelua ulkomailla\n' +
-          'Vaikeasti vammainen kyllä' +
-          '\nVammainen ja avustaja kyllä\n' +
+          'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
           'Majoitus 1.9.2012 — 1.9.2013\n' +
           'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
           'Vaativan erityisen tuen yhteydessä järjestettävä majoitus 1.9.2012 — 1.9.2013\n' +
-          'Henkilöstökoulutus kyllä\nVankilaopetuksessa kyllä\nOsa-aikaisuus 80 %\n' +
+          'Ulkomaanjaksot 1.9.2012 — 1.9.2013\n' +
+          'Maa Ruotsi\n' +
+          'Kuvaus Harjoittelua ulkomailla\n' +
           'Poissaolojaksot 1.10.2013 — 31.10.2013\n' +
-          'Syy Oma ilmoitus')
+          'Syy Oma ilmoitus\n' +
+          'Hojks Opetusryhmä Yleinen opetusryhmä\n' +
+          'Vaikeasti vammainen kyllä\n' +
+          'Vammainen ja avustaja kyllä\n' +
+          'Osa-aikaisuus 80 %\n' +
+          'Henkilöstökoulutus kyllä\n' +
+          'Vankilaopetuksessa kyllä')
       })
     })
 
