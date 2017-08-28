@@ -1,3 +1,8 @@
+## 28.8.2017
+
+- Lisätty sisältyyOpiskeluoikeuteen-kenttä kaikkiin opiskeluoikeuksiin
+- Muutettu VALMA- ja TELMA-suoritusten vahvistuksen paikkakunta valinnaiseksi
+
 ## 23.8.2017
 
 - Poistettu opiskeluoikeuden tila Erotettu
