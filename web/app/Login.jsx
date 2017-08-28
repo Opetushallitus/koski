@@ -9,7 +9,7 @@ import {TopBar} from './TopBar.jsx'
 import {t} from './i18n.js'
 import Text from './Text.jsx'
 
-const Input = ({ id, type, disabled, value }) => <input type={type} disabled={disabled} value={ value.or('') } onChange={ (e) => value.set(e.target.value)} id={id}></input>
+const Input = ({ id, type, disabled, value, autofocus = false }) => <input type={type} disabled={disabled} value={ value.or('') } onChange={ (e) => value.set(e.target.value)} id={id} autoFocus={autofocus}></input>
 
 const Login = () => {
   const state = Atom({username: '', password: ''})
@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <form className={error.map(e => e ? 'login error': 'login')}>
       <label><Text name="Tunnus"/>
-        <Input id='username' type='text' disabled={inProgress} value={state.view('username')}/>
+        <Input id='username' type='text' disabled={inProgress} value={state.view('username')} autofocus={true}/>
       </label>
       <label><Text name="Salasana"/>
         <Input id='password' type='password' disabled={inProgress} value={state.view('password')}/>
