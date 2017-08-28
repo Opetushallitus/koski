@@ -1,4 +1,4 @@
-## 29.5.2017
+## 23.8.2017
 
 - Poistettu opiskeluoikeuden tila Erotettu
 
