@@ -63,9 +63,8 @@ const http = (url, optionsForFetch, options = {}) => {
     .fromPromise(doHttp(url, optionsForFetch))
     .mapError({status: 503, url: url})
     .flatMap(parseResponseFor(url))
-    .doAction(reqComplete)
-    .doError(reqComplete)
     .toProperty()
+  result.onEnd(reqComplete)
   if (options.errorMapper) { // errors are mapped to values or other Error events and will be handled
     result = result.flatMapError(options.errorMapper).toProperty()
   } else if (options.errorHandler) { // explicit error handler given
