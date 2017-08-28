@@ -49,7 +49,6 @@ export class Suoritustaulukko extends React.Component {
     let isTutkinnonOsanSuoritukset = suoritusProto.value.classes.includes('ammatillisentutkinnonosansuoritus')
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
-
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
       filter: s => suoritusProperties(s).length > 0,
@@ -124,7 +123,7 @@ export class Suoritustaulukko extends React.Component {
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
         context.edit && uusiTutkinnonOsa(i, groupId, items),
-        <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+          isTutkinnonOsanSuoritukset && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu suoritus={context.suoritus} osasuoritukset={items} groupTitle={groupTitles[groupId]} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
