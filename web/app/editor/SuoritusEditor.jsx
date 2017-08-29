@@ -74,7 +74,7 @@ SuoritusEditor.validateModel = (m) => {
         .filter(([osasuoritus]) => suoritusKesken(osasuoritus))
         .map(([, i]) => {
           return {
-            path: ['osasuoritukset', i],
+            path: ['osasuoritukset', i, 'arviointi', -1, 'arvosana'],
             key: 'osasuorituksenTila',
             message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>
           }
