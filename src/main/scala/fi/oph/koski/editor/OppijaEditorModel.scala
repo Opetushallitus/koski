@@ -5,11 +5,12 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
+import fi.oph.koski.util.Timing
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 
-object OppijaEditorModel {
+object OppijaEditorModel extends Timing {
   // Note: even with editable=true, editability will be checked based on organizational access on the lower level
-  def toEditorModel(oppija: Oppija, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
+  def toEditorModel(oppija: Oppija, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
       override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
         case (None, Some(_)) => 1

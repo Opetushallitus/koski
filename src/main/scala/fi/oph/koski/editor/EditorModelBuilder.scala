@@ -2,6 +2,7 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
+import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.{classesFromMetadata, propsFromMetadata}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
@@ -39,7 +40,7 @@ object EditorModelBuilder {
 
   def modelBuilderForClass(t: SchemaWithClassName)(implicit context: ModelBuilderContext): ModelBuilderForClass = t match {
     case t: ClassSchema =>
-      Class.forName(t.fullClassName) match {
+      forSchema(t) match {
         case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
           KoodistoEnumModelBuilder(t)
         case c =>
@@ -73,8 +74,8 @@ case class ModelBuilderContext(
   mainSchema: SchemaWithClassName,
   deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
-  var prototypesRequested: Set[SchemaWithClassName] = Set.empty,
-  prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml
+  var prototypesRequested: SchemaSet = SchemaSet.empty,
+  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
@@ -220,7 +221,7 @@ case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
   }
 
   def buildPrototype(metadata: List[Metadata]): EditorModel = {
-    val clazz: Class[_] = Class.forName(t.fullClassName)
+    val clazz: Class[_] = forSchema(t)
     if (clazz == classOf[LocalizedString]) {
       buildModelForObject(LocalizedString.finnish(""), metadata)
     } else {
@@ -281,13 +282,13 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
     if (!context.root) return Map.empty
-    var newRequests: Set[SchemaWithClassName] = context.prototypesRequested
+    var newRequests: SchemaSet = context.prototypesRequested
     var prototypesCreated: Map[String, EditorModel] = Map.empty
     do {
       val requestsFromPreviousRound = newRequests
-      newRequests = Set.empty
+      newRequests = SchemaSet.empty
       requestsFromPreviousRound.foreach { schema =>
-        val helperContext = context.copy(root = false, prototypesBeingCreated = Set(schema))(context.user, context.koodisto, context.localizationRepository)
+        val helperContext = context.copy(root = false, prototypesBeingCreated = SchemaSet(schema))(context.user, context.koodisto, context.localizationRepository)
         val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
         val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype(Nil))
 
@@ -306,7 +307,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def classes(className: String) = {
     val tpe = typeByName(className)
-    (tpe :: findTraits(tpe)).map(t => sanitizeName(Class.forName(t.typeSymbol.fullName).getSimpleName))
+    (tpe :: findTraits(tpe)).map(t => sanitizeName(forName(t.typeSymbol.fullName).getSimpleName))
   }
 
   private def findTraits(tpe: ru.Type) = {
@@ -320,7 +321,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   }
 
   private def typeByName(className: String): ru.Type = {
-    reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType
+    reflect.runtime.currentMirror.classSymbol(forName(className)).toType
   }
 
   def prototypeKey = sanitizeName(schema.simpleName)
@@ -338,7 +339,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId == None
       case _ => true
     }
-    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty)(context.user, context.koodisto, context.localizationRepository)
+    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = SchemaSet.empty)(context.user, context.koodisto, context.localizationRepository)
   }
 }
 
@@ -346,7 +347,7 @@ object Prototypes {
   def getPrototypePlaceholder(schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
     schema match {
       case s: SchemaWithClassName =>
-        val clazz = Class.forName(s.fullClassName)
+        val clazz = forSchema(s)
         if (classOf[Opiskeluoikeus].isAssignableFrom(clazz)) {
           return None // Cuts model build time and size by half
         }
@@ -358,4 +359,26 @@ object Prototypes {
   } else {
     None
   }
+}
+
+object SchemaSet {
+  val empty = new SchemaSet(Map.empty)
+  def apply(schema: SchemaWithClassName): SchemaSet = SchemaSet.empty + schema
+}
+class SchemaSet(private val schemaMap: Map[Int, SchemaWithClassName]) {
+  def nonEmpty: Boolean = schemaMap.nonEmpty
+  def foreach(f: (SchemaWithClassName) => Unit): Unit = schemaMap.values.foreach(f)
+  def toList = schemaMap.values.toList
+  def --(toBeRemoved: SchemaSet): SchemaSet = new SchemaSet(schemaMap -- toBeRemoved.schemaMap.keys)
+  def ++(prototypesRequested: SchemaSet): SchemaSet = new SchemaSet(schemaMap ++ prototypesRequested.schemaMap)
+  def +(schema: SchemaWithClassName): SchemaSet = new SchemaSet(schemaMap + schemaTuple(schema))
+
+  private def schemaHash(schema: SchemaWithClassName) = schema.hashCode()
+  private def schemaTuple(schema: SchemaWithClassName) = (schemaHash(schema) -> schema)
+}
+
+object ClassFinder {
+  private val classes = collection.mutable.Map.empty[String, Class[_]]
+  def forName(fullName: String) = synchronized { classes.getOrElseUpdate(fullName, Class.forName(fullName)) }
+  def forSchema(schema: SchemaWithClassName) = forName(schema.fullClassName)
 }
