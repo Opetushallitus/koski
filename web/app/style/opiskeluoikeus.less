@@ -223,6 +223,10 @@
           right: 5px;
         }
       }
+
+      .property.hojks .value .hojks {
+        display: inline-block;
+      }
     }
 
     .opiskeluoikeuden-tiedot {
@@ -545,8 +549,8 @@
       position: relative;
       > table {
         font-size: 1em;
-        tr:not(:first-child) {
-          td {
+        > tbody > tr:not(:first-child) {
+          > td {
             padding-top: 9px;
           }
         }
@@ -650,6 +654,7 @@
       .RemoveSymbol;
       vertical-align: top;
       margin-left: 6px;
+      display: inline-block;
     }
 
     a.edit-value {
