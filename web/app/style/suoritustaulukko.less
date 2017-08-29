@@ -1,10 +1,7 @@
 .oppija .opiskeluoikeus {
   .suoritus-taulukko {
-    tbody.tutkinnon-osa:not(:first-of-type):not(.uusi-tutkinnon-osa) {
+    tbody.tutkinnon-osa + tbody.tutkinnon-osa {
       border-top: 1px solid #eee;
-    }
-    tbody.group-header + tbody {
-      border-top: none !important;
     }
 
     > table {
