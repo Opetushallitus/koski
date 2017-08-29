@@ -8,15 +8,16 @@ import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
 import {t} from '../i18n.js'
 import {parseBool} from '../util'
+import {buildClassNames} from '../classnames'
 
-export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption }) => {
+export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className }) => {
   if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional({model})
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
-  let classNameP = alternativesP.startWith([]).map(xs => (xs.length ? '' : 'loading') + (valid ? '' : ' error'))
+  let classNameP = alternativesP.startWith([]).map(xs => buildClassNames([className, !xs.length && 'loading', !valid && 'error']))
 
   let alternativesWithZeroValueP = alternativesP.map(xs => showEmptyOption ? R.prepend(zeroValue, xs) : xs)
 
