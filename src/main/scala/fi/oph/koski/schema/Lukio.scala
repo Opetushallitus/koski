@@ -15,11 +15,11 @@ case class LukionOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
   alkamispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
@@ -46,17 +46,17 @@ case class LukionOpiskeluoikeudenLisätiedot(
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 
-@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti.")
+@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
 case class ErityisenKoulutustehtävänJakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Erityinen koulutustehtävä. Koodisto.")
+  @Description("Erityinen koulutustehtävä. Koodisto")
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
   tehtävä: Koodistokoodiviite
@@ -79,7 +79,7 @@ case class LukionOppimääränSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
-  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä.")
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
@@ -100,7 +100,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
-  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä.")
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
@@ -160,7 +160,7 @@ case class LukionKurssinSuoritus(
   tila: Koodistokoodiviite,
   @Flatten
   arviointi: Option[List[LukionKurssinArviointi]] = None,
-  @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.")
+  @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
@@ -171,7 +171,7 @@ case class LukionKurssinSuoritus(
 ) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 case class LukionOppiaineenArviointi(
-  @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle.")
+  @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate]
@@ -212,7 +212,7 @@ case class ValtakunnallinenLukionKurssi(
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],
-  @Description("Valtakunnallisen kurssin tyyppi voi olla joko pakollinen tai syventävä.")
+  @Description("Valtakunnallisen kurssin tyyppi voi olla joko pakollinen tai syventävä")
   @KoodistoKoodiarvo("pakollinen")
   @KoodistoKoodiarvo("syventava")
   kurssinTyyppi: Koodistokoodiviite
@@ -224,7 +224,7 @@ case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
-  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä tai soveltava.")
+  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä tai soveltava")
   @KoodistoKoodiarvo("syventava")
   @KoodistoKoodiarvo("soveltava")
   kurssinTyyppi: Koodistokoodiviite

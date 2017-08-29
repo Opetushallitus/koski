@@ -20,11 +20,11 @@ object TäydellisetHenkilötiedot {
     TäydellisetHenkilötiedot(oid, None, None, etunimet, kutsumanimi, sukunimi, None, None)
 }
 
-@Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
+@Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot")
 case class TäydellisetHenkilötiedot(
   oid: Henkilö.Oid,
   hetu: Option[Henkilö.Hetu],
-  @Description("Henkilön syntymäaika. Muoto YYYY-MM-DD.")
+  @Description("Henkilön syntymäaika. Muoto YYYY-MM-DD")
   syntymäaika: Option[LocalDate],
   etunimet:String,
   kutsumanimi: String,
@@ -59,7 +59,7 @@ case class UusiHenkilö(
 ) extends Henkilö with Henkilötiedot
 
 @Title("Henkilö-OID")
-@Description("Henkilö, jonka oppijanumero 'oid' on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
+@Description("Henkilö, jonka oppijanumero 'oid' on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta")
 case class OidHenkilö(
   oid: String
 ) extends HenkilöWithOid
@@ -84,7 +84,7 @@ trait NimellinenHenkilö {
 case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
 
 trait HenkilöWithOid extends Henkilö {
-  @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa.")
+  @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""^1\.2\.246\.562\.24\.\d{11}$""")
   def oid: String

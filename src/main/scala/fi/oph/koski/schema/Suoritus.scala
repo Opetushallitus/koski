@@ -21,7 +21,7 @@ trait Suoritus {
   def tila: Koodistokoodiviite
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
-  @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan kun suorituksen tila on VALMIS.")
+  @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan kun suorituksen tila on VALMIS")
   def vahvistus: Option[Vahvistus]
   def osasuoritukset: Option[List[Suoritus]] = None
 
@@ -60,7 +60,7 @@ trait Arvioinniton extends Suoritus {
 }
 
 trait Toimipisteellinen extends OrganisaatioonLiittyvä {
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot.")
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
   def toimipiste: OrganisaatioWithOid

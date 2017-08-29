@@ -13,15 +13,15 @@ case class EsiopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("Oppijan esiopetuksen lukuvuoden alkamisaika. Esiopetuksen alkamisaika 1.8.")
+  @Description("Oppijan esiopetuksen lukuvuoden alkamisaika. Esiopetuksen alkamisaika 1.8")
   alkamispäivä: Option[LocalDate] = None,
   @Description("Oppijan opinto-oikeuden arvioitu päättymispäivä esiopetuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen.")
+  @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   päättymispäivä: Option[LocalDate] = None,
   @Description("Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)")
   tila: PerusopetuksenOpiskeluoikeudenTila,
-  @Description("Esiopetuksen opiskeluoikeuden lisätiedot.")
+  @Description("Esiopetuksen opiskeluoikeuden lisätiedot")
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[EsiopetuksenSuoritus],
@@ -34,7 +34,7 @@ case class EsiopetuksenOpiskeluoikeus(
 }
 
 case class EsiopetuksenOpiskeluoikeudenLisätiedot(
-  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.")
+  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta")
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Päätösjakso] = None
 ) extends OpiskeluoikeudenLisätiedot
@@ -45,7 +45,7 @@ case class EsiopetuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
+  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
@@ -60,7 +60,7 @@ case class Esiopetus(
   perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
-  @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta.")
+  @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta")
   @MultiLineString(4)
   kuvaus: Option[LocalizedString] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None

@@ -40,7 +40,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto)).")
+  @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto))")
   suorituskieli: Koodistokoodiviite,
   @Description("Lukioon valmistavaan koulutukseen sisältyvien oppiaineiden ja niiden kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
@@ -67,7 +67,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Description("Suoritetun oppiaineen tunnistetiedot. Voi olla joko paikallinen tai lukioon valmistavan koulutuksen oppiaine")
   koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,  
   tila: Koodistokoodiviite,
-  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty).")
+  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -83,7 +83,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
   tila: Koodistokoodiviite,
-  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty).")
+  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -101,7 +101,7 @@ trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinna
 
 @Title("Äidinkieli ja kirjallisuus")
 case class LukioonValmistavaÄidinkieliJaKirjallisuus(
-  @Description("Oppiaineen tunniste.")
+  @Description("Oppiaineen tunniste")
   @KoodistoKoodiarvo("LVAIK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
@@ -117,7 +117,7 @@ case class LukioonValmistavaÄidinkieliJaKirjallisuus(
 }
 
 case class MuutKielet(
-  @Description("Oppiaineen tunniste.")
+  @Description("Oppiaineen tunniste")
   @KoodistoKoodiarvo("LVMUUTK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
@@ -131,7 +131,7 @@ case class MuutKielet(
 }
 
 case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(
-  @Description("Oppiaineen tunniste.")
+  @Description("Oppiaineen tunniste")
   @KoodistoKoodiarvo("LVMALUO")
   @KoodistoKoodiarvo("LVYHKU")
   @KoodistoKoodiarvo("LVOPO")
@@ -176,7 +176,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka.")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot

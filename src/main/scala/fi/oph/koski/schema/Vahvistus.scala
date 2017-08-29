@@ -79,7 +79,7 @@ trait Vahvistaja {
   def getTitteli: Option[LocalizedString]
 }
 
-@Description("Henkilö- ja organisaatiotiedot, mahdollisesti titteli.")
+@Description("Henkilö- ja organisaatiotiedot, mahdollisesti titteli")
 case class OrganisaatiohenkilöValinnaisellaTittelillä(
   nimi: String,
   titteli: Option[LocalizedString] = None,

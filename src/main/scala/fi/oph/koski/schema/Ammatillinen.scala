@@ -16,11 +16,11 @@ case class AmmatillinenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa")
   alkamispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa.")
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa")
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
@@ -39,50 +39,50 @@ trait Työssäoppimisjaksollinen {
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
-@Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät).")
+@Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät)")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   majoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   poissaolojaksot: Option[List[Poissaolojakso]] = None,
   hojks: Option[Hojks],
-  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
-  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
-  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %. Rahoituksen laskennassa käytettävä tieto")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")
   osaAikaisuus: Option[Int] = None,
-  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
-  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   vankilaopetuksessa: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
-@Description("Majoitusjakson pituus (alku- ja loppupäivämäärä).")
+@Description("Majoitusjakson pituus (alku- ja loppupäivämäärä)")
 case class Majoitusjakso (
   alku: LocalDate,
   loppu: Option[LocalDate]
 ) extends Jakso
 
-@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso. Rahoituksen laskennassa käytettävä tieto.")
+@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso. Rahoituksen laskennassa käytettävä tieto")
 case class Poissaolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Poissaolon syy. Mikäli kysymys on koulutuksen järjestäjän päättämästä 4vk kestävästä kesäkeskeytyksestä, käytetään syykoodia 'Kesälomakeskeytys'.")
+  @Description("Poissaolon syy. Mikäli kysymys on koulutuksen järjestäjän päättämästä 4vk kestävästä kesäkeskeytyksestä, käytetään syykoodia 'Kesälomakeskeytys'")
   @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
 ) extends Jakso
@@ -93,7 +93,7 @@ case class AmmatillinenOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-@Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
+@Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain")
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
@@ -102,7 +102,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
   opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
-@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot.")
+@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
@@ -139,7 +139,7 @@ case class NäyttötutkintoonValmistavaKoulutus(
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
+  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
@@ -147,12 +147,12 @@ case class AmmatillisenTutkinnonSuoritus(
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
-  @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä.")
+  @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä")
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus.")
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -165,7 +165,7 @@ case class AmmatillisenTutkinnonSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
-@Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta.")
+@Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
@@ -187,7 +187,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
-  @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
+  @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
@@ -203,7 +203,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @Title("Tutkinnon osa")
   @Discriminator
   def koulutusmoduuli: AmmatillisenTutkinnonOsa
-  @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
+  @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta")
   def tutkinto: Option[AmmatillinenTutkintoKoulutus]
   @KoodistoUri("ammatillisentutkinnonosanryhma")
   def tutkinnonOsanRyhmä: Option[Koodistokoodiviite]
@@ -225,7 +225,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus = lens[AmmatillisenTutkinnonOsanSuoritus].field[Option[OrganisaatioWithOid]]("toimipiste").set(this)(Some(toimipiste))
 }
 
-@Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus.")
+@Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
 @Title("Yhteisen tutkinnon osan suoritus")
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
@@ -247,7 +247,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus
 
-@Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus.")
+@Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus")
 @Title("Muun tutkinnon osan suoritus")
 case class MuunAmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
@@ -280,7 +280,7 @@ case class Järjestämismuotojakso(
   järjestämismuoto: Järjestämismuoto
 ) extends Jakso
 
-@Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
+@Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
@@ -298,7 +298,7 @@ case class Työssäoppimisjakso(
 ) extends Jakso
 
 @Title("Ammatillinen tutkintokoulutus")
-@Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet.")
+@Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String],
@@ -401,7 +401,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan osa-alueen kuvaus")
   kuvaus: LocalizedString,
-  @Description("Onko pakollinen tutkinnossa (true/false).")
+  @Description("Onko pakollinen tutkinnossa (true/false)")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue with PaikallinenKoulutusmoduuli
@@ -409,10 +409,10 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Valtakunnallinen tutkinnon osan osa-alue")
 case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
-  @Description("Valtakunnallisen tutkinnon osan osa-alueen tunniste.")
+  @Description("Valtakunnallisen tutkinnon osan osa-alueen tunniste")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
-  @Description("Onko pakollinen tutkinnossa (true/false).")
+  @Description("Onko pakollinen tutkinnossa (true/false)")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli
@@ -427,7 +427,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   @KoodistoUri("kielivalikoima")
   @Discriminator
   kieli: Koodistokoodiviite,
-  @Description("Onko pakollinen tutkinnossa (true/false).")
+  @Description("Onko pakollinen tutkinnossa (true/false)")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
@@ -443,7 +443,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   @Discriminator
   kieli: Koodistokoodiviite,
-  @Description("Onko pakollinen tutkinnossa (true/false).")
+  @Description("Onko pakollinen tutkinnossa (true/false)")
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Äidinkieli {
@@ -472,7 +472,7 @@ case class Näyttö(
   @Description("Näytön arvioinnin lisätiedot")
   @Flatten
   arviointi: Option[NäytönArviointi],
-  @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä.")
+  @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä")
   haluaaTodistuksen: Option[Boolean] = None
 )
 
@@ -493,7 +493,7 @@ case class NäytönSuoritusaika(
   loppu: LocalDate
 )
 
-@Description("Näytön arvioinnin lisätiedot.")
+@Description("Näytön arvioinnin lisätiedot")
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
@@ -508,11 +508,11 @@ case class NäytönArviointi (
   @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
   @MinItems(1)
   arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite],
-  @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne.")
+  @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne")
   hylkäyksenPeruste: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi
 
-@Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
+@Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat")
 case class NäytönArviointikohde(
   @Description("Arviointikohteen tunniste")
   @KoodistoUri("ammatillisennaytonarviointikohde")
@@ -527,7 +527,7 @@ case class NäytönArviointikohde(
 case class NäytönArvioitsija(
   @Representative
   nimi: String,
-  @Description("Onko suorittanut näyttötutkintomestarikoulutuksen (true/false). Puuttuva arvo tulkitaan siten, että koulutuksen suorittamisesta ei ole tietoa.")
+  @Description("Onko suorittanut näyttötutkintomestarikoulutuksen (true/false). Puuttuva arvo tulkitaan siten, että koulutuksen suorittamisesta ei ole tietoa")
   @Title("Näyttötutkintomestari")
   ntm: Option[Boolean]
 ) extends SuorituksenArvioitsija
@@ -545,7 +545,7 @@ trait Järjestämismuoto {
 
 @Description("Järjestämismuoto ilman lisätietoja")
 case class JärjestämismuotoIlmanLisätietoja(
-  @Description("Koulutuksen järjestämismuodon tunniste.")
+  @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
   @Representative
   tunniste: Koodistokoodiviite
@@ -553,7 +553,7 @@ case class JärjestämismuotoIlmanLisätietoja(
 
 @Description("Koulutuksen järjestäminen oppisopimuskoulutuksena. Sisältää oppisopimuksen lisätiedot")
 case class OppisopimuksellinenJärjestämismuoto(
-  @Description("Koulutuksen järjestämismuodon tunniste.")
+  @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
@@ -562,10 +562,10 @@ case class OppisopimuksellinenJärjestämismuoto(
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
-@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
-  @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija).")
+  @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija)")
   @KoodistoUri("opetusryhma")
   opetusryhmä: Koodistokoodiviite,
   @Description("Alkamispäivämäärä. Muoto YYYY-MM-DD")
@@ -580,10 +580,10 @@ case class LaajuusOsaamispisteissä(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
 ) extends Laajuus
 
-@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot.")
+@Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
-  @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot.")
+  @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -623,7 +623,7 @@ case class ValmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Description("Suoritettavan VALMA-koulutuksen osan / osien tiedot.")
+@Description("Suoritettavan VALMA-koulutuksen osan / osien tiedot")
 @Title("VALMA-koulutuksen osan suoritus")
 case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
@@ -686,10 +686,10 @@ case class TelmaKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
 @Title("TELMA-koulutuksen osan suoritus")
-@Description("Suoritettavan TELMA-koulutuksen osan tiedot.")
+@Description("Suoritettavan TELMA-koulutuksen osan tiedot")
 case class TelmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
-  @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot.")
+  @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot")
   koulutusmoduuli: TelmaKoulutuksenOsa,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],

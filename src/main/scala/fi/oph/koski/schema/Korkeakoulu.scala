@@ -15,7 +15,7 @@ case class KorkeakoulunOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot.")
+  @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   ensisijaisuus: Option[Ensisijaisuus] = None,
   tila: KorkeakoulunOpiskeluoikeudenTila,
   suoritukset: List[KorkeakouluSuoritus],
@@ -27,7 +27,7 @@ case class KorkeakoulunOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen = None
 }
 
-@Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän.")
+@Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän")
 case class Ensisijaisuus(
   alkamispäivä: LocalDate,
   päättymispäivä: Option[LocalDate]
