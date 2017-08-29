@@ -237,7 +237,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       {showArvosana && arvosanaModel && <td className="arvosana"><Editor model={ arvosanaModel } showEmptyOption="true"/></td>}
       {
         model.context.edit && (
-          <td>
+          <td className="remove">
             <a className="remove-value" onClick={() => pushRemoval(model)}/>
           </td>
         )

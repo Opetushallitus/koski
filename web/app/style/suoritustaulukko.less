@@ -28,9 +28,19 @@
             cursor: pointer;
           }
         }
-        > .pakollisuus, > .laajuus, > .arvosana {
+        > td.pakollisuus, > td.laajuus, > td.arvosana {
           text-align: right;
           vertical-align: middle;
+        }
+        > td.remove {
+          width: 0px;
+          padding: 0;
+          position: relative;
+          a.remove-value {
+            position: absolute;
+            top: ~"calc(50% - 9px)";
+            left: -11px;
+          }
         }
         &.error {
           td.error {
@@ -62,10 +72,6 @@
         > .properties {
           padding-left: 12px;
         }
-      }
-
-      td.suoritus, td .remove-value {
-        line-height: 35px;
       }
 
       .uusi-tutkinnon-osa {
