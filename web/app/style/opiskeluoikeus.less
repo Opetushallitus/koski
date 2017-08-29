@@ -6,6 +6,13 @@
     color: @color-label;
   }
 
+  .lightgray-background {
+    background: #f5f5f5;
+    .label {
+      color: @color-label-darker;
+    }
+  }
+
   .opiskeluoikeuden-tiedot, .suoritus {
     .text-like-input, .dropdown, .property.oid input {
       max-width: 300px;
@@ -175,7 +182,7 @@
     &.editing {
       .lisätiedot  {
         & > .value {
-          background: #f5f5f5;
+          .lightgray-background;
           padding: 12px;
         }
         .properties .property {
@@ -194,6 +201,26 @@
               min-width: 310px;
             }
           }
+        }
+      }
+
+      .työssäoppimisjaksot > .value > .array > li:not(.add-item) {
+        .lightgray-background;
+        padding: 12px;
+        margin-bottom: 10px;
+
+        .properties {
+          padding: 0;
+          > table {
+            width: 100%;
+          }
+        }
+
+        .remove-item {
+          position: absolute;
+          margin: 0;
+          top: 5px;
+          right: 5px;
         }
       }
     }
