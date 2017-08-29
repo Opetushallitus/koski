@@ -7,10 +7,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
 
-class TodistusServlet(val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
+class TodistusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
-    implicit val user = koskiSession
     implicit val localizations = application.localizationRepository
 
     val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {

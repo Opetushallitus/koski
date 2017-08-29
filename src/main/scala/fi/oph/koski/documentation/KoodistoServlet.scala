@@ -1,5 +1,6 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.Unauthenticated
@@ -8,7 +9,7 @@ import fi.oph.koski.servlet.{ApiServlet, KoskiBaseServlet}
 
 import scala.collection.immutable.Seq
 
-class KoodistoServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
+class KoodistoServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with KoodistoFinder {
   private val opiskeluoikeudet: Seq[Opiskeluoikeus] = Examples.examples.flatMap(_.data.opiskeluoikeudet)
   private val koodiarvot: Seq[Opiskeluoikeus] => Seq[String] = opiskeluoikeudet => opiskeluoikeudet.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct.sorted
 
@@ -25,6 +26,8 @@ class KoodistoServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet w
       .filter(koodi => koodiarvot(opiskeluoikeudenTyyppi).contains(koodi.koodiArvo))
       .filterNot(_.koodiArvo == "perusopetuksenvuosiluokka")
   }
+
+  def koodistoPalvelu: KoodistoPalvelu = application.koodistoPalvelu
 }
 
 trait KoodistoFinder extends KoskiBaseServlet {

@@ -10,7 +10,7 @@ import fi.vm.sade.utils.cas.CasLogout
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet(val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
+class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
   private def validator = new ServiceTicketValidator(application.config)
   private val koskiSessions = application.koskiSessionRepository
 

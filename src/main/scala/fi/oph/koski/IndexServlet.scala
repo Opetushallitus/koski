@@ -8,7 +8,7 @@ import org.scalatra.ScalatraServlet
 
 import scala.util.Try
 
-class IndexServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
+class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before() {
     if (!isAuthenticated) {
       redirectToLogin
@@ -44,7 +44,7 @@ class IndexServlet(val application: KoskiApplication) extends ScalatraServlet wi
   }
 }
 
-class LoginPageServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
+class LoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
   get("/") {
     if (ssoConfig.isCasSsoUsed) {
       redirect("/")

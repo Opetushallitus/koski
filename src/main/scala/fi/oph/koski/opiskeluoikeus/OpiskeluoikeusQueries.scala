@@ -23,13 +23,13 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
     OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
         AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
-        query(filters)(koskiSession)
+        query(filters)
       case Left(status) =>
         haltWithStatus(status)
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilter]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters)
     oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
@@ -42,7 +42,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
             case Some(henkilö) =>
               Some((henkilö, opiskeluOikeudet))
             case None =>
-              logger(user).warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
+              logger(koskiSession).warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
               None
           }
         }
@@ -50,7 +50,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
     }
   }
 
-  def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
+  def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter]): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows

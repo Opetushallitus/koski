@@ -19,7 +19,7 @@ import fi.oph.koski.util.{Pagination, Timing}
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 
-class OppijaServlet(val application: KoskiApplication)
+class OppijaServlet(implicit val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }

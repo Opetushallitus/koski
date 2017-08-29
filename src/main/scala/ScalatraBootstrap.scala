@@ -37,7 +37,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   override def init(context: ServletContext) = tryCatch("Servlet context initialization") {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
-    val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
+    implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     val parallels = List(
       Future { application.perustiedotIndexer.init},
@@ -49,43 +49,43 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
     if (application.config.getBoolean("koodisto.create")) tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config, application.config.getBoolean("koodisto.update")) }
 
-    mount("/", new IndexServlet(application))
-    mount("/login", new LoginPageServlet(application))
-    mount("/pulssi", new PulssiHtmlServlet(application))
-    mount("/todistus", new TodistusServlet(application))
-    mount("/opintosuoritusote", new SuoritusServlet(application))
+    mount("/", new IndexServlet)
+    mount("/login", new LoginPageServlet)
+    mount("/pulssi", new PulssiHtmlServlet)
+    mount("/todistus", new TodistusServlet)
+    mount("/opintosuoritusote", new SuoritusServlet)
     mount("/dokumentaatio", new RedirectServlet("/documentation", true))
-    mount("/documentation", new DocumentationServlet(application))
-    mount("/api/documentation", new DocumentationApiServlet())
-    mount("/api/editor", new EditorServlet(application))
-    mount("/api/healthcheck", new HealthCheckApiServlet(application))
-    mount("/api/henkilo", new HenkilötiedotServlet(application))
-    mount("/api/koodisto", new KoodistoServlet(application.koodistoPalvelu))
-    mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet(application))
-    mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet(application))
-    mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet(application))
-    mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet(application))
-    mount("/api/oppija", new OppijaServlet(application))
-    mount("/api/oppilaitos", new OppilaitosServlet(application))
-    mount("/api/organisaatio", new OrganisaatioServlet(application))
-    mount("/api/pulssi", new PulssiServlet(application))
-    mount("/api/preferences", new PreferencesServlet(application))
-    mount("/api/tiedonsiirrot", new TiedonsiirtoServlet(application))
-    mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet(application.tutkintoRepository, application.koodistoViitePalvelu))
-    mount("/api/localization", new LocalizationServlet(application))
-    mount("/healthcheck", new HealthCheckHtmlServlet(application))
-    mount("/user", new UserServlet(application))
+    mount("/documentation", new DocumentationServlet)
+    mount("/api/documentation", new DocumentationApiServlet)
+    mount("/api/editor", new EditorServlet)
+    mount("/api/healthcheck", new HealthCheckApiServlet)
+    mount("/api/henkilo", new HenkilötiedotServlet)
+    mount("/api/koodisto", new KoodistoServlet)
+    mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet)
+    mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
+    mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)
+    mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
+    mount("/api/oppija", new OppijaServlet)
+    mount("/api/oppilaitos", new OppilaitosServlet)
+    mount("/api/organisaatio", new OrganisaatioServlet)
+    mount("/api/pulssi", new PulssiServlet)
+    mount("/api/preferences", new PreferencesServlet)
+    mount("/api/tiedonsiirrot", new TiedonsiirtoServlet)
+    mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
+    mount("/api/localization", new LocalizationServlet)
+    mount("/healthcheck", new HealthCheckHtmlServlet)
+    mount("/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
-      mount("/user/login", new LocalLoginServlet(application))
+      mount("/user/login", new LocalLoginServlet)
     }
-    mount("/user/logout", new LogoutServlet(application))
-    mount("/cas", new CasServlet(application))
-    mount("/cache", new CacheServlet(application))
+    mount("/user/logout", new LogoutServlet)
+    mount("/cas", new CasServlet)
+    mount("/cache", new CacheServlet)
 
     parallels.foreach(f => Futures.await(f))
 
     if (Fixtures.shouldUseFixtures(application.config)) {
-      context.mount(new FixtureServlet(application), "/fixtures")
+      context.mount(new FixtureServlet, "/fixtures")
       application.fixtureCreator.resetFixtures
     }
   }

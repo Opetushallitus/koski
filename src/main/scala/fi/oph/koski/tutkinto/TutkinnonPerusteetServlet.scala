@@ -1,5 +1,6 @@
 package fi.oph.koski.tutkinto
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
@@ -7,18 +8,18 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
-class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends ApiServlet with Unauthenticated with Cached24Hours {
+class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
   get("/oppilaitos/:oppilaitosId") {
    contentType = "application/json;charset=utf-8"
    (params.get("query"), params.get("oppilaitosId")) match {
-     case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => tutkintoRepository.findTutkinnot(oppilaitosId, query)
+     case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => application.tutkintoRepository.findTutkinnot(oppilaitosId, query)
      case _ => KoskiErrorCategory.badRequest.queryParam.searchTermTooShort()
    }
   }
 
   get("/diaarinumerot/koulutustyyppi/:koulutustyyppi") {
     val koulutusTyyppi = params("koulutustyyppi")
-    koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
+    application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa") {
@@ -35,7 +36,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
 
   get("/tutkinnonosat/:diaari/:suoritustapa/:ryhma") {
     val ryhmä = params("ryhma")
-    val ryhmäkoodi = koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+    val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
     perusteenTutkinnonosat { osa =>
       osa.flatMap(findRyhmä(ryhmäkoodi, _)) match {
         case None =>
@@ -48,7 +49,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
 
   get("/suoritustavat/:diaari") {
     val diaari = params("diaari")
-    tutkintoRepository.findPerusteRakenne(diaari) match {
+    application.tutkintoRepository.findPerusteRakenne(diaari) match {
       case None => renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Rakennetta ei löydy diaarinumerolla $diaari"))
       case Some(rakenne) => rakenne.suoritustavat.map(_.suoritustapa)
     }
@@ -56,7 +57,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
 
   get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhma") {
     val ryhmä = params("ryhma")
-    val ryhmäkoodi = koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+    val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
     perusteenTutkinnononLaajuus {osa =>
       findRyhmä(ryhmäkoodi, osa) match {
         case None => Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
@@ -71,7 +72,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
-    tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
+    application.tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
       case None =>
         renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
       case Some(suoritustapaJaRakenne) =>
@@ -83,7 +84,7 @@ class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository, koodisto
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
-    tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
+    application.tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
       case None =>
         Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
       case Some(suoritustapaJaRakenne) => suoritustapaJaRakenne.rakenne match {

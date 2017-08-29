@@ -10,7 +10,7 @@ import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 import scala.Function.const
 
-class DocumentationServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
+class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("/") {

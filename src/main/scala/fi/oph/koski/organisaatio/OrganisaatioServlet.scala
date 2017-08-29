@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, RequiresAuthentication}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
-class OrganisaatioServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/hierarkia") {
     val query = params.get("query")
     val all = getBooleanParam("all")

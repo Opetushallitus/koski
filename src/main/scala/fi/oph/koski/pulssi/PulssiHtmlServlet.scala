@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
 import org.scalatra.ScalatraServlet
 
-class PulssiHtmlServlet(val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
+class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
     htmlIndex("koski-pulssi.js", raamitEnabled = false)
   }

@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, SortOrder}
 
-class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
+class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
   // TODO: Pitäisikö näistäkin katseluista tehdä auditlog-merkintä?
   get("/") {
     renderEither({

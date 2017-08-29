@@ -3,7 +3,7 @@ package fi.oph.koski.healthcheck
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.HtmlServlet
 
-class HealthCheckHtmlServlet(val application: KoskiApplication) extends HtmlServlet{
+class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends HtmlServlet{
   get("/") {
     val healthcheck = application.healthCheck.healthcheck
     val status = healthcheck.isOk match {

@@ -8,7 +8,7 @@ import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.jackson.JsonMethods
 
-class KoskiHistoryServlet(val application: KoskiApplication)
+class KoskiHistoryServlet(implicit val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:oid") {

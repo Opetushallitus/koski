@@ -5,10 +5,7 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.ApiServlet
 
-/**
-  * Created by jpaanane on 31/07/2017.
-  */
-class DocumentationApiServlet() extends ApiServlet with Unauthenticated {
+class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }

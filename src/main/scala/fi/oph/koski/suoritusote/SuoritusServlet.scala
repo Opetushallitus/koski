@@ -6,11 +6,10 @@ import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 
-class SuoritusServlet(val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
+class SuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
 
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
-    implicit val user = koskiSession
     implicit val localizations = application.localizationRepository
 
     renderEither(OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).right.flatMap {
