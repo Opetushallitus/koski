@@ -244,6 +244,9 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       }
     </tr>
     {
+      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
+    }
+    {
       expanded && hasProperties && (<tr className="details" key="details">
         <td colSpan="4">
           <PropertiesEditor model={model} properties={displayProperties}/>
@@ -256,9 +259,6 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
           <Suoritustaulukko parentSuoritus={model} nested={true} suorituksetModel={ osasuoritukset }/>
         </td>
       </tr>)
-    }
-    {
-      modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }
     </tbody>)
   }
