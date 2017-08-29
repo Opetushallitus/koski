@@ -56,9 +56,39 @@
   .näyttö, .tunnustettu {
     margin-bottom: 5px;
 
-    div:first-child {
-      a {
-        line-height: 23px;
+    > td > div {
+      display: inline-block;
+
+      &.label {
+        vertical-align: top;
+        width: 10%;
+      }
+
+      &:first-child {
+        a {
+          color: #888;
+          line-height: 23px;
+        }
+      }
+    }
+
+
+    .näyttö-rivi {
+      > span {
+        margin-right: 5px;
+      }
+
+      .remove-value {
+        margin-left: 0;
+      }
+
+      &:first-of-type {
+        > span {
+          margin-right: 0;
+        }
+        > span:first-of-type {
+          margin-right: 20px;
+        }
       }
     }
 

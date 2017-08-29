@@ -50,14 +50,22 @@ const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
   const hasArvosana = !!modelData(model, 'arviointi.arvosana')
 
   return (<div>
-    <div>
-      {edit && <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>}
+    <div className="näyttö-rivi">
+      {hasTyöpaikka && <span><Text name="Työpaikka"/>{': '}<Editor className="työpaikka" model={modelLookup(model, 'suorituspaikka.kuvaus')} edit={false}/></span>}
       {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}></a>}
-      {hasSuoritusaika && <span className="suoritusaika"><Editor model={modelLookup(model, 'suoritusaika')} edit={false}/></span>}
-      {hasTyöpaikka && <span>{'Työpaikka: '}<Editor className="työpaikka" model={modelLookup(model, 'suorituspaikka.kuvaus')} edit={false}/></span>}
-      {hasArvosana && <span className="arvosana"><Editor className="arvosana" model={modelLookup(model, 'arviointi.arvosana')} edit={false}/></span>}
+      {edit && <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>}
     </div>
-    <div>
+    {hasSuoritusaika && (
+      <div className="näyttö-rivi">
+        <span><Text name="Suoritusaika"/>{': '}</span><span className="suoritusaika"><Editor model={modelLookup(model, 'suoritusaika')} edit={false}/></span>
+      </div>
+    )}
+    {hasArvosana && (
+      <div className="näyttö-rivi">
+        <span><Text name="Arvosana"/>{': '}</span><span className="arvosana"><Editor className="arvosana" model={modelLookup(model, 'arviointi.arvosana')} edit={false}/></span>
+      </div>
+    )}
+    <div className="näyttö-rivi">
       <p className="kuvaus"><Editor className="kuvaus" model={modelLookup(model, 'kuvaus')} edit={false}/></p>
     </div>
   </div>)
