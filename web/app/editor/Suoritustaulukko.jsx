@@ -31,7 +31,7 @@ import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {EnumEditor} from './EnumEditor.jsx'
-import {YhteensäSuoritettu} from './YhteensäSuoritettu.jsx'
+import {YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
 import Http from '../http'
 
 const placeholderForNonGrouped = '999999'
