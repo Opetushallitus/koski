@@ -142,7 +142,7 @@
   "lisää oppiaineen suoritus": "lisää oppiaineen suoritus",
   "lisää vuosiluokan suoritus": "lisää vuosiluokan suoritus",
   "Suoritus valmis": "Suoritus valmis",
-  "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS": "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS",
+  "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS": "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.",
   "Suoritus valmis, mutta arvosana puuttuu": "Suoritus valmis, mutta arvosana puuttuu",
   "Haluatko varmasti poistua sivulta?": "Haluatko varmasti poistua sivulta? Tallentamattomat muutokset menetetään.",
   "oppiainetta": "oppiainetta",
