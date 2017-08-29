@@ -26,7 +26,7 @@ import {
   pushRemoval
 } from './EditorModel'
 import {sortGrades} from '../sorting'
-import {fixTila, suoritusKesken} from './Suoritus'
+import {fixTila, suoritusValmis} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
@@ -48,7 +48,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
-  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || osasuoritukset.filter(R.complement(suoritusKesken)).length > 0)
+  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || osasuoritukset.filter(suoritusValmis).length > 0)
 
   if (isYsiluokka(model) && jääLuokalle(model) && osasuoritukset.length == 0) {
     luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
@@ -163,7 +163,7 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.filter(s => edit || modelData(s, 'tila.koodiarvo') === 'VALMIS' ).map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
+              suoritukset.filter(s => edit || suoritusValmis(s)).map((suoritus) => (<OppiaineenSuoritusEditor baret-lift
                                                                        key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
                                                                        expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
                                                                        showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
