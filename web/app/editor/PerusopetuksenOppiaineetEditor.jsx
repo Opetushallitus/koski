@@ -17,7 +17,6 @@ import {
   modelData,
   modelErrorMessages,
   modelItems,
-  modelLens,
   modelLookup,
   modelProperties,
   modelSet,
@@ -280,10 +279,9 @@ const ArvosanaEditor = ({model}) => {
   let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
   return (<span>{
     alternativesP.map(alternatives => {
-      let arvosanaLens = modelLens('arviointi.-1.arvosana')
-      let coolLens = L.lens(
+      let arvosanaLens = L.lens(
         (m) => {
-          return L.get(arvosanaLens, m)
+          return modelLookup(m, '-1.arvosana')
         },
         (v, m) => {
           if (modelData(v)) {
@@ -292,14 +290,15 @@ const ArvosanaEditor = ({model}) => {
             let found = alternatives.find(alt => {
               return modelData(alt, 'arvosana').koodiarvo == valittuKoodiarvo
             })
-            return modelSetValue(m, found.value, 'arviointi.-1')
+            return modelSetValue(m, found.value, '-1')
           } else {
             // Ei arvosanaa -> poistetaan arviointi kokonaan
-            return modelSetValue(m, undefined, 'arviointi')
+            return modelSetValue(m, undefined)
           }
         }
       )
-      let arvosanaModel = lensedModel(model, coolLens)
+      let arviointiModel = modelLookup(model, 'arviointi')
+      let arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
       // Use key to ensure re-render when alternatives are supplied
       return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
     })
