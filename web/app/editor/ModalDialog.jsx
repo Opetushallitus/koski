@@ -18,8 +18,10 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
     <div className="modal-content">
       <a className="close-modal" onClick={() => onDismiss()}/>
       { children }
-      <button disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
-      <a className="peruuta" onClick={() => onDismiss()}><Text name="Peruuta"/></a>
+      <div className="actions">
+        <a className="peruuta" onClick={() => onDismiss()}><Text name="Peruuta"/></a>
+        <button disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
+      </div>
     </div>
     { doActionWhileMounted(keyE, handleKeys) }
   </div>)
