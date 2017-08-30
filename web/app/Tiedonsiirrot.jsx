@@ -6,13 +6,13 @@ import Text from './Text.jsx'
 export const tiedonsiirrotContentP = (location, contentP) => contentWithLoadingIndicator(contentP).map((content) => ({
   content: (
     <div className='content-area tiedonsiirrot'>
-      <nav className="sidebar tiedonsiirrot-navi">
+      <nav className="sidebar tiedonsiirrot-navi" onClick={() => content.reloadBus.push()}>
         {naviLink('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'yhteenveto-link')}
         {naviLink('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
         {naviLink('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
       </nav>
       <div className="main-content tiedonsiirrot-content">
-        <button className="update-content" onClick={() => {content.reloadBus.push()}}><Text name="Päivitä"/></button>
+        <button className="update-content" onClick={() => content.reloadBus.push()}><Text name="Päivitä"/></button>
         { content.content }
       </div>
     </div>
