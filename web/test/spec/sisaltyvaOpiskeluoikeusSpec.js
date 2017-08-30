@@ -27,19 +27,19 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
 
     describe('Kun sisältävää opiskeluoikeutta ei löydy id:llä', function() {
       before(
-        editor.property('sisältyyOpiskeluoikeuteen').property('id').setValue(929292929),
+        editor.property('sisältyyOpiskeluoikeuteen').property('oid').setValue(929292929),
         editor.saveChangesAndExpectError,
         wait.until(page.isErrorShown)
       )
       it('Tallennus epäonnistuu ja näytetään virheilmoitus', function() {
-        expect(page.getErrorMessage()).to.equal('Sisältävää opiskeluoikeutta ei löydy id-arvolla 929292929')
+        expect(page.getErrorMessage()).to.equal('Sisältävää opiskeluoikeutta ei löydy oid-arvolla 929292929')
       })
     })
 
-    describe('Kun sisältävä opiskeluoikeus löytyy id:llä', function() {
+    describe('Kun sisältävä opiskeluoikeus löytyy oid:llä', function() {
       before(
         function() {
-          return editor.property('sisältyyOpiskeluoikeuteen').property('id').setValue(sisältävänOpiskeluoikeudenId)()
+          return editor.property('sisältyyOpiskeluoikeuteen').property('oid').setValue(sisältävänOpiskeluoikeudenId)()
         },
         editor.saveChanges
       )
