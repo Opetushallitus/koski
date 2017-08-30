@@ -7,20 +7,6 @@ import fi.oph.scalaschema.annotation._
 import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
-object EditorPropertySerializer extends Serializer[EditorProperty] {
-  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
-    case (property: EditorProperty) => {
-      Extraction.decompose(Map(
-        "key" -> property.key,
-        "title" -> property.title,
-        "model" -> property.model
-      ) ++ property.flags)
-    }
-  }
-
-  override def deserialize(implicit format: Formats) = PartialFunction.empty
-}
-
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 
