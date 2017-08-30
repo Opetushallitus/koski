@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
-import fi.oph.koski.editor.MetadataToModel.{classesFromMetadata, propsFromMetadata}
+import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
@@ -78,22 +78,22 @@ case class ModelBuilderContext(
   prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
-  override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
+  override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = Float.NaN
 }
 
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {
-  override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
+  override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = false
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
-  override def buildModelForObject(x: String, metadata: List[Metadata]) = StringModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
+  override def buildModelForObject(x: String, metadata: List[Metadata]) = StringModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = ""
 }
 
 case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[LocalDate] {
-  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x, classesFromMetadata(metadata)), propsFromMetadata(metadata))
+  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = LocalDate.now
 }
 
@@ -106,40 +106,25 @@ case class OptionalModelBuilder(t: OptionalSchema)(implicit context: ModelBuilde
     OptionalModel(
       innerModel,
       Prototypes.getPrototypePlaceholder(t.itemSchema, metadata),
-      propsFromMetadata(metadata)
+      metadata
     )
   }
   def buildPrototype(metadata: List[Metadata]) = OptionalModel(
     None,
     Prototypes.getPrototypePlaceholder(t.itemSchema, metadata),
-    Map.empty
+    Nil
   )
 }
 
 case class ListModelBuilder(t: ListSchema)(implicit context: ModelBuilderContext) extends EditorModelBuilder[Iterable[_]] {
   def buildModelForObject(xs: Iterable[_], metadata: List[Metadata]) = {
     val models: List[EditorModel] = xs.toList.map(item => buildModel(item, t.itemSchema, metadata))
-    ListModel(models, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), propsFromMetadata(t.metadata ++ metadata))
+    ListModel(models, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), t.metadata ++ metadata)
   }
-  def buildPrototype(metadata: List[Metadata]): EditorModel = ListModel(Nil, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), propsFromMetadata(metadata))
+  def buildPrototype(metadata: List[Metadata]): EditorModel = ListModel(Nil, Prototypes.getPrototypePlaceholder(t.itemSchema, Nil), metadata)
 }
 
 object MetadataToModel {
-  def propsFromMetadata(metadata: List[Metadata]) = {
-    var props: Map[String, Any] = Map.empty
-    metadata.collect { case MinItems(x) => x }.foreach { x => props += ("minItems" -> x)}
-    metadata.collect { case MaxItems(x) => x }.foreach { x => props += ("maxItems" -> x)}
-    metadata.collect { case MinValue(x) => x }.foreach { x => props += ("minValue" -> x)}
-    metadata.collect { case MaxValue(x) => x }.foreach { x => props += ("maxValue" -> x)}
-    metadata.collect { case MinValueExclusive(x) => x }.foreach { x => props += ("minValueExclusive" -> x)}
-    metadata.collect { case MaxValueExclusive(x) => x }.foreach { x => props += ("maxValueExclusive" -> x)}
-    metadata.collect { case MultiLineString(x) => props += ("maxLines" -> x)}
-    metadata.collect { case UnitOfMeasure(u) => props += ("unitOfMeasure" -> u)}
-    metadata.collect { case RegularExpression(pattern) => props += ("regularExpression" -> pattern)}
-    metadata.collect { case Example(text) => props += ("example" -> text)}
-    props
-  }
-
   def classesFromMetadata(metadata: List[Metadata]): Option[List[String]] = OptionalLists.optionalList(metadata.collect {
     case ClassName(c) => c
   })
@@ -148,7 +133,7 @@ object MetadataToModel {
 trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
   def buildModelForObject(obj: AnyRef, metadata: List[Metadata]): EditorModel
   def prototypeKey: String
-  def buildPrototypePlaceholder(metadata: List[Metadata]) = PrototypeModel(prototypeKey, propsFromMetadata(metadata))
+  def buildPrototypePlaceholder(metadata: List[Metadata]) = PrototypeModel(prototypeKey, metadata)
 }
 
 object KoodistoEnumModelBuilder {
@@ -188,7 +173,7 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
 
   def buildModelForObject(o: AnyRef, metadata: List[Metadata]) = {
     o match {
-      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath), propsFromMetadata(metadata))
+      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath), metadata)
       case k: A @unchecked => buildModelForObject(Some(k), metadata)
     }
   }
@@ -204,7 +189,7 @@ case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
   }
 
   private def buildModel(selectedModel: EditorModel, metadata: List[Metadata]) = {
-    OneOfModel(sanitizeName(t.simpleName), selectedModel, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_, metadata)), propsFromMetadata(metadata ++ t.metadata))
+    OneOfModel(sanitizeName(t.simpleName), selectedModel, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_, metadata)), metadata ++ t.metadata)
   }
 
   def prototypeKey = sanitizeName(t.simpleName)
@@ -244,7 +229,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case _ => None
     }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested
-    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, createRequestedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
+    ObjectModel(classes(schema.fullClassName), properties, objectTitle, objectContext.editable, createRequestedPrototypes, metadata ++ schema.metadata)
   }
 
   def buildPrototype(metadata: List[Metadata]) = {
@@ -252,7 +237,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       val propertyPrototype = Prototypes.getPrototypePlaceholder(property.schema, property.metadata).get
       createModelProperty(property, propertyPrototype)
     }
-    ObjectModel(classes(schema.fullClassName), properties, title = None, true, createRequestedPrototypes, propsFromMetadata(metadata ++ schema.metadata))
+    ObjectModel(classes(schema.fullClassName), properties, title = None, true, createRequestedPrototypes, metadata ++ schema.metadata)
   }
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
@@ -269,7 +254,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val complexObject: Boolean = property.metadata.contains(ComplexObject())
     val tabular: Boolean = property.metadata.contains(Tabular())
     val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
-    var props: Map[String, Any] = Map.empty
+    var props  = Map.empty[String, Boolean]
     if (hidden) props += ("hidden" -> true)
     if (representative) props += ("representative" -> true)
     if (flatten) props += ("flatten" -> true)

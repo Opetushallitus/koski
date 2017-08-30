@@ -2,25 +2,29 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
-sealed trait EditorModel
+import fi.oph.scalaschema.Metadata
 
-case class ObjectModel(classes: List[String], properties: List[EditorProperty], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel], props: Map[String, Any]) extends EditorModel
+sealed trait EditorModel {
+  def metadata: List[Metadata]
+}
 
-case class PrototypeModel(key: String, props: Map[String, Any]) extends EditorModel
+case class ObjectModel(classes: List[String], properties: List[EditorProperty], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel], metadata: List[Metadata]) extends EditorModel
 
-case class EditorProperty(key: String, title: String, model: EditorModel, props: Map[String, Any])
+case class PrototypeModel(key: String, metadata: List[Metadata]) extends EditorModel
 
-case class ListModel(items: List[EditorModel], prototype: Option[EditorModel], props: Map[String, Any]) extends EditorModel
+case class EditorProperty(key: String, title: String, model: EditorModel, flags: Map[String, Boolean])
 
-case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String], props: Map[String, Any]) extends EditorModel
+case class ListModel(items: List[EditorModel], prototype: Option[EditorModel], metadata: List[Metadata]) extends EditorModel
+
+case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String], metadata: List[Metadata]) extends EditorModel
 case class EnumValue(value: String, title: String, data: Any)
 
-case class NumberModel(value: ValueWithData[Number], props: Map[String, Any]) extends EditorModel
-case class BooleanModel(value: ValueWithData[Boolean], props: Map[String, Any]) extends EditorModel
-case class DateModel(value: ValueWithData[LocalDate], props: Map[String, Any]) extends EditorModel
-case class StringModel(value: ValueWithData[String], props: Map[String, Any]) extends EditorModel
+case class NumberModel(value: ValueWithData[Number], metadata: List[Metadata]) extends EditorModel
+case class BooleanModel(value: ValueWithData[Boolean], metadata: List[Metadata]) extends EditorModel
+case class DateModel(value: ValueWithData[LocalDate], metadata: List[Metadata]) extends EditorModel
+case class StringModel(value: ValueWithData[String], metadata: List[Metadata]) extends EditorModel
 case class ValueWithData[T](data: T, classes: Option[List[String]])
 
-case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel], props: Map[String, Any]) extends EditorModel
+case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel], metadata: List[Metadata]) extends EditorModel
 
-case class OneOfModel(`class`: String, model: EditorModel, prototypes: List[EditorModel], props: Map[String, Any]) extends EditorModel
+case class OneOfModel(`class`: String, model: EditorModel, prototypes: List[EditorModel], metadata: List[Metadata]) extends EditorModel

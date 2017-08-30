@@ -61,7 +61,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   get("/suoritukset/prefill/:koodistoUri/:koodiarvo") {
     def toListModel(suoritukset: List[Suoritus]) = {
       val models = suoritukset.map { suoritus => OppijaEditorModel.buildModel(suoritus, true)}
-      ListModel(models, None, Map.empty)
+      ListModel(models, None, Nil)
     }
     val luokkaAstePattern = """(\d)""".r
     val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)

@@ -1,6 +1,9 @@
 package fi.oph.koski.editor
 
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.{Example, MultiLineString, UnitOfMeasure}
+import fi.oph.scalaschema.Metadata
+import fi.oph.scalaschema.annotation._
 import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
@@ -11,7 +14,7 @@ object EditorPropertySerializer extends Serializer[EditorProperty] {
         "key" -> property.key,
         "title" -> property.title,
         "model" -> property.model
-      ) ++ property.props)
+      ) ++ property.flags)
     }
   }
 
@@ -21,77 +24,103 @@ object EditorPropertySerializer extends Serializer[EditorProperty] {
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 
-  private def propsToFields(props: Map[String, Any])(implicit format: Formats) = props.toList.map{ case (key, value) => JField(key, Extraction.decompose(value)) }
-
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
       model match {
-        case (ObjectModel(c, properties, title, editable, prototypes, props)) =>
+        case (ObjectModel(c, properties, title, editable, prototypes, metadata)) =>
           val protos = if (prototypes.nonEmpty) { JObject(prototypes.toList.map { case (key, model) => JField(key, serialize(format)(model)) }) } else { JNothing }
           JObject(List(
             JField("type", JString("object")),
             JField("value", JObject(
               JField("classes", JArray(c.map(JString(_)))),
               JField("title", title.map(JString(_)).getOrElse(JNothing)),
-              JField("properties", JArray(properties.map{ case EditorProperty(key, title, model, props) =>
+              JField("properties", JArray(properties.map{ case EditorProperty(key, title, model, flags) =>
                 JObject(List(
                   JField("key", JString(key)),
                   JField("title", JString(title)),
                   JField("model", serialize(format)(model))
-                ) ++ propsToFields(props))
+                ) ++ flagsToFields(flags))
               }))
             )),
             JField("editable", JBool(editable)),
             JField("prototypes", protos)
-          ) ++ propsToFields(props))
-        case (PrototypeModel(key, props)) =>
+          ) ++ metadataToFields(metadata))
+        case (PrototypeModel(key, metadata)) =>
           JObject(
             List(
               JField("type", JString("prototype")),
               JField("key", JString(key))
-            ) ++ propsToFields(props)
+            ) ++ metadataToFields(metadata)
           )
-        case (OptionalModel(model, prototype, props)) =>
+        case (OptionalModel(model, prototype, metadata)) =>
           val optionalInfo: JValue = JObject(
             JField("optional", JBool(true)),
             JField("optionalPrototype", prototype.map(p => serialize(format)(p)).getOrElse(JNothing))
           )
 
-          val typeAndValue = modelOrEmptyObject(model)
-          typeAndValue.merge(optionalInfo).merge(JObject(propsToFields(props)))
+          val typeAndValue = model.map(serialize(format)(_)).getOrElse(emptyObject)
+          typeAndValue.merge(optionalInfo).merge(JObject(metadataToFields(metadata)))
 
-        case (ListModel(items, prototype, props)) =>
+        case (ListModel(items, prototype, metadata)) =>
           JObject(List(
             JField("type", JString("array")),
             JField("value", JArray(items.map(item => serialize(format)(item)))),
             JField("arrayPrototype", prototype.map(p => serialize(format)(p)).getOrElse(JNothing))
-          ) ++ propsToFields(props))
+          ) ++ metadataToFields(metadata))
 
-        case (EnumeratedModel(value, alternatives, path, props)) =>
-          json("enum", "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value).merge(json(props))
-        case (OneOfModel(c, model, prototypes, props)) =>
+        case (EnumeratedModel(value, alternatives, path, metadata)) =>
+          JObject(List(
+            JField("type", JString("enum")),
+            JField("alternatives", alternatives.map(alts => JArray(alts.map(serializeEnumValue))).getOrElse(JNothing)),
+            JField("alternativesPath", path.map(JString(_)).getOrElse(JNothing)),
+            JField("value", value.map(serializeEnumValue).getOrElse(JNothing))
+          ) ++ metadataToFields(metadata))
+        case (OneOfModel(c, model, prototypes, metadata)) =>
           val oneOfInfo = JObject(
             JField("oneOfClass", JString(c)),
             JField("oneOfPrototypes", JArray(prototypes.map(p => serialize(format)(p))))
           )
-          serialize(format)(model).merge(oneOfInfo).merge(JObject(propsToFields(props)))
-        case (NumberModel(value, props)) => json("number", "value" -> value).merge(json(props))
-        case (BooleanModel(value, props)) => json("boolean", "value" -> value).merge(json(props))
-        case (DateModel(value, props)) => json("date", "value" -> value).merge(json(props))
-        case (StringModel(value, props)) => json("string", "value" -> value).merge(json(props))
+          serialize(format)(model).merge(oneOfInfo).merge(JObject(metadataToFields(metadata)))
+        case (NumberModel(value, metadata)) => serializeValueModel("number", value, metadata)
+        case (BooleanModel(value, metadata)) => serializeValueModel("boolean", value, metadata)
+        case (DateModel(value, metadata)) => serializeValueModel("date", value, metadata)
+        case (StringModel(value, metadata)) => serializeValueModel("string", value, metadata)
         case _ => throw new RuntimeException("No match : " + model)
       }
     }
   }
 
-  private def modelOrEmptyObject(model: Option[EditorModel])(implicit format: Formats) = model.map(serialize(format)(_)).getOrElse(emptyObject)
-
-  private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
-    val elems: List[(String, Any)] = ("type" -> tyep) :: props.toList
-    json(elems: _*)
+  private def metadataToFields(metadata: List[Metadata]): List[JField] = {
+    metadata.collect {
+      case MinItems(x) => JField("minItems", JInt(x))
+      case MaxItems(x) => JField("maxItems", JInt(x))
+      case MinValue(x) => JField("minValue", JDouble(x))
+      case MaxValue(x) => JField("maxValue", JDouble(x))
+      case MinValueExclusive(x) => JField("minValueExclusive", JDouble(x))
+      case MaxValueExclusive(x) => JField("maxValueExclusive", JDouble(x))
+      case MultiLineString(x) => JField("maxLines", JInt(x))
+      case UnitOfMeasure(x) => JField("unitOfMeasure", JString(x))
+      case RegularExpression(x) => JField("regularExpression", JString(x))
+      case Example(x) => JField("example", JString(x))
+    }
   }
 
-  private def json(props: (String, Any)*)(implicit format: Formats): JValue = json(Map(props : _*))
-  private def json(props: Map[String, Any])(implicit format: Formats): JValue = Extraction.decompose(props)
+  private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
+
+  private def flagsToFields(props: Map[String, Boolean]) = props.toList.map{ case (key, value) => JField(key, JBool(value)) }
+
+  private def serializeEnumValue(enumValue: EnumValue)(implicit format: Formats): JObject = enumValue match {
+    case fi.oph.koski.editor.EnumValue(value, title, data) => JObject(
+      JField("value", JString(value)),
+      JField("title", JString(title)),
+      JField("data", Extraction.decompose(data))
+    )
+  }
+
+  private def serializeValueModel(tyep: String, value: ValueWithData[_], metadata: List[Metadata])(implicit format: Formats) = JObject(List(
+    JField("type", JString(tyep)),
+    JField("value", Extraction.decompose(value))
+  ) ++ metadataToFields(metadata))
+  
   private def emptyObject = JObject()
 }
