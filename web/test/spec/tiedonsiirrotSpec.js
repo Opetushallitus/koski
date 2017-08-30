@@ -15,9 +15,11 @@ describe('Tiedonsiirrot', function() {
     refreshIndices,
     tiedonsiirrot.openPage
   )
-  
+
   describe("Tiedonsiirtoloki", function() {
-    let sortByName = (a, b) => a[1].localeCompare(b[1])
+    function sortByName(a, b) {
+      a[1].localeCompare(b[1])
+    }
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot().sort(sortByName)).to.deep.equal([
@@ -41,7 +43,7 @@ describe('Tiedonsiirrot', function() {
   })
 
   describe("Yhteenveto", function() {
-    before(tiedonsiirrot.openYhteenveto())
+    before(tiedonsiirrot.openYhteenveto(), wait.forAjax)
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'Stadin ammattiopisto'])
