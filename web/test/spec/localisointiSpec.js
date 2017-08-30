@@ -78,7 +78,7 @@ describe('Lokalisointi', function() {
   })
 
   describe('Monikieliset tekstit muokattavassa datassa', function() {
-    let property = editor.property('todistuksellaNäkyvätLisätiedot')
+    var property = editor.property('todistuksellaNäkyvätLisätiedot')
 
     describe('Syötettäessä suomenkielisellä käyttäjällä', function() {
       before(
