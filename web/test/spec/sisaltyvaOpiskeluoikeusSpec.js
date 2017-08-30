@@ -9,7 +9,7 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
 
   before(
     Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'),
-    function() { sisältävänOpiskeluoikeudenId = S('.opiskeluoikeus .id .value').text() },
+    function() { sisältävänOpiskeluoikeudenId = S('.opiskeluoikeus .id .value').text() }
   )
 
   describe('Sisältyvän opiskeluoikeuden luominen', function() {
