@@ -54,6 +54,8 @@ js-unit-test-watch:
 	cd web && npm run unit-test-watch
 fronttest:
 	cd web && npm run test
+chrome-fronttest:
+	cd web && npm run test-chrome
 screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
 
@@ -67,7 +69,6 @@ postgres-clean:
 	rm postgresql/data/postmaster.pid 2> /dev/null||true
 elastic:
 	elasticsearch -E path.conf=elasticsearch -E path.data=elasticsearch/data -E path.logs=elasticsearch/log
-
 ### Code checks
 
 eslint: front
