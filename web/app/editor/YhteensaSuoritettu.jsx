@@ -5,26 +5,30 @@ import Text from '../Text.jsx'
 import {modelData} from './EditorModel'
 import Http from '../http'
 
-const laajuus = (suoritus, group) => {
+export const fetchLaajuudet = (suoritus, groupIds) => {
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
+  const ids = groupIds.filter(i => i !== '999999').join(',')
 
-  if (suoritustapa === undefined || group === '999999') {
-    return Bacon.constant(null)
+  if (suoritustapa === undefined) {
+    return Bacon.constant([])
   }
 
-  let map404ToEmpty = { errorMapper: (e) => e.httpStatus === 404 ? {min: null, max: null} : Bacon.Error(e) }
-  return (Http
-    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosaryhma/laajuus/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(group)}`, map404ToEmpty)
-    .map(v => v.min === undefined ? {min: null, max: null} : v)
-    .filter(e => e.statusCode !== 404))
+  let map404ToEmpty = { errorMapper: (e) => e.httpStatus === 404 ? [] : Bacon.Error(e) }
+  return Http.cachedGet(
+    `/koski/api/tutkinnonperusteet/tutkinnonosaryhma/laajuus/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(ids)}`,
+    map404ToEmpty
+  )
 }
 
+const isEmptyObject = obj => Object.keys(obj).length === 0 && obj.constructor === Object
+const rangeExists = l => l && !isEmptyObject(l) && (l.min !== undefined || l.max !== undefined)
+
 const laajuusRange = (l) => {
-  if (!l || (l.min === null && l.max === null)) {
+  if (!rangeExists(l)) {
     return null
   }
-  else if (l.min !== null && l.max !== null) {
+  else if (l.min !== undefined && l.max !== undefined) {
     if (l.min === l.max) {
       return l.max.toString()
     }
@@ -33,21 +37,23 @@ const laajuusRange = (l) => {
     }
   }
   else {
-    return (l.min !== null ? l.max : l.min).toString()
+    return (l.min === undefined
+      ? ('-'+l.max.toString())
+      : (l.min.toString()+'-')
+    )
   }
 }
 
-export const YhteensäSuoritettu = ({suoritus, osasuoritukset, group, laajuusYksikkö=null}) => {
+export const YhteensäSuoritettu = ({osasuoritukset, laajuusP, laajuusYksikkö=null}) => {
   const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
-  let laajuudetP = laajuus(suoritus, group)
 
   return (
     <div>
       <Text name="Yhteensä"/>
       {' '}
       <span className="laajuudet-yhteensä">{laajuudetYhteensä}</span>
-      <span className="separator">{laajuudetP.map(v => (!v || v.min === null || v.max === null) ? null : ' / ')}</span>
-      <span className="laajuus-range">{laajuudetP.map(v => laajuusRange(v))}</span>
+      <span className="separator">{laajuusP.map(v => rangeExists(v) ? ' / ' : null)}</span>
+      <span className="laajuus-range">{laajuusP.map(v => laajuusRange(v))}</span>
       {' '}
       {laajuusYksikkö}
     </div>

@@ -31,7 +31,7 @@ import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {EnumEditor} from './EnumEditor.jsx'
-import {YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
+import {YhteensäSuoritettu, fetchLaajuudet} from './YhteensaSuoritettu.jsx'
 import Http from '../http'
 
 const placeholderForNonGrouped = '999999'
@@ -72,6 +72,7 @@ export class Suoritustaulukko extends React.Component {
       groupIds = [placeholderForNonGrouped]
     }
 
+    const laajuudetP = fetchLaajuudet(parentSuoritus, groupIds)
 
     let showPakollisuus = modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
     let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
@@ -126,7 +127,7 @@ export class Suoritustaulukko extends React.Component {
         context.edit && uusiTutkinnonOsa(i, groupId, items),
           !nested && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu suoritus={parentSuoritus} osasuoritukset={items} group={groupId} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]

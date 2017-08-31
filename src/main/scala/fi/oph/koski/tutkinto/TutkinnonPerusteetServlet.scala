@@ -54,17 +54,28 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     }
   }
 
-  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhma") {
-    val ryhmä = params("ryhma")
-    val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/") {
+    List()
+  }
 
-    perusteenRakenne[TutkinnonOsanLaajuus] {osa => osa match {
-      case None => Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
-      case Some(osa) => findRyhmä(ryhmäkoodi, osa) match {
-        case None => Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
-        case Some(rakenne) => Right(rakenne.asInstanceOf[RakenneModuuli].tutkinnonRakenneLaajuus)
-      }
-    }}
+  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
+    val ryhmät = params("ryhmat").split(',')
+    val ryhmäkoodit: Array[Koodistokoodiviite] = ryhmät.map(ryhmä =>
+      application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)
+        .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
+    )
+
+    val diaari = params("diaari")
+    val suoritustapa = params("suoritustapa")
+
+    val laajuudet: Array[Either[HttpStatus, Option[TutkinnonOsanLaajuus]]] = ryhmäkoodit.map(rk => {
+      perusteenRakenne[Option[TutkinnonOsanLaajuus]] {optOsa => optOsa match {
+        case Some(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))
+        case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
+      }}
+    })
+
+    ryhmät.zip(laajuudet).map(z => z._1 -> z._2.right.get.getOrElse(TutkinnonOsanLaajuus(None, None))).toMap
   }
 
   private def perusteenTutkinnonosat(f: Option[RakenneOsa] => Either[HttpStatus, List[TutkinnonOsa]]) = {
