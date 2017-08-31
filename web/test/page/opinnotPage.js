@@ -167,7 +167,8 @@ function TutkinnonOsat(groupId) {
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
       function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
-      return _.merge({
+
+      let api = _.merge({
         tila: function() {
           return findSingle('.tila', el).attr('title')
         },
@@ -188,14 +189,7 @@ function TutkinnonOsat(groupId) {
           triggerEvent(findSingle('.remove-value', el), 'click')
         },
         näyttö: function() {
-          var m = S('.näyttö .value a.edit-value', el)
-          if (m.length > 1) throw new Error('Multiple "näyttö" found')
-          return m.length === 0 ? null : {
-            paikka: el().find('.työpaikka').text(),
-            arvosana: el().find('.näyttö .arvosana span').text(),
-            arviointipäivä: el().find('.pvm').first().text(),
-            kuvaus: el().find('p').first().text()
-          }
+          return api.property('näyttö')
         },
         lueNäyttöModal: function() {
           function extractDropdownArray(elem) {
@@ -270,6 +264,7 @@ function TutkinnonOsat(groupId) {
           }
         }
       }, {}, Editor(el))
+      return api
     },
     lisääTutkinnonOsa: function(hakusana) {
       return function() {

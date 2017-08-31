@@ -6,13 +6,6 @@
     color: @color-label;
   }
 
-  .lightgray-background {
-    background: #f5f5f5;
-    .label {
-      color: @color-label-darker;
-    }
-  }
-
   .opiskeluoikeuden-tiedot, .suoritus {
     .text-like-input, .dropdown, .property.oid input {
       max-width: 300px;
@@ -189,8 +182,7 @@
     &.editing {
       .lisätiedot  {
         & > .value {
-          .lightgray-background;
-          padding: 12px;
+          .lightgray-box;
         }
         .properties .property {
           .ulkomaanjakso, .poissaolojakso {
@@ -212,8 +204,7 @@
       }
 
       .työssäoppimisjaksot > .value > .array > li:not(.add-item) {
-        .lightgray-background;
-        padding: 12px;
+        .lightgray-box;
         margin-bottom: 10px;
 
         .properties {
@@ -558,18 +549,24 @@
             padding-top: 9px;
           }
         }
-        td {
-          > .label {
-            color: @color-label;
-            margin-bottom: 6px;
+        > tbody > tr.property {
+          > td {
+            > .label {
+              margin-bottom: 6px;
+            }
+            &.label {
+              min-width: 100px;
+              padding-right: 12px;
+              color: @color-label;
+              white-space: nowrap;
+            }
+            &.complex {
+              > .value {
+                display: block;
+                margin-left: 20px;
+              }
+            }
           }
-        }
-
-        .property > .label {
-          min-width: 100px;
-          padding-right: 12px;
-          color: @color-label;
-          white-space: nowrap;
         }
 
         table.tabular-array {

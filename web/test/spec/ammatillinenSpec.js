@@ -596,7 +596,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Alussa', function() {
           it('ei näyttöä', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().getValue()).to.equal('Lisää ammattiosaamisen näyttö')
           })
         })
 
@@ -615,9 +615,8 @@ describe('Ammatillinen koulutus', function() {
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
           )
           it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('3')
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön esimerkkikuvaus')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('arvosana').getValue()).to.equal('3')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('kuvaus').getValue()).to.equal('Näytön esimerkkikuvaus')
           })
         })
 
@@ -637,9 +636,8 @@ describe('Ammatillinen koulutus', function() {
           )
           describe('Näyttää oikeat tiedot', function() {
             it('toimii', function() {
-              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().arvosana).to.equal('2')
-              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('arvosana').getValue()).to.equal('2')
+              expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('kuvaus').getValue()).to.equal('Näytön muokattu esimerkkikuvaus')
             })
           })
           describe('Oikeat tiedot säilyvät modalissa', function() {
@@ -661,8 +659,7 @@ describe('Ammatillinen koulutus', function() {
         describe('Tallentamisen jälkeen', function() {
           before(editor.saveChanges, editor.edit, opinnot.expandAll)
           it('näyttää edelleen oikeat tiedot', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.not.equal(null)
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('kuvaus').getValue()).to.equal('Näytön muokattu esimerkkikuvaus')
           })
         })
 
@@ -671,14 +668,14 @@ describe('Ammatillinen koulutus', function() {
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö()
           )
           it('toimii', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().getValue()).to.equal('Lisää ammattiosaamisen näyttö')
           })
         })
 
         describe('Tallentamisen jälkeen', function() {
           before(editor.saveChanges, editor.edit, opinnot.expandAll)
           it('näyttää edelleen oikeat tiedot', function() {
-            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö()).to.equal(null)
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().getValue()).to.equal('Lisää ammattiosaamisen näyttö')
           })
         })
       })

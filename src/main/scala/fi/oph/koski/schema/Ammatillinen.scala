@@ -218,6 +218,9 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def alkamispäivä: Option[LocalDate]
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @ComplexObject
+  def näyttö: Option[Näyttö]
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
   def suorituskieli: Option[Koodistokoodiviite]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
@@ -265,8 +268,6 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  @ComplexObject
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
