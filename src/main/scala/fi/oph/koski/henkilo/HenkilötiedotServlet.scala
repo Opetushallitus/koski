@@ -14,8 +14,6 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
   private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository)
 
   get("/search") {
-    contentType = "application/json;charset=utf-8"
-
     params.get("query") match {
       case Some(query) if query.length >= 3 =>
         val henkilöt = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList

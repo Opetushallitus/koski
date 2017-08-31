@@ -10,7 +10,6 @@ import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
 class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
   get("/oppilaitos/:oppilaitosId") {
-   contentType = "application/json;charset=utf-8"
    (params.get("query"), params.get("oppilaitosId")) match {
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => application.tutkintoRepository.findTutkinnot(oppilaitosId, query)
      case _ => KoskiErrorCategory.badRequest.queryParam.searchTermTooShort()
