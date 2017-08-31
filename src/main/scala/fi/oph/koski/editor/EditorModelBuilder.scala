@@ -139,6 +139,7 @@ trait ModelBuilderForClass extends EditorModelBuilder[AnyRef] {
 object KoodistoEnumModelBuilder {
   val defaults = Map(
     "kieli" -> "FI",
+    "maatjavaltiot2" -> "246",
     "arviointiasteikkoyleissivistava" -> "S",
     "suorituksentila" -> "KESKEN",
     "perusopetuksensuoritustapa" -> "koulutus"
