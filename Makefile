@@ -38,7 +38,7 @@ front: logdir
 	cd web && mkdir -p target && npm install
 watch:
 	cd web && npm run watch
-source-to-image: build
+source-to-image: clean build
 	echo "TODO" > target/webapp/buildversion.txt
 	mvn package -DskipTests
 
