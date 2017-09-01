@@ -5,7 +5,7 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {modelData, modelLookup, resetOptionalModel, accumulateModelStateAndValidity, pushModel} from './EditorModel.js'
+import {accumulateModelStateAndValidity, modelLookup, pushModel, resetOptionalModel} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {addContext} from './EditorModel'
 
