@@ -19,7 +19,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findVersion(oid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
-    // TODO: tarkista, että opiskeluoikeus kuuluu tälle oppijalla
+    // TODO: tarkista, että opiskeluoikeus kuuluu tälle oppijalle
     historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
       toOppija(_ => List(history))(user)(oid)
     }
