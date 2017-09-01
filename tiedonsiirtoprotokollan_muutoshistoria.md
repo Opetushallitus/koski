@@ -1,3 +1,14 @@
+## 1.9.2017
+
+Luetellaan muutoksia, jotka on toteutettu aiemmin, mutta joita ei ole merkitty muutoshistoriaan.
+
+- Lisätty ammatillisen opiskeluoikeuden lisätietoja: vaikeastiVammainen, vammainenJaAvustaja, majoitus, 
+sisäoppilaitosmainenMajoitus, vaativanErityisentuenYhteydessäJärjestettäväMajoitus, vankilaopetuksessa, osaAikaisuus,
+ poissaolojaksot, henkilöstökoulutus
+- Lisätty perusopetuksen opiskeluoikeuden lisätietoja: vaikeastiKehitysvammainen, majoitusetu, kuljetusetu,
+oikeusMaksuttomaanAsuntolapaikkaan
+- Lisätty lukiokoulutuksen opiskeluoikeuden lisätietoja: oikeusMaksuttomaanAsuntolapaikkaan
+
 ## 28.8.2017
 
 - Lisätty sisältyyOpiskeluoikeuteen-kenttä kaikkiin opiskeluoikeuksiin
