@@ -5,7 +5,7 @@ import slick.lifted.Query
 
 trait Pagination extends KoskiBaseServlet {
   def pageNumber = getOptionalIntegerParam("pageNumber")
-  def pageSize = getOptionalIntegerParam("pageSize")
+  def pageSize = getOptionalIntegerParam("pageSize").map(ps => Math.min(ps, 10000)) // Limit to 10000 items per page
   def paginationSettings: Option[PaginationSettings] = (pageNumber, pageSize) match {
     case (pageNumber, Some(pageSize)) => Some(PaginationSettings(pageNumber.getOrElse(0), pageSize))
     case _ => None
