@@ -64,7 +64,7 @@ export function parseLocation(location) {
       return this.replaceQueryParams(newParams)
     },
     replaceQueryParams(newParams) {
-      let parameterPairs = R.filter(([, value]) => value != undefined && value != '', R.toPairs(newParams))
+      let parameterPairs = R.filter(([, value]) => value !== undefined && value !== '' && value !== false, encodeParams(newParams))
       let query = R.join('&', R.map(R.join('='), parameterPairs))
       let search = query ? '?' + query : ''
       return parseLocation({pathname: location.pathname, hash: location.hash, search: search})
@@ -88,10 +88,16 @@ export function parseQuery(qstr) {
   return query
 }
 
-export const appendQueryParam = (path, key, value) => path + (parsePath(path).queryString ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(value)
-
-export const appendQueryParams = (path, params) => R.toPairs(params).reduce((l, [key, value]) => appendQueryParam(l, key, value), path)
+export const appendQueryParams = (path, params) => parsePath(path).addQueryParams(params).toString()
 
 export const navigateWithQueryParams = (newParams) => {
   navigateTo(currentLocation().addQueryParams(newParams).toString())
+}
+
+function encodeParam(param) {
+  return typeof param === 'string' ? encodeURIComponent(param) : param
+}
+
+function encodeParams(params) {
+  return R.toPairs(params).map(([key, value]) => [encodeURIComponent(key), encodeParam(value)])
 }
