@@ -11,7 +11,7 @@ import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {VahvistusEditor} from './VahvistusEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
-import {JaksoEditor} from './JaksoEditor.jsx'
+import {JaksoEditor, InlineJaksoEditor} from './JaksoEditor.jsx'
 import {BooleanEditor} from './BooleanEditor.jsx'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import {ToimipisteEditor} from './ToimipisteEditor.jsx'
@@ -41,6 +41,7 @@ export const editorMapping = R.mergeAll([{
   'erityisentuenpaatos': JaksoEditor,
   'poissaolojakso': JaksoEditor,
   'jakso': JaksoEditor,
+  'erityisenkoulutustehtavanjakso': InlineJaksoEditor,
   'toimipiste': ToimipisteEditor,
   'organisaatiowithoid': OrganisaatioEditor,
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,

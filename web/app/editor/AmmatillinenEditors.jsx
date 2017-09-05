@@ -9,7 +9,7 @@ import {SelectAlternativeByEnumValueEditor} from './SelectAlternativeByEnumValue
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
 import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
 import {TutkinnonOsanSuoritusEditor} from './Suoritustaulukko.jsx'
-import {JaksoEditor} from './JaksoEditor.jsx'
+import {InlineJaksoEditor} from './JaksoEditor.jsx'
 
 export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
@@ -80,12 +80,6 @@ export class JärjestämismuotojaksoEditor extends React.Component {
 }
 JärjestämismuotojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
-const UlkomaanjaksoEditor = ({model}) => <JaksoEditor model={model} className="inline"/>
-UlkomaanjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
-
-const PoissaolojaksoEditor = ({model}) => <JaksoEditor model={model} className="inline"/>
-PoissaolojaksoEditor.validateModel = PäivämääräväliEditor.validateModel
-
 const TyössäoppimisjaksoEditor = ({model}) => {
   return (
     <div className="tyossaoppimisjakso">
@@ -123,6 +117,6 @@ export const editorMapping = {
   'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
   'naytto': AmmatillinenNäyttöEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor,
-  'ulkomaanjakso': UlkomaanjaksoEditor,
-  'poissaolojakso': PoissaolojaksoEditor
+  'ulkomaanjakso': InlineJaksoEditor,
+  'poissaolojakso': InlineJaksoEditor
 }
