@@ -63,7 +63,7 @@ object AmmattitutkintoExample {
       ),
       AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = tutkinto,
-        suoritustapa = Some(suoritustapaNäyttö),
+        suoritustapa = suoritustapaNäyttö,
         järjestämismuodot = Some(List(
           Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
           Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
@@ -118,7 +118,7 @@ object AmmatillinenPerustutkintoExample {
   lazy val osittainenPerustutkinto = Oppija(exampleHenkilö, List(osittainenPerustutkintoOpiskeluoikeus))
 
   lazy val tunnustettuPaikallinenTutkinnonOsaOpiskeluoikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
+    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaNäyttö),
     osat = Some(List(
       MuunAmmatillisenTutkinnonOsanSuoritus(
         koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100031", Some("Moottorin ja voimansiirron huolto ja korjaus"), "tutkinnonosat", None), false, Some(LaajuusOsaamispisteissä(15))),
@@ -164,7 +164,7 @@ object AmmatillinenOldExamples {
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
         tutkintonimike = None,
         osaamisala = None,
-        suoritustapa = Some(suoritustapaNäyttö),
+        suoritustapa = suoritustapaNäyttö,
         järjestämismuodot = Some(List(Järjestämismuotojakso(date(2016, 9, 1), None, järjestämismuotoOppisopimus))),
         suorituskieli = suomenKieli,
         tila = tilaKesken,
@@ -179,12 +179,12 @@ object AmmatillinenOldExamples {
   )
 
   lazy val paikallinen = oppija(opiskeluoikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
+    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaNäyttö),
     osat = Some(List(paikallisenOsanSuoritus))
   ))
 
   lazy val mukautettu = oppija(opiskeluoikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaOps)),
+    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaOps),
     osat = Some(List(
       YhteisenAmmatillisenTutkinnonOsanSuoritus(
         koulutusmoduuli = YhteinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
@@ -205,7 +205,7 @@ object AmmatillinenOldExamples {
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-      suoritustapa = Some(suoritustapaNäyttö),
+      suoritustapa = suoritustapaNäyttö,
       järjestämismuodot = None,
       tila = tilaKesken,
       toimipiste = stadinToimipiste,
@@ -239,7 +239,7 @@ object AmmatillinenOldExamples {
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-          suoritustapa = Some(suoritustapaOps),
+          suoritustapa = suoritustapaOps,
           järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
           tila = tilaKesken,
           toimipiste = stadinToimipiste,
@@ -303,7 +303,7 @@ object AmmatillinenOldExamples {
           ),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-          suoritustapa = Some(suoritustapaNäyttö),
+          suoritustapa = suoritustapaNäyttö,
           järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
           suorituskieli = suomenKieli,
           tila = tilaValmis,

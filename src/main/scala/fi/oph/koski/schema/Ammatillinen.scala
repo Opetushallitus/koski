@@ -143,7 +143,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
-  suoritustapa: Option[Koodistokoodiviite] = None,
+  suoritustapa: Koodistokoodiviite,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,

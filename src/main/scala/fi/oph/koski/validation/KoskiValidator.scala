@@ -286,7 +286,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   def validateTutkinnonosanRyhmä(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
-        if (tutkinnonSuoritus.suoritustapa.map(_.koodiarvo) == Some("ops")) {
+        if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops") {
           // OPS-suoritustapa => vaaditaan ryhmittely
           suoritus.tutkinnonOsanRyhmä
             .map(_ => HttpStatus.ok)

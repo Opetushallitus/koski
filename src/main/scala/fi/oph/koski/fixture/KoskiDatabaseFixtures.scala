@@ -103,7 +103,8 @@ object OpiskeluoikeusTestData {
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
         toimipiste = oppilaitos,
-        suorituskieli = suomenKieli
+        suorituskieli = suomenKieli,
+        suoritustapa = AmmatillinenExampleData.suoritustapaOps
       )),
       alkamispäivä = Some(date(2000, 1, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None)))

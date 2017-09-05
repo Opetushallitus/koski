@@ -13,12 +13,12 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
-              HttpStatus.validate(tutkintoSuoritus.suoritustapa.isDefined)(KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()).then(HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
+              HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
                   validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa)
                 case osa: PaikallinenTutkinnonOsa =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
-              }, validateTutkintoField(tutkintoSuoritus, osaSuoritus)))
+              }, validateTutkintoField(tutkintoSuoritus, osaSuoritus))
           }))
       }
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
@@ -109,8 +109,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: ValtakunnallinenTutkinnonOsa, rakenne: TutkintoRakenne, suoritustapa: Option[Koodistokoodiviite]): HttpStatus = {
-    val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
+  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: ValtakunnallinenTutkinnonOsa, rakenne: TutkintoRakenne, suoritustapa: Koodistokoodiviite): HttpStatus = {
+    val suoritustapaJaRakenne = rakenne.findSuoritustapaJaRakenne(suoritustapa)
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne)  =>
         (suoritus.tutkinto, suoritus.tutkinnonOsanRyhmä) match {
