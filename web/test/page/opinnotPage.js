@@ -186,7 +186,7 @@ function TutkinnonOsat(groupId) {
           return wait.forAjax()
         },
         poistaTutkinnonOsa: function() {
-          let find = function() { return findSingle('.remove-value', el) }
+          var find = function() { return findSingle('.remove-value', el) }
           if (isElementVisible(find)) {
             triggerEvent(find, 'click')
           }
