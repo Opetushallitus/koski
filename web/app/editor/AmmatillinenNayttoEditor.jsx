@@ -3,9 +3,8 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
-import {Editor} from './Editor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
-import {accumulateModelStateAndValidity, modelLookup, pushModel, resetOptionalModel} from './EditorModel.js'
+import {accumulateModelStateAndValidity, pushModel, resetOptionalModel} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {addContext} from './EditorModel'
 
@@ -34,7 +33,7 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
 
 const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
   return (<div>
-    {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}>Muokkaa</a>}
+    {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}><Text name="Muokkaa"/></a>}
     {edit && <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>}
 
     <div className="näyttö-rivi">
