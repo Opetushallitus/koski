@@ -6,7 +6,8 @@ import ModalDialog from './ModalDialog.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {accumulateModelStateAndValidity, pushModel, resetOptionalModel} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {addContext} from './EditorModel'
+import {addContext, modelLookup} from './EditorModel'
+import {Editor} from './Editor.jsx'
 
 const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
@@ -26,6 +27,19 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
         baret-lift
         model={modelP}
         propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'arvioitsijat', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
+        getValueEditor={(p, getDefault) => {
+          if (p.key === 'suorituspaikka') {return (
+            <table><tbody><tr>
+              {
+                modelP.map(m => [
+                  <td><Editor model={modelLookup(m, 'suorituspaikka.tunniste')}/></td>,
+                  <td><Editor model={modelLookup(m, 'suorituspaikka.kuvaus')}/></td>
+                ])
+              }
+            </tr></tbody></table>
+          )}
+          return getDefault()
+        }}
       />
     </ModalDialog>
   )
