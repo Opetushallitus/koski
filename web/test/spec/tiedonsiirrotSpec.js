@@ -18,7 +18,7 @@ describe('Tiedonsiirrot', function() {
 
   describe("Tiedonsiirtoloki", function() {
     function sortByName(a, b) {
-      a[1].localeCompare(b[1])
+      return a[1].localeCompare(b[1])
     }
 
     it('Näytetään', function() {
