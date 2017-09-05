@@ -314,8 +314,7 @@ describe('Ammatillinen koulutus', function() {
           expect(page.isSavedLabelShown()).to.equal(true)
           expect(extractAsText(S('.järjestämismuodot'))).to.equal(
             'Järjestämismuodot 22.8.2017 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
-            'Yritys Autohuolto oy\n' +
-            'Y-tunnus 1629284-5'
+            'Yritys Autohuolto oy Y-tunnus 1629284-5'
           )
         })
       })
@@ -1086,8 +1085,7 @@ describe('Ammatillinen koulutus', function() {
             'Suorituskieli suomi\n' +
             'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
-            'Yritys Autokorjaamo Oy\n' +
-            'Y-tunnus 1234567-8\n' +
+            'Yritys Autokorjaamo Oy Y-tunnus 1234567-8\n' +
             '31.3.2016 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
           )
