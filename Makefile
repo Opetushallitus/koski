@@ -40,7 +40,8 @@ watch:
 	cd web && npm run watch
 source-to-image: clean build
 	echo "TODO" > target/webapp/buildversion.txt
-	mvn package -DskipTests
+	mvn package -P uberjar -DskipTests
+	rm target/*.war
 
 ### Running tests
 
