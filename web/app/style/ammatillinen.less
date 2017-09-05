@@ -44,10 +44,16 @@
     }
   }
 
-  .näyttö > td > .value {
+  .näyttö > td > .value:not(.empty) {
     .lightgray-box;
     .edit-value {
-      margin-left: 5px;
+      margin-left: 1px;
+      margin-bottom: 7px;
+      display: inline-block;
+    }
+    .remove-value {
+      float: right;
+      margin-right: -7px;
     }
   }
 

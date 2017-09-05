@@ -47,7 +47,7 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
 
 const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
   return (<div>
-    {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}></a>}
+    {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}>Muokkaa</a>}
     {edit && <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>}
 
     <div className="näyttö-rivi">

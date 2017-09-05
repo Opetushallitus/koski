@@ -30,6 +30,7 @@ export class PropertiesEditor extends React.Component {
       } else {
         let key = prefix + property.key + i
         let propertyClassName = 'property ' + property.key
+        let valueClass = modelEmpty(property.model) ? 'value empty' : 'value'
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
           : getValueEditor(property, () => <Editor model={(property.editable || context.editAll ) ? property.model : addContext(property.model, { edit: false })}/> )
@@ -39,10 +40,10 @@ export class PropertiesEditor extends React.Component {
             property.complexObject
               ? (<td className="complex" colSpan="2">
               <div className="label"><Text name={property.title}/></div>
-              <div className="value">{ valueEditor }</div>
+              <div className={valueClass}>{ valueEditor }</div>
             </td>)
               : [<td className="label" key="label"><Text name={property.title}/></td>,
-              <td className="value" key="value">{ valueEditor }</td>
+              <td className={valueClass} key="value">{ valueEditor }</td>
             ]
           }
         </tr>)]
