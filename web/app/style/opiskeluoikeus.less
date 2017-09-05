@@ -263,6 +263,33 @@
 
         }
       }
+
+      > .lisätiedot {
+        a.expandable {
+          display: inline-block;
+          &.open {
+            margin-bottom: 8px;
+          }
+          &:after {
+            font-family: FontAwesome;
+            content: '';
+            margin-left: 6px;
+            font-size: 11px;
+          }
+          &.open:after {
+            content: '';
+          }
+        }
+        .value > .properties > table > tbody > tr > .label {
+          text-align: right;
+          white-space: normal;
+          line-height: normal;
+          max-width: 310px;
+        }
+        .array > li {
+          margin-bottom: 8px;
+        }
+      }
     }
 
     .lisaa-suoritus-modal {
@@ -353,33 +380,6 @@
           width: initial;
           margin-right: 5px;
         }
-      }
-    }
-
-    .expandable-container {
-      a.expandable {
-        display: inline-block;
-        &.open {
-          margin-bottom: 8px;
-        }
-        &:after {
-          font-family: FontAwesome;
-          content: '';
-          margin-left: 6px;
-          font-size: 11px;
-        }
-        &.open:after {
-          content: '';
-        }
-      }
-      .value > .properties > table > tbody > tr > .label {
-        max-width: 310px;
-        text-align: right;
-        white-space: normal;
-        line-height: normal;
-      }
-      .array > li {
-        margin-bottom: 8px;
       }
     }
 
