@@ -1,9 +1,10 @@
 {
   "henkilö" : {
-    "hetu" : "280618-402H",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+    "oid" : "1.2.246.562.24.99999999123",
+    "syntymäaika" : "1977-02-24",
+    "etunimet" : "Heikki",
+    "kutsumanimi" : "Heikki",
+    "sukunimi" : "Hetuton"
   },
   "opiskeluoikeudet" : [ {
     "lähdejärjestelmänId" : {
@@ -18,7 +19,7 @@
       }
     },
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.56753942459"
+      "oid" : "1.2.246.562.10.52251087186"
     },
     "alkamispäivä" : "2016-09-01",
     "arvioituPäättymispäivä" : "2020-05-01",
@@ -42,6 +43,14 @@
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Opetussuunnitelman mukainen"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",

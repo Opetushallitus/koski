@@ -1,13 +1,24 @@
 {
   "henkilö" : {
-    "hetu" : "280618-402H",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+    "hetu" : "270303-281N",
+    "etunimet" : "Tiina",
+    "kutsumanimi" : "Tiina",
+    "sukunimi" : "Tiedonsiirto"
   },
   "opiskeluoikeudet" : [ {
+    "lähdejärjestelmänId" : {
+      "id" : "12345",
+      "lähdejärjestelmä" : {
+        "koodiarvo" : "winnova",
+        "nimi" : {
+          "fi" : "Winnova"
+        },
+        "koodistoUri" : "lahdejarjestelma",
+        "koodistoVersio" : 1
+      }
+    },
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186"
+      "oid" : "1.2.246.562.10.56753942459"
     },
     "alkamispäivä" : "2016-09-01",
     "arvioituPäättymispäivä" : "2020-05-01",
@@ -31,6 +42,14 @@
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Opetussuunnitelman mukainen"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
