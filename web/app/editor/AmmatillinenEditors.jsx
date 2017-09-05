@@ -15,7 +15,7 @@ import {JaksoEditor} from './JaksoEditor.jsx'
 export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
     let {model} = this.props
-    return <span>{modelTitle(model, 'kuvaus')}</span>
+    return <Editor model={model} path="kuvaus"/>
   }
 }
 NäytönSuorituspaikkaEditor.readOnly = true
