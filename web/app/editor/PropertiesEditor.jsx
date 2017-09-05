@@ -4,11 +4,12 @@ import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
 import {modelProperties} from './EditorModel'
 import Text from '../Text.jsx'
+import {buildClassNames} from '../classnames'
 
 export class PropertiesEditor extends React.Component {
   render() {
     let defaultValueEditor = (prop, getDefault) => getDefault()
-    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true} = this.props
+    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true, className} = this.props
     if (!properties) {
       if (!model) throw new Error('model or properties required')
       properties = modelProperties(model)
@@ -50,7 +51,7 @@ export class PropertiesEditor extends React.Component {
       }
     }
 
-    return (<div className="properties">
+    return (<div className={ buildClassNames(['properties', className]) }>
       <table><tbody>
       { properties.filter(shouldShow).flatMap(munch('')) }
       </tbody></table>

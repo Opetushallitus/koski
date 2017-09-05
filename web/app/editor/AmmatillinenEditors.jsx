@@ -60,18 +60,21 @@ export class JärjestämismuotojaksoEditor extends React.Component {
 
     return (
         <div className="jarjestamismuotojakso">
-
           <PäivämääräväliEditor model={model}/>
           {', '}
-          <SelectAlternativeByEnumValueEditor model={modelLookup(model, 'järjestämismuoto')} path="tunniste" className="järjestämismuoto" />
-          <PropertiesEditor
+          <span className="jarjestamismuoto">
+            <SelectAlternativeByEnumValueEditor model={modelLookup(model, 'järjestämismuoto')} path="tunniste" className="järjestämismuoto" />
+            <PropertiesEditor
+              className="inline"
               model = {modelLookup(model, 'järjestämismuoto')}
               propertyFilter={p => !['tunniste'].includes(p.key)}
-          />
-          <PropertiesEditor
+            />
+            <PropertiesEditor
+              className="inline"
               model = {model}
               propertyFilter={p => !['alku', 'loppu', 'järjestämismuoto'].includes(p.key)}
-          />
+            />
+          </span>
         </div>
     )
   }
