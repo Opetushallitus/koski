@@ -588,9 +588,6 @@ describe('Ammatillinen koulutus', function() {
         before(
           editor.edit,
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
-          editor.saveChanges,
-          wait.forAjax,
-          editor.edit,
           opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )
 

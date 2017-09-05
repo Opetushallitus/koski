@@ -186,7 +186,10 @@ function TutkinnonOsat(groupId) {
           return wait.forAjax()
         },
         poistaTutkinnonOsa: function() {
-          triggerEvent(findSingle('.remove-value', el), 'click')
+          let find = function() { return findSingle('.remove-value', el) }
+          if (isElementVisible(find)) {
+            triggerEvent(find, 'click')
+          }
         },
         näyttö: function() {
           return api.property('näyttö')
