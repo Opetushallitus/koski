@@ -1,3 +1,7 @@
+## 5.9.2017
+
+- Ammatillisen tutkinnon suorituksen suoritustapa pakolliseksi
+
 ## 1.9.2017
 
 Luetellaan muutoksia, jotka on toteutettu aiemmin, mutta joita ei ole merkitty muutoshistoriaan.
