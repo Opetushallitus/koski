@@ -5,27 +5,12 @@ import Autocomplete from '../Autocomplete.jsx'
 import Http from '../http'
 import Text from '../Text.jsx'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
+import {doActionWhileMounted} from '../util'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const tutkintoAtom = Atom()
   const suoritustapaAtom = Atom()
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
-
-  let suoritustavatP = tutkintoAtom.flatMapLatest( tutkinto => tutkinto
-    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/suoritustavat/${encodeURIComponent(tutkinto.diaarinumero)}`)
-    : []
-  ).toProperty()
-
-  Bacon.onValues(suoritustapaAtom, suoritustavatP, (suoritustapa, suoritustavat) => {
-    let currentOneFound = suoritustapa && suoritustavat.map(k => k.koodiarvo).includes(suoritustapa.koodiarvo)
-    if (!currentOneFound) {
-      if (suoritustavat.length == 1) {
-        suoritustapaAtom.set(suoritustavat[0])
-      } else if (suoritustapa) {
-        suoritustapaAtom.set(undefined)
-      }
-    }
-  })
 
   const makeSuoritus = (oppilaitos, tutkinto, suorituskieli, suoritustapa) => {
     if (tutkinto && oppilaitos && suoritustapa) {
@@ -48,7 +33,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
     <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
-    <Suoritustapa suoritustavatP={suoritustavatP} suoritustapaAtom={suoritustapaAtom}/>
+    <Suoritustapa tutkintoP={tutkintoAtom} suoritustapaAtom={suoritustapaAtom}/>
   </div>)
 }
 
@@ -74,13 +59,29 @@ const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
   </div> )
 }
 
-const Suoritustapa = ({suoritustapaAtom, suoritustavatP}) => {
-  return (<div>
-    <KoodistoDropdown
-      className="suoritustapa"
-      title="Suoritustapa"
-      options={suoritustavatP}
-      selected={suoritustapaAtom}
-    />
-  </div>)
+const Suoritustapa = ({tutkintoP, suoritustapaAtom}) => {
+  return (<div>{
+    tutkintoP.flatMapLatest(tutkinto => {
+      let suoritustavatP = (tutkinto
+          ? Http.cachedGet(`/koski/api/tutkinnonperusteet/suoritustavat/${encodeURIComponent(tutkinto.diaarinumero)}`)
+          : Bacon.constant([])
+      ).toProperty()
+      return (<span><KoodistoDropdown
+        className="suoritustapa"
+        title="Suoritustapa"
+        options={suoritustavatP}
+        selected={suoritustapaAtom}
+      /> { doActionWhileMounted( Bacon.combineAsArray(suoritustapaAtom, suoritustavatP), ([suoritustapa, suoritustavat]) => {
+          let currentOneFound = suoritustapa && suoritustavat.map(k => k.koodiarvo).includes(suoritustapa.koodiarvo)
+          if (!currentOneFound) {
+            if (suoritustavat.length == 1) {
+              suoritustapaAtom.set(suoritustavat[0])
+            } else if (suoritustapa) {
+              suoritustapaAtom.set(undefined)
+            }
+          }
+        }
+      )}</span>)
+    })
+  }</div>)
 }
