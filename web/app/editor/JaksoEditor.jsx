@@ -6,12 +6,12 @@ import {recursivelyEmpty} from './EditorModel'
 
 export class JaksoEditor extends React.Component {
   render() {
-    let {model} = this.props
+    let {model, className} = this.props
     let wrappedModel = wrapOptional({model: model})
     return (
       <div className="jaksollinen">
         <PäivämääräväliEditor model={wrappedModel}/>
-        <PropertiesEditor model={wrappedModel} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} />
+        <PropertiesEditor model={wrappedModel} propertyFilter={p => !['alku', 'loppu'].includes(p.key)} className={className} />
       </div>
     )
   }
