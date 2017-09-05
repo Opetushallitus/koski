@@ -166,6 +166,7 @@ case class AmmatillisenTutkinnonSuoritus(
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
 @Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta")
+@Title("Ammatillisen tutkinnon osa/osia")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
@@ -246,7 +247,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   näyttö: Option[Näyttö] = None,
   @Title("Osa-alueet")
-  override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanOsaAlueenSuoritus]] = None,
+  override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus
 
@@ -366,9 +367,9 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
 ) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
-@Title("Ammatillisen tutkinnon osan osa-alueen suoritus")
-@Description("Ammatillisen tutkinnon osan osa-alueen suorituksen tiedot")
-case class AmmatillisenTutkinnonOsanOsaAlueenSuoritus(
+@Title("Yhteisen tutkinnon osan osa-alueen suoritus")
+@Description("Yhteisen tutkinnon osan osa-alueen suorituksen tiedot")
+case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   @Title("Osa-alue")
   @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
