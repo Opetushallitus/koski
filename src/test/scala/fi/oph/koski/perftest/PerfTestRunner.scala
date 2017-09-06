@@ -5,33 +5,13 @@ import java.lang.System.currentTimeMillis
 import java.util.zip.GZIPOutputStream
 
 import fi.oph.koski.http.HttpStatusException
-import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import io.prometheus.client.exporter.PushGateway
 import io.prometheus.client.{CollectorRegistry, Gauge}
 
 import scala.annotation.tailrec
 
-case class Operation(method: String = "GET",
-  uri: String,
-  uriPattern: Option[String] = None,
-  queryParams: Iterable[(String, String)] = Seq.empty,
-  headers: Iterable[(String, String)] = Seq.empty,
-  body: Array[Byte] = null,
-  gzip: Boolean = false,
-  responseCodes: List[Int] = List(200)
-)
 
-abstract class PerfTestScenario extends KoskidevHttpSpecification with Logging {
-  def roundCount: Int = sys.env.getOrElse("PERFTEST_ROUNDS", "10").toInt
-  def warmupRoundCount: Int = sys.env.getOrElse("WARMUP_ROUNDS", "20").toInt
-  def serverCount: Int = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
-  def threadCount: Int = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
-  def operation(round: Int): List[Operation]
-  def name = getClass.getSimpleName
-
-  override def logger = super.logger
-}
 
 object PerfTestRunner extends Logging {
 
