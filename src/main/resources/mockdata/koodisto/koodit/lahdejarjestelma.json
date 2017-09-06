@@ -11,6 +11,28 @@
     "versio": 1
   },
   {
+    "koodiUri": "lahdejarjestelma_winnovaeduerp",
+    "koodiArvo": "winnova-eduerp",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, EduErp",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovastudentaplus",
+    "koodiArvo": "winnova-studentaplus",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, Studenta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "lahdejarjestelma_primus",
     "koodiArvo": "primus",
     "metadata": [
