@@ -14,7 +14,9 @@ case class TutkintoRakenne(diaarinumero: String, koulutustyyppi: Koulutustyyppi,
 case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: Option[RakenneOsa])
 case class TutkinnonOsanLaajuus(min: Option[Long], max: Option[Long])
 
-sealed trait RakenneOsa
+sealed trait RakenneOsa {
+  def tutkinnonOsat: List[TutkinnonOsa]
+}
 
 case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määrittelemätön: Boolean, laajuus: Option[TutkinnonOsanLaajuus]) extends RakenneOsa {
   def tutkinnonOsat: List[TutkinnonOsa] = osat flatMap {
@@ -25,4 +27,6 @@ case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määri
     this.laajuus.getOrElse(TutkinnonOsanLaajuus(None, None))
   }
 }
-case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString) extends RakenneOsa
+case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString) extends RakenneOsa {
+  override def tutkinnonOsat: List[TutkinnonOsa] = List(this)
+}

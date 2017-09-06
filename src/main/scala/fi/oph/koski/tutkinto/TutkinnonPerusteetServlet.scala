@@ -2,7 +2,6 @@ package fi.oph.koski.tutkinto
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
@@ -22,28 +21,21 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa") {
-    perusteenTutkinnonosat { osa =>
-      Right(osa match {
-        case None => List.empty
-        case Some(rakenneModuuli) => rakenneModuuli match {
-          case osa: TutkinnonOsa => List(osa)
-          case moduuli: RakenneModuuli => findTutkinnonOsat(moduuli)
-        }
-      })
-    }
+    perusteenRakenne.map(tutkinnonOsienKoodit)
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa/:ryhma") {
     val ryhmä = params("ryhma")
     val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
-    perusteenTutkinnonosat { osa =>
-      osa.flatMap(findRyhmä(ryhmäkoodi, _)) match {
-        case None =>
-          Left(KoskiErrorCategory.notFound.ryhmääEiLöydyRakenteesta())
-        case Some(rakennemoduuli) =>
-          Right(findTutkinnonOsat(rakennemoduuli))
-      }
-    }
+    perusteenRakenne.map ( osa =>
+      tutkinnonOsienKoodit(osa.flatMap(findRyhmä(ryhmäkoodi, _)))
+    )
+  }
+
+  private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne match {
+    case None => List.empty
+    case Some(rakenneOsa) =>
+      rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
   }
 
   get("/suoritustavat/:diaari") {
@@ -69,27 +61,25 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     val suoritustapa = params("suoritustapa")
 
     val laajuudet: Array[Either[HttpStatus, Option[TutkinnonOsanLaajuus]]] = ryhmäkoodit.map(rk => {
-      perusteenRakenne[Option[TutkinnonOsanLaajuus]] {optOsa => optOsa match {
+      perusteenRakenne.flatMap {
         case Some(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))
         case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
-      }}
+      }
     })
 
     ryhmät.zip(laajuudet).map(z => z._1 -> z._2.right.get.getOrElse(TutkinnonOsanLaajuus(None, None))).toMap
   }
 
-  private def perusteenTutkinnonosat(f: Option[RakenneOsa] => Either[HttpStatus, List[TutkinnonOsa]]) = {
-    perusteenRakenne[List[TutkinnonOsa]](f).right.map(_.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang))))
-  }
-
-  private def perusteenRakenne[T](f: Option[RakenneOsa] => Either[HttpStatus, T]) = {
+  private def perusteenRakenne: Either[HttpStatus, Option[RakenneOsa]] = {
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
-    application.tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa)) match {
+    val suoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = application.tutkintoRepository.findPerusteRakenne(diaari).flatMap(_.suoritustavat.find(_.suoritustapa.koodiarvo == suoritustapa))
+    suoritustapaJaRakenne match {
       case None =>
         Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
-      case Some(s) => f(s.rakenne)
+      case Some(s) =>
+        Right(s.rakenne)
     }
   }
 
@@ -107,9 +97,6 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       case _ => None
     }
   }
-
-  private def findTutkinnonOsat(rakennemoduuli: RakenneModuuli): List[TutkinnonOsa] = rakennemoduuli.osat.flatMap {
-    case osa: TutkinnonOsa => List(osa)
-    case moduuli: RakenneModuuli => findTutkinnonOsat(moduuli)
-  }
 }
+
+case class LisättävätTutkinnonOsat(osat: List[Koodistokoodiviite], osaToisestaTutkinnosta: Boolean, paikallinenOsa: Boolean)

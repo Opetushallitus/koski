@@ -178,9 +178,8 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
 
   if (!diaarinumero || !suoritustapa) return null
 
-  let map404ToEmpty = { errorMapper: (e) => e.httpStatus == 404 ? [] : Bacon.Error(e) }
   let osatP = Http
-    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)), map404ToEmpty)
+    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)))
 
   selectedAtom.filter(R.identity).onValue(newItem => {
     addTutkinnonOsa(modelSetTitle(newItem.newItem
