@@ -24,6 +24,42 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 | Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | Koski        |
 | Tutkinto       | Tutkinnon kuvaus (tutkintotunnus, nimi...)   | tutkintotunnus   | Koodisto               |
 
+## Käyttäjän kirjautuminen ja käyttöoikeudet
+
+Koski sallii käyttäjän kirjautumisen, jos
+
+1. CAS-palvelu sallii kirjautumisen käyttäjän syöttämällä käyttäjätunnuksella ja salasanalla, ja
+2. LDAP:sta löytyy käyttäjän hakemisto kohdan #1 käyttäjätunnuksella.
+
+Käyttäjä kuuluu ryhmiin, jotka määrittävät hänen käyttöoikeudet Koskessa. Käyttäjän ryhmät haetaan yllä kohdassa #2 LDAP:sta. Ne ovat hakemiston attribuutissa `description` JSON-enkoodattuna listana. Koski tunnistaa listasta arvot, jotka ovat muotoa:
+
+> APP\_{app}\_{rooli}\_{oid}
+
+Missä parametri
+
+* _app_ on joko KOSKI tai LOKALISOINTI,
+* _rooli_ kertoo käyttäjäoikeustyypin, ja
+* _oid_ on organisaation oid-tunniste.
+
+Esimerkki arvosta:
+
+> APP_KOSKI_READ_UPDATE_1.2.246.562.10.48002002061
+
+Tämä määrittää Kosken käyttäjälle luku- ja kirjoitusoikeuden organisaatiossa, jonka oid-tunnus on 1.2.246.562.10.48002002061.
+
+Parametrin _app_ arvo LOKALISOINTI sallii lokalisointitekstien lukemisen ja muuttamisen Kosken API:n kautta.
+
+Tuetut roolit:
+
+nimi | selite
+-----|-------
+READ | Organisaatiokohtainen lukuoikeus
+READ_UPDATE | Organisaatiokohtainen luku- ja kirjoitusoikeus
+OPHKATSELIJA | Globaali lukuoikeus kaikkiin organisaatioihin
+OPHPAAKAYTTAJA | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin
+YLLAPITAJA | (Toistaiseksi ei käytössä)
+TIEDONSIIRTO | Kosken API:n palvelukäyttö
+
 ## Teknologiat
 
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
