@@ -45,11 +45,10 @@ function KoskiPage() {
       var button = S('.oppija-haku .lisaa-oppija')
       return button.is(":visible") && !button.hasClass('disabled')
     },
-    addNewOppija: function() {
-      return Q().then(click(S('.oppija-haku .lisaa-oppija')))
-        .then(wait.until(AddOppijaPage().isVisible))
-        .then(wait.forAjax)
-    },
+    addNewOppija: seq(
+        click(findSingle('.oppija-haku .lisaa-oppija')),
+        wait.until(AddOppijaPage().isVisible),
+        wait.forAjax),
     isNoResultsLabelShown: function() {
       return isElementVisible(S('.oppija-haku .no-results'))
     },
@@ -60,12 +59,8 @@ function KoskiPage() {
       return S('.oppija-haku').hasClass('searching')
     },
     selectOppija: function(oppija) {
-      return function() {
-        var link = S('.oppija-haku li a:contains(' + oppija + ')')
-        if (!link.length) throw new Error("Oppija ei näkyvissä: " + oppija)
-        return Q().then(click(link))
-          .then(api.waitUntilOppijaSelected(oppija))
-      }
+      var link = findSingle('.oppija-haku li a:contains(' + oppija + ')')
+      return seq(click(link), api.waitUntilOppijaSelected(oppija))
     },
     getErrorMessage: function() {
       return S('.oppija-haku .error').text()
@@ -98,9 +93,11 @@ function KoskiPage() {
         } else if (className == "oppilaitos") {
           return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)()
         } else if (className == 'alkamispäivä') {
-          return Q().then(click(S('.date-range-selection')))
-            .then(Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || ""))
-            .then(click(S('body')))
+          return seq(
+            click(S('.date-range-selection')),
+            Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || ""),
+            click('body')
+          )()
         } else {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "ei valintaa")().then(wait.forAjax)
         }
@@ -108,9 +105,7 @@ function KoskiPage() {
 
     },
     sortBy: function(className) {
-      return function() {
-        return Q().then(click('.' + className + ' .sorting')).then(wait.forAjax)
-      }
+      return click('.' + className + ' .sorting')
     },
     tableElem: function() {
       return S('#content .oppijataulukko')
@@ -154,9 +149,7 @@ function KoskiPage() {
     isOppijaLoading: function() {
       return isElementVisible(S('.oppija.loading'))
     },
-    logout: function() {
-      return Q().then(click(S('#logout'))).then(wait.until(LoginPage().isVisible))
-    },
+    logout: seq(click('#logout'), wait.until(LoginPage().isVisible)),
     isErrorShown: function() {
       return isElementVisible(S("#error.error")) || api.isTopLevelError()
     },

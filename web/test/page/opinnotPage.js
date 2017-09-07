@@ -46,17 +46,17 @@ function OpinnotPage() {
       return S('.oppija-content.dirty').is(':visible')
     },
     avaaOpintosuoritusote: function (index) {
-      return function() {
-        return Q().then(click(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote')))
-          .then(wait.until(OpintosuoritusotePage().isVisible))
-      }
+      return seq(
+        click(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote')),
+        wait.until(OpintosuoritusotePage().isVisible)
+      )
     },
     avaaTodistus: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      return function() {
-        return Q().then(click(S(S('a.todistus')[index])))
-          .then(wait.until(TodistusPage().isVisible))
-      }
+      return seq(
+        click('a.todistus:eq(' + index + ')'),
+        wait.until(TodistusPage().isVisible)
+      )
     },
     avaaLisaysDialogi: function() {
       if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
@@ -79,7 +79,7 @@ function OpinnotPage() {
     },
     lisääSuoritus: function() {
       if (!api.lisääSuoritusDialog().isVisible()) {
-        return Q().then(click(S(".add-suoritus a"))).then(wait.until(api.lisääSuoritusDialog().isVisible))
+        return seq(click(S(".add-suoritus a")), wait.until(api.lisääSuoritusDialog().isVisible))()
       }
     },
     lisääSuoritusDialog: function() {
@@ -95,10 +95,10 @@ function OpinnotPage() {
     expandAll: function() {
       var checkAndExpand = function() {
         if (expanders().is(':visible')) {
-          return Q().then(click(expanders))
-            .then(wait.forMilliseconds(10))
-            .then(wait.forAjax)
-            .then(checkAndExpand)
+          return seq(click(expanders),
+            wait.forMilliseconds(10),
+            wait.forAjax,
+            checkAndExpand)()
         }
       }
       return checkAndExpand()
@@ -109,9 +109,10 @@ function OpinnotPage() {
     collapseAll: function() {
       var checkAndCollapse = function() {
         if (collapsers().is(':visible')) {
-          return Q().then(click(collapsers))
-            .then(wait.forMilliseconds(10))
-            .then(wait.forAjax).then(checkAndCollapse)
+          return seq(click(collapsers),
+            wait.forMilliseconds(10),
+            wait.forAjax,
+            checkAndCollapse)()
         }
       }
       return checkAndCollapse()
@@ -469,15 +470,9 @@ function Editor(elem) {
     getEditBarMessage: function() {
       return findSingle('#edit-bar .state-indicator')().text()
     },
-    saveChanges: function() {
-      return Q().then(click(enabledSaveButton)).then(KoskiPage().verifyNoError)
-    },
-    saveChangesAndExpectError: function() {
-      return Q().then(click(enabledSaveButton)).then(wait.until(KoskiPage().isErrorShown))
-    },
-    cancelChanges: function() {
-      return Q().then(click(findSingle('#edit-bar .cancel'))).then(KoskiPage().verifyNoError)
-    },
+    saveChanges: seq(click(enabledSaveButton), KoskiPage().verifyNoError),
+    saveChangesAndExpectError: seq(click(enabledSaveButton), wait.until(KoskiPage().isErrorShown)),
+    cancelChanges: seq(click(findSingle('#edit-bar .cancel')), KoskiPage().verifyNoError),
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')
     },
@@ -501,39 +496,27 @@ function Editor(elem) {
 function Property(elem) {
   if (typeof elem != 'function') throw new Error('elem has to be function')
   return _.merge({
-    addValue: function() {
-      return Q().then(click(findSingle('.add-value', elem()))).then(KoskiPage().verifyNoError)
-    },
+    addValue: seq(click(findSingle('.add-value', elem)), KoskiPage().verifyNoError),
     isRemoveValueVisible: function() {
       return elem().find('.remove-value').is(':visible')
     },
-    addItem: function() {
-      var link = findSingle('.add-item a', elem)()
-      return Q().then(click(link)).then(KoskiPage().verifyNoError)
-    },
-    removeValue: function() {
-      return Q().then(click(findSingle('.remove-value', elem))).then(KoskiPage().verifyNoError)
-    },
+    addItem: seq(click(findSingle('.add-item a', elem)), KoskiPage().verifyNoError),
+    removeValue: seq(click(findSingle('.remove-value', elem)), KoskiPage().verifyNoError),
     removeFromDropdown: function(value) {
-      return function() {
-        var dropdownElem = findSingle('.dropdown', elem)
-        return Q()
-          .then(click(findSingle('.select', dropdownElem)))
-          .then(wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible))
-          .then(triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown'))
-          .then(wait.forAjax)
-      }
+      var dropdownElem = findSingle('.dropdown', elem)
+      return seq(
+        click(findSingle('.select', dropdownElem)),
+        wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible),
+        triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown'),
+        wait.forAjax
+      )
     },
     removeItem: function(index) {
-      return function() {
-        return Q().then(click(findSingle('li:eq(' + index + ') .remove-item', elem))).then(KoskiPage().verifyNoError)
-      }
+      return seq(click(findSingle('li:eq(' + index + ') .remove-item', elem)), KoskiPage().verifyNoError)
     },
-    waitUntilLoaded: function() {
-      return wait.until(function(){
-        return elem().is(':visible') && !elem().find('.loading').is(':visible')
-      })()
-    },
+    waitUntilLoaded: wait.until(function(){
+      return elem().is(':visible') && !elem().find('.loading').is(':visible')
+    }),
     selectValue: function(value) {
       return function() {
         return Page(elem).setInputValue('.dropdown', value.toString())().then(wait.forAjax)
@@ -551,9 +534,7 @@ function Property(elem) {
       return Päivämääräväli(elem)
     },
     click: function(selector) {
-      return function() {
-        return Q().then(click(findSingle(selector, elem()))).then(KoskiPage().verifyNoError)
-      }
+      return seq(click(findSingle(selector, elem)), KoskiPage().verifyNoError)
     },
     getValue: function() {
       return elem().find('input').val() || elem().find('.value').text()

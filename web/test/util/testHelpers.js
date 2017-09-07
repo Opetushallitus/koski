@@ -186,6 +186,15 @@ function click(element) {
   return triggerEvent(element, 'click')
 }
 
+function seq() {
+  var tasks = Array.prototype.slice.call(arguments)
+  return function() {
+    var promise = Q()
+    tasks.forEach(function(task) { promise = promise.then(task) })
+    return promise
+  }
+}
+
 function openPage(path, predicate) {
   // To clear the onerror handler set by mocha. This causes the tests to actually crash if an unhandled exception is thrown. Without this, we get silent failures.
   // And yes, it needs to be here, to be called late enough. Otherwise, mocha installs its uncaught exception handler and the exceptions are not shown anywhere.

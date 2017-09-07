@@ -14,15 +14,15 @@ function TiedonsiirrotPage() {
         })
       })
     },
-    openVirhesivu: function() {
-      return Q().then(click(S('.virheet-link')))
-        .then(wait.until(function() { return isElementVisible(S('#content .tiedonsiirto-virheet'))}))
-    },
-    openYhteenveto: function() {
-      return Q().then(click(S('.yhteenveto-link')))
-        .then(wait.until(function() { return isElementVisible(S('#content .tiedonsiirto-yhteenveto'))}))
-        .then(wait.forAjax)
-    }
+    openVirhesivu: seq(
+      click('.virheet-link'),
+      wait.untilVisible('#content .tiedonsiirto-virheet')
+    ),
+    openYhteenveto: seq(
+        click('.yhteenveto-link'),
+        wait.untilVisible('#content .tiedonsiirto-yhteenveto'),
+        wait.forAjax
+    )
   }
   return api
 }
