@@ -34,3 +34,5 @@ case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
 
 /* An example of the data */
 case class Example(text: String) extends RepresentationalMetadata
+
+case class RequiresRole(role: String) extends RepresentationalMetadata

@@ -75,7 +75,8 @@ case class ModelBuilderContext(
   deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,
-  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml
+  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
+}
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
@@ -243,7 +244,11 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
     val value = schema.getPropertyValue(property, obj)
-    val propertyModel = EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
+    val propertyModel = if (sensitiveHidden(property.metadata)) {
+      EditorModelBuilder.builder(property.schema).buildPrototype(Nil)
+    } else {
+      EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
+    }
 
     createModelProperty(property, propertyModel)
   }
@@ -262,8 +267,14 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (complexObject) props += ("complexObject" -> true)
     if (tabular) props += ("tabular" -> true)
     if (!readOnly) props += ("editable" -> true)
+    if (sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> true)
 
     EditorProperty(property.key, property.title, propertyModel, props)
+  }
+
+  private def sensitiveHidden(metadata: List[Metadata]): Boolean = metadata.exists {
+    case RequiresRole(role) => !context.user.hasRole(role)
+    case _ => false
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
