@@ -31,7 +31,7 @@ describe('Lokalisointi', function() {
     function changeText(selector, value) { return function() {
       var el = findSingle(selector + ' .editing')()
       el[0].textContent = value
-      triggerEvent(el, 'input')
+      return triggerEvent(el, 'input')()
     }}
 
     describe('Tavallisella käyttäjällä', function() {

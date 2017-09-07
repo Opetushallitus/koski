@@ -93,8 +93,7 @@ function Page(mainElement) {
               // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
               Object.getOwnPropertyDescriptor(Object.getPrototypeOf(domElem), 'value').set.call(domElem, value)
             }
-            triggerEvent(input, 'input')
-            break
+            return triggerEvent(input, 'input')()
           case 'CHECKBOX':
             if (value != input.is(':checked')) {
               if(window.callPhantom) {
@@ -112,8 +111,7 @@ function Page(mainElement) {
             var option = _(input.children()).find(function(item) { return $(item).prop('value') == value })
             if (!option) throw new Error('Option ' + value + ' not found in ' + htmlOf(input))
             input.val($(option).attr('value'))
-            triggerEvent(input, 'change')
-            break
+            return triggerEvent(input, 'change')()
           case 'DROPDOWN': // Dropdown.jsx
             if (!findSingle('.options', S(input))().hasClass('open')) {
               click(findSingle('.select', S(input)), 'click')()
@@ -124,10 +122,10 @@ function Page(mainElement) {
               if (result.length !== 1) {
                 throw new Error("Element '.options li' filtered by text '"+value+"' result length "+result.length+' !== 1 in '+S(input))
               }
-              triggerEvent(result, 'mousedown')
+              return triggerEvent(result, 'mousedown')()
             }
             else {
-              triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')
+              return triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')()
             }
             break
           case 'AUTOCOMPLETE': // Autocomplete.jsx

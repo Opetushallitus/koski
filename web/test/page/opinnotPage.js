@@ -520,9 +520,8 @@ function Property(elem) {
         return Q()
           .then(click(findSingle('.select', dropdownElem)))
           .then(wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible))
-          .then(function() {
-            triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown')
-          }).then(wait.forAjax)
+          .then(triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown'))
+          .then(wait.forAjax)
       }
     },
     removeItem: function(index) {

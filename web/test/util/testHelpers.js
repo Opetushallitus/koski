@@ -156,33 +156,34 @@ function goForward() {
   testFrame().history.forward()
 }
 
-function triggerEvent(element, eventName) {
-  element = toElement(element)
-  if (!element.length) {
-    throw new Error("triggerEvent: element not visible")
-  }
+function triggerEvent(selector, eventName) {
+  return function() {
+    var element = toElement(selector)
+    if (!element.length) {
+      throw new Error("triggerEvent: element not visible")
+    }
 
-  var evt
-  if(window.callPhantom) {
-    evt = testFrame().document.createEvent('HTMLEvents');
-    evt.initEvent(eventName, true, true);
-  } else {
-    evt = new MouseEvent(eventName, {
-      'view': window,
-      'bubbles': true,
-      'cancelable': true
+    var evt
+    if(window.callPhantom) {
+      evt = testFrame().document.createEvent('HTMLEvents');
+      evt.initEvent(eventName, true, true);
+    } else {
+      evt = new MouseEvent(eventName, {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+      })
+    }
+    element.toArray().forEach(function(elem) {
+      elem.dispatchEvent(evt);
     })
+
+    return wait.forAjax()
   }
-  element.toArray().forEach(function(elem) {
-    elem.dispatchEvent(evt);
-  })
 }
 
 function click(element) {
-  return function() {
-    triggerEvent(element, 'click')
-    return wait.forAjax()
-  }
+  return triggerEvent(element, 'click')
 }
 
 function openPage(path, predicate) {
