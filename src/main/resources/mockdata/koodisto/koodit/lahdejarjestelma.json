@@ -130,5 +130,16 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_edukit",
+    "koodiArvo": "edukit",
+    "metadata": [
+      {
+        "nimi": "Edukit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
