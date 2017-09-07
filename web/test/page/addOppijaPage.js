@@ -75,7 +75,7 @@ function AddOppijaPage() {
         return wait.until(pageApi.getInput('.tutkinto input').isVisible)()
             .then(pageApi.setInputValue('.tutkinto input', name))
             .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
-            .then(function() {triggerEvent(selectedTutkinto(), 'click')})
+            .then(click(selectedTutkinto))
       }
     },
     selectSuoritustapa: function(suoritustapa) {
@@ -99,7 +99,7 @@ function AddOppijaPage() {
       if (!api.isEnabled) {
         throw new Error('Button not enabled')
       }
-      triggerEvent(button(), 'click')
+      return click(button)()
     },
     submitAndExpectSuccess: function(oppija, tutkinto) {
       tutkinto = tutkinto || "Autoalan perustutkinto"
@@ -142,9 +142,7 @@ function AddOppijaPage() {
     selectKieli: function(kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)
     },
-    goBack: function() {
-      triggerEvent(S('h1 a'), 'click')
-    }
+    goBack: click(findSingle('h1 a'))
   }
   function selectFromDropdown(selector, value) {
     return function () {

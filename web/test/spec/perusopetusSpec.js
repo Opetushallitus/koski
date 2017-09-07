@@ -248,8 +248,12 @@ describe('Perusopetus', function() {
 
         describe('Vuosiluokan suorituksen lisäys', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog()
-          before(editor.edit, editor.property('tila').removeItem(0),
-            opinnot.lisääSuoritus, lisääSuoritus.property('luokka').setValue('1a'), lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+          before(
+            editor.edit,
+            editor.property('tila').removeItem(0),
+            opinnot.lisääSuoritus,
+            lisääSuoritus.property('luokka').setValue('1a'),
+            lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
             lisääSuoritus.lisääSuoritus
           )
           it('Esitäyttää toiminta-alueet', function() {
@@ -570,7 +574,7 @@ describe('Perusopetus', function() {
         describe('Aktiivinen tila', function() {
           var tila = opinnot.opiskeluoikeusEditor().property('tila')
           it('Viimeinen tila kun päivämäärä ei ole tulevaisuudessa', function() {
-            expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[0].elem()).hasClass('active')).to.equal(true)
+            expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[0].elem)().hasClass('active')).to.equal(true)
           })
 
           describe('Kun lisätään useita tähän päivään', function() {
@@ -602,7 +606,7 @@ describe('Perusopetus', function() {
 
             describe('Käyttöliittymän tila', function() {
               it('Nykyinen tila "läsnä" on aktiivinen', function() {
-                expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[1].elem()).hasClass('active')).to.equal(true)
+                expect(findSingle('.opiskeluoikeusjakso', tila.getItems()[1].elem)().hasClass('active')).to.equal(true)
               })
             })
 

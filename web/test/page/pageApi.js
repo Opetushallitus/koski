@@ -8,9 +8,7 @@ function Page(mainElement) {
   }
   var api = {
     getInput: function(selector) {
-      return Input(function () {
-        return findSingle(selector, mainElement())
-      })
+      return Input(findSingle(selector, mainElement))
     },
     getRadioLabel: function(selector) {
       return Input(function () {
@@ -102,15 +100,14 @@ function Page(mainElement) {
               if(window.callPhantom) {
                 input.prop('checked', value)
               }
-              triggerEvent(input, 'click')
+              return click(input)()
             }
             break
           case 'RADIO':
             var radioOption = _(input).find(function(item) { return $(item).prop('value') == value })
             if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
-            triggerEvent(S(radioOption), 'click')
-            break
+            return click(S(radioOption))()
           case 'SELECT':
             var option = _(input.children()).find(function(item) { return $(item).prop('value') == value })
             if (!option) throw new Error('Option ' + value + ' not found in ' + htmlOf(input))
@@ -118,8 +115,8 @@ function Page(mainElement) {
             triggerEvent(input, 'change')
             break
           case 'DROPDOWN': // Dropdown.jsx
-            if (!findSingle('.options', S(input)).hasClass('open')) {
-              triggerEvent(findSingle('.select', S(input)), 'click')
+            if (!findSingle('.options', S(input))().hasClass('open')) {
+              click(findSingle('.select', S(input)), 'click')()
             }
 
             if (exact) {
@@ -134,11 +131,11 @@ function Page(mainElement) {
             }
             break
           case 'AUTOCOMPLETE': // Autocomplete.jsx
-            function selectedItem() { return findSingle('.results .selected', input) }
+            var selectedItem = findSingle('.results .selected', input)
 
             return Page(input).setInputValue('input', value)()
               .then(wait.untilVisible(selectedItem))
-              .then(function() { triggerEvent(selectedItem, 'click')})
+              .then(click(selectedItem))
 
 				  default:
 						throw new Error('Unknown input type: ' + inputType(input))
@@ -182,7 +179,7 @@ function Page(mainElement) {
         return el().text()
       },
       click: function () {
-        triggerEvent(el().first(), 'click')
+        click(el().first())()
       }
     }
   }

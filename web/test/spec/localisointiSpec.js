@@ -16,23 +16,20 @@ describe('Lokalisointi', function() {
   })
   describe('Sovelluksen käyttöliittymätekstien muokkaus', function() {
     function editLink() { return S('.edit-localizations') }
-    function startEdit() { triggerEvent(editLink(), 'click') }
-    function saveEdits() {
-      triggerEvent(findSingle('.localization-edit-bar button:not(:disabled)'), 'click')
-      return wait.forAjax()
-    }
-    function cancelEdits() { triggerEvent(findSingle('.localization-edit-bar .cancel'), 'click') }
+    var startEdit = click(editLink)
+    var saveEdits = click(findSingle('.localization-edit-bar button:not(:disabled)'))
+    var cancelEdits = click(findSingle('.localization-edit-bar .cancel'))
+
     function selectLanguage(lang) {
       return function() {
-        triggerEvent(S('.localization-edit-bar .languages .' + lang), 'click')
         var selector = '.localization-edit-bar .languages .' + lang + '.selected'
-        return wait.until(function() {
-          return S(selector).is(':visible')
-        })()
+        return Q()
+          .then(click(S('.localization-edit-bar .languages .' + lang)))
+          .then(wait.untilVisible(findSingle(selector)))
       }
     }
     function changeText(selector, value) { return function() {
-      var el = findSingle(selector + ' .editing')
+      var el = findSingle(selector + ' .editing')()
       el[0].textContent = value
       triggerEvent(el, 'input')
     }}

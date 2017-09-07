@@ -11,12 +11,10 @@ describe('Lukiokoulutus', function( ){
       arvosana: function() {
         return elem().find(".arvosana").text()
       },
-      toggleDetails: function() {
-        triggerEvent(elem(), "click")
-      },
+      toggleDetails: click(elem),
       showDetails: function() {
         if (api.detailsText() == '')
-          triggerEvent(elem(), "click")
+          click(elem())()
         return wait.forAjax()
       },
       editor: function() {

@@ -7,10 +7,6 @@ describe('Muokkauspalkki', function () {
     return S('#edit-bar').hasClass('visible')
   }
 
-  function click(selector) {
-    triggerEvent(S(selector)[0], 'click')
-  }
-
   var page = KoskiPage()
   describe('Näkyvyys', function () {
     beforeEach(Authentication().login())
@@ -24,18 +20,14 @@ describe('Muokkauspalkki', function () {
     })
 
     describe('Muokkaustilassa', function () {
-      before(function () {
-        click('button.toggle-edit')
-      })
+      before(click('button.toggle-edit'))
       it('Näkyvillä', function () {
         expect(editBarVisible()).to.equal(true)
       })
     })
 
     describe('Muokkaustilasta poistuttaessa', function () {
-      before(function () {
-        click('a.cancel')
-      })
+      before(click('a.cancel'))
       it('Piilossa', function () {
         expect(editBarVisible()).to.equal(false)
       })
@@ -44,11 +36,11 @@ describe('Muokkauspalkki', function () {
 
     describe('Oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function () {
       before(
-        function () {click('a.back-link')},
+        click('a.back-link'),
         wait.until(function () {
           return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass('oppijataulukko')
         }),
-        function () {goBack()},
+        goBack,
         wait.until(function () {
           return !currentURL().endsWith('/koski/')
         })
@@ -61,12 +53,12 @@ describe('Muokkauspalkki', function () {
 
     describe('Oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function () {
       before(
-        function () {click('button.toggle-edit')},
-        function () {click('a.back-link')},
+        click('button.toggle-edit'),
+        click('a.back-link'),
         wait.until(function () {
           return currentURL().endsWith('/koski/') && S('#topbar + div').hasClass('oppijataulukko')
         }),
-        function () {goBack()},
+        goBack,
         wait.until(function () {
           return !currentURL().endsWith('/koski/')
         })

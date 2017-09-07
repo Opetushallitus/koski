@@ -1,7 +1,4 @@
 function OpinnotPage() {
-  function oppija() { return findSingle('.oppija') }
-  function opiskeluoikeus() { return findSingle('.opiskeluoikeus')}
-
   var api = {
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
@@ -19,21 +16,21 @@ function OpinnotPage() {
     },
     valitseSuoritus: function(opiskeluoikeusIndex, nimi) {
       return function() {
-        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')
+        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs li:contains(' + nimi + ')')
         if (!tab.hasClass('selected')) {
-          triggerEvent(findSingle('a', tab.eq(0)), 'click')
+          return click(findSingle('a', tab.eq(0)))()
         }
       }
     },
     suoritusOnValittu: function(opiskeluoikeusIndex, nimi) {
-      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li:contains(' + nimi + ')')
+      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs li:contains(' + nimi + ')')
       return tab.hasClass('selected')
     },
     suoritusTabs: function(opiskeluoikeusIndex) {
-      return textsOf(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs > li:not(.add-suoritus)'))
+      return textsOf(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), ('.suoritus-tabs > li:not(.add-suoritus)')))
     },
     suoritusTabIndex: function(opiskeluoikeusIndex){
-      var tabs = toArray(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')').find('.suoritus-tabs li'))
+      var tabs = toArray(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), '.suoritus-tabs li'))
       for (var i in tabs) {
         if (S(tabs[i]).hasClass('selected')) return parseInt(i)
       }
@@ -50,27 +47,26 @@ function OpinnotPage() {
     },
     avaaOpintosuoritusote: function (index) {
       return function() {
-        triggerEvent(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote'), 'click')
-        return wait.until(OpintosuoritusotePage().isVisible)()
+        return Q().then(click(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote')))
+          .then(wait.until(OpintosuoritusotePage().isVisible))
       }
     },
     avaaTodistus: function(index) {
       index = typeof index !== 'undefined' ? index : 0
       return function() {
-        triggerEvent(S(S('a.todistus')[index]), 'click')
-        return wait.until(TodistusPage().isVisible)()
+        return Q().then(click(S(S('a.todistus')[index])))
+          .then(wait.until(TodistusPage().isVisible))
       }
     },
     avaaLisaysDialogi: function() {
       if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
-        triggerEvent(S('.opiskeluoikeuden-tiedot .add-item a'), 'click')
-        return wait.forAjax()
+        return click(S('.opiskeluoikeuden-tiedot .add-item a'))()
       }
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index) {
       index = index || 0
-      function elem() { return findSingle('.opiskeluoikeus-content:eq(' + index + ')') }
+      var elem = findSingle('.opiskeluoikeus-content:eq(' + index + ')')
       return _.merge(
         Editor(elem),
         {
@@ -83,8 +79,7 @@ function OpinnotPage() {
     },
     lisääSuoritus: function() {
       if (!api.lisääSuoritusDialog().isVisible()) {
-        triggerEvent(S(".add-suoritus a"), 'click')
-        return wait.until(api.lisääSuoritusDialog().isVisible)()
+        return Q().then(click(S(".add-suoritus a"))).then(wait.until(api.lisääSuoritusDialog().isVisible))
       }
     },
     lisääSuoritusDialog: function() {
@@ -95,13 +90,15 @@ function OpinnotPage() {
     oppiaineet: Oppiaineet(),
     tutkinnonOsat: TutkinnonOsat,
     anythingEditable: function() {
-      return Editor(function() { return findSingle('.content-area') } ).isEditable()
+      return Editor(findSingle('.content-area') ).isEditable()
     },
     expandAll: function() {
       var checkAndExpand = function() {
         if (expanders().is(':visible')) {
-          triggerEvent(expanders(), 'click')
-          return wait.forMilliseconds(10)().then(wait.forAjax).then(checkAndExpand)
+          return Q().then(click(expanders))
+            .then(wait.forMilliseconds(10))
+            .then(wait.forAjax)
+            .then(checkAndExpand)
         }
       }
       return checkAndExpand()
@@ -112,8 +109,9 @@ function OpinnotPage() {
     collapseAll: function() {
       var checkAndCollapse = function() {
         if (collapsers().is(':visible')) {
-          triggerEvent(collapsers(), 'click')
-          return wait.forMilliseconds(10)().then(wait.forAjax).then(checkAndCollapse)
+          return Q().then(click(collapsers))
+            .then(wait.forMilliseconds(10))
+            .then(wait.forAjax).then(checkAndCollapse)
         }
       }
       return checkAndCollapse()
@@ -121,9 +119,7 @@ function OpinnotPage() {
         return S('.foldable:not(.collapsed)>.toggle-expand:not(.disabled), tbody.expanded .toggle-expand:not(.disabled), a.expandable.open')
       }
     },
-    backToList: function() {
-      triggerEvent(findSingle('.back-link'), 'click')
-    }
+    backToList: click(findSingle('.back-link'))
   }
 
   return api
@@ -156,7 +152,7 @@ function Oppiaineet() {
 
 function TutkinnonOsat(groupId) {
   function withSuffix(s) { return groupId ? s + '.' + groupId : s }
-  function uusiTutkinnonOsaElement() { return findSingle(withSuffix('.uusi-tutkinnon-osa')) }
+  var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
 
   return {
     tyhjä: function() {
@@ -166,29 +162,22 @@ function TutkinnonOsat(groupId) {
       return S(withSuffix('.group-header')).is(':visible')
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
-      function el() { return findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')') }
+      var tutkinnonOsaElement = findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')')
 
       var api = _.merge({
         tila: function() {
-          return findSingle('.tila', el).attr('title')
+          return findSingle('.tila', tutkinnonOsaElement)().attr('title')
         },
         nimi: function() {
-          return findSingle('.nimi', el).text()
+          return findSingle('.nimi', tutkinnonOsaElement)().text()
         },
-        toggleExpand: function() {
-          triggerEvent(findSingle('.suoritus .toggle-expand', el), 'click')
-        },
-        lisääOsaamisenTunnustaminen: function() {
-          triggerEvent(findSingle('.tunnustettu .add-value', el), 'click')
-        },
-        poistaOsaamisenTunnustaminen: function() {
-          triggerEvent(findSingle('.tunnustettu .remove-value', el), 'click')
-          return wait.forAjax()
-        },
+        toggleExpand: click(findSingle('.suoritus .toggle-expand', tutkinnonOsaElement)),
+        lisääOsaamisenTunnustaminen: click(findSingle('.tunnustettu .add-value', tutkinnonOsaElement)),
+        poistaOsaamisenTunnustaminen: click(findSingle('.tunnustettu .remove-value', tutkinnonOsaElement)),
         poistaTutkinnonOsa: function() {
-          var find = function() { return findSingle('.remove-value', el) }
-          if (isElementVisible(find)) {
-            triggerEvent(find, 'click')
+          var removeElement = findSingle('.remove-value', tutkinnonOsaElement)
+          if (isElementVisible(removeElement)) {
+            return click(removeElement)()
           }
         },
         näyttö: function() {
@@ -199,74 +188,63 @@ function TutkinnonOsat(groupId) {
             return elem.find('ul.array > li').map(function() {return Page(this).getInput('.dropdown').value()}).get().slice(0, -1)
           }
           return {
-            arvosana: Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').value(),
-            arviointipäivä: Page(el).getInput('.näyttö .modal-content .päivä .value input').value(),
-            kuvaus: Page(el).getInput('.näyttö .modal-content .kuvaus .value textarea').value(),
-            arvioinnistaPäättäneet: extractDropdownArray(S('.näyttö .modal-content .arvioinnistaPäättäneet .value', el)),
-            arviointikeskusteluunOsallistuneet: extractDropdownArray(S('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value', el)),
+            arvosana: Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvosana .value .dropdown').value(),
+            arviointipäivä: Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .päivä .value input').value(),
+            kuvaus: Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .kuvaus .value textarea').value(),
+            arvioinnistaPäättäneet: extractDropdownArray(S('.näyttö .modal-content .arvioinnistaPäättäneet .value', tutkinnonOsaElement)),
+            arviointikeskusteluunOsallistuneet: extractDropdownArray(S('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value', tutkinnonOsaElement)),
             suorituspaikka: [
-              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').value(),
-              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').value()
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').value(),
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').value()
             ],
-            työssäoppimisenYhteydessä: Page(el).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').value()
+            työssäoppimisenYhteydessä: Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').value()
           }
         },
         avaaNäyttöModal: function() {
-          return function() {
-            var valueExists = !!el().find('.näyttö .edit-value').length
-            triggerEvent(findSingle('.näyttö .'+(valueExists?'edit':'add')+'-value', el), 'click')
-            return wait.untilVisible(S('.lisää-näyttö-modal', el))
-          }
+          var valueExists = !!tutkinnonOsaElement().find('.näyttö .edit-value').length
+          return Q()
+            .then(click(findSingle('.näyttö .'+(valueExists?'edit':'add')+'-value', tutkinnonOsaElement)))
+            .then(wait.untilVisible(findSingle('.lisää-näyttö-modal .modal-content')))
         },
         asetaNäytönTiedot: function(tiedot) {
           return function () {
             return wait.forAjax().then(function() {
               // Normalize state
-              var addVButton = el().find('.näyttö .modal-content .arviointi .add-value')
+              var addVButton = tutkinnonOsaElement().find('.näyttö .modal-content .arviointi .add-value')
               if (addVButton.length) {
-                triggerEvent(addVButton, 'click')
+                click(addVButton)()
               }
               else {
-                el().find('.näyttö .modal-content .arvioinnistaPäättäneet .value li .remove-item:visible').each(function(i, e) {
-                  triggerEvent(e, 'click')
+                tutkinnonOsaElement().find('.näyttö .modal-content .arvioinnistaPäättäneet .value li .remove-item:visible').each(function(i, e) {
+                  click(e)()
                 })
-                el().find('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li .remove-item:visible').each(function(i, e) {
-                  triggerEvent(e, 'click')
+                tutkinnonOsaElement().find('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li .remove-item:visible').each(function(i, e) {
+                  click(e)()
                 })
               }
             }).then(wait.forAjax).then(function () {
-              Page(el).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
-              Page(el).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
-              Page(el).getInput('.näyttö .modal-content .kuvaus .value textarea').setValue(tiedot.kuvaus)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .kuvaus .value textarea').setValue(tiedot.kuvaus)
               tiedot.arvioinnistaPäättäneet.map(function (v, i) {
-                Page(el).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
               })
               tiedot.arviointikeskusteluunOsallistuneet.map(function (v, i) {
-                Page(el).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
               })
-              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
-              Page(el).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
-              Page(el).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
 
-              if (findSingle('.näyttö .modal-content button', el).prop('disabled')) {
+              if (findSingle('.näyttö .modal-content button', tutkinnonOsaElement)().prop('disabled')) {
                 throw new Error('Invalid model')
               }
             })
           }
         },
-        painaOkNäyttöModal: function() {
-          return function() {
-            triggerEvent(findSingle('.näyttö .modal-content button', el), 'click')
-            return wait.forAjax
-          }
-        },
-        poistaNäyttö: function() {
-          return function() {
-            triggerEvent(findSingle('.näyttö .remove-value', el), 'click')
-            return wait.forAjax
-          }
-        }
-      }, {}, Editor(el))
+        painaOkNäyttöModal: click(findSingle('.näyttö .modal-content button', tutkinnonOsaElement)),
+        poistaNäyttö: click(findSingle('.näyttö .remove-value', tutkinnonOsaElement))
+      }, {}, Editor(tutkinnonOsaElement))
       return api
     },
     lisääTutkinnonOsa: function(hakusana) {
@@ -277,12 +255,15 @@ function TutkinnonOsat(groupId) {
     },
     lisääPaikallinenTutkinnonOsa: function(nimi) {
       return function() {
-        triggerEvent(uusiTutkinnonOsaElement().find('a.paikallinen-tutkinnon-osa'), 'click')
-        var modalElement = uusiTutkinnonOsaElement().find('.lisaa-paikallinen-tutkinnon-osa-modal')
+        click(subElement(uusiTutkinnonOsaElement, ('a.paikallinen-tutkinnon-osa')))()
+        var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
         return Page(modalElement).setInputValue('input', nimi)()
-          .then(function () { triggerEvent(modalElement.find('button:not(:disabled)'), 'click') })
+          .then(click(subElement(modalElement, 'button:not(:disabled)')))
           .then(wait.forAjax)
       }
+    },
+    lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
+
     },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
@@ -311,14 +292,10 @@ function Opiskeluoikeudet() {
 
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
-        triggerEvent(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
-        return wait.forAjax()
+        return click(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'))()
       }
     },
-    lisääOpiskeluoikeus: function() {
-      triggerEvent(findSingle('.add-opiskeluoikeus a'), 'click')
-      return wait.forAjax()
-    },
+    lisääOpiskeluoikeus: click(findSingle('.add-opiskeluoikeus a')),
     lisääOpiskeluoikeusEnabled: function() {
       return S('.add-opiskeluoikeus').is(':visible')
     }
@@ -334,15 +311,13 @@ function Versiohistoria() {
   var api = {
     avaa: function () {
       if (!S('.versiohistoria > .modal').is(':visible')) {
-        triggerEvent(findSingle('> a', elem()), 'click')
+        click(findSingle('> a', elem()))()
       }
-      return wait.until(function(){
-        return elem().find('li.selected').is(':visible')
-      })().then(wait.forAjax)
+      return wait.untilVisible(subElement(elem, 'li.selected'))().then(wait.forAjax)
     },
     sulje: function () {
       if (S('.versiohistoria > .modal').is(':visible')) {
-        triggerEvent(findSingle('> a', elem()), 'click')
+        return click(findSingle('> a', elem()))()
       }
     },
     listaa: function() {
@@ -353,7 +328,7 @@ function Versiohistoria() {
     },
     valitse: function(versio) {
       return function() {
-        triggerEvent(findSingle('.versionumero:contains('+ versio +')', elem()).parent(), 'click')
+        click(findSingle('.versionumero:contains('+ versio +')', elem())().parent())()
         return wait.until(function() { return api.valittuVersio() == versio })()
       }
     }
@@ -362,7 +337,7 @@ function Versiohistoria() {
 }
 
 function TilaJaVahvistus() {
-  function elem() { return findSingle('.tila-vahvistus') }
+  var elem = findSingle('.tila-vahvistus')
   function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
   function merkitseKeskeneräiseksiButton() { return elem().find('button.merkitse-kesken') }
   function merkitseKeskeytyneeksiButton() { return elem().find('button.merkitse-keskeytyneeksi') }
@@ -371,16 +346,9 @@ function TilaJaVahvistus() {
     merkitseValmiiksiEnabled: function() {
       return merkitseValmiiksiButton().is(':visible') && !merkitseValmiiksiButton().is(':disabled')
     },
-    merkitseValmiiksi: function( ) {
-      triggerEvent(merkitseValmiiksiButton(), 'click')
-      return wait.forAjax()
-    },
-    merkitseKeskeneräiseksi: function() {
-      triggerEvent(merkitseKeskeneräiseksiButton(), 'click')
-    },
-    merkitseKeskeytyneeksi: function() {
-      triggerEvent(merkitseKeskeytyneeksiButton(), 'click')
-    },
+    merkitseValmiiksi: click(merkitseValmiiksiButton),
+    merkitseKeskeneräiseksi: click(merkitseKeskeneräiseksiButton),
+    merkitseKeskeytyneeksi: click(merkitseKeskeytyneeksiButton),
     text: function( ){
       return extractAsText(findSingle('.tiedot', elem()))
     },
@@ -393,18 +361,15 @@ function TilaJaVahvistus() {
 }
 
 function MerkitseValmiiksiDialog() {
-  function elem() { return findSingle('.merkitse-valmiiksi-modal')}
-  function buttonElem() { return findSingle('button', elem())}
+  var elem = findSingle('.merkitse-valmiiksi-modal')
+  var buttonElem = findSingle('button', elem)
   var api = {
     merkitseValmiiksi: function( ) {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
-      triggerEvent(buttonElem(), 'click')
-      return wait.forAjax()
+      return click(buttonElem())()
     },
-    peruuta: function() {
-      triggerEvent(findSingle('.peruuta', elem), 'click')
-    },
-    organisaatio: OrganisaatioHaku(function() { return findSingle('.myöntäjäOrganisaatio', elem()) } ),
+    peruuta: click(findSingle('.peruuta', elem)),
+    organisaatio: OrganisaatioHaku(findSingle('.myöntäjäOrganisaatio', elem) ),
     editor: Editor(elem),
     myöntäjät: Editor(elem).property('myöntäjäHenkilöt'),
     lisääMyöntäjä: function(nimi, titteli) {
@@ -419,8 +384,8 @@ function MerkitseValmiiksiDialog() {
 }
 
 function LisääSuoritusDialog() {
-  function elem() { return findSingle('.lisaa-suoritus-modal')}
-  function buttonElem() { return findSingle('button', elem())}
+  var elem = findSingle('.lisaa-suoritus-modal')
+  var buttonElem = findSingle('button', elem)
   var api = _.merge({
     isVisible: function() {
       return isElementVisible(elem)
@@ -432,8 +397,9 @@ function LisääSuoritusDialog() {
       if (!api.isEnabled()) throw new Error('button not enabled')
       function count() { return OpinnotPage().suoritusTabs(1).length }
       var prevCount = count()
-      triggerEvent(buttonElem(), 'click')
-      return wait.until(function() { return count() == prevCount + 1 })()
+      return Q()
+        .then(click(buttonElem))
+        .then(wait.until(function() { return count() == prevCount + 1 }))
     },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
@@ -463,38 +429,29 @@ function Päivämääräväli(elem) {
 }
 
 function OpiskeluoikeusDialog() {
-  function elem() {
-    return findSingle('.lisaa-opiskeluoikeusjakso-modal')
-  }
-  function button() {
-    return findSingle('button', elem())
-  }
+  var elem = findSingle('.lisaa-opiskeluoikeusjakso-modal')
+  var button = findSingle('button', elem)
   return {
     tila: function() {
       return Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
     },
     alkuPaiva: function() {
-      return Property(function() {return findSingle('.property.alku', elem())})
+      return Property(findSingle('.property.alku', elem))
     },
-    tallenna: function() {
-      triggerEvent(button(), 'click')
-      return wait.forAjax()
-    },
-    peruuta: function() {
-      triggerEvent(findSingle('.peruuta', elem()), 'click')
-    },
+    tallenna: click(button),
+    peruuta: click(findSingle('.peruuta', elem)),
     isEnabled: function() {
       return !button().is(':disabled')
     },
     radioEnabled: function(value) {
-      return !findSingle('input[value="' + value + '"]', elem()).is(':disabled')
+      return !findSingle('input[value="' + value + '"]', elem())().is(':disabled')
     }
   }
 }
 
 function Editor(elem) {
-  function editButton() { return findSingle('.toggle-edit', elem()) }
-  function enabledSaveButton() { return findSingle('#edit-bar button:not(:disabled)') }
+  var editButton = findSingle('.toggle-edit')
+  var enabledSaveButton = findSingle('#edit-bar button:not(:disabled)')
   var api = {
     isVisible: function() {
       return isElementVisible(elem)
@@ -502,7 +459,7 @@ function Editor(elem) {
     edit: function() {
       return wait.until(api.isVisible)().then(function() {
         if (isElementVisible(editButton)) {
-          triggerEvent(editButton(), 'click')
+          return click(editButton)()
         }
       }).then(KoskiPage().verifyNoError)
     },
@@ -510,31 +467,28 @@ function Editor(elem) {
       return isElementVisible(enabledSaveButton)
     },
     getEditBarMessage: function() {
-      return findSingle('#edit-bar .state-indicator').text()
+      return findSingle('#edit-bar .state-indicator')().text()
     },
     saveChanges: function() {
-      triggerEvent(enabledSaveButton(), 'click')
-      return KoskiPage().verifyNoError()
+      return Q().then(click(enabledSaveButton)).then(KoskiPage().verifyNoError)
     },
     saveChangesAndExpectError: function() {
-      triggerEvent(enabledSaveButton(), 'click')
-      return wait.until(KoskiPage().isErrorShown)
+      return Q().then(click(enabledSaveButton)).then(wait.until(KoskiPage().isErrorShown))
     },
     cancelChanges: function() {
-      triggerEvent(findSingle('#edit-bar .cancel'), 'click')
-      return KoskiPage().verifyNoError()
+      return Q().then(click(findSingle('#edit-bar .cancel'))).then(KoskiPage().verifyNoError)
     },
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')
     },
     property: function(key) {
-      return Property(function() {return findSingle('.property.'+key+':eq(0)', elem())})
+      return Property(findSingle('.property.'+key+':eq(0)', elem))
     },
     propertyBySelector: function(selector) {
-      return Property(function() {return findSingle(selector, elem())})
+      return Property(findSingle(selector, elem))
     },
     subEditor: function(selector) {
-      return Editor(function() { return findSingle(selector, elem()) })
+      return Editor(findSingle(selector, elem))
     },
     isEditBarVisible: function() {
       return S("#edit-bar").hasClass("visible")
@@ -545,28 +499,27 @@ function Editor(elem) {
 }
 
 function Property(elem) {
+  if (typeof elem != 'function') throw new Error('elem has to be function')
   return _.merge({
     addValue: function() {
-      triggerEvent(findSingle('.add-value', elem()), 'click')
-      return KoskiPage().verifyNoError()
+      return Q().then(click(findSingle('.add-value', elem()))).then(KoskiPage().verifyNoError)
     },
     isRemoveValueVisible: function() {
       return elem().find('.remove-value').is(':visible')
     },
     addItem: function() {
-      var link = findSingle('.add-item a', elem())
-      triggerEvent(link, 'click')
-      return KoskiPage().verifyNoError()
+      var link = findSingle('.add-item a', elem)()
+      return Q().then(click(link)).then(KoskiPage().verifyNoError)
     },
     removeValue: function() {
-      triggerEvent(findSingle('.remove-value', elem()), 'click')
-      return KoskiPage().verifyNoError()
+      return Q().then(click(findSingle('.remove-value', elem))).then(KoskiPage().verifyNoError)
     },
     removeFromDropdown: function(value) {
       return function() {
-        var dropdownElem = findSingle('.dropdown', elem())
-        triggerEvent(findSingle('.select', dropdownElem), 'click')
-        return wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible)()
+        var dropdownElem = findSingle('.dropdown', elem)
+        return Q()
+          .then(click(findSingle('.select', dropdownElem)))
+          .then(wait.until(Page(dropdownElem).getInput('li:contains('+ value +')').isVisible))
           .then(function() {
             triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown')
           }).then(wait.forAjax)
@@ -574,8 +527,7 @@ function Property(elem) {
     },
     removeItem: function(index) {
       return function() {
-        triggerEvent(findSingle('li:eq(' + index + ') .remove-item', elem()), 'click')
-        return KoskiPage().verifyNoError()
+        return Q().then(click(findSingle('li:eq(' + index + ') .remove-item', elem))).then(KoskiPage().verifyNoError)
       }
     },
     waitUntilLoaded: function() {
@@ -601,8 +553,7 @@ function Property(elem) {
     },
     click: function(selector) {
       return function() {
-        triggerEvent(findSingle(selector, elem()), 'click')
-        return KoskiPage().verifyNoError()
+        return Q().then(click(findSingle(selector, elem()))).then(KoskiPage().verifyNoError)
       }
     },
     getValue: function() {
@@ -618,9 +569,9 @@ function Property(elem) {
       return toArray(elem().find('.value .array > li:not(.add-item)')).map(function(elem) { return Property(function() { return S(elem) })})
     },
     isVisible: function() {
-      return isElementVisible(function() { return findSingle('.value', elem())})
-        || isElementVisible(function() { return findSingle('.dropdown', elem())})
-        || isElementVisible(function() { return findSingle('input', elem())})
+      return isElementVisible(findSingle('.value', elem))
+        || isElementVisible(findSingle('.dropdown', elem))
+        || isElementVisible(findSingle('input', elem))
     },
     isValid: function() {
       return !elem().find('.error').is(':visible')

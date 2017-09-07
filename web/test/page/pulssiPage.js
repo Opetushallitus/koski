@@ -15,11 +15,11 @@ function PulssiPage() {
   function Metric(elem) {
     return {
       value: function() {
-        return parseFloat(elem.find('.metric-large, .metric-medium').text())
+        return parseFloat(elem().find('.metric-large, .metric-medium').text())
       },
       sum: function() {
         var sum = 0
-        var metrics = elem.find('.metric-tiny, .metric-value').toArray()
+        var metrics = elem().find('.metric-tiny, .metric-value').toArray()
         metrics.forEach(function(metric) {
           sum = sum + parseFloat(S(metric).text())
         })

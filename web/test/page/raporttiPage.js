@@ -16,7 +16,7 @@ function RaporttiPage() {
   function Metric(elem) {
     return {
       value: function () {
-        return parseFloat(elem.find('.value').text())
+        return parseFloat(elem().find('.value').text())
       }
     }
   }

@@ -503,23 +503,38 @@ describe('Ammatillinen koulutus', function() {
                 it('lisätty osa näytetään', function() {
                   expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Huippuosaajana toimiminen')
                 })
-
-                describe('Kun lisätään paikallinen tutkinnon osa', function() {
-                  before(
-                    editor.edit,
-                    opinnot.tutkinnonOsat('3').lisääPaikallinenTutkinnonOsa('Hassut temput')
-                  )
-
-                  describe('Lisäyksen jälkeen', function () {
-                    it('lisätty osa näytetään', function() {
-                      expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
-                    })
-                  })
-                })
-
-                // TODO: tutkinnon osa toisesta tutkinnosta, esimerkiksi Ajoneuvolasitukset
               })
             })
+
+            describe('Paikallinen tutkinnon osa', function() {
+              before(
+                editor.edit,
+                opinnot.tutkinnonOsat('3').tutkinnonOsa(0).poistaTutkinnonOsa,
+                opinnot.tutkinnonOsat('3').lisääPaikallinenTutkinnonOsa('Hassut temput')
+              )
+
+              describe('Lisäyksen jälkeen', function () {
+                it('lisätty osa näytetään', function() {
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Hassut temput')
+                })
+              })
+            })
+
+            /*
+            describe('Tutkinnon osa toisesta tutkinnosta', function() {
+              before(
+                editor.edit,
+                opinnot.tutkinnonOsat('3').tutkinnonOsa(0).poistaTutkinnonOsa,
+                opinnot.tutkinnonOsat('3').lisääTutkinnonOsaToisestaTutkinnosta('Pöö', 'Hassut temput')
+              )
+
+              describe('Lisäyksen jälkeen', function () {
+                it('lisätty osa näytetään', function() {
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Hassut temput')
+                })
+              })
+            })
+            */
           })
         })
       })
@@ -556,9 +571,7 @@ describe('Ammatillinen koulutus', function() {
             before(
               editor.edit,
               opinnot.expandAll,
-              tunnustaminen.setValue('Tunnustamisen muokattu esimerkkiselite'),
-              editor.saveChanges,
-              opinnot.expandAll
+              tunnustaminen.setValue('Tunnustamisen muokattu esimerkkiselite')
             )
             it('toimii', function() {
               expect(tunnustaminen.getValue()).to.equal('Tunnustamisen muokattu esimerkkiselite')
@@ -597,7 +610,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Lisääminen', function()  {
           before(
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal,
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
               kuvaus: 'Näytön esimerkkikuvaus',
               suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
@@ -607,7 +620,7 @@ describe('Ammatillinen koulutus', function() {
               arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
               arviointipäivä: '1.2.2017'
             }),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal
           )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().property('arvosana').getValue()).to.equal('3')
@@ -617,7 +630,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Muokkaus', function()  {
           before(
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal(),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal,
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
               kuvaus: 'Näytön muokattu esimerkkikuvaus',
               suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
@@ -627,7 +640,7 @@ describe('Ammatillinen koulutus', function() {
               arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
               arviointipäivä: '1.2.2017'
             }),
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal()
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal
           )
           describe('Näyttää oikeat tiedot', function() {
             it('toimii', function() {
@@ -636,7 +649,7 @@ describe('Ammatillinen koulutus', function() {
             })
           })
           describe('Oikeat tiedot säilyvät modalissa', function() {
-            before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal())
+            before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal)
             it('toimii', function() {
               var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
               expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
@@ -647,7 +660,7 @@ describe('Ammatillinen koulutus', function() {
               expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
               expect(näyttö.arviointipäivä).to.equal('1.2.2017')
             })
-            after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal())
+            after(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).painaOkNäyttöModal)
           })
         })
 
@@ -660,7 +673,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Poistaminen', function() {
           before(
-            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö()
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaNäyttö
           )
           it('toimii', function() {
             expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).näyttö().getValue()).to.equal('Lisää ammattiosaamisen näyttö')

@@ -10,15 +10,12 @@ function OrganisaatioHaku(elem) {
             }
           } else {
             return api.enter(value)()
-              .then(function () {
-                return triggerEvent(elem().find('.organisaatio-popup a:contains(' + value + ')').get(0), 'click')
-              })
+              .then(click(findFirst('.organisaatio-popup a:contains(' + value + ')', elem)))
               .then(wait.forAjax)
           }
         } else {
           api.open()
-          triggerEvent(elem().find('.organisaatio-popup .kaikki'), 'click')
-          return wait.forAjax()
+          return click(elem().find('.organisaatio-popup .kaikki'))()
         }
       }
     },
@@ -29,9 +26,9 @@ function OrganisaatioHaku(elem) {
       }
     },
     open: function() {
-      triggerEvent(elem().find('.organisaatio-selection'), 'click')
+      click(elem().find('.organisaatio-selection'), 'click')()
       if (!elem().find('.organisaatio-popup').is(':visible')) { // workaround for focus glitch, when running in browser
-        triggerEvent(elem().find('.organisaatio-selection'), 'click')
+        click(elem().find('.organisaatio-selection'))()
       }
     },
     oppilaitokset: function() {

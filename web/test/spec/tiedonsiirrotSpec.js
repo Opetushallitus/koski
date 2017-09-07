@@ -32,7 +32,7 @@ describe('Tiedonsiirrot', function() {
   })
 
   describe("Virhelistaus", function() {
-    before(tiedonsiirrot.openVirhesivu())
+    before(tiedonsiirrot.openVirhesivu)
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
@@ -43,7 +43,7 @@ describe('Tiedonsiirrot', function() {
   })
 
   describe("Yhteenveto", function() {
-    before(tiedonsiirrot.openYhteenveto(), wait.forAjax)
+    before(tiedonsiirrot.openYhteenveto)
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'Stadin ammattiopisto'])

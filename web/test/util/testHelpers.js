@@ -37,16 +37,25 @@ function S(selector) {
 }
 
 function findSingle(selector, base) {
-  base = toElement(base)
-  var result = base ? base.find(selector) : S(selector)
-  if (result.length == 0) {
-    var context = base ? htmlOf(base) : "document"
-    throw new Error("Element " + selector + " not found in " + context)
+  return function() {
+    var result = findFirst(selector, base)()
+    if (result.length > 1) {
+      throw new Error(result.length + " instances of " + selector + " found")
+    }
+    return result
   }
-  if (result.length > 1) {
-    throw new Error(result.length + " instances of " + selector + " found")
+}
+
+function findFirst(selector, base) {
+  return function() {
+    var baseElem = toElement(base)
+    var result = baseElem ? baseElem.find(selector) : S(selector)
+    if (result.length == 0) {
+      var context = baseElem ? htmlOf(baseElem) : "document"
+      throw new Error("Element " + selector + " not found in " + context)
+    }
+    return result
   }
-  return result
 }
 
 wait = {
@@ -169,6 +178,13 @@ function triggerEvent(element, eventName) {
   })
 }
 
+function click(element) {
+  return function() {
+    triggerEvent(element, 'click')
+    return wait.forAjax()
+  }
+}
+
 function openPage(path, predicate) {
   // To clear the onerror handler set by mocha. This causes the tests to actually crash if an unhandled exception is thrown. Without this, we get silent failures.
   // And yes, it needs to be here, to be called late enough. Otherwise, mocha installs its uncaught exception handler and the exceptions are not shown anywhere.
@@ -217,6 +233,7 @@ function takeScreenshot(name) {
 }
 
 function textsOf(elements) {
+  elements = evalFunc(elements)
   return toArray(elements).map(function(el) { return $(el).text().trim() })
 }
 
@@ -225,6 +242,7 @@ function sanitizeText(text) {
 }
 
 function extractAsText(el, subElement) {
+  el = evalFunc(el)
   if (isJQuery(el) && el.length > 1) {
     return extractMultiple(el)
   }
@@ -264,15 +282,23 @@ function isJQuery(el) {
 }
 
 function toArray(elements) {
+  elements = evalFunc(elements)
   if (isJQuery(elements)) elements = elements.get() // <- a jQuery object
   return Array.prototype.slice.apply(elements)
+}
+
+function evalFunc(f) {
+  while (typeof f == 'function') f = f()
+  return f
 }
 
 function isElementVisible(el) {
   try{
     el = toElement(el)
     if (el.get) el = el.get(0)  // <- extract HTML element from jQuery object
-    if (!el) return false; // <- `undefined` -> invisible
+    if (!el) {
+      return false;
+    } // <- `undefined` -> invisible
     return $(el).is(":visible")
   } catch (e) {
     if (e.message.indexOf('not found') > 0) return false
@@ -280,10 +306,15 @@ function isElementVisible(el) {
   }
 }
 
+function subElement(el, selector) {
+  return function() {
+    return el().find(selector)
+  }
+}
+
 function toElement(el) {
   if (!el) return el
-  if (typeof el == 'function') el = el()
-  return S(el)
+  return S(evalFunc(el))
 }
 
 (function improveMocha() {
@@ -310,6 +341,12 @@ function toElement(el) {
 function debug(x) {
   console.log(x)
   return x
+}
+
+function log(x) {
+  return function() {
+    console.log(x)
+  }
 }
 
 function resetFixtures() {
