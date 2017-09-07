@@ -29,7 +29,7 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 Koski sallii käyttäjän kirjautumisen, jos
 
 1. CAS-palvelu sallii kirjautumisen käyttäjän syöttämällä käyttäjätunnuksella ja salasanalla, ja
-2. LDAP:sta löytyy käyttäjän hakemisto kohdan #1 käyttäjätunnuksella.
+2. Opintopolun LDAP:sta löytyy käyttäjän hakemisto kohdan #1 käyttäjätunnuksella.
 
 Käyttäjä kuuluu ryhmiin, jotka määrittävät hänen käyttöoikeudet Koskessa. Käyttäjän ryhmät haetaan yllä kohdassa #2 LDAP:sta. Ne ovat hakemiston attribuutissa `description` JSON-enkoodattuna listana. Koski tunnistaa listasta arvot, jotka ovat muotoa:
 
@@ -59,6 +59,8 @@ OPHKATSELIJA | Globaali lukuoikeus kaikkiin organisaatioihin
 OPHPAAKAYTTAJA | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin
 YLLAPITAJA | (Toistaiseksi ei käytössä)
 TIEDONSIIRTO | Kosken API:n palvelukäyttö
+
+Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `ldap.host = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
 
 ## Teknologiat
 
@@ -401,10 +403,6 @@ Testiurleja ([api][eperusteet-api]):
 > https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
 >
 > https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/diaari?diaarinumero=104/011/2014
-
-### LDAP
-
-Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 
 ### Virta ja Ylioppilastutkintorekisteri
 
