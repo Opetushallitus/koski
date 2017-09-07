@@ -45,20 +45,19 @@ Esimerkki arvosta:
 
 > APP_KOSKI_READ_UPDATE_1.2.246.562.10.48002002061
 
-Tämä määrittää Kosken käyttäjälle luku- ja kirjoitusoikeuden organisaatiossa, jonka oid-tunnus on 1.2.246.562.10.48002002061.
+Tämä määrittää Kosken käyttäjälle luku- ja kirjoitusoikeuden organisaatioon, jonka oid-tunnus on 1.2.246.562.10.48002002061.
 
-Parametrin _app_ arvo LOKALISOINTI sallii lokalisointitekstien lukemisen ja muuttamisen Kosken API:n kautta.
+Tuetut yhdistelmät _app_, _rooli_ ja _oid_ -parametreille:
 
-Tuetut roolit:
-
-nimi | selite
------|-------
-READ | Organisaatiokohtainen lukuoikeus
-READ_UPDATE | Organisaatiokohtainen luku- ja kirjoitusoikeus
-OPHKATSELIJA | Globaali lukuoikeus kaikkiin organisaatioihin
-OPHPAAKAYTTAJA | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin
-YLLAPITAJA | (Toistaiseksi ei käytössä)
-TIEDONSIIRTO | Kosken API:n palvelukäyttö
+app | rooli | oid | selite
+---|---|---|---
+KOSKI | READ | (organisaation oid) | Organisaatiokohtainen lukuoikeus
+KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjoitusoikeus
+KOSKI | TIEDONSIIRTO | (organisaation oid) | Organisaatiokohtainen Kosken API:n palvelukäyttö
+KOSKI | OPHKATSELIJA | (OPH:n organisaation oid) | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
+KOSKI | OPHPAAKAYTTAJA | (OPH:n organisaation oid) | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
+KOSKI | YLLAPITAJA | (Toistaiseksi ei käytössä)
+LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
 
 Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `ldap.host = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
 
