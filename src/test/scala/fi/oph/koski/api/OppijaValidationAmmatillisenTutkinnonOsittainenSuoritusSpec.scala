@@ -182,7 +182,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               ))
             }
             "Vahvistuksen myöntäjähenkilö puuttuu" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
+              "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*lessThanMinimumNumberOfItems.*".r))
               ))
             }
@@ -288,12 +288,12 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   }
 
   private def vahvistus(date: LocalDate) = {
-    Some(HenkilövahvistusPaikkakunnalla(date, helsinki, stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
 
   private def vahvistusValinnaisellaTittelillä(date: LocalDate) = {
-    Some(HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(date, helsinki, stadinOpisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), stadinOpisto))))
   }
 
   private def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))

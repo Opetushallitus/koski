@@ -45,7 +45,7 @@ object AmmattitutkintoExample {
         alkamispäivä = Some(date(2012, 9, 1)),
         päättymispäivä = None,
         toimipiste = stadinToimipiste,
-        vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
+        vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, Some(helsinki)),
         suorituskieli = suomenKieli,
         osasuoritukset = Some(List(
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
@@ -73,7 +73,7 @@ object AmmattitutkintoExample {
         tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = stadinToimipiste,
-        vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+        vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
         osasuoritukset = Some(List(
           tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
           tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
@@ -309,7 +309,7 @@ object AmmatillinenOldExamples {
           tila = tilaValmis,
           alkamispäivä = None,
           toimipiste = stadinToimipiste,
-          vahvistus = Some(HenkilövahvistusPaikkakunnalla(date(2016, 1, 9), helsinki, stadinAmmattiopisto, List(
+          vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date(2016, 1, 9), Some(helsinki), stadinAmmattiopisto, List(
             Organisaatiohenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
             Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)))),
           osasuoritukset = Some(tutkinnonOsat),

@@ -60,7 +60,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   toimipiste: Oppilaitos,
   tila: Koodistokoodiviite,
   arviointi: Option[List[KorkeakoulunArviointi]],
-  vahvistus: Option[Henkilövahvistus],
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")

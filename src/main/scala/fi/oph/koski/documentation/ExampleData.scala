@@ -23,14 +23,14 @@ object ExampleData {
   val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
   val suomi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "246", nimi = Some("Suomi"))
   val ruotsi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "752", nimi = Some("Ruotsi"))
-  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu) =
-    Some(HenkilövahvistusIlmanPaikkakuntaa(päivä = päivä, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
+  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, paikkakunta: Option[Koodistokoodiviite] = None) =
+    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(päivä = päivä, myöntäjäOrganisaatio = org, paikkakunta = paikkakunta, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
   def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
     Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
 
   def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
-      HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
+      HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
         päivä = päivä,
         myöntäjäOrganisaatio = org,
         myöntäjäHenkilöt = List(OrganisaatiohenkilöValinnaisellaTittelillä("Reijo Reksi", titteli,  org))
@@ -39,9 +39,9 @@ object ExampleData {
 
   def vahvistusPaikkakunnallaJaValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä,  titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
-      HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(
+      HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
         päivä = päivä,
-        kunta,
+        Some(kunta),
         myöntäjäOrganisaatio = org,
         myöntäjäHenkilöt = List(OrganisaatiohenkilöValinnaisellaTittelillä("Reijo Reksi", titteli, org))
       )

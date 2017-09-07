@@ -14,8 +14,7 @@ trait Vahvistus {
   @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
   @Title("Myöntäjät")
   def myöntäjäHenkilöt: List[Vahvistaja]
-
-  def getPaikkakunta: Option[Koodistokoodiviite] = None
+  def getPaikkakunta: Option[Koodistokoodiviite]
 }
 
 trait VahvistusPaikkakunnalla extends Vahvistus {
@@ -25,7 +24,13 @@ trait VahvistusPaikkakunnalla extends Vahvistus {
   override def getPaikkakunta: Option[Koodistokoodiviite] = Some(paikkakunta)
 }
 
-trait Henkilövahvistus extends Vahvistus {}
+trait VahvistusValinnaisellaPaikkakunnalla extends Vahvistus {
+  @KoodistoUri("kunta")
+  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
+  def paikkakunta: Option[Koodistokoodiviite]
+  override def getPaikkakunta: Option[Koodistokoodiviite] = paikkakunta
+}
+
 trait HenkilövahvistusValinnaisellaTittelillä extends Vahvistus {}
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
@@ -35,32 +40,25 @@ case class HenkilövahvistusPaikkakunnalla(
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
   myöntäjäHenkilöt: List[Organisaatiohenkilö]
-) extends Henkilövahvistus with VahvistusPaikkakunnalla
+) extends VahvistusPaikkakunnalla
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
-case class HenkilövahvistusIlmanPaikkakuntaa(
+case class HenkilövahvistusValinnaisellaPaikkakunnalla(
   päivä: LocalDate,
+  paikkakunta: Option[Koodistokoodiviite] = None,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
   myöntäjäHenkilöt: List[Organisaatiohenkilö]
-) extends Henkilövahvistus
+) extends VahvistusValinnaisellaPaikkakunnalla
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
-case class HenkilövahvistusValinnaisellaTittelilläJaPaikkakunnalla(
+case class HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
   päivä: LocalDate,
-  paikkakunta: Koodistokoodiviite,
+  paikkakunta: Option[Koodistokoodiviite] = None,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
   myöntäjäHenkilöt: List[OrganisaatiohenkilöValinnaisellaTittelillä]
-) extends HenkilövahvistusValinnaisellaTittelillä with VahvistusPaikkakunnalla
-
-@Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
-case class HenkilövahvistusValinnaisellaTittelilläJaIlmanPaikkakuntaa(
-  päivä: LocalDate,
-  myöntäjäOrganisaatio: Organisaatio,
-  @MinItems(1)
-  myöntäjäHenkilöt: List[OrganisaatiohenkilöValinnaisellaTittelillä]
-) extends HenkilövahvistusValinnaisellaTittelillä
+) extends HenkilövahvistusValinnaisellaTittelillä with VahvistusValinnaisellaPaikkakunnalla
 
 @Description("Suorituksen vahvistus organisaatiotiedoilla")
 case class Organisaatiovahvistus(

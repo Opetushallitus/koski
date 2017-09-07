@@ -5,10 +5,11 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExampleData.jyväskylä
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.MockUsers.{kalle, paakayttaja, helsinginKaupunkiPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -209,7 +210,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     def valmis(suoritus: AmmatillisenTutkinnonSuoritus) = suoritus.copy(
       tila = tilaValmis,
-      vahvistus = ExampleData.vahvistusPaikkakunnalla(päivä = date(2016, 10, 1))
+      vahvistus = ExampleData.vahvistus(päivä = date(2016, 10, 1), paikkakunta = Some(jyväskylä))
     )
 
     def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {

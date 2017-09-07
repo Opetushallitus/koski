@@ -115,7 +115,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
   val päättymispäivä: Option[LocalDate],
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
@@ -150,7 +150,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä")
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
@@ -614,7 +614,7 @@ case class ValmaKoulutuksenSuoritus(
   koulutusmoduuli: ValmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -675,7 +675,7 @@ case class TelmaKoulutuksenSuoritus(
   koulutusmoduuli: TelmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,

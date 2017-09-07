@@ -262,7 +262,7 @@ object AmmatillinenExampleData {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
       ryhmä = Some("YMP14SN"),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40),
