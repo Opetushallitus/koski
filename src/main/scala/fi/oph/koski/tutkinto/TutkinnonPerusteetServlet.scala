@@ -21,22 +21,25 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa") {
-    perusteenRakenne.map(tutkinnonOsienKoodit)
+    perusteenRakenne.map(tutkinnonRakenne => lisättävätTutkinnonOsat(tutkinnonRakenne, tutkinnonRakenne))
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa/:ryhma") {
     val ryhmä = params("ryhma")
     val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
-    perusteenRakenne.map ( osa =>
-      tutkinnonOsienKoodit(osa.flatMap(findRyhmä(ryhmäkoodi, _)))
-    )
+    perusteenRakenne.map { tutkinnonRakenne =>
+      val ryhmänRakenne = tutkinnonRakenne.flatMap(findRyhmä(ryhmäkoodi, _))
+      lisättävätTutkinnonOsat(ryhmänRakenne, tutkinnonRakenne)
+    }
   }
 
-  private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne match {
-    case None => List.empty
-    case Some(rakenneOsa) =>
-      rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
+  private def lisättävätTutkinnonOsat(ryhmä: Option[RakenneOsa], tutkinto: Option[RakenneOsa]) = {
+    val määrittelemättömiä = ryhmä.map(_.sisältääMäärittelemättömiäOsia).getOrElse(true)
+    val osat = tutkinnonOsienKoodit(if (määrittelemättömiä) tutkinto else ryhmä) // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
+    LisättävätTutkinnonOsat(osat, määrittelemättömiä, määrittelemättömiä)
   }
+  private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne.toList.flatMap(tutkinnonOsienKoodit)
+  private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] = rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
 
   get("/suoritustavat/:diaari") {
     val diaari = params("diaari")

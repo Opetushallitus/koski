@@ -275,6 +275,15 @@ function TutkinnonOsat(groupId) {
           .then(wait.forAjax)
       }
     },
+    lisääPaikallinenTutkinnonOsa: function(nimi) {
+      return function() {
+        triggerEvent(uusiTutkinnonOsaElement().find('a.paikallinen-tutkinnon-osa'), 'click')
+        var modalElement = uusiTutkinnonOsaElement().find('.lisaa-paikallinen-tutkinnon-osa-modal')
+        return Page(modalElement).setInputValue('input', nimi)()
+          .then(function () { triggerEvent(modalElement.find('button:not(:disabled)'), 'click') })
+          .then(wait.forAjax)
+      }
+    },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
     },

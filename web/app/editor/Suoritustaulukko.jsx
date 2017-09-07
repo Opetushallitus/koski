@@ -1,5 +1,4 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
@@ -15,7 +14,8 @@ import {
   modelSetTitle,
   modelSetValue,
   modelSetValues,
-  oneOfPrototypes, optionalPrototypeModel,
+  oneOfPrototypes,
+  optionalPrototypeModel,
   pushModel,
   pushRemoval
 } from './EditorModel'
@@ -26,13 +26,13 @@ import {fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
-import Autocomplete from '../Autocomplete.jsx'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
-import {EnumEditor} from './EnumEditor.jsx'
-import {YhteensäSuoritettu, fetchLaajuudet} from './YhteensaSuoritettu.jsx'
+import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
 import Http from '../http'
+import {ift} from '../util'
+import ModalDialog from './ModalDialog.jsx'
 
 const placeholderForNonGrouped = '999999'
 
@@ -165,8 +165,18 @@ export class Suoritustaulukko extends React.Component {
 }
 
 const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
-  let displayValue = item => item.newItem ? 'Lisää uusi: ' + item.title : item.data.koodiarvo + ' ' + item.title
+  let lisääTutkinnonOsa = (newItem) => {
+    addTutkinnonOsa(modelSetTitle(newItem.newItem
+      ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
+      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId == placeholderForNonGrouped ? undefined : groupId)
+  }
   let selectedAtom = Atom(undefined)
+  let lisääPaikallinenAtom = Atom(false)
+  let lisääPaikallinenTutkinnonOsa = (osa) => {
+    lisääPaikallinenAtom.set(false)
+    if (osa) lisääTutkinnonOsa(osa)
+  }
+  let lisääOsaToisestaTutkinnostaAtom = Atom(false)
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
@@ -181,33 +191,48 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
   let osatP = Http
     .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)))
 
-  selectedAtom.filter(R.identity).onValue(newItem => {
-    addTutkinnonOsa(modelSetTitle(newItem.newItem
-      ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
-      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId == placeholderForNonGrouped ? undefined : groupId)
-  })
+  selectedAtom.filter(R.identity).onValue(lisääTutkinnonOsa)
 
   return (<span>
     {
-      osatP.map(perusteistaLöytyvätOsat => perusteistaLöytyvätOsat.length
-        ? <KoodistoDropdown
-          options={perusteistaLöytyvätOsat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))}
-          selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
-          enableFilter="true"
-          selectionText={ t('Lisää tutkinnon osa')}
-          showKoodiarvo="true"
-          />
-        : <Autocomplete
-          fetchItems={ query => query.length < 3 ? Bacon.once([]) : EnumEditor.fetchAlternatives(modelLookup(koulutusmoduuliProto, 'tunniste')).map(osat => osat.filter(osa => (!käytössäolevatKoodiarvot.includes(osa.data.koodiarvo) && displayValue(osa).toLowerCase().includes(query.toLowerCase()))))}
-          resultAtom={ selectedAtom }
-          placeholder={t('Lisää tutkinnon osa')}
-          displayValue={ displayValue }
-          selected = { selectedAtom }
-          createNewItem = { query => paikallinenKoulutusmoduuli && query.length ? { newItem: true, title: query} : null }
-        />
+      osatP.map(lisättävätTutkinnonOsat => {
+          let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
+          return (<div>
+            {  osat.length > 0 && <KoodistoDropdown
+                className="tutkinnon-osat"
+                options={osat}
+                selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
+                enableFilter="true"
+                selectionText={ t('Lisää tutkinnon osa')}
+                showKoodiarvo="true"
+              />
+            }
+            {
+              lisättävätTutkinnonOsat.osaToisestaTutkinnosta && <a className="add-link osa-toisesta-tutkinnosta disabled" onClick={() => lisääOsaToisestaTutkinnostaAtom.set(true)}>
+                <Text name="Lisää tutkinnon osa toisesta tutkinnosta"/>
+              </a>
+            }
+            {
+               lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link paikallinen-tutkinnon-osa" onClick={() => lisääPaikallinenAtom.set(true)}>
+                <Text name="Lisää paikallinen tutkinnon osa"/>
+              </a>
+            }
+            { ift(lisääPaikallinenAtom, <UusiPaikallisenTutkinnonOsanSuoritusPopUp resultCallback={lisääPaikallinenTutkinnonOsa}/>) }
+          </div>)
+        }
       )
     }
   </span>)
+}
+
+const UusiPaikallisenTutkinnonOsanSuoritusPopUp = ({resultCallback}) => {
+  let nameAtom = Atom('')
+  let selectedAtom = nameAtom.view(name => name && {newItem: true, title: name})
+
+  return (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom} submitOnEnterKey="false">
+    <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
+    <input type="text" onChange={event => nameAtom.set(event.target.value)}/>
+  </ModalDialog>)
 }
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {

@@ -15,6 +15,7 @@ case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: Opti
 case class TutkinnonOsanLaajuus(min: Option[Long], max: Option[Long])
 
 sealed trait RakenneOsa {
+  def sisältääMäärittelemättömiäOsia: Boolean
   def tutkinnonOsat: List[TutkinnonOsa]
 }
 
@@ -26,7 +27,10 @@ case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määri
   def tutkinnonRakenneLaajuus: TutkinnonOsanLaajuus = {
     this.laajuus.getOrElse(TutkinnonOsanLaajuus(None, None))
   }
+
+  override def sisältääMäärittelemättömiäOsia: Boolean = this.määrittelemätön || osat.exists(_.sisältääMäärittelemättömiäOsia)
 }
 case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString) extends RakenneOsa {
   override def tutkinnonOsat: List[TutkinnonOsa] = List(this)
+  override def sisältääMäärittelemättömiäOsia: Boolean = false
 }

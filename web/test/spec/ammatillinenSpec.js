@@ -383,7 +383,7 @@ describe('Ammatillinen koulutus', function() {
 
             describe('Ennen lisäystä', function() {
               it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
-                expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(43)
+                expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(47)
               })
 
               it('Näytetään pakollisten tutkinnon osien otsikkorivi', function() {
@@ -496,18 +496,18 @@ describe('Ammatillinen koulutus', function() {
             describe('Valtakunnallinen tutkinnon osa', function() {
               before(
                 editor.edit,
-                opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Ajoneuvolasitukset')
+                opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Huippuosaajana toimiminen')
               )
 
               describe('Lisäyksen jälkeen', function () {
                 it('lisätty osa näytetään', function() {
-                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Ajoneuvolasitukset')
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Huippuosaajana toimiminen')
                 })
 
                 describe('Kun lisätään paikallinen tutkinnon osa', function() {
                   before(
                     editor.edit,
-                    opinnot.tutkinnonOsat('3').lisääTutkinnonOsa('Hassut temput')
+                    opinnot.tutkinnonOsat('3').lisääPaikallinenTutkinnonOsa('Hassut temput')
                   )
 
                   describe('Lisäyksen jälkeen', function () {
@@ -516,6 +516,8 @@ describe('Ammatillinen koulutus', function() {
                     })
                   })
                 })
+
+                // TODO: tutkinnon osa toisesta tutkinnosta, esimerkiksi Ajoneuvolasitukset
               })
             })
           })
