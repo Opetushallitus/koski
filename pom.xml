@@ -498,6 +498,15 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-war</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
@@ -513,9 +522,9 @@
                   <mainClass>fi.oph.koski.jettylauncher.JettyLauncher</mainClass>
                 </manifest>
               </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
+              <descriptors>
+                <descriptor>src/main/assembly/assembly.xml</descriptor>
+              </descriptors>
             </configuration>
           </plugin>
         </plugins>

@@ -76,15 +76,18 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
     context.setAttribute("koski.application", application)
     context.setParentLoaderPriority(true)
     context.setContextPath("/koski")
-    def resourceBase = System.getProperty("resourcebase", "./target/webapp")
-
-    if (!Files.exists(Paths.get(resourceBase))) {
-      throw new RuntimeException("WebApplication resource base: " + resourceBase + " does not exist.")
-    }
     context.setResourceBase(resourceBase)
-
     handlers.addHandler(context)
+  }
 
+  private def resourceBase = if (System.getProperty("uberjar", "false").equals("true")) {
+    JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
+  } else {
+    val base = System.getProperty("resourcebase", "./target/webapp")
+    if (!Files.exists(Paths.get(base))) {
+      throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
+    }
+    base
   }
 
   private def setupJMX = {
