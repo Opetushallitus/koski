@@ -7,8 +7,7 @@ import {hashCode, hashAdd} from './hashcode'
 export const modelLookupRequired = (mainModel, path) => {
   var model = modelLookup(mainModel, path)
   if (!model) {
-    console.error('model for', path, 'not found from', mainModel)
-    throw new Error('model for ' + path + ' not found')
+    throwError('model for ' + path + ' not found', mainModel)
   }
   return model
 }
@@ -21,7 +20,7 @@ export const modelLookup = (mainModel, path) => {
 export const lensedModel = (model, lens) => {
   let modelFromLens = L.get(lens, model)
   if (!modelFromLens) {
-    throw new Error('lens returned ' + modelFromLens)
+    throwError('lens returned ' + modelFromLens, model, lens)
   }
   return contextualizeSubModel(modelFromLens, model, lens)
 }
@@ -135,9 +134,21 @@ export const recursivelyEmpty = (m) => {
   return !m.value.data
 }
 
-export const modelSet = (mainModel, newModel, path) => {
-  return L.set(modelLens(path), newModel, mainModel)
+
+function withCatch(name, fn) {
+  return function() {
+    try {
+      return fn.apply(null, arguments)
+    } catch (e) {
+      console.error('Error in ' + name, ...arguments, e)
+      throw e;
+    }
+  }
 }
+
+export const modelSet = withCatch('modelSet', (mainModel, newModel, path) => {
+  return L.set(modelLens(path), newModel, mainModel)
+})
 
 export const modelSetData = (model, data, path) => {
   return modelSetValue(model, { data }, path)
@@ -147,9 +158,9 @@ export const modelSetTitle = (model, title, path) => {
   return modelSetValue(model, L.set('title', title, model.value), path)
 }
 
-export const modelSetValue = (model, value, path) => {
+export const modelSetValue = withCatch('modelSetValue', (model, value, path) => {
   return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
-}
+})
 
 export const modelSetValues = (model, pathsAndValues) => {
   return R.reduce(
@@ -169,14 +180,14 @@ let modelValueLens = ({model} = {}) => L.lens(
   (v, m) => {
     if (!m) {
       if (v) {
-        throw new Error('trying to set value of null model to a non-null value', v)
+        throwError('trying to set value of null model to a non-null value', v)
       } else {
         return m
       }
     }
     if (m.type == 'prototype') {
       if (v) {
-        throw new Error(`trying to set value of an unresolved prototype model (${m.key}) to a non-null value`, v)
+        throwError(`trying to set value of an unresolved prototype model (${m.key}) to a non-null value`, v)
       }
     }
     let plainOptional = (m.optional && !m.type)
@@ -184,6 +195,11 @@ let modelValueLens = ({model} = {}) => L.lens(
     return L.set('value', v, usedModel)
   }
 )
+
+let throwError = (msg, ...args) => {
+  console.error(msg, ...args)
+  throw new Error(msg)
+}
 
 let getUsedModelForOptionalModel = (m, {model} = {}) => {
   if (!model) model = m
@@ -271,7 +287,7 @@ export const modelProperty = (mainModel, path) => {
     return modelProperty(modelLookup(mainModel, path.slice(0, -1)), path.slice(-1))
   }
   if (!mainModel.value || !mainModel.value.properties) {
-    throw new Error('No properties found')
+    throwError('No properties found', mainModel)
   }
   var found = mainModel.value.properties.find(p => p.key == path[0])
   if (!found) {
@@ -307,7 +323,7 @@ export const oneOfPrototypes = (model) => {
 // so that modifications can be targeted to the correct position in the data that's to be sent to the server.
 export const contextualizeModel = (model, context, path) => {
   if (!context) {
-    throw new Error('context missing')
+    throwError('context missing')
   }
   model = resolvePrototype(model, context)
   return R.merge(model, { context, path: childPath(model, path) })
@@ -369,7 +385,7 @@ export const applyChangesAndValidate = (modelBeforeChange, changes) => {
 // adds validationResult to model.context
 export const validateModel = (mainModel) => {
   let context = mainModel.context
-  if (!context) throw new Error('context missing')
+  if (!context) throwError('context missing')
   const validateInner = (model, results) => {
     let validator = getValidator(model, context)
     if (validator) {
@@ -501,7 +517,7 @@ let recontextualizingLens = (baseLens, pathElem) => {
 let contextualizeChild = (m, child, pathElem) => {
   if (!child) return child
   if (!m) {
-    throw new Error('parent missing')
+    throwError('parent missing')
   }
   return contextualizeSubModel(child, m, pathElem)
 }
@@ -517,7 +533,7 @@ const childPath = (model, ...pathElems) => {
 const resolvePrototype = (model, context) => {
   if (model && model.type === 'prototype') {
     // Some models are delivered as prototype references and are replaced with the actual prototype found in the context
-    if (!context) throw new Error(`Cannot resolve prototype ${model.key} without context`)
+    if (!context) throwError(`Cannot resolve prototype ${model.key} without context`, model)
     let foundProto = context.prototypes[model.key]
     if (!foundProto) {
       console.error('Prototype not found: ' + model.key)
@@ -551,7 +567,7 @@ const getEditor = (model, context) => {
   context = context || model.context
   let editorMapping = context.editorMapping
   if (!editorMapping) {
-    throw new Error('editorMapping missing')
+    throwError('editorMapping missing', model, context)
   }
   if (model.value && model.value.classes) {
     for (var i in model.value.classes) {
@@ -602,7 +618,7 @@ const toPath = (path) => {
   if (path instanceof Array) {
     return path
   }
-  throw new Error('Not a path: ' + path)
+  throwError('Not a path: ' + path)
 }
 
 // removes function/lenses, leaving just the data path
