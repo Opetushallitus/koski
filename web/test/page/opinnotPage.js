@@ -256,7 +256,7 @@ function TutkinnonOsat(groupId) {
     },
     lisääPaikallinenTutkinnonOsa: function(nimi) {
       return function() {
-        click(subElement(uusiTutkinnonOsaElement, ('a.paikallinen-tutkinnon-osa')))()
+        click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
         var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
         return Page(modalElement).setInputValue('input', nimi)()
           .then(click(subElement(modalElement, 'button:not(:disabled)')))
