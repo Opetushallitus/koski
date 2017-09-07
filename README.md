@@ -56,7 +56,6 @@ KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjo
 KOSKI | TIEDONSIIRTO | (organisaation oid) | Organisaatiokohtainen Kosken API:n palvelukäyttö
 KOSKI | OPHKATSELIJA | (OPH:n organisaation oid) | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
 KOSKI | OPHPAAKAYTTAJA | (OPH:n organisaation oid) | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
-KOSKI | YLLAPITAJA | (Toistaiseksi ei käytössä)
 LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
 
 Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `ldap.host = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
