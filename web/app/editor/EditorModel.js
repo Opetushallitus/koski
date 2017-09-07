@@ -1,7 +1,7 @@
 import R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import {hashCode, hashAdd} from './hashcode'
+import {hashAdd, hashCode} from './hashcode'
 
 // Find submodel with given path
 export const modelLookupRequired = (mainModel, path) => {
@@ -141,7 +141,7 @@ function withCatch(name, fn) {
       return fn.apply(null, arguments)
     } catch (e) {
       console.error('Error in ' + name, ...arguments, e)
-      throw e;
+      throw e
     }
   }
 }
