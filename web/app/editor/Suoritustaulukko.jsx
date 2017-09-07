@@ -207,17 +207,21 @@ const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOs
                 showKoodiarvo="true"
               />
             }
-            {
-              lisättävätTutkinnonOsat.osaToisestaTutkinnosta && <a className="add-link osa-toisesta-tutkinnosta disabled" onClick={() => lisääOsaToisestaTutkinnostaAtom.set(true)}>
-                <Text name="Lisää tutkinnon osa toisesta tutkinnosta"/>
-              </a>
-            }
-            {
-               lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link paikallinen-tutkinnon-osa" onClick={() => lisääPaikallinenAtom.set(true)}>
-                <Text name="Lisää paikallinen tutkinnon osa"/>
-              </a>
-            }
-            { ift(lisääPaikallinenAtom, <UusiPaikallisenTutkinnonOsanSuoritusPopUp resultCallback={lisääPaikallinenTutkinnonOsa}/>) }
+            <span className="osa-toisesta-tutkinnosta">
+              {
+                lisättävätTutkinnonOsat.osaToisestaTutkinnosta && <a className="add-link disabled" onClick={() => lisääOsaToisestaTutkinnostaAtom.set(true)}>
+                  <Text name="Lisää tutkinnon osa toisesta tutkinnosta"/>
+                </a>
+              }
+            </span>
+            <span className="paikallinen-tutkinnon-osa">
+              {
+                lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
+                  <Text name="Lisää paikallinen tutkinnon osa"/>
+                </a>
+              }
+              { ift(lisääPaikallinenAtom, <UusiPaikallisenTutkinnonOsanSuoritusPopUp resultCallback={lisääPaikallinenTutkinnonOsa}/>) }
+            </span>
           </div>)
         }
       )
