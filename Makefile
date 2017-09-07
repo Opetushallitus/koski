@@ -38,6 +38,8 @@ front: logdir
 	cd web && mkdir -p target && npm install
 watch:
 	cd web && npm run watch
+watch-prod:
+	NODE_ENV="'production'" make watch
 source-to-image: clean build
 	echo "TODO" > target/webapp/buildversion.txt
 	mvn package -P uberjar -DskipTests
