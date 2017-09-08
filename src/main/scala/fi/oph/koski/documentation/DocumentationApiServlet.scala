@@ -1,9 +1,12 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.{JsonSerializer, KoskiSchema}
 import fi.oph.koski.servlet.ApiServlet
+
+import scala.reflect.runtime.{universe => ru}
 
 class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   get("/categoryNames.json") {
@@ -33,4 +36,6 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
   }
+
+  override def toJsonString[T: ru.TypeTag](x: T): String = Json.write(Json.toJValueDangerous(x.asInstanceOf[AnyRef]))
 }

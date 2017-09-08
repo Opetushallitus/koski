@@ -78,10 +78,13 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/prototype/:key") {
-    val c = ModelBuilderContext(EditorSchema.deserializationContext.rootSchema, EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+    val c = ModelBuilderContext(EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
     val className = params("key")
-    val prototype = EditorModelBuilder.buildPrototype(className)(c)
-    renderOption(KoskiErrorCategory.notFound)(prototype)
+    try {
+      renderObject(EditorModelBuilder.buildPrototype(className)(c))
+    } catch {
+      case e: RuntimeException => haltWithStatus(KoskiErrorCategory.notFound())
+    }
   }
 
   get("/preferences/:organisaatioOid/:type") {

@@ -7,6 +7,7 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.scalatra._
 
 import scala.xml.Elem
+import scala.reflect.runtime.{universe => ru}
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
   override protected def logger: LoggerWithContext = {
@@ -66,14 +67,14 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     haltWithStatus(KoskiErrorCategory.internalError())
   }
 
-  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T]) = {
+  def renderOption[T: ru.TypeTag](errorCategory: ErrorCategory)(result: Option[T]) = {
     result match {
       case Some(x) => renderObject(x)
       case _ => haltWithStatus(errorCategory())
     }
   }
 
-  def renderEither[T <: AnyRef](result: Either[HttpStatus, T]) = {
+  def renderEither[T: ru.TypeTag](result: Either[HttpStatus, T]) = {
     result match {
       case Right(x) => renderObject(x)
       case Left(status) => haltWithStatus(status)
@@ -84,7 +85,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
 
   def renderStatus(status: HttpStatus): Unit
 
-  def renderObject(x: AnyRef): Unit
+  def renderObject[T: ru.TypeTag](x: T): Unit
 
   def haltWithStatus(status: HttpStatus): Nothing = {
     halt(status.statusCode, status)

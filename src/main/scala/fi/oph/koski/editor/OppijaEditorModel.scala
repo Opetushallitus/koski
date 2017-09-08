@@ -54,7 +54,7 @@ object OppijaEditorModel extends Timing {
 
 object EditorSchema {
   lazy val schema = KoskiSchema.schemaFactory.createSchema(classOf[OppijaEditorView].getName).asInstanceOf[ClassSchema].moveDefinitionsToTopLevel
-  lazy val deserializationContext = ExtractionContext(schema, validate = false)
+  lazy val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory, validate = false)
 }
 
 case class OppijaEditorView(

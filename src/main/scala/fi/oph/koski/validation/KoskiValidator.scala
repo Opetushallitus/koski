@@ -21,7 +21,7 @@ import mojave._
 
 class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    extractAndValidateOppija(Json.toJValue(oppija))
+    extractAndValidateOppija(new JsonSerializer().serialize(oppija))
   }
 
   def extractAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiSession, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {

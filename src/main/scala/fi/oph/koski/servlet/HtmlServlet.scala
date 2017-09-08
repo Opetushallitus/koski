@@ -9,6 +9,7 @@ import fi.oph.koski.util.XML
 
 import scala.util.Try
 import scala.xml.Elem
+import scala.reflect.runtime.{universe => ru}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
   lazy val buildVersion: Option[String] = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
@@ -35,7 +36,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
     response.writer.print(html)
   }
 
-  def renderObject(x: AnyRef) = x match {
+  override def renderObject[T: ru.TypeTag](x: T) = x match {
     case e: Elem =>
       contentType = "text/html"
       response.writer.print(e.toString)

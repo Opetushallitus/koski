@@ -49,7 +49,7 @@ object OpiskeluoikeudenPerustiedot {
   }
 
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(id, Json.toJValue(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
+    makePerustiedot(id, Json.toJValueDangerous(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
   }
 
   def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {

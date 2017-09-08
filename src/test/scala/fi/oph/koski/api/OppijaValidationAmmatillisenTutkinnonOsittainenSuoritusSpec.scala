@@ -335,7 +335,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   private def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonOsittainenSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
 
-    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus))), headers)(f)
+    putOppija(makeOppija(henkilö, List(Json.toJValueDangerous(opiskeluoikeus))), headers)(f)
   }
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(osittainenSuoritusKesken.copy(

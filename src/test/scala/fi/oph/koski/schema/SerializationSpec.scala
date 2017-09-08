@@ -11,16 +11,16 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
   "Serialization / deserialization" - {
     import KoskiSchema.deserializationContext
     "Tunnustaminen" in {
-      val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
-      val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](jsonString).right.get
+      val json = Json.toJValueDangerous(AmmatillinenExampleData.tunnustettu)
+      val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).right.get
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
     "Examples" - {
       Examples.examples.foreach { example =>
         example.name in {
-          val jsonString = Json.write(example.data)
-          val oppija = SchemaValidatingExtractor.extract[Oppija](jsonString).right.get
+          val json = Json.toJValueDangerous(example.data)
+          val oppija = SchemaValidatingExtractor.extract[Oppija](json).right.get
           oppija should(equal(example.data))
           logger.info(example.name + " ok")
         }
@@ -42,7 +42,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
             .filterNot { x => x.isInstanceOf[AikuistenPerusopetuksenOppiaineenSuoritus]}
 
           kaikkiSuoritukset.foreach { s =>
-            val jsonString = Json.write(s)
+            val jsonString = Json.toJValueDangerous(s)
             val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
               case Right(suoritus) => suoritus should (equal(s))
               case Left(error) => fail(s"deserialization of $s failed: $error")

@@ -33,7 +33,8 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer
+  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer
+  implicit val jsonFormats = formats + BlockOpiskeluoikeusSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {
@@ -61,6 +62,11 @@ object Json extends Logging {
 
   def toJValue(x: AnyRef): JValue = {
     Extraction.decompose(x)
+  }
+
+  // Avoid using this, doesn't check access rights to sensitive data from Oppija and Opiskeluoikeus
+  def toJValueDangerous(x: AnyRef): JValue = {
+    Extraction.decompose(x)(formats)
   }
 
   def fromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): A = {
@@ -139,6 +145,16 @@ object LocalDateTimeSerializer extends CustomSerializer[LocalDateTime](format =>
   }
   )
 )
+
+// Estää opiskeluoikeuksien serialisoimisen vahingosssa ilman arkaluontoisten kenttien filtteröintiä
+private object BlockOpiskeluoikeusSerializer extends Serializer[Opiskeluoikeus] {
+  override def deserialize(implicit format: Formats) = PartialFunction.empty
+  override def serialize(implicit format: Formats) = {
+    case x: Opiskeluoikeus => fail(x.getClass.getName)
+    case x: Suoritus => fail(x.getClass.getName)
+  }
+  def fail(name: String) = throw new RuntimeException(s"$name-luokan serialisointi estetty, käytä fi.oph.scalaschema.Serializer-luokkaa")
+}
 
 private object ExtractionHelper {
   def tryExtract[T](block: => T)(status: => HttpStatus) = {

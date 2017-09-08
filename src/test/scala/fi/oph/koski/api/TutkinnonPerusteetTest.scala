@@ -53,6 +53,6 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
   def eperusteistaLöytymätönValidiDiaarinumero: String
 
   def putTodistus[A](opiskeluoikeus: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus))), headers)(f)
+    putOppija(makeOppija(henkilö, List(Json.toJValueDangerous(opiskeluoikeus))), headers)(f)
   }
 }

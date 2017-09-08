@@ -1,6 +1,5 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
@@ -13,7 +12,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
   val oppijaPath = "/api/oppija"
 
-  implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
+  implicit def any2j(o: AnyRef): JValue = Json.toJValueDangerous(o)
 
   def putOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
@@ -21,7 +20,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
     import KoskiSchema.deserializationContext
-    putOppija(Json.toJValue(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
+    putOppija(Json.toJValueDangerous(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
@@ -36,7 +35,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def createOrUpdate(oppija: Henkilö with Henkilötiedot, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }, user: UserWithPassword = defaultUser) = {
-    putOppija(Json.toJValue(Oppija(oppija, List(opiskeluoikeus))), headers = authHeaders(user) ++ jsonContent){
+    putOppija(Json.toJValueDangerous(Oppija(oppija, List(opiskeluoikeus))), headers = authHeaders(user) ++ jsonContent){
       check
       lastOpiskeluoikeusByHetu(oppija)
     }
@@ -47,7 +46,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     createOrUpdate(oppija, opiskeluoikeus, user = user).asInstanceOf[T]
   }
 
-  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValue(Map(
+  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValueDangerous(Map(
     "henkilö" -> henkilö,
     "opiskeluoikeudet" -> opiskeluOikeudet
   ))

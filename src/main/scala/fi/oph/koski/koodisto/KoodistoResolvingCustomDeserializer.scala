@@ -10,7 +10,7 @@ import org.json4s._
 
 case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePalvelu) extends CustomDeserializer with Logging {
   override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext) = {
-    val viite = SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil))
+    val viite = SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil), schema)
     viite match {
       case Right(viite: Koodistokoodiviite) =>
         val validated: Option[Koodistokoodiviite] = try {

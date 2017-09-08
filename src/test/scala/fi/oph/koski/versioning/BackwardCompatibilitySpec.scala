@@ -46,7 +46,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
                 }
                 SchemaValidatingExtractor.extract[Oppija](json) match {
                   case Right(oppija) =>
-                    val afterRoundtrip = Json.toJValue(oppija)
+                    val afterRoundtrip = Json.toJValueDangerous(oppija)
                     validator.validateAsJson(oppija) match {
                       case Right(validated) =>
                         // Valid, now check for JSON equality after roundtrip (not strictly necessary, but it's good to know if this breaks)
@@ -62,7 +62,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
               }
             }
             val latest = files.last
-            if (Json.toJValue(example.data) != Json.readFile(fullName(latest))) {
+            if (Json.toJValueDangerous(example.data) != Json.readFile(fullName(latest))) {
               println(s"Example data differs for ${example.name} at ${latest}. Creating new version")
               Json.writeFile(fullName(currentFilename), example.data)
             }

@@ -27,7 +27,7 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
-    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schema).copy(validate = false)
+    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(
@@ -39,7 +39,7 @@ object Tables {
         Opiskeluoikeus.VERSIO_1,
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-        Json.toJValue(opiskeluoikeus),
+        Json.toJValueDangerous(opiskeluoikeus),
         opiskeluoikeus.luokka)
     }
     def readData(data: JValue, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
@@ -49,7 +49,7 @@ object Tables {
       }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      val data = Json.toJValue(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
+      val data = Json.toJValueDangerous(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
       (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
     }
   }

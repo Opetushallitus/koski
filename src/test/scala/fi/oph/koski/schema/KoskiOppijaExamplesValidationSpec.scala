@@ -24,7 +24,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   "Validation with JSON Schema" - {
     Examples.examples.foreach { example =>
       example.name in {
-        val json = JsonLoader.fromString(Json.write(example.data))
+        val json = JsonLoader.fromString(Json.write(Json.toJValueDangerous(example.data)))
         val report = validator.validate(schema, json)
         assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.filter(m => m.getLogLevel.toString == "error").mkString("\n"))
       }
@@ -79,7 +79,6 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   }
 
   def deserialize(obj: AnyRef, klass: Class[_]): Either[List[ValidationError], Any] = {
-    val schema = KoskiSchema.schema.getSchema(klass.getName).get
-    SchemaValidatingExtractor.extract(Json.toJValue(obj), schema, Nil)
+    SchemaValidatingExtractor.extract(Json.toJValueDangerous(obj), klass)
   }
 }

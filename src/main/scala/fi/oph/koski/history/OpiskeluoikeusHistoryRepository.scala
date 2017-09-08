@@ -12,7 +12,7 @@ import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, Opiskelu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.Opiskeluoikeus
+import fi.oph.koski.schema.{Opiskeluoikeus, RequiresRole}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
@@ -20,7 +20,7 @@ import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods with Logging with JsonMethods {
 
-  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluoikeusHistory]] = {
+  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[List[OpiskeluoikeusHistory]] = {
     val query = OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
       .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
@@ -28,7 +28,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
 
     runDbSync(query.result).map(toOpiskeluoikeusHistory) match {
       case Nil => None
-      case rows: Seq[OpiskeluoikeusHistory] => Some(rows)
+      case rows: Seq[OpiskeluoikeusHistory] => Some(rows.toList)
     }
   }
 
@@ -63,4 +63,4 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
   def toOpiskeluoikeusHistory(row: (OpiskeluoikeusRow, OpiskeluoikeusHistoryRow)) = OpiskeluoikeusHistory(row._1.oid, row._2.versionumero, row._2.aikaleima, row._2.kayttajaOid, row._2.muutos)
 }
 
-case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
+case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @RequiresRole("LUOTTAMUKSELLINEN") muutos: JValue)

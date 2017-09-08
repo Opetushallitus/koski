@@ -16,15 +16,12 @@ import fi.oph.scalaschema.annotation._
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
-    implicit val context = ModelBuilderContext(deserializationContext.rootSchema, deserializationContext, editable)
-    deserializationContext.rootSchema.getSchema(value.getClass.getName) match {
-      case Some(objectSchema) => builder(objectSchema).buildModelForObject(value, Nil)
-      case None => throw new RuntimeException("Schema not found for " + value.getClass.getName)
-    }
+    implicit val context = ModelBuilderContext(deserializationContext, editable)
+    builder(deserializationContext.schemaFactory.createSchema(value.getClass.getName)).buildModelForObject(value, Nil)
   }
 
   def buildPrototype(className: String)(implicit context: ModelBuilderContext) = {
-    context.mainSchema.getSchema(className).map(builder(_).buildPrototype(Nil))
+    builder(context.deserializationContext.schemaFactory.createSchema(className)).buildPrototype(Nil)
   }
 
   def builder(schema: Schema)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
@@ -54,7 +51,7 @@ object EditorModelBuilder {
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
   def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), o)
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
-    case s: ClassRefSchema => context.mainSchema.getSchema(s.fullClassName).get
+    case s: ClassRefSchema => context.deserializationContext.schemaFactory.createSchema(s.fullClassName)
     case _ => schema
   }
 }
@@ -71,7 +68,6 @@ trait ModelBuilderWithData[T] extends EditorModelBuilder[T]{
 }
 
 case class ModelBuilderContext(
-  mainSchema: SchemaWithClassName,
   deserializationContext: ExtractionContext,
   editable: Boolean, root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,

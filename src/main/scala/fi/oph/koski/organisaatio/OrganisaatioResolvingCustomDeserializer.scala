@@ -8,7 +8,7 @@ import org.json4s._
 
 case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: OrganisaatioRepository) extends CustomDeserializer with Logging {
   override def extract(json: JValue, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext): Either[List[ValidationError], Any] = {
-    SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil)) match {
+    SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil), KoskiSchema.schema) match {
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
         organisaatioRepository.getOrganisaatio(o.oid) match {

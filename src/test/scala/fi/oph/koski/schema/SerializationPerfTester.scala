@@ -11,6 +11,6 @@ object SerializationPerfTester extends App {
 
   //LocalPerfTest.runTest(TestCase("serialize oppija", 100, (n) => Json.write(oppija)))
 
-  implicit val context = SerializationContext(KoskiSchema.schema)
-  LocalPerfTest.runTest(TestCase("serialize oppija new", 100, (n) => Serializer.serialize(oppija)))
+  val context = SerializationContext(KoskiSchema.schemaFactory)
+  LocalPerfTest.runTest(TestCase("serialize oppija new", 100, (n) => Serializer.serialize(oppija, context)))
 }
