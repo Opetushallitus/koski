@@ -4,6 +4,10 @@ import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.koskiuser.UserWithPassword
 
 trait KoskidevHttpSpecification extends HttpSpecification {
+  def refreshElasticSearchIndex = {
+
+  }
+
   private def requiredEnv(name: String) = util.Properties.envOrNone(name).getOrElse(throw new IllegalStateException("Environment property " + name + " missing"))
 
   override def baseUrl = sys.env.getOrElse("KOSKI_BASE_URL", "https://dev.koski.opintopolku.fi/koski")

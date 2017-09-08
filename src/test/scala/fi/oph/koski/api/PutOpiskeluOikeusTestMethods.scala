@@ -27,7 +27,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = Json.write(oppija, true)
     val result = put("api/oppija", body = jsonString, headers = headers)(f)
-    KoskiApplicationForTests.elasticSearch.refreshIndex
+    refreshElasticSearchIndex
     result
   }
 

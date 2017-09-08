@@ -1,12 +1,14 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.http
+import fi.oph.koski.{KoskiApplicationForTests, http}
 import fi.oph.koski.json.Json
 import org.scalatest.{Assertions, Matchers}
 
 import scala.util.matching.Regex
 
 trait HttpSpecification extends HttpTester with Assertions with Matchers {
+  def refreshElasticSearchIndex: Unit
+
   def resetFixtures[A] = {
     post("fixtures/reset", Nil, authHeaders()) {
       verifyResponseStatus(200)
