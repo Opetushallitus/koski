@@ -18,7 +18,7 @@
     "immutable": "^3.7.5",
     "js-cookie": "^2.1.4",
     "oboe": "^2.1.3",
-    "partial.lenses": "^11.20.0",
+    "partial.lenses": "^9.8.0",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
     "react": "^15.6.1",
