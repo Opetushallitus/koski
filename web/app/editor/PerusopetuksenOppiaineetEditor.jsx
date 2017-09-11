@@ -124,9 +124,10 @@ let createOppiaineenSuoritus = (osasuoritukset) => {
   osasuoritukset = wrapOptional({model: osasuoritukset})
   let newItemIndex = modelItems(osasuoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'perusopetuksentoiminta_alueensuoritus' : 'oppiaineensuoritus'
+  let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus'
   let sortValue = (suoritusProto) => suoritusProto.value.classes.includes(preferredClass) ? 0 : 1
-  oppiaineenSuoritusProto = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))[0]
+  let options = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))
+  oppiaineenSuoritusProto = options[0]
   return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
 }
 
@@ -147,9 +148,14 @@ class Oppiainetaulukko extends React.Component {
     }
 
     if (suoritukset.length == 0 && !model.context.edit) return null
-    let placeholder = t(pakolliset == undefined
-      ? 'Lisää oppiaine'
-      : (pakolliset ? 'Lisää pakollinen oppiaine' : 'Lisää valinnainen oppiaine'))
+    let placeholder = t(
+      isToimintaAlueittain(model)
+        ? 'Lisää toiminta-alue'
+        : (pakolliset == undefined
+          ? 'Lisää oppiaine'
+          : (pakolliset
+            ? 'Lisää pakollinen oppiaine'
+            : 'Lisää valinnainen oppiaine')))
 
     return (<section>
         {title && <h5>{title}</h5>}
@@ -172,7 +178,7 @@ class Oppiainetaulukko extends React.Component {
         )}
         <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
                                             pakollinen={pakolliset} resultCallback={addOppiaine}
-                                            organisaatioOid={modelData(model.context.toimipiste).oid} // FIXME: no toimipiste in model.context
+                                            organisaatioOid={modelData(model.context.toimipiste).oid}
                                             placeholder={placeholder}/>
       </section>
     )

@@ -178,6 +178,8 @@ case class PerusopetuksenVuosiluokanSuorituksenLiite(
   kuvaus: LocalizedString
 )
 
+trait Toiminta_AlueenSuoritus extends Suoritus
+
 sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
@@ -204,7 +206,7 @@ case class PerusopetuksenToiminta_AlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus
+) extends OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus with Toiminta_AlueenSuoritus
 
 trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArviointi
 

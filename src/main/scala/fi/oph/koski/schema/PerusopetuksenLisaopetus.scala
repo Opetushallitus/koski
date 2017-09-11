@@ -81,7 +81,7 @@ case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksentoimintaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus
+) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus with Toiminta_AlueenSuoritus
 
 @Description("Muu perusopetuksen lisäopetuksessa suoritettu opintokokonaisuus")
 case class MuuPerusopetuksenLisäopetuksenSuoritus(

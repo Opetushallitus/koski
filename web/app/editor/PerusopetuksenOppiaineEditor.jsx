@@ -61,4 +61,6 @@ let fixKuvaus = (oppiaine) => {
   }))
 }
 
-export const paikallinenOppiainePrototype = (oppiaineenSuoritus) => koulutusModuuliprototypes(oppiaineenSuoritus).find(isPaikallinen)
+export const paikallinenOppiainePrototype = (oppiaineenSuoritus) => {
+  return koulutusModuuliprototypes(oppiaineenSuoritus).find(isPaikallinen)
+}

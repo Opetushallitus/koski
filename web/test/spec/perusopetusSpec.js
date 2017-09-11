@@ -1087,7 +1087,12 @@ describe('Perusopetus', function() {
       describe('Pakollinen oppiaine', function() {
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         var filosofia = editor.subEditor('.pakollinen.FI')
-        before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit, uusiOppiaine.selectValue('Filosofia'), filosofia.propertyBySelector('.arvosana').selectValue('8'))
+        before(
+          opinnot.valitseSuoritus(1, 'Päättötodistus'),
+          editor.edit,
+          uusiOppiaine.selectValue('Filosofia'),
+          filosofia.propertyBySelector('.arvosana').selectValue('8')
+        )
 
         describe('Lisääminen', function() {
           describe('Ennen tallennnusta', function() {
@@ -2196,7 +2201,6 @@ describe('Perusopetus', function() {
         })
       })
 
-
       describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
         var kurssi = editor.subEditor('.oppiaineet tbody.xxx')
         var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:eq(0)')
@@ -2225,6 +2229,25 @@ describe('Perusopetus', function() {
           before(editor.edit, filosofia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
+          })
+        })
+      })
+
+      describe('Opiskelu toiminta-alueittain', function() {
+        describe('Toiminta-alueen lisääminen', function() {
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          var kognitiivisetTaidot = editor.subEditor('.valinnainen.5')
+          before(
+            editor.edit,
+            opinnot.expandAll,
+            editor.property('opiskeleeToimintaAlueittain').setValue(true),
+            uusiOppiaine.selectValue('kognitiiviset taidot'),
+            kognitiivisetTaidot.propertyBySelector('.arvosana').selectValue('8'),
+            editor.saveChanges
+          )
+
+          it('Toimii', function() {
+            expect(kognitiivisetTaidot.propertyBySelector('.arvosana').getValue()).to.equal('8')
           })
         })
       })
