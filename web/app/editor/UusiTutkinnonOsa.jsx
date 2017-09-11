@@ -21,8 +21,7 @@ import Http from '../http'
 import {ift} from '../util'
 import ModalDialog from './ModalDialog.jsx'
 import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
-import {placeholderForNonGrouped} from './Suoritus'
-import {createTutkinnonOsanSuoritusPrototype} from './TutkinnonOsa'
+import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
