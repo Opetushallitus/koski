@@ -22,6 +22,8 @@ import {ift} from '../util'
 import ModalDialog from './ModalDialog.jsx'
 import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
+import {parseLocation} from '../location'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
@@ -39,13 +41,15 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
 
   return (<span>
     {
-      osatP.map(lisättävätTutkinnonOsat => {
-          return (<div>
-            <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto, groupId, käytössäolevatKoodiarvot}} />
-            <LisääOsaToisestaTutkinnosta {...{addTutkinnonOsa, lisättävätTutkinnonOsat, suoritus, suoritustapa, koulutusmoduuliProto, groupId, diaarinumero}}/>
-            <LisääPaikallinenTutkinnonOsa {...{lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli, groupId}}/>
-          </div>)
-        }
+      elementWithLoadingIndicator(
+        osatP.map(lisättävätTutkinnonOsat => {
+            return (<div>
+              <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto, groupId, käytössäolevatKoodiarvot}} />
+              <LisääOsaToisestaTutkinnosta {...{addTutkinnonOsa, lisättävätTutkinnonOsat, suoritus, koulutusmoduuliProto, groupId, diaarinumero}}/>
+              <LisääPaikallinenTutkinnonOsa {...{lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli, groupId}}/>
+            </div>)
+          }
+        )
       )
     }
   </span>)
@@ -109,7 +113,7 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
 }
 
 
-const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, suoritustapa, koulutusmoduuliProto, addTutkinnonOsa, diaarinumero}) => {
+const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, koulutusmoduuliProto, addTutkinnonOsa, diaarinumero}) => {
   let oppilaitos = modelData(suoritus, 'toimipiste')
   let lisääOsaToisestaTutkinnostaAtom = Atom(false)
   let lisääOsaToisestaTutkinnosta = (tutkinto, osa) => {
@@ -120,10 +124,7 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, su
   }
   let tutkintoAtom = Atom()
   let tutkinnonOsaAtom = Atom()
-  let osatP = tutkintoAtom.flatMapLatest(tutkinto => {
-    if (!tutkinto) return []
-    return Bacon.once([]).concat(fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero, suoritustapa).map('.osat'))
-  }).toProperty()
+  tutkintoAtom.onValue(() => tutkinnonOsaAtom.set(undefined))
 
   return (<span className="osa-toisesta-tutkinnosta">
     {
@@ -135,15 +136,26 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, su
       <h2><Text name="Tutkinnon osan lisäys toisesta tutkinnosta"/></h2>
       <div className="valinnat">
         <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} />
-        <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
+        {
+          tutkintoAtom.flatMapLatest( tutkinto => {
+            let osatP = tutkinto
+              ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
+              : Bacon.constant([])
+            return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
+          })
+        }
       </div>
     </ModalDialog>)
     }
   </span>)
 }
 
-const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => Http
-  .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (!groupId || groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)))
+const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
+  return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
+    suoritustapa: suoritustapa,
+    tutkinnonOsanRyhmä: groupId != placeholderForNonGrouped ? groupId : undefined
+  }))
+}
 
 const LisääTutkinnonOsaDropdown = ({selectedAtom, osat, placeholder, title}) => {
   return (<KoodistoDropdown
