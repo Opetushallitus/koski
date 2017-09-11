@@ -504,6 +504,13 @@ describe('Ammatillinen koulutus', function() {
                   expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Huippuosaajana toimiminen')
                 })
               })
+
+              describe('Tallennuksen jälkeen', function() {
+                before(editor.saveChanges)
+                it('lisätty osa näytetään', function() {
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Huippuosaajana toimiminen')
+                })
+              })
             })
 
             describe('Paikallinen tutkinnon osa', function() {
@@ -518,23 +525,49 @@ describe('Ammatillinen koulutus', function() {
                   expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Hassut temput')
                 })
               })
-            })
 
-            /*
-            describe('Tutkinnon osa toisesta tutkinnosta', function() {
-              before(
-                editor.edit,
-                opinnot.tutkinnonOsat('3').tutkinnonOsa(0).poistaTutkinnonOsa,
-                opinnot.tutkinnonOsat('3').lisääTutkinnonOsaToisestaTutkinnosta('Pöö', 'Hassut temput')
-              )
-
-              describe('Lisäyksen jälkeen', function () {
+              describe('Tallennuksen jälkeen', function() {
+                before(editor.saveChanges)
                 it('lisätty osa näytetään', function() {
                   expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Hassut temput')
                 })
               })
             })
-            */
+
+            describe('Tutkinnon osa toisesta tutkinnosta', function() {
+              describe('Kun valitaan sama tutkinto, kuin mitä ollaan suorittamassa', function() {
+                before(
+                  editor.edit,
+                  opinnot.tutkinnonOsat('3').tutkinnonOsa(0).poistaTutkinnonOsa,
+                  opinnot.tutkinnonOsat('3').lisääTutkinnonOsaToisestaTutkinnosta('Autoalan perustutkinto', 'Auton korjaaminen'),
+                  editor.saveChanges
+                )
+                it('Lisäys onnistuu (siksi, että dataan ei tule tutkinto-kenttää)', function() {
+                  expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Auton korjaaminen')
+                })
+              })
+              describe('Kun valitaan toinen tutkinto', function() {
+                before(
+                  page.oppijaHaku.searchAndSelect('211097-402L'),
+                  editor.edit,
+                  opinnot.tutkinnonOsat('3').tutkinnonOsa(0).poistaTutkinnonOsa,
+                  opinnot.tutkinnonOsat('3').lisääTutkinnonOsaToisestaTutkinnosta('Autoalan perustutkinto', 'Auton korjaaminen')
+                )
+
+                describe('Lisäyksen jälkeen', function () {
+                  it('lisätty osa näytetään', function() {
+                    expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Auton korjaaminen')
+                  })
+                })
+
+                describe('Tallennuksen jälkeen', function() {
+                  before(editor.saveChanges)
+                  it('lisätty osa näytetään', function() {
+                    expect(opinnot.tutkinnonOsat('3').tutkinnonOsa(0).nimi()).to.equal('Auton korjaaminen')
+                  })
+                })
+              })
+            })
           })
         })
       })
@@ -543,6 +576,7 @@ describe('Ammatillinen koulutus', function() {
         var tunnustaminen = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).property('tunnustettu')
 
         before(
+          page.oppijaHaku.searchAndSelect('280608-6619'),
           editor.edit,
           opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
         )

@@ -1,10 +1,9 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Autocomplete from '../Autocomplete.jsx'
 import Http from '../http'
-import Text from '../Text.jsx'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
+import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
 import {doActionWhileMounted} from '../util'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
@@ -32,31 +31,9 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   }
   Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
-    <Tutkinto tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
+    <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
     <Suoritustapa tutkintoP={tutkintoAtom} suoritustapaAtom={suoritustapaAtom}/>
   </div>)
-}
-
-const Tutkinto = ({tutkintoAtom, oppilaitosP}) =>{
-  return (<div>
-    {
-      Bacon.combineWith(oppilaitosP, tutkintoAtom, (oppilaitos, tutkinto) =>
-        oppilaitos && (
-          <label className='tutkinto'>
-            <Text name="Tutkinto"/>
-            <Autocomplete
-              resultAtom={tutkintoAtom}
-              fetchItems={(value) => (value.length >= 3)
-                  ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + oppilaitos.oid + '?query=' + value)
-                  : Bacon.constant([])}
-              disabled={!oppilaitos}
-              selected={tutkinto}
-            />
-          </label>
-        )
-      )
-    }
-  </div> )
 }
 
 const Suoritustapa = ({tutkintoP, suoritustapaAtom}) => {

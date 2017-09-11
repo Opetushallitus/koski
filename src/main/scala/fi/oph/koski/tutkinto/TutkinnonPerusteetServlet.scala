@@ -21,16 +21,16 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa") {
-    perusteenRakenne.map(tutkinnonRakenne => lisättävätTutkinnonOsat(tutkinnonRakenne, tutkinnonRakenne))
+    renderEither(perusteenRakenne.map(tutkinnonRakenne => lisättävätTutkinnonOsat(tutkinnonRakenne, tutkinnonRakenne)))
   }
 
   get("/tutkinnonosat/:diaari/:suoritustapa/:ryhma") {
     val ryhmä = params("ryhma")
     val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
-    perusteenRakenne.map { tutkinnonRakenne =>
+    renderEither(perusteenRakenne.map { tutkinnonRakenne =>
       val ryhmänRakenne = tutkinnonRakenne.flatMap(findRyhmä(ryhmäkoodi, _))
       lisättävätTutkinnonOsat(ryhmänRakenne, tutkinnonRakenne)
-    }
+    })
   }
 
   private def lisättävätTutkinnonOsat(ryhmä: Option[RakenneOsa], tutkinto: Option[RakenneOsa]) = {

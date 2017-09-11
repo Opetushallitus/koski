@@ -1,22 +1,13 @@
 import React from 'baret'
-import Atom from 'bacon.atom'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {
-  contextualizeSubModel,
-  ensureArrayKey,
   modelErrorMessages,
   modelItems,
   modelProperties,
   modelProperty,
-  modelSet,
-  modelSetTitle,
-  modelSetValue,
-  modelSetValues,
-  oneOfPrototypes,
   optionalPrototypeModel,
-  pushModel,
   pushRemoval
 } from './EditorModel'
 import R from 'ramda'
@@ -25,16 +16,11 @@ import {accumulateExpandedState} from './ExpandableItems'
 import {fixTila, hasArvosana} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
-import {ammatillisentutkinnonosanryhmaKoodisto, enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
-import KoodistoDropdown from '../KoodistoDropdown.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
-import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
+import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
-import Http from '../http'
-import {ift} from '../util'
-import ModalDialog from './ModalDialog.jsx'
+import UusiTutkinnonOsa from './UusiTutkinnonOsa.jsx'
+import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
 
-const placeholderForNonGrouped = '999999'
 
 export class Suoritustaulukko extends React.Component {
   render() {
@@ -124,25 +110,26 @@ export class Suoritustaulukko extends React.Component {
           </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
-        context.edit && uusiTutkinnonOsa(i, groupId, items),
-          !nested && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
+          <tr>
+            <td colSpan="4">
+              <UusiTutkinnonOsa suoritus={parentSuoritus}
+                                suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
+                                suorituksetModel={suorituksetModel}
+                                suoritukset={items}
+                                groupId={groupId}
+                                setExpanded={setExpanded}
+                                groupTitles={groupTitles}
+              />
+            </td>
+          </tr>
+        </tbody>,
+        !nested && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]
-    }
-
-    function uusiTutkinnonOsa(i, groupId, items) {
-      return (<tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
-      <tr>
-        <td colSpan="4">
-          <UusiTutkinnonOsa suoritus={parentSuoritus}
-                            suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
-                            suoritukset={items} addTutkinnonOsa={addTutkinnonOsa} groupId={groupId}/>
-        </td>
-      </tr>
-      </tbody>)
     }
 
     function suoritusEditor(suoritus, key, groupId) {
@@ -151,92 +138,7 @@ export class Suoritustaulukko extends React.Component {
                                            expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
                                            groupId={groupId}/>)
     }
-
-    function addTutkinnonOsa(koulutusmoduuli, groupId) {
-      let suoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId), koulutusmoduuli, 'koulutusmoduuli')
-      if (groupId) {
-        suoritus = modelSetValue(suoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
-      }
-      pushModel(suoritus, context.changeBus)
-      ensureArrayKey(suoritus)
-      setExpanded(suoritus)(true)
-    }
   }
-}
-
-const UusiTutkinnonOsa = ({ suoritus, groupId, suoritusPrototype, addTutkinnonOsa, suoritukset }) => {
-  let lisääTutkinnonOsa = (newItem) => {
-    addTutkinnonOsa(modelSetTitle(newItem.newItem
-      ? modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: newItem.title}, 'tunniste.nimi.fi': { data: newItem.title}, 'tunniste.koodiarvo': { data: newItem.title } })
-      : modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title), groupId == placeholderForNonGrouped ? undefined : groupId)
-  }
-  let selectedAtom = Atom(undefined)
-  let lisääPaikallinenAtom = Atom(false)
-  let lisääPaikallinenTutkinnonOsa = (osa) => {
-    lisääPaikallinenAtom.set(false)
-    if (osa) lisääTutkinnonOsa(osa)
-  }
-  let lisääOsaToisestaTutkinnostaAtom = Atom(false)
-  let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-
-  let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
-
-  let [[paikallinenKoulutusmoduuli], [koulutusmoduuliProto]] = R.partition(isPaikallinen, koulutusModuuliprotos)
-
-  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
-  let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
-
-  if (!diaarinumero || !suoritustapa) return null
-
-  let osatP = Http
-    .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)))
-
-  selectedAtom.filter(R.identity).onValue(lisääTutkinnonOsa)
-
-  return (<span>
-    {
-      osatP.map(lisättävätTutkinnonOsat => {
-          let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
-          return (<div>
-            {  osat.length > 0 && <KoodistoDropdown
-                className="tutkinnon-osat"
-                options={osat}
-                selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
-                enableFilter="true"
-                selectionText={ t('Lisää tutkinnon osa')}
-                showKoodiarvo="true"
-              />
-            }
-            <span className="osa-toisesta-tutkinnosta">
-              {
-                lisättävätTutkinnonOsat.osaToisestaTutkinnosta && <a className="add-link disabled" onClick={() => lisääOsaToisestaTutkinnostaAtom.set(true)}>
-                  <Text name="Lisää tutkinnon osa toisesta tutkinnosta"/>
-                </a>
-              }
-            </span>
-            <span className="paikallinen-tutkinnon-osa">
-              {
-                lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
-                  <Text name="Lisää paikallinen tutkinnon osa"/>
-                </a>
-              }
-              { ift(lisääPaikallinenAtom, <UusiPaikallisenTutkinnonOsanSuoritusPopUp resultCallback={lisääPaikallinenTutkinnonOsa}/>) }
-            </span>
-          </div>)
-        }
-      )
-    }
-  </span>)
-}
-
-const UusiPaikallisenTutkinnonOsanSuoritusPopUp = ({resultCallback}) => {
-  let nameAtom = Atom('')
-  let selectedAtom = nameAtom.view(name => name && {newItem: true, title: name})
-
-  return (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom} submitOnEnterKey="false">
-    <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
-    <input type="text" onChange={event => nameAtom.set(event.target.value)}/>
-  </ModalDialog>)
 }
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
@@ -310,15 +212,4 @@ export const suorituksenTilaSymbol = (tila) => {
     case 'KESKEN': return ''
     default: return ''
   }
-}
-
-let createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) => {
-  osasuoritukset = wrapOptional({model: osasuoritukset})
-  let newItemIndex = modelItems(osasuoritukset).length
-  let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
-  let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
-  let alternatives = oneOfPrototypes(suoritusProto)
-  suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
-  return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
 }

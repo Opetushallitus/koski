@@ -256,15 +256,20 @@ function TutkinnonOsat(groupId) {
     },
     lisääPaikallinenTutkinnonOsa: function(nimi) {
       return function() {
-        click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
         var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
-        return Page(modalElement).setInputValue('input', nimi)()
+        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
+          .then(Page(modalElement).setInputValue('input', nimi))
           .then(click(subElement(modalElement, 'button:not(:disabled)')))
-          .then(wait.forAjax)
       }
     },
     lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
-
+      return function() {
+        var modalElement = subElement(uusiTutkinnonOsaElement, '.osa-toisesta-tutkinnosta .modal')
+        return click(subElement(uusiTutkinnonOsaElement, ('.osa-toisesta-tutkinnosta a')))()
+          .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
+          .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', nimi))
+          .then(click(subElement(modalElement, 'button:not(:disabled)')))
+      }
     },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
