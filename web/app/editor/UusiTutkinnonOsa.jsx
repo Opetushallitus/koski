@@ -75,7 +75,9 @@ const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, add
     addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title))
   })
   let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
-  return osat.length > 0 && <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat}/>
+  return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
+      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={t('Lisää tutkinnon osa')}/>
+  </span>)
 }
 
 const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli}) => {
@@ -96,9 +98,12 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
         <Text name="Lisää paikallinen tutkinnon osa"/>
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom} submitOnEnterKey="false">
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom}>
         <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
-        <input type="text" onChange={event => nameAtom.set(event.target.value)}/>
+        <label>
+          <Text name="Tutkinnon osan nimi"/>
+          <input type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
+        </label>
       </ModalDialog>)
     ) }
   </span>)
@@ -107,17 +112,18 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
 
 const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, suoritustapa, koulutusmoduuliProto, addTutkinnonOsa, diaarinumero}) => {
   let oppilaitos = modelData(suoritus, 'toimipiste')
-  console.log('s', suoritus)
   let lisääOsaToisestaTutkinnostaAtom = Atom(false)
   let lisääOsaToisestaTutkinnosta = (tutkinto, osa) => {
     lisääOsaToisestaTutkinnostaAtom.set(false)
-    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
+    if (osa) {
+      addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
+    }
   }
   let tutkintoAtom = Atom()
   let tutkinnonOsaAtom = Atom()
   let osatP = tutkintoAtom.flatMapLatest(tutkinto => {
     if (!tutkinto) return []
-    return Bacon.once([]).concat(fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero, suoritustapa).doLog('lisättävät').map('.osat'))
+    return Bacon.once([]).concat(fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero, suoritustapa).map('.osat'))
   }).toProperty()
 
   return (<span className="osa-toisesta-tutkinnosta">
@@ -129,12 +135,9 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, su
     { ift(lisääOsaToisestaTutkinnostaAtom, <ModalDialog className="lisaa-tutkinnon-osa-toisesta-tutkinnosta-modal" onDismiss={lisääOsaToisestaTutkinnosta} onSubmit={() => lisääOsaToisestaTutkinnosta(tutkintoAtom.get(), tutkinnonOsaAtom.get())} okTextKey="Lisää tutkinnon osa" validP={tutkinnonOsaAtom} submitOnEnterKey="false">
       <h2><Text name="Tutkinnon osan lisäys toisesta tutkinnosta"/></h2>
       <div className="valinnat">
-        <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} />
-        { ift(osatP.map('.length'),
-          <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} osat={osatP}/>
-        )}
+        <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} />
+        <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
       </div>
-
     </ModalDialog>)
     }
   </span>)
@@ -143,13 +146,14 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, su
 const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => Http
   .cachedGet(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}` + (!groupId || groupId == placeholderForNonGrouped ? '' : '/'  + encodeURIComponent(groupId)))
 
-const LisääTutkinnonOsaDropdown = ({selectedAtom, osat}) => {
+const LisääTutkinnonOsaDropdown = ({selectedAtom, osat, placeholder, title}) => {
   return (<KoodistoDropdown
     className="tutkinnon-osat"
+    title={title}
     options={osat}
     selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
     enableFilter="true"
-    selectionText={ t('Lisää tutkinnon osa')}
+    selectionText={ placeholder }
     showKoodiarvo="true"
   />)
 }

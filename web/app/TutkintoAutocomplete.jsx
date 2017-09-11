@@ -4,7 +4,7 @@ import Autocomplete from './Autocomplete.jsx'
 import Http from './http'
 import Text from './Text.jsx'
 
-export default ({tutkintoAtom, oppilaitosP}) => {
+export default ({tutkintoAtom, oppilaitosP, ...rest}) => {
   return (<div className="tutkinto-autocomplete">
     {
       Bacon.combineWith(oppilaitosP, tutkintoAtom, (oppilaitos, tutkinto) =>
@@ -18,6 +18,7 @@ export default ({tutkintoAtom, oppilaitosP}) => {
                 : Bacon.constant([])}
               disabled={!oppilaitos}
               selected={tutkinto}
+              {...rest}
             />
           </label>
         )

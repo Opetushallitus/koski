@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
 import delays from './delays'
 import {t} from './i18n'
-import {toObservable} from './util'
+import {parseBool, toObservable} from './util'
 
 /*
     disabled: true/false
@@ -41,7 +41,7 @@ export default class Autocomplete extends BaconComponent {
     this.state = {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
   }
   render() {
-    let {disabled, selected, placeholder, displayValue = (item => t(item.nimi)), createNewItem = () => null} = this.props
+    let {disabled, selected, placeholder, autoFocus, displayValue = (item => t(item.nimi)), createNewItem = () => null} = this.props
     let selectedP = toObservable(selected)
     let {items, query, selectionIndex} = this.state
     let createItemElement = (item, i) => (<li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>
@@ -60,7 +60,9 @@ export default class Autocomplete extends BaconComponent {
                onKeyDown={this.onKeyDown.bind(this)}
                onChange={this.handleInput.bind(this)}
                value={ selectedP.map(s => query || (s ? displayValue(s) : '')) }
-               disabled={disabled}></input>
+               disabled={disabled}
+               autoFocus={parseBool(autoFocus)}
+        />
         {results}
       </div>
     )

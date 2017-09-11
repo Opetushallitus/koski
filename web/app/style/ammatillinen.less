@@ -33,9 +33,19 @@
     }
 
     tbody.uusi-tutkinnon-osa {
-      .dropdown {
-        display: inline-block;
-        margin-right: 20px;
+      .osa-samasta-tutkinnosta {
+        .dropdown {
+          display: inline-block;
+          margin-right: 20px;
+        }
+      }
+      .modal {
+        label {
+          >.localized {
+            display: block;
+            margin-bottom: 7px;
+          }
+        }
       }
       .paikallinen-tutkinnon-osa {
         position: relative;
@@ -58,6 +68,9 @@
           .tutkinto-autocomplete {
             width: 320px;
             display: inline-block;;
+          }
+          .tutkinnon-osat {
+            display: inline-block;
           }
         }
       }
