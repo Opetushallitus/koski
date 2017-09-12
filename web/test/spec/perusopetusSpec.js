@@ -1536,7 +1536,7 @@ describe('Perusopetus', function() {
 
       describe('Käyttöliittymän tila', function() {
         it('Näytetään oppimäärävaihtoehdot', function() {
-          expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
+          expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe', 'Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
         })
       })
 

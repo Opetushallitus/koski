@@ -131,7 +131,7 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.oppimaara .dropdown')
     },
     selectOppimäärä: function(oppimäärä) {
-      return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
+      return selectFromDropdown('.oppimaara .dropdown', oppimäärä, true)
     },
     selectOppiaine: function(oppiaine) {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
@@ -144,10 +144,10 @@ function AddOppijaPage() {
     },
     goBack: click(findSingle('h1 a'))
   }
-  function selectFromDropdown(selector, value) {
+  function selectFromDropdown(selector, value, exact) {
     return function () {
       return wait.until(pageApi.getInput(selector).isVisible)().then(wait.forAjax).then(
-        pageApi.setInputValue(selector, value)
+        pageApi.setInputValue(selector, value, exact)
       )
     }
   }
