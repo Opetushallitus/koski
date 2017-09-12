@@ -25,7 +25,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const oppimääräAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
   const oppiaineenSuoritusAtom = Atom()
   const perusteAtom = Atom()
-  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,aikuistenperusopetuksenoppimaara,perusopetuksenoppiaineenoppimaara')
+  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,aikuistenperusopetuksenoppimaara,aikuistenperusopetuksenoppimaaranalkuvaihe,perusopetuksenoppiaineenoppimaara')
   oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
 
   const suoritusPrototypeP = oppimääräAtom.map('.koodiarvo').flatMap(oppimäärä => {
@@ -45,6 +45,8 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
     if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
       return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
+    } else if (koodiarvoMatch('aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)) {
+      return makeAikuistenPerusopetuksenAlkuvaiheenSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
     } else if (koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
       return oppiaineenSuoritus
     }
@@ -56,7 +58,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   return (<span>
     <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
     {
-      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä)
+      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)
         ? <Peruste {...{suoritusTyyppiP: oppimääräAtom, perusteAtom}} />
         : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom} oppilaitos={oppilaitosAtom} suorituskieli={suorituskieliAtom}/>
       )
@@ -75,13 +77,31 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
   </div> )
 }
 
-let makePerusopetuksenOppimääränSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) => {
+function makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) {
   return {
     suorituskieli : suorituskieli,
     koulutusmoduuli: {
       tunniste: {
         koodiarvo: '201101',
         koodistoUri: 'koulutus'
+      },
+      perusteenDiaarinumero: peruste
+    },
+    toimipiste: oppilaitos,
+    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
+    suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
+    tyyppi: oppimäärä,
+    osasuoritukset: oppiaineet
+  }
+}
+
+function makeAikuistenPerusopetuksenAlkuvaiheenSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) {
+  return {
+    suorituskieli : suorituskieli,
+    koulutusmoduuli: {
+      tunniste: {
+        koodiarvo: 'aikuistenperusopetuksenoppimaaranalkuvaihe',
+        koodistoUri: 'suorituksentyyppi'
       },
       perusteenDiaarinumero: peruste
     },

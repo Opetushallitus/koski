@@ -1474,6 +1474,63 @@ describe('Perusopetus', function() {
         expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
     })
+
+    describe('Aikuisten perusopetuksen alkuvaihe', function() {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärän alkuvaihe'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärän alkuvaihe')
+      )
+
+      it('Näytetään oikein', function() {
+        expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärän alkuvaihe')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
+        expect(opinnot.getSuorituskieli()).to.equal('suomi')
+      })
+
+      describe('Tietojen muuttaminen', function() {
+        describe('Oppiaineen lisäys', function() {
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          describe('Valtakunnallisen oppiaineen lisääminen', function() {
+            var opintoOhjaus = editor.subEditor('.valinnainen.OP')
+            before(editor.edit, uusiOppiaine.selectValue('Opinto-ohjaus ja työelämän taidot'), opintoOhjaus.propertyBySelector('.arvosana').selectValue('9'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+            it('Toimii', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Opinto-ohjaus ja työelämän taidot 9')
+            })
+
+            describe('Poistaminen', function () {
+              before(editor.edit, opintoOhjaus.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.not.contain('Opinto-ohjaus ja työelämän taidot 9')
+              })
+            })
+          })
+
+          describe('Uuden paikallisen oppiaineen lisääminen', function() {
+            var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
+            before(editor.edit, uusiOppiaine.selectValue('Lisää'),
+              uusiPaikallinen.propertyBySelector('.arvosana').selectValue('7'),
+              uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
+              uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'))
+
+            describe('Ennen tallennusta', function() {
+              it('Uusi oppiaine näytetään avattuna', function() {
+                expect(uusiPaikallinen.property('kuvaus').isVisible()).to.equal(true)
+              })
+            })
+
+            describe('Tallennuksen jälkeen', function() {
+              before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+              it('Toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+              })
+            })
+          })
+        })
+      })
+    })
+
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
       before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataPerusopetus())
 

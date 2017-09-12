@@ -20,7 +20,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   })
 
   return (<span>
-    { elementWithLoadingIndicator(diaarinumerotP.map(diaarinumerot => diaarinumerot.length && diaarinumerot.length !== 1
+    { elementWithLoadingIndicator(diaarinumerotP.map(diaarinumerot => diaarinumerot > 1
         ? <Dropdown
             options={diaarinumerotP}
             keyValue={option => option.koodiarvo}
@@ -38,7 +38,7 @@ export const diaarinumerot = suoritusTyyppiP => {
     if (tyyppi.koodiarvo == 'perusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
       return '16'
     }
-    if (tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara') {
+    if (tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara' || tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
       return '17'
     }
     if (tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
