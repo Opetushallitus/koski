@@ -80,7 +80,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
     handlers.addHandler(context)
   }
 
-  private def resourceBase = if (System.getProperty("uberjar", "false").equals("true")) {
+  private def resourceBase = if (isRunningAws) {
     JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
   } else {
     val base = System.getProperty("resourcebase", "./target/webapp")
@@ -101,10 +101,13 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 
   private def setupPrometheusMetrics = {
     val context = new ServletContextHandler();
-    context.setContextPath("/")
-    context.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
+    val (contextPath, pathSpec) = if (isRunningAws) ("/koski-metrics", "/") else ("/", "metrics")
+    context.setContextPath(contextPath)
+    context.addServlet(new ServletHolder(new MetricsServlet), pathSpec)
     handlers.addHandler(context)
   }
+
+  private def isRunningAws = System.getProperty("uberjar", "false").equals("true")
 }
 
 object TestConfig {
