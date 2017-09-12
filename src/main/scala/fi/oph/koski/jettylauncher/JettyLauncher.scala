@@ -101,8 +101,8 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 
   private def setupPrometheusMetrics = {
     val context = new ServletContextHandler();
-    val (contextPath, pathSpec) = if (isRunningAws) ("/koski-metrics", "/") else ("/", "metrics")
-    context.setContextPath(contextPath)
+    val pathSpec = if (isRunningAws) "/koski-metrics" else "/metrics"
+    context.setContextPath("/")
     context.addServlet(new ServletHolder(new MetricsServlet), pathSpec)
     handlers.addHandler(context)
   }
