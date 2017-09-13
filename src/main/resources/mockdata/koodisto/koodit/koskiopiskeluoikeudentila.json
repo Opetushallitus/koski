@@ -35,6 +35,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "koskiopiskeluoikeudentila_katsotaaneronneeksi",
+    "koodiArvo": "katsotaaneronneeksi",
+    "metadata": [
+      {
+        "nimi": "Katsotaan eronneeksi",
+        "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
     "koodiArvo": "valiaikaisestikeskeytynyt",
     "metadata": [
