@@ -112,7 +112,6 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       resetFixtures
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatus(200)
-        println(body)
         sensitiveDataShown(body)
       }
     }
