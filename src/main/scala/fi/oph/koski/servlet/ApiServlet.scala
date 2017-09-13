@@ -36,7 +36,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
 
 trait ApiServletRequiringAuthentication extends ApiServlet with RequiresAuthentication {
   override def toJsonString[T: ru.TypeTag](x: T): String = {
-    new JsonSerializer().write(x)
+    JsonSerializer.write(x)
   }
 }
 

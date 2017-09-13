@@ -7,8 +7,18 @@ import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.{universe => ru}
 
-class JsonSerializer(implicit user: KoskiSession) {
-  def write[T: ru.TypeTag](x: T, pretty: Boolean = false): String = {
+object JsonSerializer {
+  def writeWithRoot[T: ru.TypeTag](x: T, pretty: Boolean = false): String = {
+    implicit val u = KoskiSession.systemUser
+    write(x, pretty)
+  }
+
+  def serializeWithRoot[T: ru.TypeTag](obj: T): JValue = {
+    implicit val u = KoskiSession.systemUser
+    serialize(obj)
+  }
+
+  def write[T: ru.TypeTag](x: T, pretty: Boolean = false)(implicit user: KoskiSession): String = {
     if (pretty) {
       JsonMethods.pretty(serialize(x))
     } else {
@@ -16,16 +26,10 @@ class JsonSerializer(implicit user: KoskiSession) {
     }
   }
 
-  def serialize[T: ru.TypeTag](obj: T): JValue = {
+  // TODO: toteuta filtteröinti käyttäen SchemaPropertyProcessor:ia ja RequiresRole-annotaatiota
+  def serialize[T: ru.TypeTag](obj: T)(implicit user: KoskiSession): JValue = {
     val context = SerializationContext(KoskiSchema.schemaFactory)
     Serializer.serialize(obj, context)
   }
-}
-
-object JsonSerializer {
-  implicit private val root = KoskiSession.systemUser
-  private val serializer = new JsonSerializer()
-  def writeWithRoot[T: ru.TypeTag](x: T, pretty: Boolean = false): String = serializer.write(x, pretty)
-  def serializeWithRoot[T: ru.TypeTag](obj: T): JValue = serializer.serialize(obj)
 }
 
