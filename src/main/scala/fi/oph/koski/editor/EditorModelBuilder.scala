@@ -328,7 +328,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId == None
       case _ => true
     }
-    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = SchemaSet.empty)(context.user, context.koodisto, context.localizationRepository)
+
+    val sensitiveAccess = context.user.hasRole("LUOTTAMUKSELLINEN")
+    context.copy(editable = context.editable && lähdejärjestelmäAccess && orgAccess && sensitiveAccess, root = false, prototypesBeingCreated = SchemaSet.empty)(context.user, context.koodisto, context.localizationRepository)
   }
 }
 
