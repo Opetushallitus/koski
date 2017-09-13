@@ -1,5 +1,5 @@
 .ajax-indicator-bg {
-  background: url('/koski/images/loader.gif') 52px 35px no-repeat;
+  background: url('/koski/images/loader.svg') no-repeat;
   opacity: 0.5;
   animation-name: fadein;
   animation-duration: 1s;
@@ -7,11 +7,11 @@
   min-height: 200px;
 }
 .ajax-indicator-right {
-  background: url('/koski/images/loader-small.gif') no-repeat;
+  background: url('/koski/images/loader.svg') no-repeat;
   background-position: right 5px center;
 }
 .ajax-indicator-left {
-  background: url('/koski/images/loader-small.gif') no-repeat;
+  background: url('/koski/images/loader.svg') no-repeat;
   background-position: left 5px center;
 }
 .ajax-indicator-after(@margin-left, @margin-top) {
@@ -19,7 +19,7 @@
   &:after {
     content: "";
     position: absolute;
-    background: url('/koski/images/loader-small.gif') no-repeat;
+    background: url('/koski/images/loader.svg') no-repeat;
     width: 16px;
     height: 16px;
     margin-left: @margin-left;

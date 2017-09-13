@@ -20,7 +20,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
   }
 
   "Static resources" in {
-    get("images/loader.gif") { verifyResponseStatus(200)}
+    get("images/loader.svg") { verifyResponseStatus(200)}
     get("js/koski-main.js") { verifyResponseStatus(200)}
     get("js/koski-login.js") { verifyResponseStatus(200)}
     get("test/runner.html") { verifyResponseStatus(200)}
