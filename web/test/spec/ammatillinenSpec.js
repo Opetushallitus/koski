@@ -1212,6 +1212,25 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
+  describe('Luottamuksellinen data', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), opinnot.expandAll)
+    describe('Kun käyttäjällä on luottamuksellinen rooli', function() {
+      it('näkyy', function() {
+        expect(extractAsText(S('.lisätiedot'))).to.equal(
+         'Lisätiedot\n' +
+          'Vankilaopetuksessa kyllä'
+        )
+      })
+    })
+
+    describe('Kun käyttäjällä ei ole luottamuksellinen roolia', function() {
+      before(Authentication().logout, Authentication().login('stadin-vastuu'), page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), opinnot.expandAll)
+      it('piilotettu', function() {
+        expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot')
+      })
+    })
+  })
+
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus VALMA', function() {
     describe('Oppilaitos katselija käyttöoikeuksilla', function() {
       before(Authentication().logout, Authentication().login('katselija'), page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
