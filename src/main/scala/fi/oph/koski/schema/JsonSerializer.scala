@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.scalaschema.SchemaPropertyProcessor.SchemaPropertyProcessor
 import fi.oph.scalaschema._
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
@@ -26,10 +27,15 @@ object JsonSerializer {
     }
   }
 
-  // TODO: toteuta filtteröinti käyttäen SchemaPropertyProcessor:ia ja RequiresRole-annotaatiota
   def serialize[T: ru.TypeTag](obj: T)(implicit user: KoskiSession): JValue = {
-    val context = SerializationContext(KoskiSchema.schemaFactory)
+    val filterSensitiveData: SchemaPropertyProcessor = (s: ClassSchema, p: Property) => if (sensitiveHidden(p.metadata)) Nil else List(p)
+    val context = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
     Serializer.serialize(obj, context)
+  }
+
+  def sensitiveHidden(metadata: List[Metadata])(implicit user: KoskiSession): Boolean = metadata.exists {
+    case RequiresRole(role) => !user.hasRole(role)
+    case _ => false
   }
 }
 

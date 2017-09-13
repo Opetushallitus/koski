@@ -69,6 +69,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   henkilöstökoulutus: Boolean = false,
   @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
+  @RequiresRole("LUOTTAMUKSELLINEN")
   vankilaopetuksessa: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 

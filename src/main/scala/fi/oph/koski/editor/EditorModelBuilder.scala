@@ -8,6 +8,7 @@ import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
+import fi.oph.koski.schema.JsonSerializer.sensitiveHidden
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
@@ -240,7 +241,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
     val value = schema.getPropertyValue(property, obj)
-    val propertyModel = if (sensitiveHidden(property.metadata)) {
+    val propertyModel = if (sensitiveHidden(property.metadata)(context.user)) {
       EditorModelBuilder.builder(property.schema).buildPrototype(Nil)
     } else {
       EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
@@ -263,14 +264,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (complexObject) props += ("complexObject" -> true)
     if (tabular) props += ("tabular" -> true)
     if (!readOnly) props += ("editable" -> true)
-    if (sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> true)
+    if (sensitiveHidden(property.metadata)(context.user)) props += ("sensitiveHidden" -> true)
 
     EditorProperty(property.key, property.title, propertyModel, props)
-  }
-
-  private def sensitiveHidden(metadata: List[Metadata]): Boolean = metadata.exists {
-    case RequiresRole(role) => !context.user.hasRole(role)
-    case _ => false
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {

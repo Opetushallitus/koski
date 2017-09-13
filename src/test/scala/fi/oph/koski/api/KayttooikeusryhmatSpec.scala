@@ -6,9 +6,11 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
 class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods {
+  import KoskiSchema.deserializationContext
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
@@ -106,7 +108,24 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
 
+    "näkee luottamuksellisen datan" in {
+      resetFixtures
+      authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
+        verifyResponseStatus(200)
+        println(body)
+        sensitiveDataShown(body)
+      }
+    }
+  }
 
+  "vastuukäyttäjä" - {
+    val user = MockUsers.stadinVastuukäyttäjä
+    "ei näe luottamusellista dataa" in {
+      authGet("api/oppija/" + MockOppijat.eero.oid, user) {
+        verifyResponseStatus(200)
+        sensitiveDataHidden(body)
+      }
+    }
   }
 
   "palvelukäyttäjä, jolla useampi juuriorganisaatio" - {
@@ -129,6 +148,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatus(200)
+        sensitiveDataShown(body)
       }
     }
   }
@@ -180,4 +200,11 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     getOpiskeluoikeudet(oid, käyttäjä)
   }
 
+  private def sensitiveDataShown(body: String) = sensitiveFieldValueEquals(body, expected = true)
+  private def sensitiveDataHidden(body: String) = sensitiveFieldValueEquals(body, expected = false)
+
+  private def sensitiveFieldValueEquals(body: String, expected: Boolean) = {
+    val sensitiveField = SchemaValidatingExtractor.extract[Oppija](body).map(_.opiskeluoikeudet.head.lisätiedot.get).map { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa }
+    sensitiveField should equal(Right(expected))
+  }
 }
