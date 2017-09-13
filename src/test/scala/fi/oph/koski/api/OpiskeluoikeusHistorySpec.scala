@@ -6,11 +6,11 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
+import fi.oph.koski.schema.{Henkilö, KoskiSchema, Opiskeluoikeus}
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import fi.oph.koski.schema.KoskiSchema
+import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
@@ -85,12 +85,20 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         }
       }
     }
-
     "Versiohistorian hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
-          getHistory(opiskeluoikeus.oid.get)
+          val JArray(muutokset) = readHistory.head.muutos
+          muutokset should not(be(empty))
+          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
+        }
+      }
+
+      "Ei näytä muutoksia käyttäjälle jolta puuttuu luottamuksellinen rooli" in {
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, user = MockUsers.stadinVastuukäyttäjä) {
+          readHistory.map(_.muutos) should equal(List(JNothing))
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
@@ -117,10 +125,12 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     }
   }
 
-  def getHistory(opiskeluoikeusOid: String): List[OpiskeluoikeusHistory] = {
-    authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid) {
+  def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistory]](JsonMethods.parse(body)).right.get
+
+  def getHistory(opiskeluoikeusOid: String, user: UserWithPassword = defaultUser): List[OpiskeluoikeusHistory] = {
+    authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid, user = user) {
       verifyResponseStatus(200)
-      SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistory]](JsonMethods.parse(body)).right.get
+      readHistory
     }
   }
 
