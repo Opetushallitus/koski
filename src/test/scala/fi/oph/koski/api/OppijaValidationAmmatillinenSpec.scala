@@ -10,9 +10,10 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import scala.reflect.runtime.{universe => ru}
 
-class OppijaValidationAmmatillinenSpec(implicit val tag: ru.TypeTag[AmmatillinenOpiskeluoikeus]) extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+  def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
+
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
