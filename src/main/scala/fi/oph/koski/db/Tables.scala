@@ -39,7 +39,7 @@ object Tables {
         Opiskeluoikeus.VERSIO_1,
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-        Json.toJValueDangerous(opiskeluoikeus),
+        JsonSerializer.serializeWithRoot(opiskeluoikeus),
         opiskeluoikeus.luokka)
     }
     def readData(data: JValue, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
@@ -49,7 +49,7 @@ object Tables {
       }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      val data = Json.toJValueDangerous(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
+      val data = JsonSerializer.serializeWithRoot(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
       (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
     }
   }
