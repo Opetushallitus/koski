@@ -1,5 +1,7 @@
 package fi.oph.koski.http
 import fi.oph.koski.http.ErrorCategory._
+import fi.oph.koski.schema.JsonSerializer
+import org.json4s.JValue
 
 import scala.reflect.runtime.{universe => ru}
 
@@ -10,19 +12,19 @@ private object ErrorCategory {
   }
 }
 
-case class ErrorCategory(val key: String, val statusCode: Int, val message: String, val exampleResponse: AnyRef) {
+case class ErrorCategory(key: String, statusCode: Int, message: String, exampleResponse: JValue) {
   def this(key: String, statusCode: Int, message: String) = {
-    this(key, statusCode, message, Some(defaultErrorContent(key, message)))
+    this(key, statusCode, message, JsonSerializer.serializeWithRoot(defaultErrorContent(key, message)))
   }
-  def this(parent: ErrorCategory, key: String, message: String, exampleResponse: AnyRef) = {
+  def this(parent: ErrorCategory, key: String, message: String, exampleResponse: JValue) = {
     this(makeKey(parent.key, key), parent.statusCode, message, exampleResponse)
     parent.addSubcategory(key, this)
   }
   def this(parent: ErrorCategory, key: String, message: String) = {
-    this(parent, key, message, defaultErrorContent(makeKey(parent.key, key), message))
+    this(parent, key, message, JsonSerializer.serializeWithRoot(defaultErrorContent(makeKey(parent.key, key), message)))
   }
 
-  def subcategory(subkey: String, message: String, exampleResponse: AnyRef) = new ErrorCategory(this, subkey, message, exampleResponse)
+  def subcategory(subkey: String, message: String, exampleResponse: JValue) = new ErrorCategory(this, subkey, message, exampleResponse)
   def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
 
   def apply[T : ru.TypeTag](message: T): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
