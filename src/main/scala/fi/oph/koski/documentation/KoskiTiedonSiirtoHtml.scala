@@ -126,7 +126,7 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
     "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)"
   )
 
-  val categoryExamples: Map[String, Seq[Example]] = Map(
+  val categoryExamples: Map[String, List[Example]] = Map(
     "Esiopetus" -> ExamplesEsiopetus.examples,
     "Perusopetukseen valmistava opetus" -> ExamplesPerusopetukseenValmistavaOpetus.examples,
     "Perusopetus" -> ExamplesPerusopetus.examples,
@@ -138,16 +138,6 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
     "Korkeakoulu (Virrasta)" -> ExamplesKorkeakoulu.examples,
     "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples
   )
-
-  val categoryExampleMetadata: Map[String, Seq[_]] = {
-    categoryExamples.mapValues(_ map {e: Example =>
-      Map(
-        "name" -> e.name,
-        "link" -> s"/koski/api/documentation/examples/${e.name}.json",
-        "description" -> e.description
-      )
-    })
-  }
 
   val jsonTableHtmlContentsCache: collection.mutable.Map[(String, String), String] = collection.mutable.Map()
 
@@ -168,7 +158,7 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
 
   val apiOperations: List[ApiOperation] = KoskiApiOperations.operations
 
-  val htmlTextSections = Vector(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
+  val htmlTextSections = List(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
 
 
   def examplesJson(examples: List[Example], title: String) = {

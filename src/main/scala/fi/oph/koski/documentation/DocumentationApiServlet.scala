@@ -14,7 +14,7 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   }
 
   get("/categoryExampleMetadata.json") {
-    KoskiTiedonSiirtoHtml.categoryExampleMetadata
+    KoskiTiedonSiirtoHtml.categoryExamples
   }
 
   get("/categoryExamples/:category/:name/table.html") {
