@@ -293,7 +293,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
       }
 
       "vähintään yksi kieli vaaditaan" in {
-        putOpiskeluoikeusWithSomeMergedJson(Map("tyyppi" -> Map("nimi" -> Map()))) {
+        putOpiskeluoikeusWithSomeMergedJson(Map("tyyppi" -> Map("nimi" -> Map.empty[String, String]))) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
