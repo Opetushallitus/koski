@@ -11,10 +11,7 @@ import io.prometheus.client.{CollectorRegistry, Gauge}
 
 import scala.annotation.tailrec
 
-
-
 object PerfTestRunner extends Logging {
-
   def executeTest(scenarios: PerfTestScenario*) = {
     val noop = () => {}
 
@@ -40,8 +37,6 @@ object PerfTestRunner extends Logging {
       throw new RuntimeException(s"Test failed: $failures failures")
     }
   }
-
-
 
   private def startScenario(scenario: PerfTestScenario, group: ThreadGroup, stats: StatsCollector, t: Int, rounds: Int): (() => Unit) = {
     scenario.logger.info(s"Rounds=${scenario.roundCount}, Servers=${scenario.serverCount}, Threads=${scenario.threadCount}")
