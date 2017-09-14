@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.json.{GenericJsonFormats, Json, LocalDateSerializer}
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
@@ -49,7 +50,7 @@ object OpiskeluoikeudenPerustiedot {
   }
 
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(id, Json.toJValueDangerous(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
+    makePerustiedot(id, JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
   }
 
   def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: TäydellisetHenkilötiedot): OpiskeluoikeudenPerustiedot = {

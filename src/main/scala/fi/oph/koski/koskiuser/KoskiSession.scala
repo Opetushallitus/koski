@@ -57,8 +57,10 @@ object KoskiSession {
   }
 
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
+  private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   // Internal user with root access
   val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN)))))
 
+  val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", "KOSKI_SYSTEM", Set())
 }
 

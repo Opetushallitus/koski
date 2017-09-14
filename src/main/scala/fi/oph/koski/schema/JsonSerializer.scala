@@ -14,8 +14,10 @@ object JsonSerializer {
     write(x, pretty)
   }
 
-  def serializeWithRoot[T: ru.TypeTag](obj: T): JValue = {
-    implicit val u = KoskiSession.systemUser
+  def serializeWithRoot[T: ru.TypeTag](obj: T): JValue = serializeWithUser(KoskiSession.systemUser)(obj)
+
+  def serializeWithUser[T: ru.TypeTag](user: KoskiSession)(obj: T): JValue = {
+    implicit val u = user
     serialize(obj)
   }
 
