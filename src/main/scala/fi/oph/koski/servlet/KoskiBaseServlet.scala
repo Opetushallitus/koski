@@ -12,6 +12,7 @@ import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
+
   override protected def logger: LoggerWithContext = {
     try {
       logger(koskiSessionOption)
@@ -69,14 +70,14 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     haltWithStatus(KoskiErrorCategory.internalError())
   }
 
-  def renderOption[T: ru.TypeTag](errorCategory: ErrorCategory)(result: Option[T]) = {
+  def renderOption[T: ru.TypeTag](errorCategory: ErrorCategory)(result: Option[T]): Unit = {
     result match {
       case Some(x) => renderObject(x)
       case _ => haltWithStatus(errorCategory())
     }
   }
 
-  def renderEither[T: ru.TypeTag](result: Either[HttpStatus, T]) = {
+  def renderEither[T: ru.TypeTag](result: Either[HttpStatus, T]): Unit = {
     result match {
       case Right(x) => renderObject(x)
       case Left(status) => haltWithStatus(status)

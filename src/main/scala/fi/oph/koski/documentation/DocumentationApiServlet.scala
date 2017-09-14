@@ -26,7 +26,7 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   }
 
   get("/apiOperations.json") {
-    JsonSerializer.serializeWithRoot(KoskiTiedonSiirtoHtml.apiOperations)
+    KoskiTiedonSiirtoHtml.apiOperations
   }
 
   get("/examples/:name.json") {
@@ -37,5 +37,5 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated {
     KoskiSchema.schemaJson
   }
 
-  override def toJsonString[T: ru.TypeTag](x: T): String = Json.write(Json.toJValueDangerous(x.asInstanceOf[AnyRef]))
+  override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)
 }

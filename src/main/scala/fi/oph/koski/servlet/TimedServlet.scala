@@ -1,7 +1,9 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.util.Timing
-import org.scalatra.ScalatraBase
+import org.scalatra.{Route, ScalatraBase}
+
+import scala.reflect.runtime.{universe => ru}
 
 trait TimedServlet extends ScalatraBase with Timing {
   private def timedAction(verb: String, path: String, action: => Any, threshold: Int = 100) = {
