@@ -3,16 +3,18 @@ package fi.oph.koski.api
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.koskiuser.{KoskiSession, UserWithPassword}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
+
+import scala.reflect.runtime.universe.TypeTag
 
 trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] {
   val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
   val oppijaPath = "/api/oppija"
 
-  implicit def any2j(o: AnyRef): JValue = Json.toJValueDangerous(o)
+  implicit def any2j[T : TypeTag](o: T): JValue = JsonSerializer.serializeWithUser(KoskiSession.systemUser)(o)
 
   def putOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
