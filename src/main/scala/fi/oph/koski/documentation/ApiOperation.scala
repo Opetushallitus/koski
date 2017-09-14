@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.ErrorCategory
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import scala.xml.Elem
 
@@ -19,8 +20,16 @@ class ApiGroup extends ApiDefinition {
   }
 }
 
-case class ApiOperation(method: String, path: String, summary: String, doc: Elem, examples: List[Example], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]) extends ApiDefinition {
+object ApiOperation {
+  def apply(method: String, path: String, summary: String, doc: Elem, examples: List[Example], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]): ApiOperation =
+      ApiOperation(method, path, summary, doc.toString, examples, parameters, statusCodes)
+}
+case class ApiOperation(method: String, path: String, summary: String, doc: String, examples: List[Example], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]) extends ApiDefinition {
   def operations = List(this)
+  @SyntheticProperty
+  def errorCategories: List[ErrorCategory] = statusCodes.flatMap(_.flatten)
+  @SyntheticProperty
+  def operation: String = path
 }
 
 sealed trait ApiOperationParameter {
@@ -29,8 +38,15 @@ sealed trait ApiOperationParameter {
   def examples: List[String]
   def example = examples.head
   def hasMultipleExamples: Boolean = examples.size > 1
+  def `type`: String
 }
 
-case class PathParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter
-case class QueryParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter
+case class PathParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter {
+  @SyntheticProperty
+  def `type` = "path"
+}
+case class QueryParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter {
+  @SyntheticProperty
+  def `type` = "query"
+}
 

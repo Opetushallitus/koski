@@ -166,31 +166,7 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
     jsonTableHtmlContentsCache.get(key)
   }
 
-  val apiOperations = {
-    KoskiApiOperations.operations.map {operation =>
-      Map(
-        "method" -> operation.method,
-        "path" -> operation.path,
-        "operation" -> operation.path,
-        "summary" -> operation.summary,
-        "doc" -> operation.doc.toString(),
-        "errorCategories" -> operation.statusCodes.flatMap(_.flatten),
-        "examples" -> operation.examples,
-        "parameters" -> operation.parameters.map {parameter => Map(
-          "name" -> parameter.name,
-          "description" -> parameter.description,
-          "examples" -> parameter.examples,
-          "type" -> {
-            val par = parameter // XXX: Fixes a weird type error
-            par match {
-              case p: QueryParameter => "query"
-              case p: PathParameter => "path"
-            }
-          }
-        )}
-      )
-    }
-  }
+  val apiOperations: List[ApiOperation] = KoskiApiOperations.operations
 
   val htmlTextSections = Vector(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
 

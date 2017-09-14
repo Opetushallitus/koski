@@ -26,7 +26,7 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated {
   }
 
   get("/apiOperations.json") {
-    KoskiTiedonSiirtoHtml.apiOperations
+    JsonSerializer.serializeWithRoot(KoskiTiedonSiirtoHtml.apiOperations)
   }
 
   get("/examples/:name.json") {
