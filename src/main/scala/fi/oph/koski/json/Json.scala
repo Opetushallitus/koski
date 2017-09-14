@@ -33,8 +33,7 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer
-  implicit val jsonFormats = formats + BlockOpiskeluoikeusSerializer
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer + BlockOpiskeluoikeusSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {
@@ -62,11 +61,6 @@ object Json extends Logging {
 
   def toJValue(x: AnyRef): JValue = {
     Extraction.decompose(x)
-  }
-
-  // Avoid using this, doesn't check access rights to sensitive data from Oppija and Opiskeluoikeus
-  def toJValueDangerous(x: AnyRef): JValue = {
-    Extraction.decompose(x)(formats)
   }
 
   def fromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): A = {
