@@ -12,8 +12,6 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
-  def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
-
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {

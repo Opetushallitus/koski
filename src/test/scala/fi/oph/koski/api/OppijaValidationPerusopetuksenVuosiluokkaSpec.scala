@@ -9,7 +9,6 @@ import fi.oph.koski.schema._
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
 class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
-  def tag = implicitly[reflect.runtime.universe.TypeTag[PerusopetuksenOpiskeluoikeus]]
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     vuosiluokkasuoritus.copy(koulutusmoduuli = vuosiluokkasuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))

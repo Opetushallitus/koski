@@ -9,7 +9,6 @@ import fi.oph.koski.schema._
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
-  def tag = implicitly[reflect.runtime.universe.TypeTag[PerusopetuksenOpiskeluoikeus]]
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     PerusopetuksenOppiaineenOppimääränSuoritus(
       koulutusmoduuli = MuuPeruskoulunOppiaine(

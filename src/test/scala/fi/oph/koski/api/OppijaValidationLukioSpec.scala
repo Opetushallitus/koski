@@ -11,7 +11,6 @@ import fi.oph.koski.schema._
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
 class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
-  def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
   def eperusteistaLöytymätönValidiDiaarinumero: String = "33/011/2003"
 

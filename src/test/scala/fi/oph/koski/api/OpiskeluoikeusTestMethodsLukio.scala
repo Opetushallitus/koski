@@ -9,6 +9,8 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus]{
+  def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
+
   override def defaultOpiskeluoikeus = OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus
 }
 

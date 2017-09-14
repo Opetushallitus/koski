@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.json.Json
-import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.{KoskiSession, UserWithPassword}
 import fi.oph.koski.schema._
@@ -11,6 +10,8 @@ import org.json4s._
 import scala.reflect.runtime.universe.TypeTag
 
 trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] {
+  def tag: TypeTag[Oikeus]
+
   val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
   val oppijaPath = "/api/oppija"
 
@@ -22,7 +23,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
     import KoskiSchema.deserializationContext
-    putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
+    putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
@@ -48,8 +49,8 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     createOrUpdate(oppija, opiskeluoikeus, user = user).asInstanceOf[T]
   }
 
-  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValueDangerous(Map(
-    "henkilö" -> henkilö,
-    "opiskeluoikeudet" -> opiskeluOikeudet
-  ))
+  def makeOppija[T: TypeTag](henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[T]): JValue = JObject(
+    "henkilö" -> JsonSerializer.serializeWithRoot(henkilö),
+    "opiskeluoikeudet" -> JsonSerializer.serializeWithRoot(opiskeluOikeudet)
+  )
 }
