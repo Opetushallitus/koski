@@ -16,6 +16,7 @@ import org.json4s.JsonAST.JString
 import org.scalatest.{FreeSpec, Matchers}
 
 import scala.collection.JavaConversions._
+import scala.reflect.runtime.universe.TypeTag
 
 class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   private lazy val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
@@ -34,51 +35,51 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   "Validation with SchemaBasedJsonDeserializer" - {
     "Henkilö" in {
       val oid = "1.2.246.562.24.12345678901"
-      testDeserialization(OidHenkilö(oid), classOf[OidHenkilö])
-      testDeserialization(OidHenkilö(oid), classOf[Henkilö])
-      testDeserialization(OidHenkilö(""), classOf[OidHenkilö], Left(List(ValidationError("oid",JString(""),EmptyString()))))
-      testDeserialization(OidHenkilö("123"), classOf[OidHenkilö], Left(List(ValidationError("oid",JString("123"),RegExMismatch("""^1\.2\.246\.562\.24\.\d{11}$""")))))
-      testDeserialization(TäydellisetHenkilötiedot(oid, Some("123456-7890"), Some(LocalDate.of(1977, 2, 2)), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))), classOf[Henkilö])
+      testDeserialization(OidHenkilö(oid))
+      testDeserialization[Henkilö](OidHenkilö(oid))
+      testDeserialization(OidHenkilö(""), Left(List(ValidationError("oid",JString(""),EmptyString()))))
+      testDeserialization(OidHenkilö("123"), Left(List(ValidationError("oid",JString("123"),RegExMismatch("""^1\.2\.246\.562\.24\.\d{11}$""")))))
+      testDeserialization[Henkilö](TäydellisetHenkilötiedot(oid, Some("123456-7890"), Some(LocalDate.of(1977, 2, 2)), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))))
     }
     "Suoritus" in {
-      testDeserialization(tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15), classOf[Suoritus])
-      testDeserialization(ympäristöalanPerustutkintoValmis(), classOf[Suoritus])
+      testDeserialization[Suoritus](tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15))
+      testDeserialization[Suoritus](ympäristöalanPerustutkintoValmis())
     }
     "Järjestämismuoto" in {
-      testDeserialization(järjestämismuotoOppisopimus, classOf[Järjestämismuoto])
+      testDeserialization[Järjestämismuoto](järjestämismuotoOppisopimus)
     }
     "LocalizedString" in {
-      testDeserialization(LocalizedString.finnish("Moi"), classOf[LocalizedString])
-      testDeserialization(LocalizedString.swedish("Hej"), classOf[LocalizedString])
-      testDeserialization(LocalizedString.english("Hello"), classOf[LocalizedString])
-      testDeserialization(English("Hello"), classOf[LocalizedString])
-      testDeserialization(Finnish("Moi", Some("Hej"), Some("Hi")), classOf[LocalizedString])
+      testDeserialization[LocalizedString](LocalizedString.finnish("Moi"))
+      testDeserialization[LocalizedString](LocalizedString.swedish("Hej"))
+      testDeserialization[LocalizedString](LocalizedString.english("Hello"))
+      testDeserialization[LocalizedString](English("Hello"))
+      testDeserialization[LocalizedString](Finnish("Moi", Some("Hej"), Some("Hi")))
     }
     "Examples" - {
       Examples.examples.foreach { example =>
         example.name in {
-          testDeserialization(example.data, classOf[Oppija])
+          testDeserialization(example.data)
         }
       }
     }
   }
 
-  private def testDeserialization(obj: AnyRef, klass: Class[_]) {
-    deserialize(obj, klass) match {
+  private def testDeserialization[T : TypeTag](obj: T) {
+    deserialize(obj) match {
       case Right(x) =>
         x should equal(obj)
       case Left(errors) =>
         System.err.println(Json.writePretty(errors))
         fail("Deserialization of " + obj + " failed")
     }
-    testDeserialization(obj, klass, (Right(obj)))
+    testDeserialization(obj, (Right(obj)))
   }
 
-  private def testDeserialization(obj: AnyRef, klass: Class[_], expected: Either[List[ValidationError], Any]) {
-    deserialize(obj, klass) should equal(expected)
+  private def testDeserialization[T : TypeTag](obj: T, expected: Either[List[ValidationError], T]) {
+    deserialize(obj) should equal(expected)
   }
 
-  def deserialize(obj: AnyRef, klass: Class[_]): Either[List[ValidationError], Any] = {
-    SchemaValidatingExtractor.extract(Json.toJValueDangerous(obj), klass)
+  def deserialize[T : TypeTag](obj: T): Either[List[ValidationError], T] = {
+    SchemaValidatingExtractor.extract(JsonSerializer.serializeWithRoot(obj))
   }
 }
