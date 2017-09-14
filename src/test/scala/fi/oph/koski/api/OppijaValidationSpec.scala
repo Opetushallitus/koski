@@ -301,7 +301,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
   }
 
   def putOpiskeluoikeusWithSomeMergedJson[A](opiskeluoikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(Json.toJValueDangerous(defaultOpiskeluoikeus).merge(opiskeluoikeus))), headers)(f)
+    putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).merge(opiskeluoikeus))), headers)(f)
   }
 
 }

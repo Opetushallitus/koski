@@ -1,11 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.Json
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
+import scala.reflect.runtime.universe.TypeTag
+
 trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpiskeluoikeusTestMethods[T] {
+  def tag: TypeTag[T]
   "Tutkinnon perusteet" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
@@ -53,6 +55,6 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
   def eperusteistaLöytymätönValidiDiaarinumero: String
 
   def putTodistus[A](opiskeluoikeus: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(Json.toJValueDangerous(opiskeluoikeus))), headers)(f)
+    putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus)(tag))), headers)(f)
   }
 }

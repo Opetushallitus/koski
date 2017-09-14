@@ -20,7 +20,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
     import KoskiSchema.deserializationContext
-    putOppija(Json.toJValueDangerous(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
+    putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija()).right.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
@@ -35,7 +35,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def createOrUpdate(oppija: Henkilö with Henkilötiedot, opiskeluoikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }, user: UserWithPassword = defaultUser) = {
-    putOppija(Json.toJValueDangerous(Oppija(oppija, List(opiskeluoikeus))), headers = authHeaders(user) ++ jsonContent){
+    putOppija(JsonSerializer.serializeWithRoot(Oppija(oppija, List(opiskeluoikeus))), headers = authHeaders(user) ++ jsonContent){
       check
       lastOpiskeluoikeusByHetu(oppija)
     }

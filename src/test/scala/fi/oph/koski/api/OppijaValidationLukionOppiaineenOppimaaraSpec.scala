@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylän
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
 class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
+  def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     LukionOppiaineenOppimääränSuoritus(
       koulutusmoduuli = LukionMuuValtakunnallinenOppiaine(Koodistokoodiviite("HI", "koskioppiaineetyleissivistava"), perusteenDiaarinumero = diaari),

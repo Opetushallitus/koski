@@ -1,17 +1,17 @@
 package fi.oph.koski.versioning
 
+import java.io.File
+import java.time.LocalDate
+
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
-import org.scalatest.{FreeSpec, Matchers}
-import java.io.File
-import java.time.LocalDate
-
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.koski.schema.{JsonSerializer, KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.JBool
+import org.scalatest.{FreeSpec, Matchers}
 
 /**
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
@@ -46,7 +46,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
                 }
                 SchemaValidatingExtractor.extract[Oppija](json) match {
                   case Right(oppija) =>
-                    val afterRoundtrip = Json.toJValueDangerous(oppija)
+                    val afterRoundtrip = JsonSerializer.serializeWithRoot(oppija)
                     validator.validateAsJson(oppija) match {
                       case Right(validated) =>
                         // Valid, now check for JSON equality after roundtrip (not strictly necessary, but it's good to know if this breaks)
@@ -62,7 +62,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
               }
             }
             val latest = files.last
-            if (Json.toJValueDangerous(example.data) != Json.readFile(fullName(latest))) {
+            if (JsonSerializer.serializeWithRoot(example.data) != Json.readFile(fullName(latest))) {
               println(s"Example data differs for ${example.name} at ${latest}. Creating new version")
               Json.writeFile(fullName(currentFilename), example.data)
             }

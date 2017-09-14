@@ -6,6 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
 class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
+  def tag = implicitly[reflect.runtime.universe.TypeTag[PerusopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = opiskeluoikeusWithPerusteenDiaarinumero(Some("19/011/2015"))
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = super.defaultOpiskeluoikeus.copy(
