@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.documentation.LukioExampleData._
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
@@ -24,7 +24,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         )))
       )))
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*enumValueMismatch.*".r))
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
       }
     }
     "Suoritus valmis, kurssien laajuuksien summa ei täsmää -> HTTP 400" in {

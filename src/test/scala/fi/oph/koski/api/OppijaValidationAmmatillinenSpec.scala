@@ -5,7 +5,8 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.helsinki
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.ErrorMatcher.exact
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -23,7 +24,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     "Kun tutkintosuoritus puuttuu" - {
       "palautetaan HTTP 400 virhe"  in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = Nil)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*lessThanMinimumNumberOfItems.*".r)))
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = Nil)) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r)))
       }
     }
 
@@ -41,7 +42,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritustapa = Koodistokoodiviite("blahblahtest", "ammatillisentutkinnonsuoritustapa"),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
-          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Koodia ammatillisentutkinnonsuoritustapa/blahblahtest ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia ammatillisentutkinnonsuoritustapa/blahblahtest ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
         }
         "Osaamisala ei löydy tutkintorakenteesta" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
@@ -55,7 +56,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
             osaamisala = Some(List(Koodistokoodiviite("0", "osaamisala"))))
 
-          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Koodia osaamisala/0 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia osaamisala/0 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
         }
       }
 
@@ -83,7 +84,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Tutkinnon osaa ei ei löydy koodistosta" - {
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
               koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("9923123", "tutkinnonosat"), true, None)), tutkinnonSuoritustapaNäyttönä)
-              (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Koodia tutkinnonosat/9923123 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+              (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia tutkinnonosat/9923123 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
           }
         }
 
@@ -96,7 +97,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Laajuus negatiivinen" - {
             val suoritus = paikallinenTutkinnonOsaSuoritus.copy(koulutusmoduuli = paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1))))
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*exclusiveMinimumValue.*".r)))
+              verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*exclusiveMinimumValue.*".r)))
             )
           }
         }
@@ -105,7 +106,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "palautetaan HTTP 400 virhe"  in {
             val suoritus = paikallinenTutkinnonOsaSuoritus.copy(tyyppi = Koodistokoodiviite(koodiarvo = "tuntematon", koodistoUri = "suorituksentyyppi"))
             putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*101053, 101054, 101055, 101056.*".r))
+              verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*101053, 101054, 101055, 101056.*".r))
             )
           }
         }
@@ -127,7 +128,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Kun tutkintoa ei löydy" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Koodia koulutus/123456 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+              verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia koulutus/123456 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
           }
 
           "Kun osa ei kuulu annetun tutkinnon rakenteeseen" - {
@@ -212,7 +213,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
             "Vahvistuksen myöntäjähenkilö puuttuu" - {
               "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*lessThanMinimumNumberOfItems.*".r))
+                verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
               ))
             }
 
@@ -221,12 +222,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Arviointi" - {
             "Arviointiasteikko on tuntematon" - {
               "palautetaan HTTP 400" in (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "vääräasteikko"), date(2015, 5, 1)))), None))
-                (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*arviointiasteikkoammatillinenhyvaksyttyhylatty.*enumValueMismatch.*".r))))
+                (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*arviointiasteikkoammatillinenhyvaksyttyhylatty.*enumValueMismatch.*".r))))
             }
 
             "Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon" - {
               "palautetaan HTTP 400" in (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), date(2015, 5, 1)))), None))
-                (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(""".*"message":"Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+                (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
             }
           }
 
@@ -242,8 +243,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
             "Päivämäärät tulevaisuudessa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa("Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
-                                          KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
+                verifyResponseStatus(400, exact(KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa, "Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
+                                          exact(KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, "Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
                 )))
             }
 
@@ -318,7 +319,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "Vahvistuksen myöntäjähenkilö puuttuu" - {
           "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, Some(HenkilövahvistusValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*lessThanMinimumNumberOfItems.*".r))
+            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
           ))
         }
 
@@ -408,7 +409,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "Virheellinen y-tunnus" - {
         "palautetaan HTTP 400" in (
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284x5"))))
-            (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*regularExpressionMismatch.*".r))) // TODO: regex matchit voisi nyt korvata eksakteilla JSON-mätseillä
+            (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*regularExpressionMismatch.*".r)))
         )
       }
     }

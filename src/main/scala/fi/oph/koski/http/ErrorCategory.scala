@@ -1,13 +1,14 @@
 package fi.oph.koski.http
+import fi.oph.koski.http.ErrorCategory._
+
+import scala.reflect.runtime.{universe => ru}
 
 private object ErrorCategory {
   def makeKey(key: String, subkey: String) = key + "." + subkey
-  def defaultErrorContent(key: String, message: AnyRef): List[ErrorDetail] = {
+  def defaultErrorContent[T : ru.TypeTag](key: String, message: T): List[ErrorDetail] = {
     List(ErrorDetail(key, message))
   }
 }
-
-import fi.oph.koski.http.ErrorCategory._
 
 case class ErrorCategory(val key: String, val statusCode: Int, val message: String, val exampleResponse: AnyRef) {
   def this(key: String, statusCode: Int, message: String) = {
@@ -24,7 +25,7 @@ case class ErrorCategory(val key: String, val statusCode: Int, val message: Stri
   def subcategory(subkey: String, message: String, exampleResponse: AnyRef) = new ErrorCategory(this, subkey, message, exampleResponse)
   def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
 
-  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
+  def apply[T : ru.TypeTag](message: T): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
 
   def apply(): HttpStatus = statusCode match {
     case 200 => HttpStatus.ok

@@ -5,7 +5,8 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistory
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.KoskiErrorCategory.notFound
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, Opiskeluoikeus}
@@ -118,7 +119,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         "Palautetaan 404" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get + "/2") {
-            verifyResponseStatus(404, KoskiErrorCategory.notFound.versiotaEiLöydy("""Versiota 2 ei löydy opiskeluoikeuden [^ ]+ historiasta.""".r))
+            verifyResponseStatus(404, ErrorMatcher.regex(notFound.versiotaEiLöydy, """Versiota 2 ei löydy opiskeluoikeuden [^ ]+ historiasta.""".r))
           }
         }
       }

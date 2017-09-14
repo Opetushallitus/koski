@@ -5,14 +5,17 @@ import java.io.File
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
+import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.util.XML.CommentedPCData
 
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq, Unparsed}
 
-trait HtmlNodes extends PiwikNodes {
+trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
   def application: KoskiApplication
   def buildVersion: Option[String]
+  def localizations: LocalizationRepository = application.localizationRepository
 
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false): Elem = {
     <html>
@@ -23,7 +26,7 @@ trait HtmlNodes extends PiwikNodes {
         <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
-        {Unparsed("window.koskiLocalizationMap="+Json.write(application.localizationRepository.localizations()))}
+        {Unparsed("window.koskiLocalizationMap="+Json.write(localizations.localizations))}
       </script>
       <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
@@ -47,11 +50,11 @@ trait HtmlNodes extends PiwikNodes {
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
       {CommentedPCData("""
-      window.koskiError = {
-        httpStatus: """ + status.statusCode + """,
-        text: '""" + status.errors.head.message.toString.replace("'", "\\'") + """',
-        topLevel: true
-      }
+        window.koskiError = {
+          httpStatus: """ + status.statusCode + """,
+          text: '""" + errorString(status).getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'") + """',
+          topLevel: true
+        }
       """)}
     </script>
 

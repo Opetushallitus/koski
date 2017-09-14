@@ -2,12 +2,14 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserLanguage}
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
+import org.json4s.JsonAST.JString
 import org.scalatra._
 
-import scala.xml.Elem
 import scala.reflect.runtime.{universe => ru}
+import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
   override protected def logger: LoggerWithContext = {
@@ -90,6 +92,11 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def haltWithStatus(status: HttpStatus): Nothing = {
     halt(status.statusCode, status)
   }
+
+  def errorString(status: HttpStatus) = status.errors.headOption.flatMap(_.message match {
+    case JString(s) => Some(s)
+    case otherJValue => None
+  })
 }
 
 

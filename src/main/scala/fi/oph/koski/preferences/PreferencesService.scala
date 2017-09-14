@@ -8,7 +8,10 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
+
+import scala.collection.immutable
 
 case class PreferencesService(protected val db: DB) extends Logging with KoskiDatabaseMethods {
 
@@ -31,7 +34,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
           case Right(deserialized) =>
             runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, `type`, key, value)))
             HttpStatus.ok
-          case Left(errors) =>
+          case Left(errors: immutable.Seq[ValidationError]) =>
             KoskiErrorCategory.badRequest.validation.jsonSchema(errors)
         }
       case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)

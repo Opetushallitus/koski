@@ -27,8 +27,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
             case Left(status) =>
               henkilöt match {
                 case Nil =>
-                  val error = status.errors.headOption.map(_.message.toString)
-                  HenkilötiedotSearchResponse(henkilöt, false, error)
+                  HenkilötiedotSearchResponse(henkilöt, false, errorString(status)) // TODO: i18n for error messages here
                 case _ =>
                   HenkilötiedotSearchResponse(henkilöt, false)
               }

@@ -1,6 +1,11 @@
 package fi.oph.koski.http
 
 import fi.oph.koski.json.Json
+import fi.oph.koski.schema.JsonSerializer
+import org.json4s.JValue
+import org.json4s.JsonAST.JString
+
+import scala.reflect.runtime.{universe => ru}
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   if (statusCode == 200 && errors.nonEmpty) throw new RuntimeException("HttpStatus 200 with error message " + errors.mkString(","))
@@ -11,8 +16,12 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
-case class ErrorDetail(key: String, message: AnyRef) { // TODO: maybe use a common message format here?
+case class ErrorDetail(key: String, message: JValue) {
   override def toString = key + " (" + Json.write(message) + ")"
+}
+
+object ErrorDetail {
+  def apply[T : ru.TypeTag](key: String, message: T): ErrorDetail = ErrorDetail(key, JsonSerializer.serializeWithRoot(message))
 }
 
 object HttpStatus {

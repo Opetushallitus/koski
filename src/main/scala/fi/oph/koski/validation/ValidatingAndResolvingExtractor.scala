@@ -5,7 +5,10 @@ import fi.oph.koski.koodisto.{KoodistoResolvingCustomDeserializer, KoodistoViite
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioResolvingCustomDeserializer}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
+
+import scala.collection.immutable
 import scala.reflect.runtime.{universe => ru}
 
 object ValidatingAndResolvingExtractor {
@@ -19,7 +22,7 @@ object ValidatingAndResolvingExtractor {
       KoodistoResolvingCustomDeserializer(context.koodistoPalvelu)
     )), tag) match {
       case Right(t: T) => Right(t)
-      case Left(errors) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema(errors))
+      case Left(errors: immutable.Seq[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(errors))
     }
   }
 }

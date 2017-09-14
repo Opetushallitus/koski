@@ -12,8 +12,7 @@ import fi.oph.koski.log.Logging
 import org.json4s._
 
 trait LocalizationRepository extends Logging {
-
-  def localizations(): Map[String, LocalizedString]
+  def localizations: Map[String, LocalizedString]
 
   def get(key: String) = localizations.get(key).getOrElse{
     logger.error(s"Unknown localization key: $key")

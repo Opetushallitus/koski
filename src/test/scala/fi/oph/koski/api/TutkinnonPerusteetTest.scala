@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
@@ -28,11 +28,11 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
 
     "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(("Perusteella " + vääräntyyppisenPerusteenDiaarinumero + " on väärä koulutustyyppi .* Hyväksytyt koulutustyypit .*").r)))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, (".*Perusteella " + vääräntyyppisenPerusteenDiaarinumero + " on väärä koulutustyyppi .* Hyväksytyt koulutustyypit .*").r)))
       }
     }
 
-    // TODO Poista, kun diaarinumero on pakollinen
+
     /*"Kun lisätään opiskeluoikeus ilman tutkinnon perusteen diaarinumeroa" - {
       "palautetaan HTTP 200"  in {
         putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(None)) (verifyResponseStatus(200))
@@ -41,7 +41,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
 
     "Kun yritetään lisätä opiskeluoikeus tyhjällä diaarinumerolla" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(""))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(""))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*perusteenDiaarinumero.*".r)))
       }
     }
   }

@@ -10,7 +10,7 @@ import scala.util.{Failure, Success, Try}
 
 class LocalizationServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {
-    application.localizationRepository.localizations()
+    application.localizationRepository.localizations
   }
 
   put("/") {
