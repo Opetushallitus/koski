@@ -5,17 +5,19 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
-import fi.oph.koski.json.Json._
+import fi.oph.koski.json.Json.jsonDiff
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer.serialize
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServletRequiringAuthentication, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
+
+import scala.reflect.runtime.{universe => ru}
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServletRequiringAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
@@ -57,7 +59,8 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {
-            KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
+            val json = serialize(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(row, latestVersion)))(ru.typeTag[HistoryInconsistency], user)
+            KoskiErrorCategory.internalError(json)
           }
         case Left(error) => error
       }) match {
