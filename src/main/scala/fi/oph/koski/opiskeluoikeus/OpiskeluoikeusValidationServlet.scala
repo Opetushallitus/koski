@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.JsonSerializer.serialize
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
 import fi.oph.koski.servlet.{ApiServletRequiringAuthentication, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
@@ -100,4 +100,4 @@ case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String
   def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
 
-case class HistoryInconsistency(message: String, diff: JValue)
+case class HistoryInconsistency(message: String, @RequiresRole("LUOTTAMUKSELLINEN") diff: JValue)
