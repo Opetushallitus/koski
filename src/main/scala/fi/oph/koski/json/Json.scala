@@ -109,10 +109,6 @@ object Json extends Logging {
   def jsonDiff(oldValue: JValue, newValue: JValue): JArray = {
     JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldValue), JsonMethods.asJsonNode(newValue))).asInstanceOf[JArray]
   }
-
-  def jsonDiff(oldValue: AnyRef, newValue: AnyRef): JArray = {
-    jsonDiff(toJValue(oldValue), toJValue(newValue))
-  }
 }
 
 object LocalDateSerializer extends CustomSerializer[LocalDate](format => (

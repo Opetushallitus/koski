@@ -17,12 +17,10 @@ import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
-import scala.reflect.runtime.{universe => ru}
-
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServletRequiringAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
-    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
+    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
     def validate(row: OpiskeluoikeusRow): ValidationResult = {
@@ -43,7 +41,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   }
 
   get("/:oid") {
-    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
+    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
     renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession).map(context.validateAll))
   }
 }
@@ -52,15 +50,14 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   *  Operating context for data validation. Operates outside the lecixal scope of OpiskeluoikeusServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class ValidateContext(user: KoskiSession, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository) {
+case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) {
   def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
       val opiskeluoikeus = row.toOpiskeluoikeus
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {
-            val json = serialize(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(row, latestVersion)))(ru.typeTag[HistoryInconsistency], user)
-            KoskiErrorCategory.internalError(json)
+            KoskiErrorCategory.internalError(serialize(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(serialize(row), serialize(latestVersion)))))
           }
         case Left(error) => error
       }) match {
