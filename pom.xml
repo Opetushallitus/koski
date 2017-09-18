@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version> 0934f35 </version>
+      <version>5d7227f</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>

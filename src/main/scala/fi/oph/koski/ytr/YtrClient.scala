@@ -10,7 +10,7 @@ import org.json4s.JValue
 
 trait YtrClient {
   implicit val formats = Json.jsonFormats
-  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(JsonSerializer.extract[YtrOppija](_))
+  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
   def oppijaJsonByHetu(hetu: String): Option[JValue]
 }
 
