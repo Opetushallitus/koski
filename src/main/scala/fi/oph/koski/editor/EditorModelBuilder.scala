@@ -50,7 +50,7 @@ object EditorModelBuilder {
 
   def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
-  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), o)
+  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o))
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
     case s: ClassRefSchema => context.deserializationContext.schemaFactory.createSchema(s.fullClassName)
     case _ => schema
@@ -149,7 +149,7 @@ object KoodistoEnumModelBuilder {
     } else {
       localization.i(k.description)
     }
-    EnumValue(k.koodiarvo, title, k)
+    EnumValue(k.koodiarvo, title, JsonSerializer.serializeWithRoot(k))
   }
 }
 

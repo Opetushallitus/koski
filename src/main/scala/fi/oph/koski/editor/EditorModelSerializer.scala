@@ -1,5 +1,6 @@
 package fi.oph.koski.editor
 
+import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Example, MultiLineString, UnitOfMeasure}
 import fi.oph.scalaschema.Metadata
@@ -8,6 +9,9 @@ import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
+  def serializeModel(model: EditorModel) = serialize(Json.jsonFormats)(model)
+  def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(Json.jsonFormats)
+
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
@@ -99,7 +103,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
     case fi.oph.koski.editor.EnumValue(value, title, data) => JObject(
       JField("value", JString(value)),
       JField("title", JString(title)),
-      JField("data", Extraction.decompose(data))
+      JField("data", data)
     )
   }
 

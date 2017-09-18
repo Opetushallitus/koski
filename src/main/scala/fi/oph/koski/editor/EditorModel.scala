@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.scalaschema.Metadata
+import org.json4s.JValue
 
 sealed trait EditorModel {
   def metadata: List[Metadata]
@@ -17,7 +18,7 @@ case class EditorProperty(key: String, title: String, model: EditorModel, flags:
 case class ListModel(items: List[EditorModel], prototype: Option[EditorModel], metadata: List[Metadata]) extends EditorModel
 
 case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String], metadata: List[Metadata]) extends EditorModel
-case class EnumValue(value: String, title: String, data: Any)
+case class EnumValue(value: String, title: String, data: JValue)
 
 case class NumberModel(value: ValueWithData[Number], metadata: List[Metadata]) extends EditorModel
 case class BooleanModel(value: ValueWithData[Boolean], metadata: List[Metadata]) extends EditorModel
