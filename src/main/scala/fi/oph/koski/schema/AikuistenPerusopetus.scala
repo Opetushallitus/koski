@@ -101,6 +101,8 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä with SuoritustavallinenPerusopetuksenSuoritus
