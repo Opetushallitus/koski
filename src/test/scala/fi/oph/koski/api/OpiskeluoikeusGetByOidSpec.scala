@@ -11,6 +11,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {
+        resetFixtures
         val oid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
