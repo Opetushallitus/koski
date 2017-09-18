@@ -5,6 +5,7 @@ import java.net.URLEncoder
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.util.Pools
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
@@ -17,6 +18,7 @@ import scala.xml.Elem
 import scalaz.concurrent.Task
 import scalaz.stream.Process.Emit
 import scalaz.{-\/, \/-}
+import scala.reflect.runtime.universe.TypeTag
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
@@ -63,9 +65,9 @@ object Http extends Logging {
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
+  def parseJson[T : TypeTag](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
     (status, text) match {
-      case (status, text) if (List(200, 201).contains(status)) => Json.read[T](text)
+      case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false)
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
@@ -80,13 +82,13 @@ object Http extends Logging {
   /** Parses as JSON, returns None on 404 result */
   def parseJsonOptional[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
     case (404, _) => None
-    case (200, text) => Some(Json.read[T](text))
+    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false))
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   /** Parses as JSON, returns None on any error */
   def parseJsonIgnoreError[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
-    case (200, text) => Some(Json.read[T](text))
+    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false))
     case (_, _) => None
   }
 

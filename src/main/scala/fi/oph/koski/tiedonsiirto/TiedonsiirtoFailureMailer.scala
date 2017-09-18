@@ -5,7 +5,7 @@ import java.time.LocalDateTime.now
 
 import com.typesafe.config.Config
 import fi.oph.koski.email._
-import fi.oph.koski.henkilo.AuthenticationServiceClient
+import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.log.Logging
 
 class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: AuthenticationServiceClient) extends Logging {

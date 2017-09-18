@@ -2,7 +2,7 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.KäyttöoikeusTilasto
+import fi.oph.koski.henkilo.authenticationservice.KäyttöoikeusTilasto
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
 
 trait KoskiPulssi {

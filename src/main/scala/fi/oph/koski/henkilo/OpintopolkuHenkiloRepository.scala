@@ -1,11 +1,11 @@
 package fi.oph.koski.henkilo
 
-import fi.oph.koski.henkilo.AuthenticationServiceClient.{OppijaHenkilö, QueryHenkilö}
+import fi.oph.koski.henkilo.authenticationservice.{AuthenticationServiceClient, MockAuthenticationServiceClient, OppijaHenkilö, QueryHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{HenkilötiedotJaOid, Koodistokoodiviite, TäydellisetHenkilötiedot, UusiHenkilö}
 
 case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid with Logging {
   def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
@@ -14,7 +14,7 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
-    henkilöPalveluClient.findOrCreate(AuthenticationServiceClient.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.flatMap { h =>
+    henkilöPalveluClient.findOrCreate(authenticationservice.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.flatMap { h =>
       toTäydellisetHenkilötiedot(h) match {
         case Some(t) => Right(t)
         case None => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Henkilöltä puuttuu hetu"))

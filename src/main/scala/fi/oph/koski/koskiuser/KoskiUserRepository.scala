@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
-import fi.oph.koski.henkilo.AuthenticationServiceClient
+import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.schema.HenkilöWithOid
 
 class KoskiUserRepository(client: AuthenticationServiceClient)(implicit cacheManager: CacheManager) {

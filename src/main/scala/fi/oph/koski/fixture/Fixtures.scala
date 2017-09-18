@@ -6,7 +6,8 @@ import fi.oph.koski.db.{KoskiDatabase, KoskiDatabaseConfig}
 import fi.oph.koski.fixture.Fixtures._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
-import fi.oph.koski.henkilo.{HenkilöRepository, MockAuthenticationServiceClient}
+import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.authenticationservice.MockAuthenticationServiceClient
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.KoskiValidator

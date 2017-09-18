@@ -6,7 +6,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid, TäydellisetHenkilötiedot, UusiHenkilö}
 import fi.oph.koski.virta.VirtaHenkilöRepository
 import fi.oph.koski.ytr.YtrHenkilöRepository
 

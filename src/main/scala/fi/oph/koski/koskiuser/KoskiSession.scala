@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import javax.servlet.http.HttpServletRequest
 
-import fi.oph.koski.henkilo.AuthenticationServiceClient.Palvelurooli
+import fi.oph.koski.henkilo.authenticationservice.Palvelurooli
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}

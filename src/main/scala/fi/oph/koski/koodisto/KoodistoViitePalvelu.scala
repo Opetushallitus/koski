@@ -21,7 +21,7 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
     val parent = koodistoPalvelu.getKoodistoKoodit(parentKoodisto).get.find(_.koodiArvo == parentViite.koodiarvo).get // TODO: unsafe gets
     val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map {
-      _.filter(koodi => koodi.withinCodeElements.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined)
+      _.filter(koodi => koodi.withinCodeElements.toList.flatten.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined)
        .map(toKoodiviite(koodisto))
     }
   }

@@ -3,7 +3,7 @@ package fi.oph.koski.tools
 import com.typesafe.config.Config
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.AuthenticationServiceClient.{HenkilöQueryResult, UusiHenkilö}
+import fi.oph.koski.henkilo.authenticationservice.{HenkilöQueryResult, UusiHenkilö}
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf

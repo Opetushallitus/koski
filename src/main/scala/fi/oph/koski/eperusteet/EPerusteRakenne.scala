@@ -1,11 +1,9 @@
 package fi.oph.koski.eperusteet
 
-import org.json4s.JsonAST.JObject
-import org.json4s._
-import org.json4s.reflect.TypeInfo
+import fi.oph.scalaschema.annotation.Discriminator
 
 case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, koulutustyyppi: String,
-                           koulutukset: List[EPerusteKoulutus], suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala]) {
+                           koulutukset: List[EPerusteKoulutus], suoritustavat: Option[List[ESuoritustapa]], tutkinnonOsat: Option[List[ETutkinnonOsa]], osaamisalat: List[EOsaamisala]) {
   def toEPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
 }
 
@@ -20,18 +18,5 @@ case class EKoko(minimi: Option[Long], maksimi: Option[Long])
 case class EMuodostumisSaanto(laajuus: Option[ELaajuus], koko: Option[EKoko])
 
 sealed trait ERakenneOsa
-case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: String, muodostumisSaanto: Option[EMuodostumisSaanto]) extends ERakenneOsa
-case class ERakenneTutkinnonOsa(_tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa
-
-object RakenneOsaSerializer extends Serializer[ERakenneOsa] {
-  private val RakenneOsaClass = classOf[ERakenneOsa]
-
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), ERakenneOsa] = {
-    case (TypeInfo(RakenneOsaClass, _), json) => json match {
-      case moduuli: JObject if moduuli.values.contains("osat") => moduuli.extract[ERakenneModuuli]
-      case osa: JObject => osa.extract[ERakenneTutkinnonOsa]
-    }
-  }
-
-  def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
-}
+case class ERakenneModuuli(nimi: Option[Map[String, String]], @Discriminator osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: Option[String], muodostumisSaanto: Option[EMuodostumisSaanto]) extends ERakenneOsa
+case class ERakenneTutkinnonOsa(@Discriminator _tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa

@@ -3,7 +3,7 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.AuthenticationServiceClient.OppijaHenkilö
+import fi.oph.koski.henkilo.authenticationservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
 import fi.oph.koski.perustiedot.Henkilötiedot

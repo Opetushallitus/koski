@@ -7,7 +7,8 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
-import fi.oph.koski.henkilo.{AuthenticationServiceClient, HenkilöRepository, KoskiHenkilöCacheUpdater}
+import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
+import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCacheUpdater}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._

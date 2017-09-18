@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
-import fi.oph.koski.henkilo.AuthenticationServiceClient
+import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient

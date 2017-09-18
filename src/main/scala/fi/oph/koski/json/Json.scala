@@ -5,7 +5,6 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.editor.EditorModelSerializer
-import fi.oph.koski.eperusteet.RakenneOsaSerializer
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
@@ -18,6 +17,7 @@ import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.{JsonMethods, Serialization}
 
+import scala.reflect.runtime.universe.TypeTag
 import scala.util.Try
 
 object GenericJsonFormats {
@@ -33,7 +33,8 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer + BlockOpiskeluoikeusSerializer
+  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer
+  implicit val jsonFormats = formats + BlockOpiskeluoikeusSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {
@@ -94,8 +95,8 @@ object Json extends Logging {
 
   def readResource(resourcename: String): json4s.JValue = readResourceIfExists(resourcename).getOrElse(throw new RuntimeException(s"Resource $resourcename not found"))
 
-  def writeFile(filename: String, json: AnyRef) = {
-    Files.writeFile(filename, writePretty(json))
+  def writeFile[T : TypeTag](filename: String, json: T) = {
+    Files.writeFile(filename, JsonMethods.pretty(JsonSerializer.serializeWithRoot(json)))
   }
 
   def maskSensitiveInformation(parsedJson: JValue): JValue = {

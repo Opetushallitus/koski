@@ -9,7 +9,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit koodistoPalvelu: KoodistoViitePalvelu): TutkintoRakenne = {
-    val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.flatMap { (suoritustapa: ESuoritustapa) =>
+    val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.toList.flatten.flatMap { (suoritustapa: ESuoritustapa) =>
       val koulutustyyppi: Koulutustyyppi = convertKoulutusTyyppi(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
 
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
@@ -17,12 +17,12 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
           case x: ERakenneModuuli => RakenneModuuli(
             nimi = LocalizedString.sanitizeRequired(x.nimi.getOrElse(Map.empty), LocalizedString.missingString),
             osat = x.osat.map(osa => convertRakenneOsa(osa, suoritustapa)),
-            määrittelemätön = x.rooli != "määritelty",
+            määrittelemätön = x.rooli != Some("määritelty"),
             laajuus = x.muodostumisSaanto.flatMap(_.laajuus.map(l => TutkinnonOsanLaajuus(l.minimi, l.maksimi)))
           )
           case x: ERakenneTutkinnonOsa => suoritustapa.tutkinnonOsaViitteet.toList.flatten.find(v => v.id.toString == x._tutkinnonOsaViite) match {
             case Some(tutkinnonOsaViite) =>
-              val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
+              val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat.toList.flatten.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
 
               koodistoPalvelu.validate(Koodistokoodiviite(eTutkinnonOsa.koodiArvo, None, "tutkinnonosat", None)) match {
                 case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo))

@@ -9,6 +9,7 @@ import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.localization.LocalizedString.sanitize
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer.extract
 import org.json4s._
 
 trait LocalizationRepository extends Logging {
@@ -46,13 +47,13 @@ trait LocalizationRepository extends Logging {
     logger.info("done.")
   }
 
-  def localizationsFromLocalizationService: Map[String, Map[String, String]] = fetchLocalizations().extract[List[LocalizationServiceLocalization]]
+  def localizationsFromLocalizationService: Map[String, Map[String, String]] = extract[List[LocalizationServiceLocalization]](fetchLocalizations(), ignoreExtras = true, validating = false)
     .groupBy(_.key)
     .mapValues(_.map(v => (v.locale, v.value)).toMap)
 }
 
 object DefaultLocalizations {
-  lazy val defaultFinnishTexts: Map[String, String] = readResource("/localization/default-texts.json").extract[Map[String, String]]
+  lazy val defaultFinnishTexts: Map[String, String] = extract[Map[String, String]](readResource("/localization/default-texts.json"))
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
@@ -130,7 +131,7 @@ case class UpdateLocalization(
 )
 
 case class LocalizationServiceLocalization(
-  id: Integer,
+  id: Int,
   locale: String,
   category: String,
   key: String,

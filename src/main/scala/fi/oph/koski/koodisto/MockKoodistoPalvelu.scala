@@ -1,12 +1,12 @@
 package fi.oph.koski.koodisto
 import fi.oph.koski.cache.{Cached, GlobalCacheManager}
 import fi.oph.koski.json.Json
-import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
+import fi.oph.koski.schema.JsonSerializer
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(Json.readResourceIfExists(_)).map(_.extract[List[KoodistoKoodi]])
+    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true, validating = false))
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
@@ -14,7 +14,7 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
   }
 
   def getKoodisto(koodistoUri: String): Option[Koodisto] = {
-    koodistoResourceName(koodistoUri).flatMap(Json.readResourceIfExists(_)).map(_.extract[Koodisto])
+    koodistoResourceName(koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[Koodisto](_, ignoreExtras = true, validating = false))
   }
 
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }

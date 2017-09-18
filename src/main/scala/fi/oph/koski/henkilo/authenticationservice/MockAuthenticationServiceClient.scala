@@ -1,9 +1,9 @@
-package fi.oph.koski.henkilo
+package fi.oph.koski.henkilo.authenticationservice
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
-import fi.oph.koski.henkilo.AuthenticationServiceClient._
+import fi.oph.koski.henkilo.{Hetu, MockOppijat, TestingException}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging

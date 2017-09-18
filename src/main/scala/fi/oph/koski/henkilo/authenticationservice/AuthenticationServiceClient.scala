@@ -1,11 +1,10 @@
-package fi.oph.koski.henkilo
+package fi.oph.koski.henkilo.authenticationservice
 
 import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json
@@ -20,66 +19,6 @@ import org.http4s._
 
 import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
-
-trait AuthenticationServiceClient {
-  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
-  def findOppijaByOid(oid: String): Option[OppijaHenkilö]
-  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
-  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
-  def findChangedOppijaOids(since: Long): List[Oid]
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
-  def getKäyttöikeusRyhmät: Map[String, List[String]]
-
-  def henkilötPerKäyttöoikeusryhmä: KäyttöoikeusTilasto = {
-    val ryhmät = getKäyttöikeusRyhmät
-    KäyttöoikeusTilasto(
-      ryhmät.values.flatten.toList.distinct.size,
-      ryhmät.map { case (x, y) => (x, y.size) }
-    )
-  }
-}
-
-object AuthenticationServiceClient {
-  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): AuthenticationServiceClient = config.getString("opintopolku.virkailija.url") match {
-    case "mock" => new MockAuthenticationServiceClientWithDBSupport(db)
-    case _ => RemoteAuthenticationServiceClient(config, perustiedotRepository, elasticSearch)
-  }
-
-  case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
-  case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
-  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
-    def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified)
-  }
-
-  case class Kieli(kieliKoodi: String)
-  case class Kansalaisuus(kansalaisuusKoodi: String)
-  case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long) {
-    def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
-    def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oidHenkilo, etunimet, kutsumanimi, sukunimi)
-    def toNimitiedotJaOid = NimitiedotJaOid(oidHenkilo, etunimet, kutsumanimi, sukunimi)
-  }
-
-  case class Yhteystiedot(sahkoposti: String)
-  case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
-  case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
-  case class Käyttäjätiedot(username: Option[String])
-
-  object UusiHenkilö {
-    def palvelu(nimi: String) = UusiHenkilö(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
-    def oppija(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(hetu, sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
-  }
-
-  case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
-  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String, palvelutRoolit: List[Palvelurooli] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
-
-  case class Palvelurooli(palveluName: String, rooli: String)
-  object Palvelurooli {
-    def apply(rooli: String): Palvelurooli = Palvelurooli("KOSKI", rooli)
-  }
-  case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
-  case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
-}
 
 object RemoteAuthenticationServiceClient {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): RemoteAuthenticationServiceClient = {
@@ -174,3 +113,63 @@ case class KäyttöoikeusRyhmä(id: Int, description: KäyttöoikeusRyhmäDescri
 case class KäyttöoikeusRyhmäDescriptions(texts: List[KäyttöoikeusRyhmäDescription])
 case class KäyttöoikeusRyhmäDescription(text: String, lang: String)
 case class KäyttöoikeusRyhmäHenkilöt(personOids: List[String])
+
+object AuthenticationServiceClient {
+  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): AuthenticationServiceClient = config.getString("opintopolku.virkailija.url") match {
+    case "mock" => new MockAuthenticationServiceClientWithDBSupport(db)
+    case _ => RemoteAuthenticationServiceClient(config, perustiedotRepository, elasticSearch)
+  }
+}
+
+trait AuthenticationServiceClient {
+  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
+  def findOppijaByOid(oid: String): Option[OppijaHenkilö]
+  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
+  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
+  def findChangedOppijaOids(since: Long): List[Oid]
+  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
+  def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
+  def getKäyttöikeusRyhmät: Map[String, List[String]]
+
+  def henkilötPerKäyttöoikeusryhmä: KäyttöoikeusTilasto = {
+    val ryhmät = getKäyttöikeusRyhmät
+    KäyttöoikeusTilasto(
+      ryhmät.values.flatten.toList.distinct.size,
+      ryhmät.map { case (x, y) => (x, y.size) }
+    )
+  }
+}
+
+case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
+case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
+  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified)
+}
+
+case class Kieli(kieliKoodi: String)
+case class Kansalaisuus(kansalaisuusKoodi: String)
+case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long) {
+  def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
+  def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oidHenkilo, etunimet, kutsumanimi, sukunimi)
+  def toNimitiedotJaOid = NimitiedotJaOid(oidHenkilo, etunimet, kutsumanimi, sukunimi)
+}
+
+case class Yhteystiedot(sahkoposti: String)
+case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
+case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
+case class Käyttäjätiedot(username: Option[String])
+
+object UusiHenkilö {
+  def palvelu(nimi: String) = UusiHenkilö(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
+  def oppija(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(hetu, sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
+}
+
+case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
+case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String, palvelutRoolit: List[Palvelurooli] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
+
+case class Palvelurooli(palveluName: String, rooli: String)
+object Palvelurooli {
+  def apply(rooli: String): Palvelurooli = Palvelurooli("KOSKI", rooli)
+}
+case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
+case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)

@@ -3,8 +3,8 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.MockAuthenticationServiceClient
 import fi.oph.koski.henkilo.MockOppijat.eero
+import fi.oph.koski.henkilo.authenticationservice.MockAuthenticationServiceClient
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
