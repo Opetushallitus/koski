@@ -1,11 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{FreeSpec, Matchers}
 
-class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester {
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {
@@ -27,5 +29,28 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         }
       }
     }
+
+    "Luottamuksellinen data" - {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN rooli" in {
+        val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero).oid.get
+        authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
+          verifyResponseStatus(200)
+          vankilaopetusValue should be(true)
+        }
+      }
+
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN rooli" in {
+        val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero).oid.get
+        authGet("api/opiskeluoikeus/" + oid, stadinVastuukäyttäjä) {
+          verifyResponseStatus(200)
+          vankilaopetusValue should be(false)
+        }
+      }
+    }
+  }
+
+
+  private def vankilaopetusValue = readOpiskeluoikeus match {
+    case a: AmmatillinenOpiskeluoikeus => a.lisätiedot.exists(_.vankilaopetuksessa)
   }
 }
