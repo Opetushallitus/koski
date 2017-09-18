@@ -3,11 +3,11 @@ package fi.oph.koski.tiedonsiirto
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema.OrganisaatioOid
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings, SortOrder}
 
-class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache with Pagination {
+class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with RequiresAuthentication with NoCache with Pagination {
   get("/") {
     renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
   }

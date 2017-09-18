@@ -5,11 +5,11 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.Opiskeluoikeus
-import fi.oph.koski.servlet.{ApiServlet, KoskiBaseServlet}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, KoskiBaseServlet}
 
 import scala.collection.immutable.Seq
 
-class KoodistoServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with KoodistoFinder {
+class KoodistoServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with Unauthenticated with KoodistoFinder {
   private val opiskeluoikeudet: Seq[Opiskeluoikeus] = Examples.examples.flatMap(_.data.opiskeluoikeudet)
   private val koodiarvot: Seq[Opiskeluoikeus] => Seq[String] = opiskeluoikeudet => opiskeluoikeudet.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct.sorted
 

@@ -5,14 +5,14 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, Cached24Hours}
 
-class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
+class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with Unauthenticated with Cached24Hours {
   get("/oppilaitos/:oppilaitosId") {
-   (params.get("query"), params.get("oppilaitosId")) match {
-     case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => application.tutkintoRepository.findTutkinnot(oppilaitosId, query)
-     case _ => KoskiErrorCategory.badRequest.queryParam.searchTermTooShort()
-   }
+   renderEither((params.get("query"), params.get("oppilaitosId")) match {
+     case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))
+     case _ => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
+   })
   }
 
   get("/diaarinumerot/koulutustyyppi/:koulutustyyppi") {
@@ -45,17 +45,17 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/suoritustavat/:diaari") {
     val diaari = params("diaari")
-    application.tutkintoRepository.findPerusteRakenne(diaari) match {
-      case None => renderStatus(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Rakennetta ei löydy diaarinumerolla $diaari"))
-      case Some(rakenne) => rakenne.suoritustavat.map(_.suoritustapa)
-    }
+    renderEither(application.tutkintoRepository.findPerusteRakenne(diaari) match {
+      case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Rakennetta ei löydy diaarinumerolla $diaari"))
+      case Some(rakenne) => Right(rakenne.suoritustavat.map(_.suoritustapa))
+    })
   }
 
-  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/") {
-    List()
+  get[Map[String, TutkinnonOsanLaajuus]]("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/") {
+    Map.empty
   }
 
-  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
+  get[Map[String, TutkinnonOsanLaajuus]]("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
     val ryhmät = params("ryhmat").split(',')
     val ryhmäkoodit: Array[Koodistokoodiviite] = ryhmät.map(ryhmä =>
       application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)

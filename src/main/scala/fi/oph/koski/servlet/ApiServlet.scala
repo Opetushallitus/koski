@@ -32,7 +32,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
     writeJson(toJsonString(x))
   }
 
-  def toJsonString[T: TypeTag](x: T): String = Json.write(x.asInstanceOf[AnyRef])
+  def toJsonString[T: TypeTag](x: T): String
 
   private def writeJson(str: String): Unit = {
     contentType = "application/json;charset=utf-8"
@@ -59,6 +59,10 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
       case x => renderObject(x)
     }
   }
+}
+
+trait ApiServletWithLegacySerialization extends ApiServlet {
+  def toJsonString[T: TypeTag](x: T): String = Json.write(x.asInstanceOf[AnyRef])
 }
 
 trait ApiServletWithSchemaBasedSerialization extends ApiServlet {

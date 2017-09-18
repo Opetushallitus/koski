@@ -7,14 +7,14 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServletWithLegacySerialization, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
 
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class EditorServlet(implicit val application: KoskiApplication) extends ApiServletWithLegacySerialization with RequiresAuthentication with NoCache {
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {

@@ -6,11 +6,11 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiUserLanguage, Login, UserAuthenticationContext}
 import fi.oph.koski.log.LogUserContext
-import fi.oph.koski.servlet.{ApiServlet, JsonBodySnatcher, NoCache}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, JsonBodySnatcher, NoCache}
 
 import scala.util.Try
 
-class LocalLoginServlet(implicit val application: UserAuthenticationContext) extends ApiServlet with AuthenticationSupport with SSOSupport with NoCache {
+class LocalLoginServlet(implicit val application: UserAuthenticationContext) extends ApiServletWithSchemaBasedSerialization with AuthenticationSupport with SSOSupport with NoCache {
   post("/") {
     def loginRequestInBody = JsonBodySnatcher.getJsonBody(request).right.toOption flatMap { json =>
       Try(Json.fromJValue[Login](json)).toOption
