@@ -4,17 +4,20 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServletWithLegacySerialization, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
+import org.json4s.jackson.Serialization
 
 /**
   *  Endpoints for the Koski UI
   */
 class EditorServlet(implicit val application: KoskiApplication) extends ApiServletWithLegacySerialization with RequiresAuthentication with NoCache {
+  // TODO: if we want to migrate to schema-based serialization mechanism, we need to add support for custom schemas?
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
@@ -92,6 +95,9 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     val `type` = params("type")
     renderEither(preferencesService.get(organisaatioOid, `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
   }
+  import reflect.runtime.universe.TypeTag
+
+  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(Json.jsonFormats + EditorModelSerializer)
 
   private def getKooditFromRequestParams() = {
     val koodistoUriParts = params("koodistoUri").split(",").toList

@@ -11,9 +11,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatra._
 import rx.lang.scala.Observable
 
-import scala.reflect.runtime.universe.TypeTag
-import scala.reflect.runtime.universe.TypeRefApi
-import scala.reflect.runtime.universe._
+import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
 trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZipSupport {
   def withJsonBody(block: JValue => Any)(parseErrorHandler: HttpStatus => Any = haltWithStatus) = {
