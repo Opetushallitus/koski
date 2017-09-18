@@ -1221,6 +1221,9 @@ describe('Perusopetus', function() {
           var suoritus = opinnot.opiskeluoikeusEditor()
           expect(suoritus.isEditable()).to.equal(false)
         })
+        it('Uuden opiskeluoikeuden lisääminen estetty', function() {
+          expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
+        })
       })
     })
   })

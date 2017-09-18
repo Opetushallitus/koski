@@ -57,6 +57,15 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
   }
 
+  "tallennusoikeudet muttei luottamuksellinen roolia" - {
+    val user = MockUsers.omniaTallentajaEiLuottamuksellinen
+    "ei voi muokata opiskeluoikeuksia" in {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+        verifyResponseStatus(403)
+      }
+    }
+  }
+
   "koski-oppilaitos-palvelukäyttäjä" - {
     val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
