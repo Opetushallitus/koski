@@ -70,7 +70,6 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
     action match {
       case _: Unit => ()
       case s: HttpStatus => renderStatus(s)
-      case in: Observable[AnyRef @unchecked] => in
       case x => renderObject(x)
     }
   }

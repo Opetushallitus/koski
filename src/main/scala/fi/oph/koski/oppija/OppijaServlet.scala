@@ -3,7 +3,7 @@ package fi.oph.koski.oppija
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
@@ -18,6 +18,8 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
+
+import scala.collection.immutable
 
 class OppijaServlet(implicit val application: KoskiApplication)
   extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
@@ -54,12 +56,9 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/") {
-    // TODO: this will actually bypass our current content filtering mechanism in JsonSerializer!!!
-    // It's not ok to pass the raw `data` value.
-
-    query(params).map {
-      case (henkilö, rivit) => Map("henkilö" -> henkilö, "opiskeluoikeudet" -> rivit.map(_.data))
-    }
+    streamResponse[Oppija](query(params).map {
+      case (henkilö: TäydellisetHenkilötiedot, rivit: immutable.Seq[OpiskeluoikeusRow]) => Oppija(henkilö, rivit.map(_.toOpiskeluoikeus))
+    })
   }
 
   get("/:oid") {

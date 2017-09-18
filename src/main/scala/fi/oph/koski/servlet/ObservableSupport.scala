@@ -3,19 +3,14 @@ package fi.oph.koski.servlet
 import java.io.{EOFException, PrintWriter}
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.LocalDateSerializer
-import org.json4s.DefaultFormats
+import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.schema.JsonSerializer
 import rx.lang.scala.Observable
 
-trait ObservableSupport extends ApiServlet {
-  override protected def renderResponse(actionResult: Any): Unit = {
-    actionResult match {
-      case in: Observable[AnyRef @unchecked] => streamResponse(in)
-      case a => super.renderResponse(a)
-    }
-  }
+import scala.reflect.runtime.universe.TypeTag
 
-  def streamResponse(in: Observable[_ <: AnyRef]): Unit = try {
+trait ObservableSupport extends ApiServlet {
+  def streamResponse[T : TypeTag](in: Observable[T])(implicit user: KoskiSession): Unit = try {
     writeJsonStreamSynchronously(in)
   } catch {
     case HttpClientEofException(eof) => renderInternalError(logger.warn(eof)("Client encountered a problem while reading streamed response"))
@@ -24,7 +19,7 @@ trait ObservableSupport extends ApiServlet {
 
   private def renderInternalError(log: Unit) = renderStatus(KoskiErrorCategory.internalError())
 
-  def writeJsonStreamSynchronously(in: Observable[_ <: AnyRef]): Unit = {
+  def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T])(implicit user: KoskiSession): Unit = {
     contentType = "application/json;charset=utf-8"
     val writer = HttpWriter(response.getWriter)
     var empty = true
@@ -36,8 +31,7 @@ trait ObservableSupport extends ApiServlet {
       if (index > 0) {
         writer.print(",")
       }
-      // TODO: make this schema-based too
-      val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats + LocalDateSerializer)
+      val output: String = JsonSerializer.write(item)
       writer.print(output)
     }
 
