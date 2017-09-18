@@ -8,6 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
 import fi.oph.koski.perustiedot.Henkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
@@ -21,7 +22,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     implicit val formats = Json.jsonFormats
     try {
-      val oldContext = context.get.extract[HenkilöUpdateContext]
+      val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
       val startMillis = currentTimeMillis
       val changedOids = application.authenticationServiceClient.findChangedOppijaOids(oldContext.lastRun)
       val newContext = runUpdate(changedOids, startMillis, oldContext)

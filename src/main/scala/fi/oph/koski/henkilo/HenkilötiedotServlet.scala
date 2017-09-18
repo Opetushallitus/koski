@@ -1,16 +1,15 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.HttpStatus.justStatus
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.HenkilötiedotJaOid
-import fi.oph.koski.servlet.{ApiServlet, ApiServletWithSchemaBasedSerialization, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.util.Timing
 import org.scalatra._
 
-class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with RequiresAuthentication with Logging with GZipSupport with NoCache with Timing {
+class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with GZipSupport with NoCache with Timing {
   private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository)
 
   get("/search") {

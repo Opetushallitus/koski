@@ -129,7 +129,6 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     })
   }
 
-
   def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
                                    oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],

@@ -36,6 +36,7 @@ trait ObservableSupport extends ApiServlet {
       if (index > 0) {
         writer.print(",")
       }
+      // TODO: make this schema-based too
       val output: String = org.json4s.jackson.Serialization.write(item)(DefaultFormats + LocalDateSerializer)
       writer.print(output)
     }

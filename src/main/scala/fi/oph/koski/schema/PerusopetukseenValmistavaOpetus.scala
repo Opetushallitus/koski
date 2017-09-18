@@ -74,7 +74,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[PerusopetukseenValmistavanKoulutuksenLaajuus],
   opetuksenSisältö: Option[LocalizedString]
-) extends PaikallinenKoulutusmoduuli {
+) extends PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
 }
 

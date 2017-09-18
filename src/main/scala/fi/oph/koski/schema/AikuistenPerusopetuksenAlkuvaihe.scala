@@ -74,7 +74,7 @@ trait AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine extends Aik
 case class AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString
-) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuli
+) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Title("Muu oppiaine")
 case class MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine(

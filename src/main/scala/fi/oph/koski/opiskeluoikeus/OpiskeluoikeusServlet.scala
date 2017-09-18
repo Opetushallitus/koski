@@ -7,9 +7,9 @@ import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
-class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with RequiresAuthentication with Logging with NoCache {
+class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache {
   get("/:oid") {
     val result: Either[HttpStatus, OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession)
     result.map(oo => AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)

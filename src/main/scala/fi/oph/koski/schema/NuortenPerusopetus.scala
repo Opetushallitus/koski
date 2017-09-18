@@ -308,7 +308,7 @@ case class PerusopetuksenPaikallinenValinnainenOppiaine(
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   kuvaus: LocalizedString,
   perusteenDiaarinumero: Option[String] = None
-) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli {
+) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference {
   def pakollinen: Boolean = false
 }
 

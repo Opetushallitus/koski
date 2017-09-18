@@ -12,12 +12,12 @@ import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
 
 import scala.collection.immutable
+import scala.reflect.runtime.universe.TypeTag
 
 case class PreferencesService(protected val db: DB) extends Logging with KoskiDatabaseMethods {
-
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
-  val prefTypes: Map[String, Class[_]] = Map(
+  val prefTypes: Map[String, Class[_ <: StorablePreference]] = Map(
     "myöntäjät" -> classOf[Organisaatiohenkilö],
     "perusopetuksenpaikallinenvalinnainenoppiaine" -> classOf[PerusopetuksenPaikallinenValinnainenOppiaine],
     "perusopetukseenvalmistavanopetuksenoppiaine" -> classOf[PerusopetukseenValmistavanOpetuksenOppiaine],
@@ -30,7 +30,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
 
     prefTypes.get(`type`) match {
       case Some(klass) =>
-        extract(value, klass) match {
+        extract[StorablePreference](value, klass) match {
           case Right(deserialized) =>
             runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, `type`, key, value)))
             HttpStatus.ok
@@ -52,16 +52,21 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     }
   }
 
-  private def extract(value: JValue, klass: Class[_]) = SchemaValidatingExtractor.extract(value, klass)(KoskiSchema.deserializationContext)
+  private def extract[T : TypeTag](value: JValue, klass: Class[_ <: T]): Either[List[ValidationError], T] = {
+    import KoskiSchema.deserializationContext
+    SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
+  }
 
-  def get(organisaatioOid: String, `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[AnyRef]] = {
+  def get(organisaatioOid: String, `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
     if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
       case Some(klass) =>
         val jValues = runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type`).map(_.value).result).toList
-        val extractionResults = jValues.map(value => extract(value, klass).left.map(error => KoskiErrorCategory.badRequest.validation.jsonSchema(error)))
-        HttpStatus.foldEithers[AnyRef](extractionResults)
+        HttpStatus.foldEithers(jValues.map(value =>
+          extract[StorablePreference](value, klass)
+            .left.map(error => KoskiErrorCategory.badRequest.validation.jsonSchema(error))
+        ))
       case None => Left(KoskiErrorCategory.notFound("Unknown pref type " + `type`))
     }
   }

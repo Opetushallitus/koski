@@ -30,7 +30,24 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
     writeJson(toJsonString(x))
   }
 
-  def toJsonString[T: TypeTag](x: T): String
+  def toJsonString[T: TypeTag](x: T): String = {
+    implicit val session = koskiSessionOption getOrElse KoskiSession.untrustedUser
+    val tag = implicitly[TypeTag[T]]
+    tag.tpe match {
+      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
+        // TODO: here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
+        val typeArg = t.args.head
+        val paginated = x.asInstanceOf[PaginatedResponse[_]]
+        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
+        JsonMethods.compact(JObject(
+          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
+          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
+          "mayHaveMore" -> JBool(paginated.mayHaveMore)
+        ))
+      case t =>
+        JsonSerializer.write(x)
+    }
+  }
 
   private def writeJson(str: String): Unit = {
     contentType = "application/json;charset=utf-8"
@@ -58,29 +75,3 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
     }
   }
 }
-
-trait ApiServletWithLegacySerialization extends ApiServlet {
-  def toJsonString[T: TypeTag](x: T): String = Json.write(x.asInstanceOf[AnyRef])
-}
-
-trait ApiServletWithSchemaBasedSerialization extends ApiServlet {
-  override def toJsonString[T: TypeTag](x: T): String = {
-    implicit val session = koskiSessionOption getOrElse KoskiSession.untrustedUser
-    val tag = implicitly[TypeTag[T]]
-    tag.tpe match {
-      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
-        // TODO: here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
-        val typeArg = t.args.head
-        val paginated = x.asInstanceOf[PaginatedResponse[_]]
-        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
-        JsonMethods.compact(JObject(
-          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
-          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
-          "mayHaveMore" -> JBool(paginated.mayHaveMore)
-        ))
-      case t =>
-        JsonSerializer.write(x)
-    }
-  }
-}
-

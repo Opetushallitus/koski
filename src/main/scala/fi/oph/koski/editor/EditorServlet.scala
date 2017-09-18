@@ -8,7 +8,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{ApiServletWithLegacySerialization, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import org.json4s.jackson.Serialization
@@ -16,7 +16,7 @@ import org.json4s.jackson.Serialization
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication) extends ApiServletWithLegacySerialization with RequiresAuthentication with NoCache {
+class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   // TODO: if we want to migrate to schema-based serialization mechanism, we need to add support for custom schemas?
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)

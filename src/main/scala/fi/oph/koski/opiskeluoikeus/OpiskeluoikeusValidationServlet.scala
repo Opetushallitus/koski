@@ -11,13 +11,13 @@ import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.JsonSerializer.serialize
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
-import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
-class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
+class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)

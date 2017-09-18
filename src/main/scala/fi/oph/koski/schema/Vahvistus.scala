@@ -91,6 +91,6 @@ case class Organisaatiohenkilö(
   nimi: String,
   titteli: LocalizedString,
   organisaatio: Organisaatio
-) extends Vahvistaja {
+) extends Vahvistaja with StorablePreference {
   override def getTitteli = Some(titteli)
 }

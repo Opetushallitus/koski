@@ -5,9 +5,9 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, Cached24Hours}
+import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
-class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with Unauthenticated with Cached24Hours {
+class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
   get("/oppilaitos/:oppilaitosId") {
    renderEither((params.get("query"), params.get("oppilaitosId")) match {
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))

@@ -3,10 +3,11 @@ package fi.oph.koski.preferences
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.RequiresAuthentication
-import fi.oph.koski.servlet.{ApiServlet, ApiServletWithLegacySerialization, NoCache}
+import fi.oph.koski.schema.StorablePreference
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JValue
 
-class PreferencesServlet(implicit val application: KoskiApplication) extends ApiServletWithLegacySerialization with RequiresAuthentication with NoCache {
+class PreferencesServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   private val service = PreferencesService(application.masterDatabase.db)
 
   put("/:organisaatioOid/:type") {
@@ -29,7 +30,7 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Api
   get("/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
-    renderEither(service.get(organisaatioOid, `type`)(koskiSession))
+    renderEither[List[StorablePreference]](service.get(organisaatioOid, `type`)(koskiSession))
   }
 }
 

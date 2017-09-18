@@ -5,11 +5,12 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer
 import org.json4s.JValue
 
 trait YtrClient {
   implicit val formats = Json.jsonFormats
-  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(_.extract[YtrOppija])
+  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(JsonSerializer.extract[YtrOppija](_))
   def oppijaJsonByHetu(hetu: String): Option[JValue]
 }
 

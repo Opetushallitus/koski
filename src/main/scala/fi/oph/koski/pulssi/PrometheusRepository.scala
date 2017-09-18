@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
 import fi.oph.koski.json.GenericJsonFormats
+import fi.oph.koski.schema.JsonSerializer.extract
 import org.json4s.JValue
 
 import scalaz.concurrent.Task
@@ -48,7 +49,7 @@ trait PrometheusRepository {
 
   private def monthlyOps: Task[List[Map[String, Any]]] = metric("/prometheus/api/v1/query?query=koski_monthly_operations")
     .map(_.map { metric =>
-      val operation = (metric \ "metric" \ "operation").extract[String]
+      val operation = extract[String](metric \ "metric" \ "operation")
       val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
       (operation, Math.max(0, count))
     }.map { case (operation, count) =>
@@ -60,8 +61,8 @@ trait PrometheusRepository {
   )
 
   private def monthlyAlerts: Task[Map[String, Int]] = metric("/prometheus/api/v1/query?query=koski_alerts").map(_.map { metric =>
-      val alert = (metric \ "metric" \ "alertname").extract[String]
-      val instance = (metric \ "metric" \ "instance").extractOpt[String].map(i => "@"+i).getOrElse("")
+      val alert = extract[String](metric \ "metric" \ "alertname")
+      val instance = extract[Option[String]](metric \ "metric" \ "instance").map(i => "@"+i).getOrElse("")
       val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
       (s"$alert$instance", Math.max(0, count))
     }.toMap
@@ -76,10 +77,10 @@ trait PrometheusRepository {
       .map(_.headOption.flatMap(value).map(_.toDouble.toInt).getOrElse(0))
 
   private def metric(queryStr: String): Task[List[JValue]] =
-    query(queryStr).map(result => (result \ "data" \ "result").extract[List[JValue]])
+    query(queryStr).map(result => extract[List[JValue]](result \ "data" \ "result"))
 
   private def value(metric: JValue): Option[String] =
-    (metric \ "value").extract[List[String]].lastOption
+    (extract[List[String]](metric \ "value")).lastOption
 }
 
 case class KoskiMetriikka(

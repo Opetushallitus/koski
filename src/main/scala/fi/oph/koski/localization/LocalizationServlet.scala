@@ -4,11 +4,11 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 import scala.util.{Failure, Success, Try}
 
-class LocalizationServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with AuthenticationSupport with NoCache {
+class LocalizationServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {
     application.localizationRepository.localizations
   }
