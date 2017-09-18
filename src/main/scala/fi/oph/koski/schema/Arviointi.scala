@@ -2,11 +2,9 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
-import org.json4s.reflect.{Reflector, TypeInfo}
-import org.json4s.{Extraction, _}
 
 trait Arviointi {
   def arvosana: KoodiViite

@@ -140,7 +140,8 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     val document = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
 
     val documentId = org.oid + "_" + idValue
-    val json: JValue = JObject("doc_as_upsert" -> JBool(true), "doc" -> JsonSerializer.serializeWithRoot(document))
+    val docJson = JsonSerializer.serializeWithRoot(document).merge(JObject(if (data.isDefined) Nil else List("data" -> JNull))) // Replace missing field with null
+    val json: JValue = JObject("doc_as_upsert" -> JBool(true), "doc" -> docJson)
 
     val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update?retry_on_conflict=5", json)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
 

@@ -32,8 +32,7 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + EditorModelSerializer
-  implicit val jsonFormats = formats + BlockOpiskeluoikeusSerializer
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + EditorModelSerializer + BlockOpiskeluoikeusSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {

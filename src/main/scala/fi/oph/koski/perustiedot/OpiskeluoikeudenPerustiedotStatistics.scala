@@ -90,7 +90,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
 
     result.map { r =>
       val total = extract[Int](r \ "hits" \ "total")
-      OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](r \ "aggregations" \ "tyyppi" \ "buckets"))
+      OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](r \ "aggregations" \ "tyyppi" \ "buckets", ignoreExtras = true))
     }
   }
 }
