@@ -13,14 +13,14 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import fi.oph.koski.servlet.{ApiServletRequiringAuthentication, NoCache}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 
 class OppijaServlet(implicit val application: KoskiApplication)
-  extends ApiServletRequiringAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
+  extends ApiServletWithSchemaBasedSerialization with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
 

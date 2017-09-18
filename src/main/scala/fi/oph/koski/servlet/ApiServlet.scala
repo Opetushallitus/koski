@@ -2,14 +2,18 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.schema.{JsonSerializer, KoskiSchema}
+import fi.oph.koski.util.PaginatedResponse
 import org.json4s._
+import org.json4s.jackson.JsonMethods
 import org.scalatra._
 import rx.lang.scala.Observable
 
-import scala.reflect.runtime.{universe => ru}
+import scala.reflect.runtime.universe.TypeTag
+import scala.reflect.runtime.universe.TypeRefApi
+import scala.reflect.runtime.universe._
 
 trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZipSupport {
   def withJsonBody(block: JValue => Any)(parseErrorHandler: HttpStatus => Any = haltWithStatus) = {
@@ -24,30 +28,30 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
     writeJson(Json.write(status.errors))
   }
 
-  def renderObject[T: ru.TypeTag](x: T): Unit = {
+  def renderObject[T: TypeTag](x: T): Unit = {
     writeJson(toJsonString(x))
   }
 
-  def toJsonString[T: ru.TypeTag](x: T): String = Json.write(x.asInstanceOf[AnyRef])
+  def toJsonString[T: TypeTag](x: T): String = Json.write(x.asInstanceOf[AnyRef])
 
   private def writeJson(str: String): Unit = {
     contentType = "application/json;charset=utf-8"
     response.writer.print(str)
   }
 
-  def get[T: ru.TypeTag](s: String)(action: => T): Route =
+  def get[T: TypeTag](s: String)(action: => T): Route =
     super.get(s)(render(action))
 
-  def post[T: ru.TypeTag](s: String)(action: => T): Route =
+  def post[T: TypeTag](s: String)(action: => T): Route =
     super.post(s)(render(action))
 
-  def put[T: ru.TypeTag](s: String)(action: => T): Route =
+  def put[T: TypeTag](s: String)(action: => T): Route =
     super.put(s)(render(action))
 
-  def delete[T: ru.TypeTag](s: String)(action: => T): Route =
+  def delete[T: TypeTag](s: String)(action: => T): Route =
     super.delete(s)(render(action))
 
-  def render[T: ru.TypeTag](action: => T): Any = {
+  def render[T: TypeTag](action: => T): Any = {
     action match {
       case _: Unit => ()
       case s: HttpStatus => renderStatus(s)
@@ -57,9 +61,24 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
   }
 }
 
-trait ApiServletRequiringAuthentication extends ApiServlet with RequiresAuthentication {
-  override def toJsonString[T: ru.TypeTag](x: T): String = {
-    JsonSerializer.write(x)
+trait ApiServletWithSchemaBasedSerialization extends ApiServlet {
+  override def toJsonString[T: TypeTag](x: T): String = {
+    implicit val session = koskiSessionOption getOrElse KoskiSession.untrustedUser
+    val tag = implicitly[TypeTag[T]]
+    tag.tpe match {
+      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
+        // TODO: here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
+        val typeArg = t.args.head
+        val paginated = x.asInstanceOf[PaginatedResponse[_]]
+        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
+        JsonMethods.compact(JObject(
+          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
+          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
+          "mayHaveMore" -> JBool(paginated.mayHaveMore)
+        ))
+      case t =>
+        JsonSerializer.write(x)
+    }
   }
 }
 

@@ -35,6 +35,12 @@ object JsonSerializer {
     Serializer.serialize(obj, context)
   }
 
+  def serialize(obj: Any, schema: Schema)(implicit user: KoskiSession): JValue = {
+    val filterSensitiveData: SchemaPropertyProcessor = (s: ClassSchema, p: Property) => if (sensitiveHidden(p.metadata)) Nil else List(p)
+    val context = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
+    Serializer.serialize(obj, schema, context)
+  }
+
   def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false, validating: Boolean = true): T = {
     extract(JsonMethods.parse(j))
   }

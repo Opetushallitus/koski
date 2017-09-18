@@ -6,18 +6,18 @@ import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.jsonDiff
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.JsonSerializer.serialize
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
-import fi.oph.koski.servlet.{ApiServletRequiringAuthentication, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{ApiServletWithSchemaBasedSerialization, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
-class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServletRequiringAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
+class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServletWithSchemaBasedSerialization with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
