@@ -1,22 +1,21 @@
 package fi.oph.koski.perustiedot
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
+import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer.extract
 import org.http4s.EntityEncoder
 import org.json4s.{JValue, _}
 
 class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
-  import PerustiedotSearchIndex.formats
-
   def http = elastic.http
   def reindexingNeededAtStartup = init
 
   lazy val init = {
     if (indexExists) {
       logger.info("ElasticSearch index exists")
-      val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
+      val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index")
       val alreadyApplied = (serverSettings ++ settings) == serverSettings
       if (alreadyApplied) {
         logger.info("Elasticsearch index settings are up to date")
@@ -73,5 +72,4 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
             }
           }
         }
-    }""").extract[Map[String, Any]]
-}
+    }""")}

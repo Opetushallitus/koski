@@ -2,13 +2,10 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
-import fi.oph.koski.json.{GenericJsonFormats, Json, LocalDateSerializer}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.LocalizedStringDeserializer
+import fi.oph.koski.schema.JsonSerializer.extract
 import fi.oph.koski.schema._
-import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.{JArray, JValue}
 
@@ -43,8 +40,6 @@ case class OpiskeluoikeusJaksonPerustiedot(
 )
 
 object OpiskeluoikeudenPerustiedot {
-  import PerustiedotSearchIndex._
-
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(row.id, row.data, row.luokka, henkilöRow.toHenkilötiedot)
   }
@@ -57,25 +52,25 @@ object OpiskeluoikeudenPerustiedot {
     val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
       .map { suoritus =>
         SuorituksenPerustiedot(
-          (suoritus \ "tyyppi").extract[Koodistokoodiviite],
-          KoulutusmoduulinPerustiedot((suoritus \ "koulutusmoduuli" \ "tunniste").extract[Koodistokoodiviite]), // TODO: voi olla paikallinen koodi
-          (suoritus \ "osaamisala").extract[Option[List[Koodistokoodiviite]]],
-          (suoritus \ "tutkintonimike").extract[Option[List[Koodistokoodiviite]]],
-          (suoritus \ "toimipiste").extract[OidOrganisaatio],
-          Some((suoritus \ "tila").extract[Koodistokoodiviite])
+          extract[Koodistokoodiviite](suoritus \ "tyyppi"),
+          (KoulutusmoduulinPerustiedot(extract[Koodistokoodiviite](suoritus \ "koulutusmoduuli" \ "tunniste"))), // TODO: voi olla paikallinen koodi
+          extract[Option[List[Koodistokoodiviite]]](suoritus \ "osaamisala"),
+          extract[Option[List[Koodistokoodiviite]]](suoritus \ "tutkintonimike"),
+          extract[OidOrganisaatio](suoritus \ "toimipiste", ignoreExtras = true),
+          Some(extract[Koodistokoodiviite](suoritus \ "tila"))
         )
       }
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
       id,
       toNimitiedotJaOid(henkilö),
-      (data \ "oppilaitos").extract[Oppilaitos],
-      (data \ "sisältyyOpiskeluoikeuteen").extract[Option[SisältäväOpiskeluoikeus]],
-      (data \ "alkamispäivä").extract[Option[LocalDate]],
-      (data \ "päättymispäivä").extract[Option[LocalDate]],
-      (data \ "tyyppi").extract[Koodistokoodiviite],
+      extract[Oppilaitos](data \ "oppilaitos"),
+      extract[Option[SisältäväOpiskeluoikeus]](data \ "sisältyyOpiskeluoikeuteen"),
+      extract[Option[LocalDate]](data \ "alkamispäivä"),
+      extract[Option[LocalDate]](data \ "päättymispäivä"),
+      extract[Koodistokoodiviite](data \ "tyyppi"),
       suoritukset,
-      Some(fixTilat((data \ "tila" \ "opiskeluoikeusjaksot").extract[List[OpiskeluoikeusJaksonPerustiedot]])),
+      Some(fixTilat(extract[List[OpiskeluoikeusJaksonPerustiedot]](data \ "tila" \ "opiskeluoikeusjaksot", ignoreExtras = true))),
       luokka)
   }
 

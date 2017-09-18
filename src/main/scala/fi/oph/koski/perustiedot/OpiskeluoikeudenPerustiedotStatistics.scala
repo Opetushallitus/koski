@@ -1,6 +1,8 @@
 package fi.oph.koski.perustiedot
 
 import fi.oph.koski.json.Json
+import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.schema.JsonSerializer.extract
 
 case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex) {
   import PerustiedotSearchIndex._
@@ -38,7 +40,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
         """.stripMargin)
     )
 
-    result.map(r => (r \ "aggregations" \ "henkilöcount" \ "value").extract[Int])
+    result.map(r => extract[Int](r \ "aggregations" \ "henkilöcount" \ "value"))
   }
 
   private def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
@@ -87,8 +89,8 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
     )
 
     result.map { r =>
-      val total = (r \ "hits" \ "total").extract[Int]
-      OpiskeluoikeudetTyypeittäin(total, (r \ "aggregations" \ "tyyppi" \ "buckets").extract[List[Tyyppi]])
+      val total = extract[Int](r \ "hits" \ "total")
+      OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](r \ "aggregations" \ "tyyppi" \ "buckets"))
     }
   }
 }

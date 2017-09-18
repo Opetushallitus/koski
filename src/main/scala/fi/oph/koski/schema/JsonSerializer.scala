@@ -35,6 +35,9 @@ object JsonSerializer {
     Serializer.serialize(obj, context)
   }
 
+  def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false, validating: Boolean = true): T = {
+    extract(JsonMethods.parse(j))
+  }
   def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false, validating: Boolean = true): T = {
     implicit val c = KoskiSchema.deserializationContext.copy(ignoreUnexpectedProperties = ignoreExtras, validate = validating)
     SchemaValidatingExtractor.extract(j) match {

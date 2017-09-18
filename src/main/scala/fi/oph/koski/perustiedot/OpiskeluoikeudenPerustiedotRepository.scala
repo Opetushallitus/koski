@@ -13,6 +13,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.schema.JsonSerializer.extract
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
@@ -125,7 +127,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 
     index.runSearch("perustiedot", doc)
       .map{ response =>
-        (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
+        extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
       }
       .getOrElse(Nil)
   }
@@ -137,7 +139,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = Json.toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
     index.runSearch("perustiedot", doc)
-      .map(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot]))
+      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")))
       .getOrElse(Nil)
   }
 
@@ -145,7 +147,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     index.runSearch("perustiedot", doc)
-      .flatMap(response => (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption)
+      .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[NimitiedotJaOid](j \ "_source" \ "henkilö")).headOption)
   }
 
   def findOids(hakusana: String)(implicit session: KoskiSession): List[Oid] = {
@@ -164,7 +166,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     ))
 
     index.runSearch("perustiedot", doc)
-      .map(response => (response \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid]))
+      .map(response => extract[List[JValue]](response \ "aggregations" \ "oids" \ "buckets").map(j => extract[Oid](j \ "key")))
       .getOrElse(Nil)
   }
 
@@ -189,8 +191,8 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 
   private def analyzeString(string: String): List[String] = {
     val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", string)(EntityEncoder.stringEncoder)(Http.parseJson[JValue]))
-    val tokens: List[JValue] = (document \ "tokens").extract[List[JValue]]
-    tokens.map(token => (token \ "token").extract[String])
+    val tokens: List[JValue] = extract[List[JValue]](document \ "tokens")
+    tokens.map(token => extract[String](token \ "token"))
   }
 }
 

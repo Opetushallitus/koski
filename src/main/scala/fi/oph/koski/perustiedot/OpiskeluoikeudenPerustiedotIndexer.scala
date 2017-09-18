@@ -10,6 +10,8 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.schema.JsonSerializer.extract
 import fi.oph.koski.util.{PaginationSettings, Timing}
 import org.json4s._
 
@@ -56,20 +58,20 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     if (items.isEmpty) {
       return Right(0)
     }
-    val jsonLines: Seq[Map[String, Any]] = items.flatMap { perustiedot =>
+    val jsonLines: Seq[JValue] = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
-    }
-    val response = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
-    val errors = (response \ "errors").extract[Boolean]
+    }.map(Json.toJValue)
+    val response = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val errors = extract[Boolean](response \ "errors")
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${Json.writePretty(response)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
-      val itemResults = (response \ "items").extract[List[JValue]].map(_ \ "update" \ "_shards" \ "successful").map(_.extract[Int])
+      val itemResults = extract[List[JValue]](response \ "items").map(_ \ "update" \ "_shards" \ "successful").map(extract[Int](_))
       Right(itemResults.sum)
     }
   }
@@ -79,7 +81,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
 
     val deleted = Http.runTask(index.http
       .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-        case (200, text, request) => (Json.parse(text) \ "deleted").extract[Int]
+        case (200, text, request) => extract[Int](Json.parse(text) \ "deleted")
         case (status, text, request) if List(404, 409).contains(status) => 0
         case (status, text, request) => throw HttpStatusException(status, text, request)
       })

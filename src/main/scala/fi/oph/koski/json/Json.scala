@@ -6,7 +6,6 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.editor.EditorModelSerializer
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.localization.LocalizedStringDeserializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
@@ -33,7 +32,7 @@ object GenericJsonFormats {
 }
 
 object Json extends Logging {
-  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + EditorModelSerializer + LocalizedStringDeserializer + ArviointiSerializer + KoodiViiteDeserializer
+  val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + EditorModelSerializer
   implicit val jsonFormats = formats + BlockOpiskeluoikeusSerializer
 
   def write(x: AnyRef, pretty: Boolean = false): String = {

@@ -4,6 +4,7 @@ import java.io.File
 
 import fi.oph.koski.http.Http
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.util.{PortChecker, Wait}
 import org.json4s._
 
@@ -25,7 +26,7 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
 
       def clusterHealthOk = {
         val healthResponse: JValue = Http.runTask(elasticSearchHttp.get(uri"/_cluster/health")(Http.parseJson[JValue]))
-        val healthCode = (healthResponse \ "status").extract[String]
+        val healthCode = JsonSerializer.extract[String](healthResponse \ "status")
         List("green", "yellow").contains(healthCode)
       }
 

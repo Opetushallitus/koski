@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
@@ -11,7 +10,6 @@ import fi.oph.koski.koskiuser.MockUsers.helsinginKaupunkiPalvelukäyttäjä
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._
-import fi.oph.koski.util.PaginatedResponse
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -79,7 +77,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.helsinginKaupunkiPalvelukäyttäjä) {
       verifyResponseStatus(200)
-      val yhteenveto = Json.read[List[TiedonsiirtoYhteenveto]](body)
+      val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
       yhteenveto.length should be > 0
     }
   }
@@ -91,7 +89,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.omniaKatselija) {
       verifyResponseStatus(200)
-      val yhteenveto = Json.read[List[TiedonsiirtoYhteenveto]](body)
+      val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
       yhteenveto.length should be(0)
     }
   }
@@ -176,7 +174,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] =
     authGet(url, user) {
       verifyResponseStatus(200)
-      Json.read[PaginatedResponse[Tiedonsiirrot]](body).result.henkilöt
+      readPaginatedResponse[Tiedonsiirrot].henkilöt
     }
 
   private def getVirheellisetTiedonsiirrot(user: UserWithPassword) = getTiedonsiirrot(user, "api/tiedonsiirrot/virheet")

@@ -58,14 +58,3 @@ case class PaikallinenKoodi(
   def getNimi = Some(nimi)
   def description: LocalizedString = nimi
 }
-
-object KoodiViiteDeserializer extends Deserializer[KoodiViite] {
-  private val KoodiViiteClass = classOf[KoodiViite] // Note that this guy always tries to extract as Koodistokoodiviite
-  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KoodiViite] =  {
-    case (TypeInfo(KoodiViiteClass, _), json) =>
-      json match {
-        case viite: JObject => viite.extract[Koodistokoodiviite]
-        case _ => throw new UnsupportedOperationException("Invalid JSON type in KoodiViite")
-      }
-  }
-}
