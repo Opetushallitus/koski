@@ -12,9 +12,13 @@ import Text from './Text.jsx'
 export const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
 const acceptableQuery = (q) => q.length >= 3
+const capitalizeHetu = (h) => /\d{6}[+\-A]\d{3}[0-9A-Z]/i.test(h) ? h.toUpperCase() : h
 
 const hakuTulosE = oppijaHakuE.debounce(delays().delay(500))
-  .flatMapLatest(query => (acceptableQuery(query) ? Http.get(`/koski/api/henkilo/search?query=${encodeURIComponent(query)}`, { willHandleErrors: true }) : Bacon.once({henkilöt: []})).map((response) => ({ response, query })))
+  .flatMapLatest(query => (acceptableQuery(query)
+    ? Http.get(`/koski/api/henkilo/search?query=${encodeURIComponent(capitalizeHetu(query))}`, { willHandleErrors: true })
+    : Bacon.once({henkilöt: []})).map((response) => ({ response, query })
+  ))
 
 hakuTulosE.onError(showError)
 
