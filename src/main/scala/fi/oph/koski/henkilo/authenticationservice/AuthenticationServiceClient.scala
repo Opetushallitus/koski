@@ -7,13 +7,13 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
 import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{JsonSerializer, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
 import org.http4s._
 

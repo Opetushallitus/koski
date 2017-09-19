@@ -17,7 +17,7 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
-import fi.oph.koski.schema.JsonSerializer.extract
+import JsonSerializer.extract
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
 import io.prometheus.client.Counter

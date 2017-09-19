@@ -3,8 +3,8 @@ package fi.oph.koski.servlet
 import java.io.{EOFException, PrintWriter}
 
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.schema.JsonSerializer
 import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.TypeTag

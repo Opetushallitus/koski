@@ -6,7 +6,7 @@ import fi.oph.koski.date.DateValidation
 import fi.oph.koski.date.DateValidation._
 import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository

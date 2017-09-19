@@ -1,8 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.Examples.examples
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpecification with Logging {

@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._

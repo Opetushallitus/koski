@@ -3,8 +3,8 @@ package fi.oph.koski.elasticsearch
 import java.io.File
 
 import fi.oph.koski.http.Http
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.util.{PortChecker, Wait}
 import org.json4s._
 

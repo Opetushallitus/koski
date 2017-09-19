@@ -7,14 +7,13 @@ import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.json.Json
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.JsonSerializer
-import fi.oph.koski.schema.JsonSerializer.extract
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
@@ -22,7 +21,6 @@ import org.http4s.EntityEncoder
 import org.json4s.JValue
 
 class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
-  import PerustiedotSearchIndex._
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {

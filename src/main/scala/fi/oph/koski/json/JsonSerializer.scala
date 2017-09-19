@@ -1,6 +1,7 @@
-package fi.oph.koski.schema
+package fi.oph.koski.json
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.schema.{KoskiSchema, RequiresRole}
 import fi.oph.scalaschema.SchemaPropertyProcessor.SchemaPropertyProcessor
 import fi.oph.scalaschema._
 import org.json4s.JValue

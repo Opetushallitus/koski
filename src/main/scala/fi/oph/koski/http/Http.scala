@@ -3,9 +3,8 @@ package fi.oph.koski.http
 import java.net.URLEncoder
 
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.log.{LoggerWithContext, Logging}
-import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.util.Pools
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._

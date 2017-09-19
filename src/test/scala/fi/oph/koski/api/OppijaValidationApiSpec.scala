@@ -1,9 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.opiskeluoikeus.ValidationResult
-import fi.oph.koski.schema.JsonSerializer
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers {

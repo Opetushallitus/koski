@@ -1,7 +1,7 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.integrationtest.TrustingHttpsClient
-import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.json.JsonSerializer
 import org.apache.http.client.methods.HttpGet
 import org.json4s.jackson.JsonMethods
 

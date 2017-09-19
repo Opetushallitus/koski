@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
 import fi.oph.koski.json.GenericJsonFormats
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JValue
 
 import scalaz.concurrent.Task

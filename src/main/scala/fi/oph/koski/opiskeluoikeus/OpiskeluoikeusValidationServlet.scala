@@ -9,7 +9,7 @@ import fi.oph.koski.json.Json.jsonDiff
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer.serialize
+import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator

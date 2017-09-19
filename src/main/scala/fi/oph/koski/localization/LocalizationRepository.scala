@@ -6,10 +6,10 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizedString.sanitize
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s._
 
 trait LocalizationRepository extends Logging {

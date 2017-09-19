@@ -5,10 +5,11 @@ import java.time.LocalDate
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
-import fi.oph.koski.schema.JsonSerializer.sensitiveHidden
+import fi.oph.koski.json.JsonSerializer.sensitiveHidden
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists

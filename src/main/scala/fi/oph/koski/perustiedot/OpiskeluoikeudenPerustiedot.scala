@@ -3,8 +3,9 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.{JArray, JValue}

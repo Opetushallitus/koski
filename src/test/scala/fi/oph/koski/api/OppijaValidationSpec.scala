@@ -9,6 +9,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.organisaatio.MockOrganisaatiot

@@ -2,8 +2,8 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.schema.JsonSerializer.extract
-import fi.oph.koski.schema.{JsonSerializer, Oppilaitos}
+import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.schema.Oppilaitos
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {

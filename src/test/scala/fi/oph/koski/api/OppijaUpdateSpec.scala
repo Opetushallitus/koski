@@ -8,6 +8,7 @@ import fi.oph.koski.documentation.ExampleData.jyväskylä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString

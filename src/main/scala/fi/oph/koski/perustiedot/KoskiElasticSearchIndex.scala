@@ -4,7 +4,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import org.http4s.EntityEncoder
 import org.json4s.{JValue, _}
 

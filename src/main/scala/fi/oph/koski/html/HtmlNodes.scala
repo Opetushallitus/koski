@@ -4,9 +4,8 @@ import java.io.File
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.util.XML.CommentedPCData
 

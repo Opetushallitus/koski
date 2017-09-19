@@ -1,7 +1,6 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
 import org.http4s._
 import org.http4s.headers.`Content-Type`
 

@@ -1,9 +1,9 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.schema.{JsonSerializer, KoskiSchema}
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.ApiServlet
 
 import scala.reflect.runtime.{universe => ru}

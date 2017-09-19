@@ -1,6 +1,6 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.schema.JsonSerializer.serializeWithRoot
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description

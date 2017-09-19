@@ -1,7 +1,7 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.schema.JsonSerializer
-import fi.oph.koski.schema.JsonSerializer.serializeWithRoot
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import org.json4s.jackson.JsonMethods
 
 import scala.xml.Elem

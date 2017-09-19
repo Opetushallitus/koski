@@ -1,8 +1,7 @@
 package fi.oph.koski.koodisto
 import fi.oph.koski.cache.{Cached, GlobalCacheManager}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
-import fi.oph.koski.schema.JsonSerializer
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {

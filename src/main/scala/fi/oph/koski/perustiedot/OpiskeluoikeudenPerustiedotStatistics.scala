@@ -1,8 +1,7 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.json.Json
-import fi.oph.koski.schema.JsonSerializer
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer.extract
 
 case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex) {
   import PerustiedotSearchIndex._

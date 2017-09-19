@@ -3,9 +3,8 @@ package fi.oph.koski.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
 import org.json4s.jackson.JsonMethods
 
 object KoodistoCreator extends Logging {

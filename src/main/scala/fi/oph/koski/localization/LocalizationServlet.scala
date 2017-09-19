@@ -2,9 +2,8 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 import scala.util.{Failure, Success, Try}

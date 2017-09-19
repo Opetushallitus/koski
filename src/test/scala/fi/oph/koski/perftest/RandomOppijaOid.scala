@@ -1,8 +1,8 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.JsonSerializer
 import org.scalatest.Matchers
 
 import scala.util.Random

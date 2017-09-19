@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.eerola
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers.helsinginKaupunkiPalvelukäyttäjä
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.schema._

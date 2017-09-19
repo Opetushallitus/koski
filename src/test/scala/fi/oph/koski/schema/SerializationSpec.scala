@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
 import fi.oph.scalaschema.SchemaValidatingExtractor

@@ -1,6 +1,6 @@
 package fi.oph.koski.perftest
 
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.{Json, JsonSerializer}
 import fi.oph.koski.perftest.RandomName._
 import fi.oph.koski.schema._
 

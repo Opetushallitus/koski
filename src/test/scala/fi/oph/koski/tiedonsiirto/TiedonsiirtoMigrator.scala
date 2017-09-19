@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.Tiedonsiirto
 import fi.oph.koski.db.{KoskiDatabaseMethods, TiedonsiirtoRow}
 import fi.oph.koski.http.ErrorDetail
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable

@@ -1,7 +1,6 @@
 package fi.oph.koski.eperusteet
 
-import fi.oph.koski.json.Json
-import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.json.{Json, JsonSerializer}
 
 object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(

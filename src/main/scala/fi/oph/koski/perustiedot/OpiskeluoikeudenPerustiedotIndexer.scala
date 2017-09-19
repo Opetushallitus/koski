@@ -5,13 +5,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.json.{Json, Json4sHttp4s, JsonSerializer}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.schema.JsonSerializer
-import fi.oph.koski.schema.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.util.{PaginationSettings, Timing}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
