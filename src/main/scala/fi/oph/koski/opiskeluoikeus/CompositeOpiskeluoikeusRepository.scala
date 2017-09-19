@@ -4,6 +4,7 @@ import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 
 import scala.collection.mutable.ListBuffer
@@ -26,4 +27,6 @@ class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: Lis
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = main.findByUserOid(user.oid)
 
   override def delete(id: Int)(implicit user: KoskiSession) = main.delete(id)
+
+  override def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Oid] = main.getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid)
 }

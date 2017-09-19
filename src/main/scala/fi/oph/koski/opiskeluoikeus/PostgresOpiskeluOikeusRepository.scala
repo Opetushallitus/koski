@@ -13,6 +13,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OidGenerator
@@ -44,14 +45,22 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid)).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
-  override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] =
-    if (oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")) {
-      runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)))
-        .headOption
-        .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
-    } else {
-      Left(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
-    }
+  override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
+    withExistenceCheck(runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid))))
+  }
+
+  override def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Oid] = withOidCheck(opiskeluoikeusOid) {
+    withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === opiskeluoikeusOid).map(_.oppijaOid).result))
+  }
+
+  private def withExistenceCheck[T](things: Iterable[T]) = things.headOption
+    .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+
+  private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = if (oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")) {
+    f
+  } else {
+    Left(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
+  }
 
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus = {
     runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.id === id).delete) match {
