@@ -2,7 +2,6 @@ package fi.oph.koski.email
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
-import fi.oph.koski.json.Json.jsonFormats
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 

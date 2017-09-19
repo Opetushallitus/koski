@@ -1,6 +1,5 @@
 package fi.oph.koski.json
 
-import java.io.InputStream
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import com.github.fge.jsonpatch.diff.JsonDiff
@@ -13,7 +12,7 @@ import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
 import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
-import org.json4s.jackson.{JsonMethods, Serialization}
+import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.universe.TypeTag
 import scala.util.Try
@@ -74,14 +73,6 @@ object Json extends Logging {
 
   def writeFile[T : TypeTag](filename: String, json: T) = {
     Files.writeFile(filename, JsonSerializer.writeWithRoot(json, pretty = true))
-  }
-
-  def maskSensitiveInformation(parsedJson: JValue): JValue = {
-    val maskedJson = parsedJson.mapField {
-      case ("hetu", JString(_)) => ("hetu", JString("******-****"))
-      case field: (String, JsonAST.JValue) => field
-    }
-    maskedJson
   }
 
   def jsonDiff(oldValue: JValue, newValue: JValue): JArray = {

@@ -19,7 +19,6 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
   def scheduler = new Scheduler(application.masterDatabase.db, "henkilötiedot-update", new IntervalSchedule(henkilötiedotUpdateInterval), henkilöUpdateContext(currentTimeMillis), updateHenkilöt)
 
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
-    implicit val formats = Json.jsonFormats
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
       val startMillis = currentTimeMillis
