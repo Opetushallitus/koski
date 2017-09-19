@@ -1,9 +1,8 @@
 package fi.oph.koski.preferences
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.RequiresAuthentication
-import fi.oph.koski.schema.StorablePreference
+import fi.oph.koski.schema.{JsonSerializer, StorablePreference}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JValue
 
@@ -13,7 +12,7 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Api
   put("/:organisaatioOid/:type") {
     withJsonBody({ body =>
       val organisaatioOid = params("organisaatioOid")
-      val KeyValue(key, value) = Json.fromJValue[KeyValue](body)
+      val KeyValue(key, value) = JsonSerializer.extract[KeyValue](body)
       val `type` = params("type")
 
       renderStatus(service.put(organisaatioOid, `type`, key, value)(koskiSession))

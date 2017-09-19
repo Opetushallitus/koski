@@ -53,10 +53,6 @@ object Json extends Logging {
     Extraction.decompose(x)
   }
 
-  def fromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): A = {
-    x.extract[A]
-  }
-
   def readFile(filename: String): json4s.JValue = {
     readFileIfExists(filename).get
   }

@@ -21,7 +21,7 @@ class LocalizationServlet(implicit val application: KoskiApplication) extends Ap
     }
 
     withJsonBody { body =>
-      Try(Json.fromJValue[List[LocalizationRequest]](body)) match {
+      Try(JsonSerializer.extract[List[LocalizationRequest]](body)) match {
         case Success(req) =>
           application.localizationRepository.createOrUpdate(req.map(_.toUpdateLocalization))
           logger.info("Lokalisoitujen tekstien muutos: " + JsonSerializer.writeWithRoot(req))

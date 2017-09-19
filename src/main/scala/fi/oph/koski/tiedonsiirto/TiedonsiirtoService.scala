@@ -7,7 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json.{fromJValue, toJValue}
+import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
@@ -244,7 +244,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
 
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: HetuTaiOid = fromJValue[HetuTaiOid](annetutHenkilötiedot)
+    val annettuTunniste: HetuTaiOid = JsonSerializer.extract[HetuTaiOid](annetutHenkilötiedot)
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
 
     val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.hetu) match {
