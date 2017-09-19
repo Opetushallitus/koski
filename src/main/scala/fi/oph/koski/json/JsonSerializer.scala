@@ -46,7 +46,7 @@ object JsonSerializer {
   }
 
   def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false): T = {
-    extract(JsonMethods.parse(j))
+    extract(JsonMethods.parse(j), ignoreExtras)
   }
   def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false): T = {
     implicit val c = ExtractionContext(schemaFactory).copy(ignoreUnexpectedProperties = ignoreExtras)
