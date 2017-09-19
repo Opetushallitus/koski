@@ -17,7 +17,6 @@ import org.json4s.jackson.Serialization
   *  Endpoints for the Koski UI
   */
 class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
-  // TODO: if we want to migrate to schema-based serialization mechanism, we need to add support for custom schemas?
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
