@@ -132,9 +132,9 @@ const toPercent = x => Math.round(x * 100 * 10) / 10
 
 const Kattavuus = ({koulutusmuoto, pulssi}) => {
   let kmuoto = pulssi.opiskeluoikeudet.koulutusmuotoTilastot.find(o => o.koulutusmuoto === koulutusmuoto)
-  let count =  kmuoto && kmuoto.siirtäneitäOppilaitoksia
+  let count =  (kmuoto && kmuoto.siirtäneitäOppilaitoksia) || 0
   let total = pulssi.oppilaitosMäärät.koulutusmuodoittain[koulutusmuoto]
-  let percentage = count && total && toPercent(count / total)
+  let percentage = (count && total && toPercent(count / total)) || 0
 
   return (
       <div>
