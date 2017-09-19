@@ -12,6 +12,6 @@ object EasyHttp {
   def getJson[A : TypeTag](url: String)(implicit mf: Manifest[A]) = {
     val httpGet = new HttpGet(url)
     val jValue = JsonMethods.parse(httpclient.execute(httpGet).getEntity.getContent)
-    JsonSerializer.extract[A](jValue)
+    JsonSerializer.extract[A](jValue, ignoreExtras = true)
   }
 }
