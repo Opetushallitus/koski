@@ -1,6 +1,8 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.json.JsonSerializer.serializeWithRoot
+import fi.oph.koski.json.JsonSerializer.serialize
+import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSession.untrustedUser
 import fi.oph.koski.schema._
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description
@@ -17,10 +19,10 @@ object SchemaToJsonHtml {
   private def buildHtml(property: Property, obj: Any, schema: ClassSchema, context: NodeContext): List[Elem] = (obj, property.schema) match {
     case (o: AnyRef, t:ClassSchema) => buildHtmlForObject(property, o, schema, context)
     case (xs: Iterable[_], t:ListSchema) => buildHtmlForArray(property, xs, schema, context)
-    case (x: Number, t:NumberSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
-    case (x: Boolean, t:BooleanSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
-    case (x: AnyRef, t:DateSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
-    case (x: String, t:StringSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
+    case (x: Number, t:NumberSchema) => buildValueHtml(property, serialize(x, t)(untrustedUser), context)
+    case (x: Boolean, t:BooleanSchema) => buildValueHtml(property, serialize(x, t)(untrustedUser), context)
+    case (x: AnyRef, t:DateSchema) => buildValueHtml(property, serialize(x, t)(untrustedUser), context)
+    case (x: String, t:StringSchema) => buildValueHtml(property, serialize(x, t)(untrustedUser), context)
     case (x: Option[_], t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x.get, schema, context)
     case (x: AnyRef, t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x, schema, context)
     case (x: AnyRef, t:AnyOfSchema) => buildHtml(property.copy(schema = findOneOfSchema(t, x)), x, schema, context)
