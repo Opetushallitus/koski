@@ -66,7 +66,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/oids") {
-    application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession)
+    streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession))
   }
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
