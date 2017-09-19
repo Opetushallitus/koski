@@ -16,16 +16,16 @@ import fi.oph.koski.util.Timing
 
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
+  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(oid, OpiskeluoikeusRepository.findByOppijaOid(oid))
 
   def findVersion(oid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     // TODO: tarkista, että opiskeluoikeus kuuluu tälle oppijalle
     historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
-      toOppija(_ => List(history))(user)(oid)
+      toOppija(oid, List(history))
     }
   }
 
-  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
+  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(user.oid, OpiskeluoikeusRepository.findByUserOid(user.oid))
 
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
@@ -113,11 +113,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
     }
   }
 
-  private def toOppija(findFunc: String => Seq[Opiskeluoikeus])(implicit user: KoskiSession): String => Either[HttpStatus, Oppija] = oid => {
+  // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
+  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => Seq[Opiskeluoikeus])(implicit user: KoskiSession) = {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
     val result = henkilöRepository.findByOid(oid) match {
       case Some(oppija) =>
-        findFunc(oppija.oid) match {
+        opiskeluoikeudet match {
           case Nil => notFound
           case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet))
         }
