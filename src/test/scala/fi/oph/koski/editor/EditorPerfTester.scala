@@ -15,7 +15,7 @@ object EditorPerfTester extends App with Timing {
 
   lazy val prebuiltModel = buildModel
   LocalPerfTest.runTest(LocalPerfTest.TestCase("build model", 10, (n) => buildModel))
-  LocalPerfTest.runTest(LocalPerfTest.TestCase("serialize model", 10, (n) => Json.write(prebuiltModel)))
+  LocalPerfTest.runTest(LocalPerfTest.TestCase("serialize model", 10, (n) => EditorModelSerializer.serializeModel(prebuiltModel)))
 
   private def buildModel = {
     OppijaEditorModel.toEditorModel(Oppija(MockOppijat.eero, AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet), true)

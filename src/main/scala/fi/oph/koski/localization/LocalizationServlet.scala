@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 import scala.util.{Failure, Success, Try}
@@ -23,10 +24,10 @@ class LocalizationServlet(implicit val application: KoskiApplication) extends Ap
       Try(Json.fromJValue[List[LocalizationRequest]](body)) match {
         case Success(req) =>
           application.localizationRepository.createOrUpdate(req.map(_.toUpdateLocalization))
-          logger.info("Lokalisoitujen tekstien muutos: " + Json.write(req))
+          logger.info("Lokalisoitujen tekstien muutos: " + JsonSerializer.writeWithRoot(req))
         case Failure(e) =>
           haltWithStatus(
-            KoskiErrorCategory.badRequest("Localization request is in wrong format. Example of a valid request: " + Json.write(List(LocalizationRequest("fi", "my.localization.key", "My localized message"))))
+            KoskiErrorCategory.badRequest("Localization request is in wrong format. Example of a valid request: " + JsonSerializer.writeWithRoot(List(LocalizationRequest("fi", "my.localization.key", "My localized message"))))
           )
       }
     } ()

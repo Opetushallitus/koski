@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.util.XML.CommentedPCData
 
@@ -26,7 +27,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
         <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
-        {Unparsed("window.koskiLocalizationMap="+Json.write(localizations.localizations))}
+        {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
       </script>
       <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>

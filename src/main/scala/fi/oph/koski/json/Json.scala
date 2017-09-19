@@ -33,18 +33,6 @@ object GenericJsonFormats {
 object Json extends Logging {
   implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + BlockOpiskeluoikeusSerializer
 
-  def write(x: AnyRef, pretty: Boolean = false): String = {
-    if (pretty) {
-      writePretty(x)
-    } else {
-      Serialization.write(x);
-    }
-  }
-
-  def writePretty(x: AnyRef): String = {
-    Serialization.writePretty(x);
-  }
-
   def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
     Serialization.read(json)
   }

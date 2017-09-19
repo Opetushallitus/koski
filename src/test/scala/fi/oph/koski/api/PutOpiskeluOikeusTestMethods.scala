@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.{KoskiSession, UserWithPassword}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
+import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.universe.TypeTag
 
@@ -27,7 +28,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    val jsonString = Json.write(oppija, true)
+    val jsonString = JsonMethods.pretty(oppija)
     val result = put("api/oppija", body = jsonString, headers = headers)(f)
     refreshElasticSearchIndex
     result

@@ -6,6 +6,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 trait SSOSupport extends ScalatraBase with Logging {
@@ -31,7 +32,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
   def setUserCookie(user: AuthenticationUser) = {
-    response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+    response.addCookie(Cookie("koskiUser", URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
   def getUserCookie: Option[AuthenticationUser] = {
     Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>

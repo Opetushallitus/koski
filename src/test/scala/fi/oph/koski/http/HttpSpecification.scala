@@ -42,11 +42,6 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
   import reflect.runtime.universe.TypeTag
   // TODO: validating=false in many places just because of the non-empty-string default constraint in scala-schema
   def readPaginatedResponse[T: TypeTag]: T = JsonSerializer.extract[T](Json.parse(body) \ "result", validating = false) // scala-schema doesn't support parameterized case classes like PaginatedResponse
-
-  private def toString(x: AnyRef) = x match {
-    case x: String => x
-    case _ => Json.write(x)
-  }
 }
 
 object ErrorMatcher {

@@ -10,7 +10,9 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{JsonSerializer, KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import org.json4s.JValue
 import org.json4s.JsonAST.JBool
+import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 /**
@@ -38,7 +40,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
             files.foreach { filename =>
               filename in {
                 var skipEqualityCheck = false
-                val json = Json.readFile(fullName(filename)).removeField {
+                val json: JValue = Json.readFile(fullName(filename)).removeField {
                   case ("ignoreJsonEquality", JBool(true)) =>
                     skipEqualityCheck = true
                     true
@@ -46,12 +48,12 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
                 }
                 SchemaValidatingExtractor.extract[Oppija](json) match {
                   case Right(oppija) =>
-                    val afterRoundtrip = JsonSerializer.serializeWithRoot(oppija)
+                    val afterRoundtrip: JValue = JsonSerializer.serializeWithRoot(oppija)
                     validator.validateAsJson(oppija) match {
                       case Right(validated) =>
                         // Valid, now check for JSON equality after roundtrip (not strictly necessary, but it's good to know if this breaks)
                         if (!skipEqualityCheck) {
-                          Json.write(afterRoundtrip) should equal(Json.write(json))
+                          JsonMethods.compact(afterRoundtrip) should equal(JsonMethods.compact(json))
                         }
                       case Left(err) =>
                         throw new IllegalStateException(err.toString)

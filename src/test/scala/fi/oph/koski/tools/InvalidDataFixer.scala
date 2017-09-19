@@ -4,7 +4,7 @@ import fi.oph.koski.http.DefaultHttpTester
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.ValidationResult
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidHenkilö, Opiskeluoikeus, Oppija}
+import fi.oph.koski.schema._
 
 object InvalidDataFixer extends App with DefaultHttpTester with Logging {
   authGet("api/opiskeluoikeus/validate") {
@@ -25,7 +25,7 @@ object InvalidDataFixer extends App with DefaultHttpTester with Logging {
           OidHenkilö(result.henkilöOid),
           List(found)
         )
-        put("api/oppija", Json.write(oppija), headers = authHeaders() ++ jsonContent) {
+        put("api/oppija", JsonSerializer.writeWithRoot(oppija), headers = authHeaders() ++ jsonContent) {
           println("RESPONSE " + response.status)
         }
       }

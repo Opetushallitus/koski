@@ -1,9 +1,8 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.json.Json
 import fi.oph.koski.schema.JsonSerializer
 import org.json4s.JValue
-import org.json4s.JsonAST.JString
+import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.{universe => ru}
 
@@ -17,7 +16,7 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
 }
 
 case class ErrorDetail(key: String, message: JValue) {
-  override def toString = key + " (" + Json.write(message) + ")"
+  override def toString = key + " (" + JsonMethods.compact(message) + ")"
 }
 
 object ErrorDetail {

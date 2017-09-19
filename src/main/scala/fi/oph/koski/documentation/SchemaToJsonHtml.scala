@@ -1,9 +1,11 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.json.Json
-import fi.oph.koski.schema.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
+import fi.oph.koski.schema.JsonSerializer.serializeWithRoot
+import fi.oph.koski.schema._
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description
+import org.json4s.JValue
+import org.json4s.jackson.JsonMethods
 
 import scala.xml.Elem
 
@@ -15,10 +17,10 @@ object SchemaToJsonHtml {
   private def buildHtml(property: Property, obj: Any, schema: ClassSchema, context: NodeContext): List[Elem] = (obj, property.schema) match {
     case (o: AnyRef, t:ClassSchema) => buildHtmlForObject(property, o, schema, context)
     case (xs: Iterable[_], t:ListSchema) => buildHtmlForArray(property, xs, schema, context)
-    case (x: Number, t:NumberSchema) => buildValueHtml(property, x, context)
-    case (x: Boolean, t:BooleanSchema) => buildValueHtmlString(property, x.toString, context)
-    case (x: AnyRef, t:DateSchema) => buildValueHtml(property, x, context)
-    case (x: String, t:StringSchema) => buildValueHtml(property, x, context)
+    case (x: Number, t:NumberSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
+    case (x: Boolean, t:BooleanSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
+    case (x: AnyRef, t:DateSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
+    case (x: String, t:StringSchema) => buildValueHtml(property, serializeWithRoot(x, t), context)
     case (x: Option[_], t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x.get, schema, context)
     case (x: AnyRef, t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x, schema, context)
     case (x: AnyRef, t:AnyOfSchema) => buildHtml(property.copy(schema = findOneOfSchema(t, x)), x, schema, context)
@@ -79,7 +81,7 @@ object SchemaToJsonHtml {
     }
   }
 
-  private def buildValueHtml(property: Property, value: AnyRef, context: NodeContext) = buildValueHtmlString(property, Json.write(value), context)
+  private def buildValueHtml(property: Property, value: JValue, context: NodeContext) = buildValueHtmlString(property, JsonMethods.compact(value), context)
 
   private def buildValueHtmlString(property: Property, value: String, context: NodeContext) = {
     List(tr(<span>{keyHtml(property.key)} <span class="value">{value}</span></span>, property.metadata, context))

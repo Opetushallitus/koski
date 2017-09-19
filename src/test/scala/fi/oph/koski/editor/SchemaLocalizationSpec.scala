@@ -2,8 +2,9 @@ package fi.oph.koski.editor
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.DefaultLocalizations
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.{JsonSerializer, KoskiSchema}
 import fi.oph.scalaschema._
+import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class SchemaLocalizationSpec extends FreeSpec with Matchers {
@@ -15,7 +16,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
 
         val missingKeys = newStuff.map(_._2).toSet
 
-        println(Json.writePretty(missingKeys.zip(missingKeys).toMap))
+        println(JsonSerializer.writeWithRoot(missingKeys.zip(missingKeys).toMap, pretty = true))
 
         println("Missing properties by class: " + newStuff.map { case (schema, title) => schema.simpleName + "." + title }.toList.mkString("\n"))
 

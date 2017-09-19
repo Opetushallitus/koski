@@ -30,7 +30,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
       "Serialized/deserializes cleanly" in {
         val string: LocalizedString = LocalizedString.finnish("rölli")
         string.values.foreach { x: AnyRef => {} } // <- force lazy val to evaluate
-        val jsonString = Json.write(string)
+        val jsonString = JsonSerializer.writeWithRoot(string)
         jsonString should equal("""{"fi":"rölli"}""")
       }
     }

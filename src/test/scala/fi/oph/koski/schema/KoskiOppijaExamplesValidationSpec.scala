@@ -25,7 +25,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   "Validation with JSON Schema" - {
     Examples.examples.foreach { example =>
       example.name in {
-        val json = JsonLoader.fromString(Json.write(JsonSerializer.serializeWithRoot(example.data)))
+        val json = JsonLoader.fromString(JsonSerializer.writeWithRoot(example.data))
         val report = validator.validate(schema, json)
         assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.filter(m => m.getLogLevel.toString == "error").mkString("\n"))
       }
@@ -69,7 +69,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
       case Right(x) =>
         x should equal(obj)
       case Left(errors) =>
-        System.err.println(Json.writePretty(errors))
+        System.err.println(JsonSerializer.writeWithRoot(errors.toList, pretty = true))
         fail("Deserialization of " + obj + " failed")
     }
     testDeserialization(obj, (Right(obj)))

@@ -9,13 +9,13 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.schema._
 import org.json4s._
+import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
 class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -53,7 +53,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Väärä Content-Type" - {
       "palautetaan HTTP 415" in {
 
-        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
+        put("api/oppija", body = JsonMethods.compact(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
           verifyResponseStatus(415, KoskiErrorCategory.unsupportedMediaType.jsonOnly("Wrong content type: only application/json content type with UTF-8 encoding allowed"))
         }
       }

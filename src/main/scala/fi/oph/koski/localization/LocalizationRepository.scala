@@ -4,11 +4,11 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
-import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.localization.LocalizedString.sanitize
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.schema.JsonSerializer.extract
 import org.json4s._
 
@@ -34,7 +34,7 @@ trait LocalizationRepository extends Logging {
       }
     }.toList.flatten
 
-    logger.info("Creating " + missing.length + " missing localizations: " + Json.write(missing))
+    logger.info("Creating " + missing.length + " missing localizations: " + JsonSerializer.writeWithRoot(missing))
 
     if (missing.nonEmpty) {
       try {

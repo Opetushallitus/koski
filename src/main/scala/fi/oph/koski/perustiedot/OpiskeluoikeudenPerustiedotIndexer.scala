@@ -14,6 +14,7 @@ import fi.oph.koski.schema.JsonSerializer
 import fi.oph.koski.schema.JsonSerializer.extract
 import fi.oph.koski.util.{PaginationSettings, Timing}
 import org.json4s._
+import org.json4s.jackson.JsonMethods
 
 import scala.concurrent.Future
 
@@ -64,10 +65,10 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
     }.map(Json.toJValue)
-    val response = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val response: JValue = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
-      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${Json.writePretty(response)}"
+      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${JsonMethods.pretty(response)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {

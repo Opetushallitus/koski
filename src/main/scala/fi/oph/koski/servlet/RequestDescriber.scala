@@ -2,9 +2,9 @@ package fi.oph.koski.servlet
 
 import javax.servlet.http.HttpServletRequest
 
-import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import org.json4s._
+import org.json4s.jackson.JsonMethods
 import org.scalatra.servlet.RichRequest
 
 object RequestDescriber {
@@ -21,7 +21,7 @@ object RequestDescriber {
         try {
           val parsedJson: JValue = org.json4s.jackson.JsonMethods.parse(request.body)
           val maskedJson: JValue = maskSensitiveInformation(parsedJson)
-          Json.write(maskedJson)
+          JsonMethods.compact(maskedJson)
         } catch {
           case e: Exception => body
         }

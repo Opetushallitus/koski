@@ -1,7 +1,8 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.http.ErrorCategory
-import fi.oph.koski.json.Json
+import fi.oph.koski.schema.JsonSerializer
+import fi.oph.koski.schema.JsonSerializer.serializeWithRoot
+import org.json4s.jackson.JsonMethods
 
 import scala.xml.Elem
 
@@ -45,7 +46,7 @@ object ApiTesterHtml {
                       <a class="show-json">Näytä JSON</a>
                       <span class="json-popup">
                         <a class="close">Sulje</a>
-                        <pre><code>{ Json.write(errorCategory.exampleResponse) }</code></pre>
+                        <pre><code>{ JsonMethods.compact(errorCategory.exampleResponse) }</code></pre>
                       </span>
                     </span>
                   </td>
@@ -128,7 +129,7 @@ object ApiTesterHtml {
         <label>Esimerkkejä
           <select>
             {operation.examples.map { example =>
-            <option data-exampledata={Json.writePretty(example.data)}>
+            <option data-exampledata={JsonSerializer.writeWithRoot(example.data, pretty = true)}>
               {example.name}
             </option>
           }}

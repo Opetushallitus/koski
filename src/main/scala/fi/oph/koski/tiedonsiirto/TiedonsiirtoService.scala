@@ -22,6 +22,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util._
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
+import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
 
@@ -146,7 +147,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
 
     val result = extract[String](response \ "result")
     if (!(List("created", "updated", "noop").contains(result))) {
-      val msg = s"Elasticsearch indexing failed: ${Json.writePretty(response)}"
+      val msg = s"Elasticsearch indexing failed: ${JsonMethods.pretty(response)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {

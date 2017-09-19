@@ -9,7 +9,6 @@ import fi.oph.koski.util.PaginatedResponse
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.scalatra._
-import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
@@ -23,7 +22,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZ
 
   def renderStatus(status: HttpStatus) = {
     response.setStatus(status.statusCode)
-    writeJson(Json.write(status.errors))
+    renderObject(status.errors)
   }
 
   def renderObject[T: TypeTag](x: T): Unit = {
