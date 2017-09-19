@@ -1,6 +1,7 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.schema.KoskiSchema.schemaFactory
 import fi.oph.koski.schema.{KoskiSchema, RequiresRole}
 import fi.oph.scalaschema.SchemaPropertyProcessor.SchemaPropertyProcessor
 import fi.oph.scalaschema._
@@ -41,11 +42,11 @@ object JsonSerializer {
     Serializer.serialize(obj, schema, serializationContext)
   }
 
-  def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false, validating: Boolean = true): T = {
+  def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false): T = {
     extract(JsonMethods.parse(j))
   }
-  def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false, validating: Boolean = true): T = {
-    implicit val c = KoskiSchema.deserializationContext.copy(ignoreUnexpectedProperties = ignoreExtras, validate = validating)
+  def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false): T = {
+    implicit val c = ExtractionContext(schemaFactory).copy(ignoreUnexpectedProperties = ignoreExtras)
     SchemaValidatingExtractor.extract(j) match {
       case Right(x) => x
       case Left(error) =>

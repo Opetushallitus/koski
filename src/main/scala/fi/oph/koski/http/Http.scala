@@ -66,7 +66,7 @@ object Http extends Logging {
 
   def parseJson[T : TypeTag](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
     (status, text) match {
-      case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false)
+      case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true)
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
@@ -81,13 +81,13 @@ object Http extends Logging {
   /** Parses as JSON, returns None on 404 result */
   def parseJsonOptional[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
     case (404, _) => None
-    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false))
+    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true))
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   /** Parses as JSON, returns None on any error */
   def parseJsonIgnoreError[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
-    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true, validating = false))
+    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true))
     case (_, _) => None
   }
 

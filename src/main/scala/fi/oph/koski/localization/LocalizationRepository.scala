@@ -47,7 +47,7 @@ trait LocalizationRepository extends Logging {
     logger.info("done.")
   }
 
-  def localizationsFromLocalizationService: Map[String, Map[String, String]] = extract[List[LocalizationServiceLocalization]](fetchLocalizations(), ignoreExtras = true, validating = false)
+  def localizationsFromLocalizationService: Map[String, Map[String, String]] = extract[List[LocalizationServiceLocalization]](fetchLocalizations(), ignoreExtras = true)
     .groupBy(_.key)
     .mapValues(_.map(v => (v.locale, v.value)).toMap)
 }

@@ -76,7 +76,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     )))
 
     val rows: Seq[TiedonsiirtoDocument] = runSearch(doc)
-      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", validating = false)))
+      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source")))
       .getOrElse(Nil)
 
     val oppilaitosResult: Either[HttpStatus, Option[Oppilaitos]] = oppilaitosOid match {
@@ -259,8 +259,8 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     }
 
     haetutTiedot.orElse(oidHenkilö match {
-      case Some(oidHenkilö) => Some(extract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö)), validating = false))
-      case None => annetutHenkilötiedot.toOption.map(extract[TiedonsiirtoOppija](_, validating = false))
+      case Some(oidHenkilö) => Some(extract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö))))
+      case None => annetutHenkilötiedot.toOption.map(extract[TiedonsiirtoOppija](_))
     })
   }
 

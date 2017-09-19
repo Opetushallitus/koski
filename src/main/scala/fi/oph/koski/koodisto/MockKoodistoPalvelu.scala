@@ -5,7 +5,7 @@ import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true, validating = false))
+    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true))
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
@@ -13,7 +13,7 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
   }
 
   def getKoodisto(koodistoUri: String): Option[Koodisto] = {
-    koodistoResourceName(koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[Koodisto](_, ignoreExtras = true, validating = false))
+    koodistoResourceName(koodistoUri).flatMap(Json.readResourceIfExists(_)).map(JsonSerializer.extract[Koodisto](_, ignoreExtras = true))
   }
 
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
