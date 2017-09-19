@@ -14,26 +14,22 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
-    henkilöPalveluClient.findOrCreate(authenticationservice.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.flatMap { h =>
-      toTäydellisetHenkilötiedot(h) match {
-        case Some(t) => Right(t)
-        case None => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Henkilöltä puuttuu hetu"))
-      }
-    }
+    henkilöPalveluClient
+      .findOrCreate(authenticationservice.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi))
+      .right.map(toTäydellisetHenkilötiedot)
   }
 
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = {
-    henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
+    henkilöPalveluClient.findOppijaByOid(oid).map(toTäydellisetHenkilötiedot)
   }
 
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
-    case _ => henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
+    case _ => henkilöPalveluClient.findOppijatByOids(oids).map(toTäydellisetHenkilötiedot)
   }
 
-  // TODO: muuta signature OppijaHenkilö -> TäydellisetHenkilötiedot
-  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): Option[TäydellisetHenkilötiedot] = {
-    Some(TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
+  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): TäydellisetHenkilötiedot = {
+    TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
   }
 
   private def toHenkilötiedot(user: QueryHenkilö) =  HenkilötiedotJaOid(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
