@@ -1,10 +1,9 @@
 package fi.oph.koski.editor
 
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.DefaultLocalizations
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema._
-import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class SchemaLocalizationSpec extends FreeSpec with Matchers {

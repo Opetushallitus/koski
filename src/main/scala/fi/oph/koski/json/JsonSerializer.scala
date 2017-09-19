@@ -10,6 +10,9 @@ import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.universe.TypeTag
 
+/**
+  * JSON (de)serialization using scala-schema mechanisms
+  */
 object JsonSerializer {
   private def filterSensitiveData(s: ClassSchema, p: Property)(implicit user: KoskiSession) = if (sensitiveHidden(p.metadata)) Nil else List(p)
   def serializationContext(implicit user: KoskiSession) = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)

@@ -1,9 +1,10 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
+import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.{Assertions, Matchers}
 
 import scala.util.matching.Regex
@@ -39,7 +40,7 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
   }
 
   import reflect.runtime.universe.TypeTag
-  def readPaginatedResponse[T: TypeTag]: T = JsonSerializer.extract[T](Json.parse(body) \ "result") // scala-schema doesn't support parameterized case classes like PaginatedResponse
+  def readPaginatedResponse[T: TypeTag]: T = JsonSerializer.extract[T](parse(body) \ "result") // scala-schema doesn't support parameterized case classes like PaginatedResponse
 }
 
 object ErrorMatcher {

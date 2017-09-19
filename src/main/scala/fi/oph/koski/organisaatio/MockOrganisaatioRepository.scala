@@ -1,8 +1,8 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.json.Json
-import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.Oppilaitos
 
 // Testeissä käytetyt organisaatio-oidit
@@ -53,7 +53,7 @@ object MockOrganisaatiot {
 
 object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodistoViitePalvelu) {
   val rootOrgs: List[OrganisaatioHierarkia] = MockOrganisaatiot.roots
-    .flatMap(oid => Json.readResourceIfExists(hierarchyResourcename(oid)))
+    .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
     .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
     .map(convertOrganisaatio(_))
 

@@ -3,7 +3,7 @@ package fi.oph.koski.sso
 import java.net.{URLDecoder, URLEncoder}
 
 import com.typesafe.config.Config
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}

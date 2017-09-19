@@ -4,12 +4,11 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
-import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.localization.LocalizedString.sanitize
 import fi.oph.koski.log.Logging
-import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s._
 
 trait LocalizationRepository extends Logging {
@@ -53,7 +52,7 @@ trait LocalizationRepository extends Logging {
 }
 
 object DefaultLocalizations {
-  lazy val defaultFinnishTexts: Map[String, String] = extract[Map[String, String]](readResource("/localization/default-texts.json"))
+  lazy val defaultFinnishTexts: Map[String, String] = extract[Map[String, String]](JsonResources.readResource("/localization/default-texts.json"))
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
@@ -98,7 +97,7 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
     _localizations
   }
 
-  override def fetchLocalizations(): JValue = readResource("/mockdata/lokalisointi/koski.json")
+  override def fetchLocalizations(): JValue = JsonResources.readResource("/mockdata/lokalisointi/koski.json")
 
   override def createOrUpdate(toUpdate: List[UpdateLocalization]): Unit = {
     _localizations = toUpdate.foldLeft(_localizations) { (acc, n) =>

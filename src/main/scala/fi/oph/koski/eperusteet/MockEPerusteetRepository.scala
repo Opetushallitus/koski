@@ -1,6 +1,6 @@
 package fi.oph.koski.eperusteet
 
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.{JsonFiles, JsonResources, JsonSerializer}
 
 object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(
@@ -12,12 +12,12 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-lukio",
     "rakenne-hiusalan-perustutkinto",
     "rakenne-puutarhatalouden-perustutkinto").map { id =>
-    JsonSerializer.extract[EPerusteRakenne](Json.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
+    JsonSerializer.extract[EPerusteRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
   }
 
   def findPerusteet(query: String): List[EPeruste] = {
     // Hakee aina samoilla kriteereillä "auto"
-    JsonSerializer.extract[EPerusteet](Json.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true).data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase))
+    JsonSerializer.extract[EPerusteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true).data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase))
   }
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {

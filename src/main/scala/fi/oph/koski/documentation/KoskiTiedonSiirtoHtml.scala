@@ -1,12 +1,8 @@
 package fi.oph.koski.documentation
 
 import com.tristanhunt.knockoff.DefaultDiscounter._
-import fi.oph.koski.http.ErrorCategory
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.ClassSchema
-import fi.oph.koski.json.Json
-
-import scala.xml.Elem
 
 object KoskiTiedonSiirtoHtml {
   private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"

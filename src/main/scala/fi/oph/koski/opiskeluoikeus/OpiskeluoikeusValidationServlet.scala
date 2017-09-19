@@ -5,11 +5,10 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json.jsonDiff
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
-import fi.oph.koski.log.KoskiMessageField.{apply => _}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator

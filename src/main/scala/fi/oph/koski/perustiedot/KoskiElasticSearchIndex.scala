@@ -2,9 +2,9 @@ package fi.oph.koski.perustiedot
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.log.Logging
-import fi.oph.koski.json.JsonSerializer.extract
 import org.http4s.EntityEncoder
 import org.json4s.{JValue, _}
 
@@ -30,9 +30,9 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
       }
     } else {
       logger.info("Creating Elasticsearch index")
-      Http.runTask(http.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      Http.runTask(http.put(uri"/koski-index", toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
       logger.info("Creating Elasticsearch index alias")
-      Http.runTask(http.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      Http.runTask(http.post(uri"/_aliases", toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
       logger.info("Created index and alias.")
       true
     }
@@ -56,7 +56,8 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
     }
   }
 
-  private def settings = Json.parse("""
+  import org.json4s.jackson.JsonMethods.parse
+  private def settings = parse("""
     {
         "analysis": {
           "filter": {

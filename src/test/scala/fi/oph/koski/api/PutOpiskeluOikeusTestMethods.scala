@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.{KoskiSession, UserWithPassword}
 import fi.oph.koski.schema._

@@ -3,7 +3,7 @@ package fi.oph.koski.http
 import java.net.URLEncoder
 
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.util.Pools
 import io.prometheus.client.{Counter, Summary}
@@ -11,13 +11,14 @@ import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
 import org.http4s.headers.`Content-Type`
+import org.json4s.jackson.JsonMethods.parse
 
 import scala.concurrent.duration._
+import scala.reflect.runtime.universe.TypeTag
 import scala.xml.Elem
 import scalaz.concurrent.Task
 import scalaz.stream.Process.Emit
 import scalaz.{-\/, \/-}
-import scala.reflect.runtime.universe.TypeTag
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
@@ -66,7 +67,7 @@ object Http extends Logging {
 
   def parseJson[T : TypeTag](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
     (status, text) match {
-      case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true)
+      case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](parse(text), ignoreExtras = true)
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
@@ -81,13 +82,13 @@ object Http extends Logging {
   /** Parses as JSON, returns None on 404 result */
   def parseJsonOptional[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
     case (404, _) => None
-    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true))
+    case (200, text) => Some(JsonSerializer.extract[T](parse(text), ignoreExtras = true))
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   /** Parses as JSON, returns None on any error */
   def parseJsonIgnoreError[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
-    case (200, text) => Some(JsonSerializer.extract[T](Json.parse(text), ignoreExtras = true))
+    case (200, text) => Some(JsonSerializer.extract[T](parse(text), ignoreExtras = true))
     case (_, _) => None
   }
 

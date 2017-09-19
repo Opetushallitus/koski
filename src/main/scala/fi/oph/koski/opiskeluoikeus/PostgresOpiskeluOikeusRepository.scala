@@ -9,7 +9,8 @@ import fi.oph.koski.db._
 import fi.oph.koski.henkilo.{KoskiHenkilöCacheUpdater, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.JsonDiff.jsonDiff
+import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
@@ -164,7 +165,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
-          diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
+          diff = LegacyJsonSerialization.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
           Right(Created(opiskeluoikeusId, oid, VERSIO_1, diff, row.data))
@@ -186,7 +187,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         val updatedValues@(newData, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus)
 
-        val diff: JArray = Json.jsonDiff(oldRow.data, newData)
+        val diff: JArray = jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
             DBIO.successful(Right(NotChanged(id, oid, versionumero, diff, newData)))

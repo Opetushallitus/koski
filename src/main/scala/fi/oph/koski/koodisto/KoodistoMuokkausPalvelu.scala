@@ -3,7 +3,6 @@ package fi.oph.koski.koodisto
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException, VirkailijaHttpClient}
-import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 
 /** Koodistojen ja koodien lisäyspalvelu **/
@@ -15,7 +14,6 @@ object KoodistoMuokkausPalvelu {
 }
 
 class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl: String) extends Logging {
-  import fi.oph.koski.json.Json._
   import fi.oph.koski.json.Json4sHttp4s._
 
   val secureHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")

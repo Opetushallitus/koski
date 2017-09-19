@@ -3,7 +3,8 @@ package fi.oph.koski.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonDiff.jsonDiff
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
@@ -79,6 +80,6 @@ object KoodistoCreator extends Logging {
   }
 
   def objectDiff(a: AnyRef, b: AnyRef) = {
-    JsonMethods.compact(Json.jsonDiff(JsonSerializer.serializeWithRoot(a), JsonSerializer.serializeWithRoot(b)))
+    JsonMethods.compact(jsonDiff(JsonSerializer.serializeWithRoot(a), JsonSerializer.serializeWithRoot(b)))
   }
 }

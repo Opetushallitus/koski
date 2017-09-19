@@ -3,7 +3,7 @@ package fi.oph.koski.ytr
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.Logging
 import org.json4s.JValue
 
@@ -31,7 +31,7 @@ object YtrEmpty extends YtrClient {
 }
 
 object YtrMock extends YtrClient {
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = Json.readResourceIfExists(resourcename(hetu))
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
   def filename(hetu: String) = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 }

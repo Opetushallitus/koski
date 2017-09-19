@@ -8,7 +8,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.MockOrganisaatiot

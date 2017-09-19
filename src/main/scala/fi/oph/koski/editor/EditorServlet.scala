@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
@@ -96,7 +96,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
   import reflect.runtime.universe.TypeTag
 
-  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(Json.jsonFormats + EditorModelSerializer)
+  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 
   private def getKooditFromRequestParams() = {
     val koodistoUriParts = params("koodistoUri").split(",").toList

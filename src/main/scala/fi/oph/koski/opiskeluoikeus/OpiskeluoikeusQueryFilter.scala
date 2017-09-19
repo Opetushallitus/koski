@@ -3,15 +3,15 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioOid, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
+import org.json4s.jackson.JsonMethods
 
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 sealed trait OpiskeluoikeusQueryFilter
 
@@ -70,7 +70,7 @@ private object OpiskeluoikeusQueryFilterParser {
       case ("luokkahaku", v) => Right(Luokkahaku(v))
       case ("nimihaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("nimihaku", hakusana) => Right(Nimihaku(hakusana))
-      case ("suoritusJson", jsonString) => Json.tryParse(jsonString) match {
+      case ("suoritusJson", jsonString) => Try(JsonMethods.parse(jsonString)) match {
         case Success(json) => Right(SuoritusJsonHaku(json))
         case Failure(e) => Left(KoskiErrorCategory.badRequest.queryParam("Epävalidi json-dokumentti parametrissa suoritusJson"))
       }

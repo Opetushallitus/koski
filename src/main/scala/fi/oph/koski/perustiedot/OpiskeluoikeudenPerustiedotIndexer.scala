@@ -5,12 +5,13 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.json.{Json, Json4sHttp4s, JsonSerializer}
+import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.util.{PaginationSettings, Timing}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
@@ -25,7 +26,6 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
-  import PerustiedotSearchIndex._
 
   lazy val init = {
     index.init
@@ -35,7 +35,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       "suoritukset" -> Map("type" -> "nested")
     )))
 
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
 
     if (index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")) {
       Future {
@@ -63,7 +63,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
         Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
         Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
       )
-    }.map(Json.toJValue)
+    }.map(toJValue)
     val response: JValue = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
@@ -77,11 +77,13 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
   }
 
   def deleteByOppijaOids(oids: List[Oid]) = {
-    val doc = Json.toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
+    val doc = toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
+
+    import org.json4s.jackson.JsonMethods.parse
 
     val deleted = Http.runTask(index.http
       .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-        case (200, text, request) => extract[Int](Json.parse(text) \ "deleted")
+        case (200, text, request) => extract[Int](parse(text) \ "deleted")
         case (status, text, request) if List(404, 409).contains(status) => 0
         case (status, text, request) => throw HttpStatusException(status, text, request)
       })

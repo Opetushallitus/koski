@@ -1,6 +1,6 @@
 package fi.oph.koski.editor
 
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Example, MultiLineString, UnitOfMeasure}
 import fi.oph.scalaschema.Metadata
@@ -9,8 +9,8 @@ import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
-  def serializeModel(model: EditorModel) = serialize(Json.jsonFormats)(model)
-  def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(Json.jsonFormats)
+  def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
+  def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 

@@ -3,10 +3,8 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
-import org.json4s.JValue
-import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class ArviointiSpec extends FreeSpec with Matchers {
@@ -81,7 +79,8 @@ class ArviointiSpec extends FreeSpec with Matchers {
   }
 
   private lazy val app = KoskiApplicationForTests
-  private def read[T](s: String)(implicit mf : Manifest[T]) = ValidatingAndResolvingExtractor.extract[T](Json.parse(s), ValidationAndResolvingContext(app.koodistoViitePalvelu, app.organisaatioRepository)) match {
+  import org.json4s.jackson.JsonMethods.parse
+  private def read[T](s: String)(implicit mf : Manifest[T]) = ValidatingAndResolvingExtractor.extract[T](parse(s), ValidationAndResolvingContext(app.koodistoViitePalvelu, app.organisaatioRepository)) match {
     case Right(x) => x
   }
 }

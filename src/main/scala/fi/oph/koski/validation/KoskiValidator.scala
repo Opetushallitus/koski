@@ -6,7 +6,7 @@ import fi.oph.koski.date.DateValidation
 import fi.oph.koski.date.DateValidation._
 import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
@@ -16,8 +16,8 @@ import fi.oph.koski.schema.{AmmatillisenTutkinnonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
-import org.json4s.{JArray, JValue}
 import mojave._
+import org.json4s.{JArray, JValue}
 
 class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {

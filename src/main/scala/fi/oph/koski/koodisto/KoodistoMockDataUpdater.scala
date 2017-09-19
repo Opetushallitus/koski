@@ -2,7 +2,7 @@ package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.log.Logging
 
 object KoodistoMockDataUpdater extends App with Logging {
@@ -17,12 +17,12 @@ object KoodistoMockDataUpdater extends App with Logging {
     kp.getLatestVersion(koodistoUri) match {
       case Some(versio) =>
         logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
-        Json.writeFile(
+        JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio)
         )
         val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten
-        Json.writeFile(
+        JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit
         )

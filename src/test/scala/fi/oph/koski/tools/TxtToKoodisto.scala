@@ -3,7 +3,7 @@ package fi.oph.koski.tools
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 
-import fi.oph.koski.json.Json
+import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.koodisto._
 import fi.oph.koski.util.Files
 
@@ -26,12 +26,12 @@ object TxtToKoodisto extends App {
         val koodiarvo = arvo.toUpperCase
         KoodistoKoodi(KoodistoKoodi.koodiUri(koodistoUri, koodiarvo), koodiarvo, List(KoodistoKoodiMetadata(kieli = Some("FI"), nimi = Some(nimenosat.mkString(" ")))), 1, None, None)
     }
-  Json.writeFile(
+  JsonFiles.writeFile(
     MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
     koodit
   )
   val koodisto = Koodisto(koodistoUri, 1, List(KoodistoMetadata("FI", Some(koodistoNimi), None)), "http://koski", LocalDate.now, "1.2.246.562.10.00000000001")
-  Json.writeFile(
+  JsonFiles.writeFile(
     MockKoodistoPalvelu.koodistoFileName(koodistoUri),
     koodisto
   )

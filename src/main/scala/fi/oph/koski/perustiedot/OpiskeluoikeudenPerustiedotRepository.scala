@@ -7,8 +7,8 @@ import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json
 import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
@@ -118,7 +118,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       case _ => ElasticSearch.allFilter(elasticFilters)
     }
 
-    val doc = Json.toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
+    val doc = toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
       "query" -> elasticQuery,
       "sort" -> elasticSort)
     ))
@@ -135,14 +135,14 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   }
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
-    val doc = Json.toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
+    val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
     index.runSearch("perustiedot", doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")))
       .getOrElse(Nil)
   }
 
   def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
-    val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
+    val doc = toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     index.runSearch("perustiedot", doc)
       .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[NimitiedotJaOid](j \ "_source" \ "henkilö")).headOption)
@@ -157,7 +157,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     }
 
     val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session)
-    val doc = Json.toJValue(Map(
+    val doc = toJValue(Map(
       "_source" -> "henkilö.oid",
       "query" -> Map("bool" -> Map("must" -> filters)),
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))

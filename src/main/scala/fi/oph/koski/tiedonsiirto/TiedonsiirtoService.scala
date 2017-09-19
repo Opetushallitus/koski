@@ -7,7 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json.toJValue
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
@@ -25,7 +25,7 @@ import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
-
+import org.json4s.jackson.JsonMethods.parse
 
 class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
@@ -35,7 +35,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
 
     val deleted = Http.runTask(index.http
       .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-        case (200, text, request) => extract[Int](Json.parse(text) \ "deleted")
+        case (200, text, request) => extract[Int](parse(text) \ "deleted")
         case (status, text, request) if List(404, 409).contains(status) => 0
         case (status, text, request) => throw HttpStatusException(status, text, request)
       })
@@ -70,7 +70,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-    val doc = Json.toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
+    val doc = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters),
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
@@ -164,7 +164,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     }
     if (sorting.descending) ordering = ordering.reverse
 
-    val query = Json.toJValue(Map(
+    val query = toJValue(Map(
       "size" -> 0,
       "aggs" ->
         Map(
@@ -274,7 +274,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
   lazy val init = {
     index.init
 
-    val mappings = Json.toJValue(Map("properties" -> Map(
+    val mappings = toJValue(Map("properties" -> Map(
       "virheet" -> Map(
         "properties" -> Map(
           "key" -> Map(

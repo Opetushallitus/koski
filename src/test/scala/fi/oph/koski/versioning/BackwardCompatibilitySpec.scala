@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
@@ -35,12 +35,12 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
           case Nil =>
             println("Creating " + currentFilename)
             new File(fullName(currentFilename)).getParentFile().mkdirs()
-            Json.writeFile(fullName(currentFilename), example.data)
+            JsonFiles.writeFile(fullName(currentFilename), example.data)
           case files =>
             files.foreach { filename =>
               filename in {
                 var skipEqualityCheck = false
-                val json: JValue = Json.readFile(fullName(filename)).removeField {
+                val json: JValue = JsonFiles.readFile(fullName(filename)).removeField {
                   case ("ignoreJsonEquality", JBool(true)) =>
                     skipEqualityCheck = true
                     true
@@ -64,9 +64,9 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
               }
             }
             val latest = files.last
-            if (JsonSerializer.serializeWithRoot(example.data) != Json.readFile(fullName(latest))) {
+            if (JsonSerializer.serializeWithRoot(example.data) != JsonFiles.readFile(fullName(latest))) {
               println(s"Example data differs for ${example.name} at ${latest}. Creating new version")
-              Json.writeFile(fullName(currentFilename), example.data)
+              JsonFiles.writeFile(fullName(currentFilename), example.data)
             }
         }
       }

@@ -7,7 +7,7 @@ import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.Examples
-import fi.oph.koski.json.{Json, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.{English, Finnish, LocalizedString}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.scalaschema.SchemaValidatingExtractor

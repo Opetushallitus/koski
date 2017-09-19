@@ -1,10 +1,9 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.json.Json
 import org.json4s._
-
+import org.json4s.jackson.JsonMethods.parse
 object JsonValidationErrorExample {
-  val example = Json.parse("""[
+  val example = parse("""[
                                     |  {
                                     |    "key": "badRequest.validation.jsonSchema",
                                     |    "message": {

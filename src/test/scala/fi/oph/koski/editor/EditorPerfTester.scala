@@ -3,7 +3,6 @@ package fi.oph.koski.editor
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenPerustutkintoExample
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.perftest.LocalPerfTest
 import fi.oph.koski.schema.Oppija
