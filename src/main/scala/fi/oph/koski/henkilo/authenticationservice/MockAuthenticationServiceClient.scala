@@ -27,15 +27,13 @@ class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthe
 }
 
 class MockAuthenticationServiceClient() extends AuthenticationServiceClient with Logging {
-  // TODO: synchronize access
-
   var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
-  def resetFixtures = {
+  def resetFixtures = synchronized {
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
+  private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = synchronized {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.exists(_.hetu == createUserInfo.hetu)) {
@@ -58,7 +56,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None))
   }
 
-  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
+  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = synchronized {
     oppijat.getOppijat.find {_.oid == id}
   }
 
@@ -86,7 +84,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modify(oppija: TäydellisetHenkilötiedot): Unit = {
+  def modify(oppija: TäydellisetHenkilötiedot): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
         o.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi)
@@ -94,7 +92,9 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     })
   }
 
-  def reset(): Unit = oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  def reset(): Unit = synchronized {
+    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  }
 
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
@@ -103,9 +103,13 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   override def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] =
     MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
-  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu.contains(hetu)).map(toOppijaHenkilö)
+  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
+    oppijat.getOppijat.find(_.hetu.contains(hetu)).map(toOppijaHenkilö)
+  }
 
-  override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
+  override def findChangedOppijaOids(since: Long): List[String] = synchronized {
+    MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
+  }
 
   override def getKäyttöikeusRyhmät: Map[String, List[String]] =
     MockUsers.users.flatMap(u => u.käyttöoikeudet.map(_._2.nimi).map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
