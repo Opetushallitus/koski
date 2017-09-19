@@ -7,6 +7,7 @@ import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
@@ -123,6 +124,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
         val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
         oppijat.length should equal(0)
+        resetFixtures
       }
     }
 
@@ -140,6 +142,24 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
         oppijat.length should be >= 2
       }
     }
+
+    "Luottamuksellinen data" - {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN rooli" in {
+        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(true))
+      }
+
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN rooli" in {
+        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(Some(false))
+      }
+
+      def vankilaopetuksessa(queryResult: Seq[Oppija]): Option[Boolean] = queryResult.toList match {
+        case List(oppija) =>
+          oppija.opiskeluoikeudet(0).asInstanceOf[AmmatillinenOpiskeluoikeus].lisätiedot.map(_.vankilaopetuksessa)
+        case oppijat =>
+          fail("Unexpected number of results: " + oppijat.length)
+      }
+    }
+
 
     def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
       putOpiskeluoikeus(opiskeluoikeus, henkilö) {
