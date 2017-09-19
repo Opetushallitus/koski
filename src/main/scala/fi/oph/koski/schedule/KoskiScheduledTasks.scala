@@ -26,7 +26,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
       val startMillis = currentTimeMillis
       val changedOids = application.authenticationServiceClient.findChangedOppijaOids(oldContext.lastRun)
       val newContext = runUpdate(changedOids, startMillis, oldContext)
-      Some(Json.toJValue(newContext))
+      Some(JsonSerializer.serializeWithRoot(newContext))
     } catch {
       case e: Exception =>
         logger.error(e)("Problem running scheduledHenkilötiedotUpdate")
@@ -57,7 +57,7 @@ class UpdateHenkilot(application: KoskiApplication) extends Timing {
     }
   }
 
-  private def henkilöUpdateContext(lastRun: Long) = Some(Json.toJValue(HenkilöUpdateContext(lastRun)))
+  private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
   private def henkilötiedotUpdateInterval = application.config.getDuration("schedule.henkilötiedotUpdateInterval")
 }
 

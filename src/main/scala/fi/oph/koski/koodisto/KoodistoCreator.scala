@@ -80,6 +80,6 @@ object KoodistoCreator extends Logging {
   }
 
   def objectDiff(a: AnyRef, b: AnyRef) = {
-    JsonMethods.compact(Json.jsonDiff(Json.toJValue(a), Json.toJValue(b)))
+    JsonMethods.compact(Json.jsonDiff(JsonSerializer.serializeWithRoot(a), JsonSerializer.serializeWithRoot(b)))
   }
 }

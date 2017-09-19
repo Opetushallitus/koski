@@ -258,7 +258,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     }
 
     haetutTiedot.orElse(oidHenkilö match {
-      case Some(oidHenkilö) => Some(extract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(toJValue(oidHenkilö)), validating = false))
+      case Some(oidHenkilö) => Some(extract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö)), validating = false))
       case None => annetutHenkilötiedot.toOption.map(extract[TiedonsiirtoOppija](_, validating = false))
     })
   }
@@ -289,7 +289,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
       )
     )))
 
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/tiedonsiirto", Json.toJValue(mappings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(index.http.put(uri"/koski-index/_mapping/tiedonsiirto", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
   }
 }
 

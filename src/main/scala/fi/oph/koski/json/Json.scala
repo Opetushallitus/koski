@@ -45,7 +45,11 @@ object Json extends Logging {
 
   def tryParse(json: String): Try[JValue] = Try(parse(json))
 
-  def toJValue(x: AnyRef): JValue = {
+  def toJValue(x: Map[_,_]): JValue = {
+    Extraction.decompose(x)
+  }
+
+  def toJValue(x: List[_]): JValue = {
     Extraction.decompose(x)
   }
 

@@ -23,7 +23,7 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
       } else {
         logger.info("Updating Elasticsearch index settings")
         Http.runTask(http.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-        Http.runTask(http.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+        Http.runTask(http.put(uri"/koski/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
         Http.runTask(http.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
         logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
         true
