@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 
 object InvalidDataFixer extends App with DefaultHttpTester with Logging {
   authGet("api/opiskeluoikeus/validate") {
-    val results = Json.read[List[ValidationResult]](body).filter(!_.isOk)
+    val results = JsonSerializer.parse[List[ValidationResult]](body).filter(!_.isOk)
     println(s"Löytyi ${results.length} rikkinäistä opiskeluoikeutta")
     results.foreach { result =>
       println("FAIL oid=" + result.opiskeluoikeusOid + " " + result.errors)
@@ -19,7 +19,7 @@ object InvalidDataFixer extends App with DefaultHttpTester with Logging {
     results.foreach { result =>
       authGet("api/opiskeluoikeus/" + result.opiskeluoikeusOid) {
         println("FIXING oid=" + result.opiskeluoikeusOid + " " + result.errors)
-        val found = Json.read[Opiskeluoikeus](body)
+        val found = JsonSerializer.parse[Opiskeluoikeus](body)
         println("Deserialized OK")
         val oppija = Oppija(
           OidHenkilö(result.henkilöOid),

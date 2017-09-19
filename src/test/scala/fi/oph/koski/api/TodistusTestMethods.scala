@@ -27,7 +27,7 @@ trait TodistusTestMethods extends SearchTestMethods with OpiskeluoikeusTestMetho
     searchForHenkilötiedot(searchTerm).flatMap { henkilötiedot =>
       val oppija: Oppija = authGet("api/oppija/" + henkilötiedot.oid) {
         verifyResponseStatus(200)
-        Json.read[Oppija](body)
+        JsonSerializer.parse[Oppija](body)
       }
       oppija.opiskeluoikeudet.headOption
     }.headOption

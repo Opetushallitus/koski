@@ -81,7 +81,7 @@ class ArviointiSpec extends FreeSpec with Matchers {
   }
 
   private lazy val app = KoskiApplicationForTests
-  private def read[T](s: String)(implicit mf : Manifest[T]) = ValidatingAndResolvingExtractor.extract[T](Json.read[JValue](s), ValidationAndResolvingContext(app.koodistoViitePalvelu, app.organisaatioRepository)) match {
+  private def read[T](s: String)(implicit mf : Manifest[T]) = ValidatingAndResolvingExtractor.extract[T](Json.parse(s), ValidationAndResolvingContext(app.koodistoViitePalvelu, app.organisaatioRepository)) match {
     case Right(x) => x
   }
 }

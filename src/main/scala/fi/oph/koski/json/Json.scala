@@ -33,14 +33,6 @@ object GenericJsonFormats {
 object Json extends Logging {
   implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + BlockOpiskeluoikeusSerializer
 
-  def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
-    Serialization.read(json)
-  }
-
-  def read[A](json: InputStream)(implicit mf : scala.reflect.Manifest[A]) : A = {
-    Serialization.read(json)
-  }
-
   def parse(json: String) = JsonMethods.parse(json)
 
   def tryParse(json: String): Try[JValue] = Try(parse(json))
@@ -81,7 +73,7 @@ object Json extends Logging {
   def readResource(resourcename: String): json4s.JValue = readResourceIfExists(resourcename).getOrElse(throw new RuntimeException(s"Resource $resourcename not found"))
 
   def writeFile[T : TypeTag](filename: String, json: T) = {
-    Files.writeFile(filename, JsonMethods.pretty(JsonSerializer.serializeWithRoot(json)))
+    Files.writeFile(filename, JsonSerializer.writeWithRoot(json, pretty = true))
   }
 
   def maskSensitiveInformation(parsedJson: JValue): JValue = {

@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.Json
 import fi.oph.koski.opiskeluoikeus.ValidationResult
+import fi.oph.koski.schema.JsonSerializer
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers {
@@ -11,7 +12,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       resetFixtures
       authGet("api/opiskeluoikeus/validate") {
         verifyResponseStatus(200)
-        val results = Json.read[List[ValidationResult]](body)
+        val results = JsonSerializer.parse[List[ValidationResult]](body)
         results.length should be >= 0
         results.foreach(checkValidity)
       }
@@ -20,7 +21,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       resetFixtures
       authGet("api/opiskeluoikeus/validate?henkilö=true&history=true") {
         verifyResponseStatus(200)
-        val results = Json.read[List[ValidationResult]](body)
+        val results = JsonSerializer.parse[List[ValidationResult]](body)
         results.length should be >= 0
         results.foreach(checkValidity)
       }
@@ -29,7 +30,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.oid.get) {
         verifyResponseStatus(200)
-        val result = Json.read[ValidationResult](body)
+        val result = JsonSerializer.parse[ValidationResult](body)
         checkValidity(result)
       }
     }

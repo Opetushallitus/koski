@@ -28,7 +28,7 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
       fail("Expected status " + expectedStatus + ", got " + response.status + ", " + response.body)
     }
     if (details.length > 0) {
-      val errors: List[ErrorDetail] = Json.read[List[ErrorDetail]](body)
+      val errors: List[ErrorDetail] = JsonSerializer.parse[List[ErrorDetail]](body)
       errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
         if (errorDetail.key != expectedErrorDetail.errorKey) {
           fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.errorKey + "), message=" + errorDetail.message)

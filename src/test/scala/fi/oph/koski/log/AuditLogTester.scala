@@ -8,10 +8,10 @@ import org.scalatest.Matchers
 
 object AuditLogTester extends Matchers with LogTester {
   def verifyAuditLogMessage(params: Map[String, String]): Unit = {
-    val message = getLogMessages.lastOption.map(m => Json.read[JObject](m.getMessage.toString))
+    val message = getLogMessages.lastOption.map(m => Json.parse(m.getMessage.toString))
     message match {
       case None => throw new IllegalStateException("No audit log message found")
-      case Some(msg) =>
+      case Some(msg: JObject) =>
         params.toList.foreach {
           case (key, expectedValue) =>
             msg.values.get(key) should equal(Some(expectedValue))

@@ -3,12 +3,11 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.jyväskylä
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
@@ -25,7 +24,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       resetFixtures
       putOppija(Oppija(oppija, List(defaultOpiskeluoikeus))) {
         verifyResponseStatus(200)
-        val result = Json.read[HenkilönOpiskeluoikeusVersiot](response.body)
+        val result = JsonSerializer.parse[HenkilönOpiskeluoikeusVersiot](response.body)
         result.henkilö.oid should startWith("1.2.246.562.24.000000000")
         result.opiskeluoikeudet.map(_.versionumero) should equal(List(1))
       }

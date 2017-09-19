@@ -1,8 +1,8 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
-import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.JsonSerializer
 import org.scalatest.Matchers
 
 import scala.util.Random
@@ -13,7 +13,7 @@ case class RandomOppijaOid(fetchCount: Int) extends KoskidevHttpSpecification wi
     logger.info(s"Fetching $fetchCount oids")
     get(url, headers = (authHeaders() ++ jsonContent)) {
       response.status should equal(200)
-      Json.read[List[String]](body)
+      JsonSerializer.parse[List[String]](body)
     }
   }
 

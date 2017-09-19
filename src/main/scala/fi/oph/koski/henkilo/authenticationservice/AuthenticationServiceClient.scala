@@ -13,7 +13,7 @@ import fi.oph.koski.json.Json4sHttp4s._
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
 import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
+import fi.oph.koski.schema.{JsonSerializer, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.Timing
 import org.http4s._
 
@@ -58,7 +58,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
 
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
-      case (x, data, _) if x <= 201 => Right(Json.read[OppijaNumerorekisteriOppija](data).toOppijaHenkilö)
+      case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriOppija](data).toOppijaHenkilö)
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw HttpStatusException(status, text, uri)
     })

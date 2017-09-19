@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
-import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -40,7 +39,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   def oppijaByHetu(hetu: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/henkilo/hetu/" + hetu, user) {
       verifyResponseStatus(200)
-      val oid = Json.read[List[HenkilötiedotJaOid]](body).head.oid
+      val oid = JsonSerializer.parse[List[HenkilötiedotJaOid]](body).head.oid
       oppija(oid, user)
     }
   }

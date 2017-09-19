@@ -4,7 +4,7 @@ import fi.oph.koski.json.Json
 import org.json4s._
 
 object JsonValidationErrorExample {
-  val example = Json.read[JValue]("""[
+  val example = Json.parse("""[
                                     |  {
                                     |    "key": "badRequest.validation.jsonSchema",
                                     |    "message": {

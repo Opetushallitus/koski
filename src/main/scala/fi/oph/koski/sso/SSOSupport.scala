@@ -37,7 +37,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def getUserCookie: Option[AuthenticationUser] = {
     Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
       try {
-        Some(Json.read[AuthenticationUser](json))
+        Some(JsonSerializer.parse[AuthenticationUser](json))
       } catch {
         case e: Exception =>
           removeUserCookie
