@@ -244,7 +244,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
 
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: HetuTaiOid = JsonSerializer.extract[HetuTaiOid](annetutHenkilötiedot)
+    val annettuTunniste: HetuTaiOid = JsonSerializer.extract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true)
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
 
     val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.hetu) match {
