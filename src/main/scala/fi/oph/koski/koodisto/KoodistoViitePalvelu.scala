@@ -17,12 +17,12 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
   }
 
   def getSisältyvätKoodiViitteet(koodisto: KoodistoViite, parentViite: Koodistokoodiviite): Option[List[Koodistokoodiviite]] = {
-    val parentKoodisto = toKoodistoViite(parentViite).get
-    val parent = koodistoPalvelu.getKoodistoKoodit(parentKoodisto).get.find(_.koodiArvo == parentViite.koodiarvo).get // TODO: unsafe gets
-    val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
-    koodit.map {
-      _.filter(koodi => koodi.withinCodeElements.toList.flatten.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined)
-       .map(toKoodiviite(koodisto))
+    for {
+      parentKoodisto <- toKoodistoViite(parentViite)
+      parent <- koodistoPalvelu.getKoodistoKoodit(parentKoodisto).toList.flatten.find(_.koodiArvo == parentViite.koodiarvo)
+      koodit: List[KoodistoKoodi] <- koodistoPalvelu.getKoodistoKoodit(koodisto)
+    } yield {
+      koodit.filter(_.hasParent(parent)).map(toKoodiviite(koodisto))
     }
   }
 
