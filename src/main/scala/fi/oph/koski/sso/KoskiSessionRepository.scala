@@ -17,7 +17,7 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
     runDbSync((Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, now, now)))
   }
 
-  def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
+  def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 10) {
     val limit = new Timestamp(System.currentTimeMillis() - sessionTimeout.milliseconds)
     val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
