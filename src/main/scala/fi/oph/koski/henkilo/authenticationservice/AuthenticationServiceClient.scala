@@ -57,7 +57,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
 
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
-      case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriOppija](data).toOppijaHenkilö)
+      case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriOppija](data, ignoreExtras = true).toOppijaHenkilö)
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw HttpStatusException(status, text, uri)
     })
