@@ -114,19 +114,18 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
   }
 
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
-  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => Seq[Opiskeluoikeus])(implicit user: KoskiSession) = {
+  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => Seq[Opiskeluoikeus])(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
-    val result = henkilöRepository.findByOid(oid) match {
+    henkilöRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluoikeudet match {
           case Nil => notFound
-          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet))
+          case opiskeluoikeudet: Seq[Opiskeluoikeus] =>
+            writeViewingEventToAuditLog(user, oid)
+            Right(Oppija(oppija, opiskeluoikeudet))
         }
       case None => notFound
     }
-
-    result.right.foreach((oppija: Oppija) => writeViewingEventToAuditLog(user, oid))
-    result
   }
 
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
