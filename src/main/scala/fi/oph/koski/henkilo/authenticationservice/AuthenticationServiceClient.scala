@@ -139,7 +139,7 @@ trait AuthenticationServiceClient {
   }
 }
 
-case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
+case class HenkilöQueryResult(totalCount: Int, results: List[QueryHenkilö])
 case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
 case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
   def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified)
