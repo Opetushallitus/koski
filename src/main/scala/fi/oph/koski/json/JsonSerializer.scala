@@ -10,6 +10,9 @@ import org.json4s.jackson.JsonMethods
 import scala.reflect.runtime.universe.TypeTag
 
 object JsonSerializer {
+  private def filterSensitiveData(s: ClassSchema, p: Property)(implicit user: KoskiSession) = if (sensitiveHidden(p.metadata)) Nil else List(p)
+  def serializationContext(implicit user: KoskiSession) = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
+
   def writeWithRoot[T: TypeTag](x: T, pretty: Boolean = false): String = {
     implicit val u = KoskiSession.systemUser
     write(x, pretty)
@@ -31,15 +34,11 @@ object JsonSerializer {
   }
 
   def serialize[T: TypeTag](obj: T)(implicit user: KoskiSession): JValue = {
-    val filterSensitiveData: SchemaPropertyProcessor = (s: ClassSchema, p: Property) => if (sensitiveHidden(p.metadata)) Nil else List(p)
-    val context = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
-    Serializer.serialize(obj, context)
+    Serializer.serialize(obj, serializationContext)
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: KoskiSession): JValue = {
-    val filterSensitiveData: SchemaPropertyProcessor = (s: ClassSchema, p: Property) => if (sensitiveHidden(p.metadata)) Nil else List(p)
-    val context = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
-    Serializer.serialize(obj, schema, context)
+    Serializer.serialize(obj, schema, serializationContext)
   }
 
   def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false, validating: Boolean = true): T = {

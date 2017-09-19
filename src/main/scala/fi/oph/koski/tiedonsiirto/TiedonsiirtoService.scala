@@ -20,6 +20,7 @@ import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import JsonSerializer.extract
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
+import fi.oph.scalaschema.Serializer
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
@@ -140,7 +141,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
     val document = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
 
     val documentId = org.oid + "_" + idValue
-    val docJson = JsonSerializer.serializeWithRoot(document).merge(JObject(if (data.isDefined) Nil else List("data" -> JNull))) // TODO: should replace all missing Options with JNull
+    val docJson = Serializer.serialize(document, JsonSerializer.serializationContext(KoskiSession.systemUser).copy(omitEmptyFields = false))
     val json: JValue = JObject("doc_as_upsert" -> JBool(true), "doc" -> docJson)
 
     val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update?retry_on_conflict=5", json)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
