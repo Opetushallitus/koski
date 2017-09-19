@@ -60,7 +60,7 @@ trait PrometheusRepository {
     }.sortBy(_("nimi").toString)
   )
 
-  private def monthlyAlerts: Task[Map[String, Int]] = metric("/sapi/v1/query?query=koski_alerts").map(_.map { metric =>
+  private def monthlyAlerts: Task[Map[String, Int]] = metric("/api/v1/query?query=koski_alerts").map(_.map { metric =>
       val alert = extract[String](metric \ "metric" \ "alertname")
       val instance = extract[Option[String]](metric \ "metric" \ "instance").map(i => "@"+i).getOrElse("")
       val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
