@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {parseBool, toObservable} from './util'
+import {parseBool, scrollElementBottomVisible, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 import {t} from './i18n'
 
@@ -35,8 +35,9 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
   let filteredOptionsP = Bacon.combineWith(optionsP, queryAtom, Bacon.constant(displayValue), queryFilter)
   let allOptionsP = filteredOptionsP.map(opts => opts.concat(newItem ? [newItem] : []))
   var inputElem = null
-
+  var listElem = null
   let handleOnBlur = () => openAtom.set(false)
+  openAtom.filter(R.identity).delay(0).onValue(() => scrollElementBottomVisible(listElem))
 
   let onKeyDown = (allOptions) => (e) => {
     let keyHandlers = {
@@ -125,7 +126,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
               </div>
           }
           {
-            (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')}>
+            (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')} ref={ref => listElem = ref}>
               {
                 allOptions.map((o,i) => {
                   let isNew = isNewItem(allOptions, o, i)

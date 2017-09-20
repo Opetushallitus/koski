@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
 import delays from './delays'
 import {t} from './i18n'
-import {parseBool, toObservable} from './util'
+import {parseBool, scrollElementBottomVisible, toObservable} from './util'
 
 /*
     disabled: true/false
@@ -50,8 +50,7 @@ export default class Autocomplete extends BaconComponent {
     </li>)
     let newItem = createNewItem(query || '')
     let itemElems = items.concat(newItem ? [newItem] : []).map(createItemElement)
-    let results = itemElems.length ? <ul className='results'>{itemElems}</ul> : null
-
+    let results = itemElems.length ? <ul ref="results" className='results'>{itemElems}</ul> : null
     return (
       <div ref='autocomplete' className='autocomplete'>
         <input type="text"
@@ -104,6 +103,11 @@ export default class Autocomplete extends BaconComponent {
       .throttle(delays().delay(200))
       .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
       .takeUntil(this.unmountE)
-      .onValue((items) => this.setState({ items: items, selectionIndex: 0 }))
+      .onValue((items) => {
+          this.setState({ items: items, selectionIndex: 0 })
+          Bacon.later(0).onValue(() => {
+            scrollElementBottomVisible(this.refs.results)
+          })
+      })
   }
 }
