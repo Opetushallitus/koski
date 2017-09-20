@@ -52,7 +52,8 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
 }
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus'
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus' &&
+    !!modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenoppiaineenoppimaara')
 }
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.addSuoritusTitle = () =>
