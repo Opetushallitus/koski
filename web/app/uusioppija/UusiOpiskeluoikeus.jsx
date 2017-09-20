@@ -15,7 +15,7 @@ import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {sortLanguages} from '../sorting'
 import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
-import UusiAikuistenPerusopetuksenSuoritus from "./UusiAikuistenPerusopetuksenSuoritus.jsx"
+import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus.jsx'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
