@@ -1,7 +1,66 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
+
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
+
+
+@Description("Aikuisten perusopetuksen opiskeluoikeus")
+case class AikuistenPerusopetuksenOpiskeluoikeus(
+  oid: Option[String] = None,
+  versionumero: Option[Int]  = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  oppilaitos: Option[Oppilaitos],
+  koulutustoimija: Option[Koulutustoimija] = None,
+  @Hidden
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
+  @Description("Oppijan oppimäärän alkamispäivä")
+  alkamispäivä: Option[LocalDate] = None,
+  @Description("Oppijan oppimäärän päättymispäivä")
+  päättymispäivä: Option[LocalDate] = None,
+  tila: PerusopetuksenOpiskeluoikeudenTila,
+  lisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
+  suoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus],
+  @KoodistoKoodiarvo("aikuistenperusopetus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetus", "opiskeluoikeudentyyppi")
+) extends KoskeenTallennettavaOpiskeluoikeus {
+  override def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = this.copy(oid = oid, versionumero = versionumero)
+  override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def arvioituPäättymispäivä = None
+}
+
+case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
+  @KoodistoUri("perusopetuksentukimuoto")
+  @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
+  tukimuodot: Option[List[Koodistokoodiviite]] = None,
+  @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
+  @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  tehostetunTuenPäätös: Option[Päätösjakso] = None,
+  @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
+  ulkomailla: Option[Päätösjakso] = None,
+  @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
+  @DefaultValue(false)
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @DefaultValue(false)
+  vammainen: Boolean = false,
+  @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @DefaultValue(false)
+  vaikeastiVammainen: Boolean = false,
+  @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
+  majoitusetu: Option[Päätösjakso] = None,
+  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.""")
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
+  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None
+) extends OpiskeluoikeudenLisätiedot
+
+trait AikuistenPerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
@@ -16,7 +75,7 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
 
 @Description("Aikuisten perusopetuksen tunnistetiedot")
 case class AikuistenPerusopetus(
@@ -29,9 +88,6 @@ case class AikuistenPerusopetus(
 @Description("Perusopetuksen oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän suoritusta")
 case class AikuistenPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  yksilöllistettyOppimäärä: Boolean = false,
-  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
-  painotettuOpetus: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -39,7 +95,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 
 case class AikuistenPerusopetuksenKurssinSuoritus(
@@ -105,4 +161,4 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä with SuoritustavallinenPerusopetuksenSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä with SuoritustavallinenPerusopetuksenSuoritus

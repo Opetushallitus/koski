@@ -20,7 +20,7 @@ object ExamplesAikuistenPerusopetus {
 
   lazy val aineopiskelija = Oppija(
     MockOppijat.eero.vainHenkilötiedot,
-    List(PerusopetuksenOpiskeluoikeus(
+    List(AikuistenPerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -46,7 +46,7 @@ object ExamplesAikuistenPerusopetus {
 
   def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
     exampleHenkilö,
-    List(PerusopetuksenOpiskeluoikeus(
+    List(AikuistenPerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -61,7 +61,7 @@ object ExamplesAikuistenPerusopetus {
     ))
   )
 
-  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = PerusopetuksenOpiskeluoikeus(
+  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = AikuistenPerusopetuksenOpiskeluoikeus(
     alkamispäivä = Some(date(2008, 8, 15)),
     päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -121,7 +121,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
       oppiaineenSuoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9), yksilöllistettyOppimäärä = true),
+      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
       oppiaineenSuoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
@@ -129,7 +129,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
+      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
@@ -155,7 +155,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
       oppiaineenSuoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9), yksilöllistettyOppimäärä = true),
+      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
       oppiaineenSuoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
@@ -163,7 +163,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
+      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
@@ -190,7 +190,7 @@ object ExamplesAikuistenPerusopetus {
   def aikuistenPerusopetuksenAlkuvaihe = {
     Oppija(
       exampleHenkilö,
-      List(PerusopetuksenOpiskeluoikeus(
+      List(AikuistenPerusopetuksenOpiskeluoikeus(
         alkamispäivä = Some(date(2008, 8, 15)),
         päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = Some(jyväskylänNormaalikoulu),

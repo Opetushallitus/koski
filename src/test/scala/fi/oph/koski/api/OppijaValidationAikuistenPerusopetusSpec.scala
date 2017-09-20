@@ -1,17 +1,21 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
-class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
-  override def defaultOpiskeluoikeus = opiskeluoikeusWithPerusteenDiaarinumero(Some("19/011/2015"))
-
-  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = super.defaultOpiskeluoikeus.copy(
+class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
+  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       aikuistenPerusopetuksenOppimääränSuoritus(diaari)
-    ))
+    ),
+    alkamispäivä = Some(longTimeAgo),
+    tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+  )
 
   private def aikuistenPerusopetuksenOppimääränSuoritus(diaari: Option[String] = Some("19/011/2015")) = {
     ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
