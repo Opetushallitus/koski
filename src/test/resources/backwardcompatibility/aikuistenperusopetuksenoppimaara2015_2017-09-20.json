@@ -43,7 +43,7 @@
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
-        "perusteenDiaarinumero" : "OPH-1280-2017",
+        "perusteenDiaarinumero" : "19/011/2015",
         "tunniste" : {
           "koodiarvo" : "201101",
           "koodistoUri" : "koulutus"
@@ -122,8 +122,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -139,7 +137,7 @@
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI1",
-              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
             }
           },
           "tila" : {
@@ -161,7 +159,7 @@
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI2",
-              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
             }
           },
           "tila" : {
@@ -183,7 +181,7 @@
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI3",
-              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+              "koodistoUri" : "aikuistenperusopetuksenkurssit2015"
             }
           },
           "tila" : {
@@ -242,8 +240,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -281,8 +277,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -310,8 +304,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -335,8 +327,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -360,8 +350,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -385,8 +373,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -410,8 +396,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -435,8 +419,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -460,8 +442,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -485,8 +465,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : true,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -510,8 +488,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -535,8 +511,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -560,8 +534,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -585,8 +557,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -620,8 +590,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -645,8 +613,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -670,8 +636,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -695,8 +659,6 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : true,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -730,8 +692,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -769,8 +729,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -798,8 +756,6 @@
             "fi" : "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta."
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -822,7 +778,7 @@
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetus",
+      "koodiarvo" : "aikuistenperusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]
