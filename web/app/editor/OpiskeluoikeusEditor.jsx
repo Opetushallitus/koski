@@ -11,7 +11,7 @@ import {Editor} from './Editor.jsx'
 import {navigateTo} from '../location'
 import {suorituksenTyyppi, suoritusTitle} from './Suoritus'
 import Text from '../Text.jsx'
-import {assignTabNames, suoritusIndex, SuoritusTabs, urlForTab} from './SuoritusTabs.jsx'
+import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from './SuoritusTabs.jsx'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let oid = modelData(model, 'oid')
@@ -21,9 +21,9 @@ export const OpiskeluoikeusEditor = ({model}) => {
     let suoritukset = modelItems(mdl, 'suoritukset')
     assignTabNames(suoritukset)
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
-    var index = suoritusIndex(mdl, suoritukset)
+    var index = suoritusTabIndex(suoritukset)
     if (index < 0 || index >= suoritukset.length) {
-      navigateTo(urlForTab(mdl, suoritukset[0].tabName))
+      navigateTo(urlForTab(suoritukset, index))
       return null
     }
     let valittuSuoritus = suoritukset[index]

@@ -19,7 +19,7 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
       pushModel(suoritus, model.context.changeBus)
       let suoritukset2 = [suoritus].concat(suoritukset)
       assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
-      navigateTo(urlForTab(model, suoritus.tabName))
+      navigateTo(urlForTab(suoritukset2, 0))
     } else {
       addingAtom.set(false)
     }
@@ -29,10 +29,10 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
   return (<ul className="suoritus-tabs">
       {
         suoritukset.map((suoritusModel, i) => {
-          let selected = i === suoritusIndex(model, suoritukset)
+          let selected = i === suoritusTabIndex(suoritukset)
           let titleEditor = tabTitle(suoritusModel)
           return (<li className={selected ? 'selected': null} key={i}>
-            { selected ? titleEditor : <Link href={ urlForTab(model, suoritusModel.tabName) } exitHook={false}> {titleEditor} </Link>}
+            { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link>}
           </li>)
         })
       }
@@ -69,10 +69,16 @@ export const assignTabNames = (suoritukset) => {
   }
 }
 
-export const urlForTab = (model, i) => currentLocation().addQueryParams({[suoritusQueryParam(model.context)]: i}).toString()
+export const urlForTab = (suoritukset, i) => {
+  let tabName = suoritukset[i].tabName
+  return currentLocation().addQueryParams({[suoritusQueryParam(suoritukset[0].context)]: tabName}).toString()
+}
+
 const suoritusQueryParam = context => (modelData(context.opiskeluoikeus, 'oid') || context.opiskeluoikeusIndex) + '.suoritus'
-export const suoritusIndex = (model, suoritukset) => {
-  let paramName = suoritusQueryParam(model.context)
+
+export const suoritusTabIndex = (suoritukset) => {
+  if (!suoritukset.length) return 0
+  let paramName = suoritusQueryParam(suoritukset[0].context)
   let selectedTabName = currentLocation().params[paramName]
   let index = suoritukset.map(s => s.tabName).indexOf(selectedTabName)
   if (index < 0) {
