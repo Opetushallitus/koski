@@ -5,7 +5,7 @@ import Http from '../http'
 import {formatISODate} from '../date.js'
 import DateInput from '../DateInput.jsx'
 import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
-import UusiPerusopetuksenSuoritus from './UusiPerusopetuksenSuoritus.jsx'
+import UusiNuortenPerusopetuksenSuoritus from './UusiNuortenPerusopetuksenSuoritus.jsx'
 import UusiAmmatillisenKoulutuksenSuoritus from './UusiAmmatillisenKoulutuksenSuoritus.jsx'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus.jsx'
@@ -15,6 +15,7 @@ import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {sortLanguages} from '../sorting'
 import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
+import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus.jsx'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -48,7 +49,8 @@ export default ({opiskeluoikeusAtom}) => {
       <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />
       {
         tyyppiAtom.map('.koodiarvo').map(tyyppi => {
-          if (tyyppi == 'perusopetus') return <UusiPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+          if (tyyppi == 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
           if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
           if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
           if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />

@@ -1,3 +1,7 @@
+## 20.9.2017
+
+- Eriytetty aikuisten perusopetus omaksi opiskeluoikeustyypikseen
+
 ## 5.9.2017
 
 - Ammatillisen tutkinnon suorituksen suoritustapa pakolliseksi

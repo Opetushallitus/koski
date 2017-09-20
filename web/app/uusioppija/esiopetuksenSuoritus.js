@@ -23,7 +23,8 @@ export const esiopetuksenSuoritus = (suoritusAtom, oppilaitosAtom, suorituskieli
   }
 
   let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
-  diaarinumerot(suoritusP.map('.tyyppi')).map(options => options[0]).map('.koodiarvo').onValue(peruste => {
+  let diaarinumerotP = suoritusP.map('.tyyppi').flatMapLatest(tyyppi =>  !tyyppi ? [] : diaarinumerot(tyyppi)).toProperty()
+  diaarinumerotP.map(options => options[0]).map('.koodiarvo').onValue(peruste => {
     let current = perusteAtom.get()
     if (!current || peruste !== current) {
       perusteAtom.set(peruste)

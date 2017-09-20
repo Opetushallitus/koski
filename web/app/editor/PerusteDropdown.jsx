@@ -6,7 +6,7 @@ import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 
 export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
-  let diaarinumerotP = diaarinumerot(suoritusTyyppiP)
+  let diaarinumerotP = suoritusTyyppiP.flatMapLatest(tyyppi =>  !tyyppi ? [] : diaarinumerot(tyyppi)).toProperty()
   let selectedOptionP = Bacon.combineWith(diaarinumerotP, perusteAtom, (options, selected) => options.find(o => o.koodiarvo == selected))
   let selectOption = (option) => {
     perusteAtom.set(option && option.koodiarvo)
@@ -33,26 +33,25 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
 }
 
 
-export const diaarinumerot = suoritusTyyppiP => {
-  const koulutustyyppiP = suoritusTyyppiP.map(tyyppi => {
-    if (tyyppi.koodiarvo == 'perusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
-      return '16'
-    }
-    if (tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara' || tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
-      return '17'
-    }
-    if (tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
-      return '6'
-    }
-    if (tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
-      return '22'
-    }
-    if (tyyppi.koodiarvo == 'esiopetuksensuoritus') {
-      return '15'
-    }
-  }).skipDuplicates()
+export const diaarinumerot = suoritusTyyppi => {
+  let koulutustyyppi = koulutustyyppiKoodi(suoritusTyyppi.koodiarvo)
+  return koulutustyyppi ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi}`) : []
+}
 
-  return koulutustyyppiP.flatMapLatest(tyyppi => tyyppi
-    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${tyyppi}`)
-    : []).toProperty()
+const koulutustyyppiKoodi = tyyppi => {
+  if (tyyppi == 'perusopetuksenoppimaara' || tyyppi == 'perusopetuksenvuosiluokka') {
+    return '16'
+  }
+  if (tyyppi == 'aikuistenperusopetuksenoppimaara' || tyyppi == 'perusopetuksenoppiaineenoppimaara' || tyyppi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
+    return '17'
+  }
+  if (tyyppi == 'perusopetuksenlisaopetus') {
+    return '6'
+  }
+  if (tyyppi == 'perusopetukseenvalmistavaopetus') {
+    return '22'
+  }
+  if (tyyppi == 'esiopetuksensuoritus') {
+    return '15'
+  }
 }

@@ -13,68 +13,15 @@ import {
   modelLookup,
   modelProperties,
   modelSet,
-  modelSetValue,
-  pushModelValue
+  modelSetValue
 } from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
-import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
 import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
 
-const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => isOppiaineenSuoritus(opiskeluoikeus)
-  ? oppiaineenSuoritusPopup({opiskeluoikeus, resultCallback})
-  : vuosiluokanSuoritusPopup({opiskeluoikeus, resultCallback})
-
-UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
-    let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
-    return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
-  }
-UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) =>
-  <Text name={isOppiaineenSuoritus(opiskeluoikeus) ? 'lisää oppiaineen suoritus' : 'lisää vuosiluokan suoritus'}/>
-
-let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suoritukset').map(suoritus => suoritus.tyyppi.koodiarvo).includes('perusopetuksenoppiaineenoppimaara')
-
-export default UusiPerusopetuksenSuoritusPopup
-
-let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
-  let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
-  let submitBus = Bacon.Bus()
-  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
-  let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
-  let validP = errorP.not()
-
-  return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
-    <h2><Text name="Suorituksen lisäys"/></h2>
-    {
-      modelP.map(oppiaineenSuoritus => {
-        return (<div key="props">
-          <PropertiesEditor
-            context={oppiaineenSuoritus.context}
-            properties={modelProperties(oppiaineenSuoritus, ['koulutusmoduuli.tunniste', 'koulutusmoduuli.kieli', 'toimipiste'])}
-            getValueEditor={(p, getDefault) => {
-              return p.key == 'tunniste'
-                ? <UusiPerusopetuksenOppiaineDropdown
-                    oppiaineenSuoritus={oppiaineenSuoritus}
-                    selected={koulutusmoduuli(oppiaineenSuoritus)}
-                    resultCallback={oppiaine => pushModelValue(oppiaineenSuoritus, oppiaine.value, 'koulutusmoduuli')}
-                    pakollinen={true} enableFilter={false}
-                    suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
-                  />
-                : getDefault()
-              }
-            }
-          />
-        </div>)
-      })
-    }
-
-    { doActionWhileMounted(modelP.sampledBy(submitBus.filter(validP)), resultCallback) }
-  </ModalDialog>)
-}
-
-let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
+const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenvuosiluokansuoritus')
 
@@ -115,6 +62,12 @@ let vuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
     }
   </div>)
 }
+
+UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
+
+UusiPerusopetuksenVuosiluokanSuoritusPopup.addSuoritusTitle = () => <Text name="lisää vuosiluokan suoritus"/>
+
+export default UusiPerusopetuksenVuosiluokanSuoritusPopup
 
 let newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')

@@ -1,4 +1,4 @@
-import {lensedModel, modelData, modelItems, modelLens, modelSetValue, modelSetValues} from './EditorModel'
+import {lensedModel, modelData, modelItems, modelLens, modelSetValue, modelSetValues, modelTitle} from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
@@ -42,4 +42,13 @@ export const fixTila = (model) => {
     }
     return m
   }))
+}
+
+export const suoritusTitle = (suoritus) => {
+  let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
+  switch(suorituksenTyyppi(suoritus)) {
+    case 'ammatillinentutkintoosittainen': return `${title}, osittainen` // TODO: i18n
+    case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
+    default: return title
+  }
 }

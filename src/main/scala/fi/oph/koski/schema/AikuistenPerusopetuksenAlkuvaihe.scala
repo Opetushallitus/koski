@@ -19,7 +19,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaaranalkuvaihe", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus with Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus
 
 @Description("Aikuisten perusopetuksen alkuvaiheen tunnistetiedot")
 case class AikuistenPerusopetuksenAlkuvaihe(
@@ -32,9 +32,6 @@ case class AikuistenPerusopetuksenAlkuvaihe(
 @Description("Oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän alkuvaiheen suoritusta")
 case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenOppiaine,
-  yksilöllistettyOppimäärä: Boolean = false,
-  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
-  painotettuOpetus: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -42,7 +39,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
 
 case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")

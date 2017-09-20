@@ -20,46 +20,30 @@ import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
+import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const oppimääräAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
+  const suoritustyyppiAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
   const oppiaineenSuoritusAtom = Atom()
   const perusteAtom = Atom()
-  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara,aikuistenperusopetuksenoppimaara,aikuistenperusopetuksenoppimaaranalkuvaihe,perusopetuksenoppiaineenoppimaara')
-  oppimäärätP.onValue(oppimäärät => oppimääräAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
+  const oppimäärätP = koodistoValues('suorituksentyyppi/aikuistenperusopetuksenoppimaara,aikuistenperusopetuksenoppimaaranalkuvaihe,perusopetuksenoppiaineenoppimaara')
+  oppimäärätP.onValue(oppimäärät => suoritustyyppiAtom.set(oppimäärät.find(koodiarvoMatch('aikuistenperusopetuksenoppimaara'))))
 
-  const suoritusPrototypeP = oppimääräAtom.map('.koodiarvo').flatMap(oppimäärä => {
+  const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(oppimäärä => {
     if (oppimäärä == 'perusopetuksenoppiaineenoppimaara') {
+      // TODO: älä käytä luokkien nimiä
       return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.PerusopetuksenOppiaineenOppimääränSuoritus')
     }
   }).toProperty()
 
-  const oppiaineetP = oppimääräAtom.flatMapLatest((tyyppi) => {
-    if (koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(tyyppi)) {
-      return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${tyyppi.koodiarvo}`).map(modelData)
-    } else {
-      return []
-    }
-  }).toProperty()
-
-  const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineenSuoritus, oppiaineet, suorituskieli) => {
-    if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {
-      return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
-    } else if (koodiarvoMatch('aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)) {
-      return makeAikuistenPerusopetuksenAlkuvaiheenSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
-    } else if (koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
-      return oppiaineenSuoritus
-    }
-  }
-
-  Bacon.combineWith(oppilaitosAtom, oppimääräAtom, perusteAtom, oppiaineenSuoritusAtom, oppiaineetP, suorituskieliAtom, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, perusteAtom, oppiaineetP(suoritustyyppiAtom), suorituskieliAtom, oppiaineenSuoritusAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Oppimäärä oppimääräAtom={oppimääräAtom} oppimäärätP={oppimäärätP}/>
+    <Oppimäärä oppimääräAtom={suoritustyyppiAtom} oppimäärätP={oppimäärätP}/>
     {
-      oppimääräAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)
-        ? <Peruste {...{suoritusTyyppiP: oppimääräAtom, perusteAtom}} />
+      suoritustyyppiAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)
+        ? <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
         : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom} oppilaitos={oppilaitosAtom} suorituskieli={suorituskieliAtom}/>
       )
     }
@@ -75,42 +59,6 @@ const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
       selected = {oppimääräAtom}
     />
   </div> )
-}
-
-function makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) {
-  return {
-    suorituskieli : suorituskieli,
-    koulutusmoduuli: {
-      tunniste: {
-        koodiarvo: '201101',
-        koodistoUri: 'koulutus'
-      },
-      perusteenDiaarinumero: peruste
-    },
-    toimipiste: oppilaitos,
-    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-    suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
-    tyyppi: oppimäärä,
-    osasuoritukset: oppiaineet
-  }
-}
-
-function makeAikuistenPerusopetuksenAlkuvaiheenSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli) {
-  return {
-    suorituskieli : suorituskieli,
-    koulutusmoduuli: {
-      tunniste: {
-        koodiarvo: 'aikuistenperusopetuksenoppimaaranalkuvaihe',
-        koodistoUri: 'suorituksentyyppi'
-      },
-      perusteenDiaarinumero: peruste
-    },
-    toimipiste: oppilaitos,
-    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
-    suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
-    tyyppi: oppimäärä,
-    osasuoritukset: oppiaineet
-  }
 }
 
 const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>

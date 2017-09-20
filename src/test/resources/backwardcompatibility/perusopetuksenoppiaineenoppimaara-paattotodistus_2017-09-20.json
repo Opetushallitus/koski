@@ -130,7 +130,7 @@
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetus",
+      "koodiarvo" : "aikuistenperusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]

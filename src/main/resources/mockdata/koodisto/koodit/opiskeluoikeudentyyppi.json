@@ -20,6 +20,16 @@
     "versio" : 1
   },
   {
+    "koodiUri" : "opiskeluoikeudentyyppi_aikuistenperusopetus",
+    "koodiArvo" : "aikuistenperusopetus",
+    "metadata" : [ {
+      "nimi" : "Aikuisten perusopetus",
+      "lyhytNimi" : "Aikuisten perusopetus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
     "koodiUri" : "opiskeluoikeudentyyppi_lukiokoulutus",
     "koodiArvo" : "lukiokoulutus",
     "metadata" : [ {

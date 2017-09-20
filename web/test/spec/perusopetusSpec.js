@@ -324,14 +324,14 @@ describe('Perusopetus', function() {
           'Matematiikka 9\n' +
           'Kemia 7\n' +
           'Fysiikka 9\n' +
-          'Biologia 9 *\n' +
+          'Biologia 9\n' +
           'Maantieto 9\n' +
           'Musiikki 7\n' +
           'Kuvataide 8\n' +
           'Kotitalous 8\n' +
           'Terveystieto 8\n' +
           'Käsityö 9\n' +
-          'Liikunta 9 **\n' +
+          'Liikunta 9\n' +
           'Valinnaiset oppiaineet\n' +
           'Oppiaine Arvosana Laajuus\n' +
           'Valinnainen b1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
@@ -339,8 +339,7 @@ describe('Perusopetus', function() {
           'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
           'Valinnainen b2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
           'Tietokoneen hyötykäyttö 9\n' +
-          'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
-          '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+          'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
         )
       })
     })
@@ -1429,6 +1428,7 @@ describe('Perusopetus', function() {
               before(
                 opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
                 addOppija.selectOppilaitos('Kulosaaren ala-aste'),
+                addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
                 addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
                 addOppija.selectOppiaine('Fysiikka'),
                 addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka')
@@ -1451,9 +1451,9 @@ describe('Perusopetus', function() {
           expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Perusopetus',
             'Perusopetukseen valmistava opetus',
             'Perusopetuksen lisäopetus',
+            'Aikuisten perusopetus',
             'Ammatillinen koulutus'])
         })
-
         describe('Opiskeluoikeuden lisäys', function() {
           before(
             addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
@@ -1476,6 +1476,7 @@ describe('Perusopetus', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärä')
       )
@@ -1490,6 +1491,7 @@ describe('Perusopetus', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärän alkuvaihe'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärän alkuvaihe')
       )
@@ -1543,11 +1545,15 @@ describe('Perusopetus', function() {
     })
 
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
-      before(prepareForNewOppija('kalle', '230872-7258'), addOppija.enterValidDataPerusopetus())
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
+      )
 
       describe('Käyttöliittymän tila', function() {
         it('Näytetään oppimäärävaihtoehdot', function() {
-          expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe', 'Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
+          expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe', 'Perusopetuksen oppiaineen oppimäärä'])
         })
       })
 
