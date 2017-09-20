@@ -10,7 +10,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
     application.oppilaitosRepository.oppilaitokset(koskiSession).toList
   }
 
-  val perusopetuksenTyypit = List("perusopetus", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus")
+  val perusopetuksenTyypit = List("perusopetus", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "aikuistenperusopetus")
   val esiopetuksenTyypit = List("esiopetus")
   val ammatillisenTyypit = List("ammatillinenkoulutus")
 

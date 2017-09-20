@@ -29,8 +29,7 @@ const UusiPerusopetuksenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => is
 
 UusiPerusopetuksenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
     let tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
-    return tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
-  }
+    return (tyyppi == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0) || tyyppi == 'aikuistenperusopetus' }
 UusiPerusopetuksenSuoritusPopup.addSuoritusTitle = (opiskeluoikeus) =>
   <Text name={isOppiaineenSuoritus(opiskeluoikeus) ? 'lisää oppiaineen suoritus' : 'lisää vuosiluokan suoritus'}/>
 
@@ -38,6 +37,7 @@ let isOppiaineenSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'suorit
 
 export default UusiPerusopetuksenSuoritusPopup
 
+// TODO: splittaa aikuisten jutut omaan tiedostoon (tulossa myös ammatillinen)
 let oppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()

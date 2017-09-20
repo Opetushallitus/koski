@@ -6,7 +6,7 @@ import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 
 export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
-  let diaarinumerotP = diaarinumerot(suoritusTyyppiP)
+  let diaarinumerotP = suoritusTyyppiP.flatMapLatest(tyyppi =>  !tyyppi ? [] : diaarinumerot(tyyppi)).toProperty()
   let selectedOptionP = Bacon.combineWith(diaarinumerotP, perusteAtom, (options, selected) => options.find(o => o.koodiarvo == selected))
   let selectOption = (option) => {
     perusteAtom.set(option && option.koodiarvo)
@@ -33,8 +33,8 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
 }
 
 
-export const diaarinumerot = suoritusTyyppiP => {
-  const koulutustyyppiP = suoritusTyyppiP.map(tyyppi => {
+export const diaarinumerot = tyyppi => {
+  const koulutustyyppi = () => {
     if (tyyppi.koodiarvo == 'perusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
       return '16'
     }
@@ -50,9 +50,9 @@ export const diaarinumerot = suoritusTyyppiP => {
     if (tyyppi.koodiarvo == 'esiopetuksensuoritus') {
       return '15'
     }
-  }).skipDuplicates()
+  }
 
-  return koulutustyyppiP.flatMapLatest(tyyppi => tyyppi
-    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${tyyppi}`)
-    : []).toProperty()
+  return koulutustyyppi()
+    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi()}`)
+    : []
 }
