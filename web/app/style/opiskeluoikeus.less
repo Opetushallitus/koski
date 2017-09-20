@@ -434,16 +434,17 @@
       }
 
       .suoritus-tabs {
-        padding: 0;
-        list-style: none;
         margin-top: 20px;
         border-bottom: 1px solid #AEAEAF;
         margin-bottom: 30px;
-
-        > li {
+        > ul {
+          display: inline-block;
+          padding: 0;
+          list-style: none;
+        }
+        .tab {
           display: inline-block;
           padding: 5px 40px;
-          transform: translate(0, 1px);
           &.selected {
             background: white;
             border-left: 1px solid #AEAEAE;
@@ -453,7 +454,6 @@
           a {
             color: @color-link-blue;
           }
-
           &.add-suoritus {
             font-size: 0.8em;
           }

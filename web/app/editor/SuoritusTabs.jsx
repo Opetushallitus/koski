@@ -1,50 +1,37 @@
 import React from 'baret'
-import Atom from 'bacon.atom'
 import R from 'ramda'
 import {modelData, modelTitle} from './EditorModel.js'
-import {onLopputilassa} from './OpiskeluoikeudenTilaEditor.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
-import UusiSuoritusPopup from './UusiSuoritusPopup.jsx'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 import {suorituksenTyyppi, suoritusTitle, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, luokkaAste} from './Perusopetus'
+import UusiSuoritusLink from '../uusisuoritus/UusiSuoritusLink.jsx'
 
 export const SuoritusTabs = ({ model, suoritukset }) => {
-  let addingAtom = Atom(false)
   let uusiSuoritusCallback = (suoritus) => {
-    if (suoritus) {
-      pushModel(suoritus, model.context.changeBus)
-      let suoritukset2 = [suoritus].concat(suoritukset)
-      assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
-      navigateTo(urlForTab(suoritukset2, 0))
-    } else {
-      addingAtom.set(false)
-    }
+    pushModel(suoritus, model.context.changeBus)
+    let suoritukset2 = [suoritus].concat(suoritukset)
+    assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
+    navigateTo(urlForTab(suoritukset2, 0))
   }
   let tabTitle = (suoritusModel) => suorituksenTyyppi(suoritusModel) == 'perusopetuksenoppimaara' ? <Text name="Päättötodistus"/> : suoritusTitle(suoritusModel)
 
-  return (<ul className="suoritus-tabs">
+  return (<div className="suoritus-tabs"><ul>
       {
         suoritukset.map((suoritusModel, i) => {
           let selected = i === suoritusTabIndex(suoritukset)
           let titleEditor = tabTitle(suoritusModel)
-          return (<li className={selected ? 'selected': null} key={i}>
+          return (<li className={selected ? 'tab selected': 'tab'} key={i}>
             { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link>}
           </li>)
         })
       }
-      {
-        model.context.edit && !onLopputilassa(model) && UusiSuoritusPopup.canAddSuoritus(model) && (
-          <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus">{''}</span>{UusiSuoritusPopup.addSuoritusTitle(model)}</a></li>
-        )
-      }
-      {
-        addingAtom.map(adding => adding && <UusiSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
-      }
-    </ul>
+      </ul>
+      <UusiSuoritusLink model={model} callback={uusiSuoritusCallback}/>
+    </div>
   )}
 
 export const assignTabNames = (suoritukset) => {

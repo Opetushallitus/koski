@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
 import {
   accumulateModelStateAndValidity,
   contextualizeSubModel,
@@ -9,10 +9,10 @@ import {
   modelLookup,
   modelProperties,
   pushModelValue
-} from './EditorModel'
-import ModalDialog from './ModalDialog.jsx'
+} from '../editor/EditorModel'
+import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
-import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
 
 const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {

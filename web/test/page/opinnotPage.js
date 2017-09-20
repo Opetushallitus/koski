@@ -16,21 +16,21 @@ function OpinnotPage() {
     },
     valitseSuoritus: function(opiskeluoikeusIndex, nimi) {
       return function() {
-        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs li:contains(' + nimi + ')')
+        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs > ul > li:contains(' + nimi + ')')
         if (!tab.hasClass('selected')) {
           return click(findSingle('a', tab.eq(0)))()
         }
       }
     },
     suoritusOnValittu: function(opiskeluoikeusIndex, nimi) {
-      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs li:contains(' + nimi + ')')
+      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs > ul > li:contains(' + nimi + ')')
       return tab.hasClass('selected')
     },
     suoritusTabs: function(opiskeluoikeusIndex) {
-      return textsOf(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), ('.suoritus-tabs > li:not(.add-suoritus)')))
+      return textsOf(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), ('.suoritus-tabs > ul > li')))
     },
     suoritusTabIndex: function(opiskeluoikeusIndex){
-      var tabs = toArray(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), '.suoritus-tabs li'))
+      var tabs = toArray(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), '.suoritus-tabs > ul > li'))
       for (var i in tabs) {
         if (S(tabs[i]).hasClass('selected')) return parseInt(i)
       }
@@ -75,7 +75,7 @@ function OpinnotPage() {
       )
     },
     lisääSuoritusVisible: function() {
-      return S(".add-suoritus").is(":visible")
+      return S(".add-suoritus a").is(":visible")
     },
     lisääSuoritus: function() {
       if (!api.lisääSuoritusDialog().isVisible()) {

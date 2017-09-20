@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
 import {
   accumulateModelStateAndValidity,
   addContext,
@@ -14,12 +14,12 @@ import {
   modelProperties,
   modelSet,
   modelSetValue
-} from './EditorModel'
-import {EnumEditor} from './EnumEditor.jsx'
-import ModalDialog from './ModalDialog.jsx'
+} from '../editor/EditorModel'
+import {EnumEditor} from '../editor/EnumEditor.jsx'
+import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import Text from '../Text.jsx'
-import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
+import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../editor/Perusopetus'
 
 const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
