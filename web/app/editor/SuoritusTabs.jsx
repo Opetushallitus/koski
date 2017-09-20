@@ -30,7 +30,7 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
         })
       }
       </ul>
-      <UusiSuoritusLink model={model} callback={uusiSuoritusCallback}/>
+      <UusiSuoritusLink opiskeluoikeus={model} callback={uusiSuoritusCallback}/>
     </div>
   )}
 

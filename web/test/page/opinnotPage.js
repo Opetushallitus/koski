@@ -77,14 +77,8 @@ function OpinnotPage() {
     lisääSuoritusVisible: function() {
       return S(".add-suoritus a").is(":visible")
     },
-    lisääSuoritus: function() {
-      if (!api.lisääSuoritusDialog().isVisible()) {
-        return seq(click(S(".add-suoritus a")), wait.until(api.lisääSuoritusDialog().isVisible))()
-      }
-    },
-    lisääSuoritusDialog: function() {
-      return LisääSuoritusDialog()
-    },
+    lisääSuoritusDialog: LisääSuoritusDialog,
+    lisääSuoritus: click(findSingle(".add-suoritus a")),
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
@@ -393,6 +387,11 @@ function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
   var buttonElem = findSingle('button', elem)
   var api = _.merge({
+    open: function() {
+      if (!api.isVisible()) {
+        return seq(click(S(".add-suoritus a")), wait.until(api.isVisible))()
+      }
+    },
     isVisible: function() {
       return isElementVisible(elem)
     },

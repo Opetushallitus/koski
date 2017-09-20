@@ -1,45 +1,50 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {onLopputilassa} from '../editor/OpiskeluoikeudenTilaEditor.jsx'
-import UusiPerusopetuksenVuosiluokanSuoritusPopup from './UusiPerusopetuksenVuosiluokanSuoritusPopup.jsx'
-import UusiPerusopetuksenOppiaineenSuoritusPopup from './UusiPerusopetuksenOppiaineenSuoritusPopup.jsx'
+import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluokanSuoritus.jsx'
+import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus.jsx'
+import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus.jsx'
+import UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus from './UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus.jsx'
 
-export default ({model, callback}) => {
-  let addingAtom = Atom(false)
-  let uusiSuoritusCallback = (suoritus) => {
-    if (suoritus) {
-      callback(suoritus)
-    } else {
-      addingAtom.set(false)
-    }
-  }
+export default ({opiskeluoikeus, callback}) => {
+  return (<span className="add-suoritus tab">{
+    opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && findPopUps(opiskeluoikeus).map((PopUp, i) => {
+      let addingAtom = Atom(false)
+      let resultCallback = (suoritus) => {
+        if (suoritus) {
+          callback(suoritus)
+        } else {
+          addingAtom.set(false)
+        }
+      }
 
-  return (<span className="add-suoritus tab">
-    {
-      model.context.edit && !onLopputilassa(model) && canAddSuoritus(model) && (
-        <a className="add-suoritus-link" onClick={() => { addingAtom.modify(x => !x) }}><span className="plus">{''}</span>{addSuoritusTitle(model)}</a>
-      )
-    }
-    {
-      addingAtom.map(adding => adding && <UusiSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
-    }
-  </span>)
+      let startAdding = () => {
+        if (PopUp.createSuoritus) {
+          callback(PopUp.createSuoritus(opiskeluoikeus))
+        } else {
+          addingAtom.modify(x => !x)
+        }
+      }
+
+      return (<span key={i}>
+        {
+          opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && (
+            <a className="add-suoritus-link" onClick={startAdding}><span className="plus">{''}</span>{PopUp.addSuoritusTitle(opiskeluoikeus)}</a>
+          )
+        }
+        {
+          addingAtom.map(adding => adding && <PopUp {...{opiskeluoikeus, resultCallback}}/>)
+        }
+      </span>)
+    })
+  }</span>)
 }
 
+const popups = [
+  UusiPerusopetuksenOppiaineenOppimääränSuoritus,
+  UusiPerusopetuksenVuosiluokanSuoritus,
+  UusiAikuistenPerusopetuksenOppimaaranSuoritus,
+  UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus
+]
 
-const UusiSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
-  let PopUp = findPopUp(opiskeluoikeus)
-  return <PopUp {...{opiskeluoikeus, resultCallback}}/>
-}
-
-const canAddSuoritus = (opiskeluoikeus) => !!findPopUp(opiskeluoikeus)
-const addSuoritusTitle = (opiskeluoikeus) => findPopUp(opiskeluoikeus).addSuoritusTitle(opiskeluoikeus)
-
-const popups = [UusiPerusopetuksenOppiaineenSuoritusPopup, UusiPerusopetuksenVuosiluokanSuoritusPopup]
-const findPopUp = (opiskeluoikeus) => popups.find(popup => popup.canAddSuoritus(opiskeluoikeus))
-
-/*
-const UusiAikuistenPerusopetuksenPäättövaiheenOpintojenSuoritus = ({}) => {
-
-}
-*/
+const findPopUps = (opiskeluoikeus) => popups.filter(popup => popup.canAddSuoritus(opiskeluoikeus))

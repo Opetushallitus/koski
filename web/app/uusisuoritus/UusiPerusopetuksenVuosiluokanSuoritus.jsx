@@ -6,13 +6,10 @@ import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
 import {
   accumulateModelStateAndValidity,
   addContext,
-  contextualizeSubModel,
   modelData,
   modelItems,
   modelLens,
-  modelLookup,
   modelProperties,
-  modelSet,
   modelSetValue
 } from '../editor/EditorModel'
 import {EnumEditor} from '../editor/EnumEditor.jsx'
@@ -20,6 +17,7 @@ import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import Text from '../Text.jsx'
 import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../editor/Perusopetus'
+import {copyToimipiste, newSuoritusProto} from '../editor/Suoritus'
 
 const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -28,7 +26,7 @@ const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallb
   initialSuoritusModel = L.modify(L.compose(modelLens('koulutusmoduuli.tunniste'), 'alternativesPath'), (url => url + '/' + puuttuvatLuokkaAsteet(opiskeluoikeus).join(',')) , initialSuoritusModel)
   let viimeisin = viimeisinLuokkaAste(opiskeluoikeus)
   if (viimeisin) {
-    initialSuoritusModel = modelSet(initialSuoritusModel, modelLookup(viimeisin, 'toimipiste'), 'toimipiste')
+    initialSuoritusModel = copyToimipiste(viimeisin, initialSuoritusModel)
   }
 
   initialSuoritusModel = addContext(initialSuoritusModel, { editAll: true })
@@ -68,13 +66,6 @@ UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => 
 UusiPerusopetuksenVuosiluokanSuoritusPopup.addSuoritusTitle = () => <Text name="lisää vuosiluokan suoritus"/>
 
 export default UusiPerusopetuksenVuosiluokanSuoritusPopup
-
-let newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
-  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
-  let indexForNewItem = modelItems(suoritukset).length
-  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
-  return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
-}
 
 let valittuLuokkaAsteP = (model) => {
   let luokkaAsteLens = modelLens('koulutusmoduuli.tunniste')

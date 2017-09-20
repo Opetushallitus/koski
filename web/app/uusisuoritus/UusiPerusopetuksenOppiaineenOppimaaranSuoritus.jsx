@@ -3,7 +3,6 @@ import Bacon from 'baconjs'
 import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
 import {
   accumulateModelStateAndValidity,
-  contextualizeSubModel,
   modelData,
   modelItems,
   modelLookup,
@@ -14,6 +13,7 @@ import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
+import {newSuoritusProto, suorituksenTyyppi} from '../editor/Suoritus'
 
 const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
@@ -53,17 +53,10 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
   return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus' &&
-    !!modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenoppiaineenoppimaara')
+    !!modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'perusopetuksenoppiaineenoppimaara')
 }
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.addSuoritusTitle = () =>
   <Text name="lisää oppiaineen suoritus"/>
 
 export default UusiPerusopetuksenOppiaineenSuoritusPopup
-
-let newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
-  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
-  let indexForNewItem = modelItems(suoritukset).length
-  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
-  return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
-}

@@ -1,4 +1,14 @@
-import {lensedModel, modelData, modelItems, modelLens, modelSetValue, modelSetValues, modelTitle} from './EditorModel'
+import {
+  contextualizeSubModel,
+  lensedModel,
+  modelData,
+  modelItems,
+  modelLens,
+  modelLookup, modelSet,
+  modelSetValue,
+  modelSetValues,
+  modelTitle
+} from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
@@ -52,3 +62,16 @@ export const suoritusTitle = (suoritus) => {
     default: return title
   }
 }
+
+export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
+  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
+  let indexForNewItem = modelItems(suoritukset).length
+  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
+  return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
+}
+
+export const copyToimipiste = (from, to) => modelSet(to, modelLookup(from, 'toimipiste'), 'toimipiste')
+
+export const aikuistenPerusopetuksenOppimääränSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaara')
+
+export const aikuistenPerusopetuksenAlkuvaiheenSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaaranalkuvaihe')
