@@ -5,7 +5,7 @@ import {modelData, modelTitle} from './EditorModel.js'
 import {onLopputilassa} from './OpiskeluoikeudenTilaEditor.jsx'
 import Link from '../Link.jsx'
 import {currentLocation} from '../location.js'
-import UusiPerusopetuksenSuoritusPopup from './UusiPerusopetuksenSuoritusPopup.jsx'
+import UusiSuoritusPopup from './UusiSuoritusPopup.jsx'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 import {suorituksenTyyppi, suoritusTitle, suoritusValmis} from './Suoritus'
@@ -37,12 +37,12 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
         })
       }
       {
-        model.context.edit && !onLopputilassa(model) && UusiPerusopetuksenSuoritusPopup.canAddSuoritus(model) && (
-          <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus">{''}</span>{UusiPerusopetuksenSuoritusPopup.addSuoritusTitle(model)}</a></li>
+        model.context.edit && !onLopputilassa(model) && UusiSuoritusPopup.canAddSuoritus(model) && (
+          <li className="add-suoritus"><a onClick={() => { addingAtom.modify(x => !x) }}><span className="plus">{''}</span>{UusiSuoritusPopup.addSuoritusTitle(model)}</a></li>
         )
       }
       {
-        addingAtom.map(adding => adding && <UusiPerusopetuksenSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
+        addingAtom.map(adding => adding && <UusiSuoritusPopup opiskeluoikeus={model} resultCallback={uusiSuoritusCallback}/>)
       }
     </ul>
   )}
