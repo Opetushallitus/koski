@@ -33,26 +33,25 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
 }
 
 
-export const diaarinumerot = tyyppi => {
-  const koulutustyyppi = () => {
-    if (tyyppi.koodiarvo == 'perusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenvuosiluokka') {
-      return '16'
-    }
-    if (tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaara' || tyyppi.koodiarvo == 'perusopetuksenoppiaineenoppimaara' || tyyppi.koodiarvo == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
-      return '17'
-    }
-    if (tyyppi.koodiarvo == 'perusopetuksenlisaopetus') {
-      return '6'
-    }
-    if (tyyppi.koodiarvo == 'perusopetukseenvalmistavaopetus') {
-      return '22'
-    }
-    if (tyyppi.koodiarvo == 'esiopetuksensuoritus') {
-      return '15'
-    }
-  }
+export const diaarinumerot = suoritusTyyppi => {
+  let koulutustyyppi = koulutustyyppiKoodi(suoritusTyyppi.koodiarvo)
+  return koulutustyyppi ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi}`) : []
+}
 
-  return koulutustyyppi()
-    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi()}`)
-    : []
+const koulutustyyppiKoodi = tyyppi => {
+  if (tyyppi == 'perusopetuksenoppimaara' || tyyppi == 'perusopetuksenvuosiluokka') {
+    return '16'
+  }
+  if (tyyppi == 'aikuistenperusopetuksenoppimaara' || tyyppi == 'perusopetuksenoppiaineenoppimaara' || tyyppi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
+    return '17'
+  }
+  if (tyyppi == 'perusopetuksenlisaopetus') {
+    return '6'
+  }
+  if (tyyppi == 'perusopetukseenvalmistavaopetus') {
+    return '22'
+  }
+  if (tyyppi == 'esiopetuksensuoritus') {
+    return '15'
+  }
 }
