@@ -41,7 +41,7 @@ describe('Oppijataulukko', function() {
     })
 
     describe('koulutuksen tyypillä', function() {
-      before(page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'), page.oppijataulukko.filterBy('koulutus', 'Perusopetuksen oppiaineen oppimäärä'))
+      before(page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('tyyppi', 'Aikuisten perusopetus'), page.oppijataulukko.filterBy('koulutus', 'Perusopetuksen oppiaineen oppimäärä'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Oppiaineenkorottaja, Olli' ])
       })
@@ -92,11 +92,11 @@ describe('Oppijataulukko', function() {
     describe('nimellä', function() {
       before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('alkamispäivä'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Aikuisopiskelija, Aini', 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Monikoululainen, Miia', 'Monikoululainen, Miia',  'Oppiaineenkorottaja, Olli', 'Oppija, Oili', 'Toiminta, Tommi', 'Ysiluokkalainen, Ylermi' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Monikoululainen, Miia', 'Monikoululainen, Miia',  'Oppija, Oili', 'Toiminta, Tommi', 'Ysiluokkalainen, Ylermi' ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'Ysiluokkalainen, Ylermi', 'Toiminta, Tommi', 'Oppija, Oili', 'Oppiaineenkorottaja, Olli', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Hetuton, Heikki', 'Aikuisopiskelija, Aini' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([ 'Ysiluokkalainen, Ylermi', 'Toiminta, Tommi', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Hetuton, Heikki' ])
         })
       })
     })
