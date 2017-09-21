@@ -1485,6 +1485,20 @@ describe('Perusopetus', function() {
         expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
         expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
+
+      describe('Alkuvaiheen opintojen lisääminen', function() {
+        before(
+          editor.edit, opinnot.lisääSuoritus
+        )
+
+        it('Näytetään uusi suoritus', function() {
+          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe])
+        })
+
+        it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
+          expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+        })
+      })
     })
 
     describe('Aikuisten perusopetuksen alkuvaihe', function() {
@@ -1557,9 +1571,9 @@ describe('Perusopetus', function() {
           //expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Aikuisten perusopetus')
         })
 
-        // TODO: testi sille, että lisäyslinkkiä ei enää näy
-
-        // TODO: testi alkuvaiheen lisäykselle, kun päättövaihe on lisätty
+        it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
+          expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+        })
       })
     })
 
