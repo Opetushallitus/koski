@@ -3,26 +3,22 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.Tables.OpiskeluOikeudet
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{OrganisaatioWithOid, _}
 
 trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
 
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
-  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(alkamispäivä),
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
-    suoritukset = List(autoalanPerustutkinnonSuoritus())
+    suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste))
   )
 
   def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(

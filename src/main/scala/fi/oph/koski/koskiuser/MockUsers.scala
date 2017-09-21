@@ -22,6 +22,7 @@ object MockUsers {
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
   val stadinAmmattiopistoKatselija = MockUser("katselija", "katselija", "1.2.246.562.24.99999999985", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosKatselija)))
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.helsinginKaupunki, vastuukäyttäjä)))
+  val hkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosTallentaja)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
 
@@ -40,7 +41,8 @@ object MockUsers {
     kahdenOrganisaatioPalvelukäyttäjä,
     omattiedot,
     stadinVastuukäyttäjä,
-    omniaTallentajaEiLuottamuksellinen
+    omniaTallentajaEiLuottamuksellinen,
+    hkiTallentaja
   )
 }
 

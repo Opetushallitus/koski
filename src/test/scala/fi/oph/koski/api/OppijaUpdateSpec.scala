@@ -4,12 +4,12 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.jyväskylä
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, kalle, paakayttaja}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -61,6 +61,11 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
             )) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
             }
+          }
+        }
+        "Oppisopimustoimisto hyväksytään opiskeluoikeuden oppilaitokseksi" in {
+          putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo, toimpiste = stadinOppisopimuskeskus).copy(oppilaitos = None), headers = authHeaders(hkiTallentaja) ++ jsonContent) {
+            verifyResponseStatus(200)
           }
         }
       }

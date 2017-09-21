@@ -25,6 +25,7 @@ object MockOrganisaatiot {
   val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val ylioppilastutkintolautakunta = "1.2.246.562.10.43628088406"
   val aapajoenKoulu = "1.2.246.562.10.26197302388"
+  val stadinOppisopimuskeskus = "1.2.246.562.10.88592529245"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,

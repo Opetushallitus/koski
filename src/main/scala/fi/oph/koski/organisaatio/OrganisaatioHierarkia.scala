@@ -16,7 +16,7 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
   }
 
   def toOrganisaatio: OrganisaatioWithOid =
-    if (organisaatiotyypit.contains("OPPILAITOS")) {
+    if (organisaatiotyypit.contains("OPPILAITOS") || organisaatiotyypit.contains("OPPISOPIMUSTOIMIPISTE")) {
       Oppilaitos(oid, oppilaitosnumero, Some(nimi), kotipaikka)
     } else if (organisaatiotyypit.contains("KOULUTUSTOIMIJA")) {
       Koulutustoimija(oid, Some(nimi), yTunnus, kotipaikka)
