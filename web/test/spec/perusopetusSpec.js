@@ -1562,17 +1562,22 @@ describe('Perusopetus', function() {
           editor.edit, opinnot.lisääSuoritus
         )
 
-        it('Näytetään uusi suoritus', function() {
-          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärän alkuvaihe', 'Aikuisten perusopetuksen oppimäärä'])
+        describe('Lisäyksen jälkeen', function() {
+          it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
+            expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+          })
         })
 
-        it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
-          // TODO: nyt siellä näkyy vielä "oppimäärän alkuvaihe", kun pitäis valita näistä suorituksista nimenomaan se oppimäärä
-          //expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Aikuisten perusopetus')
-        })
+        describe('Tallennuksen jälkeen', function() {
+          before(editor.saveChanges)
+          it('Näytetään uusi suoritus', function() {
+            expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
+          })
 
-        it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
-          expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+          it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
+          })
+
         })
       })
     })

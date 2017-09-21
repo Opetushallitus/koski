@@ -25,6 +25,7 @@ object OppijaEditorModel extends Timing {
         val oppilaitokset = opiskeluoikeudet.groupBy(_.getOppilaitos).map {
           case (oppilaitos, opiskeluoikeudet) =>
             OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).map {
+              case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
               case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
               case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
               case oo: Any => oo
@@ -38,6 +39,17 @@ object OppijaEditorModel extends Timing {
 
   def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+  }
+
+  def aikuistenPerusopetuksenSuoritustenJärjestysKriteeri(s: AikuistenPerusopetuksenPäätasonSuoritus) = {
+    val primary = s match {
+      case s: AikuistenPerusopetuksenOppimääränSuoritus => 0
+      case s: AikuistenPerusopetuksenAlkuvaiheenSuoritus => 1
+      case s: PerusopetuksenOppiaineenOppimääränSuoritus => 2
+      case _ => 100
+    }
+    val secondary = s.valmis
+    (primary, secondary)
   }
 
   def perusopetuksenSuoritustenJärjestysKriteeri(s: PerusopetuksenPäätasonSuoritus) = {
