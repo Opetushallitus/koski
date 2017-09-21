@@ -13,12 +13,21 @@ import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
 import Text from '../Text.jsx'
-import {newSuoritusProto, suorituksenTyyppi} from '../editor/Suoritus'
+import {
+  copyToimipiste,
+  newSuoritusProto,
+  perusopetuksenOppiaineenOppimääränSuoritus,
+  suorituksenTyyppi
+} from '../editor/Suoritus'
 
 const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
+  let edellinenOppiaine = perusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
+  if (edellinenOppiaine) {
+    initialSuoritusModel = copyToimipiste(edellinenOppiaine, initialSuoritusModel)
+  }
   let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
   let validP = errorP.not()
 

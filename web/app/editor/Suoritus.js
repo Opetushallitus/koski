@@ -73,5 +73,5 @@ export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
 export const copyToimipiste = (from, to) => modelSet(to, modelLookup(from, 'toimipiste'), 'toimipiste')
 
 export const aikuistenPerusopetuksenOppimääränSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaara')
-
 export const aikuistenPerusopetuksenAlkuvaiheenSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaaranalkuvaihe')
+export const perusopetuksenOppiaineenOppimääränSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'perusopetuksenoppiaineenoppimaara')
