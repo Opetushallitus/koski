@@ -1488,15 +1488,11 @@ describe('Perusopetus', function() {
 
       describe('Alkuvaiheen opintojen lisääminen', function() {
         before(
-          editor.edit, opinnot.lisääSuoritus
+          editor.edit, opinnot.lisääSuoritus, editor.saveChanges
         )
 
         it('Näytetään uusi suoritus', function() {
           expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
-        })
-
-        it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
-          expect(opinnot.lisääSuoritusVisible()).to.equal(false)
         })
       })
     })
