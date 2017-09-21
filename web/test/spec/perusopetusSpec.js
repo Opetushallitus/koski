@@ -1492,7 +1492,7 @@ describe('Perusopetus', function() {
         )
 
         it('Näytetään uusi suoritus', function() {
-          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe])
+          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
         })
 
         it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
