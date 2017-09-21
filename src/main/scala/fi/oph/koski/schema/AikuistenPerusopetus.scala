@@ -35,9 +35,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
-  @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
-  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
