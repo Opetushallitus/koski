@@ -2188,8 +2188,6 @@ describe('Perusopetus', function() {
           'Oppiaine Äidinkieli ja kirjallisuus\n' +
           'Kieli Suomen kieli ja kirjallisuus\n' +
           'Peruste 19/011/2015\n' +
-          'Yksilöllistetty oppimäärä ei\n' +
-          'Painotettu opetus ei\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Arvosana 9\n' +
           'Suoritustapa Erityinen tutkinto\n' +
