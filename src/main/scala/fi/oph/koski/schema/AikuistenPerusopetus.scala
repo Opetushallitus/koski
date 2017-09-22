@@ -123,6 +123,7 @@ case class PaikallinenAikuistenPerusopetuksenKurssi(
 @Title("Aikuisten perusopetuksen opetussuunnitelman 2015 mukainen kurssi")
 case class ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
   @KoodistoUri("aikuistenperusopetuksenkurssit2015")
+  @Title("Nimi")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
@@ -130,6 +131,7 @@ case class ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
 @Title("Aikuisten perusopetuksen päättövaiheen opetussuunnitelman 2017 mukainen kurssi")
 case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   @KoodistoUri("aikuistenperusopetuksenpaattovaiheenkurssit2017")
+  @Title("Nimi")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
