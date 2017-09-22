@@ -387,6 +387,9 @@
           width: initial;
           margin-right: 5px;
         }
+        > div {
+          margin-top: 5px;
+        }
       }
     }
 
@@ -486,6 +489,10 @@
 
           .vahvistus {
             color: @color-label;
+
+            > span:not(:nth-child(1)):not(:nth-child(2)) {
+              margin-left: 10px;
+            }
           }
         }
         .controls {

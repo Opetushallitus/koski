@@ -46,9 +46,15 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
       onRemoval={poistettavaNimi => removeBus.push(poistettavaNimi)}
     />
     {
-      isNewItem(model) && (<span className="uusi-henkilo">
-        <span className="nimi"><Editor model={model} path="nimi" placeholder={t('nimi')}/></span>
-        <span className="titteli"><Editor model={model} path="titteli" placeholder={t('titteli')}/></span></span>
+      isNewItem(model) && (<div className="uusi-henkilo">
+          <div>
+            <span className="nimi"><Editor model={model} path="nimi" placeholder={t('nimi')}/></span>
+            <span className="titteli"><Editor model={model} path="titteli" placeholder={t('titteli')}/></span>
+          </div>
+          <div>
+            <Editor model={model} path="organisaatio" placeholder={t('organisaatio')}/>
+          </div>
+        </div>
       )
     }
   </span>)
