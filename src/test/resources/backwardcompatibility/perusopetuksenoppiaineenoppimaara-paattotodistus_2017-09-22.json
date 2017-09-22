@@ -54,8 +54,6 @@
         "pakollinen" : true,
         "perusteenDiaarinumero" : "19/011/2015"
       },
-      "yksilöllistettyOppimäärä" : false,
-      "painotettuOpetus" : false,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
