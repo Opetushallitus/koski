@@ -71,13 +71,25 @@
             display: inline-block;
             max-width: 100px;
           }
-          .kurssit {
+          &.kurssit td {
             padding-left: 20px;
             margin-left: 20px;
             margin-bottom: 5px;
             background: @color-neutral-gray;
-            .kurssi {
-              padding-right: 10px;
+            > ul.kurssit {
+              display: inline-block;
+              vertical-align: middle;
+              .kurssi {
+                padding-right: 10px;
+              }
+            }
+            > .uusi-kurssi {
+              .AddSymbol;
+            }
+            .uusi-kurssi-modal {
+              .modal-content {
+                min-width: 400px;
+              }
             }
           }
         }

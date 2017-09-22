@@ -342,6 +342,25 @@ describe('Perusopetus', function() {
           'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
         )
       })
+
+      describe('Tietojen muuttaminen', function() {
+        describe('Kurssin lisääminen', function() {
+          describe('Valtakunnallinen kurssi', function() {
+            before(
+              editor.edit,
+              opinnot.oppiaineet.oppiaine(0).avaaLisääKurssiDialog,
+              opinnot.oppiaineet.oppiaine(0).lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri')
+            )
+            it('toimii', function() {})
+
+            // TODO: kurssien rajaus oikeaan koodistoon (2015 vs 2017)
+            // TODO: kurssien rajaus oppiaineeseen
+            // TODO: virheen näyttö jos arvosana puuttuu
+            // TODO: arvosanan syöttö
+            // TODO: paikalliset kurssit
+          })
+        })
+      })
     })
 
     describe('Alkuvaiheen opinnot', function() {

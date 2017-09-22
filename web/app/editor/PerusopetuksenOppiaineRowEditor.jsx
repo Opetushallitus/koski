@@ -2,7 +2,6 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
-import {KurssiEditor} from './KurssiEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import * as L from 'partial.lenses'
@@ -10,7 +9,6 @@ import {
   lensedModel,
   modelData,
   modelErrorMessages,
-  modelItems,
   modelLookup,
   modelProperties,
   modelSetValue,
@@ -22,6 +20,7 @@ import {fixTila} from './Suoritus'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
+import {PerusopetuksenKurssitEditor} from './PerusopetuksenKurssitEditor.jsx'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
@@ -105,16 +104,6 @@ export const expandableProperties = (model) => {
   return modelProperties(oppiaine)
     .concat(modelProperties(model))
     .filter(extraPropertiesFilter)
-}
-
-const PerusopetuksenKurssitEditor = ({model}) => {
-  let kurssit = modelItems(model, 'osasuoritukset')
-  if (!kurssit.length) return null
-  return (<tr className="kurssit"><td colSpan="4"><ul className="kurssit">{
-    kurssit.map((kurssi, kurssiIndex) =>
-      <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>
-    )
-  }</ul></td></tr>)
 }
 
 const ArvosanaEditor = ({model}) => {

@@ -151,10 +151,22 @@ function Oppiaineet() {
     var oppiaineElem = typeof indexOrClass == 'number'
       ? findSingle('.oppiaineet tbody:eq(' + indexOrClass + ')')
       : findSingle('.oppiaineet tbody.' + indexOrClass)
-    return _.merge({
-      text: function() { return extractAsText(oppiaineElem) }
+    var oppiaineApi = _.merge({
+      text: function() { return extractAsText(oppiaineElem) },
+      avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi', oppiaineElem)),
+      lisääKurssiDialog: LisääKurssiDialog()
     }, Editor(oppiaineElem))
+    return oppiaineApi
+
+    function LisääKurssiDialog() {
+      return {
+        valitseKurssi: function(kurssi) {
+          return seq(oppiaineApi.propertyBySelector('.uusi-kurssi-modal .kurssi').setValue(kurssi), click(subElement(oppiaineElem, '.uusi-kurssi-modal button')))
+        },
+      }
+    }
   }
+
 }
 
 function TutkinnonOsat(groupId) {
