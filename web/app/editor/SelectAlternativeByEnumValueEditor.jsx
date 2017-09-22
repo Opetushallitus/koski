@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {modelData, modelLookup} from './EditorModel.js'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineetEditor.jsx'
+import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
 import {lensedModel, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 
