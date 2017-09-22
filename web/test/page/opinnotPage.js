@@ -121,7 +121,7 @@ function OpinnotPage() {
 }
 
 function Oppiaineet() {
-  return {
+  let api = {
     isVisible: function() { return S('.oppiaineet h5').is(':visible') },
 
     merkitseOppiaineetValmiiksi: function () {
@@ -129,7 +129,7 @@ function Oppiaineet() {
       var count = 20
       var promises = []
       for (var i = 0; i < count; i++) {
-        var oppiaine = editor.subEditor('.oppiaineet tbody.oppiaine:eq('+i+')')
+        var oppiaine = api.oppiaine(i)
         var arvosana = oppiaine.propertyBySelector('.arvosana')
         if (arvosana.isVisible()) {
           promises.push(arvosana.selectValue('5')())
@@ -141,7 +141,19 @@ function Oppiaineet() {
     uusiOppiaine: function(selector) {
       selector = selector || ""
       return OpinnotPage().opiskeluoikeusEditor().propertyBySelector(selector + ' .uusi-oppiaine')
-    }
+    },
+
+    oppiaine: Oppiaine
+  }
+  return api
+
+  function Oppiaine(indexOrClass) {
+    var oppiaineElem = typeof indexOrClass == 'number'
+      ? findSingle('.oppiaineet tbody:eq(' + indexOrClass + ')')
+      : findSingle('.oppiaineet tbody.' + indexOrClass)
+    return _.merge({
+      text: function() { return extractAsText(oppiaineElem) }
+    }, Editor(oppiaineElem))
   }
 }
 

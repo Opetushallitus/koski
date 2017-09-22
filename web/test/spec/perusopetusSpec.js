@@ -819,7 +819,7 @@ describe('Perusopetus', function() {
       describe('Vieraan kielen valinta', function() {
 
         describe('kielivalinnan muuttaminen', function() {
-          var b1kieli = editor.subEditor('.oppiaineet tbody.oppiaine:eq(1) tr:eq(0)')
+          var b1kieli = opinnot.oppiaineet.oppiaine(1)
           var kieli = b1kieli.propertyBySelector('.oppiaine')
           before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.saveChanges)
           it('muutettu kielivalinta näytetään', function() {
@@ -861,7 +861,7 @@ describe('Perusopetus', function() {
         })
       })
       describe('Oppiaineen arvosanan muutos', function() {
-        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
         before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
 
@@ -904,14 +904,14 @@ describe('Perusopetus', function() {
       describe('Yksilöllistäminen', function() {
         before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),  editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.saveChanges)
         it('toimii', function() {
-          expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 *')
+          expect(opinnot.oppiaineet.oppiaine(0).text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 *')
         })
         after(editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(false), editor.saveChanges, wait.until(page.isSavedLabelShown))
       })
       describe('Painotus', function() {
         before(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
         it('toimii', function() {
-          expect(extractAsText(S('.oppiaineet tbody:eq(0) tr:eq(0)'))).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 **')
+          expect(opinnot.oppiaineet.oppiaine(0).text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 **')
         })
         after(editor.edit, opinnot.expandAll, editor.property('painotettuOpetus').setValue(false), editor.saveChanges)
       })
@@ -1732,7 +1732,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun painetaan Lisää-nappia', function() {
-            var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+            var äidinkieli = opinnot.oppiaineet.oppiaine(0)
             var arvosana = äidinkieli.propertyBySelector('.arvosana')
             before(lisääSuoritus.lisääSuoritus)
             describe('Käyttöliittymän tila', function() {
@@ -1830,7 +1830,7 @@ describe('Perusopetus', function() {
                       })
 
                       describe('Kun merkitään keskeytyneeksi', function() {
-                        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+                        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
 
                         before(
                           opinnot.expandAll,
@@ -2298,7 +2298,7 @@ describe('Perusopetus', function() {
     describe('Tietojen muuttaminen', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
       describe('Oppiaineen arvosanan muutos', function() {
-        var äidinkieli = editor.subEditor('.oppiaineet tbody:eq(0)')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
         describe('Kun annetaan numeerinen arvosana', function() {
           before(editor.edit, arvosana.selectValue('5'), editor.saveChanges)
@@ -2310,7 +2310,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
-        var kurssi = editor.subEditor('.oppiaineet tbody.xxx')
+        var kurssi = opinnot.oppiaineet.oppiaine('xxx')
         var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:eq(0)')
         var kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:eq(1)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
 
@@ -2402,7 +2402,7 @@ describe('Perusopetus', function() {
     })
     describe('Tietojen muuttaminen', function() {
       describe('Oppiaineen arvosanan muutos', function() {
-        var äidinkieli = editor.subEditor('.oppiaineet tbody.ai tr:eq(0)')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
         before(editor.edit, arvosana.selectValue('H'), editor.saveChanges)
         it('muutettu arvosana näytetään', function() {
