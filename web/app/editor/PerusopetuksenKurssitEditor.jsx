@@ -1,5 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
+import R from 'ramda'
 import {KurssiEditor} from './KurssiEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {
@@ -10,6 +11,7 @@ import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {ift} from '../util'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown.jsx'
+import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 
 export const PerusopetuksenKurssitEditor = ({model}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -45,14 +47,30 @@ export const PerusopetuksenKurssitEditor = ({model}) => {
 const UusiPerusopetuksenKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
   let selectedAtom = Atom()
   let validP = selectedAtom
+
+
+  let diaari = modelData(uusiKurssinSuoritus.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  let valtakunnallisetKurssiProtot = filterProtos(koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)), diaari)
+  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
+
   return (<ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
     <h2><Text name="Lisää kurssi"/></h2>
     <span className="kurssi"><UusiKurssiDropdown kurssinSuoritus={uusiKurssinSuoritus}
+                                                 valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
+                                                 paikallinenKurssiProto={paikallinenKurssiProto}
                                                  selected={selectedAtom}
                                                  resultCallback={(x) => selectedAtom.set(x)}
                                                  organisaatioOid={toimipiste}
                                                  placeholder="Lisää kurssi"/></span>
   </ModalDialog>)
+}
+
+const filterProtos = (protot, diaari) => {
+  switch (diaari) {
+    case 'OPH-1280-2017': return protot.filter(proto => proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenpaattovaiheenkurssi2017'))
+    case '19/011/2015': return protot.filter(proto => proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenkurssi2015'))
+    default: return protot
+  }
 }
 
 let createKurssinSuoritus = (osasuoritukset) => {

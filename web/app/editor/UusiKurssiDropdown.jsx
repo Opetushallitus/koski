@@ -1,43 +1,43 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import R from 'ramda'
 import Atom from 'bacon.atom'
 import DropDown from '../Dropdown.jsx'
-import R from 'ramda'
-import {modelData, modelLookup} from './EditorModel'
+import {modelData, modelTitle} from './EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
-import {isPaikallinen, isUusi, koulutusModuuliprototypes} from './Koulutusmoduuli'
+import {isPaikallinen, isUusi} from './Koulutusmoduuli'
 import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 
-export const UusiKurssiDropdown = ({suoritukset = [], organisaatioOid, kurssinSuoritus, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
-  if (!kurssinSuoritus || !kurssinSuoritus.context.edit) return null
+export const UusiKurssiDropdown = ({suoritukset = [], paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-  let kurssiModels = koulutusModuuliprototypes(kurssinSuoritus).filter(R.complement(isPaikallinen))
-  let valtakunnallisetKurssit = completeWithFieldAlternatives(kurssiModels, 'tunniste')
-  let paikallinenProto = koulutusModuuliprototypes(kurssinSuoritus).find(isPaikallinen)
+  let valtakunnallisetKurssit = completeWithFieldAlternatives(valtakunnallisetKurssiProtot, 'tunniste')
+
   let paikallisetKurssit = Atom([])
   let setPaikallisetKurssit = kurssit => paikallisetKurssit.set(kurssit)
 
-  if (paikallinenProto) {
-    getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).onValue(setPaikallisetKurssit)
+  if (paikallinenKurssiProto) {
+    getOrganizationalPreferences(organisaatioOid, paikallinenKurssiProto.value.classes[0]).onValue(setPaikallisetKurssit)
   }
 
+  let displayValue = (kurssi) => modelData(kurssi, 'tunniste.koodiarvo') + ' ' + modelTitle(kurssi, 'tunniste')
   let kurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
+    .map(R.sortBy(displayValue))
 
-  let poistaPaikallinenKurssi = kurssi => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], kurssi).onValue(setPaikallisetKurssit)
+  let poistaPaikallinenKurssi = kurssi => deleteOrganizationalPreference(organisaatioOid, paikallinenKurssiProto.value.classes[0], kurssi).onValue(setPaikallisetKurssit)
 
   return (<div className={'uusi-kurssi'}>
     {
-      elementWithLoadingIndicator(kurssit.map('.length').map(length => length || paikallinenProto
+      elementWithLoadingIndicator(kurssit.map('.length').map(length => length || paikallinenKurssiProto
         ? <DropDown
           options={kurssit}
           keyValue={kurssi => isUusi(kurssi) ? 'uusi' : modelData(kurssi, 'tunniste').koodiarvo}
-          displayValue={kurssi => isUusi(kurssi) ? 'Lisää...' : modelLookup(kurssi, 'tunniste').value.title}
+          displayValue={kurssi => isUusi(kurssi) ? 'Lisää...' : displayValue(kurssi) }
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
-          newItem={paikallinenProto}
+          newItem={paikallinenKurssiProto}
           enableFilter={enableFilter}
           selected={selected}
           isRemovable={isPaikallinen}
