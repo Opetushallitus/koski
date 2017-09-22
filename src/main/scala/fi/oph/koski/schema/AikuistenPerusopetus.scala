@@ -142,10 +142,6 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
   @Flatten
   koulutusmoduuli: PerusopetuksenOppiaine,
-  @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
-  yksilöllistettyOppimäärä: Boolean = false,
-  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
-  painotettuOpetus: Boolean = false,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   @Title("Arvosana")
@@ -160,4 +156,4 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä with SuoritustavallinenPerusopetuksenSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus

@@ -1,3 +1,7 @@
+## 22.9.2017
+
+- Poistettu yksilöllistettyOppimäärä ja painotettuOpetus perusopetuksen oppiaineen oppimäärän suorituksesta
+
 ## 20.9.2017
 
 - Eriytetty aikuisten perusopetus omaksi opiskeluoikeustyypikseen
