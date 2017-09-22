@@ -11,7 +11,7 @@ import {LaajuusEditor} from './LaajuusEditor.jsx'
 import {VahvistusEditor} from './VahvistusEditor.jsx'
 import {KoulutusmoduuliEditor} from './KoulutusmoduuliEditor.jsx'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
-import {JaksoEditor, InlineJaksoEditor} from './JaksoEditor.jsx'
+import {InlineJaksoEditor, JaksoEditor} from './JaksoEditor.jsx'
 import {BooleanEditor} from './BooleanEditor.jsx'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import {ToimipisteEditor} from './ToimipisteEditor.jsx'
@@ -20,7 +20,7 @@ import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 import {OrganisaatioHenkilöEditor} from './OrganisaatioHenkiloEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {PerusteEditor} from './PerusteEditor.jsx'
-import {OppiaineenSuoritusEditor} from './PerusopetuksenOppiaineetEditor.jsx'
+import {PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor.jsx'
 
 export const editorMapping = R.mergeAll([{
   'optional': OptionalEditor,
@@ -47,7 +47,7 @@ export const editorMapping = R.mergeAll([{
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
   'peruste': PerusteEditor,
   // Perusopetus
-  'perusopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor,
-  'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineenSuoritusEditor
+  'perusopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,
+  'perusopetuksenlisaopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor
 
 }, AmmatillinenEditors.editorMapping])
