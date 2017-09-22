@@ -121,7 +121,7 @@ function OpinnotPage() {
 }
 
 function Oppiaineet() {
-  let api = {
+  var api = {
     isVisible: function() { return S('.oppiaineet h5').is(':visible') },
 
     merkitseOppiaineetValmiiksi: function () {
