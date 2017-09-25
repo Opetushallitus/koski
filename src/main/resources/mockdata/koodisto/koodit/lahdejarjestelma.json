@@ -141,5 +141,16 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_msdynamicscrmaes",
+    "koodiArvo": "msdynamicscrm_aes",
+    "metadata": [
+      {
+        "nimi": "MS Dynamics CRM Accountor Enterprise Solutions",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
