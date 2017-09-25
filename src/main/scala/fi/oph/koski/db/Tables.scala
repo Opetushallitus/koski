@@ -147,7 +147,7 @@ object Tables {
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
+  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] =
     if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else {
@@ -156,8 +156,9 @@ object Tables {
         oo <- OpiskeluOikeudet
         if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
       } yield { oo}
-    }
-  }
+    }.filterNot(mitätöity)
+
+  lazy val mitätöity: (OpiskeluoikeusTable) => Rep[Boolean] = _.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === "mitatoity"
 }
 
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)

@@ -5,13 +5,14 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiSession, MockUser, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeudet
+import fi.oph.koski.db.Tables.{OpiskeluOikeudet, OpiskeluOikeudetWithAccessCheck}
+import fi.oph.koski.koskiuser.KoskiSession.systemUser
 
 class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
   "Sisältyvä opiskeluoikeus" - {
@@ -84,7 +85,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
   }
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
-    oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).headOption)
+    oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
   override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 }
