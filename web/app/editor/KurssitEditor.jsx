@@ -45,13 +45,13 @@ export const KurssitEditor = ({model}) => {
       model.context.edit && <a className="uusi-kurssi" onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
     }
     {
-      ift(showUusiKurssiAtom, <UusiPerusopetuksenKurssiPopup resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
+      ift(showUusiKurssiAtom, <UusiKurssiPopup resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
     }
     </span>
   )
 }
 
-const UusiPerusopetuksenKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+const UusiKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
   let selectedAtom = Atom()
   let validP = selectedAtom
   let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
