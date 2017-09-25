@@ -143,7 +143,7 @@ describe('Lukiokoulutus', function( ){
     before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto()).to.equal("Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus")
+        expect(opinnot.getTutkinto()).to.equal("Lukiokoulutukseen valmistava koulutus")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
