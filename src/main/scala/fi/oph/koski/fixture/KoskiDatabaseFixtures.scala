@@ -1,11 +1,13 @@
 package fi.oph.koski.fixture
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.ExampleData.suomenKieli
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
+import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
@@ -62,9 +64,9 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.teija, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.markkanen, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia)),
       (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
-      (MockOppijat.ysiluokkalainen, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
-      (MockOppijat.hetuton, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
-      (MockOppijat.monessaKoulussaOllut, ExamplesPerusopetus.ysinOpiskeluoikeusKesken),
+      (MockOppijat.ysiluokkalainen, ysinOpiskeluoikeusKesken),
+      (MockOppijat.hetuton, ysinOpiskeluoikeusKesken),
+      (MockOppijat.monessaKoulussaOllut, ysinOpiskeluoikeusKesken),
       (MockOppijat.monessaKoulussaOllut, ExamplesPerusopetus.seiskaTuplattuOpiskeluoikeus),
       (MockOppijat.koululainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
       (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus),
@@ -87,7 +89,8 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.omattiedot, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "D")),
       (MockOppijat.omattiedot, ExamplesLukio.päättötodistus()),
       (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
-      (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades)
+      (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades),
+      (MockOppijat.eero, OpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
     )
   }
 }
@@ -114,4 +117,11 @@ object OpiskeluoikeusTestData {
       ))
     )
   }
+
+  lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
+    ysinOpiskeluoikeusKesken.copy(tila =
+      ysinOpiskeluoikeusKesken.tila.copy(opiskeluoikeusjaksot =
+        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ PerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+      )
+    )
 }
