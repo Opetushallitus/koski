@@ -19,9 +19,10 @@ export class PropertiesEditor extends React.Component {
       context = model.context
     }
     let edit = context.edit
-    let shouldShow = (property) => shouldShowProperty(context)(property) && propertyFilter(property)
+    let contextForProperty = (property) => !propertyEditable(property) && context.edit ? { ...context, edit: false } : context
+    let shouldShow = (property) => shouldShowProperty(contextForProperty(property))(property) && propertyFilter(property)
 
-    let munch = (prefix) => (property, i) => { // TODO: just index passing is enough, no context needed
+    let munch = (prefix) => (property, i) => {
       if (property.flatten && property.model.value && property.model.value.properties) {
         return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
       } else if (!edit && property.flatten && (property.model.type === 'array')) {
