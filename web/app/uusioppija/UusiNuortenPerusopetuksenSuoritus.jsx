@@ -8,27 +8,27 @@ import Text from '../Text.jsx'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const suoritustyyppiAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
+  const suoritustyyppiAtom = Atom()
   const perusteAtom = Atom()
-  const oppimäärätP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara')
-  oppimäärätP.onValue(oppimäärät => suoritustyyppiAtom.set(oppimäärät.find(koodiarvoMatch('perusopetuksenoppimaara'))))
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/perusopetuksenoppimaara')
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('perusopetuksenoppimaara'))))
 
   Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, perusteAtom, oppiaineetP(suoritustyyppiAtom), suorituskieliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Oppimäärä oppimääräAtom={suoritustyyppiAtom} oppimäärätP={oppimäärätP}/>
+    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
     <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
   </span>)
 }
 
-const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
+const Suoritustyyppi = ({suoritustyyppiAtom, suoritustyypitP}) => {
   return (<div>
     <KoodistoDropdown
       className="oppimaara"
       title="Oppimäärä"
-      options = { oppimäärätP }
-      selected = {oppimääräAtom}
+      options = { suoritustyypitP }
+      selected = { suoritustyyppiAtom }
     />
   </div> )
 }

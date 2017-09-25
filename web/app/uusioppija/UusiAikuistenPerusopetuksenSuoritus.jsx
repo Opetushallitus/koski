@@ -23,14 +23,14 @@ import Text from '../Text.jsx'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const suoritustyyppiAtom = Atom() // TODO: oppimäärä -> suoritusTyyppi
+  const suoritustyyppiAtom = Atom()
   const oppiaineenSuoritusAtom = Atom()
   const perusteAtom = Atom()
-  const oppimäärätP = koodistoValues('suorituksentyyppi/aikuistenperusopetuksenoppimaara,aikuistenperusopetuksenoppimaaranalkuvaihe,perusopetuksenoppiaineenoppimaara')
-  oppimäärätP.onValue(oppimäärät => suoritustyyppiAtom.set(oppimäärät.find(koodiarvoMatch('aikuistenperusopetuksenoppimaara'))))
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/aikuistenperusopetuksenoppimaara,aikuistenperusopetuksenoppimaaranalkuvaihe,perusopetuksenoppiaineenoppimaara')
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('aikuistenperusopetuksenoppimaara'))))
 
-  const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(oppimäärä => {
-    if (oppimäärä == 'perusopetuksenoppiaineenoppimaara') {
+  const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(suorituksenTyyppi => {
+    if (suorituksenTyyppi == 'perusopetuksenoppiaineenoppimaara') {
       // TODO: älä käytä luokkien nimiä
       return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.PerusopetuksenOppiaineenOppimääränSuoritus')
     }
@@ -40,9 +40,9 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Oppimäärä oppimääräAtom={suoritustyyppiAtom} oppimäärätP={oppimäärätP}/>
+    <Suoritustyyppi oppimääräAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
     {
-      suoritustyyppiAtom.map( oppimäärä => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)
+      suoritustyyppiAtom.map( tyyppi => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(tyyppi)
         ? <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
         : <Oppiaine suoritusPrototypeP={suoritusPrototypeP} oppiaineenSuoritusAtom={oppiaineenSuoritusAtom} perusteAtom={perusteAtom} oppilaitos={oppilaitosAtom} suorituskieli={suorituskieliAtom}/>
       )
@@ -50,13 +50,13 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   </span>)
 }
 
-const Oppimäärä = ({oppimääräAtom, oppimäärätP}) => {
+const Suoritustyyppi = ({suoritustyyppiAtom, suoritustyypitP}) => {
   return (<div>
     <KoodistoDropdown
       className="oppimaara"
       title="Oppimäärä"
-      options = { oppimäärätP }
-      selected = {oppimääräAtom}
+      options = { suoritustyypitP }
+      selected = { suoritustyyppiAtom }
     />
   </div> )
 }
