@@ -1,29 +1,28 @@
-[
-  {
+[ {
   "koodiUri" : "lukionkurssintyyppi_pakollinen",
   "koodiArvo" : "pakollinen",
   "metadata" : [ {
     "nimi" : "Pakollinen",
     "kieli" : "FI"
   } ],
-  "versio" : 1
-  },
-  {
-    "koodiUri" : "lukionkurssintyyppi_syventava",
-    "koodiArvo" : "syventava",
-    "metadata" : [ {
-      "nimi" : "Syventävä",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "lukionkurssintyyppi_soveltava",
-    "koodiArvo" : "soveltava",
-    "metadata" : [ {
-      "nimi" : "Soveltava",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  }
-]
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukionkurssintyyppi_soveltava",
+  "koodiArvo" : "soveltava",
+  "metadata" : [ {
+    "nimi" : "Soveltava",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukionkurssintyyppi_syventava",
+  "koodiArvo" : "syventava",
+  "metadata" : [ {
+    "nimi" : "Syventävä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

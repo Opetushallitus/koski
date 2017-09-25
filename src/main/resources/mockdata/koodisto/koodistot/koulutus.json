@@ -4,20 +4,20 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "koulutus",
-    "kuvaus" : "koulutus",
-    "kasite" : ""
-  }, {
-    "kieli" : "SV",
-    "nimi" : "koulutus",
-    "kuvaus" : "koulutus",
-    "kasite" : ""
+    "kuvaus" : "koulutus"
   }, {
     "kieli" : "EN",
     "nimi" : "koulutus",
-    "kuvaus" : "koulutus",
-    "kasite" : ""
+    "kuvaus" : "koulutus"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "koulutus",
+    "kuvaus" : "koulutus"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
-  "voimassaAlkuPvm" : "2016-03-14",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "voimassaAlkuPvm" : "2016-08-03",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 3
 }

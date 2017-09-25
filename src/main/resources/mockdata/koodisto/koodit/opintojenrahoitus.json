@@ -5,23 +5,8 @@
     "nimi" : "Valtionosuusrahoitteinen koulutus",
     "kieli" : "FI"
   } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "opintojenrahoitus_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Muuta kautta rahoitettu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "opintojenrahoitus_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Työvoimapoliittinen aikuiskoulutus (ESR-rahoitteinen)",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
@@ -29,7 +14,17 @@
     "nimi" : "Työvoimapoliittinen aikuiskoulutus (kansallinen rahoitus)",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Työvoimapoliittinen aikuiskoulutus (ESR-rahoitteinen)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "opintojenrahoitus_4",
   "koodiArvo" : "4",
@@ -37,7 +32,17 @@
     "nimi" : "Työnantajan kokonaan rahoittama",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "Muuta kautta rahoitettu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "opintojenrahoitus_7",
   "koodiArvo" : "7",
@@ -45,15 +50,24 @@
     "nimi" : "Nuorten aikuisten osaamisohjelma",
     "kieli" : "FI"
   } ],
-  "versio" : 1
-},
-  {
-    "koodiUri" : "opintojenrahoitus_8",
-    "koodiArvo" : "8",
-    "metadata" : [ {
-      "nimi" : "Aikuisten osaamisperustan vahvistaminen",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  }
-]
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "Aikuisten osaamisperustan vahvistaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "Henkilöstökoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

@@ -1,613 +1,569 @@
-[
-  {
-    "koodiUri": "suorituksentyyppi_ammatillinentutkinto",
-    "koodiArvo": "ammatillinentutkinto",
-    "metadata": [
-      {
-        "nimi": "Ammatillinen tutkinto",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainen",
-    "koodiArvo": "ammatillinentutkintoosittainen",
-    "metadata": [
-      {
-        "nimi": "Osittainen ammatillinen tutkinto",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosa",
-    "koodiArvo": "ammatillisentutkinnonosa",
-    "metadata": [
-      {
-        "nimi": "Ammatillisen tutkinnon osa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
-    "koodiArvo": "ammatillisentutkinnonosanosaalue",
-    "metadata": [
-      {
-        "nimi": "Ammatillisen tutkinnon osan osa-alue",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosaapienempikokonaisuus",
-    "koodiArvo": "ammatillisentutkinnonosaapienempikokonaisuus",
-    "metadata": [
-      {
-        "nimi": "Ammatillisen tutkinnon osaa pienempi kokonaisuus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavakoulutus",
-    "koodiArvo": "nayttotutkintoonvalmistavakoulutus",
-    "metadata": [
-      {
-        "nimi": "Näyttötutkintoon valmistava koulutus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavankoulutuksenosa",
-    "koodiArvo": "nayttotutkintoonvalmistavankoulutuksenosa",
-    "metadata": [
-      {
-        "nimi": "Näyttötutkintoon valmistavan koulutuksen osa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetukseenvalmistavaopetus",
-    "koodiArvo": "perusopetukseenvalmistavaopetus",
-    "metadata": [
-      {
-        "nimi": "Perusopetukseen valmistava opetus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetukseenvalmistavanopetuksenoppiaine",
-    "koodiArvo": "perusopetukseenvalmistavanopetuksenoppiaine",
-    "metadata": [
-      {
-        "nimi": "Perusopetukseen valmistavan opetuksen oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_esiopetuksensuoritus",
-    "koodiArvo": "esiopetuksensuoritus",
-    "metadata": [
-      {
-        "nimi": "Esiopetuksen suoritus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenoppimaara",
-    "koodiArvo": "perusopetuksenoppimaara",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaaranalkuvaihe",
-    "koodiArvo": "aikuistenperusopetuksenoppimaaranalkuvaihe",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen oppimäärän alkuvaihe",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaara",
-    "koodiArvo": "aikuistenperusopetuksenoppimaara",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenoppiaine",
-    "koodiArvo": "perusopetuksenoppiaine",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppiaine",
-    "koodiArvo": "aikuistenperusopetuksenoppiaine",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenkurssi",
-    "koodiArvo": "aikuistenperusopetuksenkurssi",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenoppiaine",
-    "koodiArvo": "aikuistenperusopetuksenalkuvaiheenoppiaine",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen alkuvaiheen oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenkurssi",
-    "koodiArvo": "aikuistenperusopetuksenalkuvaiheenkurssi",
-    "metadata": [
-      {
-        "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksentoimintaalue",
-    "koodiArvo": "perusopetuksentoimintaalue",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen toiminta-alue",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenoppiaineenoppimaara",
-    "koodiArvo": "perusopetuksenoppiaineenoppimaara",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen oppiaineen oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenvuosiluokka",
-    "koodiArvo": "perusopetuksenvuosiluokka",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen vuosiluokka",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_lukionoppimaara",
-    "koodiArvo": "lukionoppimaara",
-    "metadata": [
-      {
-        "nimi": "Lukion oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_lukionoppiaineenoppimaara",
-    "koodiArvo": "lukionoppiaineenoppimaara",
-    "metadata": [
-      {
-        "nimi": "Lukion oppiaineen oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_lukionoppiaine",
-    "koodiArvo": "lukionoppiaine",
-    "metadata": [
-      {
-        "nimi": "Lukion oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_lukionkurssi",
-    "koodiArvo": "lukionkurssi",
-    "metadata": [
-      {
-        "nimi": "Lukion kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_lukionmuuopinto",
-    "koodiArvo": "lukionmuuopinto",
-    "metadata": [
-      {
-        "nimi": "Lukion muu opinto",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_preiboppimäärä",
-    "koodiArvo": "preiboppimaara",
-    "metadata": [
-      {
-        "nimi": "Pre-IB luokan oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ibtutkinto",
-    "koodiArvo": "ibtutkinto",
-    "metadata": [
-      {
-        "nimi": "IB-lukion oppimäärä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_iboppiaine",
-    "koodiArvo": "iboppiaine",
-    "metadata": [
-      {
-        "nimi": "IB-lukion oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_iboppiainetok",
-    "koodiArvo": "iboppiainetok",
-    "metadata": [
-      {
-        "nimi": "IB-lukion oppiaine Theory of Knowledge",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_iboppiainecas",
-    "koodiArvo": "iboppiainecas",
-    "metadata": [
-      {
-        "nimi": "IB-lukion CAS (Creativity-Action-Service)",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_iboppiaineee",
-    "koodiArvo": "iboppiaineee",
-    "metadata": [
-      {
-        "nimi": "IB-lukion Extended Essay",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_preiboppiaine",
-    "koodiArvo": "preiboppiaine",
-    "metadata": [
-      {
-        "nimi": "Pre-IB-oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ibkurssi",
-    "koodiArvo": "ibkurssi",
-    "metadata": [
-      {
-        "nimi": "IB-lukion kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_preibkurssi",
-    "koodiArvo": "preibkurssi",
-    "metadata": [
-      {
-        "nimi": "Pre-IB-kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
-    "koodiArvo": "ylioppilastutkinto",
-    "metadata": [
-      {
-        "nimi": "Ylioppilastutkinto",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ylioppilastutkinnonkoe",
-    "koodiArvo": "ylioppilastutkinnonkoe",
-    "metadata": [
-      {
-        "nimi": "Ylioppilastutkinnon koe",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_korkeakoulututkinto",
-    "koodiArvo": "korkeakoulututkinto",
-    "metadata": [
-      {
-        "nimi": "Korkeakoulututkinto",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_korkeakoulunopintojakso",
-    "koodiArvo": "korkeakoulunopintojakso",
-    "metadata": [
-      {
-        "nimi": "Korkeakoulun opintojakso",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_telma",
-    "koodiArvo": "telma",
-    "metadata": [
-      {
-        "nimi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_telmakoulutuksenosa",
-    "koodiArvo": "telmakoulutuksenosa",
-    "metadata": [
-      {
-        "nimi": "Työhön ja itsenäiseen elämään valmentavan koulutuksen osa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_valma",
-    "koodiArvo": "valma",
-    "metadata": [
-      {
-        "nimi": "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
+[ {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenkurssi",
+  "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen alkuvaiheen kurssi",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenoppiaine",
+  "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen alkuvaiheen oppiaine",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenkurssi",
+  "koodiArvo" : "aikuistenperusopetuksenkurssi",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen kurssi",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenoppiaine",
+  "koodiArvo" : "aikuistenperusopetuksenoppiaine",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen oppiaine",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenoppimaara",
+  "koodiArvo" : "aikuistenperusopetuksenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen oppimäärä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_aikuistenperusopetuksenoppimaaranalkuvaihe",
+  "koodiArvo" : "aikuistenperusopetuksenoppimaaranalkuvaihe",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetuksen oppimäärän alkuvaihe",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinentutkinto",
+  "koodiArvo" : "ammatillinentutkinto",
+  "metadata" : [ {
+    "nimi" : "Yrkesinriktad examen",
+    "kieli" : "SV"
   }, {
-    "koodiUri": "suorituksentyyppi_valmakoulutuksenosa",
-    "koodiArvo": "valmakoulutuksenosa",
-    "metadata": [
-      {
-        "nimi": "Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_luva",
-    "koodiArvo": "luva",
-    "metadata": [
-      {
-        "nimi": "Lukioon valmentava koulutus (LUVA)",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_luvaoppiaine",
-    "koodiArvo": "luvaoppiaine",
-    "metadata": [
-      {
-        "nimi": "Lukioon valmentavan koulutuksen oppiaine",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_luvakurssi",
-    "koodiArvo": "luvakurssi",
-    "metadata": [
-      {
-        "nimi": "Lukioon valmentavan koulutuksen kurssi",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_luvalukionoppiaine",
-    "koodiArvo": "luvalukionoppiaine",
-    "metadata": [
-      {
-        "nimi": "Lukion oppiaineen opinnnot osana lukioon valmistavaa koulutusta",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetus",
-    "koodiArvo": "perusopetuksenlisaopetus",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen lisäopetus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetuksenoppiaine",
-    "koodiArvo": "perusopetuksenlisaopetuksenoppiaine",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen lisäopetuksen oppiaineen suoritus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_muuperusopetuksenlisaopetuksensuoritus",
-    "koodiArvo": "muuperusopetuksenlisaopetuksensuoritus",
-    "metadata": [
-      {
-        "nimi": "Muu perusopetuksen lisäopetuksessa suoritettu suoritus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetuksentoimintaalue",
-    "koodiArvo": "perusopetuksenlisaopetuksentoimintaalue",
-    "metadata": [
-      {
-        "nimi": "Perusopetuksen lisäopetuksen toiminta-alue",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  }
-]
+    "nimi" : "Ammatillinen tutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinentutkintoosittainen",
+  "koodiArvo" : "ammatillinentutkintoosittainen",
+  "metadata" : [ {
+    "nimi" : "Osittainen ammatillinen tutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosa",
+  "koodiArvo" : "ammatillisentutkinnonosa",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen tutkinnon osa",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosaapienempikokonaisuus",
+  "koodiArvo" : "ammatillisentutkinnonosaapienempikokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen tutkinnon osaa pienempi kokonaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
+  "koodiArvo" : "ammatillisentutkinnonosanosaalue",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen tutkinnon osan osa-alue",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_esiopetuksensuoritus",
+  "koodiArvo" : "esiopetuksensuoritus",
+  "metadata" : [ {
+    "nimi" : "Esiopetuksen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ibkurssi",
+  "koodiArvo" : "ibkurssi",
+  "metadata" : [ {
+    "nimi" : "IB-lukion kurssi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kurs i IB-gymnasium",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_iboppiaine",
+  "koodiArvo" : "iboppiaine",
+  "metadata" : [ {
+    "nimi" : "IB-lukion oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne i IB-gymnasium",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_iboppiainecas",
+  "koodiArvo" : "iboppiainecas",
+  "metadata" : [ {
+    "nimi" : "CAS (Creativity-Action-Service) i IB-gymnasium",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "IB-lukion CAS (Creativity-Action-Service)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_iboppiaineee",
+  "koodiArvo" : "iboppiaineee",
+  "metadata" : [ {
+    "nimi" : "IB-lukion Extended Essay",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Extended Essay i IB-gymnasium",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_iboppiainetok",
+  "koodiArvo" : "iboppiainetok",
+  "metadata" : [ {
+    "nimi" : "IB-lukion oppiaine Theory of Knowledge",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämnet Theory of Knowledge i IB-gymnasium",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ibtutkinto",
+  "koodiArvo" : "ibtutkinto",
+  "metadata" : [ {
+    "nimi" : "Lärokurs i IB-gymnasium",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "IB-lukion oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_korkeakoulunopintojakso",
+  "koodiArvo" : "korkeakoulunopintojakso",
+  "metadata" : [ {
+    "nimi" : "Studieperiod på högskola",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korkeakoulun opintojakso",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_korkeakoulututkinto",
+  "koodiArvo" : "korkeakoulututkinto",
+  "metadata" : [ {
+    "nimi" : "Högskoleexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korkeakoulututkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionkurssi",
+  "koodiArvo" : "lukionkurssi",
+  "metadata" : [ {
+    "nimi" : "Kurs i gymnasiet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukion kurssi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionmuuopinto",
+  "koodiArvo" : "lukionmuuopinto",
+  "metadata" : [ {
+    "nimi" : "Lukion muu opinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionoppiaine",
+  "koodiArvo" : "lukionoppiaine",
+  "metadata" : [ {
+    "nimi" : "Läroämne i gymnasiet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukion oppiaine",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionoppiaineenoppimaara",
+  "koodiArvo" : "lukionoppiaineenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Lukion oppiaineen oppimäärä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lärokurs i ett läroämne i gymnasiet",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionoppimaara",
+  "koodiArvo" : "lukionoppimaara",
+  "metadata" : [ {
+    "nimi" : "Gymnasiets lärokurs",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukion oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_luva",
+  "koodiArvo" : "luva",
+  "metadata" : [ {
+    "nimi" : "Förberedande utbildning för gymnasieutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukioon valmentava koulutus (LUVA)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_luvakurssi",
+  "koodiArvo" : "luvakurssi",
+  "metadata" : [ {
+    "nimi" : "Lukioon valmentavan koulutuksen kurssi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kurs i förberedande utbildning för gymnasieutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_luvalukionoppiaine",
+  "koodiArvo" : "luvalukionoppiaine",
+  "metadata" : [ {
+    "nimi" : "Lukion oppiaineen opinnnot osana lukioon valmistavaa koulutusta",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Studier i ett läroämne i gymnasiet som en del av förberedande utbildning för gymnasieutbildning?",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_luvaoppiaine",
+  "koodiArvo" : "luvaoppiaine",
+  "metadata" : [ {
+    "nimi" : "Läroämne i förberedande utbildning för gymnasieutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukioon valmentavan koulutuksen oppiaine",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muuperusopetuksenlisaopetuksensuoritus",
+  "koodiArvo" : "muuperusopetuksenlisaopetuksensuoritus",
+  "metadata" : [ {
+    "nimi" : "Muu perusopetuksen lisäopetuksessa suoritettu suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_nayttotutkintoonvalmistavakoulutus",
+  "koodiArvo" : "nayttotutkintoonvalmistavakoulutus",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för fristående examen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Näyttötutkintoon valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_nayttotutkintoonvalmistavankoulutuksenosa",
+  "koodiArvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
+  "metadata" : [ {
+    "nimi" : "Näyttötutkintoon valmistavan koulutuksen osa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetukseenvalmistavanopetuksenoppiaine",
+  "koodiArvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
+  "metadata" : [ {
+    "nimi" : "Perusopetukseen valmistavan opetuksen oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne i förberedande undervisning för grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetukseenvalmistavaopetus",
+  "koodiArvo" : "perusopetukseenvalmistavaopetus",
+  "metadata" : [ {
+    "nimi" : "Förberedande undervisning för grundläggande utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetukseen valmistava opetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenlisaopetuksenoppiaine",
+  "koodiArvo" : "perusopetuksenlisaopetuksenoppiaine",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen lisäopetuksen oppiaineen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenlisaopetuksentoimintaalue",
+  "koodiArvo" : "perusopetuksenlisaopetuksentoimintaalue",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen lisäopetuksen toiminta-alue",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Verksamhetsområde i påbyggnadsundervisning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenlisaopetus",
+  "koodiArvo" : "perusopetuksenlisaopetus",
+  "metadata" : [ {
+    "nimi" : "Påbyggnadsundervisning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen lisäopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenoppiaine",
+  "koodiArvo" : "perusopetuksenoppiaine",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne i grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenoppiaineenoppimaara",
+  "koodiArvo" : "perusopetuksenoppiaineenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Lärokurs i ett läroämne i grundläggande utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen oppiaineen oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenoppimaara",
+  "koodiArvo" : "perusopetuksenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Grundläggande utbildningens lärokurs",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksentoimintaalue",
+  "koodiArvo" : "perusopetuksentoimintaalue",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen toiminta-alue",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Verksamhetsområde i grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenvuosiluokka",
+  "koodiArvo" : "perusopetuksenvuosiluokka",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen vuosiluokka",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Årskurs i grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_preibkurssi",
+  "koodiArvo" : "preibkurssi",
+  "metadata" : [ {
+    "nimi" : "Pre-IB-kurssi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Pre-IB-kurs",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_preiboppiaine",
+  "koodiArvo" : "preiboppiaine",
+  "metadata" : [ {
+    "nimi" : "Pre-IB-oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Pre-IB-läroämne",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_preiboppimaara",
+  "koodiArvo" : "preiboppimaara",
+  "metadata" : [ {
+    "nimi" : "Lärokurs i Pre-IB-klass",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Pre-IB luokan oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_telma",
+  "koodiArvo" : "telma",
+  "metadata" : [ {
+    "nimi" : "Utbildning som handleder för arbete och ett självständigt liv",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_telmakoulutuksenosa",
+  "koodiArvo" : "telmakoulutuksenosa",
+  "metadata" : [ {
+    "nimi" : "Työhön ja itsenäiseen elämään valmentavan koulutuksen osa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_valma",
+  "koodiArvo" : "valma",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_valmakoulutuksenosa",
+  "koodiArvo" : "valmakoulutuksenosa",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ylioppilastutkinnonkoe",
+  "koodiArvo" : "ylioppilastutkinnonkoe",
+  "metadata" : [ {
+    "nimi" : "Ylioppilastutkinnon koe",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Prov i studentexamen",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ylioppilastutkinto",
+  "koodiArvo" : "ylioppilastutkinto",
+  "metadata" : [ {
+    "nimi" : "Studentexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ylioppilastutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

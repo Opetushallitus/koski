@@ -1,4 +1,1176 @@
 [ {
+  "koodiUri" : "koulutustyyppi_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "yrkesinriktad grundexamen",
+    "lyhytNimi" : "yrkesinriktad grundexamen",
+    "kuvaus" : "yrkesinriktad grundexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatillinen perustutkinto",
+    "lyhytNimi" : "Ammatillinen perustutkinto",
+    "kuvaus" : "Ammatillinen perustutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_62",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_09",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_22",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_03",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_23",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_24",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_61",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321603",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_04",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_08",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_02",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 3,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et010301",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321603",
+    "codeElementVersion" : 2,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  } ]
+}, {
   "koodiUri" : "koulutustyyppi_10",
   "koodiArvo" : "10",
   "metadata" : [ {
@@ -61,1275 +1233,6 @@
     "codeElementUri" : "koulutus_099999",
     "codeElementVersion" : 3,
     "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
-    "lyhytNimi" : "Ammatillinen perustutkinto erityisopetuksena",
-    "kuvaus" : "Ammatillinen perustutkinto erityisopetuksena",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
-    "lyhytNimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
-    "kuvaus" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_03",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_20",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_09",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_22",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_08",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_02",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et010302",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_04",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 3,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 3,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_14",
-  "koodiArvo" : "14",
-  "metadata" : [ {
-    "nimi" : "Aikuisten lukiokoulutus",
-    "lyhytNimi" : "Aikuisten lukiokoulutus",
-    "kuvaus" : "Aikuisten lukiokoulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Aikuisten lukiokoulutus",
-    "lyhytNimi" : "Aikuisten lukiokoulutus",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Aikuisten lukiokoulutus",
-    "lyhytNimi" : "Aikuisten lukiokoulutus",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "haunkohdejoukko_10",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_19",
-  "koodiArvo" : "19",
-  "metadata" : [ {
-    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
-    "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) erityisopetuksena",
-    "lyhytNimi" : "VALMA erityisopetuksena",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_999902",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039994",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039994",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039994",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_20",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039994",
-    "codeElementVersion" : 5,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_22",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999902",
-    "codeElementVersion" : 3,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039994",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et021202",
-    "codeElementVersion" : 1,
-    "passive" : false
   } ]
 }, {
   "koodiUri" : "koulutustyyppi_11",
@@ -5392,1872 +5295,6 @@
     "passive" : true
   } ]
 }, {
-  "koodiUri" : "koulutustyyppi_8",
-  "koodiArvo" : "8",
-  "metadata" : [ {
-    "nimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
-    "lyhytNimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
-    "kuvaus" : "Utbildning som förbereder invandrare för yrkesutbildning",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
-    "lyhytNimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
-    "kuvaus" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_039998",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039998",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039998",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039998",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039998",
-    "codeElementVersion" : 6,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_15",
-  "koodiArvo" : "15",
-  "metadata" : [ {
-    "nimi" : "Esiopetus",
-    "lyhytNimi" : "Esiopetus",
-    "kuvaus" : "Esiopetus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Förskoleundervisning",
-    "lyhytNimi" : "Förskoleundervisning",
-    "kuvaus" : "Förskoleundervisning",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_100000",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_100000",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_100000",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_100000",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_100000",
-    "codeElementVersion" : 5,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "yrkesinriktad grundexamen",
-    "lyhytNimi" : "yrkesinriktad grundexamen",
-    "kuvaus" : "yrkesinriktad grundexamen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ammatillinen perustutkinto",
-    "lyhytNimi" : "Ammatillinen perustutkinto",
-    "kuvaus" : "Ammatillinen perustutkinto",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_62",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_09",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_22",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_03",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_23",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_24",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_61",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321603",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351701",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_04",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_08",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_02",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371113",
-    "codeElementVersion" : 3,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_11",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et010301",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371110",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381204",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352503",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321603",
-    "codeElementVersion" : 2,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351203",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381410",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_341101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361401",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321602",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351703",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351106",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_010001",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_331101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351307",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351407",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_038411",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381303",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381408",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321901",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352903",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381504",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381402",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_371109",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361104",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321301",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361902",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_321501",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381106",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351107",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321204",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_351704",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_361201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_381304",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381113",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_352401",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_321902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381112",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_381203",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351502",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351603",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351605",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_351805",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_361301",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_352902",
-    "codeElementVersion" : 4,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
-    "lyhytNimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
-    "kuvaus" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
-    "lyhytNimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
-    "kuvaus" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_039997",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039997",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_64",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039997",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039997",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039997",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et020104",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "haunkohdejoukko_17",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Högskoleexamen",
-    "lyhytNimi" : "Högskoleexamen",
-    "kuvaus" : "Högskoleexamen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Korkeakoulutus",
-    "lyhytNimi" : "Korkeakoulutus",
-    "kuvaus" : "Korkeakoulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_750201",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000002",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000003",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000001",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000003",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_919999",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000001",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_750205",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000002",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_750205",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000002",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_919999",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000003",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_750201",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000001",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_750201",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_750205",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_919999",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_06",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "haunkohdejoukko_12",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_12",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000002",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000003",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_14",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_42",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000001",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_16",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_07",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_13",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000003",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_43",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_41",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_000001",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_000002",
-    "codeElementVersion" : 5,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_22",
-  "koodiArvo" : "22",
-  "metadata" : [ {
-    "nimi" : "Utbildning som förbereder för grundläggande utbildning",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Perusopetukseen valmistava opetus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutustyyppi_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
-    "lyhytNimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
-    "lyhytNimi" : "TELMA",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_999903",
-    "codeElementVersion" : 3,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999903",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039999",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et0202",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039999",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039999",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039999",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_20",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "tutkintotyyppi_09",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999903",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_22",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039999",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et021201",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Gymnasiet",
-    "lyhytNimi" : "Gymnasiet",
-    "kuvaus" : "Gymnasiet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukiokoulutus",
-    "lyhytNimi" : "Lukiokoulutus",
-    "kuvaus" : "Lukiokoulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301103",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et0101",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_11",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301103",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301104",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301104",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_01",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 3,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
-    "lyhytNimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
-    "kuvaus" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Perusopetuksen lisäopetus",
-    "lyhytNimi" : "Perusopetuksen lisäopetus",
-    "kuvaus" : "Perusopetuksen lisäopetus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_020075",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_11",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_12",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_64",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_020075",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_020075",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et020101",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_020075",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "haunkohdejoukko_17",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_020075",
-    "codeElementVersion" : 5,
-    "passive" : true
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_17",
-  "koodiArvo" : "17",
-  "metadata" : [ {
-    "nimi" : "Aikuisten perusopetus",
-    "lyhytNimi" : "Aikuisten perusopetus",
-    "kuvaus" : "Aikuisten perusopetus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Aikuisten perusopetus",
-    "lyhytNimi" : "Aikuisten perusopetus",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Grundläggande utbildning för vuxna",
-    "lyhytNimi" : "Grundläggande utbildning för vuxna",
-    "kuvaus" : "Grundläggande utbildning för vuxna",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_201101",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_201101",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_201101",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_11",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "haunkohdejoukko_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_201101",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_201101",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_21",
-  "koodiArvo" : "21",
-  "metadata" : [ {
-    "nimi" : "EB, RP, ISH",
-    "lyhytNimi" : "EB, RP, ISH",
-    "kuvaus" : "EB, RP, ISH",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "EB, RP, ISH",
-    "lyhytNimi" : "EB, RP, ISH",
-    "kuvaus" : "EB, RP, ISH",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "EB, RP, ISH",
-    "lyhytNimi" : "EB, RP, ISH",
-    "kuvaus" : "EB, RP, ISH",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "haunkohdejoukko_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et0101",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_15",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_19",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "tutkintotyyppi_01",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301103",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301104",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301103",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301104",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301103",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_301104",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_301102",
-    "codeElementVersion" : 6,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koulutustyyppi_23",
-  "koodiArvo" : "23",
-  "metadata" : [ {
-    "nimi" : "Utbildning som förbereder för gymnasieutbildning",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukiokoulutukseen valmistava koulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koulutustyyppi_12",
   "koodiArvo" : "12",
   "metadata" : [ {
@@ -10086,46 +8123,6 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koulutustyyppi_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
-    "lyhytNimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
-    "kuvaus" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
-    "lyhytNimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
-    "kuvaus" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_039996",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et020102",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039996",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039996",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_039996",
-    "codeElementVersion" : 6,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_039996",
-    "codeElementVersion" : 4,
-    "passive" : true
-  } ]
-}, {
   "koodiUri" : "koulutustyyppi_13",
   "koodiArvo" : "13",
   "metadata" : [ {
@@ -11251,6 +9248,196 @@
     "passive" : true
   } ]
 }, {
+  "koodiUri" : "koulutustyyppi_14",
+  "koodiArvo" : "14",
+  "metadata" : [ {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kuvaus" : "Aikuisten lukiokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "haunkohdejoukko_10",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_15",
+  "koodiArvo" : "15",
+  "metadata" : [ {
+    "nimi" : "Esiopetus",
+    "lyhytNimi" : "Esiopetus",
+    "kuvaus" : "Esiopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förskoleundervisning",
+    "lyhytNimi" : "Förskoleundervisning",
+    "kuvaus" : "Förskoleundervisning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_100000",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_100000",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_100000",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_100000",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_100000",
+    "codeElementVersion" : 5,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_16",
+  "koodiArvo" : "16",
+  "metadata" : [ {
+    "nimi" : "Perusopetus",
+    "lyhytNimi" : "Perusopetus",
+    "kuvaus" : "Perusopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande utbildning",
+    "lyhytNimi" : "Grundläggande utbildning",
+    "kuvaus" : "Grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_201100",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_201100",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_201100",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_201100",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_201100",
+    "codeElementVersion" : 4,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_17",
+  "koodiArvo" : "17",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetus",
+    "lyhytNimi" : "Aikuisten perusopetus",
+    "kuvaus" : "Aikuisten perusopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Aikuisten perusopetus",
+    "lyhytNimi" : "Aikuisten perusopetus",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Grundläggande utbildning för vuxna",
+    "lyhytNimi" : "Grundläggande utbildning för vuxna",
+    "kuvaus" : "Grundläggande utbildning för vuxna",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_201101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_201101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_201101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "haunkohdejoukko_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_201101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_201101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "koulutustyyppi_18",
   "koodiArvo" : "18",
   "metadata" : [ {
@@ -11323,6 +9510,170 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "koulutustyyppi_19",
+  "koodiArvo" : "19",
+  "metadata" : [ {
+    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) erityisopetuksena",
+    "lyhytNimi" : "VALMA erityisopetuksena",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_999902",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039994",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039994",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039994",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_20",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039994",
+    "codeElementVersion" : 5,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_22",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999902",
+    "codeElementVersion" : 3,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039994",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et021202",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Gymnasiet",
+    "lyhytNimi" : "Gymnasiet",
+    "kuvaus" : "Gymnasiet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukiokoulutus",
+    "lyhytNimi" : "Lukiokoulutus",
+    "kuvaus" : "Lukiokoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301103",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et0101",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301103",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301104",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301104",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_01",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 3,
+    "passive" : true
+  } ]
+}, {
   "koodiUri" : "koulutustyyppi_20",
   "koodiArvo" : "20",
   "metadata" : [ {
@@ -11339,39 +9690,1688 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutustyyppi_16",
-  "koodiArvo" : "16",
+  "koodiUri" : "koulutustyyppi_21",
+  "koodiArvo" : "21",
   "metadata" : [ {
-    "nimi" : "Perusopetus",
-    "lyhytNimi" : "Perusopetus",
-    "kuvaus" : "Perusopetus",
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kuvaus" : "EB, RP, ISH",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kuvaus" : "EB, RP, ISH",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kuvaus" : "EB, RP, ISH",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et0101",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_01",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301103",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301104",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301103",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301104",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301103",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_301104",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_301102",
+    "codeElementVersion" : 6,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_22",
+  "koodiArvo" : "22",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för grundläggande utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetukseen valmistava opetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutustyyppi_23",
+  "koodiArvo" : "23",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för gymnasieutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukiokoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutustyyppi_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Högskoleexamen",
+    "lyhytNimi" : "Högskoleexamen",
+    "kuvaus" : "Högskoleexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korkeakoulutus",
+    "lyhytNimi" : "Korkeakoulutus",
+    "kuvaus" : "Korkeakoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_750201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000002",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000003",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000001",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000003",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_919999",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000001",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_750205",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000002",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_750205",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000002",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_919999",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000003",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_750201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000001",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_750201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_750205",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_919999",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_06",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "haunkohdejoukko_12",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_12",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000002",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000003",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_14",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_42",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000001",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_16",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_07",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_13",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000003",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_43",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_41",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_000001",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_000002",
+    "codeElementVersion" : 5,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+    "lyhytNimi" : "Ammatillinen perustutkinto erityisopetuksena",
+    "kuvaus" : "Ammatillinen perustutkinto erityisopetuksena",
     "kieli" : "FI"
   }, {
-    "nimi" : "Grundläggande utbildning",
-    "lyhytNimi" : "Grundläggande utbildning",
-    "kuvaus" : "Grundläggande utbildning",
+    "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+    "lyhytNimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+    "kuvaus" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
     "kieli" : "SV"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
-    "codeElementUri" : "koulutus_201100",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_201100",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_201100",
+    "codeElementUri" : "koulutus_351704",
     "codeElementVersion" : 3,
     "passive" : true
   }, {
-    "codeElementUri" : "koulutus_201100",
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
     "codeElementVersion" : 6,
     "passive" : false
   }, {
-    "codeElementUri" : "koulutus_201100",
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351301",
     "codeElementVersion" : 4,
     "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_03",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_20",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_09",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_22",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_08",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_02",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et010302",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "tutkintotyyppi_04",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351701",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371110",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371113",
+    "codeElementVersion" : 3,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381204",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352503",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_341101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351203",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381410",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361401",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_371101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321602",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351703",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351106",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_010001",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321101",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351307",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_331101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321901",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_038411",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381303",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381408",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351407",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352903",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381504",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_352301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381402",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351805",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321301",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361104",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_371109",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321501",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351107",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381106",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_361902",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_381201",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_321204",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351704",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381203",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381112",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351502",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352201",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352401",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381304",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_321902",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_381113",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_361301",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352101",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_352902",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351605",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_351603",
+    "codeElementVersion" : 3,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
+    "lyhytNimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+    "lyhytNimi" : "TELMA",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_999903",
+    "codeElementVersion" : 3,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999903",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039999",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et0202",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039999",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039999",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039999",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_20",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "tutkintotyyppi_09",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999903",
+    "codeElementVersion" : 1,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_22",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039999",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et021201",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
+    "lyhytNimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
+    "kuvaus" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen lisäopetus",
+    "lyhytNimi" : "Perusopetuksen lisäopetus",
+    "kuvaus" : "Perusopetuksen lisäopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_020075",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_12",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_64",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_020075",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_020075",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et020101",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_020075",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "haunkohdejoukko_17",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_020075",
+    "codeElementVersion" : 5,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_7",
+  "koodiArvo" : "7",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
+    "lyhytNimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
+    "kuvaus" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
+    "lyhytNimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
+    "kuvaus" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_039996",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et020102",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039996",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039996",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039996",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039996",
+    "codeElementVersion" : 4,
+    "passive" : true
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
+    "lyhytNimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
+    "kuvaus" : "Utbildning som förbereder invandrare för yrkesutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
+    "lyhytNimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
+    "kuvaus" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_039998",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039998",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039998",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039998",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039998",
+    "codeElementVersion" : 6,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
+    "lyhytNimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
+    "kuvaus" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
+    "lyhytNimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
+    "kuvaus" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_64",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 6,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et020104",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "haunkohdejoukko_17",
+    "codeElementVersion" : 1,
+    "passive" : false
   } ]
 } ]

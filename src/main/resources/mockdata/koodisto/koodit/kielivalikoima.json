@@ -1,55 +1,4 @@
 [ {
-  "koodiUri" : "kielivalikoima_lv",
-  "koodiArvo" : "LV",
-  "metadata" : [ {
-    "nimi" : "lettiska",
-    "lyhytNimi" : "lettiska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "latvia, lätti",
-    "lyhytNimi" : "latvia, lätti",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Latvian",
-    "lyhytNimi" : "Latvian",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_en",
-  "koodiArvo" : "EN",
-  "metadata" : [ {
-    "nimi" : "English",
-    "lyhytNimi" : "English",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "engelska",
-    "lyhytNimi" : "engelska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "englanti",
-    "lyhytNimi" : "englanti",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_fi",
-  "koodiArvo" : "FI",
-  "metadata" : [ {
-    "nimi" : "Finnish",
-    "lyhytNimi" : "Finnish",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "suomi",
-    "lyhytNimi" : "suomi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "finska",
-    "lyhytNimi" : "finska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "kielivalikoima_97",
   "koodiArvo" : "97",
   "metadata" : [ {
@@ -63,16 +12,67 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_de",
+  "koodiArvo" : "DE",
+  "metadata" : [ {
+    "nimi" : "German",
+    "lyhytNimi" : "German",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "tyska",
+    "lyhytNimi" : "tyska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "saksa",
+    "lyhytNimi" : "saksa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_el",
+  "koodiArvo" : "EL",
+  "metadata" : [ {
+    "nimi" : "Greek",
+    "lyhytNimi" : "Greek",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "kreikka",
+    "lyhytNimi" : "kreikka",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "grekiska",
+    "lyhytNimi" : "grekiska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_en",
+  "koodiArvo" : "EN",
+  "metadata" : [ {
+    "nimi" : "englanti",
+    "lyhytNimi" : "englanti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "engelska",
+    "lyhytNimi" : "engelska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "English",
+    "lyhytNimi" : "English",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_es",
   "koodiArvo" : "ES",
   "metadata" : [ {
-    "nimi" : "spanska",
-    "lyhytNimi" : "spanska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Spanish",
     "lyhytNimi" : "Spanish",
     "kieli" : "EN"
+  }, {
+    "nimi" : "spanska",
+    "lyhytNimi" : "spanska",
+    "kieli" : "SV"
   }, {
     "nimi" : "espanja",
     "lyhytNimi" : "espanja",
@@ -80,36 +80,70 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "kielivalikoima_zh",
-  "koodiArvo" : "ZH",
+  "koodiUri" : "kielivalikoima_et",
+  "koodiArvo" : "ET",
   "metadata" : [ {
-    "nimi" : "kinesiska",
-    "lyhytNimi" : "kinesiska",
+    "nimi" : "Estonian",
+    "lyhytNimi" : "Estonian",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "estniska",
+    "lyhytNimi" : "estniska",
     "kieli" : "SV"
   }, {
-    "nimi" : "kiina",
-    "lyhytNimi" : "kiina",
+    "nimi" : "viro, eesti",
+    "lyhytNimi" : "viro, eesti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_fi",
+  "koodiArvo" : "FI",
+  "metadata" : [ {
+    "nimi" : "suomi",
+    "lyhytNimi" : "suomi",
     "kieli" : "FI"
   }, {
-    "nimi" : "Chinese",
-    "lyhytNimi" : "Chinese",
+    "nimi" : "finska",
+    "lyhytNimi" : "finska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish",
+    "lyhytNimi" : "Finnish",
     "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "kielivalikoima_la",
-  "koodiArvo" : "LA",
+  "koodiUri" : "kielivalikoima_fr",
+  "koodiArvo" : "FR",
   "metadata" : [ {
-    "nimi" : "latina",
-    "lyhytNimi" : "latina",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "latin",
-    "lyhytNimi" : "latin",
+    "nimi" : "franska",
+    "lyhytNimi" : "franska",
     "kieli" : "SV"
   }, {
-    "nimi" : "Latin",
-    "lyhytNimi" : "Latin",
+    "nimi" : "French",
+    "lyhytNimi" : "French",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "ranska",
+    "lyhytNimi" : "ranska",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_it",
+  "koodiArvo" : "IT",
+  "metadata" : [ {
+    "nimi" : "italia",
+    "lyhytNimi" : "italia",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "italienska",
+    "lyhytNimi" : "italienska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Italian",
+    "lyhytNimi" : "Italian",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -117,16 +151,84 @@
   "koodiUri" : "kielivalikoima_ja",
   "koodiArvo" : "JA",
   "metadata" : [ {
-    "nimi" : "japani",
-    "lyhytNimi" : "japani",
-    "kieli" : "FI"
-  }, {
     "nimi" : "japanska",
     "lyhytNimi" : "japanska",
     "kieli" : "SV"
   }, {
     "nimi" : "Japanese",
     "lyhytNimi" : "Japanese",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "japani",
+    "lyhytNimi" : "japani",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_la",
+  "koodiArvo" : "LA",
+  "metadata" : [ {
+    "nimi" : "Latin",
+    "lyhytNimi" : "Latin",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "latina",
+    "lyhytNimi" : "latina",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "latin",
+    "lyhytNimi" : "latin",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_lt",
+  "koodiArvo" : "LT",
+  "metadata" : [ {
+    "nimi" : "liettua",
+    "lyhytNimi" : "liettua",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lithuanian",
+    "lyhytNimi" : "Lithuanian",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "litauiska",
+    "lyhytNimi" : "litauiska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_lv",
+  "koodiArvo" : "LV",
+  "metadata" : [ {
+    "nimi" : "latvia, lätti",
+    "lyhytNimi" : "latvia, lätti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "lettiska",
+    "lyhytNimi" : "lettiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Latvian",
+    "lyhytNimi" : "Latvian",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_pt",
+  "koodiArvo" : "PT",
+  "metadata" : [ {
+    "nimi" : "portugisiska",
+    "lyhytNimi" : "portugisiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "portugali",
+    "lyhytNimi" : "portugali",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Portuguese",
+    "lyhytNimi" : "Portuguese",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -165,104 +267,19 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "kielivalikoima_de",
-  "koodiArvo" : "DE",
+  "koodiUri" : "kielivalikoima_sv",
+  "koodiArvo" : "SV",
   "metadata" : [ {
-    "nimi" : "German",
-    "lyhytNimi" : "German",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "saksa",
-    "lyhytNimi" : "saksa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "tyska",
-    "lyhytNimi" : "tyska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_el",
-  "koodiArvo" : "EL",
-  "metadata" : [ {
-    "nimi" : "grekiska",
-    "lyhytNimi" : "grekiska",
+    "nimi" : "svenska",
+    "lyhytNimi" : "svenska",
     "kieli" : "SV"
   }, {
-    "nimi" : "Greek",
-    "lyhytNimi" : "Greek",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "kreikka",
-    "lyhytNimi" : "kreikka",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_et",
-  "koodiArvo" : "ET",
-  "metadata" : [ {
-    "nimi" : "viro, eesti",
-    "lyhytNimi" : "viro, eesti",
+    "nimi" : "ruotsi",
+    "lyhytNimi" : "ruotsi",
     "kieli" : "FI"
   }, {
-    "nimi" : "estniska",
-    "lyhytNimi" : "estniska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Estonian",
-    "lyhytNimi" : "Estonian",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_fr",
-  "koodiArvo" : "FR",
-  "metadata" : [ {
-    "nimi" : "franska",
-    "lyhytNimi" : "franska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "French",
-    "lyhytNimi" : "French",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "ranska",
-    "lyhytNimi" : "ranska",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_lt",
-  "koodiArvo" : "LT",
-  "metadata" : [ {
-    "nimi" : "litauiska",
-    "lyhytNimi" : "litauiska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lithuanian",
-    "lyhytNimi" : "Lithuanian",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "liettua",
-    "lyhytNimi" : "liettua",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_pt",
-  "koodiArvo" : "PT",
-  "metadata" : [ {
-    "nimi" : "portugisiska",
-    "lyhytNimi" : "portugisiska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "portugali",
-    "lyhytNimi" : "portugali",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portuguese",
-    "lyhytNimi" : "Portuguese",
+    "nimi" : "Swedish",
+    "lyhytNimi" : "Swedish",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -270,13 +287,13 @@
   "koodiUri" : "kielivalikoima_vk",
   "koodiArvo" : "VK",
   "metadata" : [ {
-    "nimi" : "viittomakieli",
-    "lyhytNimi" : "viittomakieli",
-    "kieli" : "FI"
-  }, {
     "nimi" : "teckenspråk",
     "lyhytNimi" : "teckenspråk",
     "kieli" : "SV"
+  }, {
+    "nimi" : "viittomakieli",
+    "lyhytNimi" : "viittomakieli",
+    "kieli" : "FI"
   }, {
     "nimi" : "Sign language",
     "lyhytNimi" : "Sign language",
@@ -287,50 +304,33 @@
   "koodiUri" : "kielivalikoima_xx",
   "koodiArvo" : "XX",
   "metadata" : [ {
-    "nimi" : "Other languages",
-    "lyhytNimi" : "Other languages",
-    "kieli" : "EN"
+    "nimi" : "muu kieli",
+    "lyhytNimi" : "muu kieli",
+    "kieli" : "FI"
   }, {
     "nimi" : "övrigt språk",
     "lyhytNimi" : "övrigt språk",
     "kieli" : "SV"
   }, {
-    "nimi" : "muu kieli",
-    "lyhytNimi" : "muu kieli",
-    "kieli" : "FI"
+    "nimi" : "Other languages",
+    "lyhytNimi" : "Other languages",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "kielivalikoima_it",
-  "koodiArvo" : "IT",
+  "koodiUri" : "kielivalikoima_zh",
+  "koodiArvo" : "ZH",
   "metadata" : [ {
-    "nimi" : "Italian",
-    "lyhytNimi" : "Italian",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "italienska",
-    "lyhytNimi" : "italienska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "italia",
-    "lyhytNimi" : "italia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "kielivalikoima_sv",
-  "koodiArvo" : "SV",
-  "metadata" : [ {
-    "nimi" : "Swedish",
-    "lyhytNimi" : "Swedish",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "ruotsi",
-    "lyhytNimi" : "ruotsi",
+    "nimi" : "kiina",
+    "lyhytNimi" : "kiina",
     "kieli" : "FI"
   }, {
-    "nimi" : "svenska",
-    "lyhytNimi" : "svenska",
+    "nimi" : "Chinese",
+    "lyhytNimi" : "Chinese",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "kinesiska",
+    "lyhytNimi" : "kinesiska",
     "kieli" : "SV"
   } ],
   "versio" : 1

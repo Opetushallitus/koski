@@ -1,24 +1,23 @@
 {
-  "koodistoUri": "oppiaineaidinkielijakirjallisuus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "codesGroupUri": "http://koski",
-  "versio": 1,
-  "voimassaAlkuPvm": "2013-01-01",
-  "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
-    },
-    {
-      "kieli": "FI",
-      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
-    }
-  ]
+  "koodistoUri" : "oppiaineaidinkielijakirjallisuus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Oppiaine Äidinkieli ja kirjallisuus",
+    "kuvaus" : "Oppiaine Äidinkieli ja kirjallisuus"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Oppiaine Äidinkieli ja kirjallisuus",
+    "kuvaus" : "Oppiaine Äidinkieli ja kirjallisuus"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Oppiaine Äidinkieli ja kirjallisuus",
+    "kuvaus" : "Oppiaine Äidinkieli ja kirjallisuus"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
 }

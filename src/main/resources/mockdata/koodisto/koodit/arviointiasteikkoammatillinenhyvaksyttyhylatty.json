@@ -6,7 +6,8 @@
     "lyhytNimi" : "Hylätty",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
   "koodiArvo" : "Hyväksytty",
@@ -15,5 +16,6 @@
     "lyhytNimi" : "Hyväksytty",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

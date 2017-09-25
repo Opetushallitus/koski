@@ -1,35 +1,28 @@
-[
-  {
-    "koodiUri": "effortasteikkoib_a",
-    "koodiArvo": "A",
-    "metadata": [
-      {
-        "nimi": "very good",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "effortasteikkoib_b",
-    "koodiArvo": "B",
-    "metadata": [
-      {
-        "nimi": "good",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "effortasteikkoib_c",
-    "koodiArvo": "C",
-    "metadata": [
-      {
-        "nimi": " needs improvement",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1
-  }
-]
+[ {
+  "koodiUri" : "effortasteikkoib_a",
+  "koodiArvo" : "A",
+  "metadata" : [ {
+    "nimi" : "very good",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "effortasteikkoib_b",
+  "koodiArvo" : "B",
+  "metadata" : [ {
+    "nimi" : "good",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "effortasteikkoib_c",
+  "koodiArvo" : "C",
+  "metadata" : [ {
+    "nimi" : " needs improvement",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

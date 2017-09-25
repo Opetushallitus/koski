@@ -1,89 +1,548 @@
 [ {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai1",
-  "koodiArvo" : "ÄI1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi1",
+  "koodiArvo" : "BI1",
   "metadata" : [ {
-    "nimi" : "Suomen kielen ja kirjallisuuden perusteet",
+    "nimi" : "Mitä elämä on?",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai2",
-  "koodiArvo" : "ÄI2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi2",
+  "koodiArvo" : "BI2",
   "metadata" : [ {
-    "nimi" : "Monimuotoiset tekstit",
+    "nimi" : "Kaupunkiekologia ja kestävä tulevaisuus",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai3",
-  "koodiArvo" : "ÄI3",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi3",
+  "koodiArvo" : "BI3",
   "metadata" : [ {
-    "nimi" : "Tekstien tuottaminen ja tulkitseminen",
+    "nimi" : "Ihminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai4",
-  "koodiArvo" : "ÄI4",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa1",
+  "koodiArvo" : "EAA1",
   "metadata" : [ {
-    "nimi" : "Kieli ja kulttuuri",
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai5",
-  "koodiArvo" : "ÄI5",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa2",
+  "koodiArvo" : "EAA2",
   "metadata" : [ {
-    "nimi" : "Ilmaisutaidon kurssi",
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s21",
-  "koodiArvo" : "S21",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa3",
+  "koodiArvo" : "EAA3",
   "metadata" : [ {
-    "nimi" : "Uutisia ja mielipiteitä",
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s22",
-  "koodiArvo" : "S22",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa4",
+  "koodiArvo" : "EAA4",
   "metadata" : [ {
-    "nimi" : "Tekstit tutuiksi",
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s23",
-  "koodiArvo" : "S23",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa5",
+  "koodiArvo" : "EAA5",
   "metadata" : [ {
-    "nimi" : "Kirjoittaminen prosessina",
+    "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s24",
-  "koodiArvo" : "S24",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa6",
+  "koodiArvo" : "EAA6",
   "metadata" : [ {
-    "nimi" : "Kulttuuri ja identiteetti",
+    "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s25",
-  "koodiArvo" : "S25",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa7",
+  "koodiArvo" : "EAA7",
   "metadata" : [ {
-    "nimi" : "Kieli avaimena maailmaan",
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa8",
+  "koodiArvo" : "EAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena1",
+  "koodiArvo" : "ENA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena10",
+  "koodiArvo" : "ENA10",
+  "metadata" : [ {
+    "nimi" : "Globaalienglanti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena11",
+  "koodiArvo" : "ENA11",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena12",
+  "koodiArvo" : "ENA12",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena2",
+  "koodiArvo" : "ENA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena3",
+  "koodiArvo" : "ENA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena4",
+  "koodiArvo" : "ENA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Opiskelu ja koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena5",
+  "koodiArvo" : "ENA5",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena6",
+  "koodiArvo" : "ENA6",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena7",
+  "koodiArvo" : "ENA7",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena8",
+  "koodiArvo" : "ENA8",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena9",
+  "koodiArvo" : "ENA9",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_et1",
+  "koodiArvo" : "ET1",
+  "metadata" : [ {
+    "nimi" : "Katsomukset ja ihmisoikeudet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_et2",
+  "koodiArvo" : "ET2",
+  "metadata" : [ {
+    "nimi" : "Ihmisenä kasvaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy1",
+  "koodiArvo" : "FY1",
+  "metadata" : [ {
+    "nimi" : "Fysiikka omassa elämässä ja elinympäristössä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy2",
+  "koodiArvo" : "FY2",
+  "metadata" : [ {
+    "nimi" : "Fysiikka maailmankuvan rakentajana",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy3",
+  "koodiArvo" : "FY3",
+  "metadata" : [ {
+    "nimi" : "Fysiikka yhteiskunnassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge1",
+  "koodiArvo" : "GE1",
+  "metadata" : [ {
+    "nimi" : "Toimiva maapallo",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge2",
+  "koodiArvo" : "GE2",
+  "metadata" : [ {
+    "nimi" : "Maapallo ihmisen elinympäristönä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge3",
+  "koodiArvo" : "GE3",
+  "metadata" : [ {
+    "nimi" : "Muuttuva maapallo ja kestävä tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi1",
+  "koodiArvo" : "HI1",
+  "metadata" : [ {
+    "nimi" : "Antiikista uuden ajan murrokseen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi2",
+  "koodiArvo" : "HI2",
+  "metadata" : [ {
+    "nimi" : "Teollisuusyhteiskunnan synnystä nykyaikaan",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi3",
+  "koodiArvo" : "HI3",
+  "metadata" : [ {
+    "nimi" : "Suomen historian käännekohdat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa1",
+  "koodiArvo" : "IAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa2",
+  "koodiArvo" : "IAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa3",
+  "koodiArvo" : "IAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa4",
+  "koodiArvo" : "IAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa5",
+  "koodiArvo" : "IAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa6",
+  "koodiArvo" : "IAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa7",
+  "koodiArvo" : "IAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa8",
+  "koodiArvo" : "IAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke1",
+  "koodiArvo" : "KE1",
+  "metadata" : [ {
+    "nimi" : "Kemia omassa elämässä ja elinympäristössä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke2",
+  "koodiArvo" : "KE2",
+  "metadata" : [ {
+    "nimi" : "Kemia maailmankuvan rakentajana",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke3",
+  "koodiArvo" : "KE3",
+  "metadata" : [ {
+    "nimi" : "Kemia yhteiskunnassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa1",
+  "koodiArvo" : "KXA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa2",
+  "koodiArvo" : "KXA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa3",
+  "koodiArvo" : "KXA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa4",
+  "koodiArvo" : "KXA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa5",
+  "koodiArvo" : "KXA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa6",
+  "koodiArvo" : "KXA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa7",
+  "koodiArvo" : "KXA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa8",
+  "koodiArvo" : "KXA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa1",
+  "koodiArvo" : "LAA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa2",
+  "koodiArvo" : "LAA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa3",
+  "koodiArvo" : "LAA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa4",
+  "koodiArvo" : "LAA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa5",
+  "koodiArvo" : "LAA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa6",
+  "koodiArvo" : "LAA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa7",
+  "koodiArvo" : "LAA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa8",
+  "koodiArvo" : "LAA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -170,386 +629,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_u1",
-  "koodiArvo" : "U1",
-  "metadata" : [ {
-    "nimi" : "Uskonnot maailmassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_u2",
-  "koodiArvo" : "U2",
-  "metadata" : [ {
-    "nimi" : "Ihmisenä kasvaminen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_et1",
-  "koodiArvo" : "ET1",
-  "metadata" : [ {
-    "nimi" : "Katsomukset ja ihmisoikeudet",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_et2",
-  "koodiArvo" : "ET2",
-  "metadata" : [ {
-    "nimi" : "Ihmisenä kasvaminen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi1",
-  "koodiArvo" : "HI1",
-  "metadata" : [ {
-    "nimi" : "Antiikista uuden ajan murrokseen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi2",
-  "koodiArvo" : "HI2",
-  "metadata" : [ {
-    "nimi" : "Teollisuusyhteiskunnan synnystä nykyaikaan",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi3",
-  "koodiArvo" : "HI3",
-  "metadata" : [ {
-    "nimi" : "Suomen historian käännekohdat",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh1",
-  "koodiArvo" : "YH1",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntajärjestelmä sekä julkiset palvelut",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh2",
-  "koodiArvo" : "YH2",
-  "metadata" : [ {
-    "nimi" : "Työelämän tuntemus ja oma talous",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh3",
-  "koodiArvo" : "YH3",
-  "metadata" : [ {
-    "nimi" : "Aktiivinen kansalaisuus ja vaikuttaminen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy1",
-  "koodiArvo" : "FY1",
-  "metadata" : [ {
-    "nimi" : "Fysiikka omassa elämässä ja elinympäristössä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy2",
-  "koodiArvo" : "FY2",
-  "metadata" : [ {
-    "nimi" : "Fysiikka maailmankuvan rakentajana",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy3",
-  "koodiArvo" : "FY3",
-  "metadata" : [ {
-    "nimi" : "Fysiikka yhteiskunnassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke1",
-  "koodiArvo" : "KE1",
-  "metadata" : [ {
-    "nimi" : "Kemia omassa elämässä ja elinympäristössä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke2",
-  "koodiArvo" : "KE2",
-  "metadata" : [ {
-    "nimi" : "Kemia maailmankuvan rakentajana",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke3",
-  "koodiArvo" : "KE3",
-  "metadata" : [ {
-    "nimi" : "Kemia yhteiskunnassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi1",
-  "koodiArvo" : "BI1",
-  "metadata" : [ {
-    "nimi" : "Mitä elämä on?",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi2",
-  "koodiArvo" : "BI2",
-  "metadata" : [ {
-    "nimi" : "Kaupunkiekologia ja kestävä tulevaisuus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi3",
-  "koodiArvo" : "BI3",
-  "metadata" : [ {
-    "nimi" : "Ihminen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge1",
-  "koodiArvo" : "GE1",
-  "metadata" : [ {
-    "nimi" : "Toimiva maapallo",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge2",
-  "koodiArvo" : "GE2",
-  "metadata" : [ {
-    "nimi" : "Maapallo ihmisen elinympäristönä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge3",
-  "koodiArvo" : "GE3",
-  "metadata" : [ {
-    "nimi" : "Muuttuva maapallo ja kestävä tulevaisuus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub1",
-  "koodiArvo" : "RUB1",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub2",
-  "koodiArvo" : "RUB2",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub3",
-  "koodiArvo" : "RUB3",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub4",
-  "koodiArvo" : "RUB4",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub5",
-  "koodiArvo" : "RUB5",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub6",
-  "koodiArvo" : "RUB6",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub7",
-  "koodiArvo" : "RUB7",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub8",
-  "koodiArvo" : "RUB8",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena1",
-  "koodiArvo" : "ENA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena2",
-  "koodiArvo" : "ENA2",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena3",
-  "koodiArvo" : "ENA3",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena4",
-  "koodiArvo" : "ENA4",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Opiskelu ja koulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena5",
-  "koodiArvo" : "ENA5",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Työelämässä toiminen ja muita muodollisia tilanteita",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena6",
-  "koodiArvo" : "ENA6",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena7",
-  "koodiArvo" : "ENA7",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena8",
-  "koodiArvo" : "ENA8",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena9",
-  "koodiArvo" : "ENA9",
-  "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena10",
-  "koodiArvo" : "ENA10",
-  "metadata" : [ {
-    "nimi" : "Globaalienglanti",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena11",
-  "koodiArvo" : "ENA11",
-  "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena12",
-  "koodiArvo" : "ENA12",
-  "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa1",
-  "koodiArvo" : "LAA1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa1",
+  "koodiArvo" : "POA1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
     "kieli" : "FI"
@@ -557,8 +638,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa2",
-  "koodiArvo" : "LAA2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa2",
+  "koodiArvo" : "POA2",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
@@ -566,8 +647,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa3",
-  "koodiArvo" : "LAA3",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa3",
+  "koodiArvo" : "POA3",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
@@ -575,8 +656,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa4",
-  "koodiArvo" : "LAA4",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa4",
+  "koodiArvo" : "POA4",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
@@ -584,8 +665,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa5",
-  "koodiArvo" : "LAA5",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa5",
+  "koodiArvo" : "POA5",
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
@@ -593,8 +674,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa6",
-  "koodiArvo" : "LAA6",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa6",
+  "koodiArvo" : "POA6",
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
@@ -602,8 +683,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa7",
-  "koodiArvo" : "LAA7",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa7",
+  "koodiArvo" : "POA7",
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
@@ -611,152 +692,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa8",
-  "koodiArvo" : "LAA8",
-  "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma1",
-  "koodiArvo" : "SMA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma2",
-  "koodiArvo" : "SMA2",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma3",
-  "koodiArvo" : "SMA3",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma4",
-  "koodiArvo" : "SMA4",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma5",
-  "koodiArvo" : "SMA5",
-  "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma6",
-  "koodiArvo" : "SMA6",
-  "metadata" : [ {
-    "nimi" : "Kieli maailmassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma7",
-  "koodiArvo" : "SMA7",
-  "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma8",
-  "koodiArvo" : "SMA8",
-  "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa1",
-  "koodiArvo" : "SAA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa2",
-  "koodiArvo" : "SAA2",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa3",
-  "koodiArvo" : "SAA3",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa4",
-  "koodiArvo" : "SAA4",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa5",
-  "koodiArvo" : "SAA5",
-  "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa6",
-  "koodiArvo" : "SAA6",
-  "metadata" : [ {
-    "nimi" : "Kieli maailmassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa7",
-  "koodiArvo" : "SAA7",
-  "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa8",
-  "koodiArvo" : "SAA8",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa8",
+  "koodiArvo" : "POA8",
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
@@ -836,8 +773,125 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa1",
-  "koodiArvo" : "IAA1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub1",
+  "koodiArvo" : "RUB1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub2",
+  "koodiArvo" : "RUB2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub3",
+  "koodiArvo" : "RUB3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub4",
+  "koodiArvo" : "RUB4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub5",
+  "koodiArvo" : "RUB5",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub6",
+  "koodiArvo" : "RUB6",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub7",
+  "koodiArvo" : "RUB7",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub8",
+  "koodiArvo" : "RUB8",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s21",
+  "koodiArvo" : "S21",
+  "metadata" : [ {
+    "nimi" : "Uutisia ja mielipiteitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s22",
+  "koodiArvo" : "S22",
+  "metadata" : [ {
+    "nimi" : "Tekstit tutuiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s23",
+  "koodiArvo" : "S23",
+  "metadata" : [ {
+    "nimi" : "Kirjoittaminen prosessina",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s24",
+  "koodiArvo" : "S24",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_s25",
+  "koodiArvo" : "S25",
+  "metadata" : [ {
+    "nimi" : "Kieli avaimena maailmaan",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa1",
+  "koodiArvo" : "SAA1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
     "kieli" : "FI"
@@ -845,8 +899,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa2",
-  "koodiArvo" : "IAA2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa2",
+  "koodiArvo" : "SAA2",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
@@ -854,8 +908,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa3",
-  "koodiArvo" : "IAA3",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa3",
+  "koodiArvo" : "SAA3",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
@@ -863,8 +917,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa4",
-  "koodiArvo" : "IAA4",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa4",
+  "koodiArvo" : "SAA4",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
@@ -872,8 +926,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa5",
-  "koodiArvo" : "IAA5",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa5",
+  "koodiArvo" : "SAA5",
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
@@ -881,8 +935,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa6",
-  "koodiArvo" : "IAA6",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa6",
+  "koodiArvo" : "SAA6",
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
@@ -890,8 +944,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa7",
-  "koodiArvo" : "IAA7",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa7",
+  "koodiArvo" : "SAA7",
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
@@ -899,8 +953,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa8",
-  "koodiArvo" : "IAA8",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa8",
+  "koodiArvo" : "SAA8",
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
@@ -908,8 +962,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa1",
-  "koodiArvo" : "EAA1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma1",
+  "koodiArvo" : "SMA1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
     "kieli" : "FI"
@@ -917,8 +971,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa2",
-  "koodiArvo" : "EAA2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma2",
+  "koodiArvo" : "SMA2",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
@@ -926,8 +980,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa3",
-  "koodiArvo" : "EAA3",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma3",
+  "koodiArvo" : "SMA3",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
@@ -935,8 +989,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa4",
-  "koodiArvo" : "EAA4",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma4",
+  "koodiArvo" : "SMA4",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
@@ -944,8 +998,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa5",
-  "koodiArvo" : "EAA5",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma5",
+  "koodiArvo" : "SMA5",
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
@@ -953,8 +1007,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa6",
-  "koodiArvo" : "EAA6",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma6",
+  "koodiArvo" : "SMA6",
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
@@ -962,8 +1016,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa7",
-  "koodiArvo" : "EAA7",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma7",
+  "koodiArvo" : "SMA7",
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
@@ -971,8 +1025,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa8",
-  "koodiArvo" : "EAA8",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma8",
+  "koodiArvo" : "SMA8",
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
@@ -980,145 +1034,91 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa1",
-  "koodiArvo" : "POA1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_u1",
+  "koodiArvo" : "U1",
   "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "nimi" : "Uskonnot maailmassa",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa2",
-  "koodiArvo" : "POA2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_u2",
+  "koodiArvo" : "U2",
   "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "nimi" : "Ihmisenä kasvaminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa3",
-  "koodiArvo" : "POA3",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh1",
+  "koodiArvo" : "YH1",
   "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "nimi" : "Yhteiskuntajärjestelmä sekä julkiset palvelut",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa4",
-  "koodiArvo" : "POA4",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh2",
+  "koodiArvo" : "YH2",
   "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "nimi" : "Työelämän tuntemus ja oma talous",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa5",
-  "koodiArvo" : "POA5",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh3",
+  "koodiArvo" : "YH3",
   "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
+    "nimi" : "Aktiivinen kansalaisuus ja vaikuttaminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa6",
-  "koodiArvo" : "POA6",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai1",
+  "koodiArvo" : "ÄI1",
   "metadata" : [ {
-    "nimi" : "Kieli maailmassa",
+    "nimi" : "Suomen kielen ja kirjallisuuden perusteet",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa7",
-  "koodiArvo" : "POA7",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai2",
+  "koodiArvo" : "ÄI2",
   "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "nimi" : "Monimuotoiset tekstit",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa8",
-  "koodiArvo" : "POA8",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai3",
+  "koodiArvo" : "ÄI3",
   "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "nimi" : "Tekstien tuottaminen ja tulkitseminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa1",
-  "koodiArvo" : "KXA1",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai4",
+  "koodiArvo" : "ÄI4",
   "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "nimi" : "Kieli ja kulttuuri",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa2",
-  "koodiArvo" : "KXA2",
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai5",
+  "koodiArvo" : "ÄI5",
   "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa3",
-  "koodiArvo" : "KXA3",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa4",
-  "koodiArvo" : "KXA4",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa5",
-  "koodiArvo" : "KXA5",
-  "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa6",
-  "koodiArvo" : "KXA6",
-  "metadata" : [ {
-    "nimi" : "Kieli maailmassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa7",
-  "koodiArvo" : "KXA7",
-  "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa8",
-  "koodiArvo" : "KXA8",
-  "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "nimi" : "Ilmaisutaidon kurssi",
     "kieli" : "FI"
   } ],
   "versio" : 1,

@@ -4,20 +4,44 @@
   "metadata" : [ {
     "kieli" : "EN",
     "nimi" : "tutkintonimikkeet",
-    "kuvaus" : "tutkintonimikkeet",
-    "kasite" : ""
+    "kuvaus" : "tutkintonimikkeet"
   }, {
     "kieli" : "SV",
     "nimi" : "tutkintonimikkeet",
-    "kuvaus" : "tutkintonimikkeet",
-    "kasite" : ""
+    "kuvaus" : "tutkintonimikkeet"
   }, {
     "kieli" : "FI",
     "nimi" : "tutkintonimikkeet",
-    "kuvaus" : "tutkintonimikkeet",
-    "kasite" : ""
+    "kuvaus" : "tutkintonimikkeet"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
   "voimassaAlkuPvm" : "2015-10-05",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ {
+    "codesUri" : "koulutusohjelmaamm",
+    "codesVersion" : 1,
+    "passive" : false
+  }, {
+    "codesUri" : "osaamisala",
+    "codesVersion" : 3,
+    "passive" : false
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 4,
+    "passive" : true
+  }, {
+    "codesUri" : "lukiolinjat",
+    "codesVersion" : 1,
+    "passive" : false
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 5,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 6,
+    "passive" : false
+  } ],
+  "tila" : "LUONNOS",
+  "version" : 2
 }

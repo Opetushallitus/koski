@@ -3,18 +3,18 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "SV",
-    "nimi" : "Effortasteikko ib",
-    "kasite" : "effortasteikko"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Effortasteikko ib",
-    "kasite" : "arvosana"
+    "nimi" : "Effortasteikko ib"
   }, {
     "kieli" : "FI",
-    "nimi" : "Effortasteikko ib",
-    "kasite" : "effortasteikko"
+    "nimi" : "Effortasteikko ib"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Effortasteikko ib"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2016-09-09",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

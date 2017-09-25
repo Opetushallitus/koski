@@ -2,17 +2,20 @@
   "koodistoUri" : "opiskeluoikeudentyyppi",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "EN",
+    "nimi" : "Opiskeluoikeuden tyyppi"
+  }, {
     "kieli" : "FI",
     "nimi" : "Opiskeluoikeuden tyyppi",
     "kuvaus" : "Opiskeluoikeuden tyyppi"
   }, {
     "kieli" : "SV",
     "nimi" : "Opiskeluoikeuden tyyppi"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Opiskeluoikeuden tyyppi"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2016-04-04",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
 }

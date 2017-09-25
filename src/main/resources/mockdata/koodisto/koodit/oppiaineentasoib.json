@@ -1,5 +1,14 @@
-[
-  {
+[ {
+  "koodiUri" : "oppiaineentasoib_hl",
+  "koodiArvo" : "HL",
+  "metadata" : [ {
+    "nimi" : "Higher Level",
+    "lyhytNimi" : "HL",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineentasoib_sl",
   "koodiArvo" : "SL",
   "metadata" : [ {
@@ -7,16 +16,6 @@
     "lyhytNimi" : "SL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
-  },
-  {
-    "koodiUri" : "oppiaineentasoib_hl",
-    "koodiArvo" : "HL",
-    "metadata" : [ {
-      "nimi" : "Higher Level",
-      "lyhytNimi" : "HL",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1
-  }
-]
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

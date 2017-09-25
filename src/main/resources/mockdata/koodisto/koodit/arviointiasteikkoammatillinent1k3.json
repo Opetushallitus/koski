@@ -1,22 +1,4 @@
 [ {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "hyvä",
-    "lyhytNimi" : "H2",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "kiitettävä",
-    "lyhytNimi" : "K3",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "arviointiasteikkoammatillinent1k3_0",
   "koodiArvo" : "0",
   "metadata" : [ {
@@ -24,7 +6,8 @@
     "lyhytNimi" : "H",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "arviointiasteikkoammatillinent1k3_1",
   "koodiArvo" : "1",
@@ -33,5 +16,26 @@
     "lyhytNimi" : "T1",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "hyvä",
+    "lyhytNimi" : "H2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "kiitettävä",
+    "lyhytNimi" : "K3",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

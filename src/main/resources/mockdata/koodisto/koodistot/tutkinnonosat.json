@@ -4,20 +4,20 @@
   "metadata" : [ {
     "kieli" : "EN",
     "nimi" : "tutkinnon osat",
-    "kuvaus" : "tutkinnon osat",
-    "kasite" : ""
+    "kuvaus" : "tutkinnon osat"
   }, {
     "kieli" : "SV",
     "nimi" : "examensdeler",
-    "kuvaus" : "examensdeler",
-    "kasite" : ""
+    "kuvaus" : "examensdeler"
   }, {
     "kieli" : "FI",
     "nimi" : "tutkinnon osat",
-    "kuvaus" : "tutkinnon osat",
-    "kasite" : ""
+    "kuvaus" : "tutkinnon osat"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
   "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 277
 }

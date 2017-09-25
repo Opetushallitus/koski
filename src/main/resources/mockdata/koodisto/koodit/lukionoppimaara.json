@@ -1,24 +1,25 @@
-[
-  {
-    "koodiUri": "lukionoppimaara_aikuistenops",
-    "koodiArvo": "aikuistenops",
-    "metadata": [
-      {
-        "nimi": "Lukio suoritetaan aikuisten opetussuunnitelman mukaan",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "lukionoppimaara_nuortenops",
-    "koodiArvo": "nuortenops",
-    "metadata": [
-      {
-        "nimi": "Lukio suoritetaan nuorten opetussuunnitelman mukaan",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  }
-]
+[ {
+  "koodiUri" : "lukionoppimaara_aikuistenops",
+  "koodiArvo" : "aikuistenops",
+  "metadata" : [ {
+    "nimi" : "Gymnasiet genomförs enligt läroplanen vuxna",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukio suoritetaan aikuisten opetussuunnitelman mukaan",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukionoppimaara_nuortenops",
+  "koodiArvo" : "nuortenops",
+  "metadata" : [ {
+    "nimi" : "Gymnasiet genomförs enligt läroplanen för unga",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukio suoritetaan nuorten opetussuunnitelman mukaan",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

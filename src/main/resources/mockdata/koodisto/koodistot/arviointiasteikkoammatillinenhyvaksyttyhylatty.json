@@ -2,19 +2,19 @@
   "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
-    "kasite" : "arviointiasteikko"
-  }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
-    "kasite" : "arvosana"
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
-    "kasite" : "arviointiasteikko"
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-10-05",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
 }

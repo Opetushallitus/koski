@@ -1,70 +1,53 @@
-[
-  {
-    "koodiUri": "virtalukukausiilmtila_4",
-    "metadata": [
-      {
-        "nimi": "Saknas",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Puuttuu",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "4"
-  },
-  {
-    "koodiUri": "virtalukukausiilmtila_3",
-    "metadata": [
-      {
-        "nimi": "Frånvarande med lagstadgad orsak",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Poissa, ei kuluta opintoaikaa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "3"
-  },
-  {
-    "koodiUri": "virtalukukausiilmtila_2",
-    "metadata": [
-      {
-        "nimi": "Poissa",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Frånvarande",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "2"
-  },
-  {
-    "koodiUri": "virtalukukausiilmtila_1",
-    "metadata": [
-      {
-        "nimi": "Läsnä",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Närvarande",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "1"
-  }
-]
+[ {
+  "koodiUri" : "virtalukukausiilmtila_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Läsnä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Närvarande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtalukukausiilmtila_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Frånvarande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Poissa",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtalukukausiilmtila_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Frånvarande med lagstadgad orsak",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Poissa, ei kuluta opintoaikaa",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtalukukausiilmtila_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Puuttuu",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Saknas",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+} ]

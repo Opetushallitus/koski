@@ -3,30 +3,32 @@
   "koodiArvo" : "naytto",
   "metadata" : [ {
     "nimi" : "Näyttö",
-    "kieli" : "FI"
+    "kieli" : "EN"
   }, {
     "nimi" : "Näyttö",
     "kieli" : "SV"
   }, {
     "nimi" : "Näyttö",
-    "kieli" : "EN"
+    "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_ops",
   "koodiArvo" : "ops",
   "metadata" : [ {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Opetussuunnitelman mukainen",
-    "lyhytNimi" : "ops",
     "kieli" : "SV"
   }, {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Opetussuunnitelman mukainen",
+    "lyhytNimi" : "ops",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

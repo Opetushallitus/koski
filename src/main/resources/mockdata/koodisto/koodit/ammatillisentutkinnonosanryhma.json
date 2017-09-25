@@ -5,7 +5,8 @@
     "nimi" : "Ammatilliset tutkinnon osat",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "ammatillisentutkinnonosanryhma_2",
   "koodiArvo" : "2",
@@ -13,7 +14,8 @@
     "nimi" : "Yhteiset tutkinnon osat",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "ammatillisentutkinnonosanryhma_3",
   "koodiArvo" : "3",
@@ -21,7 +23,8 @@
     "nimi" : "Vapaavalintaiset tutkinnon osat",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "ammatillisentutkinnonosanryhma_4",
   "koodiArvo" : "4",
@@ -29,5 +32,6 @@
     "nimi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

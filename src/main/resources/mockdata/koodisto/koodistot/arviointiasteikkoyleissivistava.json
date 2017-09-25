@@ -2,19 +2,19 @@
   "koodistoUri" : "arviointiasteikkoyleissivistava",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "SV",
-    "nimi" : "Arviointiasteikko yleissivistava",
-    "kasite" : "arviointiasteikko"
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko yleissivistava"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko yleissivistava",
-    "kasite" : "arvosana"
+    "nimi" : "Arviointiasteikko yleissivistava"
   }, {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko yleissivistava",
-    "kasite" : "arviointiasteikko"
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko yleissivistava"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-10-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001"
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
 }

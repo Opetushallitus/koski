@@ -1,17 +1,19 @@
 [ {
-  "koodiUri" : "lasnaolotila_poissa",
-  "koodiArvo" : "poissa",
-  "metadata" : [ {
-    "nimi" : "Poissa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "lasnaolotila_lasna",
   "koodiArvo" : "lasna",
   "metadata" : [ {
     "nimi" : "Läsnä",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lasnaolotila_poissa",
+  "koodiArvo" : "poissa",
+  "metadata" : [ {
+    "nimi" : "Poissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

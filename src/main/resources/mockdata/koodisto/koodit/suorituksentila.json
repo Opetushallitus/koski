@@ -1,14 +1,14 @@
 [ {
-  "koodiUri" : "suorituksentila_valmis",
-  "koodiArvo" : "VALMIS",
+  "koodiUri" : "suorituksentila_kesken",
+  "koodiArvo" : "KESKEN",
   "metadata" : [ {
-    "nimi" : "Suoritus valmis",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Prestationen slutförd",
+    "nimi" : "Prestationen icke slutförd",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Suoritus kesken",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -25,14 +25,14 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "suorituksentila_kesken",
-  "koodiArvo" : "KESKEN",
+  "koodiUri" : "suorituksentila_valmis",
+  "koodiArvo" : "VALMIS",
   "metadata" : [ {
-    "nimi" : "Suoritus kesken",
+    "nimi" : "Suoritus valmis",
     "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Prestationen icke slutförd",
+    "nimi" : "Prestationen slutförd",
     "lyhytNimi" : "",
     "kieli" : "SV"
   } ],

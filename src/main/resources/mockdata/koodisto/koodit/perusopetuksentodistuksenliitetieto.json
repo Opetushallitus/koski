@@ -1,5 +1,4 @@
-[
-  {
+[ {
   "koodiUri" : "perusopetuksentodistuksenliitetieto_kayttaytyminen",
   "koodiArvo" : "kayttaytyminen",
   "metadata" : [ {
@@ -7,36 +6,36 @@
     "kuvaus" : "Arvio oppilaan käyttäytymisestä",
     "kieli" : "FI"
   } ],
-  "versio" : 1
-  },
-  {
-    "koodiUri" : "perusopetuksentodistuksenliitetieto_tyoskentely",
-    "koodiArvo" : "tyoskentely",
-    "metadata" : [ {
-      "nimi" : "Työskentely",
-      "kuvaus" : "Arvio oppilaan työskentelystä",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
-    "koodiArvo" : "valinnaisetaineet",
-    "metadata" : [ {
-      "nimi" : "Valinnaiset aineet",
-      "kuvaus" : "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "perusopetuksentodistuksenliitetieto_painotettuopetus",
-    "koodiArvo" : "painotettuopetus",
-    "metadata" : [ {
-      "nimi" : "Painotettu opetus",
-      "kuvaus" : "",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  }
-]
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "perusopetuksentodistuksenliitetieto_painotettuopetus",
+  "koodiArvo" : "painotettuopetus",
+  "metadata" : [ {
+    "nimi" : "Painotettu opetus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "perusopetuksentodistuksenliitetieto_tyoskentely",
+  "koodiArvo" : "tyoskentely",
+  "metadata" : [ {
+    "nimi" : "Työskentely",
+    "kuvaus" : "Arvio oppilaan työskentelystä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
+  "koodiArvo" : "valinnaisetaineet",
+  "metadata" : [ {
+    "nimi" : "Valinnaiset aineet",
+    "kuvaus" : "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

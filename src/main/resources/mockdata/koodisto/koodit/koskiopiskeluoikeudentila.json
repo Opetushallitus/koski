@@ -1,85 +1,75 @@
-[
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_lasna",
-    "koodiArvo": "lasna",
-    "metadata": [
-      {
-        "nimi": "Läsnä",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_valmistunut",
-    "koodiArvo": "valmistunut",
-    "metadata": [
-      {
-        "nimi": "Valmistunut",
-        "kuvaus": "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_eronnut",
-    "koodiArvo": "eronnut",
-    "metadata": [
-      {
-        "nimi": "Eronnut",
-        "kuvaus": "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_katsotaaneronneeksi",
-    "koodiArvo": "katsotaaneronneeksi",
-    "metadata": [
-      {
-        "nimi": "Katsotaan eronneeksi",
-        "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
-    "koodiArvo": "valiaikaisestikeskeytynyt",
-    "metadata": [
-      {
-        "nimi": "Väliaikaisesti keskeytynyt",
-        "kuvaus": "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_peruutettu",
-    "koodiArvo": "peruutettu",
-    "metadata": [
-      {
-        "nimi": "Peruutettu",
-        "kuvaus": "Opiskeluoikeus peruutettu",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_mitatoity",
-    "koodiArvo": "mitatoity",
-    "metadata": [
-      {
-        "nimi": "Mitätöity",
-        "kuvaus": "Opiskeluoikeus mitätöity",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  }
-]
+[ {
+  "koodiUri" : "koskiopiskeluoikeudentila_eronnut",
+  "koodiArvo" : "eronnut",
+  "metadata" : [ {
+    "nimi" : "Eronnut",
+    "kuvaus" : "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_katsotaaneronneeksi",
+  "koodiArvo" : "katsotaaneronneeksi",
+  "metadata" : [ {
+    "nimi" : "Katsotaan eronneeksi",
+    "kuvaus" : "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Anses utskriven",
+    "kuvaus" : "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_lasna",
+  "koodiArvo" : "lasna",
+  "metadata" : [ {
+    "nimi" : "Läsnä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_peruutettu",
+  "koodiArvo" : "peruutettu",
+  "metadata" : [ {
+    "nimi" : "Peruutettu",
+    "kuvaus" : "Opiskeluoikeus peruutettu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
+  "koodiArvo" : "valiaikaisestikeskeytynyt",
+  "metadata" : [ {
+    "nimi" : "Väliaikaisesti keskeytynyt",
+    "kuvaus" : "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_valmistunut",
+  "koodiArvo" : "valmistunut",
+  "metadata" : [ {
+    "nimi" : "Valmistunut",
+    "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri": "koskiopiskeluoikeudentila_mitatoity",
+  "koodiArvo": "mitatoity",
+  "metadata": [
+    {
+      "nimi": "Mitätöity",
+      "kuvaus": "Opiskeluoikeus mitätöity",
+      "kieli": "FI"
+    }
+  ],
+  "versio": 1
+}]

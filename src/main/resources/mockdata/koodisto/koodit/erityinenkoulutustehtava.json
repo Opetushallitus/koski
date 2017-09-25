@@ -1,79 +1,76 @@
-[
-  {
-    "koodiUri": "erityinenkoulutustehtava_taide",
-    "koodiArvo": "taide",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä taide",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_urheilu",
-    "koodiArvo": "urheilu",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä urheilu",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_kielijakansainvalisyys",
-    "koodiArvo": "kielijakansainvalisyys",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä kieli ja kansainvälisyys",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_ib",
-    "koodiArvo": "ib",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä IB",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_matematiikka-luonnontiede-ymparisto-tekniikka",
-    "koodiArvo": "matematiikka-luonnontiede-ymparisto-tekniikka",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä matematiikka, luonnontiede, ympäristö ja tekniikka",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_steiner",
-    "koodiArvo": "steiner",
-    "metadata": [
-      {
-        "nimi": "Erityisenä koulutustehtävänä steinerkoulu",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "erityinenkoulutustehtava_muu",
-    "koodiArvo": "muu",
-    "metadata": [
-      {
-        "nimi": "Jokin muu erityinen koulutustehtävä",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  }
-]
+[ {
+  "koodiUri" : "erityinenkoulutustehtava_ib",
+  "koodiArvo" : "ib",
+  "metadata" : [ {
+    "nimi" : "Erityisenä koulutustehtävänä IB",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild utbildningsuppgift IB",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_kielijakansainvalisyys",
+  "koodiArvo" : "kielijakansainvalisyys",
+  "metadata" : [ {
+    "nimi" : "Erityisenä koulutustehtävänä kieli ja kansainvälisyys",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild utbildningsuppgift språk och internationalisering",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
+  "koodiArvo" : "matematiikka-luonnontiede-ymparisto-tekniikka",
+  "metadata" : [ {
+    "nimi" : "Erityisenä koulutustehtävänä matematiikka, luonnontiede, ympäristö ja tekniikka",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Särkild utbildningsuppgift matematik, naturvetenskaper, miljö och teknik",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_muu",
+  "koodiArvo" : "muu",
+  "metadata" : [ {
+    "nimi" : "Jokin muu erityinen koulutustehtävä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_steiner",
+  "koodiArvo" : "steiner",
+  "metadata" : [ {
+    "nimi" : "Särskild utbildningsuppgift steinerskola",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Erityisenä koulutustehtävänä steinerkoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_taide",
+  "koodiArvo" : "taide",
+  "metadata" : [ {
+    "nimi" : "Erityisenä koulutustehtävänä taide",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "erityinenkoulutustehtava_urheilu",
+  "koodiArvo" : "urheilu",
+  "metadata" : [ {
+    "nimi" : "Erityisenä koulutustehtävänä urheilu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

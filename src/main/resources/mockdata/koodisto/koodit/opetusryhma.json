@@ -5,7 +5,8 @@
     "nimi" : "Yleinen opetusryhmä",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "opetusryhma_2",
   "koodiArvo" : "2",
@@ -13,5 +14,6 @@
     "nimi" : "Erityisopetusryhmä",
     "kieli" : "FI"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

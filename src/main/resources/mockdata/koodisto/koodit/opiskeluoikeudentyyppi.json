@@ -1,112 +1,111 @@
-[
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_ammatillinenkoulutus",
-    "koodiArvo" : "ammatillinenkoulutus",
-    "metadata" : [ {
-      "nimi" : "Ammatillinen koulutus",
-      "lyhytNimi" : "Ammatillinen koulutus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_perusopetus",
-    "koodiArvo" : "perusopetus",
-    "metadata" : [ {
-      "nimi" : "Perusopetus",
-      "lyhytNimi" : "Perusopetus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_aikuistenperusopetus",
-    "koodiArvo" : "aikuistenperusopetus",
-    "metadata" : [ {
-      "nimi" : "Aikuisten perusopetus",
-      "lyhytNimi" : "Aikuisten perusopetus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_lukiokoulutus",
-    "koodiArvo" : "lukiokoulutus",
-    "metadata" : [ {
-      "nimi" : "Lukiokoulutus",
-      "lyhytNimi" : "Lukiokoulutus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_ibtutkinto",
-    "koodiArvo" : "ibtutkinto",
-    "metadata" : [ {
-      "nimi" : "IB-tutkinto",
-      "lyhytNimi" : "IB-tutkinto",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
-    "koodiArvo" : "ylioppilastutkinto",
-    "metadata" : [ {
-      "nimi" : "Ylioppilastutkinto",
-      "lyhytNimi" : "Ylioppilastutkinto",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_korkeakoulutus",
-    "koodiArvo" : "korkeakoulutus",
-    "metadata" : [ {
-      "nimi" : "Korkeakoulutus",
-      "lyhytNimi" : "Korkeakoulutus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_luva",
-    "koodiArvo" : "luva",
-    "metadata" : [ {
-      "nimi" : "Lukioon valmistava koulutus (LUVA)",
-      "lyhytNimi" : "Luva",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
-    "koodiArvo" : "perusopetuksenlisaopetus",
-    "metadata" : [ {
-      "nimi" : "Perusopetuksen lisäopetus",
-      "lyhytNimi" : "Perusopetuksen lisäopetus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_perusopetukseenvalmistavaopetus",
-    "koodiArvo" : "perusopetukseenvalmistavaopetus",
-    "metadata" : [ {
-      "nimi" : "Perusopetukseen valmistava opetus",
-      "lyhytNimi" : "Perusopetukseen valmistava opetus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_esiopetus",
-    "koodiArvo" : "esiopetus",
-    "metadata" : [ {
-      "nimi" : "Esiopetus",
-      "lyhytNimi" : "Esiopetus",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  }
-]
+[ {
+  "koodiUri" : "opiskeluoikeudentyyppi_aikuistenperusopetus",
+  "koodiArvo" : "aikuistenperusopetus",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetus",
+    "lyhytNimi" : "Aikuisten perusopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_ammatillinenkoulutus",
+  "koodiArvo" : "ammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen koulutus",
+    "lyhytNimi" : "Ammatillinen koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_esiopetus",
+  "koodiArvo" : "esiopetus",
+  "metadata" : [ {
+    "nimi" : "Esiopetus",
+    "lyhytNimi" : "Esiopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_ibtutkinto",
+  "koodiArvo" : "ibtutkinto",
+  "metadata" : [ {
+    "nimi" : "IB-tutkinto",
+    "lyhytNimi" : "IB-tutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_korkeakoulutus",
+  "koodiArvo" : "korkeakoulutus",
+  "metadata" : [ {
+    "nimi" : "Korkeakoulutus",
+    "lyhytNimi" : "Korkeakoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_lukiokoulutus",
+  "koodiArvo" : "lukiokoulutus",
+  "metadata" : [ {
+    "nimi" : "Lukiokoulutus",
+    "lyhytNimi" : "Lukiokoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_luva",
+  "koodiArvo" : "luva",
+  "metadata" : [ {
+    "nimi" : "Lukioon valmistava koulutus (LUVA)",
+    "lyhytNimi" : "Luva",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_perusopetukseenvalmistavaopetus",
+  "koodiArvo" : "perusopetukseenvalmistavaopetus",
+  "metadata" : [ {
+    "nimi" : "Perusopetukseen valmistava opetus",
+    "lyhytNimi" : "Perusopetukseen valmistava opetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
+  "koodiArvo" : "perusopetuksenlisaopetus",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen lisäopetus",
+    "lyhytNimi" : "Perusopetuksen lisäopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_perusopetus",
+  "koodiArvo" : "perusopetus",
+  "metadata" : [ {
+    "nimi" : "Perusopetus",
+    "lyhytNimi" : "Perusopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
+  "koodiArvo" : "ylioppilastutkinto",
+  "metadata" : [ {
+    "nimi" : "Ylioppilastutkinto",
+    "lyhytNimi" : "Ylioppilastutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]
