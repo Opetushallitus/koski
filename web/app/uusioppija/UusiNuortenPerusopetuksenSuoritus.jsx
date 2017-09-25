@@ -1,11 +1,10 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
-import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
-import Text from '../Text.jsx'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
+import Suoritustyyppi from './Suoritustyyppi.jsx'
+import Peruste from './Peruste.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()
@@ -21,16 +20,3 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
   </span>)
 }
-
-const Suoritustyyppi = ({suoritustyyppiAtom, suoritustyypitP}) => {
-  return (<div>
-    <KoodistoDropdown
-      className="oppimaara"
-      title="Oppimäärä"
-      options = { suoritustyypitP }
-      selected = { suoritustyyppiAtom }
-    />
-  </div> )
-}
-
-const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>

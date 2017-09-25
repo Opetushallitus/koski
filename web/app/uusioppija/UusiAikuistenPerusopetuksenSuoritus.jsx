@@ -16,11 +16,11 @@ import {
 import {editorMapping} from '../editor/Editors.jsx'
 import {Editor} from '../editor/Editor.jsx'
 import {PropertyEditor} from '../editor/PropertyEditor.jsx'
-import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
-import {PerusteDropdown} from '../editor/PerusteDropdown.jsx'
 import Text from '../Text.jsx'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
+import Suoritustyyppi from './Suoritustyyppi.jsx'
+import Peruste from './Peruste.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()
@@ -31,7 +31,6 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
   const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(suorituksenTyyppi => {
     if (suorituksenTyyppi == 'perusopetuksenoppiaineenoppimaara') {
-      // TODO: älä käytä luokkien nimiä
       return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.PerusopetuksenOppiaineenOppimääränSuoritus')
     }
   }).toProperty()
@@ -40,7 +39,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Suoritustyyppi oppimääräAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
+    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
     {
       suoritustyyppiAtom.map( tyyppi => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(tyyppi)
         ? <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
@@ -49,19 +48,6 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   </span>)
 }
-
-const Suoritustyyppi = ({suoritustyyppiAtom, suoritustyypitP}) => {
-  return (<div>
-    <KoodistoDropdown
-      className="oppimaara"
-      title="Oppimäärä"
-      options = { suoritustyypitP }
-      selected = { suoritustyyppiAtom }
-    />
-  </div> )
-}
-
-const Peruste = ({suoritusTyyppiP, perusteAtom}) => <label className="peruste"><Text name="Peruste"/><PerusteDropdown {...{suoritusTyyppiP, perusteAtom}}/></label>
 
 const Oppiaine = ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppilaitos, suorituskieli}) => { // suoritusPrototypeP = prototyyppi oppiaineen oppimäärän suoritukselle
   return (<span>
