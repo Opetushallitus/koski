@@ -9,11 +9,11 @@
     table.suoritukset {
       width: 100%;
 
-      tbody tr {
+      > tbody > tr {
         background: @color-neutral-gray;
       }
 
-      thead tr:last-child {
+      > thead > tr:last-child {
         th {
           padding: 0;
           hr {
@@ -22,34 +22,38 @@
         }
       }
 
-      th {
-        &.arvosana, &.maara {
-          width: 100px;
-          text-align: right;
-        }
-        &.oppiaine, &.suorituksentila {
-          vertical-align: bottom;
-        }
-      }
+      > tbody, thead {
+        > tr {
+          > th {
+            &.arvosana, &.maara {
+              width: 100px;
+              text-align: right;
+            }
+            &.oppiaine, &.suorituksentila {
+              vertical-align: bottom;
+            }
+          }
 
-      td, th {
-        padding: 12px;
-        &.oppiaine {
-          padding-left: 6px;
-        }
-      }
+          > td, > th {
+            padding: 12px;
+            &.oppiaine {
+              padding-left: 6px;
+            }
+          }
 
-      td {
-        border-bottom: 5px solid white;
-        &.maara, &.arvosana {
-          text-align: right;
-        }
-        &.suorituksentila {
-          padding-top: 14px;
-          width: 62px;
-          font-family: FontAwesome;
-          div {
-            width: 0;
+          > td {
+            border-bottom: 5px solid white;
+            &.maara, &.arvosana {
+              text-align: right;
+            }
+            &.suorituksentila {
+              padding-top: 14px;
+              width: 62px;
+              font-family: FontAwesome;
+              div {
+                width: 0;
+              }
+            }
           }
         }
       }
