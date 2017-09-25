@@ -13,7 +13,7 @@ import {ift} from '../util'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 
-export const PerusopetuksenKurssitEditor = ({model}) => {
+export const KurssitEditor = ({model}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
@@ -29,8 +29,8 @@ export const PerusopetuksenKurssitEditor = ({model}) => {
   }
 
   if (!kurssit.length && !model.context.edit) return null
-  return (<tr className="kurssit"><td colSpan="4">
-    <ul className="kurssit">{
+  return (
+    <span className="kurssit"><ul>{
       kurssit.map((kurssi, kurssiIndex) =>
         <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>
       )
@@ -41,7 +41,8 @@ export const PerusopetuksenKurssitEditor = ({model}) => {
     {
       ift(showUusiKurssiAtom, <UusiPerusopetuksenKurssiPopup resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
     }
-  </td></tr>)
+    </span>
+  )
 }
 
 const UusiPerusopetuksenKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {

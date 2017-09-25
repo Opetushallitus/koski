@@ -228,7 +228,7 @@ case class PaikallinenLukionKurssi(
   @KoodistoKoodiarvo("syventava")
   @KoodistoKoodiarvo("soveltava")
   kurssinTyyppi: Koodistokoodiviite
-) extends LukionKurssi with PaikallinenKoulutusmoduuli
+) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {

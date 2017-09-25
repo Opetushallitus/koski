@@ -7,7 +7,7 @@ import {modelData, modelErrorMessages, modelLookup, modelProperties, modelSetVal
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
-import {PerusopetuksenKurssitEditor} from './PerusopetuksenKurssitEditor.jsx'
+import {KurssitEditor} from './KurssitEditor.jsx'
 import {ArvosanaEditor} from './ArvosanaEditor.jsx'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
@@ -71,7 +71,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
     {
       expanded && <tr key='details'><td colSpan="4" className="details"><PropertiesEditor context={model.context} properties={extraProperties} /></td></tr>
     }
-    <PerusopetuksenKurssitEditor model={model}/>
+    <tr className="kurssit"><td colSpan="4"><KurssitEditor model={model}/></td></tr>
     {
       modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }

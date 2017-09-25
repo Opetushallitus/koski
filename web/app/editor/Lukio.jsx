@@ -1,8 +1,8 @@
 import React from 'react'
-import {modelData, modelTitle, modelItems} from './EditorModel.js'
+import {modelData, modelItems, modelTitle} from './EditorModel.js'
 import {suorituksenTilaSymbol} from './Suoritustaulukko.jsx'
-import {KurssiEditor} from './KurssiEditor.jsx'
 import Text from '../Text.jsx'
+import {KurssitEditor} from './KurssitEditor.jsx'
 
 export class LukionOppiaineetEditor extends React.Component {
   render() {
@@ -52,13 +52,7 @@ class LukionOppiaineEditor extends React.Component {
         </td>
         <td className="oppiaine">
           <div className="nimi">{modelTitle(oppiaine, 'koulutusmoduuli')}</div>
-          <ul className="kurssit">
-            {
-              kurssit.map((kurssi, kurssiIndex) =>
-                <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>
-              )
-            }
-          </ul>
+          <KurssitEditor model={oppiaine}/>
         </td>
         <td className="maara">{suoritetutKurssit.length}</td>
         <td className="arvosana">
