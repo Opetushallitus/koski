@@ -6,6 +6,7 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.DefaultValue
 
 case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[KoodistoKoodiMetadata], versio: Int, version: Option[Long], voimassaAlkuPvm: Option[LocalDate], tila: Option[String] = None, withinCodeElements: Option[List[CodeRelationship]] = None) {
+  def koodistoUri = koodiUri.split("_")(0)
   def hasParent(parent: KoodistoKoodi): Boolean = this.withinCodeElements.toList.flatten.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined
 
   private def localizedStringFromMetadata(f: KoodistoKoodiMetadata => Option[String]): Option[LocalizedString] = {
