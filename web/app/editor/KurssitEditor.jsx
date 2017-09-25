@@ -21,6 +21,7 @@ import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 
 export const KurssitEditor = ({model}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
+  let oppiaine = modelLookup(model, 'koulutusmoduuli')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
   let kurssinSuoritusProto = createKurssinSuoritus(osasuoritukset)
@@ -45,13 +46,13 @@ export const KurssitEditor = ({model}) => {
       model.context.edit && <a className="uusi-kurssi" onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
     }
     {
-      ift(showUusiKurssiAtom, <UusiKurssiPopup resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
+      ift(showUusiKurssiAtom, <UusiKurssiPopup oppiaine={oppiaine} resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
     }
     </span>
   )
 }
 
-const UusiKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+const UusiKurssiPopup = ({oppiaine, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
   let selectedAtom = Atom()
   let validP = selectedAtom
   let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
@@ -60,7 +61,8 @@ const UusiKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
 
   return (<ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
     <h2><Text name="Lisää kurssi"/></h2>
-    <span className="kurssi"><UusiKurssiDropdown kurssinSuoritus={uusiKurssinSuoritus}
+    <span className="kurssi"><UusiKurssiDropdown oppiaine={oppiaine}
+                                                 kurssinSuoritus={uusiKurssinSuoritus}
                                                  valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
                                                  paikallinenKurssiProto={paikallinenKurssiProto}
                                                  selected={selectedAtom}
@@ -71,7 +73,7 @@ const UusiKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
 }
 
 const filterProtos = (päätasonSuoritus, protos) => {
-  if (päätasonSuoritus.value.classes.includes('aikuisteperusopetuksenoppimaaransuoritus')) {
+  if (päätasonSuoritus.value.classes.includes('aikuistenperusopetuksenoppimaaransuoritus')) {
     let diaari = modelData(päätasonSuoritus, 'koulutusmoduuli.perusteenDiaarinumero')
     return protos.filter(proto => {
       switch (diaari) {

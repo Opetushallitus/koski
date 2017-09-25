@@ -5,6 +5,7 @@ import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
+import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
@@ -12,6 +13,8 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import org.json4s.jackson.Serialization
+
+import scala.collection.immutable
 
 /**
   *  Endpoints for the Koski UI
@@ -89,6 +92,23 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     }
   }
 
+  get("/kurssit/:oppiaineKoodisto/:oppiaineKoodiarvo/:kurssiKoodistot") {
+    val oppiaineKoodistoUri = params("oppiaineKoodisto")
+    val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
+    val oppiaineKoodit = application.koodistoViitePalvelu.getKoodistoKoodiViite(params("oppiaineKoodisto"), params("oppiaineKoodiarvo")).toList
+    val oppiaineeseenSisältyvätKurssit = for {
+      oppiaineKoodi <- oppiaineKoodit
+      kurssiKoodisto <- kurssiKoodistot
+      kurssiKoodi <- application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(kurssiKoodisto, oppiaineKoodi).toList.flatten
+    } yield {
+      kurssiKoodi
+    }
+    toKoodistoEnumValues(oppiaineeseenSisältyvätKurssit match {
+      case Nil => koodistojenKoodit(kurssiKoodistot)
+      case _ => oppiaineeseenSisältyvätKurssit
+    })
+  }
+
   get("/preferences/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
@@ -99,12 +119,18 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 
   private def getKooditFromRequestParams() = {
-    val koodistoUriParts = params("koodistoUri").split(",").toList
-    val koodit: List[Koodistokoodiviite] = koodistoUriParts flatMap {part: String =>
-      context.koodistoPalvelu.getLatestVersion(part).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
-    }
+    toKoodistoEnumValues(koodistojenKoodit(koodistotByString(params("koodistoUri"))))
+  }
 
-    koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
+  private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_).toList.flatten)
+
+  private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
+
+  private def koodistotByString(str: String): List[KoodistoViite] = {
+    val koodistoUriParts = str.split(",").toList
+    koodistoUriParts flatMap {part: String =>
+      context.koodistoPalvelu.getLatestVersion(part)
+    }
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)

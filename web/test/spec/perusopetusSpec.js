@@ -372,6 +372,7 @@ describe('Perusopetus', function() {
 
             // TODO: kurssien rajaus oppiaineeseen
             // TODO: paikalliset kurssit
+            // TODO: ei lisätä samaa uudestaan
           })
         })
       })

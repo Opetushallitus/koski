@@ -3,17 +3,15 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import Atom from 'bacon.atom'
 import DropDown from '../Dropdown.jsx'
-import {modelData, modelTitle} from './EditorModel'
+import {modelData, modelLookup, modelSetValue, modelTitle} from './EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {isPaikallinen, isUusi} from './Koulutusmoduuli'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
-
-export const UusiKurssiDropdown = ({suoritukset = [], paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
+import Http from '../http'
+export const UusiKurssiDropdown = ({oppiaine, suoritukset = [], paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-  let valtakunnallisetKurssit = completeWithFieldAlternatives(valtakunnallisetKurssiProtot, 'tunniste')
-
+  let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
   let paikallisetKurssit = Atom([])
   let setPaikallisetKurssit = kurssit => paikallisetKurssit.set(kurssit)
 
@@ -48,4 +46,15 @@ export const UusiKurssiDropdown = ({suoritukset = [], paikallinenKurssiProto, va
       ))
     }
   </div>)
+}
+
+const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
+  let oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
+  let oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
+  const alternativesForField = (model) => {
+    let kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
+    return Http.cachedGet(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${kurssiKoodistot}`)
+      .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, 'tunniste')))
+  }
+  return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(x => x.flatten())
 }
