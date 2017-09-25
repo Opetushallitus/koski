@@ -69,5 +69,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_mitatoity",
+    "koodiArvo": "mitatoity",
+    "metadata": [
+      {
+        "nimi": "Mitätöity",
+        "kuvaus": "Opiskeluoikeus mitätöity",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
