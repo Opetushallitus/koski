@@ -112,7 +112,7 @@ case class PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(
   @Flatten
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli {
+) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = LocalizedString.empty
 }
 
