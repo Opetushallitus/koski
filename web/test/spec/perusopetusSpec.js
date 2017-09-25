@@ -1538,7 +1538,7 @@ describe('Perusopetus', function() {
       )
       it('Näytetään oikein', function() {
         expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
-        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-1280-2017')
         expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
 
@@ -1564,7 +1564,7 @@ describe('Perusopetus', function() {
 
       it('Näytetään oikein', function() {
         expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärän alkuvaihe')
-        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('19/011/2015')
+        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-1280-2017')
         expect(opinnot.getSuorituskieli()).to.equal('suomi')
       })
 
@@ -1668,7 +1668,7 @@ describe('Perusopetus', function() {
 
           it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
             expect(opinnot.getSuorituskieli()).to.equal('suomi')
-            expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('19/011/2015')
+            expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('OPH-1280-2017')
           })
 
           it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {

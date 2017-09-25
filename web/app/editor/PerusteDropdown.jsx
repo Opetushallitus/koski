@@ -5,6 +5,8 @@ import Dropdown from '../Dropdown.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 
+const preferred = ['OPH-1280-2017', '104/011/2014']
+
 export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   let diaarinumerotP = suoritusTyyppiP.flatMapLatest(tyyppi =>  !tyyppi ? [] : diaarinumerot(tyyppi)).toProperty()
   let selectedOptionP = Bacon.combineWith(diaarinumerotP, perusteAtom, (options, selected) => options.find(o => o.koodiarvo == selected))
@@ -15,7 +17,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   diaarinumerotP.onValue(options => {
     let current = perusteAtom.get()
     if (!current || !options.map(k => k.koodiarvo).includes(current)) {
-      selectOption(options[0])
+      selectOption(options.find(k => preferred.includes(k.koodiarvo)) || options[0])
     }
   })
 
