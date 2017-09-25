@@ -41,12 +41,6 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     )
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
-    def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
-      "nested" -> Map(
-        "path" -> path,
-        "query" -> query
-      )
-    )
     val elasticSort = sorting match {
       case Ascending("nimi") => nimi("asc")
       case Ascending("luokka") => luokka("asc")
@@ -111,7 +105,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
       case _ => Nil
-    } ++ oppilaitosFilter(session) ++ suoritusFilter
+    } ++ oppilaitosFilter(session) ++ suoritusFilter ++ mitätöityFilter
 
     val elasticQuery = elasticFilters match {
       case Nil => Map.empty
@@ -129,6 +123,13 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       }
       .getOrElse(Nil)
   }
+
+  private def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
+    "nested" -> Map(
+      "path" -> path,
+      "query" -> query
+    )
+  )
 
   private def vainAktiivinen(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
     tilat.reverse.find(!_.alku.isAfter(LocalDate.now)).toList
@@ -156,7 +157,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       throw new TestingException("Testing error handling")
     }
 
-    val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session)
+    val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session) ++ mitätöityFilter
     val doc = toJValue(Map(
       "_source" -> "henkilö.oid",
       "query" -> Map("bool" -> Map("must" -> filters)),
@@ -178,6 +179,13 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       )))
     }
 
+  private def mitätöityFilter: List[Map[String, Any]] = List(
+    Map("bool" -> Map("must_not" -> nestedFilter("tilat", Map(
+      "bool" -> Map(
+        "must" -> List(
+          Map("term" -> Map("tilat.tila.koodiarvo" -> "mitatoity"))
+        )
+    ))))))
 
   private def nameFilter(hakusana: String) =
     analyzeString(hakusana).map { namePrefix =>
