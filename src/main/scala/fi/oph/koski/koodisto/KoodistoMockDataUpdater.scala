@@ -21,7 +21,7 @@ object KoodistoMockDataUpdater extends App with Logging {
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio)
         )
-        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten
+        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.sortBy(_.koodiArvo)
         JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit
