@@ -17,3 +17,4 @@ export class BooleanEditor extends React.Component {
   }
 }
 BooleanEditor.canShowInline = () => true
+BooleanEditor.handlesOptional = () => true
