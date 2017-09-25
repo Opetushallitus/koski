@@ -3,31 +3,19 @@ import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
 import {EnumEditor} from './EnumEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
-import * as L from 'partial.lenses'
-import {
-  lensedModel,
-  modelData,
-  modelErrorMessages,
-  modelLookup,
-  modelProperties,
-  modelSetValue,
-  oneOfPrototypes,
-  pushRemoval
-} from './EditorModel'
-import {sortGrades} from '../sorting'
-import {fixTila} from './Suoritus'
+import {modelData, modelErrorMessages, modelLookup, modelProperties, modelSetValue, pushRemoval} from './EditorModel'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
 import {PerusopetuksenKurssitEditor} from './PerusopetuksenKurssitEditor.jsx'
+import {ArvosanaEditor} from './ArvosanaEditor.jsx'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
     let {model, showLaajuus, showFootnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
-    let className = 'oppiaine'
+    let className = 'oppiaine oppiaine-rivi'
       + ' ' + (modelData(model, 'koulutusmoduuli.pakollinen') ? 'pakollinen' : 'valinnainen')
       + ' ' + modelData(oppiaine, 'tunniste').koodiarvo
       + ' ' + modelData(model, 'tila.koodiarvo').toLowerCase()
@@ -106,38 +94,7 @@ export const expandableProperties = (model) => {
     .filter(extraPropertiesFilter)
 }
 
-const ArvosanaEditor = ({model}) => {
-  model = fixTila(model)
-  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model: modelLookup(model, 'arviointi.-1')})), 'arvosana').startWith([])
-  let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
-  return (<span>{
-    alternativesP.map(alternatives => {
-      let arvosanaLens = L.lens(
-        (m) => {
-          return modelLookup(m, '-1.arvosana')
-        },
-        (v, m) => {
-          if (modelData(v)) {
-            // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
-            let valittuKoodiarvo = modelData(v).koodiarvo
-            let found = alternatives.find(alt => {
-              return modelData(alt, 'arvosana').koodiarvo == valittuKoodiarvo
-            })
-            return modelSetValue(m, found.value, '-1')
-          } else {
-            // Ei arvosanaa -> poistetaan arviointi kokonaan
-            return modelSetValue(m, undefined)
-          }
-        }
-      )
-      let arviointiModel = modelLookup(model, 'arviointi')
-      let arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
-      // Use key to ensure re-render when alternatives are supplied
-      return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
-    })
-  }</span>)
-}
-
+// TODO: move this to a more appropriate place. Maybe rename?
 export const completeWithFieldAlternatives = (models, path) => {
   const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, path))
     .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, path)))

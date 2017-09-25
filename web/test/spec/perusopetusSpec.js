@@ -345,18 +345,32 @@ describe('Perusopetus', function() {
 
       describe('Tietojen muuttaminen', function() {
         describe('Kurssin lisääminen', function() {
+          var äidinkieli = opinnot.oppiaineet.oppiaine(0)
           describe('Valtakunnallinen kurssi', function() {
             before(
               editor.edit,
-              opinnot.oppiaineet.oppiaine(0).avaaLisääKurssiDialog,
-              opinnot.oppiaineet.oppiaine(0).lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri')
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri')
             )
-            it('toimii', function() {})
+            describe('Ennen arvosanan syöttöä', function() {
+              it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään', function() {
+                expect(editor.canSave()).to.equal(false)
+                expect(äidinkieli.errorText()).to.equal('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+              })
+            })
 
-            // TODO: kurssien rajaus oikeaan koodistoon (2015 vs 2017)
+            describe('Kun annetaan arvosana ja tallennetaan', function() {
+              before(
+                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+                editor.saveChanges
+              )
+
+              it('Kurssin tiedot näytetään oikein', function() {
+                expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
+              })
+            })
+
             // TODO: kurssien rajaus oppiaineeseen
-            // TODO: virheen näyttö jos arvosana puuttuu
-            // TODO: arvosanan syöttö
             // TODO: paikalliset kurssit
           })
         })
@@ -838,7 +852,7 @@ describe('Perusopetus', function() {
       describe('Vieraan kielen valinta', function() {
 
         describe('kielivalinnan muuttaminen', function() {
-          var b1kieli = opinnot.oppiaineet.oppiaine(1)
+          var b1kieli = opinnot.oppiaineet.oppiaine('pakollinen.B1')
           var kieli = b1kieli.propertyBySelector('.oppiaine')
           before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.saveChanges)
           it('muutettu kielivalinta näytetään', function() {

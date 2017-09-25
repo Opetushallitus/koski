@@ -1,31 +1,4 @@
 describe('Lukiokoulutus', function( ){
-  function Kurssi(identifierOrElem) {
-    function elem() {
-      return typeof identifierOrElem == "string" ? S(".kurssi:contains(" + identifierOrElem +")") : S(identifierOrElem)
-    }
-    function detailsElem() { return elem().find(".details")}
-    var api = {
-      detailsText: function() {
-        return detailsElem().is(":visible") ? extractAsText(detailsElem()) : ""
-      },
-      arvosana: function() {
-        return elem().find(".arvosana").text()
-      },
-      toggleDetails: click(elem),
-      showDetails: function() {
-        if (api.detailsText() == '')
-          click(elem())()
-        return wait.forAjax()
-      },
-      editor: function() {
-        return Editor(detailsElem)
-      }
-    }
-    return api
-  }
-  Kurssi.findAll = function() {
-    return toArray(S(".kurssi")).map(Kurssi)
-  }
 
   var page = KoskiPage()
   var todistus = TodistusPage()
@@ -91,7 +64,7 @@ describe('Lukiokoulutus', function( ){
     })
 
     describe('Kurssin tiedot', function() {
-      var kurssi = Kurssi('MAA16')
+      var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
       describe('Kun klikataan', function() {
         before(kurssi.toggleDetails)
         it('näyttää kurssin tiedot', function() {
@@ -125,10 +98,10 @@ describe('Lukiokoulutus', function( ){
         var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
         before(opiskeluoikeusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
-          var kurssi = Kurssi('MAA16')
-          before(kurssi.showDetails, kurssi.editor().property('arvosana').selectValue('6'), kurssi.toggleDetails, opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
+          var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+          before(kurssi.showDetails, kurssi.details().property('arvosana').selectValue('6'), kurssi.toggleDetails, opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
-            expect(kurssi.arvosana()).to.equal('6')
+            expect(kurssi.arvosana.getText()).to.equal('6')
           })
         })
       })
@@ -211,7 +184,7 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Kurssin tiedot', function() {
-      var kurssi = Kurssi('MAT1')
+      var kurssi = opinnot.oppiaineet.oppiaine('LVMALUO').kurssi('MAT1')
       describe('Kun klikataan', function() {
         before(kurssi.toggleDetails)
         it('näyttää kurssin tiedot', function() {

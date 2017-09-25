@@ -8,7 +8,7 @@ export class LukionOppiaineetEditor extends React.Component {
   render() {
     let {oppiaineet} = this.props
     return (
-      <table className="suoritukset">
+      <table className="suoritukset oppiaineet">
         <thead>
         <tr>
           <th className="suorituksentila"></th>
@@ -44,7 +44,7 @@ class LukionOppiaineEditor extends React.Component {
     let keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
 
     return (
-      <tr>
+      <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
         <td className="suorituksentila" title={modelTitle(oppiaine, 'tila')}>
           <div>
             {suorituksenTilaSymbol(modelData(oppiaine, 'tila.koodiarvo'))}

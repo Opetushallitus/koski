@@ -9,7 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {arviointiPuuttuu, suoritusKesken, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
@@ -71,7 +71,7 @@ SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m)) {
     return modelItems(m, 'osasuoritukset')
         .map((osasuoritus, i) => [osasuoritus, i])
-        .filter(([osasuoritus]) => suoritusKesken(osasuoritus))
+        .filter(([osasuoritus]) => suoritusKesken(osasuoritus) || onKeskeneräisiäOsasuorituksia(osasuoritus))
         .map(([, i]) => {
           return {
             path: ['osasuoritukset', i, 'arviointi', -1, 'arvosana'],

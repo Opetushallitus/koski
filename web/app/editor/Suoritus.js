@@ -28,7 +28,8 @@ export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
 }
 
 export const keskeneräisetOsasuoritukset = (suoritus) => {
-  return modelItems(suoritus, 'osasuoritukset').filter(suoritusKesken)
+  let osasuoritukset = modelItems(suoritus, 'osasuoritukset')
+  return osasuoritukset.filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
 }
 
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo

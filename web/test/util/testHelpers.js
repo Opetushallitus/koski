@@ -318,7 +318,8 @@ function isElementVisible(el) {
 
 function subElement(el, selector) {
   return function() {
-    return el().find(selector)
+    if (!el) return S(selector)
+    return toElement(el).find(selector)
   }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {ArvosanaEditor} from './ArvosanaEditor.jsx'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -13,7 +14,6 @@ export class KurssiEditor extends React.Component {
   render() {
     let {kurssi} = this.props
     let {open, tooltipPosition} = this.state
-    let arviointi = modelData(kurssi, 'arviointi')
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     let showDetails = () => {
       if (!open) {
@@ -27,9 +27,9 @@ export class KurssiEditor extends React.Component {
     }
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     return (
-      <li onClick={showDetails} className="kurssi" ref={e => this.kurssiElement = e}>
-        <div className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
-        <div className="arvosana">{arviointi && modelData(kurssi, 'arviointi.-1.arvosana').koodiarvo}</div>
+      <li className="kurssi" ref={e => this.kurssiElement = e}>
+        <div onClick={showDetails} className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
+        <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
           open && (<div className={'details details-' + tooltipPosition}>
             <PropertiesEditor model={kurssi}/>

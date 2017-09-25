@@ -149,12 +149,16 @@ function Oppiaineet() {
 
   function Oppiaine(indexOrClass) {
     var oppiaineElem = typeof indexOrClass == 'number'
-      ? findSingle('.oppiaineet tbody:eq(' + indexOrClass + ')')
-      : findSingle('.oppiaineet tbody.' + indexOrClass)
+      ? findSingle('.oppiaineet .oppiaine-rivi:eq(' + indexOrClass + ')')
+      : findSingle('.oppiaineet .oppiaine-rivi.' + indexOrClass)
     var oppiaineApi = _.merge({
       text: function() { return extractAsText(oppiaineElem) },
       avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi', oppiaineElem)),
-      lisääKurssiDialog: LisääKurssiDialog()
+      lisääKurssiDialog: LisääKurssiDialog(),
+      kurssi: function(identifier) {
+        return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
+      },
+      errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) }
     }, Editor(oppiaineElem))
     return oppiaineApi
 
@@ -166,8 +170,31 @@ function Oppiaineet() {
       }
     }
   }
-
 }
+
+function Kurssi(elem) {
+  var detailsElem = subElement(elem, '.details')
+  var api = {
+    detailsText: function() {
+      return toElement(detailsElem).is(":visible") ? extractAsText(detailsElem) : ""
+    },
+    arvosana: Editor(elem).propertyBySelector('.arvosana'),
+    toggleDetails: click(subElement(elem, '.tunniste')),
+    showDetails: function() {
+      if (api.detailsText() == '')
+        return api.toggleDetails()
+      return wait.forAjax()
+    },
+    details: function() {
+      return Editor(detailsElem)
+    }
+  }
+  return api
+}
+Kurssi.findAll = function() {
+  return toArray(S(".kurssi")).map(Kurssi)
+}
+
 
 function TutkinnonOsat(groupId) {
   function withSuffix(s) { return groupId ? s + '.' + groupId : s }
