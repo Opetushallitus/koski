@@ -9,7 +9,7 @@ import {buildClassNames} from '../classnames'
 export class PropertiesEditor extends React.Component {
   render() {
     let defaultValueEditor = (prop, getDefault) => getDefault()
-    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true, className} = this.props
+    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true, propertyEditable = p => p.editable || context.editAll, className} = this.props
     if (!properties) {
       if (!model) throw new Error('model or properties required')
       properties = modelProperties(model)
@@ -34,7 +34,7 @@ export class PropertiesEditor extends React.Component {
         let valueClass = modelEmpty(property.model) ? 'value empty' : 'value'
         let valueEditor = property.tabular
           ? <TabularArrayEditor model={property.model} />
-          : getValueEditor(property, () => <Editor model={(property.editable || context.editAll ) ? property.model : addContext(property.model, { edit: false })}/> )
+          : getValueEditor(property, () => <Editor model={propertyEditable(property) ? property.model : addContext(property.model, { edit: false })}/> )
 
         return [(<tr className={propertyClassName} key={key}>
           {

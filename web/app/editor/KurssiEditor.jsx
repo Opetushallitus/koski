@@ -32,7 +32,11 @@ export class KurssiEditor extends React.Component {
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
           open && (<div className={'details details-' + tooltipPosition}>
-            <PropertiesEditor model={kurssi}/>
+            <PropertiesEditor
+              model={kurssi}
+              propertyFilter={p => !['arviointi', 'tila', 'koodistoUri'].includes(p.key)}
+              propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)}
+            />
           </div>)
         }
       </li>
