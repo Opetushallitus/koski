@@ -1,3 +1,7 @@
+## 25.9.2017
+
+- Lisätty opiskeluoikeuden tila Mitätöity
+
 ## 22.9.2017
 
 - Poistettu yksilöllistettyOppimäärä ja painotettuOpetus perusopetuksen oppiaineen oppimäärän suorituksesta
