@@ -5,12 +5,13 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
+class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "/api/oppija/" - {
     "GET" - {
       "with valid oid" in {
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatus(200)
+          readOppija.opiskeluoikeudet.filter(_.mitätöity) should be(empty)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }

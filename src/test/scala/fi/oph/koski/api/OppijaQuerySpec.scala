@@ -4,9 +4,10 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.date.DateOrdering
-import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
@@ -87,6 +88,17 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=lasna").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=eronnut").length should equal(0)
+      }
+      "mitätöityjä ei palauteta" in {
+        resetFixtures
+        val ooCount = queryOppijat().flatMap(_.opiskeluoikeudet).length
+        val opiskeluoikeus = makeOpiskeluoikeus()
+        insert(opiskeluoikeus.copy(tila =
+          opiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
+            opiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
+          )
+        ), MockOppijat.koululainen.vainHenkilötiedot)
+        queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount)
       }
       "toimipistehaku" - {
         "toimipisteen OID:lla" in {
