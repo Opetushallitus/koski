@@ -416,6 +416,7 @@ describe('Perusopetus', function() {
             })
 
             // TODO: kurssien rajaus oppiaineeseen
+            // TODO: A1-oppiaineen kurssien rajaus kielen perusteella
             // TODO: paikalliset kurssit
           })
         })
