@@ -73,10 +73,7 @@ describe('Lukiokoulutus', function( ){
             'Nimi Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2\n' +
             'Laajuus 1 kurssia\n' +
             'Kuvaus Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä.\n' +
-            'Kurssin tyyppi Syventävä\n' +
-            'Tila Suoritus valmis\n' +
-            'Arvosana 9\n' +
-            'Arviointipäivä 4.6.2016')
+            'Kurssin tyyppi Syventävä')
         })
       })
       describe('Kun klikataan uudestaan', function() {
@@ -99,7 +96,7 @@ describe('Lukiokoulutus', function( ){
         before(opiskeluoikeusEditor.edit)
         describe('Arvosanan muuttaminen', function() {
           var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
-          before(kurssi.showDetails, kurssi.details().property('arvosana').selectValue('6'), kurssi.toggleDetails, opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
+          before(kurssi.arvosana.selectValue('6'), opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
           it('Toimii', function() {
             expect(kurssi.arvosana.getText()).to.equal('6')
           })
@@ -192,10 +189,7 @@ describe('Lukiokoulutus', function( ){
             'Tunniste MAT1\n' +
             'Nimi Matematiikan kertauskurssi\n' +
             'Laajuus 1 kurssia\n' +
-            'Kuvaus Matematiikan kertauskurssi\n' +
-            'Tila Suoritus valmis\n' +
-            'Arvosana S\n' +
-            'Arviointipäivä 4.6.2016'
+            'Kuvaus Matematiikan kertauskurssi'
           )
         })
       })
