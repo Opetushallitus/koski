@@ -43,7 +43,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
-    runDbSync(findAction(OpiskeluOikeudet.filterNot(mitätöity).filter(_.oppijaOid === oid)).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(findAction(OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid)).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
@@ -185,7 +185,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus).withVersion(nextVersionumero)
 
-        val updatedValues@(newData, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus)
+        val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus)
 
         val diff: JArray = jsonDiff(oldRow.data, newData)
         diff.values.length match {

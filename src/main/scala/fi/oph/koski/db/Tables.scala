@@ -21,9 +21,10 @@ object Tables {
     val sisältäväOpiskeluoikeusOid = column[Option[String]]("sisaltava_opiskeluoikeus_oid")
     val sisältäväOpiskeluoikeusOppilaitosOid = column[Option[String]]("sisaltava_opiskeluoikeus_oppilaitos_oid")
     val luokka = column[Option[String]]("luokka")
+    val mitätöity = column[Boolean]("mitatoity")
 
-    def * = (id, oid, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
-    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid)
+    def * = (id, oid, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, mitätöity)
   }
 
   object OpiskeluoikeusTable {
@@ -40,7 +41,8 @@ object Tables {
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
         JsonSerializer.serializeWithRoot(opiskeluoikeus),
-        opiskeluoikeus.luokka)
+        opiskeluoikeus.luokka,
+        opiskeluoikeus.mitätöity)
     }
     def readData(data: JValue, oid: String, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       SchemaValidatingExtractor.extract[Opiskeluoikeus](data) match {
@@ -50,7 +52,7 @@ object Tables {
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       val data = JsonSerializer.serializeWithRoot(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
-      (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
+      (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid), opiskeluoikeus.mitätöity)
     }
   }
 
@@ -156,16 +158,14 @@ object Tables {
         oo <- OpiskeluOikeudet
         if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
       } yield { oo}
-    }.filterNot(mitätöity)
-
-  lazy val mitätöity: (OpiskeluoikeusTable) => Rep[Boolean] = _.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === "mitatoity"
+    }.filterNot(_.mitätöity)
 }
 
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 // TODO: find out if access to the raw "data" can be restricted (rendering raw data will bypass user restrictions)
-case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String]) {
+case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
       import fi.oph.koski.db.Tables.OpiskeluoikeusTable
