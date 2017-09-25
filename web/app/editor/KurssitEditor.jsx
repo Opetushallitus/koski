@@ -4,7 +4,13 @@ import R from 'ramda'
 import {KurssiEditor} from './KurssiEditor.jsx'
 import {wrapOptional} from './OptionalEditor.jsx'
 import {
-  contextualizeSubModel, ensureArrayKey, modelData, modelItems, modelLookup, modelSet, oneOfPrototypes,
+  contextualizeSubModel,
+  ensureArrayKey,
+  modelData,
+  modelItems,
+  modelLookup,
+  modelSet,
+  oneOfPrototypes,
   pushModel
 } from './EditorModel'
 import Text from '../Text.jsx'
@@ -48,10 +54,8 @@ export const KurssitEditor = ({model}) => {
 const UusiPerusopetuksenKurssiPopup = ({resultCallback, toimipiste, uusiKurssinSuoritus}) => {
   let selectedAtom = Atom()
   let validP = selectedAtom
-
-
-  let diaari = modelData(uusiKurssinSuoritus.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
-  let valtakunnallisetKurssiProtot = filterProtos(koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)), diaari)
+  let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
+  let valtakunnallisetKurssiProtot = filterProtos(päätasonSuoritus, koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)))
   let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
 
   return (<ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
@@ -66,11 +70,18 @@ const UusiPerusopetuksenKurssiPopup = ({resultCallback, toimipiste, uusiKurssinS
   </ModalDialog>)
 }
 
-const filterProtos = (protot, diaari) => {
-  switch (diaari) {
-    case 'OPH-1280-2017': return protot.filter(proto => proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenpaattovaiheenkurssi2017'))
-    case '19/011/2015': return protot.filter(proto => proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenkurssi2015'))
-    default: return protot
+const filterProtos = (päätasonSuoritus, protos) => {
+  if (päätasonSuoritus.value.classes.includes('aikuisteperusopetuksenoppimaaransuoritus')) {
+    let diaari = modelData(päätasonSuoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+    return protos.filter(proto => {
+      switch (diaari) {
+        case 'OPH-1280-2017': return proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenpaattovaiheenkurssi2017')
+        case '19/011/2015': return proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenkurssi2015')
+        default: return true
+      }
+    })
+  } else {
+    return protos
   }
 }
 

@@ -372,7 +372,6 @@ describe('Perusopetus', function() {
 
             // TODO: kurssien rajaus oppiaineeseen
             // TODO: paikalliset kurssit
-            // TODO: alkuvaiheen kurssit
           })
         })
       })
@@ -397,6 +396,28 @@ describe('Perusopetus', function() {
           'Ympäristö- ja luonnontieto 8\nLYL1\n9\n' +
           'Terveystieto 10\nATE1\n9\n' +
           'Opinto-ohjaus ja työelämän taidot S')
+      })
+
+      describe('Tietojen muuttaminen', function() {
+        describe('Kurssin lisääminen', function() {
+          var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+          describe('Valtakunnallinen kurssi', function() {
+            before(
+              editor.edit,
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('AÄI7'),
+              äidinkieli.kurssi('AÄI7').arvosana.setValue('8'),
+              editor.saveChanges
+            )
+
+            it('Kurssin tiedot näytetään oikein', function() {
+              expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9 AÄI7\n8')
+            })
+
+            // TODO: kurssien rajaus oppiaineeseen
+            // TODO: paikalliset kurssit
+          })
+        })
       })
     })
   })
