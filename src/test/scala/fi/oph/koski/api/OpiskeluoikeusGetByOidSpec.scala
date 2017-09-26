@@ -49,6 +49,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN rooli" in {
+        resetFixtures
         val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
           verifyResponseStatus(200)
@@ -72,5 +73,6 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
   }
 
   def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
-  def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid) match { case a: AmmatillinenOpiskeluoikeus => a }
+  def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
+    oppija(MockOppijat.eero.oid, defaultUser).tallennettavatOpiskeluoikeudet.collect { case a: AmmatillinenOpiskeluoikeus => a }.head
 }
