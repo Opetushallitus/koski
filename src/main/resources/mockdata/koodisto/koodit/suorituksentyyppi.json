@@ -3,7 +3,6 @@
   "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen alkuvaiheen kurssi",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -13,7 +12,6 @@
   "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen alkuvaiheen oppiaine",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -23,7 +21,6 @@
   "koodiArvo" : "aikuistenperusopetuksenkurssi",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen kurssi",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -33,7 +30,6 @@
   "koodiArvo" : "aikuistenperusopetuksenoppiaine",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen oppiaine",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -43,7 +39,6 @@
   "koodiArvo" : "aikuistenperusopetuksenoppimaara",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen oppimäärä",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -53,7 +48,6 @@
   "koodiArvo" : "aikuistenperusopetuksenoppimaaranalkuvaihe",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen oppimäärän alkuvaihe",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -84,7 +78,6 @@
   "koodiArvo" : "ammatillisentutkinnonosa",
   "metadata" : [ {
     "nimi" : "Ammatillisen tutkinnon osa",
-    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,

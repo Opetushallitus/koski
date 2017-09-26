@@ -32,6 +32,16 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskiopiskeluoikeudentila_mitatoity",
+  "koodiArvo" : "mitatoity",
+  "metadata" : [ {
+    "nimi" : "Mitätöity",
+    "kuvaus" : "Opiskeluoikeus mitätöity",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskiopiskeluoikeudentila_peruutettu",
   "koodiArvo" : "peruutettu",
   "metadata" : [ {
@@ -61,15 +71,4 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-  "koodiUri": "koskiopiskeluoikeudentila_mitatoity",
-  "koodiArvo": "mitatoity",
-  "metadata": [
-    {
-      "nimi": "Mitätöity",
-      "kuvaus": "Opiskeluoikeus mitätöity",
-      "kieli": "FI"
-    }
-  ],
-  "versio": 1
-}]
+} ]

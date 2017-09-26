@@ -1068,11 +1068,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10",
   "koodiArvo" : "ÄI10",
@@ -1081,11 +1077,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2",
   "koodiArvo" : "ÄI2",
@@ -1094,11 +1086,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3",
   "koodiArvo" : "ÄI3",
@@ -1107,11 +1095,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4",
   "koodiArvo" : "ÄI4",
@@ -1120,11 +1104,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5",
   "koodiArvo" : "ÄI5",
@@ -1133,11 +1113,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6",
   "koodiArvo" : "ÄI6",
@@ -1146,11 +1122,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7",
   "koodiArvo" : "ÄI7",
@@ -1159,11 +1131,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8",
   "koodiArvo" : "ÄI8",
@@ -1172,11 +1140,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9",
   "koodiArvo" : "ÄI9",
@@ -1185,9 +1149,5 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 } ]
