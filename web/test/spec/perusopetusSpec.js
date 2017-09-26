@@ -384,8 +384,6 @@ describe('Perusopetus', function() {
               )
             })
 
-
-
             // TODO: paikalliset kurssit
             // TODO: ei lisätä samaa uudestaan
             // TODO: kurssin poisto
