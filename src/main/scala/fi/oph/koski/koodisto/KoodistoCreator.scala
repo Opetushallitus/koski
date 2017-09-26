@@ -3,7 +3,7 @@ package fi.oph.koski.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.oph.koski.json.JsonDiff.jsonDiff
+import fi.oph.koski.json.JsonDiff.objectDiff
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
@@ -38,7 +38,7 @@ object KoodistoCreator extends Logging {
         val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
 
         if (existing.withinCodes != mock.withinCodes) {
-          logger.info("Päivitetään koodisto " + existing.koodistoUri + " diff " + objectDiff(existing, mock) + " original " + JsonSerializer.writeWithRoot(existing))
+          logger.info("Päivitetään koodisto " + existing.koodistoUri + " diff " + JsonMethods.compact(objectDiff(existing, mock)) + " original " + JsonSerializer.writeWithRoot(existing))
           Some(mock)
         } else {
           None
@@ -76,7 +76,7 @@ object KoodistoCreator extends Logging {
       }
 
       päivitettävätKoodit.zipWithIndex.foreach { case ((vanhaKoodi, uusiKoodi), index) =>
-        logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + objectDiff(vanhaKoodi, uusiKoodi) + " original " + JsonSerializer.writeWithRoot(vanhaKoodi))
+        logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + JsonMethods.compact(objectDiff(vanhaKoodi, uusiKoodi)) + " original " + JsonSerializer.writeWithRoot(vanhaKoodi))
         kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
           voimassaAlkuPvm = Some(LocalDate.now),
           tila = uusiKoodi.tila.orElse(vanhaKoodi.tila),
@@ -84,9 +84,5 @@ object KoodistoCreator extends Logging {
         ))
       }
     }
-  }
-
-  def objectDiff(a: AnyRef, b: AnyRef) = {
-    JsonMethods.compact(jsonDiff(JsonSerializer.serializeWithRoot(a), JsonSerializer.serializeWithRoot(b)))
   }
 }
