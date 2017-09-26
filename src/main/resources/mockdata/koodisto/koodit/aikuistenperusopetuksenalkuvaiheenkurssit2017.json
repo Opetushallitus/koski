@@ -8,8 +8,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_es",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa2",
@@ -21,8 +23,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_es",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa3",
@@ -34,8 +38,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_es",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa4",
@@ -47,8 +53,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_es",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena1",
@@ -60,8 +68,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_en",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena2",
@@ -73,8 +83,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_en",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena3",
@@ -86,8 +98,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_en",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena4",
@@ -99,8 +113,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_en",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa1",
@@ -112,8 +128,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_it",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa2",
@@ -125,8 +143,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_it",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa3",
@@ -138,8 +158,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_it",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa4",
@@ -151,8 +173,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_it",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa1",
@@ -164,8 +188,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_xx",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa2",
@@ -177,8 +203,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_xx",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa3",
@@ -190,8 +218,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_xx",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa4",
@@ -203,8 +233,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_xx",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa1",
@@ -216,8 +248,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_la",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa2",
@@ -229,8 +263,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_la",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa3",
@@ -242,8 +278,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_la",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa4",
@@ -255,8 +293,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_la",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama1",
@@ -268,8 +308,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama2",
@@ -281,8 +320,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama3",
@@ -294,8 +332,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama4",
@@ -307,8 +344,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama5",
@@ -320,8 +356,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot1",
@@ -333,8 +368,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot2",
@@ -346,8 +380,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa1",
@@ -359,8 +392,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa2",
@@ -372,8 +407,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa3",
@@ -385,8 +422,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa4",
@@ -398,8 +437,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa1",
@@ -411,8 +452,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_fr",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa2",
@@ -424,8 +467,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa3",
@@ -437,8 +482,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa4",
@@ -450,8 +497,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_pt",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as21",
@@ -463,8 +512,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as210",
@@ -476,8 +524,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as211",
@@ -489,8 +536,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as212",
@@ -502,8 +548,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as213",
@@ -515,8 +560,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as214",
@@ -528,8 +572,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as215",
@@ -541,8 +584,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as216",
@@ -554,8 +596,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as217",
@@ -567,8 +608,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as22",
@@ -580,8 +620,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as23",
@@ -593,8 +632,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as24",
@@ -606,8 +644,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as25",
@@ -619,8 +656,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as26",
@@ -632,8 +668,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as27",
@@ -645,8 +680,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as28",
@@ -658,8 +692,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as29",
@@ -671,8 +704,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa1",
@@ -684,8 +716,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_de",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa2",
@@ -697,8 +731,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_de",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa3",
@@ -710,8 +746,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_de",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa4",
@@ -723,8 +761,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_de",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma1",
@@ -736,8 +776,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_se",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma2",
@@ -749,8 +791,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_se",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma3",
@@ -762,8 +806,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_se",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma4",
@@ -775,8 +821,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_se",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ate1",
@@ -788,8 +836,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea1",
@@ -801,8 +848,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea2",
@@ -814,8 +863,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea3",
@@ -827,8 +878,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea4",
@@ -840,8 +893,10 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
+  },{
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk1",
@@ -853,8 +908,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk2",
@@ -866,8 +920,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk3",
@@ -879,8 +932,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl1",
@@ -892,8 +944,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl2",
@@ -905,8 +956,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai1",
@@ -918,8 +968,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai10",
@@ -931,8 +980,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai11",
@@ -944,8 +992,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai12",
@@ -957,8 +1004,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai13",
@@ -970,8 +1016,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai14",
@@ -983,8 +1028,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai15",
@@ -996,8 +1040,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai16",
@@ -1009,8 +1052,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai17",
@@ -1022,8 +1064,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai2",
@@ -1035,8 +1076,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai3",
@@ -1048,8 +1088,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai4",
@@ -1061,8 +1100,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai5",
@@ -1074,8 +1112,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai6",
@@ -1087,8 +1124,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai7",
@@ -1100,8 +1136,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai8",
@@ -1113,8 +1148,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai9",
@@ -1126,8 +1160,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma1",
@@ -1139,8 +1172,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma2",
@@ -1152,8 +1184,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma3",
@@ -1165,8 +1196,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot1",
@@ -1178,8 +1208,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot2",
@@ -1191,8 +1220,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk1",
@@ -1204,8 +1232,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk2",
@@ -1217,8 +1244,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyl1",
@@ -1230,8 +1256,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai1",
@@ -1243,8 +1268,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai10",
@@ -1256,8 +1280,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai11",
@@ -1269,8 +1292,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai12",
@@ -1282,8 +1304,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai13",
@@ -1295,8 +1316,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai14",
@@ -1308,8 +1328,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai15",
@@ -1321,8 +1340,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai2",
@@ -1334,8 +1352,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai3",
@@ -1347,8 +1364,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai4",
@@ -1360,8 +1376,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai5",
@@ -1373,8 +1388,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai6",
@@ -1386,8 +1400,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai7",
@@ -1399,8 +1412,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai8",
@@ -1412,8 +1424,7 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 }, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai9",
@@ -1425,7 +1436,6 @@
   "versio" : 1,
   "withinCodeElements" : [{
     "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
+    "codeElementVersion" : 1
   }]
 } ]
