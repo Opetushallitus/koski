@@ -1,13 +1,18 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso}
 import org.scalatest.{FreeSpec, Matchers}
 
-class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester {
+import scala.reflect.runtime.universe.TypeTag
+
+class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {
@@ -27,6 +32,17 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
       "with invalid oid" in {
         get("api/opiskeluoikeus/0", headers = authHeaders()) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: 0. Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
+        }
+      }
+      "with mitätöity oid" in {
+        val mitätöity = defaultOpiskeluoikeus.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
+          defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+        ))
+        putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
+          verifyResponseStatus(200)
+        }
+        get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders()) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
         }
       }
     }
@@ -54,4 +70,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
   private def vankilaopetusValue = readOpiskeluoikeus match {
     case a: AmmatillinenOpiskeluoikeus => a.lisätiedot.exists(_.vankilaopetuksessa)
   }
+
+  def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
+  def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid) match { case a: AmmatillinenOpiskeluoikeus => a }
 }
