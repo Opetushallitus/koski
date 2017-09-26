@@ -93,7 +93,7 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
 trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tila: Koodistokoodiviite
-  def opiskeluoikeusPäättynyt = List("valmistunut", "eronnut", "peruutettu").contains(tila.koodiarvo)
+  def opiskeluoikeusPäättynyt = List("valmistunut", "eronnut", "peruutettu", "mitatoity").contains(tila.koodiarvo)
 }
 
 
