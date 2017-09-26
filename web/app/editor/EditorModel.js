@@ -416,8 +416,8 @@ export const getModelFromChange = (change) => {
   return change._remove ? undefined : change
 }
 
-export const accumulateModelStateAndValidity = (model, changeBus = Bacon.Bus()) => {
-  let modelP = accumulateModelState(model, changeBus)
+export const accumulateModelStateAndValidity = (model) => {
+  let modelP = accumulateModelState(model)
   let errorP = modelP.map(modelValid).not()
   return {
     modelP,
@@ -425,7 +425,8 @@ export const accumulateModelStateAndValidity = (model, changeBus = Bacon.Bus()) 
   }
 }
 
-export const accumulateModelState = (model, changeBus = Bacon.Bus()) => {
+export const accumulateModelState = (model) => {
+  let changeBus = Bacon.Bus()
   let validatedInitialModel = validateModel(addContext(model, {changeBus}))
   return changeBus.scan(validatedInitialModel, (m, changes) => applyChangesAndValidate(m, changes))
 }

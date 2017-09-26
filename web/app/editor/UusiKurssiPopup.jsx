@@ -1,18 +1,22 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {modelData} from './EditorModel'
+import {accumulateModelState, modelData, modelValid} from './EditorModel'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown.jsx'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {t} from '../i18n'
 
 export default ({oppiaine, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+  let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
   let validP = selectedAtom
   let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
   let valtakunnallisetKurssiProtot = filterProtos(päätasonSuoritus, koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)))
   let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
+  selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
   return (<ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
     <h2><Text name="Lisää kurssi"/></h2>
@@ -20,10 +24,18 @@ export default ({oppiaine, resultCallback, toimipiste, uusiKurssinSuoritus}) => 
                                                  kurssinSuoritus={uusiKurssinSuoritus}
                                                  valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
                                                  paikallinenKurssiProto={paikallinenKurssiProto}
-                                                 selected={selectedAtom}
-                                                 resultCallback={(x) => selectedAtom.set(x)}
+                                                 selected={selectedPrototypeAtom}
+                                                 resultCallback={(x) => selectedPrototypeAtom.set(x)}
                                                  organisaatioOid={toimipiste}
-                                                 placeholder="Lisää kurssi"/></span>
+                                                 placeholder={t('Lisää kurssi')}/></span>
+    { // TODO: check placeholders fro i18n
+      selectedPrototypeAtom.flatMap(selectedProto => {
+        if (!isPaikallinen(selectedProto)) return null
+        let modelP = accumulateModelState(selectedProto)
+        modelP.map(model => modelValid(model) ? model : undefined).forEach(model => selectedAtom.set(model)) // set selected atom to non-empty only when valid data
+        return modelP.map(model => <PropertiesEditor model={model} propertyFilter={p => !['koodistoUri'].includes(p.key)}/>)
+      }).toProperty()
+    }
   </ModalDialog>)
 }
 

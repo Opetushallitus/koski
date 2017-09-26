@@ -351,7 +351,8 @@ describe('Perusopetus', function() {
             before(
               editor.edit,
               äidinkieli.avaaLisääKurssiDialog,
-              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri')
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi
             )
             describe('Ennen arvosanan syöttöä', function() {
               it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään', function() {
@@ -360,33 +361,57 @@ describe('Perusopetus', function() {
               })
             })
 
-            describe('Kieliopinnoissa', function() {
+            describe('Kun annetaan arvosana ja tallennetaan', function() {
               before(
-                editor.edit,
-                a1.avaaLisääKurssiDialog
+                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+                editor.saveChanges
               )
-              it('Näytetään vain oikean oppiaineen ja kielen kurssit', function() {
 
-                expect(a1.lisääKurssiDialog.kurssit()).to.deep.equal(['ENA1 Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita',
-                  'ENA2 Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen',
-                  'ENA3 Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni',
-                  'ENA4 Kehittyvä kielitaito: Ajankohtaiset ilmiöt',
-                  'ENA5 Kulttuurikohtaamisia',
-                  'ENA6 Globaalienglanti',
-                  'ENA7 Liikkuvuus ja kansainvälisyys',
-                  'ENA8 Avaimet elinikäiseen kieltenopiskeluun',
-                  'Lisää...'])
+              it('Kurssin tiedot näytetään oikein', function() {
+                expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
               })
-
-              after(
-                a1.lisääKurssiDialog.sulje,
-                editor.cancelChanges
-              )
             })
-
-            // TODO: paikalliset kurssit
             // TODO: ei lisätä samaa uudestaan
             // TODO: kurssin poisto
+          })
+
+          describe('Kieliaineiden kurssit', function() {
+            before(
+              editor.edit,
+              a1.avaaLisääKurssiDialog
+            )
+            it('Näytetään vain oikean oppiaineen ja kielen kurssit', function() {
+
+              expect(a1.lisääKurssiDialog.kurssit()).to.deep.equal(['ENA1 Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita',
+                'ENA2 Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen',
+                'ENA3 Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni',
+                'ENA4 Kehittyvä kielitaito: Ajankohtaiset ilmiöt',
+                'ENA5 Kulttuurikohtaamisia',
+                'ENA6 Globaalienglanti',
+                'ENA7 Liikkuvuus ja kansainvälisyys',
+                'ENA8 Avaimet elinikäiseen kieltenopiskeluun',
+                'Lisää paikallinen kurssi...'])
+            })
+
+            after(
+              a1.lisääKurssiDialog.sulje,
+              editor.cancelChanges
+            )
+          })
+
+          describe('Paikallinen kurssi', function() {
+            before(
+              editor.edit,
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Lisää paikallinen kurssi...'),
+              äidinkieli.lisääKurssiDialog.property('koodiarvo').setValue('ÄIX1'),
+              äidinkieli.lisääKurssiDialog.property('nimi').setValue('Äidinkielen paikallinen erikoiskurssi'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi,
+              äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
+              editor.saveChanges
+            )
+            it('Toimii', function() {
+            })
           })
         })
       })
@@ -421,6 +446,7 @@ describe('Perusopetus', function() {
               editor.edit,
               äidinkieli.avaaLisääKurssiDialog,
               äidinkieli.lisääKurssiDialog.valitseKurssi('AÄI7'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('AÄI7').arvosana.setValue('8'),
               editor.saveChanges
             )
@@ -428,7 +454,21 @@ describe('Perusopetus', function() {
             it('Kurssin tiedot näytetään oikein', function() {
               expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9 AÄI7\n8')
             })
-            // TODO: paikalliset kurssit
+          })
+
+          describe('Paikallinen kurssi', function() {
+            before(
+              editor.edit,
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Lisää paikallinen kurssi...'),
+              äidinkieli.lisääKurssiDialog.property('koodiarvo').setValue('ÄIX1'),
+              äidinkieli.lisääKurssiDialog.property('nimi').setValue('Äidinkielen paikallinen erikoiskurssi'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi,
+              äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
+              editor.saveChanges
+            )
+            it('Toimii', function() {
+            })
           })
         })
       })

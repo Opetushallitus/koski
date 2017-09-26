@@ -33,7 +33,7 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset = [], paikallinenKurss
         ? <DropDown
           options={kurssit}
           keyValue={kurssi => isUusi(kurssi) ? 'uusi' : modelData(kurssi, 'tunniste').koodiarvo}
-          displayValue={kurssi => isUusi(kurssi) ? 'Lisää...' : displayValue(kurssi) }
+          displayValue={kurssi => isUusi(kurssi) ? t('Lisää paikallinen kurssi...') : displayValue(kurssi) }
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
           newItem={paikallinenKurssiProto}

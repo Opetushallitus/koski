@@ -1,6 +1,6 @@
 import {modelData, modelLookup, oneOfPrototypes} from './EditorModel'
 
-export const isPaikallinen = (m) => m.value.classes.includes('paikallinenkoulutusmoduuli')
+export const isPaikallinen = (m) => m && m.value.classes.includes('paikallinenkoulutusmoduuli')
 export const isUusi = (oppiaine) => {
   return !modelData(oppiaine, 'tunniste').koodiarvo
 }

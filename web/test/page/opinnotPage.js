@@ -163,16 +163,19 @@ function Oppiaineet() {
     return oppiaineApi
 
     function LisääKurssiDialog() {
-      function kurssiDropdown() { return oppiaineApi.propertyBySelector('.uusi-kurssi-modal .kurssi') }
-      return {
+      var modalElem = findSingle('.uusi-kurssi-modal', oppiaineElem)
+      function kurssiDropdown() { return api.propertyBySelector('.kurssi') }
+      var api = _.merge({
         valitseKurssi: function(kurssi) {
-          return seq(kurssiDropdown().setValue(kurssi), click(subElement(oppiaineElem, '.uusi-kurssi-modal button')))
+          return kurssiDropdown().setValue(kurssi)
         },
+        lisääKurssi: click(subElement(modalElem, 'button')),
         kurssit: function() {
           return kurssiDropdown().getOptions()
         },
         sulje: click('.uusi-kurssi-modal .peruuta')
-      }
+      }, Editor(modalElem))
+      return api
     }
   }
 }
