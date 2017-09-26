@@ -15,6 +15,7 @@ import fi.oph.koski.validation.ValidationAndResolvingContext
 import org.json4s.jackson.Serialization
 
 import scala.collection.immutable
+import KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 
 /**
   *  Endpoints for the Koski UI
@@ -93,19 +94,32 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/kurssit/:oppiaineKoodisto/:oppiaineKoodiarvo/:kurssiKoodistot") {
-    val oppiaineKoodistoUri = params("oppiaineKoodisto")
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
-    val oppiaineKoodit = application.koodistoViitePalvelu.getKoodistoKoodiViite(params("oppiaineKoodisto"), params("oppiaineKoodiarvo")).toList
-    val oppiaineeseenSisältyvätKurssit = for {
-      oppiaineKoodi <- oppiaineKoodit
-      kurssiKoodisto <- kurssiKoodistot
-      kurssiKoodi <- application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(kurssiKoodisto, oppiaineKoodi).toList.flatten
-    } yield {
-      kurssiKoodi
+    def sisältyvätKurssit(parentKoodistoUri: String, parentKoodiarvo: String) = {
+      val parent = application.koodistoViitePalvelu.getKoodistoKoodiViite(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
+      for {
+        kurssiKoodisto <- kurssiKoodistot
+        kurssiKoodi <- application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(kurssiKoodisto, parent).toList.flatten
+      } yield {
+        kurssiKoodi
+      }
     }
-    toKoodistoEnumValues(oppiaineeseenSisältyvätKurssit match {
-      case Nil => koodistojenKoodit(kurssiKoodistot)
+    val kieliKoodisto = params.get("kieliKoodisto") // vieraan kielen kursseille
+    val kieliKoodiarvo = params.get("kieliKoodiarvo")
+    val oppiaineKoodistoUri = params("oppiaineKoodisto")
+
+    val oppiaineeseenSisältyvätKurssit = sisältyvätKurssit(params("oppiaineKoodisto"), params("oppiaineKoodiarvo"))
+    val oppiaineeseenJaKieleenSisältyvätKurssit = (kieliKoodisto, kieliKoodiarvo) match {
+      case (Some(kieliKoodisto), Some(kieliKoodiarvo)) =>
+        sisältyvätKurssit(kieliKoodisto, kieliKoodiarvo) match {
+          case Nil => oppiaineeseenSisältyvätKurssit
+          case kieleensisältyvätKurssit => kieleensisältyvätKurssit.intersect(oppiaineeseenSisältyvätKurssit)
+        }
       case _ => oppiaineeseenSisältyvätKurssit
+    }
+    toKoodistoEnumValues(oppiaineeseenJaKieleenSisältyvätKurssit match {
+      case Nil => koodistojenKoodit(kurssiKoodistot)
+      case _ => oppiaineeseenJaKieleenSisältyvätKurssit
     })
   }
 

@@ -9,6 +9,7 @@ import {isPaikallinen, isUusi} from './Koulutusmoduuli'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
 import Http from '../http'
+import {parseLocation} from '../location'
 export const UusiKurssiDropdown = ({oppiaine, suoritukset = [], paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
@@ -51,9 +52,12 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset = [], paikallinenKurss
 const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
   let oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
   let oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
+  let kieliKoodisto = modelData(oppiaine, 'kieli.koodistoUri')
+  let kieliKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo')
   const alternativesForField = (model) => {
     let kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
-    return Http.cachedGet(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${kurssiKoodistot}`)
+    let loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${kurssiKoodistot}`).addQueryParams({kieliKoodisto, kieliKoodiarvo})
+    return Http.cachedGet(loc.toString())
       .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, 'tunniste')))
   }
   return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(x => x.flatten())
