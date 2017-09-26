@@ -6,12 +6,10 @@ import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso}
+import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
 import org.scalatest.{FreeSpec, Matchers}
 
-import scala.reflect.runtime.universe.TypeTag
-
-class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
+class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/oppija/" - {
     "GET" - {
       "with valid oid" in {
@@ -37,7 +35,8 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
         }
       }
       "with mitätöity oid" in {
-        val mitätöity = defaultOpiskeluoikeus.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
+        val oo = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
+        val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
         ))
         putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
@@ -49,7 +48,4 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
       }
     }
   }
-
-  def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
-  def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid) match { case a: AmmatillinenOpiskeluoikeus => a }
 }
