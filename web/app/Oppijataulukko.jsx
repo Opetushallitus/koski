@@ -170,7 +170,7 @@ export class Oppijataulukko extends React.Component {
 
   componentWillMount() {
     const koodistoMetadata = k => k.metadata.find(m => m.kieli == lang.toUpperCase()) || k.metadata.find(m => m.kieli == 'FI')
-    const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: koodistoMetadata(k).nimi})).sort((a, b) => a.value.localeCompare(b.value))
+    const koodistoDropdownArvot = koodit => koodit.filter(k => k.koodiArvo !== 'mitatoity').map(k => ({ key: k.koodiArvo, value: koodistoMetadata(k).nimi})).sort((a, b) => a.value.localeCompare(b.value))
     this.filterBus = Bacon.Bus()
     this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
