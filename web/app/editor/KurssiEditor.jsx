@@ -2,6 +2,7 @@ import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {ArvosanaEditor} from './ArvosanaEditor.jsx'
+import {pushRemoval} from './EditorModel'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -38,6 +39,9 @@ export class KurssiEditor extends React.Component {
               propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
             />
           </div>)
+        }
+        {
+          kurssi.context.edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
       </li>
     )

@@ -370,9 +370,23 @@ describe('Perusopetus', function() {
               it('Kurssin tiedot näytetään oikein', function() {
                 expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
               })
+
+              describe('Kurssin poistaminen', function() {
+                // TODO: kurssin poisto
+                before(
+                  editor.edit,
+                  äidinkieli.kurssi('ÄI4').poistaKurssi,
+                  editor.saveChanges
+                )
+
+                it('Toimii', function() {
+                  expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9')
+                })
+              })
             })
+
+
             // TODO: ei lisätä samaa uudestaan
-            // TODO: kurssin poisto
           })
 
           describe('Kieliaineiden kurssit', function() {

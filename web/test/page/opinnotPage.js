@@ -195,7 +195,8 @@ function Kurssi(elem) {
     },
     details: function() {
       return Editor(detailsElem)
-    }
+    },
+    poistaKurssi: click(subElement(elem, '.remove-value'))
   }
   return api
 }
