@@ -11,7 +11,7 @@ import {Editor} from './Editor.jsx'
 import Text from '../Text.jsx'
 
 export const OpiskeluoikeudenTilaEditor = ({model}) => {
-  let wrappedModel = lensedModel(model, L.rewrite(fixPäättymispäivä))
+  let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
@@ -57,6 +57,9 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
       </div>
   )
 }
+
+export const fixOpiskeluoikeudenPäättymispäivä = model =>
+  lensedModel(model, L.rewrite(fixPäättymispäivä))
 
 export const onLopputila = (tila) => {
   let koodi = modelData(tila).koodiarvo
