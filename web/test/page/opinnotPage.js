@@ -163,10 +163,15 @@ function Oppiaineet() {
     return oppiaineApi
 
     function LisääKurssiDialog() {
+      function kurssiDropdown() { return oppiaineApi.propertyBySelector('.uusi-kurssi-modal .kurssi') }
       return {
         valitseKurssi: function(kurssi) {
-          return seq(oppiaineApi.propertyBySelector('.uusi-kurssi-modal .kurssi').setValue(kurssi), click(subElement(oppiaineElem, '.uusi-kurssi-modal button')))
+          return seq(kurssiDropdown().setValue(kurssi), click(subElement(oppiaineElem, '.uusi-kurssi-modal button')))
         },
+        kurssit: function() {
+          return kurssiDropdown().getOptions()
+        },
+        sulje: click('.uusi-kurssi-modal .peruuta')
       }
     }
   }

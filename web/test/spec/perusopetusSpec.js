@@ -346,6 +346,7 @@ describe('Perusopetus', function() {
       describe('Tietojen muuttaminen', function() {
         describe('Kurssin lisääminen', function() {
           var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+          var a1 = opinnot.oppiaineet.oppiaine('A1')
           describe('Valtakunnallinen kurssi', function() {
             before(
               editor.edit,
@@ -359,18 +360,32 @@ describe('Perusopetus', function() {
               })
             })
 
-            describe('Kun annetaan arvosana ja tallennetaan', function() {
+            describe('Kieliopinnoissa', function() {
               before(
-                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
-                editor.saveChanges
+                editor.edit,
+                a1.avaaLisääKurssiDialog
               )
+              it('Näytetään vain oikean oppiaineen ja kielen kurssit', function() {
 
-              it('Kurssin tiedot näytetään oikein', function() {
-                expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
+                expect(a1.lisääKurssiDialog.kurssit()).to.deep.equal(['ENA1 Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita',
+                  'ENA2 Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen',
+                  'ENA3 Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni',
+                  'ENA4 Kehittyvä kielitaito: Ajankohtaiset ilmiöt',
+                  'ENA5 Kulttuurikohtaamisia',
+                  'ENA6 Globaalienglanti',
+                  'ENA7 Liikkuvuus ja kansainvälisyys',
+                  'ENA8 Avaimet elinikäiseen kieltenopiskeluun',
+                  'Lisää...'])
               })
+
+              after(
+                a1.lisääKurssiDialog.sulje,
+                editor.cancelChanges
+              )
             })
 
-            // TODO: kurssien rajaus oppiaineeseen
+
+
             // TODO: paikalliset kurssit
             // TODO: ei lisätä samaa uudestaan
             // TODO: kurssin poisto
@@ -415,9 +430,6 @@ describe('Perusopetus', function() {
             it('Kurssin tiedot näytetään oikein', function() {
               expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\n9 LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9 AÄI7\n8')
             })
-
-            // TODO: kurssien rajaus oppiaineeseen
-            // TODO: A1-oppiaineen kurssien rajaus kielen perusteella
             // TODO: paikalliset kurssit
           })
         })
