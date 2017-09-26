@@ -30,7 +30,11 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
     </div>
     <div className="property tila">
       <label><Text name="Tila"/>{':'}</label>
-      <EnumEditor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} />
+      <EnumEditor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} fetchAlternatives={fetchTilat} />
     </div>
   </ModalDialog>)
+}
+
+const fetchTilat = model => {
+  return EnumEditor.fetchAlternatives(model).map(alts => alts.filter(a => a.value !== 'mitatoity'))
 }
