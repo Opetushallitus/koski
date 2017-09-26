@@ -14,14 +14,14 @@
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "koskioppiaineetyleissivistava",
+    "codesUri" : "kielivalikoima",
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "kielivalikoima",
+    "codesUri" : "koskioppiaineetyleissivistava",
     "codesVersion" : 1,
     "passive" : false
   } ],
   "tila" : "PASSIIVINEN",
-  "version" : 2
+  "version" : 5
 }

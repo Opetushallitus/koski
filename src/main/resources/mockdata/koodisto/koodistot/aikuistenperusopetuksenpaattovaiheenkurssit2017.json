@@ -9,11 +9,11 @@
   "voimassaAlkuPvm" : "2017-07-04",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
-    "codesUri" : "oppiaineaidinkielijakirjallisuus",
+    "codesUri" : "koskioppiaineetyleissivistava",
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "koskioppiaineetyleissivistava",
+    "codesUri" : "oppiaineaidinkielijakirjallisuus",
     "codesVersion" : 1,
     "passive" : false
   }, {
@@ -22,5 +22,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 1
+  "version" : 3
 }

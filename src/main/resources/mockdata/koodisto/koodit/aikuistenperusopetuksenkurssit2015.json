@@ -6,11 +6,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_bi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi2",
   "koodiArvo" : "BI2",
@@ -19,11 +19,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_bi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_bi3",
   "koodiArvo" : "BI3",
@@ -32,11 +32,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_bi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa1",
   "koodiArvo" : "EAA1",
@@ -45,15 +45,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa2",
   "koodiArvo" : "EAA2",
@@ -62,15 +62,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa3",
   "koodiArvo" : "EAA3",
@@ -79,15 +79,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa4",
   "koodiArvo" : "EAA4",
@@ -96,15 +96,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa5",
   "koodiArvo" : "EAA5",
@@ -113,15 +113,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa6",
   "koodiArvo" : "EAA6",
@@ -130,15 +130,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa7",
   "koodiArvo" : "EAA7",
@@ -147,15 +147,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_eaa8",
   "koodiArvo" : "EAA8",
@@ -164,15 +164,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_es",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena1",
   "koodiArvo" : "ENA1",
@@ -181,15 +181,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena10",
   "koodiArvo" : "ENA10",
@@ -198,15 +198,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena11",
   "koodiArvo" : "ENA11",
@@ -215,15 +215,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena12",
   "koodiArvo" : "ENA12",
@@ -232,15 +232,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena2",
   "koodiArvo" : "ENA2",
@@ -249,15 +249,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena3",
   "koodiArvo" : "ENA3",
@@ -266,15 +266,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena4",
   "koodiArvo" : "ENA4",
@@ -283,15 +283,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena5",
   "koodiArvo" : "ENA5",
@@ -300,15 +300,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena6",
   "koodiArvo" : "ENA6",
@@ -317,15 +317,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena7",
   "koodiArvo" : "ENA7",
@@ -334,15 +334,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena8",
   "koodiArvo" : "ENA8",
@@ -351,15 +351,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ena9",
   "koodiArvo" : "ENA9",
@@ -368,15 +368,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_en",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_et1",
   "koodiArvo" : "ET1",
@@ -385,11 +385,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_kt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_et2",
   "koodiArvo" : "ET2",
@@ -398,11 +398,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_kt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy1",
   "koodiArvo" : "FY1",
@@ -411,11 +411,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_fy",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy2",
   "koodiArvo" : "FY2",
@@ -424,11 +424,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_fy",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_fy3",
   "koodiArvo" : "FY3",
@@ -437,11 +437,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_fy",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge1",
   "koodiArvo" : "GE1",
@@ -450,11 +450,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ge",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge2",
   "koodiArvo" : "GE2",
@@ -463,11 +463,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ge",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ge3",
   "koodiArvo" : "GE3",
@@ -476,11 +476,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ge",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi1",
   "koodiArvo" : "HI1",
@@ -489,11 +489,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_hi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi2",
   "koodiArvo" : "HI2",
@@ -502,11 +502,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_hi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_hi3",
   "koodiArvo" : "HI3",
@@ -515,11 +515,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_hi",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa1",
   "koodiArvo" : "IAA1",
@@ -528,15 +528,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa2",
   "koodiArvo" : "IAA2",
@@ -545,15 +545,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa3",
   "koodiArvo" : "IAA3",
@@ -562,15 +562,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa4",
   "koodiArvo" : "IAA4",
@@ -579,15 +579,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa5",
   "koodiArvo" : "IAA5",
@@ -596,15 +596,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa6",
   "koodiArvo" : "IAA6",
@@ -613,15 +613,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa7",
   "koodiArvo" : "IAA7",
@@ -630,15 +630,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_iaa8",
   "koodiArvo" : "IAA8",
@@ -647,15 +647,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_it",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke1",
   "koodiArvo" : "KE1",
@@ -664,11 +664,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ke",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke2",
   "koodiArvo" : "KE2",
@@ -677,11 +677,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ke",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ke3",
   "koodiArvo" : "KE3",
@@ -690,11 +690,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ke",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa1",
   "koodiArvo" : "KXA1",
@@ -703,15 +703,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa2",
   "koodiArvo" : "KXA2",
@@ -720,15 +720,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa3",
   "koodiArvo" : "KXA3",
@@ -737,15 +737,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa4",
   "koodiArvo" : "KXA4",
@@ -754,15 +754,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa5",
   "koodiArvo" : "KXA5",
@@ -771,15 +771,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa6",
   "koodiArvo" : "KXA6",
@@ -788,15 +788,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa7",
   "koodiArvo" : "KXA7",
@@ -805,15 +805,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_kxa8",
   "koodiArvo" : "KXA8",
@@ -822,15 +822,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_xx",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa1",
   "koodiArvo" : "LAA1",
@@ -839,15 +839,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa2",
   "koodiArvo" : "LAA2",
@@ -856,15 +856,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa3",
   "koodiArvo" : "LAA3",
@@ -873,15 +873,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa4",
   "koodiArvo" : "LAA4",
@@ -890,15 +890,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa5",
   "koodiArvo" : "LAA5",
@@ -907,15 +907,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa6",
   "koodiArvo" : "LAA6",
@@ -924,15 +924,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa7",
   "koodiArvo" : "LAA7",
@@ -941,15 +941,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_laa8",
   "koodiArvo" : "LAA8",
@@ -958,15 +958,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_la",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma1",
   "koodiArvo" : "MA1",
@@ -975,11 +975,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma2",
   "koodiArvo" : "MA2",
@@ -988,11 +988,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma3",
   "koodiArvo" : "MA3",
@@ -1001,11 +1001,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma4",
   "koodiArvo" : "MA4",
@@ -1014,11 +1014,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma5",
   "koodiArvo" : "MA5",
@@ -1027,11 +1027,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma6",
   "koodiArvo" : "MA6",
@@ -1040,11 +1040,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma7",
   "koodiArvo" : "MA7",
@@ -1053,11 +1053,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma8",
   "koodiArvo" : "MA8",
@@ -1066,11 +1066,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ma9",
   "koodiArvo" : "MA9",
@@ -1079,11 +1079,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ma",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa1",
   "koodiArvo" : "POA1",
@@ -1092,15 +1092,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa2",
   "koodiArvo" : "POA2",
@@ -1109,15 +1109,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa3",
   "koodiArvo" : "POA3",
@@ -1126,15 +1126,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa4",
   "koodiArvo" : "POA4",
@@ -1143,15 +1143,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa5",
   "koodiArvo" : "POA5",
@@ -1160,15 +1160,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa6",
   "koodiArvo" : "POA6",
@@ -1177,15 +1177,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa7",
   "koodiArvo" : "POA7",
@@ -1194,15 +1194,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_poa8",
   "koodiArvo" : "POA8",
@@ -1211,15 +1211,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_pt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa1",
   "koodiArvo" : "RAA1",
@@ -1228,15 +1228,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa2",
   "koodiArvo" : "RAA2",
@@ -1245,15 +1245,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa3",
   "koodiArvo" : "RAA3",
@@ -1262,15 +1262,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa4",
   "koodiArvo" : "RAA4",
@@ -1279,15 +1279,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa5",
   "koodiArvo" : "RAA5",
@@ -1296,15 +1296,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa6",
   "koodiArvo" : "RAA6",
@@ -1313,15 +1313,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa7",
   "koodiArvo" : "RAA7",
@@ -1330,15 +1330,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_raa8",
   "koodiArvo" : "RAA8",
@@ -1347,151 +1347,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_fr",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea1",
-  "koodiArvo" : "VEA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
+  }, {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea2",
-  "koodiArvo" : "VEA2",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea3",
-  "koodiArvo" : "VEA3",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea4",
-  "koodiArvo" : "VEA4",
-  "metadata" : [ {
-    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea5",
-  "koodiArvo" : "VEA5",
-  "metadata" : [ {
-    "nimi" : "Kulttuurikohtaamisia",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea6",
-  "koodiArvo" : "VEA6",
-  "metadata" : [ {
-    "nimi" : "Kieli maailmassa",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea7",
-  "koodiArvo" : "VEA7",
-  "metadata" : [ {
-    "nimi" : "Liikkuvuus ja kansainvälisyys",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea8",
-  "koodiArvo" : "VEA8",
-  "metadata" : [ {
-    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
-    "codeElementUri" : "kielivalikoima_ru",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub1",
   "koodiArvo" : "RUB1",
@@ -1500,15 +1364,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub2",
   "koodiArvo" : "RUB2",
@@ -1517,15 +1381,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub3",
   "koodiArvo" : "RUB3",
@@ -1534,15 +1398,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub4",
   "koodiArvo" : "RUB4",
@@ -1551,15 +1415,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub5",
   "koodiArvo" : "RUB5",
@@ -1568,15 +1432,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub6",
   "koodiArvo" : "RUB6",
@@ -1585,15 +1449,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub7",
   "koodiArvo" : "RUB7",
@@ -1602,15 +1466,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_rub8",
   "koodiArvo" : "RUB8",
@@ -1619,15 +1483,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_b1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_sv",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_s21",
   "koodiArvo" : "S21",
@@ -1636,11 +1500,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_s22",
   "koodiArvo" : "S22",
@@ -1649,11 +1513,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_s23",
   "koodiArvo" : "S23",
@@ -1662,11 +1526,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_s24",
   "koodiArvo" : "S24",
@@ -1675,11 +1539,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_s25",
   "koodiArvo" : "S25",
@@ -1688,11 +1552,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa1",
   "koodiArvo" : "SAA1",
@@ -1701,15 +1565,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa2",
   "koodiArvo" : "SAA2",
@@ -1718,15 +1582,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa3",
   "koodiArvo" : "SAA3",
@@ -1735,15 +1599,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa4",
   "koodiArvo" : "SAA4",
@@ -1752,15 +1616,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa5",
   "koodiArvo" : "SAA5",
@@ -1769,15 +1633,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa6",
   "koodiArvo" : "SAA6",
@@ -1786,15 +1650,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa7",
   "koodiArvo" : "SAA7",
@@ -1803,15 +1667,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_saa8",
   "koodiArvo" : "SAA8",
@@ -1820,15 +1684,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_de",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma1",
   "koodiArvo" : "SMA1",
@@ -1837,15 +1701,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma2",
   "koodiArvo" : "SMA2",
@@ -1854,15 +1718,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma3",
   "koodiArvo" : "SMA3",
@@ -1871,15 +1735,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma4",
   "koodiArvo" : "SMA4",
@@ -1888,15 +1752,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma5",
   "koodiArvo" : "SMA5",
@@ -1905,15 +1769,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma6",
   "koodiArvo" : "SMA6",
@@ -1922,15 +1786,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_a1",
     "codeElementVersion" : 1,
     "passive" : false
-  },{
+  }, {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma7",
   "koodiArvo" : "SMA7",
@@ -1939,15 +1803,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_sma8",
   "koodiArvo" : "SMA8",
@@ -1956,15 +1820,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
-    "codeElementVersion" : 1,
-    "passive" : false
-  },{
+  "withinCodeElements" : [ {
     "codeElementUri" : "kielivalikoima_se",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_u1",
   "koodiArvo" : "U1",
@@ -1973,11 +1837,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_kt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_u2",
   "koodiArvo" : "U2",
@@ -1986,11 +1850,147 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_kt",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea1",
+  "koodiArvo" : "VEA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea2",
+  "koodiArvo" : "VEA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea3",
+  "koodiArvo" : "VEA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea4",
+  "koodiArvo" : "VEA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea5",
+  "koodiArvo" : "VEA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea6",
+  "koodiArvo" : "VEA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea7",
+  "koodiArvo" : "VEA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenkurssit2015_vea8",
+  "koodiArvo" : "VEA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_ru",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_a1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh1",
   "koodiArvo" : "YH1",
@@ -1999,11 +1999,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_yh",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh2",
   "koodiArvo" : "YH2",
@@ -2012,11 +2012,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_yh",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_yh3",
   "koodiArvo" : "YH3",
@@ -2025,11 +2025,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
+  "withinCodeElements" : [ {
     "codeElementUri" : "koskioppiaineetyleissivistava_yh",
     "codeElementVersion" : 1,
     "passive" : false
-  }]
+  } ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai1",
   "koodiArvo" : "ÄI1",
@@ -2038,11 +2038,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai2",
   "koodiArvo" : "ÄI2",
@@ -2051,11 +2047,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai3",
   "koodiArvo" : "ÄI3",
@@ -2064,11 +2056,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai4",
   "koodiArvo" : "ÄI4",
@@ -2077,11 +2065,7 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "aikuistenperusopetuksenkurssit2015_ai5",
   "koodiArvo" : "ÄI5",
@@ -2090,9 +2074,5 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [{
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
-    "codeElementVersion" : 1,
-    "passive" : true
-  }]
+  "withinCodeElements" : [ ]
 } ]
