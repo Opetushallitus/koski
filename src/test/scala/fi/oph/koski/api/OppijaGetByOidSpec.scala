@@ -35,6 +35,7 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
         }
       }
       "with mitätöity oid" in {
+        resetFixtures
         val oo = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
         val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
