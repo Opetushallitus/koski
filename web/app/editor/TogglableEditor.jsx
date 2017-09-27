@@ -42,7 +42,7 @@ class MitätöiButton extends React.Component {
 
     return suorituksiaTehty(opiskeluoikeus)
       ? null
-      : <button className="toggle-edit" onClick={mitätöi}><Text name={deleteRequested ? 'vahvista mitätöinti, operaatiota ei voi peruuttaa' : 'mitätöi opiskeluoikeus'}/></button>
+      : <button className="toggle-edit" onClick={mitätöi}><Text name={deleteRequested ? 'Vahvista mitätöinti, operaatiota ei voi peruuttaa' : 'Mitätöi opiskeluoikeus'}/></button>
   }
 }
 
