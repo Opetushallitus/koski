@@ -16,7 +16,7 @@ import {
   oneOfPrototypes,
   pushModel
 } from './EditorModel'
-import {suoritusValmis} from './Suoritus'
+import {osasuoritukset, suoritusValmis} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
@@ -30,20 +30,20 @@ let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pako
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   model = addContext(model, { suoritus: model })
-  let osasuoritukset = modelItems(model, 'osasuoritukset')
+  let oppiaineSuoritukset = modelItems(model, 'osasuoritukset')
 
-  let korotus = osasuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
-  let yksilöllistetty = osasuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
-  let painotettu = osasuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
+  let korotus = oppiaineSuoritukset.find(s => modelData(s, 'korotus')) ? ['† = perusopetuksen päättötodistuksen arvosanan korotus'] : []
+  let yksilöllistetty = oppiaineSuoritukset.find(s => modelData(s, 'yksilöllistettyOppimäärä')) ? ['* = yksilöllistetty oppimäärä'] : []
+  let painotettu = oppiaineSuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
-  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || osasuoritukset.filter(suoritusValmis).length > 0)
+  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || oppiaineSuoritukset.filter(suoritusValmis).length > 0)
 
-  if (isYsiluokka(model) && jääLuokalle(model) && osasuoritukset.length == 0) {
+  if (isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
     luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
       pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
     })
-  } else if (isYsiluokka(model) && !jääLuokalle(model) && osasuoritukset.length > 0) {
+  } else if (isYsiluokka(model) && !jääLuokalle(model) && oppiaineSuoritukset.length > 0) {
     pushModel(modelSetValue(model, [], 'osasuoritukset'))
   }
 
@@ -109,15 +109,15 @@ const KäyttäytymisenArvioEditor = ({model}) => {
 
 }
 
-let createOppiaineenSuoritus = (osasuoritukset) => {
-  osasuoritukset = wrapOptional({model: osasuoritukset})
-  let newItemIndex = modelItems(osasuoritukset).length
-  let oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
+let createOppiaineenSuoritus = (suoritukset) => {
+  suoritukset = wrapOptional({model: suoritukset})
+  let newItemIndex = modelItems(suoritukset).length
+  let oppiaineenSuoritusProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, newItemIndex)
   let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus'
   let sortValue = (suoritusProto) => suoritusProto.value.classes.includes(preferredClass) ? 0 : 1
   let options = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))
   oppiaineenSuoritusProto = options[0]
-  return contextualizeSubModel(oppiaineenSuoritusProto, osasuoritukset, newItemIndex)
+  return contextualizeSubModel(oppiaineenSuoritusProto, suoritukset, newItemIndex)
 }
 
 class Oppiainetaulukko extends React.Component {
@@ -158,7 +158,7 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.filter(s => edit || suoritusValmis(s)).map((suoritus) => (<PerusopetuksenOppiaineRowEditor baret-lift
+              suoritukset.filter(s => edit || suoritusValmis(s) || osasuoritukset(s).length).map((suoritus) => (<PerusopetuksenOppiaineRowEditor baret-lift
                                                                                                                      key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
                                                                                                                      expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
                                                                                                                      showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
