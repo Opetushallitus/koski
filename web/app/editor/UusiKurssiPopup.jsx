@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {accumulateModelState, modelData, modelValid} from './EditorModel'
+import {accumulateModelState, modelData, modelItems, modelLookup, modelValid} from './EditorModel'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown.jsx'
@@ -9,18 +9,21 @@ import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {t} from '../i18n'
 
-export default ({oppiaine, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+  let oppiaine = modelLookup(oppiaineenSuoritus, 'koulutusmoduuli')
   let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
   let validP = selectedAtom
   let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
   let valtakunnallisetKurssiProtot = filterProtos(päätasonSuoritus, koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)))
   let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
+  let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
   return (<ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback} onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
     <h2><Text name="Lisää kurssi"/></h2>
-    <span className="kurssi"><UusiKurssiDropdown oppiaine={oppiaine}
+    <span className="kurssi"><UusiKurssiDropdown suoritukset={kurssiSuoritukset}
+                                                 oppiaine={oppiaine}
                                                  kurssinSuoritus={uusiKurssinSuoritus}
                                                  valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
                                                  paikallinenKurssiProto={paikallinenKurssiProto}
@@ -28,7 +31,7 @@ export default ({oppiaine, resultCallback, toimipiste, uusiKurssinSuoritus}) => 
                                                  resultCallback={(x) => selectedPrototypeAtom.set(x)}
                                                  organisaatioOid={toimipiste}
                                                  placeholder={t('Lisää kurssi')}/></span>
-    { // TODO: check placeholders fro i18n
+    { // TODO: check placeholders from i18n
       selectedPrototypeAtom.flatMap(selectedProto => {
         if (!isPaikallinen(selectedProto)) return null
         let modelP = accumulateModelState(selectedProto)

@@ -350,43 +350,50 @@ describe('Perusopetus', function() {
           describe('Valtakunnallinen kurssi', function() {
             before(
               editor.edit,
-              äidinkieli.avaaLisääKurssiDialog,
-              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
-              äidinkieli.lisääKurssiDialog.lisääKurssi
+              äidinkieli.avaaLisääKurssiDialog
             )
-            describe('Ennen arvosanan syöttöä', function() {
-              it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään', function() {
-                expect(editor.canSave()).to.equal(false)
-                expect(äidinkieli.errorText()).to.equal('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+            describe('Ennen kurssin lisäämistä', function() {
+              it('Voidaan lisätä vain ne kurssit, joita ei vielä ole lisätty', function() {
+                expect(äidinkieli.lisääKurssiDialog.kurssit()).to.include('ÄI4 Kieli ja kulttuuri')
+                expect(äidinkieli.lisääKurssiDialog.kurssit()).not.to.include('ÄI1 Suomen kielen ja kirjallisuuden perusteet')
               })
             })
-
-            describe('Kun annetaan arvosana ja tallennetaan', function() {
+            describe('Kun lisätään kurssi', function() {
               before(
-                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
-                editor.saveChanges
+                äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+                äidinkieli.lisääKurssiDialog.lisääKurssi
               )
 
-              it('Kurssin tiedot näytetään oikein', function() {
-                expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
+              describe('Ennen arvosanan syöttöä', function() {
+                it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään', function() {
+                  expect(editor.canSave()).to.equal(false)
+                  expect(äidinkieli.errorText()).to.equal('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+                })
               })
 
-              describe('Kurssin poistaminen', function() {
-                // TODO: kurssin poisto
+              describe('Kun annetaan arvosana ja tallennetaan', function() {
                 before(
-                  editor.edit,
-                  äidinkieli.kurssi('ÄI4').poistaKurssi,
+                  äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
                   editor.saveChanges
                 )
 
-                it('Toimii', function() {
-                  expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9')
+                it('Kurssin tiedot näytetään oikein', function() {
+                  expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
+                })
+
+                describe('Kurssin poistaminen', function() {
+                  before(
+                    editor.edit,
+                    äidinkieli.kurssi('ÄI4').poistaKurssi,
+                    editor.saveChanges
+                  )
+
+                  it('Toimii', function() {
+                    expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9')
+                  })
                 })
               })
             })
-
-
-            // TODO: ei lisätä samaa uudestaan
           })
 
           describe('Kieliaineiden kurssit', function() {

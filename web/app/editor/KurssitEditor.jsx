@@ -18,7 +18,6 @@ import UusiKurssiPopup from './UusiKurssiPopup.jsx'
 
 export const KurssitEditor = ({model}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
-  let oppiaine = modelLookup(model, 'koulutusmoduuli')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
   let kurssinSuoritusProto = createKurssinSuoritus(osasuoritukset)
@@ -43,7 +42,7 @@ export const KurssitEditor = ({model}) => {
       model.context.edit && <a className="uusi-kurssi" onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
     }
     {
-      ift(showUusiKurssiAtom, <UusiKurssiPopup oppiaine={oppiaine} resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
+      ift(showUusiKurssiAtom, <UusiKurssiPopup oppiaineenSuoritus={model} resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
     }
     </span>
   )
