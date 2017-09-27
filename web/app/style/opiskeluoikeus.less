@@ -438,7 +438,18 @@
 
       .suoritus-tabs {
         margin-top: 20px;
-        border-bottom: 1px solid #AEAEAF;
+        position:relative;
+        z-index: @z-index-base;
+        &:before {
+          display: block;
+          position: absolute;
+          bottom: 0;
+          height: 1px;
+          width: 100%;
+          border-bottom: 1px solid #AEAEAF;
+          content: '';
+          z-index: -1;
+        }
         margin-bottom: 30px;
         > ul {
           display: inline-block;
