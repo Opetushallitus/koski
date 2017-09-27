@@ -208,7 +208,6 @@ let getUsedModelForOptionalModel = (m, {model} = {}) => {
     m = contextualizeSubModel(m, model)
   }
   let prototypeModel = optionalPrototypeModel(m)
-  //console.log('creating empty with', editor)
   let editor = undefined
   if (prototypeModel) { // TODO: why enum fails?
     editor = getEditor(prototypeModel)
@@ -230,10 +229,8 @@ export const optionalModelLens = ({model}) => {
       let editor = getEditor(model)
       let isEmpty = (editor && editor.isEmpty) || modelEmptyDefaultImpl
       if (isEmpty(newModel)) {
-        //console.log('set empty', newModel.path)
         return createOptionalEmpty(contextModel)
       } else {
-        //console.log('set non-empty', newModel.path)
         return modelSetValue(getUsedModelForOptionalModel(contextModel, {model}), newModel.value)
       }
     }
@@ -350,15 +347,16 @@ export const modelValid = (model, recursive = true) => {
 }
 
 export const modelErrorMessages = (model, recursive = true) => {
-  return R.values(modelErrors(model, recursive)).flatten().filter(e => e.message).map(e => e.message)
+  return R.uniq(R.values(modelErrors(model, recursive))
+    .flatten()
+    .filter(e => e.message)
+    .map(e => e.message))
 }
 
 const modelErrors = (model, recursive = true) => {
   let context = model.context
-
   let pathString = justPath(model.path).join('.')
   let keyMatch = ([key]) => recursive ? pathString === key || R.startsWith(pathString + '.', key) : pathString === key
-
   let validationResult = context.validationResult || {}
 
   return pathString.length
