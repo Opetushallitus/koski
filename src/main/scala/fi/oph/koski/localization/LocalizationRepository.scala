@@ -97,7 +97,7 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
     _localizations
   }
 
-  override def fetchLocalizations(): JValue = JsonResources.readResource("/mockdata/lokalisointi/koski.json")
+  override def fetchLocalizations(): JValue = JsonResources.readResource(MockLocalizationRepository.resourceName)
 
   override def createOrUpdate(toUpdate: List[UpdateLocalization]): Unit = {
     _localizations = toUpdate.foldLeft(_localizations) { (acc, n) =>
@@ -111,6 +111,10 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
   def reset = {
     _localizations = super.localizations
   }
+}
+
+object MockLocalizationRepository {
+  val resourceName = "/mockdata/lokalisointi/koski.json"
 }
 
 class RemoteLocalizationRepository(http: Http)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
