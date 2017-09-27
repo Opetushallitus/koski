@@ -149,8 +149,6 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
 ) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli
 
 case class LukioonValmistavanKurssinSuoritus(
-  @Title("Kurssi")
-  @Flatten
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   tila: Koodistokoodiviite,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
@@ -159,7 +157,7 @@ case class LukioonValmistavanKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(

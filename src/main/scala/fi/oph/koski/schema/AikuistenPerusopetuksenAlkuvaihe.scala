@@ -43,8 +43,6 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
 
 case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")
-  @Title("Kurssi")
-  @Flatten
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenKurssi,
   tila: Koodistokoodiviite,
   @Flatten
@@ -52,7 +50,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenkurssi", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
 sealed trait AikuistenPerusopetuksenAlkuvaiheenOppiaine extends Koulutusmoduuli with Laajuudeton {

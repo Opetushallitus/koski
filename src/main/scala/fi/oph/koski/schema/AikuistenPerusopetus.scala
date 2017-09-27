@@ -97,8 +97,6 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
 
 case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen kurssin tunnistetiedot")
-  @Title("Kurssi")
-  @Flatten
   koulutusmoduuli: AikuistenPerusopetuksenKurssi,
   tila: Koodistokoodiviite,
   @Flatten
@@ -106,7 +104,7 @@ case class AikuistenPerusopetuksenKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenkurssi", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
   def laajuus: Option[LaajuusVuosiviikkotunneissa]

@@ -175,25 +175,23 @@ case class IBOppiaineenArviointi(
 @Title("Pre IB -kurssin suoritus")
 case class PreIBKurssinSuoritus(
   @Description("Pre-IB kurssin tunnistetiedot")
-  @Title("Kurssi")
   koulutusmoduuli: PreIBKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("preibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus
+) extends IBSuoritus with KurssinSuoritus
 
 @Title("IB-kurssin suoritus")
 case class IBKurssinSuoritus(
-  @Title("Kurssi")
   koulutusmoduuli: IBKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBKurssinArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus
+) extends IBSuoritus with KurssinSuoritus
 
 trait PreIBKurssi extends Koulutusmoduuli
 

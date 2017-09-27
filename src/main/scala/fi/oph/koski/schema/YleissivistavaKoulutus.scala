@@ -9,6 +9,12 @@ trait OppiaineenSuoritus extends Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
 }
 
+trait KurssinSuoritus extends Suoritus with VahvistuksetonSuoritus{
+  @Title("Kurssi")
+  @Flatten
+  def koulutusmoduuli: Koulutusmoduuli
+}
+
 trait Yksilöllistettävä {
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   def yksilöllistettyOppimäärä: Boolean
