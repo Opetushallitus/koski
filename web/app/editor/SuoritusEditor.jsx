@@ -75,7 +75,7 @@ SuoritusEditor.validateModel = (m) => {
           return [{
             path: subPath.concat('arviointi'),
             key: 'osasuorituksenTila',
-            message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>
+            message: <Text name='Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'/>
           }]
         } else {
           return validateSuoritus(osasuoritus)
