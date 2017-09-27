@@ -53,7 +53,11 @@ const deleteOpiskeluoikeus = opiskeluoikeus => {
   koodistoValues('koskiopiskeluoikeudentila/mitatoity').map('.0')
     .map(mitätöity => modelSetData(model, mitätöity, 'tila'))
     .map(m => modelSetData(m, today, 'alku'))
-    .onValue(pushModel)
+    .onValue(m => {
+      pushModel(m)
+      opiskeluoikeus.context.saveChangesBus.push()
+      window.location.href = '/koski'
+    })
 }
 
 const tilaListModel = opiskeluoikeus => {
