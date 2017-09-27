@@ -20,11 +20,29 @@ export class TogglableEditor extends React.Component {
     let showDeleteLink = model.editable && editingAny
     let editLink = showEditLink
       ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
-      : showDeleteLink && !suorituksiaTehty(model.context.opiskeluoikeus)
-        ? <button className="toggle-edit" onClick={() => deleteOpiskeluoikeus(model.context.opiskeluoikeus)}><Text name="poista opiskeluoikeus"/></button>
+      : showDeleteLink
+        ? <MitätöiButton opiskeluoikeus={model.context.opiskeluoikeus} />
         : null
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))
+  }
+}
+
+class MitätöiButton extends React.Component {
+  render() {
+    let { opiskeluoikeus } = this.props
+    let deleteRequested = this.state && this.state.deleteRequested
+    let mitätöi = () => {
+      if (deleteRequested) {
+        deleteOpiskeluoikeus(opiskeluoikeus)
+      } else {
+        this.setState({deleteRequested: true})
+      }
+    }
+
+    return suorituksiaTehty(opiskeluoikeus)
+      ? null
+      : <button className="toggle-edit" onClick={mitätöi}><Text name={deleteRequested ? 'vahvista mitätöinti, operaatiota ei voi peruuttaa' : 'mitätöi opiskeluoikeus'}/></button>
   }
 }
 
@@ -48,3 +66,4 @@ const suorituksiaTehty = opiskeluoikeus => {
   let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
   return osasuoritukset.find(s => modelData(s, 'tila').koodiarvo === 'VALMIS') !== undefined
 }
+
