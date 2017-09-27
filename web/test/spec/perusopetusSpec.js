@@ -365,7 +365,7 @@ describe('Perusopetus', function() {
               )
 
               describe('Ennen arvosanan syöttöä', function() {
-                it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään', function() {
+                it('Tallentaminen ei ole mahdollista ja virheilmoitus näytetään (koska päätason suoritus on valmis)', function() {
                   expect(editor.canSave()).to.equal(false)
                   expect(äidinkieli.errorText()).to.equal('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
                 })
@@ -390,6 +390,25 @@ describe('Perusopetus', function() {
 
                   it('Toimii', function() {
                     expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9')
+                  })
+                })
+              })
+
+              describe('Kun päätason suoritus on KESKEN-tilassa', function() {
+                before(
+                  editor.edit,
+                  editor.property('tila').removeItem(0),
+                  opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+                )
+                describe('Kun oppiaineen suoritus on VALMIS-tilassa', function() {
+                  it('Keskeneräista kurssisuoritusta ei voi tallentaa', function() {
+                    expect(editor.canSave()).to.equal(false)
+                  })
+                })
+                describe('Kun oppiaineen suoritus on KESKEN-tilassa', function() {
+                  before(äidinkieli.arvosana.setValue('Ei valintaa'))
+                  it('Keskeneräisen kurssisuorituksen voi tallentaa', function() {
+                    expect(editor.canSave()).to.equal(true)
                   })
                 })
               })

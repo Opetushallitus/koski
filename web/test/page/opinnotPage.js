@@ -151,6 +151,7 @@ function Oppiaineet() {
     var oppiaineElem = typeof indexOrClass == 'number'
       ? findSingle('.oppiaineet .oppiaine-rivi:eq(' + indexOrClass + ')')
       : findSingle('.oppiaineet .oppiaine-rivi.' + indexOrClass)
+    var editorApi = Editor(oppiaineElem)
     var oppiaineApi = _.merge({
       text: function() { return extractAsText(oppiaineElem) },
       avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
@@ -158,8 +159,9 @@ function Oppiaineet() {
       kurssi: function(identifier) {
         return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
       },
-      errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) }
-    }, Editor(oppiaineElem))
+      errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
+      arvosana: editorApi.propertyBySelector('tr td.arvosana')
+    }, editorApi)
     return oppiaineApi
 
     function LisääKurssiDialog() {
