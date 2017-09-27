@@ -50,7 +50,7 @@
     "phantomjs": "2.1.7",
     "postcss-loader": "^2.0.6",
     "reporter-file": "^1.0.0",
-    "snyk": "^1.40.2",
+    "snyk": "^1.41.1",
     "style-loader": "^0.18",
     "webpack": "^3.5.6"
   },
