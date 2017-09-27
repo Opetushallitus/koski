@@ -15,6 +15,7 @@
     section {
       display: inline-block;
       vertical-align: top;
+      max-width: 800px;
       &.pakolliset, &.valinnaiset {
         width: 578px;
       }
@@ -34,7 +35,7 @@
             padding-bottom: 7px;
           }
           > .oppiaine {
-            width: 500px;
+            min-width: 500px;
 
             .koodi-ja-nimi {
               .koodi {
@@ -56,12 +57,14 @@
             }
           }
           > .arvosana {
+            max-width: 60px;
             text-align: right;
             select {
               width: initial;
             }
           }
-          > td.laajuus, > th.laajuus {
+          > .laajuus {
+            max-width: 65px;
             padding-left: 10px;
             text-align: right;
             white-space: nowrap;
