@@ -153,7 +153,7 @@ function Oppiaineet() {
       : findSingle('.oppiaineet .oppiaine-rivi.' + indexOrClass)
     var oppiaineApi = _.merge({
       text: function() { return extractAsText(oppiaineElem) },
-      avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi', oppiaineElem)),
+      avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
       lisääKurssiDialog: LisääKurssiDialog(),
       kurssi: function(identifier) {
         return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
