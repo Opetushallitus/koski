@@ -10,10 +10,11 @@ import {t} from '../i18n.js'
 import {parseBool} from '../util'
 import {buildClassNames} from '../classnames'
 
-export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className }) => {
+export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className }) => {
   if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional({model})
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
+  inline = parseBool(inline)
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
@@ -54,6 +55,7 @@ export const EnumEditor = ({model, asRadiogroup, disabledValue, sortBy, fetchAlt
       : (
            <span className={classNameP.map(n => 'dropdown-wrapper ' + n)}>
              <DropDown
+               inline={inline}
                options={alternativesWithZeroValueP}
                keyValue={option => option.value}
                displayValue={option => option.title}

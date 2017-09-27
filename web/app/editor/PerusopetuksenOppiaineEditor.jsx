@@ -32,7 +32,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
     }
       {
         // kielivalinta
-        kieliaine && <span className="value kieli"><Editor model={oppiaine} path="kieli" sortBy={!äidinkieli && sortLanguages}/></span>
+        kieliaine && <span className="value kieli"><Editor model={oppiaine} inline={true} path="kieli" sortBy={!äidinkieli && sortLanguages}/></span>
       }
       {
         this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.saveChangesBus, () => {

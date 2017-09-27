@@ -5,6 +5,7 @@ import R from 'ramda'
 import {parseBool, scrollElementBottomVisible, toObservable} from './util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
 import {t} from './i18n'
+import {buildClassNames} from './classnames'
 
 /*
   options: [] or Observable []
@@ -18,14 +19,16 @@ import {t} from './i18n'
   removeText: string
   enableFilter: boolean
   selectionText: shown when no option is selected
+  inline: hide borders until hovered upon
  */
 export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                   selected, onSelectionChanged, selectionText = t('Valitse...'),
+                  inline = false,
                   enableFilter = false,
                   newItem, isRemovable = () => false, onRemoval, removeText}) => {
   let optionsP = toObservable(options)
   let selectedP = toObservable(selected)
-
+  inline = parseBool(inline)
   enableFilter = parseBool(enableFilter)
   let selectionIndexAtom = Atom(0)
   let removeIndexAtom = Atom(undefined)
@@ -104,8 +107,9 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
     e.stopPropagation()
     onRemoval(keyValue(option))
   }
+  let className = buildClassNames(['dropdown', inline && 'inline'])
   return (<span>{
-    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className="dropdown" tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
+    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
             enableFilter ?
               <div className="input-container" onClick={toggleOpen}>
@@ -130,12 +134,12 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
               {
                 allOptions.map((o,i) => {
                   let isNew = isNewItem(allOptions, o, i)
-                  let className = Bacon.combineWith(
+                  let itemClassName = Bacon.combineWith(
                     (s, r) => s + r,
                     selectionIndexAtom.map(selectionIndex => 'option' + (i === selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : '')),
                     removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''))
                   return (<li key={keyValue(o) || displayValue(o)}
-                              className={className}
+                              className={itemClassName}
                               onMouseDown={(e) => {selectOption(e, o)}}
                               onClick={(e) => {selectOption(e, o)}}
                               onMouseOver={() => handleMouseOver(allOptions, o)}>
