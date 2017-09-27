@@ -155,6 +155,11 @@ function Oppiaineet() {
     var oppiaineApi = _.merge({
       text: function() { return extractAsText(oppiaineElem) },
       avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
+      lisääKurssi: function(kurssi) { return seq(
+        oppiaineApi.avaaLisääKurssiDialog,
+        oppiaineApi.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+        oppiaineApi.lisääKurssiDialog.lisääKurssi
+      )},
       lisääKurssiDialog: LisääKurssiDialog(),
       kurssi: function(identifier) {
         return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))

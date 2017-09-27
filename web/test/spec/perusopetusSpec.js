@@ -397,6 +397,7 @@ describe('Perusopetus', function() {
               describe('Kun päätason suoritus on KESKEN-tilassa', function() {
                 before(
                   editor.edit,
+                  äidinkieli.lisääKurssi('Kieli ja kulttuuri'),
                   editor.property('tila').removeItem(0),
                   opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
                 )
