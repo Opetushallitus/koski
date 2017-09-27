@@ -552,9 +552,9 @@ const resolvePrototype = (model, context) => {
 
 const removeUndefinedValues = (obj) => R.fromPairs(R.toPairs(obj).filter(([, v]) => v !== undefined))
 
-const removeCommonPath = (p1, p2) => {
-  if (p2.length == 0) return p1
-  return p1.slice(p2.length)
+export const removeCommonPath = (deeperPath, parentPath) => {
+  if (parentPath.length == 0) return deeperPath
+  return deeperPath.slice(parentPath.length)
 }
 
 const getValidator = (model, context) => {

@@ -1,4 +1,4 @@
-import {addContext, modelData, modelItems, modelLookup} from './EditorModel'
+import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from './EditorModel'
 import React from 'baret'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
@@ -9,7 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
-import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
@@ -67,19 +67,22 @@ SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
-
-  if (suoritusValmis(m)) {
-    return modelItems(m, 'osasuoritukset')
-        .map((osasuoritus, i) => [osasuoritus, i])
-        .filter(([osasuoritus]) => suoritusKesken(osasuoritus) || onKeskeneräisiäOsasuorituksia(osasuoritus))
-        .map(([, i]) => {
-          return {
-            path: ['osasuoritukset', i, 'arviointi', -1, 'arvosana'],
+  let validateSuoritus = (s) => {
+    return osasuoritukset(s)
+      .flatMap(osasuoritus => {
+        if (suoritusValmis(s) && suoritusKesken(osasuoritus)) {
+          let subPath = removeCommonPath(osasuoritus.path, m.path)
+          return [{
+            path: subPath.concat('arviointi'),
             key: 'osasuorituksenTila',
             message: <Text name='Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS'/>
-          }
-        })
+          }]
+        } else {
+          return validateSuoritus(osasuoritus)
+        }
+      })
   }
+  return validateSuoritus(m)
 }
 
 class TodistusLink extends React.Component {
