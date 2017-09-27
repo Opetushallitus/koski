@@ -6,7 +6,7 @@
     .kurssi {
       position: relative;
       display: table-cell;
-      width: 62px;
+      min-width: 62px;
       > .tunniste {
         cursor: pointer;
         font-weight: 600;
@@ -18,6 +18,14 @@
 
       > .arvosana {
         margin-right: 10px;
+        .dropdown {
+          width: 62px !important;
+        }
+      }
+
+      a.remove-value {
+        position: absolute;
+        margin-left: 2px !important;
       }
 
       .tunniste + .arvosana {

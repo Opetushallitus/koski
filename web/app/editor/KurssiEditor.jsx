@@ -29,7 +29,10 @@ export class KurssiEditor extends React.Component {
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e}>
-        <div onClick={showDetails} className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</div>
+        <span onClick={showDetails} className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</span>
+        {
+          kurssi.context.edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
+        }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
           open && (<div className={'details details-' + tooltipPosition}>
@@ -39,9 +42,6 @@ export class KurssiEditor extends React.Component {
               propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
             />
           </div>)
-        }
-        {
-          kurssi.context.edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
       </li>
     )

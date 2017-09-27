@@ -74,10 +74,10 @@
             max-width: 100px;
           }
           &.kurssit > td {
+            padding-left: 20px;
             > .kurssit {
               margin-right: 60px;
               > ul {
-                padding-left: 20px;
                 margin-bottom: 5px;
                 vertical-align: middle;
               }
@@ -175,8 +175,13 @@
         .kieli .dropdown {
           margin-right: 15px;
         }
-        .arvosana .dropdown {
-          margin-right: 0;
+        .arvosana {
+          > .value {
+            display: inline-block;
+          }
+          .dropdown {
+            margin-right: 0;
+          }
         }
       }
       .details {
