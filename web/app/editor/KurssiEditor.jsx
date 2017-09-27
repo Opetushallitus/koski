@@ -3,6 +3,7 @@ import {modelData, modelTitle} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {ArvosanaEditor} from './ArvosanaEditor.jsx'
 import {pushRemoval} from './EditorModel'
+import {buildClassNames} from '../classnames'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -26,12 +27,17 @@ export class KurssiEditor extends React.Component {
         })
       }
     }
+    let hideDetails = () => {
+      this.setState({open: false})
+    }
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
+    let edit = kurssi.context.edit
+    let className = buildClassNames(['tunniste', kurssinTyyppi, !edit && 'hoverable'])
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e}>
-        <span onClick={showDetails} className={'tunniste ' + kurssinTyyppi } title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</span>
+        <a onClick={showDetails} onMouseEnter={!edit && showDetails} onMouseLeave={!edit && hideDetails} className={className} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</a>
         {
-          kurssi.context.edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
+          edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
@@ -61,7 +67,8 @@ export class KurssiEditor extends React.Component {
   }
 
   handleClickOutside(e) {
-    if (!this.kurssiElement.querySelector('.details').contains(e.target)) {
+    let detailsElem = this.kurssiElement.querySelector('.details')
+    if (detailsElem && !detailsElem.contains(e.target)) {
       this.removeListeners()
       this.setState({open: false})
     }

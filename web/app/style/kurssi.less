@@ -11,8 +11,13 @@
         cursor: pointer;
         font-weight: 600;
         &.syventava, &.soveltava {
-          color: #979797;
           font-style: italic;
+        }
+        &.hoverable {
+          color: black;
+          &.syventava, &.soveltava {
+            color: #979797;
+          }
         }
       }
 
@@ -26,10 +31,6 @@
       a.remove-value {
         position: absolute;
         margin-left: 2px !important;
-      }
-
-      .tunniste + .arvosana {
-        cursor: pointer;
       }
 
       .details {
