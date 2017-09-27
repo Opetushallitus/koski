@@ -20,7 +20,7 @@ export class TogglableEditor extends React.Component {
     let showDeleteLink = model.editable && editingAny
     let editLink = showEditLink
       ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
-      : showDeleteLink
+      : showDeleteLink && !suorituksiaTehty(model.context.opiskeluoikeus)
         ? <button className="toggle-edit" onClick={() => deleteOpiskeluoikeus(model.context.opiskeluoikeus)}><Text name="poista opiskeluoikeus"/></button>
         : null
 
@@ -41,4 +41,10 @@ const deleteOpiskeluoikeus = opiskeluoikeus => {
 const tilaListModel = opiskeluoikeus => {
   let model = modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
   return contextualizeSubModel(model.arrayPrototype, model, modelItems(model).length)
+}
+
+const suorituksiaTehty = opiskeluoikeus => {
+  let suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+  let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
+  return osasuoritukset.find(s => modelData(s, 'tila').koodiarvo === 'VALMIS') !== undefined
 }
