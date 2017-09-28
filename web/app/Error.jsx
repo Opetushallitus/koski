@@ -75,7 +75,7 @@ export const TopLevelError = ({error}) => {
 }
 
 export const OpiskeluoikeusMitätöity = () => {
-  return (<div className="content-area deleted">
+  return (<div className="content-area invalidated">
     <h1><Text name="Opiskeluoikeus mitätöity" /></h1>
     <a href="/koski"><Text name="Palaa opiskelijalistaukseen"/></a>
   </div>)
