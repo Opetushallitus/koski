@@ -28,7 +28,7 @@ describe('Perusopetus', function() {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
@@ -91,7 +91,7 @@ describe('Perusopetus', function() {
             'Suorituskieli suomi\n' +
             'Muut suorituskielet sloveeni\n' +
             'Kielikylpykieli ruotsi\n' +
-            'Suoritus : VALMIS Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi , rehtori\n' +
+            'Suoritus valmis Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi , rehtori\n' +
             'Siirretään seuraavalle luokalle')
         })
         it('näyttää oppiaineiden arvosanat', function() {
@@ -149,7 +149,7 @@ describe('Perusopetus', function() {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2015\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 30.5.2016 Jyväskylä Reijo Reksi , rehtori')
+            'Suoritus valmis Vahvistus : 30.5.2016 Jyväskylä Reijo Reksi , rehtori')
         })
       })
       describe('Lukuvuositodistus', function() {
@@ -170,7 +170,7 @@ describe('Perusopetus', function() {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2013\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi , rehtori\n' +
+            'Suoritus valmis Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi , rehtori\n' +
             'Ei siirretä seuraavalle luokalle')
         })
       })
@@ -211,7 +211,7 @@ describe('Perusopetus', function() {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
           expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
@@ -307,7 +307,7 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
@@ -465,7 +465,7 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
@@ -1925,7 +1925,7 @@ describe('Perusopetus', function() {
               var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
               describe('Aluksi', function() {
                 it('Tila on "kesken"', function() {
-                  expect(tilaJaVahvistus.text()).to.equal('Suoritus : KESKEN')
+                  expect(tilaJaVahvistus.text()).to.equal('Suoritus kesken')
                 })
               })
               describe('Kun on keskeneräisiä oppiaineita', function() {
@@ -1964,7 +1964,7 @@ describe('Perusopetus', function() {
 
                     describe('Käyttöliittymän tila', function() {
                       it('Tila on "valmis" ja vahvistus näytetään', function() {
-                        expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle')
+                        expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle')
                       })
 
                       it('Merkitse valmiiksi -nappia ei näytetä', function() {
@@ -1975,7 +1975,7 @@ describe('Perusopetus', function() {
                     describe('Kun muutetaan takaisin keskeneräiseksi', function() {
                       before(tilaJaVahvistus.merkitseKeskeneräiseksi)
                       it('Tila on "kesken" ja vahvistus on poistettu', function() {
-                        expect(tilaJaVahvistus.text()).to.equal('Suoritus : KESKEN')
+                        expect(tilaJaVahvistus.text()).to.equal('Suoritus kesken')
                       })
 
                       describe('Kun merkitään keskeytyneeksi', function() {
@@ -1988,7 +1988,7 @@ describe('Perusopetus', function() {
                         )
 
                         it('Tila on "keskeytynyt"', function() {
-                          expect(tilaJaVahvistus.text()).to.equal('Suoritus : KESKEYTYNYT')
+                          expect(tilaJaVahvistus.text()).to.equal('Suoritus keskeytynyt')
                         })
 
                         it('Keskeneräiset oppiainesuoritukset on merkitty keskeytyneiksi', function() {
@@ -2048,7 +2048,7 @@ describe('Perusopetus', function() {
                             )
 
                             it('Tila on "valmis" ja vahvistus näytetään', function() {
-                              expect(tilaJaVahvistus.text()).to.equal('Suoritus : VALMIS Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
+                              expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
                             })
 
                             describe('Seuraavan luokka-asteen lisäyksessä', function() {
@@ -2301,7 +2301,7 @@ describe('Perusopetus', function() {
 
           describe('Käyttöliittymän tila', function() {
             it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
-              expect(tilaJaVahvistus.tila()).to.equal('VALMIS')
+              expect(tilaJaVahvistus.tila()).to.equal('Suoritus valmis')
             })
           })
 
@@ -2341,7 +2341,7 @@ describe('Perusopetus', function() {
           'Arvosana 9\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -2408,7 +2408,7 @@ describe('Perusopetus', function() {
           'Koulutus Perusopetuksen lisäopetus 105/011/2014\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
@@ -2535,7 +2535,7 @@ describe('Perusopetus', function() {
           'Koulutus Perusopetukseen valmistava opetus 57/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(

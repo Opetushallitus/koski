@@ -21,7 +21,7 @@ describe('Telma', function() {
           'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA) 6/011/2015\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : VALMIS Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
+          'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
         )
       })
 

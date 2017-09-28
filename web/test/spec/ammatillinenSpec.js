@@ -788,22 +788,18 @@ describe('Ammatillinen koulutus', function() {
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
             'Laajuus 5 osp\n' +
             'Ryhmä YMP14SN\n' +
-            'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
+            'Suoritus valmis Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines('Sulje kaikki\n' +
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal('Sulje kaikki\n' +
             'Ammatilliset tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Kestävällä tavalla toimiminen kyllä 40 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Ympäristön hoitaminen kyllä 35 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
             'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
@@ -820,20 +816,14 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Uusiutuvien energialähteiden hyödyntäminen kyllä 15 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Ulkoilureittien rakentaminen ja hoitaminen kyllä 15 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Kulttuuriympäristöjen kunnostaminen ja hoitaminen kyllä 15 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
             'Suorituspaikka Sastamalan kunta\n' +
@@ -850,12 +840,9 @@ describe('Ammatillinen koulutus', function() {
             'Arvioinnista päättäneet Opettaja\n' +
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Vesistöjen kunnostaminen ja hoitaminen kyllä 15 Hyväksytty\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
-            'Lisätiedot\n' +
-            'Muutos arviointiasteikossa\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Lisätiedot Muutos arviointiasteikossa\n' +
             'Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
             'Näyttö\n' +
             'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
@@ -875,70 +862,53 @@ describe('Ammatillinen koulutus', function() {
             'Sulje kaikki\n' +
             'Kokonaisuus Arvosana\n' +
             'Hoitotarpeen määrittäminen Hyväksytty\n' +
-            'Kuvaus\n' +
-            'Hoitotarpeen määrittäminen\n' +
+            'Kuvaus Hoitotarpeen määrittäminen\n' +
             'Yhteensä 135 / 135 osp\n' +
             'Yhteiset tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Viestintä- ja vuorovaikutusosaaminen kyllä 11 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 3\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
             'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
             'Vieraat kielet, englanti kyllä 2 3\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
-            'Lisätiedot\n' +
-            'Arvioinnin mukauttaminen\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Sulje kaikki\n' +
             'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
             'Matematiikka kyllä 3 3\n' +
-            'Kuvaus\n' +
-            'Matematiikan opinnot\n' +
+            'Kuvaus Matematiikan opinnot\n' +
             'Fysiikka ja kemia kyllä 3 3\n' +
             'Tieto- ja viestintätekniikka sekä sen hyödyntäminen kyllä 3 3\n' +
-            'Alkamispäivä\n' +
-            '1.1.2014\n' +
+            'Alkamispäivä 1.1.2014\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
             'Tila Suoritus valmis\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
-            'Lisätiedot\n' +
-            'Arvioinnin mukauttaminen\n' +
+            'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Sosiaalinen ja kulttuurinen osaaminen kyllä 7 3\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Yhteensä 35 / 35 osp\n' +
-            'Vapaavalintaiset tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Vapaasti valittavat tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Sosiaalinen ja kulttuurinen osaaminen ei 5 3\n' +
             'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Yhteensä 5 osp\n' +
-            'Tutkintoa yksilöllisesti laajentavat tutkinnon osat\n' +
-            'Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Yhteensä 5 / 10 osp\n' +
+            'Tutkintoa yksilöllisesti laajentavat tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Matkailuenglanti ei 5 3\n' +
-            'Kuvaus\n' +
-            'Matkailuenglanti\n' +
-            'Oppilaitos / toimipiste\n' +
-            'Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus\n' +
-            '31.5.2016 Reijo Reksi , rehtori\n' +
+            'Kuvaus Matkailuenglanti\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Yhteensä 5 osp')
         })
       })
@@ -966,11 +936,11 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function () {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Autoalan perustutkinto 39/011/2014\n' +
-          'Suoritustapa Näyttö\n' +
+          'Suoritustapa Näyttötutkinto\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus : KESKEN'
+          'Suoritus kesken'
         )
       })
 
@@ -1049,7 +1019,7 @@ describe('Ammatillinen koulutus', function() {
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
-          'Suoritus : VALMIS'
+          'Suoritus valmis'
         )
       })
 
@@ -1085,7 +1055,7 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Alkamispäivä 1.9.2012\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
+            'Suoritus valmis Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
           )
         })
 
@@ -1123,14 +1093,14 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
-            'Suoritustapa Näyttö\n' +
+            'Suoritustapa Näyttötutkinto\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
             'Yritys Autokorjaamo Oy Y-tunnus 1234567-8\n' +
             '31.3.2016 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
-            'Suoritus : VALMIS Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
+            'Suoritus valmis Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
           )
         })
 
@@ -1250,7 +1220,7 @@ describe('Ammatillinen koulutus', function() {
             'Laajuus 65 osp\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus : VALMIS Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
+            'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
           )
         })
 

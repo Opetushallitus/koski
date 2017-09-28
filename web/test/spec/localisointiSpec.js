@@ -7,10 +7,10 @@ describe('Lokalisointi', function() {
     before(Authentication().login('pärre'), resetFixtures, page.openPage)
     describe('Oppijataulukko', function() {
       it('Näyttää ruotsinkielisen tekstin, mikäli käännös löytyy', function() {
-        expect(S('#logo').text()).to.equal('Studieinfo.fi')
+        expect(S('.oppija-haku h3').text()).to.equal('Sök eller lägg till studerande')
       })
       it('Näyttää suomenkielisen tekstin, mikäli käännös puuttuu', function() {
-        expect(S('.oppija-haku h3').text()).to.equal('Hae tai lisää opiskelija')
+        expect(S('#logo').text()).to.equal('Opintopolku.fi')
       })
     })
   })
