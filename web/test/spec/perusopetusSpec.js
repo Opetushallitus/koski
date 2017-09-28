@@ -247,7 +247,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Vuosiluokan suorituksen lisäys', function() {
-          var lisääSuoritus = opinnot.lisääSuoritusDialog()
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(
             editor.edit,
             editor.property('tila').removeItem(0),
@@ -1769,7 +1769,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Toisen oppiaineen lisääminen', function() {
-            var lisääSuoritus = opinnot.lisääSuoritusDialog()
+            var lisääSuoritus = opinnot.lisääSuoritusDialog
             before(editor.edit, lisääSuoritus.open, wait.forAjax,
               lisääSuoritus.property('tunniste').setValue('Matematiikka'),
               lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
@@ -1838,7 +1838,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Vuosiluokan suorituksen lisääminen', function() {
-    var lisääSuoritus = opinnot.lisääSuoritusDialog()
+    var lisääSuoritus = opinnot.lisääSuoritusDialog
 
     before(
       prepareForNewOppija('kalle', '230872-7258'),
@@ -2358,31 +2358,31 @@ describe('Perusopetus', function() {
 
       before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
       before(editor.edit, editor.property('tila').removeItem(0)) // opiskeluoikeus: läsnä
-      before(arvosana.removeItem(0)) // poistetaan arviointi
 
       describe('Kun suoritus on valmis, mutta arvosana puuttuu', function() {
+        before(arvosana.removeItem(0)) // poistetaan arviointi
         it('Tallennus on estetty', function() {
           expect(opinnot.onTallennettavissa()).to.equal(false)
         })
-      })
-      describe('Kun merkitään keskeneräiseksi', function() {
-        before(tilaJaVahvistus.merkitseKeskeneräiseksi, editor.saveChanges, editor.edit)
-        it('Tallennus onnistuu', function() {
-        })
+        describe('Kun merkitään keskeneräiseksi', function() {
+          before(tilaJaVahvistus.merkitseKeskeneräiseksi, editor.saveChanges, editor.edit)
+          it('Tallennus onnistuu', function() {
+          })
 
-        it('Valmiiksi merkintä on estetty', function() {
-          expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
-        })
+          it('Valmiiksi merkintä on estetty', function() {
+            expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+          })
 
-        describe('Kun lisätään arvosana', function() {
-          before(arvosana.addItem,
-            tilaJaVahvistus.merkitseValmiiksi,
-            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
-            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
-            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
-            tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,  editor.saveChanges)
-          it('Valmiiksi merkintä on mahdollista', function() {
+          describe('Kun lisätään arvosana', function() {
+            before(arvosana.addItem,
+              tilaJaVahvistus.merkitseValmiiksi,
+              tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+              tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+              tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,  editor.saveChanges)
+            it('Valmiiksi merkintä on mahdollista', function() {
 
+            })
           })
         })
       })
@@ -2417,15 +2417,6 @@ describe('Perusopetus', function() {
               })
             })
           })
-        })
-      })
-      describe('Toisen oppiaineen lisääminen', function() {
-        before(
-          editor.edit,
-          opinnot.lisääSuoritus
-        )
-        it('Toimii', function() {
-          // TODO
         })
       })
     })

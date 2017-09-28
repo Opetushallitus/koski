@@ -77,7 +77,7 @@ function OpinnotPage() {
     lisääSuoritusVisible: function() {
       return S(".add-suoritus a").is(":visible")
     },
-    lisääSuoritusDialog: LisääSuoritusDialog,
+    lisääSuoritusDialog: LisääSuoritusDialog(),
     lisääSuoritus: click(findSingle(".add-suoritus a")),
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
