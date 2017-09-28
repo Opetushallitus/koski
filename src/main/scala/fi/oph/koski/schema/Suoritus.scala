@@ -57,6 +57,7 @@ trait MahdollisestiSuorituskielellinen {
 
 trait Arvioinniton extends Suoritus {
   def arviointi = None
+  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait Toimipisteellinen extends OrganisaatioonLiittyvä {
@@ -73,7 +74,7 @@ trait Ryhmällinen {
 }
 
 trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
-  def mutuallyExclusive = {}
+  def mutuallyExclusivePäätasoVahvistukseton = {}
 }
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
@@ -81,10 +82,11 @@ trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 
-trait VahvistuksetonSuoritus extends Suoritus {
+trait Vahvistukseton extends Suoritus {
   override def tarvitseeVahvistuksen = false
   override def vahvistus: Option[Vahvistus] = None
-  def mutuallyExclusive = {}
+  def mutuallyExclusivePäätasoVahvistukseton = {}
+  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait MonikielinenSuoritus {

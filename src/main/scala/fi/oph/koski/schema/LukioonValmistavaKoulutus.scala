@@ -75,7 +75,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukioonValmistavanKurssinSuoritus]],
   @KoodistoKoodiarvo("luvaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvaoppiaine", koodistoUri = "suorituksentyyppi")
-) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
+) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
 @Title("Lukion oppiaineen opintojen suoritus")
 @Description("Lukion oppiaineen opintojen suoritustiedot LUVA-koulutuksessa")
@@ -91,7 +91,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("luvalukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
+) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
 
 trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {

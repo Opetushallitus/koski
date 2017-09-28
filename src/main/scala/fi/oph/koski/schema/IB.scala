@@ -87,7 +87,7 @@ case class IBTutkinto(
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends Koulutus with Laajuudeton with Tutkinto
 
-trait IBSuoritus extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+trait IBSuoritus extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Title("IB-oppiaineen suoritus")
 case class IBOppiaineenSuoritus(

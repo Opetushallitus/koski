@@ -92,7 +92,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 
 case class AikuistenPerusopetuksenKurssinSuoritus(

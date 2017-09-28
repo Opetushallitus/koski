@@ -107,10 +107,13 @@ object AmmatillinenExampleData {
     Some(LaajuusOsaamispisteissä(15))
   )
 
-  lazy val arviointiKiitettävä = AmmatillinenArviointi(
-    arvosana = k3,
+  def arviointi(arvosana: Koodistokoodiviite) = AmmatillinenArviointi(
+    arvosana = arvosana,
     date(2014, 10, 20)
   )
+
+
+  lazy val arviointiKiitettävä = arviointi(k3)
 
   lazy val ammatillisetTutkinnonOsat = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma"))
   lazy val yhteisetTutkinnonOsat = Some(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))

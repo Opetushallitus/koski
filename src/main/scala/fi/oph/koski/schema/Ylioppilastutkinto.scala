@@ -44,7 +44,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus
+) extends Vahvistukseton
 
 case class YlioppilaskokeenArviointi(
   @KoodistoUri("koskiyoarvosanat")

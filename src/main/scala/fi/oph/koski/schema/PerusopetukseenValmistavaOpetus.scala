@@ -57,7 +57,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavanopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(

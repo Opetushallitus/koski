@@ -123,12 +123,13 @@ case class MuidenLukioOpintojenSuoritus(
   @KoodistoKoodiarvo("lukionmuuopinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionmuuopinto", "suorituksentyyppi"),
   tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   koulutusmoduuli: MuuLukioOpinto,
   @MinItems(1)
   @Description("Kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
-) extends LukionOppimääränOsasuoritus with VahvistuksetonSuoritus with Arvioinniton
+) extends LukionOppimääränOsasuoritus with Vahvistukseton
 
 @Title("Muu lukio-opinto")
 @Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")
@@ -149,7 +150,7 @@ case class LukionOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen
+) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Lukion kurssin suoritustiedot")
 case class LukionKurssinSuoritus(

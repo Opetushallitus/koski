@@ -50,6 +50,7 @@ object AmmattitutkintoExample {
         osasuoritukset = Some(List(
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
             tila = tilaValmis,
+            arviointi = Some(List(arviointiHyväksytty)),
             koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
               PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
               "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
@@ -57,6 +58,7 @@ object AmmattitutkintoExample {
           ),
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
             tila = tilaValmis,
+            arviointi = Some(List(arviointiHyväksytty)),
             koulutusmoduuli = autonLisävarustetyöt(false)
           )
         ))

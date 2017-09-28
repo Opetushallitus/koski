@@ -68,7 +68,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
+) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
@@ -81,7 +81,7 @@ case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksentoimintaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus with Toiminta_AlueenSuoritus
+) extends PerusopetuksenLisäopetuksenAlisuoritus with Vahvistukseton with Toiminta_AlueenSuoritus
 
 @Description("Muu perusopetuksen lisäopetuksessa suoritettu opintokokonaisuus")
 case class MuuPerusopetuksenLisäopetuksenSuoritus(
@@ -92,7 +92,7 @@ case class MuuPerusopetuksenLisäopetuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("muuperusopetuksenlisaopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "muuperusopetuksenlisaopetuksensuoritus", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus {
+) extends PerusopetuksenLisäopetuksenAlisuoritus with Vahvistukseton {
   def korotus = false
 }
 

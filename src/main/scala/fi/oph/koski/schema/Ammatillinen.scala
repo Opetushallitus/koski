@@ -367,7 +367,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Title("Yhteisen tutkinnon osan osa-alueen suoritus")
 @Description("Yhteisen tutkinnon osan osa-alueen suorituksen tiedot")
@@ -385,7 +385,7 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
@@ -591,11 +591,12 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
+  arviointi: Option[List[AmmatillinenArviointi]],
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
 
