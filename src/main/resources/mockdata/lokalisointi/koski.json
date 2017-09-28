@@ -7256,7 +7256,7 @@
   "accesscount" : 0,
   "created" : 1496312270901,
   "locale" : "en",
-  "key" : "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS",
+  "key" : "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.",
   "id" : 19782,
   "category" : "koski",
   "accessed" : 1496312270901,
@@ -7269,7 +7269,7 @@
   "accesscount" : 0,
   "created" : 1496312270893,
   "locale" : "fi",
-  "key" : "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS",
+  "key" : "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.",
   "id" : 19780,
   "category" : "koski",
   "accessed" : 1496312270893,
@@ -7277,12 +7277,12 @@
   "modified" : 1496312267671,
   "modifiedBy" : "1.2.246.562.24.54037785580",
   "force" : false,
-  "value" : "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS"
+  "value" : "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi."
 }, {
   "accesscount" : 0,
   "created" : 1496312270897,
   "locale" : "sv",
-  "key" : "Oppiaineen suoritus ei voi olla KESKEN, kun päätason suoritus on VALMIS",
+  "key" : "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.",
   "id" : 19781,
   "category" : "koski",
   "accessed" : 1496312270897,
@@ -7290,7 +7290,7 @@
   "modified" : 1506340659442,
   "modifiedBy" : "1.2.246.562.24.54037785580",
   "force" : false,
-  "value" : "Prestationen i läroämnet kan inte vara ICKE SLUTFÖRD om prestationen på huvudnivån är SLUTFÖRD"
+  "value" : ""
 }, {
   "accesscount" : 0,
   "created" : 1501502575499,
