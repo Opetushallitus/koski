@@ -99,8 +99,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   private def findRyhmä(ryhmä: Koodistokoodiviite, rakenneOsa: RakenneOsa): Option[RakenneModuuli] = {
     def nameMatches(nimi: LocalizedString): Boolean = {
-      def normalize(n: String): String = n.toLowerCase.replace("Vapaavalintaiset", "Vapaasti valittavat")
-      normalize(nimi.get("fi")) == normalize(ryhmä.nimi.map(_.get("fi")).getOrElse(""))
+      nimi.get("fi") == ryhmä.nimi.map(_.get("fi")).getOrElse("")
     }
 
     rakenneOsa match {
