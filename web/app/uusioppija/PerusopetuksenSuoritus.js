@@ -2,13 +2,7 @@ import {koodiarvoMatch} from './koodisto'
 import {modelData} from '../editor/EditorModel'
 import {oppimääränOsasuoritukset} from '../editor/Perusopetus'
 
-export const oppiaineetP = suoritustyyppiAtom => suoritustyyppiAtom.flatMapLatest((tyyppi) => {
-  if (koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(tyyppi)) {
-    return oppimääränOsasuoritukset(tyyppi.koodiarvo).map(modelData)
-  } else {
-    return []
-  }
-}).toProperty()
+export const oppiaineetP = suoritustyyppiAtom => suoritustyyppiAtom.flatMapLatest((tyyppi) => oppimääränOsasuoritukset(tyyppi).map(modelData)).toProperty()
 
 export const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli, oppiaineenSuoritus) => {
   if (oppilaitos && peruste && koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(oppimäärä) && suorituskieli) {

@@ -471,4 +471,4 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
         MuuPeruskoulunOppiaine(aine("LI")),
         MuuPeruskoulunOppiaine(aine("OP"))
   )
-    }
+}

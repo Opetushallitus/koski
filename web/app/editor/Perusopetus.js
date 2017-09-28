@@ -1,4 +1,5 @@
 import {modelData} from './EditorModel'
+import Bacon from 'baconjs'
 import Http from '../http'
 import {suorituksenTyyppi} from './Suoritus'
 
@@ -15,4 +16,4 @@ export const luokkaAste = (suoritus) => {
 
 export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/perusopetuksenluokkaaste/${luokkaAste_}?toimintaAlueittain=${toimintaAlueittain}`)
 
-export const oppimääränOsasuoritukset = (koulutustyyppi) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${koulutustyyppi}`)
+export const oppimääränOsasuoritukset = (suoritustyyppi) => suoritustyyppi ? Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${suoritustyyppi.koodiarvo}`) : Bacon.constant([])

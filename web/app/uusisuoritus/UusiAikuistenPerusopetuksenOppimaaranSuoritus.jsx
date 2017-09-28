@@ -13,7 +13,7 @@ export default {
   createSuoritus : (opiskeluoikeus) => {
     let proto = newSuoritusProto(opiskeluoikeus, 'aikuistenperusopetuksenoppimaaransuoritus')
     let toimipisteellä = copyToimipiste(aikuistenPerusopetuksenAlkuvaiheenSuoritus(opiskeluoikeus), proto)
-    return oppimääränOsasuoritukset(modelData(proto, 'tyyppi').koodiarvo).map(oppiaineet => modelSetValue(toimipisteellä, oppiaineet.value, 'osasuoritukset'))
+    return oppimääränOsasuoritukset(modelData(proto, 'tyyppi')).map(oppiaineet => modelSetValue(toimipisteellä, oppiaineet.value, 'osasuoritukset'))
   },
   canAddSuoritus: (opiskeluoikeus) => {
     return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus'

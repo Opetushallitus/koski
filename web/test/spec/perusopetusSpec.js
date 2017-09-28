@@ -1689,11 +1689,12 @@ describe('Perusopetus', function() {
       })
 
       describe('Tietojen muuttaminen', function() {
+        before(editor.edit)
         describe('Oppiaineen lisäys', function() {
           var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
           describe('Valtakunnallisen oppiaineen lisääminen', function() {
             var opintoOhjaus = editor.subEditor('.valinnainen.OP')
-            before(editor.edit, uusiOppiaine.selectValue('Opinto-ohjaus ja työelämän taidot'), opintoOhjaus.propertyBySelector('.arvosana').selectValue('9'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(uusiOppiaine.selectValue('Opinto-ohjaus ja työelämän taidot'), opintoOhjaus.propertyBySelector('.arvosana').selectValue('9'), editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('Toimii', function () {
               expect(extractAsText(S('.oppiaineet'))).to.contain('Opinto-ohjaus ja työelämän taidot 9')
             })
