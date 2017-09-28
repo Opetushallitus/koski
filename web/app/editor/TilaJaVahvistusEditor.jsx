@@ -1,5 +1,12 @@
 import {
-  addContext, modelData, modelItems, modelLens, modelLookup, modelSet, modelSetValue,
+  addContext,
+  modelData,
+  modelItems,
+  modelLens,
+  modelLookup,
+  modelSet,
+  modelSetValue,
+  modelTitle,
   pushModel
 } from './EditorModel'
 import React from 'baret'
@@ -9,14 +16,7 @@ import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {
-  arviointiPuuttuu,
-  onKeskeneräisiäOsasuorituksia,
-  setTila,
-  suorituksenTila,
-  suoritusKesken,
-  suoritusValmis
-} from './Suoritus'
+import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, setTila, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
@@ -25,7 +25,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          <Text name="Suoritus"/>{': '}<span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ suorituksenTila(model) }</span>
+          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ modelTitle(model, 'tila') }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
