@@ -1,4 +1,5 @@
 import React from 'baret'
+import Bacon from 'baconjs'
 import {
   aikuistenPerusopetuksenAlkuvaiheenSuoritus,
   aikuistenPerusopetuksenOppimääränSuoritus,
@@ -11,7 +12,7 @@ import Text from '../Text.jsx'
 export default {
   createSuoritus : (opiskeluoikeus) => {
     let proto = newSuoritusProto(opiskeluoikeus, 'aikuistenperusopetuksenalkuvaiheensuoritus')
-    return copyToimipiste(aikuistenPerusopetuksenOppimääränSuoritus(opiskeluoikeus), proto)
+    return Bacon.once(copyToimipiste(aikuistenPerusopetuksenOppimääränSuoritus(opiskeluoikeus), proto))
   },
   canAddSuoritus: (opiskeluoikeus) => {
     return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus'

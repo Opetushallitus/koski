@@ -20,7 +20,7 @@ export default ({opiskeluoikeus, callback}) => {
 
       let startAdding = () => {
         if (PopUp.createSuoritus) {
-          callback(PopUp.createSuoritus(opiskeluoikeus))
+          PopUp.createSuoritus(opiskeluoikeus).onValue(callback)
         } else {
           addingAtom.modify(x => !x)
         }

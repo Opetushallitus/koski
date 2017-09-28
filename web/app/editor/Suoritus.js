@@ -75,3 +75,21 @@ export const copyToimipiste = (from, to) => modelSet(to, modelLookup(from, 'toim
 export const aikuistenPerusopetuksenOppimääränSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaara')
 export const aikuistenPerusopetuksenAlkuvaiheenSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'aikuistenperusopetuksenoppimaaranalkuvaihe')
 export const perusopetuksenOppiaineenOppimääränSuoritus = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'perusopetuksenoppiaineenoppimaara')
+
+export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
+  if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka') {
+    return '16'
+  }
+  if (suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenoppiaineenoppimaara' || suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
+    return '17'
+  }
+  if (suoritustyyppiKoodi == 'perusopetuksenlisaopetus') {
+    return '6'
+  }
+  if (suoritustyyppiKoodi == 'perusopetukseenvalmistavaopetus') {
+    return '22'
+  }
+  if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
+    return '15'
+  }
+}

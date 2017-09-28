@@ -4,6 +4,7 @@ import Bacon from 'baconjs'
 import Dropdown from '../Dropdown.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
+import {koulutustyyppiKoodi} from './Suoritus'
 
 const preferred = ['OPH-1280-2017', '104/011/2014']
 
@@ -34,26 +35,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   </span>)
 }
 
-
 export const diaarinumerot = suoritusTyyppi => {
   let koulutustyyppi = koulutustyyppiKoodi(suoritusTyyppi.koodiarvo)
   return koulutustyyppi ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi}`) : []
-}
-
-const koulutustyyppiKoodi = tyyppi => {
-  if (tyyppi == 'perusopetuksenoppimaara' || tyyppi == 'perusopetuksenvuosiluokka') {
-    return '16'
-  }
-  if (tyyppi == 'aikuistenperusopetuksenoppimaara' || tyyppi == 'perusopetuksenoppiaineenoppimaara' || tyyppi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
-    return '17'
-  }
-  if (tyyppi == 'perusopetuksenlisaopetus') {
-    return '6'
-  }
-  if (tyyppi == 'perusopetukseenvalmistavaopetus') {
-    return '22'
-  }
-  if (tyyppi == 'esiopetuksensuoritus') {
-    return '15'
-  }
 }

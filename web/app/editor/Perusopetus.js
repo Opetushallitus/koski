@@ -14,3 +14,5 @@ export const luokkaAste = (suoritus) => {
 }
 
 export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/perusopetuksenluokkaaste/${luokkaAste_}?toimintaAlueittain=${toimintaAlueittain}`)
+
+export const oppimääränOsasuoritukset = (koulutustyyppi) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${koulutustyyppi}`)

@@ -1629,10 +1629,37 @@ describe('Perusopetus', function() {
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärä')
       )
-      it('Näytetään oikein', function() {
-        expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
-        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-1280-2017')
-        expect(opinnot.getSuorituskieli()).to.equal('suomi')
+
+      describe('Lisäyksen jälkeen', function() {
+        it('Näytetään oikein', function() {
+          expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
+          expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-1280-2017')
+          expect(opinnot.getSuorituskieli()).to.equal('suomi')
+        })
+        describe('Oppiaineiden suoritukset', function() {
+          before(editor.edit)
+          it('Esitäyttää pakolliset oppiaineet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+              'A1-kieli,',
+              'B1-kieli,',
+              'Matematiikka',
+              'Biologia',
+              'Maantieto',
+              'Fysiikka',
+              'Kemia',
+              'Terveystieto',
+              'Uskonto tai elämänkatsomustieto',
+              'Historia',
+              'Yhteiskuntaoppi',
+              'Musiikki',
+              'Kuvataide',
+              'Käsityö',
+              'Liikunta',
+              'Kotitalous',
+              'Opinto-ohjaus'])
+            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
+          })
+        })
       })
 
       describe('Alkuvaiheen opintojen lisääminen', function() {
@@ -1711,6 +1738,28 @@ describe('Perusopetus', function() {
           it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
             expect(opinnot.lisääSuoritusVisible()).to.equal(false)
           })
+
+          it('Esitäyttää pakolliset oppiaineet', function() {
+            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
+              'A1-kieli,',
+              'B1-kieli,',
+              'Matematiikka',
+              'Biologia',
+              'Maantieto',
+              'Fysiikka',
+              'Kemia',
+              'Terveystieto',
+              'Uskonto tai elämänkatsomustieto',
+              'Historia',
+              'Yhteiskuntaoppi',
+              'Musiikki',
+              'Kuvataide',
+              'Käsityö',
+              'Liikunta',
+              'Kotitalous',
+              'Opinto-ohjaus'])
+            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
+          })
         })
 
         describe('Tallennuksen jälkeen', function() {
@@ -1719,10 +1768,9 @@ describe('Perusopetus', function() {
             expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
           })
 
-          it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
+          it('Näytetään aikuisten perusopetuksen oppimäärä opiskeluoikeuden otsikossa', function() {
             expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Aikuisten perusopetuksen oppimäärä')
           })
-
         })
       })
     })

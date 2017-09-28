@@ -1,10 +1,10 @@
 import {koodiarvoMatch} from './koodisto'
-import Http from '../http'
 import {modelData} from '../editor/EditorModel'
+import {oppimääränOsasuoritukset} from '../editor/Perusopetus'
 
 export const oppiaineetP = suoritustyyppiAtom => suoritustyyppiAtom.flatMapLatest((tyyppi) => {
   if (koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')(tyyppi)) {
-    return Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${tyyppi.koodiarvo}`).map(modelData)
+    return oppimääränOsasuoritukset(tyyppi.koodiarvo).map(modelData)
   } else {
     return []
   }
