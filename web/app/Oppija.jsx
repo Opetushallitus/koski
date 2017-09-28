@@ -121,9 +121,17 @@ const createState = (oppijaOid) => {
       opiskeluoikeudet: [opiskeluoikeus]
     }
 
+    let errorHandler = e => {
+      e.topLevel = true
+      if (e.httpStatus === 404) {
+        e.opiskeluoikeusDeleted = true
+      }
+      showError(e)
+    }
+
     return Bacon.once(R.merge(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
       Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
-        .flatMap(() => Http.cachedGet(oppijaEditorUri, { errorHandler: function(e) { e.topLevel=true; showError(e) }})) // loading after save fails -> rare, not easily recoverable error, show full screen
+        .flatMap(() => Http.cachedGet(oppijaEditorUri, {errorHandler})) // loading after save fails -> rare, not easily recoverable error, show full screen
         .map(setupModelContext)
         .map( oppija => R.merge(oppija, { event: 'saved' }))
     )

@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error.jsx'
+import {Error, errorP, handleError, isDeleted, isTopLevel, TopLevelError, OpiskeluoikeusMitätöity} from './Error.jsx'
 import {userP} from './user'
 import {contentP, titleKeyP} from './router.jsx'
 import {TopBar} from './TopBar.jsx'
@@ -24,7 +24,9 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, 
       {topBar}
       {
         isTopLevel(error)
-          ? <TopLevelError error={error} />
+          ? isDeleted(error)
+            ? <OpiskeluoikeusMitätöity />
+            : <TopLevelError error={error} />
           : (R.any(R.map(p => location.path.endsWith(p), noAccessControlPaths)) || user
             ? content
             : null

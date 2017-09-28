@@ -53,6 +53,13 @@ body {
   margin-top: @topbar-height;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
+  &.deleted {
+    text-align: center;
+    h1 {
+      font-size: 50px;
+      font-weight: lighter;
+    }
+  }
 }
 
 #content[data-inraamit='true'] .content-area {

@@ -56,7 +56,6 @@ const deleteOpiskeluoikeus = opiskeluoikeus => {
     .onValue(m => {
       pushModel(m)
       opiskeluoikeus.context.saveChangesBus.push()
-      window.location.href = '/koski'
     })
 }
 
