@@ -400,13 +400,14 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   def päättötodistuksenSuoritukset(suorituksenTyyppi: String, toimintaAlueittain: Boolean) = {
     suorituksenTyyppi match {
       case "perusopetuksenoppimaara" =>
-    if (toimintaAlueittain) {
-      toimintaAlueidenSuoritukset
-    } else {
+        if (toimintaAlueittain) {
+          toimintaAlueidenSuoritukset
+        } else {
           päättötodistuksenOppiaineet.map(nuortenSuoritus)
         }
       case "aikuistenperusopetuksenoppimaara" =>
         päättötodistuksenOppiaineet.map(aikuistenSuoritus)
+      case _ => Nil
     }
   }
   def pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste: Int, toimintaAlueittain: Boolean) = {
