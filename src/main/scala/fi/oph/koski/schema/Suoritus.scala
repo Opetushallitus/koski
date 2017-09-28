@@ -72,7 +72,9 @@ trait Ryhmällinen {
   def ryhmä: Option[String]
 }
 
-trait PäätasonSuoritus extends Suoritus with Toimipisteellinen
+trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
+  def mutuallyExclusive = {}
+}
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   @MultiLineString(3)
@@ -82,6 +84,7 @@ trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
 trait VahvistuksetonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = false
   override def vahvistus: Option[Vahvistus] = None
+  def mutuallyExclusive = {}
 }
 
 trait MonikielinenSuoritus {
