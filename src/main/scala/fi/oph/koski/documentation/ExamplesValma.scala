@@ -31,7 +31,7 @@ object ExamplesValma {
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, None, pakollinen = false),
+            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, Some(List(arviointiHyväksytty)), pakollinen = false),
             ValmaKoulutuksenOsanSuoritus(
               koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = Some(List(arviointiHyväksytty)),

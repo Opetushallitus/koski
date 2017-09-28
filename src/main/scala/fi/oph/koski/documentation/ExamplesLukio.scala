@@ -189,13 +189,15 @@ object ExamplesLukio {
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("TO", "lukionmuutopinnot")),
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
-              ))
+              )),
+              arviointi = arviointi("S")
             ),
             MuidenLukioOpintojenSuoritus(
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("OA", "lukionmuutopinnot")),
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = sanallinenArviointi("S", kuvaus=Some("Sujuvaa keskustelua"), päivä = date(2016, 6, 8)))
-              ))
+              )),
+              arviointi = arviointi("S")
             )
           ))
         )

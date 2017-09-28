@@ -39,8 +39,8 @@ trait Suoritus {
     case a: SanallinenArviointi => a.kuvaus
     case _ => None
   }
-  def tarvitseeVahvistuksen = true
-  def valmis = vahvistus.isDefined
+  def tarvitseeVahvistuksen: Boolean = false
+  def valmis = if (tarvitseeVahvistuksen) vahvistus.isDefined else arviointi.toList.nonEmpty
   def kesken = !valmis
 }
 
@@ -82,6 +82,7 @@ trait Ryhmällinen {
 }
 
 trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
+  override def tarvitseeVahvistuksen = true
   def mutuallyExclusivePäätasoVahvistukseton = {}
 }
 
@@ -91,11 +92,9 @@ trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
 }
 
 trait Vahvistukseton extends Suoritus {
-  override def tarvitseeVahvistuksen = false
   override def vahvistus: Option[Vahvistus] = None
   def mutuallyExclusivePäätasoVahvistukseton = {}
   def mutuallyExclusiveVahvistuksetonArvioinniton = {}
-  override def valmis = arviointi.toList.nonEmpty
 }
 
 trait MonikielinenSuoritus {
