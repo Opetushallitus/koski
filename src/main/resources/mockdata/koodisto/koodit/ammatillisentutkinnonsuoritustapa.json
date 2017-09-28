@@ -2,7 +2,7 @@
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_naytto",
   "koodiArvo" : "naytto",
   "metadata" : [ {
-    "nimi" : "Näyttö",
+    "nimi" : "",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
@@ -33,7 +33,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Opetussuunnitelman mukainen",
+    "nimi" : "",
     "lyhytNimi" : "ops",
     "kuvaus" : "",
     "kieli" : "EN"
