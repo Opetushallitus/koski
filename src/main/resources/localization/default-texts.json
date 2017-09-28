@@ -376,5 +376,10 @@
   "Koulutustyyppi" : "Koulutustyyppi",
   "Valitse ensin tutkinnon suoritustapa": "Valitse ensin tutkinnon suoritustapa, jos haluat lisätä tutkinnonosan suorituksia",
   "Id" : "Id",
-  "Esimerkki" : "Esimerkki"
+  "Esimerkki" : "Esimerkki",
+  "Mitätöi opiskeluoikeus": "Mitätöi opiskeluoikeus",
+  "Vahvista mitätöinti, operaatiota ei voi peruuttaa": "Vahvista mitätöinti, operaatiota ei voi peruuttaa",
+  "Opiskeluoikeus mitätöity": "Opiskeluoikeus mitätöity",
+  "Palaa opiskelijalistaukseen": "Palaa opiskelijalistaukseen"
 }
+
