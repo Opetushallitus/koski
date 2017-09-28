@@ -182,6 +182,9 @@ function KoskiPage() {
     },
     getUserName: function() {
       return S('.user-info .name').text()
+    },
+    isOpiskeluoikeusInvalidated: function() {
+      return isElementVisible(S(".content-area.invalidated"))
     }
   }
 

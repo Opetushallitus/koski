@@ -268,6 +268,41 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
+  describe('Opiskeluoikeuden mitätöiminen', function() {
+    before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit)
+    describe('Opiskeluoikeudelle jossa on valmiita suorituksia', function() {
+      it('Ei ole mahdollista', function() {
+        expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(false)
+      })
+    })
+
+    describe('Opiskeluoikeudelle jossa ei ole valmiita suorituksia', function() {
+      before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
+      it('Näytetään mitätöintinappi', function() {
+        expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
+      })
+
+      describe('Painettaessa', function() {
+        before(opinnot.invalidateOpiskeluoikeus)
+        it('Pyydetään vahvistus', function() {
+          expect(opinnot.confirmInvalidateOpiskeluoikeusIsShown()).to.equal(true)
+        })
+
+        describe('Painettaessa uudestaan', function() {
+          before(opinnot.invalidateOpiskeluoikeus)
+          it('Opiskeluoikeus mitätöidään', function() {
+            expect(page.isOpiskeluoikeusInvalidated()).to.equal(true)
+          })
+
+          describe('Mitätöityä opiskeluoikeutta', function() {
+            before(reloadTestFrame, wait.until(page.is404))
+            it('Ei näytetä', function (){})
+          })
+        })
+      })
+    })
+  })
+
   describe('Tietojen muuttaminen', function() {
     before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
 

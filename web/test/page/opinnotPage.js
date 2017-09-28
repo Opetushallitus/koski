@@ -114,6 +114,13 @@ function OpinnotPage() {
         return S('.foldable:not(.collapsed)>.toggle-expand:not(.disabled), tbody.expanded .toggle-expand:not(.disabled), a.expandable.open')
       }
     },
+    invalidateOpiskeluoikeusIsShown: function() {
+      return isElementVisible(findSingle('.invalidate'))
+    },
+    confirmInvalidateOpiskeluoikeusIsShown: function() {
+      return isElementVisible(findSingle('.invalidate.confirm'))
+    },
+    invalidateOpiskeluoikeus: click(findSingle('.invalidate')),
     backToList: click(findSingle('.back-link'))
   }
 
