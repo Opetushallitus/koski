@@ -82,6 +82,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
     openAtom.set(true)
   }
   let handleInputBlur = (allOptions, s) => (e) => {
+    if (!inputElem) return
     let matchingOption = allOptions.find(o => inputElem.value && displayValue(o).toLowerCase() == inputElem.value.toLowerCase())
     if (matchingOption && !R.equals(matchingOption,s)) {
       selectOption(e, matchingOption)
