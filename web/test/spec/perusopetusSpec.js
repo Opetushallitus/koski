@@ -2359,27 +2359,35 @@ describe('Perusopetus', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
       before(editor.edit, editor.property('tila').removeItem(0)) // opiskeluoikeus: läsnä
 
-      describe('Kun suoritus on valmis, mutta arvosana puuttuu', function() {
-        before(arvosana.removeItem(0)) // poistetaan arviointi
-        it('Tallennus on estetty', function() {
-          expect(opinnot.onTallennettavissa()).to.equal(false)
+      describe('Kun arviointi poistetaan', function() {
+        before(
+          arvosana.setValue('Ei valintaa'),
+          editor.saveChanges
+        )
+
+        it('Suoritus siirtyy tilaan KESKEN', function() {
+          expect(tilaJaVahvistus.text()).to.equal('Suoritus kesken')
         })
-        describe('Kun merkitään keskeneräiseksi', function() {
-          before(tilaJaVahvistus.merkitseKeskeneräiseksi, editor.saveChanges, editor.edit)
-          it('Tallennus onnistuu', function() {
-          })
+
+        describe('Kun muokataan suoritusta', function() {
+          before(
+            editor.edit
+          )
 
           it('Valmiiksi merkintä on estetty', function() {
             expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
           })
 
           describe('Kun lisätään arvosana', function() {
-            before(arvosana.addItem,
+            before(arvosana.setValue('8'),
               tilaJaVahvistus.merkitseValmiiksi,
               tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
               tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
               tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
-              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,  editor.saveChanges)
+              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+              editor.saveChanges
+            )
+
             it('Valmiiksi merkintä on mahdollista', function() {
 
             })

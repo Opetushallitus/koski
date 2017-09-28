@@ -42,7 +42,7 @@ const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) 
 
 export const fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {
-    if (hasArvosana(m) && !suoritusValmis(m)) {
+    if (hasArvosana(m) && !suoritusValmis(m) && model.value.classes.includes('vahvistuksetonsuoritus')) {
       // Arvosana annettu -> asetetaan tila VALMIS
       return setTila(m, 'VALMIS')
     }

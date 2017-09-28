@@ -9,6 +9,7 @@ import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.j
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from './PerusopetuksenOppiaineenOppimaaranSuoritusEditor.jsx'
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
+import {ArvosanaEditor} from './ArvosanaEditor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
@@ -53,9 +54,13 @@ export class SuoritusEditor extends React.Component {
       <PropertiesEditor
         model={model}
         propertyFilter={p => !excludedProperties.includes(p.key)}
-        getValueEditor={ (prop, getDefault) => prop.key === 'suorituskieli'
-          ? <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
-          : getDefault() }
+        getValueEditor={ (prop, getDefault) => {
+          switch (prop.key) {
+            case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
+            case 'arviointi': return <ArvosanaEditor model={model}/>
+            default: return getDefault()
+          }
+        }}
       />
       <TilaJaVahvistusEditor model={model} />
       <div className="osasuoritukset">{editor}</div>
