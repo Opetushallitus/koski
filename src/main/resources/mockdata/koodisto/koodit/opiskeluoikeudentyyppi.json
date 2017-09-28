@@ -4,7 +4,13 @@
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetus",
     "lyhytNimi" : "Aikuisten perusopetus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande utbildning för vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -14,7 +20,13 @@
   "metadata" : [ {
     "nimi" : "Ammatillinen koulutus",
     "lyhytNimi" : "Ammatillinen koulutus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -24,7 +36,13 @@
   "metadata" : [ {
     "nimi" : "Esiopetus",
     "lyhytNimi" : "Esiopetus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förskoleundervisning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -32,8 +50,14 @@
   "koodiUri" : "opiskeluoikeudentyyppi_ibtutkinto",
   "koodiArvo" : "ibtutkinto",
   "metadata" : [ {
+    "nimi" : "IB-examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "IB-tutkinto",
     "lyhytNimi" : "IB-tutkinto",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -44,7 +68,13 @@
   "metadata" : [ {
     "nimi" : "Korkeakoulutus",
     "lyhytNimi" : "Korkeakoulutus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Högskoleutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -54,7 +84,13 @@
   "metadata" : [ {
     "nimi" : "Lukiokoulutus",
     "lyhytNimi" : "Lukiokoulutus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasieutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -64,7 +100,13 @@
   "metadata" : [ {
     "nimi" : "Lukioon valmistava koulutus (LUVA)",
     "lyhytNimi" : "Luva",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förberedande utbildning för gymnasieutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -74,7 +116,13 @@
   "metadata" : [ {
     "nimi" : "Perusopetukseen valmistava opetus",
     "lyhytNimi" : "Perusopetukseen valmistava opetus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förberedande undervisning för den grundläggande utbildningen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -82,8 +130,14 @@
   "koodiUri" : "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
   "koodiArvo" : "perusopetuksenlisaopetus",
   "metadata" : [ {
+    "nimi" : "Påbyggnadsundervisning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Perusopetuksen lisäopetus",
     "lyhytNimi" : "Perusopetuksen lisäopetus",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -92,8 +146,14 @@
   "koodiUri" : "opiskeluoikeudentyyppi_perusopetus",
   "koodiArvo" : "perusopetus",
   "metadata" : [ {
+    "nimi" : "Grundläggande utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Perusopetus",
     "lyhytNimi" : "Perusopetus",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -102,8 +162,14 @@
   "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
   "koodiArvo" : "ylioppilastutkinto",
   "metadata" : [ {
+    "nimi" : "Studentexamen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ylioppilastutkinto",
     "lyhytNimi" : "Ylioppilastutkinto",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,

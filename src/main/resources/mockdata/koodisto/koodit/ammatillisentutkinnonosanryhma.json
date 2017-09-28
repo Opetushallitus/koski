@@ -2,7 +2,14 @@
   "koodiUri" : "ammatillisentutkinnonosanryhma_1",
   "koodiArvo" : "1",
   "metadata" : [ {
+    "nimi" : "Yrkesinriktade examensdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ammatilliset tutkinnon osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -12,7 +19,14 @@
   "koodiArvo" : "2",
   "metadata" : [ {
     "nimi" : "Yhteiset tutkinnon osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gemensamma examensdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -20,8 +34,15 @@
   "koodiUri" : "ammatillisentutkinnonosanryhma_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "Vapaavalintaiset tutkinnon osat",
+    "nimi" : "Vapaasti valittavat tutkinnon osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritt valbara examensdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,7 +51,14 @@
   "koodiArvo" : "4",
   "metadata" : [ {
     "nimi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Examensdelar som individuellt breddar examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

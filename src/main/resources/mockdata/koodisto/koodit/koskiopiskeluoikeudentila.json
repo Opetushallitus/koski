@@ -3,8 +3,14 @@
   "koodiArvo" : "eronnut",
   "metadata" : [ {
     "nimi" : "Eronnut",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utskriven",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -26,7 +32,14 @@
   "koodiUri" : "koskiopiskeluoikeudentila_lasna",
   "koodiArvo" : "lasna",
   "metadata" : [ {
+    "nimi" : "Närvarande",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Läsnä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -36,8 +49,14 @@
   "koodiArvo" : "mitatoity",
   "metadata" : [ {
     "nimi" : "Mitätöity",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus mitätöity",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Annulleras",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -45,7 +64,13 @@
   "koodiUri" : "koskiopiskeluoikeudentila_peruutettu",
   "koodiArvo" : "peruutettu",
   "metadata" : [ {
+    "nimi" : "Indragen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Peruutettu",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus peruutettu",
     "kieli" : "FI"
   } ],
@@ -55,7 +80,13 @@
   "koodiUri" : "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
   "koodiArvo" : "valiaikaisestikeskeytynyt",
   "metadata" : [ {
+    "nimi" : "Tillfälligt avbruten",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Väliaikaisesti keskeytynyt",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
     "kieli" : "FI"
   } ],
@@ -66,8 +97,14 @@
   "koodiArvo" : "valmistunut",
   "metadata" : [ {
     "nimi" : "Valmistunut",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utexaminerad",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
