@@ -6,6 +6,7 @@ import * as Lukio from './Lukio.jsx'
 import {Suoritustaulukko} from './Suoritustaulukko.jsx'
 import {LuvaEditor} from './LuvaEditor.jsx'
 import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor.jsx'
+import PerusopetuksenOppiaineenOppimääränSuoritusEditor from './PerusopetuksenOppiaineenOppimaaranSuoritusEditor.jsx'
 import {sortLanguages} from '../sorting'
 import {Editor} from './Editor.jsx'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor.jsx'
@@ -15,6 +16,9 @@ import Text from '../Text.jsx'
 const resolveEditor = (mdl) => {
   if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
+  }
+  if (['perusopetuksenoppiaineenoppimaaransuoritus'].includes(mdl.value.classes[0])) {
+    return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
   }
   if (['esiopetuksensuoritus'].includes(mdl.value.classes[0])) {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />

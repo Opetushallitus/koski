@@ -143,49 +143,52 @@ function Oppiaineet() {
       return OpinnotPage().opiskeluoikeusEditor().propertyBySelector(selector + ' .uusi-oppiaine')
     },
 
-    oppiaine: Oppiaine
-  }
-  return api
-
-  function Oppiaine(indexOrClass) {
-    var oppiaineElem = typeof indexOrClass == 'number'
-      ? findSingle('.oppiaineet .oppiaine-rivi:eq(' + indexOrClass + ')')
-      : findSingle('.oppiaineet .oppiaine-rivi.' + indexOrClass)
-    var editorApi = Editor(oppiaineElem)
-    var oppiaineApi = _.merge({
-      text: function() { return extractAsText(oppiaineElem) },
-      avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
-      lisääKurssi: function(kurssi) { return seq(
-        oppiaineApi.avaaLisääKurssiDialog,
-        oppiaineApi.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
-        oppiaineApi.lisääKurssiDialog.lisääKurssi
-      )},
-      lisääKurssiDialog: LisääKurssiDialog(),
-      kurssi: function(identifier) {
-        return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
-      },
-      errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
-      arvosana: editorApi.propertyBySelector('tr td.arvosana')
-    }, editorApi)
-    return oppiaineApi
-
-    function LisääKurssiDialog() {
-      var modalElem = findSingle('.uusi-kurssi-modal', oppiaineElem)
-      function kurssiDropdown() { return api.propertyBySelector('.kurssi') }
-      var api = _.merge({
-        valitseKurssi: function(kurssi) {
-          return kurssiDropdown().setValue(kurssi)
-        },
-        lisääKurssi: click(subElement(modalElem, 'button')),
-        kurssit: function() {
-          return kurssiDropdown().getOptions()
-        },
-        sulje: click('.uusi-kurssi-modal .peruuta')
-      }, Editor(modalElem))
-      return api
+    oppiaine: function(indexOrClass) {
+      var oppiaineElem = typeof indexOrClass == 'number'
+        ? findSingle('.oppiaineet .oppiaine-rivi:eq(' + indexOrClass + ')')
+        : findSingle('.oppiaineet .oppiaine-rivi.' + indexOrClass)
+      return Oppiaine(oppiaineElem)
     }
   }
+  return api
 }
+
+function Oppiaine(oppiaineElem) {
+  var editorApi = Editor(oppiaineElem)
+  var oppiaineApi = _.merge({
+    text: function() { return extractAsText(oppiaineElem) },
+    avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
+    lisääKurssi: function(kurssi) { return seq(
+      oppiaineApi.avaaLisääKurssiDialog,
+      oppiaineApi.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+      oppiaineApi.lisääKurssiDialog.lisääKurssi
+    )},
+    lisääKurssiDialog: LisääKurssiDialog(),
+    kurssi: function(identifier) {
+      return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
+    },
+    errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
+    arvosana: editorApi.propertyBySelector('tr td.arvosana')
+  }, editorApi)
+  return oppiaineApi
+
+  function LisääKurssiDialog() {
+    var modalElem = findSingle('.uusi-kurssi-modal', oppiaineElem)
+    function kurssiDropdown() { return api.propertyBySelector('.kurssi') }
+    var api = _.merge({
+      valitseKurssi: function(kurssi) {
+        return kurssiDropdown().setValue(kurssi)
+      },
+      lisääKurssi: click(subElement(modalElem, 'button')),
+      kurssit: function() {
+        return kurssiDropdown().getOptions()
+      },
+      sulje: click('.uusi-kurssi-modal .peruuta')
+    }, Editor(modalElem))
+    return api
+  }
+}
+
 
 function Kurssi(elem) {
   var detailsElem = subElement(elem, '.details')

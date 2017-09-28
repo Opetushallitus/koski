@@ -2386,6 +2386,48 @@ describe('Perusopetus', function() {
           })
         })
       })
+      describe('Kurssit', function() {
+        describe('Kurssin lisääminen', function() {
+
+          var äidinkieli = Oppiaine(findSingle('.perusopetuksenoppiaineenoppimaaransuoritus'))
+
+          before(
+            editor.edit,
+            tilaJaVahvistus.merkitseKeskeneräiseksi,
+            äidinkieli.avaaLisääKurssiDialog
+          )
+          it('Näytetään vain oikean oppiaineen kurssit', function() {
+            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(21)
+          })
+
+          describe('Kun lisätään kurssi', function() {
+            before(
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi
+            )
+
+            describe('Kun annetaan arvosana ja tallennetaan', function() {
+              before(
+                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+                editor.saveChanges
+              )
+
+              it('toimii', function() {
+
+              })
+            })
+          })
+        })
+      })
+      describe('Toisen oppiaineen lisääminen', function() {
+        before(
+          editor.edit,
+          opinnot.lisääSuoritus
+        )
+        it('Toimii', function() {
+          // TODO
+        })
+      })
     })
   })
 
