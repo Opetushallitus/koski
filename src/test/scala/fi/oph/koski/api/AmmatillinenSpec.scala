@@ -25,7 +25,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Matemaattis-luonnontieteellinen osaaminen 9 Kiitettävä 3 M1)
         |Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 Kiitettävä 3
         |Sosiaalinen ja kulttuurinen osaaminen 7 Kiitettävä 3
-        |Vapaavalintaiset tutkinnon osat
+        |Vapaasti valittavat tutkinnon osat
         |Sosiaalinen ja kulttuurinen osaaminen 5 Kiitettävä 3
         |Tutkintoa yksilöllisesti laajentavat tutkinnon osat
         |Matkailuenglanti 5 Kiitettävä 3
