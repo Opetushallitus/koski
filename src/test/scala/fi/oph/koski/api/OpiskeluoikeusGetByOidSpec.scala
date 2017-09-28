@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso}
@@ -34,15 +35,11 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
       }
       "with mitätöity oid" in {
         resetFixtures
-        val oo = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
-        val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
-          defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
-        ))
-        putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
-          verifyResponseStatus(200)
-        }
-        get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders()) {
-          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus))
+        List(defaultUser, MockUsers.paakayttaja).foreach { user =>
+          get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders(user = user)) {
+            verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+          }
         }
       }
     }
@@ -65,6 +62,16 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         }
       }
     }
+  }
+
+  private def mitätöiOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus) = {
+    val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
+      defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+    ))
+    putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(200)
+    }
+    mitätöity
   }
 
   private def vankilaopetusValue = readOpiskeluoikeus match {

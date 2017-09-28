@@ -150,15 +150,17 @@ object Tables {
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] =
-    if (user.hasGlobalReadAccess) {
+    (if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
         if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
-      } yield { oo}
-    }.filterNot(_.mitätöity)
+      } yield {
+        oo
+      }
+    }).filterNot(_.mitätöity)
 }
 
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
