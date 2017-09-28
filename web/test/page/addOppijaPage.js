@@ -37,7 +37,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Opetussuunnitelman mukainen'}, {}, params)
+      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Ammatillinen perustutkinto'}, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))

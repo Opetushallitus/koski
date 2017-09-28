@@ -61,7 +61,7 @@ object AmmatillinenExampleData {
   )
 
   lazy val suoritustapaNäyttö = Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1))
-  lazy val suoritustapaOps = Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "ammatillisentutkinnonsuoritustapa", Some(1))
+  lazy val suoritustapaOps = Koodistokoodiviite("ops", Some("Ammatillinen perustutkinto"), "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val järjestämismuotoOppisopimus = OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))
   lazy val järjestämismuotoOppilaitos = JärjestämismuotoIlmanLisätietoja(Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1)))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))

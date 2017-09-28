@@ -165,7 +165,7 @@ describe('Ammatillinen koulutus', function() {
               addOppija.enterHenkilötiedot(),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('auto'),
-              addOppija.selectSuoritustapa('Opetussuunnitelman mukainen')
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto')
             )
             it('Vaihtoehto on valmiiksi valittu', function() {
               expect(addOppija.oppilaitos()).to.deep.equal('Omnian ammattiopisto')
@@ -208,7 +208,7 @@ describe('Ammatillinen koulutus', function() {
             expect(addOppija.isEnabled()).to.equal(false)
           })
           describe('Tutkinnon valinnan jälkeen', function() {
-            before(addOppija.selectTutkinto('auto'), addOppija.selectSuoritustapa('Opetussuunnitelman mukainen'))
+            before(addOppija.selectTutkinto('auto'), addOppija.selectSuoritustapa('Ammatillinen perustutkinto'))
             it('Lisää-nappi on enabloitu', function() {
               expect(addOppija.isEnabled()).to.equal(true)
             })
@@ -778,7 +778,7 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equalIgnoreNewlines(
             'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
-            'Suoritustapa Opetussuunnitelman mukainen\n' +
+            'Suoritustapa Ammatillinen perustutkinto\n' +
             'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
