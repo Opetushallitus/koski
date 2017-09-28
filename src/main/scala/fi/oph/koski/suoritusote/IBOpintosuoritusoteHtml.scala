@@ -35,7 +35,7 @@ class IBOpintosuoritusoteHtml(implicit override val user: KoskiSession, override
 
   override protected def arvosana(suoritus: Suoritus): String = {
     val effort = suoritus match {
-      case IBKurssinSuoritus(_, _, Some(viimeisinArviointi :: xs), _, _) => viimeisinArviointi.effort.map(_.koodiarvo).getOrElse("")
+      case IBKurssinSuoritus(_, Some(viimeisinArviointi :: xs), _, _) => viimeisinArviointi.effort.map(_.koodiarvo).getOrElse("")
       case _ => ""
     }
     super.arvosana(suoritus) + effort

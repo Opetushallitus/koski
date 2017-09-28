@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
@@ -18,7 +19,9 @@ trait Suoritus {
   def alkamispäivä: Option[LocalDate] = None
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
-  def tila: Koodistokoodiviite
+  @SyntheticProperty
+  @ReadOnly("Suorituksen tila päätellään automaattisesti")
+  def tila: Koodistokoodiviite = if (valmis) Suoritus.tilaValmis else Suoritus.tilaKesken
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan kun suorituksen tila on VALMIS")
@@ -37,8 +40,13 @@ trait Suoritus {
     case _ => None
   }
   def tarvitseeVahvistuksen = true
-  def valmis = tila.koodiarvo == "VALMIS"
-  def kesken = tila.koodiarvo == "KESKEN"
+  def valmis = vahvistus.isDefined
+  def kesken = !valmis
+}
+
+object Suoritus {
+  val tilaValmis = MockKoodistoViitePalvelu.getKoodistoKoodiViite("suorituksentila", "VALMIS").get
+  val tilaKesken = MockKoodistoViitePalvelu.getKoodistoKoodiViite("suorituksentila", "KESKEN").get
 }
 
 trait Suorituskielellinen {
@@ -87,6 +95,7 @@ trait Vahvistukseton extends Suoritus {
   override def vahvistus: Option[Vahvistus] = None
   def mutuallyExclusivePäätasoVahvistukseton = {}
   def mutuallyExclusiveVahvistuksetonArvioinniton = {}
+  override def valmis = arviointi.toList.nonEmpty
 }
 
 trait MonikielinenSuoritus {

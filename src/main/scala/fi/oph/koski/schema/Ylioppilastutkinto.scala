@@ -28,7 +28,6 @@ case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[Organisaatiovahvistus] = None,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
   @Title("Kokeet")
@@ -40,7 +39,6 @@ case class YlioppilastutkinnonSuoritus(
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
   koulutusmoduuli: YlioppilasTutkinnonKoe,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")

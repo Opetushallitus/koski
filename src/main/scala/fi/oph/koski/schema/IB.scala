@@ -36,7 +36,6 @@ case class IBTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: IBTutkinto = IBTutkinto(),
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
@@ -58,7 +57,6 @@ case class PreIBSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PreIBKoulutusmoduuli = PreIBKoulutusmoduuli(),
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Title("Oppiaineet")
@@ -94,7 +92,6 @@ case class IBOppiaineenSuoritus(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   koulutusmoduuli: IBAineRyhmäOppiaine,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -109,7 +106,6 @@ case class IBOppiaineenSuoritus(
 case class IBTheoryOfKnowledgeSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineTheoryOfKnowledge,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[IBCoreRequirementsArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -124,7 +120,6 @@ case class IBTheoryOfKnowledgeSuoritus(
 case class IBCASSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineCAS,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("iboppiainecas")
@@ -136,7 +131,6 @@ case class IBCASSuoritus(
 case class IBExtendedEssaySuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineExtendedEssay,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[IBCoreRequirementsArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("iboppiaineee")
@@ -148,7 +142,6 @@ case class IBExtendedEssaySuoritus(
 case class PreIBOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBOppiaine,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
@@ -176,7 +169,6 @@ case class IBOppiaineenArviointi(
 case class PreIBKurssinSuoritus(
   @Description("Pre-IB kurssin tunnistetiedot")
   koulutusmoduuli: PreIBKurssi,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("preibkurssi")
@@ -186,7 +178,6 @@ case class PreIBKurssinSuoritus(
 @Title("IB-kurssin suoritus")
 case class IBKurssinSuoritus(
   koulutusmoduuli: IBKurssi,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[IBKurssinArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibkurssi")

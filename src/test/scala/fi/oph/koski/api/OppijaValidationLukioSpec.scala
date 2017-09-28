@@ -42,10 +42,8 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
     "Suoritus kesken, kurssien laajuuksien summa ei täsmää -> HTTP 200" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        tila = tilaKesken,
         vahvistus = None,
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
-          tila = tilaKesken,
           osasuoritukset = Some(List(
             kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = numeerinenArviointi(9))
           ))
@@ -60,9 +58,8 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
   "Tilat ja vahvistukset" - {
     "Valmis oppiainesuoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        tila = tilaKesken,
         vahvistus = None,
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9"))))
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("9"))))
       )))
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(200)
@@ -70,12 +67,11 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
     "Valmis oppiaineen kurssin suoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        tila = tilaKesken,
         vahvistus = None,
         osasuoritukset = Some(List(
-          suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9")).copy(
+          suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("9")).copy(
             osasuoritukset = Some(List(
-              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis, arviointi = numeerinenArviointi(9))
+              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(arviointi = numeerinenArviointi(9))
             ))
           )))
       )))

@@ -22,7 +22,6 @@ object ExamplesValma {
         )),
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(ValmaKoulutuksenSuoritus(
-          tila = tilaValmis,
           vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("5/011/2015")),
@@ -32,9 +31,8 @@ object ExamplesValma {
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, None, pakollinen = false).copy(tila = tilaKeskeytynyt),
+            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, None, pakollinen = false),
             ValmaKoulutuksenOsanSuoritus(
-              tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = Some(List(arviointiHyväksytty)),
               tunnustettu = tunnustettu
@@ -51,7 +49,6 @@ object ExamplesValma {
     osaaminen = Some(MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat", Some(1)), true, None),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       tutkinto = Some(AmmatillinenTutkintoKoulutus(
@@ -71,7 +68,6 @@ object ExamplesValma {
     tunnustettu: Option[OsaamisenTunnustaminen] = None,
     näyttö: Option[Näyttö] = None) =
     ValmaKoulutuksenOsanSuoritus(
-      tila = tilaValmis,
       koulutusmoduuli = PaikallinenValmaKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
         kuvaus = finnish(kuvaus),

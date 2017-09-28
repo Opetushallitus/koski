@@ -8,7 +8,6 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaihe,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
@@ -32,7 +31,6 @@ case class AikuistenPerusopetuksenAlkuvaihe(
 @Description("Oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän alkuvaiheen suoritusta")
 case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenOppiaine,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Title("Kurssit")
@@ -44,7 +42,6 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
 case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenKurssi,
-  tila: Koodistokoodiviite,
   @Flatten
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,

@@ -158,9 +158,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         "Suorituksen tila" - {
-          def copySuoritus(t: Koodistokoodiviite, a: Option[List[AmmatillinenArviointi]], v: Option[HenkilövahvistusValinnaisellaTittelillä], ap: Option[LocalDate] = None): AmmatillisenTutkinnonOsanSuoritus = {
+          def copySuoritus(a: Option[List[AmmatillinenArviointi]], v: Option[HenkilövahvistusValinnaisellaTittelillä], ap: Option[LocalDate] = None): AmmatillisenTutkinnonOsanSuoritus = {
             val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
-            tutkinnonOsaSuoritus.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+            tutkinnonOsaSuoritus.copy(arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
           }
 
           def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = {
@@ -168,72 +168,52 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
 
 
-          def testKesken(tila: Koodistokoodiviite): Unit = {
-            "Arviointi puuttuu" - {
-              "palautetaan HTTP 200" in (put(copySuoritus(tila, None, None)) (
-                verifyResponseStatus(200)
-              ))
-            }
-            "Arviointi annettu" - {
-              "palautetaan HTTP 200" in (put(copySuoritus(tila, arviointiHyvä(), None)) (
-                verifyResponseStatus(200)
-              ))
-            }
-            "Vahvistus annettu" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tila, arviointiHyvä(), vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella tutkinnonosat/100023 on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
-              ))
-            }
-          }
-          "Kun suorituksen tila on KESKEN" - {
-            testKesken(tilaKesken)
+          "Arviointi ja vahvistus puuttuu" - {
+            "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
+              verifyResponseStatus(200)
+            ))
           }
 
-          "Kun suorituksen tila on KESKEYTYNYT" - {
-            testKesken(tilaKeskeytynyt)
+          "Arviointi annettu" - {
+            "palautetaan HTTP 200" in (put(copySuoritus(arviointiHyvä(), None)) (
+              verifyResponseStatus(200)
+            ))
           }
 
-          "Kun suorituksen tila on VALMIS" - {
-            "Suorituksella arviointi ja vahvistus" - {
-              "palautetaan HTTP 200" in (put(copySuoritus(tilaValmis, arviointiHyvä(), vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-                verifyResponseStatus(200)
-              ))
-            }
-            "Vahvistus annettu, mutta arviointi puuttuu" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, None, vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu arviointi, vaikka suorituksen tila on VALMIS"))
-              ))
-            }
-
-            "Vahvistus puuttuu" - {
-              "palautetaan HTTP 200 (vahvistus vaaditaan vain päätason tutkintosuoritukselta)" in (put(copySuoritus(tilaValmis, arviointiHyvä(), None)) (
-                verifyResponseStatus(200)
-              ))
-            }
-
-            "Vahvistuksen myöntäjähenkilö puuttuu" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
-                verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
-              ))
-            }
-
+          "Suorituksella arviointi ja vahvistus" - {
+            "palautetaan HTTP 200" in (put(copySuoritus(arviointiHyvä(), vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
+              verifyResponseStatus(200)
+            ))
           }
+
+          "Vahvistus annettu, mutta arviointi puuttuu" - {
+            "palautetaan HTTP 400" in (put(copySuoritus(None, vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu arviointi, vaikka suorituksen tila on VALMIS"))
+            ))
+          }
+
+          "Vahvistuksen myöntäjähenkilö puuttuu" - {
+            "palautetaan HTTP 400" in (put(copySuoritus(arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
+              verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
+            ))
+          }
+
 
           "Arviointi" - {
             "Arviointiasteikko on tuntematon" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "vääräasteikko"), date(2015, 5, 1)))), None))
+              "palautetaan HTTP 400" in (put(copySuoritus(Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "vääräasteikko"), date(2015, 5, 1)))), None))
                 (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*arviointiasteikkoammatillinenhyvaksyttyhylatty.*enumValueMismatch.*".r))))
             }
 
             "Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon" - {
-              "palautetaan HTTP 400" in (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), date(2015, 5, 1)))), None))
+              "palautetaan HTTP 400" in (put(copySuoritus(Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), date(2015, 5, 1)))), None))
                 (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
             }
           }
 
           "Suorituksen päivämäärät" - {
             def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
-              copySuoritus(tilaValmis, arviointiHyvä(LocalDate.parse(arviointipäivä)), vahvistusValinnaisellaTittelillä(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
+              copySuoritus(arviointiHyvä(LocalDate.parse(arviointipäivä)), vahvistusValinnaisellaTittelillä(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
             }
 
             "Päivämäärät kunnossa" - {
@@ -262,7 +242,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa" - {
             val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä,
-              tila = tilaValmis,
               vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
               osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
@@ -275,59 +254,36 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Tutkinnon tila ja arviointi" - {
-      def copySuoritus(t: Koodistokoodiviite, v: Option[HenkilövahvistusValinnaisellaPaikkakunnalla], ap: Option[LocalDate] = None) = {
+      def copySuoritus(v: Option[HenkilövahvistusValinnaisellaPaikkakunnalla], ap: Option[LocalDate] = None) = {
         val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
-        autoalanPerustutkinnonSuoritus().copy(tila = t, vahvistus = v, alkamispäivä = alkamispäivä)
+        autoalanPerustutkinnonSuoritus().copy(vahvistus = v, alkamispäivä = alkamispäivä)
       }
 
       def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
       }
 
-      def testKesken(tila: Koodistokoodiviite): Unit = {
-        "Vahvistus puuttuu" - {
-          "palautetaan HTTP 200" in (put(copySuoritus(tila, None, None)) (
-            verifyResponseStatus(200)
-          ))
-        }
-        "Vahvistus annettu" - {
-          "palautetaan HTTP 400" in (put(copySuoritus(tila, vahvistus(LocalDate.parse("2016-08-08")))) (
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella koulutus/351301 on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
-          ))
-        }
-      }
-      "Kun suorituksen tila on KESKEN" - {
-        testKesken(tilaKesken)
+      "Vahvistus puuttuu" - {
+        "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
+          verifyResponseStatus(200)
+        ))
       }
 
-      "Kun suorituksen tila on KESKEYTYNYT" - {
-        testKesken(tilaKesken)
+      "Suorituksella on vahvistus" - {
+        "palautetaan HTTP 200" in (put(copySuoritus(vahvistus(LocalDate.parse("2016-08-08")))) (
+          verifyResponseStatus(200)
+        ))
       }
 
-      "Kun suorituksen tila on VALMIS" - {
-        "Suorituksella on vahvistus" - {
-          "palautetaan HTTP 200" in (put(copySuoritus(tilaValmis, vahvistus(LocalDate.parse("2016-08-08")))) (
-            verifyResponseStatus(200)
-          ))
-        }
-
-        "Vahvistus puuttuu" - {
-          "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, None)) (
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/351301 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
-          ))
-        }
-
-        "Vahvistuksen myöntäjähenkilö puuttuu" - {
-          "palautetaan HTTP 400" in (put(copySuoritus(tilaValmis, Some(HenkilövahvistusValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
-            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
-          ))
-        }
-
+      "Vahvistuksen myöntäjähenkilö puuttuu" - {
+        "palautetaan HTTP 400" in (put(copySuoritus(Some(HenkilövahvistusValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
+        ))
       }
 
       "Suorituksen päivämäärät" - {
         def päivämäärillä(alkamispäivä: String, vahvistuspäivä: String) = {
-          copySuoritus(tilaValmis, vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
+          copySuoritus(vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
         }
 
         "Päivämäärät kunnossa" - {
@@ -437,7 +393,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val tutkinnonOsaSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = tutkinnonOsa,
-    tila = tilaKesken,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointi = arviointiHyvä(),
     tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
@@ -449,7 +404,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val paikallinenTutkinnonOsaSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = paikallinenTutkinnonOsa,
-    tila = tilaKesken,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointi = arviointiHyvä()
   )

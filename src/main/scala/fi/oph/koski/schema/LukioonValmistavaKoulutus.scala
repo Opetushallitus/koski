@@ -38,7 +38,6 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: LukioonValmistavaKoulutus,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto))")
   suorituskieli: Koodistokoodiviite,
@@ -66,7 +65,6 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   @Description("Suoritetun oppiaineen tunnistetiedot. Voi olla joko paikallinen tai lukioon valmistavan koulutuksen oppiaine")
   koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,  
-  tila: Koodistokoodiviite,
   @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -82,7 +80,6 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
 case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
-  tila: Koodistokoodiviite,
   @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -150,7 +147,6 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
 
 case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
-  tila: Koodistokoodiviite,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
   @Flatten
   arviointi: Option[List[LukionKurssinArviointi]],

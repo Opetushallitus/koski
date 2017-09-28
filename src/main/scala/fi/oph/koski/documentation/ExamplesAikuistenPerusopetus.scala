@@ -28,7 +28,6 @@ object ExamplesAikuistenPerusopetus {
       suoritukset = List(
         PerusopetuksenOppiaineenOppimääränSuoritus(
           koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("19/011/2015")),
-          tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           suoritustapa = suoritustapaErityinenTutkinto,
@@ -82,7 +81,6 @@ object ExamplesAikuistenPerusopetus {
     AikuistenPerusopetuksenOppimääränSuoritus(
       koulutusmoduuli = koulutus,
       suorituskieli = suomenKieli,
-      tila = tilaValmis,
       toimipiste = jyväskylänNormaalikoulu,
       vahvistus = vahvistusPaikkakunnalla(),
       suoritustapa = suoritustapaErityinenTutkinto,
@@ -93,7 +91,6 @@ object ExamplesAikuistenPerusopetus {
   def oppiaineenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
-    tila = tilaValmis,
     arviointi = None
   )
 
@@ -171,19 +168,16 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritus2015(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015")),
-    tilaValmis,
     arviointi = arviointi(9)
   )
 
   def kurssinSuoritus2017(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017")),
-    tilaValmis,
     arviointi = arviointi(9)
   )
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String) = AikuistenPerusopetuksenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus)),
-    tilaValmis,
     arviointi = arviointi(9)
   )
 
@@ -209,7 +203,6 @@ object ExamplesAikuistenPerusopetus {
   def aikuistenPerusopetuksenAlkuvaiheenSuoritus = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
     aikuistenPerusopetuksenAlkuvaihe2017,
     suorituskieli = suomenKieli,
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suoritustapa = suoritustapaErityinenTutkinto,
@@ -272,13 +265,11 @@ object ExamplesAikuistenPerusopetus {
   def alkuvaiheenOppiaineenSuoritus(aine: AikuistenPerusopetuksenAlkuvaiheenOppiaine) = AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
-    tila = tilaValmis,
     arviointi = None
   )
 
   def alkuvaiheenKurssinSuoritus(koodiarvo: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017")),
-    tilaValmis,
     arviointi = arviointi(9)
   )
 }

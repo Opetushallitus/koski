@@ -41,7 +41,6 @@ case class KorkeakoulututkinnonSuoritus(
   @Title("Tutkinto")
   koulutusmoduuli: Korkeakoulututkinto,
   toimipiste: Oppilaitos,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[KorkeakoulunArviointi]],
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   suorituskieli: Option[Koodistokoodiviite],
@@ -58,7 +57,6 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @Title("Opintojakso")
   koulutusmoduuli: KorkeakoulunOpintojakso,
   toimipiste: Oppilaitos,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[KorkeakoulunArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
   suorituskieli: Option[Koodistokoodiviite],
