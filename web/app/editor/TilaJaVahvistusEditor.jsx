@@ -1,20 +1,11 @@
-import {
-  addContext,
-  modelData,
-  modelItems,
-  modelLookup,
-  modelSet,
-  modelSetValue,
-  modelTitle,
-  pushModel
-} from './EditorModel'
+import {addContext, modelData, modelItems, modelLookup, modelSet, modelSetValue, pushModel} from './EditorModel'
 import React from 'baret'
 import R from 'ramda'
 import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis, tilaText} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
@@ -23,7 +14,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ modelTitle(model, 'tila') }</span>
+          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ tilaText(model) }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>

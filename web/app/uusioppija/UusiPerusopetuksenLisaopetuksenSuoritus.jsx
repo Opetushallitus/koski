@@ -16,7 +16,6 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
           perusteenDiaarinumero: peruste
         },
         toimipiste: oppilaitos,
-        tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetuksenlisaopetus'},
         suorituskieli : suorituskieli
       }

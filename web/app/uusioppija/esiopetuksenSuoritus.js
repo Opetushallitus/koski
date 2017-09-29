@@ -15,7 +15,6 @@ export const esiopetuksenSuoritus = (suoritusAtom, oppilaitosAtom, suorituskieli
           perusteenDiaarinumero: peruste
         },
         toimipiste: oppilaitos,
-        tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'esiopetuksensuoritus'},
         suorituskieli : suorituskieli
       }

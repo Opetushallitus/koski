@@ -1,17 +1,6 @@
-import {
-  contextualizeSubModel,
-  modelData,
-  modelItems,
-  modelLens,
-  modelLookup,
-  modelSet,
-  modelSetValue,
-  modelTitle
-} from './EditorModel'
-import * as L from 'partial.lenses'
+import {contextualizeSubModel, modelData, modelItems, modelLookup, modelSet, modelTitle} from './EditorModel'
 import R from 'ramda'
 import {t} from '../i18n'
-import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
 
 export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
@@ -25,28 +14,13 @@ export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus val
 export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
-// TODO: tilalinssi pois
-const tilaLens = modelLens('tila')
-export const setTila = (suoritus, koodiarvo) => {
-  let tila = modelSetValue(L.get(tilaLens, suoritus), createTila(koodiarvo))
-  return L.set(tilaLens, tila, suoritus)
-}
 export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
   return keskeneräisetOsasuoritukset(suoritus).length > 0
 }
-
 export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).flatMap(s => [s].concat(rekursiivisetOsasuoritukset(s)))
-
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
-
-const createTila = (koodiarvo) => {
-  if (!tilat[koodiarvo]) throw new Error('tila puuttuu: ' + koodiarvo)
-  return tilat[koodiarvo]
-}
-
-const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, toKoodistoEnumValue('suorituksentila', key, value)])))
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
