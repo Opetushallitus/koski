@@ -199,7 +199,7 @@ const suoritusProperties = suoritus => {
   let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
     suoritus.context.edit
       ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu'].includes(p.key))
-      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
+      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
   )
   return properties.filter(shouldShowProperty(suoritus.context))

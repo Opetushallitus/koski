@@ -41,7 +41,7 @@ const resolveEditor = (mdl) => {
 
 export class SuoritusEditor extends React.Component {
   render() {
-    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
+    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
     let {model} = this.props
     model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
