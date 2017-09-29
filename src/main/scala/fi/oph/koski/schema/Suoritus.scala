@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
@@ -21,6 +21,7 @@ trait Suoritus {
   @KoodistoUri("suorituksentila")
   @SyntheticProperty
   @ReadOnly("Suorituksen tila päätellään automaattisesti")
+  @Hidden
   // TODO: tsekkaa refet ja preferoi arviointia / vahvistusta!
   def tila: Koodistokoodiviite = if (valmis) Suoritus.tilaValmis else Suoritus.tilaKesken
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
