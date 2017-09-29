@@ -3,7 +3,6 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation._
-import org.json4s.FieldSerializer
 
 object Opiskeluoikeus {
   type Id = Int
@@ -68,6 +67,10 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   }
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
+  final def withTila(tila: OpiskeluoikeudenTila): KoskeenTallennettavaOpiskeluoikeus =
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[OpiskeluoikeudenTila]("tila").set(this)(tila)
+  final def withPäättymispäivä(date: LocalDate): KoskeenTallennettavaOpiskeluoikeus =
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[LocalDate]]("päättymispäivä").set(this)(Some(LocalDate.now))
 }
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182")

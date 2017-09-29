@@ -65,13 +65,8 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
   }
 
   private def mitätöiOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus) = {
-    val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
-      defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
-    ))
-    putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
-      verifyResponseStatus(200)
-    }
-    mitätöity
+    delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders())(verifyResponseStatus(200))
+    oo
   }
 
   private def vankilaopetusValue = readOpiskeluoikeus match {

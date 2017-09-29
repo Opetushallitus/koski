@@ -15,4 +15,8 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
     result.map(oo => AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
     renderEither(result.map(_.toOpiskeluoikeus))
   }
+
+  delete("/:oid") {
+    renderEither(application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid")))
+  }
 }

@@ -1,5 +1,8 @@
 package fi.oph.koski.oppija
 
+import java.time.LocalDate
+import java.time.LocalDate.now
+
 import com.typesafe.config.Config
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
@@ -67,6 +70,11 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRe
     }
   }
 
+  def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
+      findOppija(row.oppijaOid).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+    }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
+
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val verb = result match {
@@ -118,6 +126,25 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRe
     }
   }
 
+  private def cancelOpiskeluoikeus(opiskeluoikeusOid: String)(oppija: Oppija): Either[HttpStatus, Oppija] = {
+    oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
+      .toRight(KoskiErrorCategory.notFound())
+      .flatMap(invalidated)
+      .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
+  }
+
+  private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+    (oo.tila match {
+      case a: AmmatillinenOpiskeluoikeudenTila =>
+        Right(a.copy(opiskeluoikeusjaksot = a.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
+      case p: PerusopetuksenOpiskeluoikeudenTila =>
+        Right(p.copy(opiskeluoikeusjaksot = p.opiskeluoikeusjaksot :+ PerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+      case l: LukionOpiskeluoikeudenTila =>
+        Right(l.copy(opiskeluoikeusjaksot = l.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(now, mitätöity)))
+      case _ => Left(KoskiErrorCategory.badRequest())
+    }).map(oo.withTila).map(_.withPäättymispäivä(now))
+  }
+
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
   private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => Seq[Opiskeluoikeus])(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
@@ -138,6 +165,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRe
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid)))
     }
   }
+
+  private lazy val mitätöity = Koodistokoodiviite("mitatoity", koodistoUri = "koskiopiskeluoikeudentila")
 }
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
