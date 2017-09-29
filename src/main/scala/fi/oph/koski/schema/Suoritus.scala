@@ -20,7 +20,7 @@ trait Suoritus {
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
   @SyntheticProperty
-  @ReadOnly("Suorituksen tila päätellään automaattisesti")
+  @ReadOnly("Suorituksen tila päätellään automaattisesti. Koski ei enää käsittele tila-kentän arvoa. Kenttä poistetaan tulevaisuudessa tarpeettomana.")
   @Hidden
   def tila: Option[Koodistokoodiviite] = None
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
@@ -44,11 +44,6 @@ trait Suoritus {
   def valmis = vahvistus.isDefined || !tarvitseeVahvistuksen && arviointi.toList.nonEmpty
   def arviointiPuuttuu = arviointi.isEmpty
   def kesken = !valmis
-}
-
-object Suoritus {
-  val tilaValmis = MockKoodistoViitePalvelu.getKoodistoKoodiViite("suorituksentila", "VALMIS").get
-  val tilaKesken = MockKoodistoViitePalvelu.getKoodistoKoodiViite("suorituksentila", "KESKEN").get
 }
 
 trait Suorituskielellinen {
