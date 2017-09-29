@@ -389,7 +389,6 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
     (1 to 5).map(n => PerusopetuksenToiminta_Alue(koodi("perusopetuksentoimintaalue", n.toString))).map(ta => PerusopetuksenToiminta_AlueenSuoritus(ta)).toList
   }
   private def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
-  private def kesken = koodi("suorituksentila", "KESKEN")
   private def aine(koodiarvo: String) = koodi("koskioppiaineetyleissivistava", koodiarvo)
   private def nuortenSuoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)
   private def aikuistenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)

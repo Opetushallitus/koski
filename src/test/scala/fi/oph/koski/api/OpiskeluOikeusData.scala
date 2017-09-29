@@ -5,10 +5,5 @@ import fi.oph.koski.schema._
 
 trait OpiskeluoikeusData[Oikeus <: Opiskeluoikeus] {
   val defaultHenkilö = MockOppijat.eero.vainHenkilötiedot
-
   def defaultOpiskeluoikeus: Oikeus
-
-  val tilaValmis: Koodistokoodiviite = Koodistokoodiviite("VALMIS", "suorituksentila")
-  val tilaKesken: Koodistokoodiviite = Koodistokoodiviite("KESKEN", "suorituksentila")
-  val tilaKeskeytynyt: Koodistokoodiviite = Koodistokoodiviite("KESKEYTYNYT", "suorituksentila")
 }

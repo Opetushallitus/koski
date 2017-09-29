@@ -102,7 +102,6 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
         List(Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
       case OpiskeluoikeusAlkanutViimeistään(day) =>
         List(Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd"))))
-      case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
       case _ => Nil
     } ++ oppilaitosFilter(session) ++ suoritusFilter ++ mitätöityFilter

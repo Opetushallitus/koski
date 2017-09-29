@@ -53,7 +53,4 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)
   }
-
-  private def tilaValmis = requiredKoodi("suorituksentila", "VALMIS")
-  private def tilaKesken = requiredKoodi("suorituksentila", "KESKEN")
 }

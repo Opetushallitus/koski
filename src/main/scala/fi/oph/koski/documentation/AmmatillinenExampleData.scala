@@ -154,7 +154,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def tutkinnonOsanSuoritusTilassa(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], tila: Koodistokoodiviite, laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
+  def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
     val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
@@ -330,8 +330,8 @@ object AmmatillinenExampleData {
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40),
         tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35),
         tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", ammatillisetTutkinnonOsat, k3, 15),
-        tutkinnonOsanSuoritusTilassa("100442", "Ulkoilureittien rakentaminen ja hoitaminen", ammatillisetTutkinnonOsat, tilaKesken, None),
-        tutkinnonOsanSuoritusTilassa("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", ammatillisetTutkinnonOsat, tilaKeskeytynyt, None),
+        tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
+        tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
         paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", vapaavalintaisetTutkinnonOsat, k3, 5)
       ).map(_.toimipisteellä(toimipiste)))
     )
