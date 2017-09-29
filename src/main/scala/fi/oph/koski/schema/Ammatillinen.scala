@@ -471,6 +471,7 @@ case class Näyttö(
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
+  @DefaultValue(false)
   työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
   @Flatten
