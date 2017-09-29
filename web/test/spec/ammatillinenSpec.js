@@ -433,12 +433,11 @@ describe('Ammatillinen koulutus', function() {
               })
               describe('Arvosanan lisääminen', function() {
                 before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
-                it('Toimii', function() {
 
-                })
-
-                it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
-                  expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+                describe('Lisättäessä', function() {
+                  it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
+                    expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+                  })
                 })
 
                 describe('Tallentamisen jälkeen', function() {
@@ -922,7 +921,6 @@ describe('Ammatillinen koulutus', function() {
             'Alkamispäivä 1.1.2014\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
-            'Tila Suoritus valmis\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
@@ -990,7 +988,6 @@ describe('Ammatillinen koulutus', function() {
           'Tutkinnon osa Tunniste 11-22-33\n' +
           'Nimi Moottorin korjaus\n' +
           'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
-          'Tila Suoritus valmis\n' +
           'Vahvistus 28.5.2002 Reijo Reksi\n' +
           'Näyttö\n' +
           'Kuvaus Moottorin korjaus\n' +
@@ -1054,7 +1051,7 @@ describe('Ammatillinen koulutus', function() {
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
-          'Suoritus valmis'
+          'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
         )
       })
 
@@ -1096,10 +1093,10 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-            'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus\n' +
-            'Johtaminen ja henkilöstön kehittäminen\n' +
+            'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
+            'Johtaminen ja henkilöstön kehittäminen Hyväksytty\n' +
             'Kuvaus Johtamisen ja henkilöstön kehittämisen valmistava koulutus\n' +
-            'Auton lisävarustetyöt ei 15 osp\n' +
+            'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
             'Yhteensä 15'
           )
         })
