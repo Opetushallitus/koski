@@ -3,10 +3,9 @@ package fi.oph.koski.db
 import java.sql.Timestamp
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
+import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 
 object Tables {
@@ -28,7 +27,10 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
+    private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
+    private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+    private def serialize(opiskeluoikeus: Opiskeluoikeus) = Serializer.serialize(opiskeluoikeus, serializationContext)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: Opiskeluoikeus) = {
       OpiskeluoikeusRow(
@@ -40,7 +42,7 @@ object Tables {
         Opiskeluoikeus.VERSIO_1,
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-        JsonSerializer.serializeWithRoot(opiskeluoikeus),
+        serialize(opiskeluoikeus),
         opiskeluoikeus.luokka,
         opiskeluoikeus.mitätöity)
     }
@@ -51,7 +53,7 @@ object Tables {
       }
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      val data = JsonSerializer.serializeWithRoot(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
+      val data = serialize(opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None))
       (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid), opiskeluoikeus.mitätöity)
     }
   }
@@ -166,7 +168,6 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-// TODO: find out if access to the raw "data" can be restricted (rendering raw data will bypass user restrictions)
 case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
