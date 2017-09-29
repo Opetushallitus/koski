@@ -1,4 +1,8 @@
-import {contextualizeSubModel, modelData, modelItems, modelLookup, modelSet, modelTitle} from './EditorModel'
+import {
+  contextualizeSubModel, lensedModel, modelData, modelItems, modelLookup, modelSet, modelSetValues,
+  modelTitle
+} from './EditorModel'
+import * as L from 'partial.lenses'
 import R from 'ramda'
 import {t} from '../i18n'
 
@@ -60,4 +64,14 @@ export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
     return '15'
   }
+}
+
+export const fixArviointi = (model) => {
+  return lensedModel(model, L.rewrite(m => {
+    if (!hasArvosana(m)) {
+      // Arvosana puuttuu -> poistetaan arviointi, vahvistus ja asetetaan tilaksi KESKEN
+      return modelSetValues(m, { arviointi: undefined, vahvistus: undefined })
+    }
+    return m
+  }))
 }
