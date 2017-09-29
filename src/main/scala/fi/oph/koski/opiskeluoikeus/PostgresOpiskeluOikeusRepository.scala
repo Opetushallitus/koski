@@ -10,7 +10,6 @@ import fi.oph.koski.henkilo.{KoskiHenkilöCacheUpdater, PossiblyUnverifiedHenkil
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
@@ -18,7 +17,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OidGenerator
-import org.json4s.JArray
+import org.json4s.{JArray, JObject, JString}
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
 import slick.lifted.Query
@@ -165,7 +164,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
-          diff = LegacyJsonSerialization.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
+          diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
           Right(Created(opiskeluoikeusId, oid, VERSIO_1, diff, row.data))
