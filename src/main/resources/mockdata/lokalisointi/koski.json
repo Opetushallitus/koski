@@ -5733,45 +5733,6 @@
   "value" : "Markera som icke slutförd"
 }, {
   "accesscount" : 0,
-  "created" : 1496312269892,
-  "locale" : "en",
-  "key" : "Merkitse keskeytyneeksi",
-  "id" : 19545,
-  "category" : "koski",
-  "accessed" : 1496312269892,
-  "createdBy" : "1.2.246.562.24.54037785580",
-  "modified" : 1496312267670,
-  "modifiedBy" : "1.2.246.562.24.54037785580",
-  "force" : false,
-  "value" : ""
-}, {
-  "accesscount" : 0,
-  "created" : 1496312269885,
-  "locale" : "fi",
-  "key" : "Merkitse keskeytyneeksi",
-  "id" : 19543,
-  "category" : "koski",
-  "accessed" : 1496312269885,
-  "createdBy" : "1.2.246.562.24.54037785580",
-  "modified" : 1496312267670,
-  "modifiedBy" : "1.2.246.562.24.54037785580",
-  "force" : false,
-  "value" : "Merkitse keskeytyneeksi"
-}, {
-  "accesscount" : 0,
-  "created" : 1496312269888,
-  "locale" : "sv",
-  "key" : "Merkitse keskeytyneeksi",
-  "id" : 19544,
-  "category" : "koski",
-  "accessed" : 1496312269888,
-  "createdBy" : "1.2.246.562.24.54037785580",
-  "modified" : 1506340223642,
-  "modifiedBy" : "1.2.246.562.24.54037785580",
-  "force" : false,
-  "value" : "Markera som avbruten"
-}, {
-  "accesscount" : 0,
   "created" : 1496312269119,
   "locale" : "en",
   "key" : "Merkitse valmiiksi",

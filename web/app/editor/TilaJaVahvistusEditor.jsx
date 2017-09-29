@@ -2,7 +2,6 @@ import {
   addContext,
   modelData,
   modelItems,
-  modelLens,
   modelLookup,
   modelSet,
   modelSetValue,
@@ -12,7 +11,6 @@ import {
 import React from 'baret'
 import R from 'ramda'
 import Atom from 'bacon.atom'
-import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
@@ -34,7 +32,6 @@ export const TilaJaVahvistusEditor = ({model}) => {
       </span>
       <span className="controls">
         <MerkitseValmiiksiButton model={model}/>
-        <MerkitseKeskeytyneeksiButton model={model}/>
         <MerkitseKeskeneräiseksiButton model={model}/>
       </span>
     </div>
@@ -49,21 +46,6 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   }
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
   return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
-}
-
-const MerkitseKeskeytyneeksiButton = ({model}) => {
-  if (!model.context.edit || !suoritusKesken(model)) return null
-
-  let merkitseKeskeytyneeksiJosKesken = (suoritus) => {
-    if (!suoritusKesken(suoritus)) return suoritus
-    let osasuorituksetKeskeytetty = L.modify([modelLens('osasuoritukset'), 'value', L.elems], merkitseKeskeytyneeksiJosKesken, suoritus)
-    return setTila(osasuorituksetKeskeytetty, 'KESKEYTYNYT')
-  }
-
-  let merkitseKeskeytyneeksi = () => {
-    pushModel(merkitseKeskeytyneeksiJosKesken(model))
-  }
-  return <button className="merkitse-keskeytyneeksi" onClick={merkitseKeskeytyneeksi}><Text name="Merkitse keskeytyneeksi"/></button>
 }
 
 const MerkitseValmiiksiButton = ({model}) => {
