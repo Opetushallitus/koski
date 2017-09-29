@@ -1267,14 +1267,13 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen\n' +
             'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 osp Hyväksytty\n' +
             'Kuvaus Arjen taitojen ja hyvinvoinnin vahvistaminen\n' +
-            'Tietokoneen käyttäjän AB-kortti ei 5 osp\n' +
+            'Tietokoneen käyttäjän AB-kortti ei 5 osp Hyväksytty\n' +
             'Kuvaus Tietokoneen käyttäjän AB-kortti\n' +
             'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
             'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
-            'Tila Suoritus valmis\n' +
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Yhteensä 65 osp'
