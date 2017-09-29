@@ -255,17 +255,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateStatus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
-    if (hasVahvistus && !suoritus.valmis) {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (suoritus.valmis && !hasArviointi && !suoritus.isInstanceOf[Arvioinniton]) {
-      KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu arviointi, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (suoritus.tarvitseeVahvistuksen && !hasVahvistus && suoritus.valmis && !parent.find(_.tarvitseeVahvistuksen).isDefined) {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+    if (hasVahvistus && suoritus.arviointiPuuttuu) {
+      KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
     } else {
-      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
+      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(_.kesken)) match {
         case (true, Some(keskeneräinenOsasuoritus)) =>
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
-            "Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+            "Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus))
         case _ =>
           HttpStatus.ok
       }

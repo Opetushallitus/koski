@@ -188,7 +188,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Vahvistus annettu, mutta arviointi puuttuu" - {
             "palautetaan HTTP 400" in (put(copySuoritus(None, vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu arviointi, vaikka suorituksen tila on VALMIS"))
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella tutkinnonosat/100023 on vahvistus, vaikka arviointi puuttuu"))
             ))
           }
 
@@ -239,15 +239,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             }
           }
 
-          "Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa" - {
+          "Kun tutkinnolla on vahvistus, mutta tutkinnon osalta puuttuu arviointi" - {
             val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä,
               vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
-              osasuoritukset = Some(List(tutkinnonOsaSuoritus))
+              osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(arviointi = None)))
             )))
 
             "palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023 vaikka suorituksen tila on VALMIS"))))
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023"))))
           }
         }
       }

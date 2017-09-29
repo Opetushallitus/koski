@@ -41,6 +41,7 @@ trait Suoritus {
   }
   def tarvitseeVahvistuksen: Boolean = false
   def valmis = if (tarvitseeVahvistuksen) vahvistus.isDefined else arviointi.toList.nonEmpty
+  def arviointiPuuttuu = arviointi.isEmpty
   def kesken = !valmis
 }
 
@@ -65,6 +66,7 @@ trait MahdollisestiSuorituskielellinen {
 
 trait Arvioinniton extends Suoritus {
   def arviointi = None
+  override def arviointiPuuttuu = false
   def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 

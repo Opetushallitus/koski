@@ -95,10 +95,13 @@ object KoskiErrorCategory {
       val rakenne = new Rakenne
 
       class Tila extends ErrorCategory(Validation.this, "tila", "Suorituksen tilaan liittyvä validointivirhe") {
-        val vahvistusVäärässäTilassa = subcategory("vahvistusVäärässäTilassa", "Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS")
+        val vahvistusIlmanArviointia = subcategory("vahvistusVäärässäTilassa", "Suoritukselta puuttuu arviointi, vaikka sillä on vahvistus")
+        // TODO: poista
         val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS")
+        // TODO: poista
         val arviointiPuuttuu = subcategory("arviointiPuuttuu", "Suoritukselta puuttuu arviointi, vaikka sen tila on VALMIS")
-        val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN")
+        val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Valmiiksi merkityllä suorituksella on keskeneräinen osasuoritus")
+        // TODO: nimeä (vahvistus puuttuu vaikks opiskeluoikeus valmistunut)
         val suoritusVäärässäTilassa = subcategory("suoritusVäärässäTilassa", "Suoritus on tilassa KESKEN, vaikka se kuuluu opiskeluoikeuteen jonka tila on valmistunut")
         val oppiaineetPuuttuvat = subcategory("oppiaineetPuuttuvat", "Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sen tila on VALMIS")
         val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun suoritus on VALMIS, eikä oppilas jää luokalle")
