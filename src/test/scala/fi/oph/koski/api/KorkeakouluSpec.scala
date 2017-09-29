@@ -29,10 +29,10 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
     "Suoritusten tilat" - {
       "Keskeneräinen tutkinto" in {
-        getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("KESKEN"))
+        getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(false))
       }
       "Valmis tutkinto" in {
-        getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("VALMIS"))
+        getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
       }
     }
 
@@ -43,12 +43,12 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
         oikeudet(0).tyyppi.koodiarvo should equal("korkeakoulutus")
         oikeudet(0).suoritukset.length should equal(1)
-        oikeudet(0).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
+        oikeudet(0).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.valmis) should equal(List(true))
 
         oikeudet(1).tyyppi.koodiarvo should equal("korkeakoulutus")
         oikeudet(1).suoritukset.length should equal(8)
-        oikeudet(1).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.tila.koodiarvo) foreach {
-          _ should equal("VALMIS")
+        oikeudet(1).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.valmis) foreach {
+          _ should equal(true)
         }
       }
     }
