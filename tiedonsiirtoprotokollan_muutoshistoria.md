@@ -1,3 +1,10 @@
+## 29.9.2017
+
+- Suorituksen tilaa ei enää käsitellä tietoja vastaanotettaessa, vaan tila lasketaan Koskessa arvioinnin ja vahvistuksen perusteella
+- Ammatillisen tutkinnon osittaiseen suoritukseen lisätty vahvistus
+- Muiden lukio-opintojen suoritukseen lisätty arviointi
+- Näyttötutkintoon valmistavan koulutuksen osan suoritukseen lisätty arviointi
+
 ## 25.9.2017
 
 - Lisätty opiskeluoikeuden tila Mitätöity
