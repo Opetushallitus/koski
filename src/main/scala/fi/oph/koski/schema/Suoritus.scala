@@ -41,7 +41,7 @@ trait Suoritus {
     case _ => None
   }
   def tarvitseeVahvistuksen: Boolean = false
-  def valmis = if (tarvitseeVahvistuksen) vahvistus.isDefined else arviointi.toList.nonEmpty
+  def valmis = vahvistus.isDefined || !tarvitseeVahvistuksen && arviointi.toList.nonEmpty
   def arviointiPuuttuu = arviointi.isEmpty
   def kesken = !valmis
 }
