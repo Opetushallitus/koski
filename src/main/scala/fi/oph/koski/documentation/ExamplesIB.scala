@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, tilaValmis}
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.MockOppijat
