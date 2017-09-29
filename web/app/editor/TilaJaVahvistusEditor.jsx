@@ -48,7 +48,7 @@ const MerkitseValmiiksiButton = ({model}) => {
       if (isPerusopetuksenOppimäärä(model)) {
         let ysiluokkaKesken = modelItems(model.context.opiskeluoikeus, 'suoritukset').find(R.allPass([isYsiluokka, suoritusKesken]))
         if (ysiluokkaKesken) {
-          var ysiLuokkaValmis = modelSet(ysiLuokkaValmis, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
+          var ysiLuokkaValmis = modelSet(ysiluokkaKesken, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
           pushModel(ysiLuokkaValmis, model.context.changeBus)
         }
       }
