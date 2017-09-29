@@ -129,14 +129,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -162,14 +154,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -195,14 +179,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -224,14 +200,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -253,14 +221,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -282,14 +242,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -311,14 +263,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -340,14 +284,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -369,14 +305,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -398,14 +326,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -427,14 +347,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -456,14 +368,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -485,14 +389,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -514,14 +410,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -543,14 +431,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -572,14 +452,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -601,27 +473,11 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenvuosiluokka",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     }, {
       "koulutusmoduuli" : {
@@ -735,14 +591,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -768,14 +616,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -811,14 +651,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -844,14 +676,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -873,14 +697,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -902,14 +718,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -931,14 +739,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -960,14 +760,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -989,14 +781,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1018,14 +802,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1047,14 +823,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1076,14 +844,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1105,14 +865,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1134,14 +886,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1163,14 +907,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1202,14 +938,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1231,14 +959,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1260,14 +980,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1289,14 +1001,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1328,14 +1032,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1371,14 +1067,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1404,27 +1092,11 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenvuosiluokka",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     }, {
       "koulutusmoduuli" : {
@@ -1493,14 +1165,6 @@
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenvuosiluokka",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     }, {
       "koulutusmoduuli" : {
@@ -1591,14 +1255,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1624,14 +1280,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1667,14 +1315,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1700,14 +1340,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1729,14 +1361,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1758,14 +1382,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1787,14 +1403,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1816,14 +1424,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1845,14 +1445,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1874,14 +1466,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1903,14 +1487,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1932,14 +1508,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1961,14 +1529,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1990,14 +1550,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2019,14 +1571,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2058,14 +1602,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2087,14 +1623,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2116,14 +1644,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2145,14 +1665,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2184,14 +1696,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2227,14 +1731,6 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2260,27 +1756,11 @@
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

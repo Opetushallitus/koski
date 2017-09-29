@@ -143,14 +143,6 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -193,14 +185,6 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -243,14 +227,6 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -295,14 +271,6 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -346,14 +314,6 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -392,27 +352,11 @@
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "telma",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

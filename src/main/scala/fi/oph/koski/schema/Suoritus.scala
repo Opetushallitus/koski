@@ -22,7 +22,7 @@ trait Suoritus {
   @SyntheticProperty
   @ReadOnly("Suorituksen tila päätellään automaattisesti")
   @Hidden
-  def tila: Koodistokoodiviite = if (valmis) Suoritus.tilaValmis else Suoritus.tilaKesken
+  def tila: Option[Koodistokoodiviite] = None
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan kun suorituksen tila on VALMIS")

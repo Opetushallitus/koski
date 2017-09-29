@@ -117,14 +117,6 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -155,14 +147,6 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -185,40 +169,16 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "KESKEN",
-            "nimi" : {
-              "fi" : "Suoritus kesken",
-              "sv" : "Prestationen icke slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "KESKEN",
-          "nimi" : {
-            "fi" : "Suoritus kesken",
-            "sv" : "Prestationen icke slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "nimi" : {
-          "fi" : "Suoritus kesken",
-          "sv" : "Prestationen icke slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

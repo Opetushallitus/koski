@@ -149,14 +149,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -187,14 +179,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -225,27 +209,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -295,14 +263,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -333,14 +293,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -371,27 +323,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -441,14 +377,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -479,27 +407,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -554,27 +466,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -629,27 +525,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -699,14 +579,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -737,14 +609,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -775,14 +639,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -813,27 +669,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -879,14 +719,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -922,27 +754,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -988,27 +804,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1054,27 +854,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1120,27 +904,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1186,27 +954,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1252,27 +1004,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1318,27 +1054,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1384,14 +1104,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1422,14 +1134,6 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1465,27 +1169,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1531,27 +1219,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1597,27 +1269,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1663,27 +1319,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1729,27 +1369,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1795,27 +1419,11 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1861,40 +1469,16 @@
           "tyyppi" : {
             "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "preiboppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     }, {
       "koulutusmoduuli" : {
@@ -2013,14 +1597,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2050,14 +1626,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2083,14 +1651,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2120,14 +1680,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2157,14 +1709,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2194,14 +1738,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2231,14 +1767,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2264,14 +1792,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2301,27 +1821,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2380,14 +1884,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2413,14 +1909,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2446,14 +1934,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2479,14 +1959,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2512,14 +1984,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2545,27 +2009,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2620,14 +2068,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2657,14 +2097,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2694,14 +2126,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2731,14 +2155,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2768,14 +2184,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2801,27 +2209,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2876,14 +2268,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2913,14 +2297,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2950,14 +2326,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2987,14 +2355,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3020,14 +2380,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3057,14 +2409,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3094,14 +2438,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3131,14 +2467,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3164,27 +2492,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3239,14 +2551,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3276,14 +2580,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3309,14 +2605,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3346,14 +2634,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3383,14 +2663,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3420,14 +2692,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3457,14 +2721,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3494,14 +2750,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3531,27 +2779,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3606,14 +2838,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3643,14 +2867,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3680,14 +2896,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3717,14 +2925,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3754,14 +2954,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3787,27 +2979,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "theoryOfKnowledge" : {
@@ -3854,14 +3030,6 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3887,27 +3055,11 @@
           "tyyppi" : {
             "koodiarvo" : "ibkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "nimi" : {
-              "fi" : "Suoritus valmis",
-              "sv" : "Prestationen slutförd"
-            },
-            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiainetok",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       },
       "extendedEssay" : {
@@ -3955,14 +3107,6 @@
         "tyyppi" : {
           "koodiarvo" : "iboppiaineee",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       },
       "creativityActionService" : {
@@ -3998,14 +3142,6 @@
         "tyyppi" : {
           "koodiarvo" : "iboppiainecas",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       },
       "lisäpisteet" : {
@@ -4015,14 +3151,6 @@
       "tyyppi" : {
         "koodiarvo" : "ibtutkinto",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

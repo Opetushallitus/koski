@@ -210,7 +210,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
-  def tila: Koodistokoodiviite
   def arviointi: Option[List[AmmatillinenArviointi]]
   @Description("Tutkinnon osalta ei vaadita vahvistusta, mikäli se sisältyy ammatillisen tutkinnon suoritukseen (jolla puolestaan on VALMIS-tilassa oltava vahvistus)")
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]

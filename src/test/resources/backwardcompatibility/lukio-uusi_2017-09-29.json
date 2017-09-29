@@ -66,14 +66,6 @@
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "nimi" : {
-          "fi" : "Suoritus kesken",
-          "sv" : "Prestationen icke slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

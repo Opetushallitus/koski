@@ -150,14 +150,6 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -204,14 +196,6 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -258,14 +242,6 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -312,14 +288,6 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -366,14 +334,6 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -484,14 +444,6 @@
             "tyyppi" : {
               "koodiarvo" : "ammatillisentutkinnonosa",
               "koodistoUri" : "suorituksentyyppi"
-            },
-            "tila" : {
-              "koodiarvo" : "VALMIS",
-              "nimi" : {
-                "fi" : "Suoritus valmis",
-                "sv" : "Prestationen slutförd"
-              },
-              "koodistoUri" : "suorituksentila"
             }
           },
           "selite" : {
@@ -501,27 +453,11 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "nimi" : {
-            "fi" : "Suoritus valmis",
-            "sv" : "Prestationen slutförd"
-          },
-          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "valma",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "nimi" : {
-          "fi" : "Suoritus valmis",
-          "sv" : "Prestationen slutförd"
-        },
-        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {
