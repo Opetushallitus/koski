@@ -486,10 +486,10 @@
               "koodistoUri" : "suorituksentyyppi"
             },
             "tila" : {
-              "koodiarvo" : "KESKEN",
+              "koodiarvo" : "VALMIS",
               "nimi" : {
-                "fi" : "Suoritus kesken",
-                "sv" : "Prestationen icke slutförd"
+                "fi" : "Suoritus valmis",
+                "sv" : "Prestationen slutförd"
               },
               "koodistoUri" : "suorituksentila"
             }
