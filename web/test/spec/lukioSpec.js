@@ -58,8 +58,8 @@ describe('Lukiokoulutus', function( ){
           'Kuvataide\nKU1\n8 KU2\n9 2 9\n(8,5)\n' +
           'Terveystieto\nTE1\n8 1 9\n(8,0)\n' +
           'Tanssi ja liike\nITT1\n10 1 10\n(10,0)\n' +
-          'Teemaopinnot\nMTA\nS 1 -\n' +
-          'Oman äidinkielen opinnot\nOA1\nS 1 -')
+          'Teemaopinnot\nMTA\nS 1 S\n' +
+          'Oman äidinkielen opinnot\nOA1\nS 1 S')
       })
     })
 
