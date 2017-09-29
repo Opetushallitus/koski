@@ -263,9 +263,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
       }
 
-      "Vahvistus puuttuu" - {
+      "Vahvistus puuttuu, opiskeluoikeus voimassa" - {
         "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
           verifyResponseStatus(200)
+        ))
+      }
+
+      "Vahvistus puuttuu, opiskeluoikeus valmistunut" - {
+        "palautetaan HTTP 400" in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(copySuoritus(v = None)))) (
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/351301 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
         ))
       }
 
