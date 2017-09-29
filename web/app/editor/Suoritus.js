@@ -11,13 +11,22 @@ import {
 } from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
+import {t} from '../i18n'
 import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
 
-export const suoritusValmis = (suoritus) => suorituksenTila(suoritus) === 'VALMIS'
-export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKEN'
-export const suorituksenTila = (suoritus) => modelData(suoritus, 'tila').koodiarvo
+export const suoritusValmis = (suoritus) => {
+  if (suoritus.value.classes.includes('vahvistukseton')) {
+    return !!modelData(suoritus, 'arviointi.0')
+  } else {
+    return !!modelData(suoritus, 'vahvistus')
+  }
+}
+export const suoritusKesken = R.complement(suoritusValmis)
+export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus valmis' : 'Suoritus kesken')
+export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
+// TODO: tilalinssi pois
 export const tilaLens = modelLens('tila')
 export const setTila = (suoritus, koodiarvo) => {
   let tila = modelSetValue(L.get(tilaLens, suoritus), createTila(koodiarvo))
@@ -40,6 +49,7 @@ const createTila = (koodiarvo) => {
 
 const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, toKoodistoEnumValue('suorituksentila', key, value)])))
 
+// TODO: pois
 export const fixTila = (model) => {
   return lensedModel(model, L.rewrite(m => {
     if (hasArvosana(m) && !suoritusValmis(m) && !model.value.classes.includes('paatasonsuoritus')) {

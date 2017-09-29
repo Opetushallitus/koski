@@ -101,9 +101,8 @@ class TodistusLink extends React.Component {
     let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
     let koulutusmoduuliKoodistoUri = modelData(suoritus, 'koulutusmoduuli').tunniste.koodistoUri
     let koulutusmoduuliKoodiarvo = modelData(suoritus, 'koulutusmoduuli').tunniste.koodiarvo
-    let suoritusTila = modelData(suoritus, 'tila').koodiarvo
     let href = '/koski/todistus/' + oppijaOid + '?suoritustyyppi=' + suoritustyyppi + '&koulutusmoduuli=' + koulutusmoduuliKoodistoUri + '/' + koulutusmoduuliKoodiarvo
-    return suoritusTila === 'VALMIS'
+    return suoritusValmis(suoritus)
            && suoritustyyppi !== 'korkeakoulututkinto'
            && suoritustyyppi !== 'preiboppimaara'
            && suoritustyyppi !== 'esiopetuksensuoritus'

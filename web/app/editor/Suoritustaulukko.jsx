@@ -13,7 +13,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana} from './Suoritus'
+import {fixTila, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
@@ -155,7 +155,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
-        <span className="tila" title={modelTitle(model, 'tila')}>{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
+        <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>
         {
           hasProperties
             ? <a className="nimi" onClick={() => onExpand(!expanded)}>{nimi}</a>
@@ -205,11 +205,4 @@ const suoritusProperties = suoritus => {
   return properties.filter(shouldShowProperty(suoritus.context))
 }
 
-export const suorituksenTilaSymbol = (tila) => {
-  switch (tila) {
-    case 'VALMIS': return ''
-    case 'KESKEYTYNYT': return ''
-    case 'KESKEN': return ''
-    default: return ''
-  }
-}
+export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''

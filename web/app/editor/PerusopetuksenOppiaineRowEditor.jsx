@@ -9,6 +9,7 @@ import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
 import {KurssitEditor} from './KurssitEditor.jsx'
 import {ArvosanaEditor} from './ArvosanaEditor.jsx'
+import {tilaKoodi} from './Suoritus'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
@@ -18,7 +19,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
     let className = 'oppiaine oppiaine-rivi'
       + ' ' + (modelData(model, 'koulutusmoduuli.pakollinen') ? 'pakollinen' : 'valinnainen')
       + ' ' + modelData(oppiaine, 'tunniste').koodiarvo
-      + ' ' + modelData(model, 'tila.koodiarvo').toLowerCase()
+      + ' ' + tilaKoodi(model)
       + (expanded ? ' expanded' : '')
       + (isPaikallinen(oppiaine) ? ' paikallinen' : '')
 

@@ -3,6 +3,7 @@ import {modelData, modelItems, modelTitle} from './EditorModel.js'
 import {suorituksenTilaSymbol} from './Suoritustaulukko.jsx'
 import Text from '../Text.jsx'
 import {KurssitEditor} from './KurssitEditor.jsx'
+import {tilaText} from './Suoritus'
 
 export class LukionOppiaineetEditor extends React.Component {
   render() {
@@ -45,9 +46,9 @@ class LukionOppiaineEditor extends React.Component {
 
     return (
       <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
-        <td className="suorituksentila" title={modelTitle(oppiaine, 'tila')}>
+        <td className="suorituksentila" title={tilaText(oppiaine)}>
           <div>
-            {suorituksenTilaSymbol(modelData(oppiaine, 'tila.koodiarvo'))}
+            {suorituksenTilaSymbol(oppiaine)}
           </div>
         </td>
         <td className="oppiaine">
