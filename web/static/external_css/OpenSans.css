@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local(OpenSans-Italic), url(/koski/fonts/OpenSans-Italic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Open Sans SemiBold Italic'), local(OpenSans-SemiBoldItalic), url(/koski/fonts/OpenSans-SemiBoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local(OpenSans-BoldItalic), url(/koski/fonts/OpenSans-BoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 800;
+  src: local('Open Sans ExtraBold Italic'), local(OpenSans-ExtraBoldItalic), url(/koski/fonts/OpenSans-ExtraBoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local(OpenSans-Regular), url(/koski/fonts/OpenSans-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans SemiBold'), local(OpenSans-SemiBold), url(/koski/fonts/OpenSans-SemiBold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local(OpenSans-Bold), url(/koski/fonts/OpenSans-Bold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Open Sans ExtraBold'), local(OpenSans-ExtraBold), url(/koski/fonts/OpenSans-ExtraBold.ttf) format('truetype');
+}
+

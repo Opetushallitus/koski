@@ -37,10 +37,10 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> ++
     <meta charset="UTF-8" /> ++
     <link rel="shortcut icon" href="/koski/favicon.ico" /> ++
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" /> ++
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet"/> ++
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/> ++
+    <link rel="stylesheet" href="/koski/external_css/normalize.min.css" /> ++
+    <link href="/koski/external_css/OpenSans.css" rel="stylesheet"/> ++
+    <link href="/koski/external_css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
+    <link rel="stylesheet" type="text/css" href="/koski/external_css/highlight-js.default.min.css"/> ++
     <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
 
 
