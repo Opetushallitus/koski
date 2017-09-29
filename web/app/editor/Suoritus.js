@@ -15,10 +15,10 @@ import {t} from '../i18n'
 import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
 
 export const suoritusValmis = (suoritus) => {
-  if (suoritus.value.classes.includes('vahvistukseton')) {
-    return !!modelData(suoritus, 'arviointi.0')
-  } else {
+  if (suoritus.value.classes.includes('paatasonsuoritus')) {
     return !!modelData(suoritus, 'vahvistus')
+  } else {
+    return !!modelData(suoritus, 'arviointi.0')
   }
 }
 export const suoritusKesken = R.complement(suoritusValmis)
