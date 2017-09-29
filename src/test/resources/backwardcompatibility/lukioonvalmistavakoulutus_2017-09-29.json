@@ -1,0 +1,628 @@
+{
+  "henkilö" : {
+    "hetu" : "211007-442N",
+    "etunimet" : "Luke",
+    "kutsumanimi" : "Luke",
+    "sukunimi" : "Lukioonvalmistautuja"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999906",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "56/011/2015"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVAIK",
+            "koodistoUri" : "oppiaineetluva"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI7",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "STK",
+              "nimi" : {
+                "fi" : "Suomi toisena kielenä ja kirjallisuus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Suomi toisena kielenä ja kirjallisuus"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVMUUTK",
+            "koodistoUri" : "oppiaineetluva"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RU1",
+              "nimi" : {
+                "fi" : "Ruotsin alkeet"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Ruotsin alkeet"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVMALUO",
+            "koodistoUri" : "oppiaineetluva"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAT1",
+              "nimi" : {
+                "fi" : "Matematiikan kertauskurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Matematiikan kertauskurssi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVYHKU",
+            "koodistoUri" : "oppiaineetluva"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "YHKU1",
+              "nimi" : {
+                "fi" : "Yhteiskuntatietous ja kulttuurintuntemus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Yhteiskuntatietous ja kulttuurintuntemus"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVOPO",
+            "koodistoUri" : "oppiaineetluva"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "OPO1",
+              "nimi" : {
+                "fi" : "Opinto-ohjaus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Opinto-ohjaus"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LVATK",
+            "nimi" : {
+              "fi" : "Tietojenkäsittely"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tietojenkäsittely"
+          },
+          "pakollinen" : false
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ATK1",
+              "nimi" : {
+                "fi" : "Tietokoneen käytön peruskurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Tietokoneen käytön peruskurssi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kurssinTyyppi" : {
+              "koodiarvo" : "pakollinen",
+              "koodistoUri" : "lukionkurssintyyppi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvalukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "luva",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "nimi" : {
+          "fi" : "Suoritus valmis",
+          "sv" : "Prestationen slutförd"
+        },
+        "koodistoUri" : "suorituksentila"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "luva",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "lisätiedot" : {
+      "pidennettyPäättymispäivä" : true,
+      "ulkomainenVaihtoopiskelija" : false,
+      "ulkomaanjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "maa" : {
+          "koodiarvo" : "752",
+          "nimi" : {
+            "fi" : "Ruotsi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "kuvaus" : {
+          "fi" : "Harjoittelua ulkomailla"
+        }
+      } ],
+      "oikeusMaksuttomaanAsuntolapaikkaan" : true
+    }
+  } ]
+}

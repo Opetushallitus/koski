@@ -11,7 +11,7 @@ import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JValue
-import org.json4s.JsonAST.JBool
+import org.json4s.JsonAST.{JArray, JBool, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -53,7 +53,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
                       case Right(validated) =>
                         // Valid, now check for JSON equality after roundtrip (not strictly necessary, but it's good to know if this breaks)
                         if (!skipEqualityCheck) {
-                          JsonMethods.compact(afterRoundtrip) should equal(JsonMethods.compact(json))
+                          JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
                         }
                       case Left(err) =>
                         throw new IllegalStateException(err.toString)
@@ -71,5 +71,15 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
         }
       }
     }
+  }
+
+  private def mangle(json: JValue): JValue = json match {
+    case JObject(fields) => JObject(fields
+      .filter { case (key, value) => key != "tila" && value.isInstanceOf[JObject]} // Ei vertailla suorituksen tiloja
+      .map { case (key, value) => (key, mangle(value)) }
+      .sortBy(_._1)
+    )
+    case JArray(elems) => JArray(elems.map(mangle))
+    case _ => json
   }
 }

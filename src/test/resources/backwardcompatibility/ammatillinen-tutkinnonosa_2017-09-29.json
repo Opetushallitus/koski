@@ -75,9 +75,34 @@
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
       },
       "suorituskieli" : {
         "koodiarvo" : "FI",
@@ -131,10 +156,6 @@
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "3",
@@ -178,6 +199,14 @@
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       } ],
       "todistuksellaNäkyvätLisätiedot" : {
@@ -186,6 +215,14 @@
       "tyyppi" : {
         "koodiarvo" : "ammatillinentutkintoosittainen",
         "koodistoUri" : "suorituksentyyppi"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "nimi" : {
+          "fi" : "Suoritus valmis",
+          "sv" : "Prestationen slutförd"
+        },
+        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

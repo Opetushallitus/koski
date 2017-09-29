@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -8,35 +7,17 @@
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186",
-      "oppilaitosnumero" : {
-        "koodiarvo" : "10105",
-        "koodistoUri" : "oppilaitosnumero"
-      },
-      "nimi" : {
-        "fi" : "Stadin ammattiopisto"
-      }
+      "oid" : "1.2.246.562.10.52251087186"
     },
-    "alkamispäivä" : "2012-09-01",
-    "arvioituPäättymispäivä" : "2015-05-31",
-    "päättymispäivä" : "2016-05-31",
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2012-09-01",
+        "alku" : "2016-09-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
             "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-05-31",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -46,31 +27,27 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "361902",
+          "koodiarvo" : "351301",
           "nimi" : {
-            "fi" : "Luonto- ja ympäristöalan perustutkinto"
+            "fi" : "Autoalan perustutkinto"
           },
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "62/011/2014"
+        "perusteenDiaarinumero" : "39/011/2014"
       },
-      "osaamisala" : [ {
-        "koodiarvo" : "1525",
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
         "nimi" : {
-          "fi" : "Autokorinkorjauksen osaamisala"
+          "fi" : "Näyttö"
         },
-        "koodistoUri" : "osaamisala"
-      } ],
-      "toinenOsaamisala" : true,
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
       },
       "suorituskieli" : {
         "koodiarvo" : "FI",
@@ -79,43 +56,23 @@
         },
         "koodistoUri" : "kieli"
       },
-      "järjestämismuodot" : [ {
-        "alku" : "2012-09-01",
-        "järjestämismuoto" : {
-          "tunniste" : {
-            "koodiarvo" : "10",
-            "nimi" : {
-              "fi" : "Oppilaitosmuotoinen"
-            },
-            "koodistoUri" : "jarjestamismuoto",
-            "koodistoVersio" : 1
-          }
-        }
-      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "100432",
-            "nimi" : {
-              "fi" : "Ympäristön hoitaminen"
-            },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodiarvo" : "104052",
+            "koodistoUri" : "tutkinnonosat"
           },
-          "pakollinen" : true,
-          "laajuus" : {
-            "arvo" : 35.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
+          "pakollinen" : true
+        },
+        "tutkinto" : {
+          "tunniste" : {
+            "koodiarvo" : "357305",
+            "koodistoUri" : "koulutus"
+          },
+          "perusteenDiaarinumero" : "40/011/2001"
         },
         "tutkinnonOsanRyhmä" : {
-          "koodiarvo" : "1",
+          "koodiarvo" : "4",
           "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
         "toimipiste" : {
@@ -123,10 +80,6 @@
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -140,7 +93,7 @@
           "hyväksytty" : true
         } ],
         "vahvistus" : {
-          "päivä" : "2016-05-31",
+          "päivä" : "2014-11-08",
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -171,14 +124,27 @@
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       } ],
-      "todistuksellaNäkyvätLisätiedot" : {
-        "fi" : "Suorittaa toista osaamisalaa"
-      },
       "tyyppi" : {
-        "koodiarvo" : "ammatillinentutkintoosittainen",
+        "koodiarvo" : "ammatillinentutkinto",
         "koodistoUri" : "suorituksentyyppi"
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "nimi" : {
+          "fi" : "Suoritus kesken",
+          "sv" : "Prestationen icke slutförd"
+        },
+        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

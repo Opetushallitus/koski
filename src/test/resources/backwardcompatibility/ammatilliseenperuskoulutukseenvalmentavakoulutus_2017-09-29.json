@@ -69,10 +69,6 @@
           "fi" : "Stadin ammattiopisto"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "myöntäjäOrganisaatio" : {
@@ -132,10 +128,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -158,6 +150,14 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -182,10 +182,6 @@
           },
           "pakollinen" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -208,6 +204,14 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -232,10 +236,6 @@
           },
           "pakollinen" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -258,6 +258,14 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -282,10 +290,6 @@
           },
           "pakollinen" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -308,6 +312,14 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -332,13 +344,36 @@
           },
           "pakollinen" : false
         },
-        "tila" : {
-          "koodiarvo" : "KESKEYTYNYT",
-          "koodistoUri" : "suorituksentila"
-        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -361,10 +396,6 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -414,10 +445,6 @@
                 "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
               }
             },
-            "tila" : {
-              "koodiarvo" : "VALMIS",
-              "koodistoUri" : "suorituksentila"
-            },
             "vahvistus" : {
               "päivä" : "2015-10-03",
               "paikkakunta" : {
@@ -457,6 +484,14 @@
             "tyyppi" : {
               "koodiarvo" : "ammatillisentutkinnonosa",
               "koodistoUri" : "suorituksentyyppi"
+            },
+            "tila" : {
+              "koodiarvo" : "KESKEN",
+              "nimi" : {
+                "fi" : "Suoritus kesken",
+                "sv" : "Prestationen icke slutförd"
+              },
+              "koodistoUri" : "suorituksentila"
             }
           },
           "selite" : {
@@ -466,11 +501,27 @@
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "valma",
         "koodistoUri" : "suorituksentyyppi"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "nimi" : {
+          "fi" : "Suoritus valmis",
+          "sv" : "Prestationen slutförd"
+        },
+        "koodistoUri" : "suorituksentila"
       }
     } ],
     "tyyppi" : {

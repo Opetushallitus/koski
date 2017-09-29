@@ -101,10 +101,6 @@
           "fi" : "Jyväskylän normaalikoulu"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "paikkakunta" : {
@@ -160,10 +156,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
@@ -189,10 +181,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -204,6 +192,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -223,10 +219,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -238,6 +230,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -257,10 +257,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -272,6 +268,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -291,10 +295,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -306,6 +306,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -325,10 +333,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -340,6 +344,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -359,10 +371,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -374,6 +382,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -393,10 +409,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -408,6 +420,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -427,10 +447,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -442,11 +458,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -459,10 +491,6 @@
             "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -489,10 +517,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -504,6 +528,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -523,10 +555,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -538,6 +566,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -557,10 +593,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -572,6 +604,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -591,10 +631,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -606,6 +642,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -625,10 +669,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -640,6 +680,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -659,10 +707,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -674,6 +718,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -693,10 +745,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -708,6 +756,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -727,10 +783,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -742,6 +794,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -766,10 +826,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -781,11 +837,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -798,10 +870,6 @@
             "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -828,10 +896,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -843,6 +907,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -862,10 +934,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -877,6 +945,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -896,10 +972,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -911,6 +983,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -930,10 +1010,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -945,6 +1021,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -964,10 +1048,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -979,11 +1059,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -996,10 +1092,6 @@
             "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1026,10 +1118,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1041,6 +1129,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1060,10 +1156,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1075,11 +1167,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1092,10 +1200,6 @@
             "koodistoUri" : "oppiainematematiikka"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1127,10 +1231,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1142,6 +1242,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1161,10 +1269,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -1176,6 +1280,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1195,10 +1307,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1210,6 +1318,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1229,10 +1345,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -1244,6 +1356,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1263,10 +1383,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -1278,6 +1394,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1297,10 +1421,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1312,6 +1432,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1331,10 +1459,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1346,6 +1470,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1365,10 +1497,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -1380,6 +1508,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1399,10 +1535,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1414,6 +1546,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1433,10 +1573,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1448,6 +1584,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1467,10 +1611,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1482,6 +1622,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1501,10 +1649,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -1516,6 +1660,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1535,10 +1687,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1550,6 +1698,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1574,10 +1730,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1589,6 +1741,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1613,10 +1773,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1628,11 +1784,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1641,10 +1813,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1671,10 +1839,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1686,6 +1850,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1705,10 +1877,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1720,6 +1888,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1739,10 +1915,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1754,6 +1926,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1773,10 +1953,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1788,6 +1964,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1807,10 +1991,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -1822,6 +2002,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1846,10 +2034,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1861,6 +2045,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1885,10 +2077,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1900,6 +2088,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -1924,10 +2120,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1939,11 +2131,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -1952,10 +2160,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1982,10 +2186,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1997,6 +2197,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2016,10 +2224,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2031,11 +2235,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2044,10 +2264,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -2074,10 +2290,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2089,6 +2301,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2108,10 +2328,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -2123,6 +2339,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2142,10 +2366,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -2157,6 +2377,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2176,10 +2404,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2191,6 +2415,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2210,10 +2442,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2225,6 +2453,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2244,10 +2480,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2259,6 +2491,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2278,10 +2518,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2293,6 +2529,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2317,10 +2561,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2332,6 +2572,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2356,10 +2604,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2371,6 +2615,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2395,10 +2647,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2410,6 +2658,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2434,10 +2690,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2449,6 +2701,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2473,10 +2733,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2488,6 +2744,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2512,10 +2776,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2527,11 +2787,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2540,10 +2816,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -2570,10 +2842,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2585,6 +2853,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2604,10 +2880,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -2619,6 +2891,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2638,10 +2918,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -2653,6 +2929,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2672,10 +2956,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -2687,6 +2967,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2706,10 +2994,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2721,6 +3005,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2745,10 +3037,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -2760,6 +3048,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2784,10 +3080,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2799,6 +3091,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2823,10 +3123,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2838,11 +3134,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2851,10 +3163,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -2881,10 +3189,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2896,6 +3200,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2915,10 +3227,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2930,6 +3238,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -2949,10 +3265,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -2964,11 +3276,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -2977,10 +3305,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3007,10 +3331,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3022,11 +3342,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3035,10 +3371,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3065,10 +3397,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -3080,11 +3408,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3093,10 +3437,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3123,10 +3463,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -3138,6 +3474,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3157,10 +3501,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3172,6 +3512,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3191,10 +3539,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -3206,6 +3550,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3225,10 +3577,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -3240,11 +3588,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3253,10 +3617,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3283,10 +3643,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3298,6 +3654,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3317,10 +3681,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3332,11 +3692,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3345,10 +3721,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3375,10 +3747,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3390,6 +3758,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3409,10 +3785,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -3424,6 +3796,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3448,10 +3828,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -3463,11 +3839,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3476,10 +3868,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3506,10 +3894,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3531,13 +3915,17 @@
                 },
                 "pakollinen" : true
               },
-              "tila" : {
-                "koodiarvo" : "VALMIS",
-                "koodistoUri" : "suorituksentila"
-              },
               "tyyppi" : {
                 "koodiarvo" : "ammatillisentutkinnonosa",
                 "koodistoUri" : "suorituksentyyppi"
+              },
+              "tila" : {
+                "koodiarvo" : "KESKEN",
+                "nimi" : {
+                  "fi" : "Suoritus kesken",
+                  "sv" : "Prestationen icke slutförd"
+                },
+                "koodistoUri" : "suorituksentila"
               }
             },
             "selite" : {
@@ -3547,11 +3935,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3560,10 +3964,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3590,10 +3990,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3605,6 +4001,14 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         }, {
           "koulutusmoduuli" : {
@@ -3629,10 +4033,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -3645,11 +4045,27 @@
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
           },
-          "suoritettuLukiodiplomina" : true
+          "suoritettuLukiodiplomina" : true,
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3658,10 +4074,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3688,10 +4100,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -3703,11 +4111,27 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "koulutusmoduuli" : {
@@ -3721,10 +4145,6 @@
             "fi" : "Tanssi ja liike"
           },
           "pakollinen" : false
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -3756,10 +4176,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -3771,21 +4187,40 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
         }
       }, {
         "tyyppi" : {
           "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TO",
@@ -3815,10 +4250,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -3830,17 +4261,36 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
-        } ]
+        } ],
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
       }, {
         "tyyppi" : {
           "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "OA",
@@ -3870,10 +4320,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -3888,8 +4334,24 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "nimi" : {
+              "fi" : "Suoritus valmis",
+              "sv" : "Prestationen slutförd"
+            },
+            "koodistoUri" : "suorituksentila"
           }
-        } ]
+        } ],
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila"
+        }
       } ],
       "todistuksellaNäkyvätLisätiedot" : {
         "fi" : "Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"
@@ -3898,7 +4360,15 @@
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       },
-      "ryhmä" : "12A"
+      "ryhmä" : "12A",
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "nimi" : {
+          "fi" : "Suoritus valmis",
+          "sv" : "Prestationen slutförd"
+        },
+        "koodistoUri" : "suorituksentila"
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",
