@@ -1,12 +1,11 @@
 import {
   contextualizeSubModel,
-  lensedModel,
   modelData,
   modelItems,
   modelLens,
-  modelLookup, modelSet,
+  modelLookup,
+  modelSet,
   modelSetValue,
-  modelSetValues,
   modelTitle
 } from './EditorModel'
 import * as L from 'partial.lenses'
@@ -27,7 +26,7 @@ export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'ke
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
 // TODO: tilalinssi pois
-export const tilaLens = modelLens('tila')
+const tilaLens = modelLens('tila')
 export const setTila = (suoritus, koodiarvo) => {
   let tila = modelSetValue(L.get(tilaLens, suoritus), createTila(koodiarvo))
   return L.set(tilaLens, tila, suoritus)
@@ -48,21 +47,6 @@ const createTila = (koodiarvo) => {
 }
 
 const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, toKoodistoEnumValue('suorituksentila', key, value)])))
-
-// TODO: pois
-export const fixTila = (model) => {
-  return lensedModel(model, L.rewrite(m => {
-    if (hasArvosana(m) && !suoritusValmis(m) && !model.value.classes.includes('paatasonsuoritus')) {
-      // Arvosana annettu -> asetetaan tila VALMIS
-      return setTila(m, 'VALMIS')
-    }
-    if (!hasArvosana(m)) {
-      // Arvosana puuttuu -> poistetaan arviointi, vahvistus ja asetetaan tilaksi KESKEN
-      return modelSetValues(m, { arviointi: undefined, vahvistus: undefined, tila: createTila('KESKEN')})
-    }
-    return m
-  }))
-}
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')

@@ -14,7 +14,7 @@ import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, setTila, suoritusKesken, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
@@ -42,7 +42,7 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   if (!model.context.edit || suoritusKesken(model)) return null
   var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').koodiarvo
   let merkitseKeskeneräiseksi = () => {
-    pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
+    pushModel(modelSetValue(model, undefined, 'vahvistus'))
   }
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
   return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
@@ -57,8 +57,7 @@ const MerkitseValmiiksiButton = ({model}) => {
       if (isPerusopetuksenOppimäärä(model)) {
         let ysiluokkaKesken = modelItems(model.context.opiskeluoikeus, 'suoritukset').find(R.allPass([isYsiluokka, suoritusKesken]))
         if (ysiluokkaKesken) {
-          var ysiLuokkaValmis = setTila(ysiluokkaKesken, 'VALMIS')
-          ysiLuokkaValmis = modelSet(ysiLuokkaValmis, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
+          var ysiLuokkaValmis = modelSet(ysiLuokkaValmis, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
           pushModel(ysiLuokkaValmis, model.context.changeBus)
         }
       }

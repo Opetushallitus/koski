@@ -13,7 +13,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
+import {hasArvosana, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
@@ -149,7 +149,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let arvosanaModel = modelLookup(fixTila(model), 'arviointi.-1.arvosana')
+    let arvosanaModel = modelLookup(model, 'arviointi.-1.arvosana')
 
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
