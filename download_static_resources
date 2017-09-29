@@ -1,0 +1,42 @@
+#!/bin/bash -euo pipefail
+# Downloads and customizes static dependencies
+
+FONT_AWESOME_VERSION="4.7.0"
+HIGHLIGHT_JS_VERSION="9.12.0"
+NORMALIZE_CSS_VERSION="7.0.0"
+
+# Using tmp dir command from https://unix.stackexchange.com/a/84980
+project_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+tmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+pushd . > /dev/null
+  cd $tmpdir
+
+  # Font awesome, strip version numbers from CSS URLs
+  wget -q "http://fontawesome.io/assets/font-awesome-$FONT_AWESOME_VERSION.zip"
+  unzip -qo "font-awesome-$FONT_AWESOME_VERSION.zip"
+  cd "font-awesome-$FONT_AWESOME_VERSION/"
+    cd css/
+      sed "s/\?v=$FONT_AWESOME_VERSION//g" font-awesome.min.css > fa.min.css
+      cp fa.min.css $project_root/web/static/external_css/font-awesome.min.css
+    cd ..
+    cp fonts/* $project_root/web/static/fonts/
+  cd ..
+
+  # OpenSans font files
+  wget -q "https://fonts.google.com/download?family=Open%20Sans" -O OpenSans.zip
+  unzip -qo "OpenSans.zip" -d fontfiles
+  mv fontfiles/LICENSE.txt fontfiles/OpenSans_LICENSE.txt
+  cp fontfiles/* $project_root/web/static/fonts/
+
+popd > /dev/null
+rm -rf $tmpdir
+
+pushd . > /dev/null
+  cd web/static/external_css
+  wget -q "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/$HIGHLIGHT_JS_VERSION/styles/default.min.css" -O highlight-js.default.min.css
+  wget -qN "https://cdnjs.cloudflare.com/ajax/libs/normalize/$NORMALIZE_CSS_VERSION/normalize.min.css"
+
+  # OpenSans font CSS, change references from Google Font CDN to local files
+  wget "https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800,800i&amp;subset=latin-ext" -qO- | python -c "print(__import__('re').sub(r\"local\('([^']+)'\),\s*url\(.+(\.[a-z0-9]+)\)\", lambda m: \"local({}), url(/koski/fonts/{})\".format(m.group(1), m.group(1)+m.group(2)), ''.join(__import__('fileinput').input())))" > OpenSans.css
+
+popd > /dev/null
