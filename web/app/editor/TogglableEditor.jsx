@@ -3,10 +3,8 @@ import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../location'
 import Text from '../Text.jsx'
-import {contextualizeSubModel, modelData, modelItems, modelLookup, modelSetData, pushModel} from './EditorModel'
-import {formatISODate} from '../date'
-import {koodistoValues} from '../uusioppija/koodisto'
-import {fixOpiskeluoikeudenPäättymispäivä} from './OpiskeluoikeudenTilaEditor.jsx'
+import {modelData, modelItems} from './EditorModel'
+import {invalidateOpiskeluoikeus} from '../Oppija.jsx'
 
 export class TogglableEditor extends React.Component {
   render() {
@@ -34,7 +32,7 @@ class MitätöiButton extends React.Component {
     let deleteRequested = this.state && this.state.deleteRequested
     let mitätöi = () => {
       if (deleteRequested) {
-        deleteOpiskeluoikeus(opiskeluoikeus)
+        invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))
       } else {
         this.setState({deleteRequested: true})
       }
@@ -44,24 +42,6 @@ class MitätöiButton extends React.Component {
       ? null
       : <button className={deleteRequested ? 'invalidate confirm' : 'invalidate'} onClick={mitätöi}><Text name={deleteRequested ? 'Vahvista mitätöinti, operaatiota ei voi peruuttaa' : 'Mitätöi opiskeluoikeus'}/></button>
   }
-}
-
-const deleteOpiskeluoikeus = opiskeluoikeus => {
-  let today = formatISODate(new Date())
-  let model = tilaListModel(fixOpiskeluoikeudenPäättymispäivä(opiskeluoikeus))
-
-  koodistoValues('koskiopiskeluoikeudentila/mitatoity').map('.0')
-    .map(mitätöity => modelSetData(model, mitätöity, 'tila'))
-    .map(m => modelSetData(m, today, 'alku'))
-    .onValue(m => {
-      pushModel(m)
-      opiskeluoikeus.context.saveChangesBus.push()
-    })
-}
-
-const tilaListModel = opiskeluoikeus => {
-  let model = modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
-  return contextualizeSubModel(model.arrayPrototype, model, modelItems(model).length)
 }
 
 const suorituksiaTehty = opiskeluoikeus => {

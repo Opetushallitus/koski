@@ -1,4 +1,4 @@
-import React from 'baret'
+import React, {fromBacon} from 'baret'
 import Bacon from 'baconjs'
 import Http from './http'
 import {
@@ -52,6 +52,16 @@ export const oppijaContentP = (oppijaOid) => {
   }
   return stateToContent(currentState.state)
 }
+
+const invalidateBus = Bacon.Bus()
+export const invalidateOpiskeluoikeus = oid => {
+  invalidateBus.push(oid)
+}
+
+const invalidateE = invalidateBus.flatMapLatest(oid =>
+  Http.delete(`/koski/api/opiskeluoikeus/${oid}`, {
+    invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']
+  })).map(() => oppija => Bacon.once(R.merge(oppija, {event: 'invalidated'})))
 
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
@@ -137,10 +147,9 @@ const createState = (oppijaOid) => {
     )
   })
 
-
   const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE, invalidateE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
@@ -183,6 +192,7 @@ export class ExistingOppija extends React.Component {
       ? <div className="loading"/>
       : (
         <div>
+          <OpiskeluoikeusMitätöity stateP={stateP} />
           <div className={stateP.map(state => 'oppija-content ' + state)}>
             <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
@@ -230,3 +240,14 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
     <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : null)}</span>
   </div>)
 }
+
+const OpiskeluoikeusMitätöity = ({stateP}) => {
+  return fromBacon(stateP.map(e => e === 'invalidated'
+    ? (<div className="opiskeluoikeus-invalidated">
+        <h1><Text name="Opiskeluoikeus mitätöity"/></h1>
+        <a href="/koski"><Text name="Palaa opiskelijalistaukseen"/></a>
+      </div>)
+    : null))
+}
+
+

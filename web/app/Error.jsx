@@ -74,12 +74,4 @@ export const TopLevelError = ({error}) => {
   </div>)
 }
 
-export const OpiskeluoikeusMitätöity = () => {
-  return (<div className="content-area invalidated">
-    <h1><Text name="Opiskeluoikeus mitätöity" /></h1>
-    <a href="/koski"><Text name="Palaa opiskelijalistaukseen"/></a>
-  </div>)
-}
-
 export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel
-export const isDeleted = error => error.httpStatus === 404 && error.opiskeluoikeusDeleted === true
