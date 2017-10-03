@@ -220,10 +220,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         })
 
         "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
-          verifyResponseStatus(400,
-              exact(KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa, "Päivämäärä päättymispäivä (2100-05-31) on tulevaisuudessa"),
-              exact(KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, "Päivämäärä suoritus.vahvistus.päivä (2100-05-31) on tulevaisuudessa")
-          )
+          verifyResponseStatus(200)
         })
 
         "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {

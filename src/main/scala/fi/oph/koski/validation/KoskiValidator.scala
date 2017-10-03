@@ -189,7 +189,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     HttpStatus.fold(
-      validateNotInFuture("päättymispäivä", KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa, opiskeluoikeus.päättymispäivä),
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää),
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä), KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää),
       HttpStatus.validate(päättäväJakso == None || päättäväJakso == viimeinenJakso)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.get.tila.koodiarvo}) jälkeen"))
@@ -205,10 +204,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     HttpStatus.fold(
       validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät), KoskiErrorCategory.badRequest.validation.date.arviointiEnnenAlkamispäivää)
-        .then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
+          .then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
           .then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
-        :: validateNotInFuture("suoritus.arviointi.päivä", KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa, arviointipäivät)
-        :: validateNotInFuture("suoritus.vahvistus.päivä", KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, vahvistuspäivät)
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, parent)
         :: validateLaajuus(suoritus)

@@ -189,9 +189,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
             "Päivämäärät tulevaisuudessa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
-                verifyResponseStatus(400, exact(KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa, "Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
-                                          exact(KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, "Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
-                )))
+                verifyResponseStatus(200)))
             }
 
             "alkamispäivä > arviointi.päivä" - {
