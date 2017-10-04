@@ -17,7 +17,7 @@
       }
     },
     "alkamispäivä" : "2012-09-01",
-    "päättymispäivä" : "2016-01-10",
+    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -30,7 +30,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2016-01-10",
+        "alku" : "2016-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {

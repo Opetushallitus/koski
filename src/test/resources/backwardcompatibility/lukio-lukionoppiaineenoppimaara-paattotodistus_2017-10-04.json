@@ -60,10 +60,6 @@
           "fi" : "Jyväskylän normaalikoulu"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "arviointi" : [ {
         "arvosana" : {
           "koodiarvo" : "9",
@@ -72,7 +68,7 @@
         "hyväksytty" : true
       } ],
       "vahvistus" : {
-        "päivä" : "2016-06-04",
+        "päivä" : "2016-01-10",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -132,10 +128,6 @@
             "koodistoUri" : "lukionkurssintyyppi"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
@@ -165,10 +157,6 @@
             "koodiarvo" : "pakollinen",
             "koodistoUri" : "lukionkurssintyyppi"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -200,10 +188,6 @@
             "koodistoUri" : "lukionkurssintyyppi"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
@@ -233,10 +217,6 @@
             "koodiarvo" : "pakollinen",
             "koodistoUri" : "lukionkurssintyyppi"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
