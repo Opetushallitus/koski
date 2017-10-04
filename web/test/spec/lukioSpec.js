@@ -34,7 +34,7 @@ describe('Lukiokoulutus', function( ){
           'Suorituskieli suomi\n' +
           'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
           'Ryhmä 12A\n' +
-          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 1.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
@@ -107,7 +107,7 @@ describe('Lukiokoulutus', function( ){
       before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 1.6.2016 Reijo Reksi rehtori')
       })
     })
   })

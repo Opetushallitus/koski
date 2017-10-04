@@ -253,7 +253,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
             val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.map { case s: AmmatillisenTutkinnonSuoritus => s.copy(vahvistus = vahvistus(date(2017, 6, 30), stadinAmmattiopisto, Some(helsinki)))}.head
 
             putOpiskeluoikeus(oo.copy(suoritukset = List(tutkinto))) {
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää("päättymispäivä (2017-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2017-06-30)"))
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-06-30) oltava sama tai aiempi kuin päättymispäivä(2017-05-31)"))
             }
           }
         }

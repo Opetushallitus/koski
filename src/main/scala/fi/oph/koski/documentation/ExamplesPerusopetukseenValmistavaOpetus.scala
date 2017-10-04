@@ -21,7 +21,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
       PerusopetukseenValmistavanOpetuksenSuoritus(
         koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
         toimipiste = jyväskylänNormaalikoulu,
-        vahvistus = vahvistusPaikkakunnalla(),
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2008, 6, 1)),
         suorituskieli = suomenKieli,
         osasuoritukset = Some(List(
           PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(

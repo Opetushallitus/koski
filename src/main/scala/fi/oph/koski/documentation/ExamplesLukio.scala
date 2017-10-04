@@ -38,7 +38,7 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
-          vahvistus = vahvistusPaikkakunnalla(),
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 6, 1)),
           toimipiste = toimipiste,
           todistuksellaNäkyvätLisätiedot = Some("Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"),
           ryhmä = Some("12A"),
@@ -215,7 +215,7 @@ object ExamplesLukio {
         LukionOppiaineenOppimääränSuoritus(
           koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
-          vahvistus = vahvistusPaikkakunnalla(),
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(

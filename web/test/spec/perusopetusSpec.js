@@ -2607,7 +2607,7 @@ describe('Perusopetus', function() {
           'Koulutus Perusopetukseen valmistava opetus 57/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
-          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 1.6.2008 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
@@ -2676,7 +2676,7 @@ describe('Perusopetus', function() {
     describe('Tulostettava todistus', function() {
       before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 1.6.2008 Reijo Reksi rehtori')
         // See more detailed content specification in PerusopetusSpec.scala
       })
     })

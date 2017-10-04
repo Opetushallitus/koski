@@ -98,13 +98,13 @@ object AmmatillinenPerustutkintoExample {
   val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    päättymispäivä = Some(date(2016, 5, 31)),
+    päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
-        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
       )
     )
   )
@@ -396,10 +396,10 @@ object AmmatillinenOldExamples {
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
-        date(2016, 2, 1),
+        date(2016, 1, 9),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 5, 1), stadinAmmattiopisto, helsinki),
+      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 1, 9), stadinAmmattiopisto, helsinki),
       tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
     )
   )
