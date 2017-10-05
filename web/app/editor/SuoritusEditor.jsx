@@ -41,7 +41,7 @@ const resolveEditor = (mdl) => {
 
 export class SuoritusEditor extends React.Component {
   render() {
-    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus', 'jääLuokalle', 'pakollinen']
+    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
     let {model} = this.props
     model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
@@ -101,9 +101,8 @@ class TodistusLink extends React.Component {
     let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
     let koulutusmoduuliKoodistoUri = modelData(suoritus, 'koulutusmoduuli').tunniste.koodistoUri
     let koulutusmoduuliKoodiarvo = modelData(suoritus, 'koulutusmoduuli').tunniste.koodiarvo
-    let suoritusTila = modelData(suoritus, 'tila').koodiarvo
     let href = '/koski/todistus/' + oppijaOid + '?suoritustyyppi=' + suoritustyyppi + '&koulutusmoduuli=' + koulutusmoduuliKoodistoUri + '/' + koulutusmoduuliKoodiarvo
-    return suoritusTila === 'VALMIS'
+    return suoritusValmis(suoritus)
            && suoritustyyppi !== 'korkeakoulututkinto'
            && suoritustyyppi !== 'preiboppimaara'
            && suoritustyyppi !== 'esiopetuksensuoritus'

@@ -214,7 +214,6 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     def valmis(suoritus: AmmatillisenTutkinnonSuoritus) = suoritus.copy(
-      tila = tilaValmis,
       vahvistus = ExampleData.vahvistus(päivä = date(2016, 10, 1), paikkakunta = Some(jyväskylä))
     )
 

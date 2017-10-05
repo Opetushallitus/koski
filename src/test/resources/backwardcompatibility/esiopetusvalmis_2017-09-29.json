@@ -16,11 +16,11 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "alkamispäivä" : "2007-08-15",
-    "päättymispäivä" : "2008-06-01",
+    "alkamispäivä" : "2006-08-13",
+    "päättymispäivä" : "2007-06-03",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2007-08-15",
+        "alku" : "2006-08-13",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -30,7 +30,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2008-06-01",
+        "alku" : "2007-06-03",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -41,13 +41,22 @@
         }
       } ]
     },
+    "lisätiedot" : {
+      "pidennettyOppivelvollisuus" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      }
+    },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "102/011/2014",
         "tunniste" : {
-          "koodiarvo" : "999905",
+          "koodiarvo" : "001101",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "57/011/2015"
+        "kuvaus" : {
+          "fi" : "Kaksikielinen esiopetus (suomi-portugali)"
+        }
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -59,12 +68,26 @@
           "fi" : "Jyväskylän normaalikoulu"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "muutSuorituskielet" : [ {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "esiopetuksensuoritus",
+        "koodistoUri" : "suorituksentyyppi"
       },
       "vahvistus" : {
-        "päivä" : "2016-06-04",
+        "päivä" : "2007-06-03",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -98,62 +121,10 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "ai",
-            "nimi" : {
-              "fi" : "Äidinkieli"
-            }
-          },
-          "laajuus" : {
-            "arvo" : 10.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          },
-          "opetuksenSisältö" : {
-            "fi" : "Suullinen ilmaisu ja kuullun ymmärtäminen"
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "kuvaus" : {
-            "fi" : "Keskustelee sujuvasti suomeksi"
-          },
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      } ],
-      "tyyppi" : {
-        "koodiarvo" : "perusopetukseenvalmistavaopetus",
-        "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetukseenvalmistavaopetus",
+      "koodiarvo" : "esiopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]

@@ -17,7 +17,7 @@
       }
     },
     "alkamispäivä" : "2012-09-01",
-    "päättymispäivä" : "2016-01-10",
+    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -30,7 +30,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2016-01-10",
+        "alku" : "2016-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -57,10 +57,6 @@
         "nimi" : {
           "fi" : "Ressun lukio"
         }
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -117,10 +113,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
@@ -145,10 +137,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -180,10 +168,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -214,10 +198,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -247,10 +227,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
@@ -275,10 +251,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -310,10 +282,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -344,10 +312,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -377,10 +341,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
@@ -405,10 +365,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -440,10 +396,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -472,10 +424,6 @@
             "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -507,10 +455,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -539,10 +483,6 @@
             "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -574,10 +514,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -607,10 +543,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
@@ -635,10 +567,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -670,10 +598,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -703,10 +627,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -738,10 +658,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -767,10 +683,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
@@ -795,10 +707,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -835,10 +743,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -863,10 +767,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -893,10 +793,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -921,10 +817,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -951,10 +843,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -979,10 +867,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1009,10 +893,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1037,10 +917,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1067,10 +943,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "10",
@@ -1095,10 +967,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1125,10 +993,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1153,10 +1017,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1183,10 +1043,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1212,10 +1068,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
@@ -1240,10 +1092,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1274,10 +1122,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1314,10 +1158,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1342,10 +1182,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1372,10 +1208,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1400,10 +1232,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1430,10 +1258,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1458,10 +1282,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1488,10 +1308,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "8",
@@ -1516,10 +1332,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1546,10 +1358,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "9",
@@ -1574,10 +1382,6 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1604,10 +1408,6 @@
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -1633,10 +1433,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
@@ -1661,10 +1457,6 @@
               "koodiarvo" : "pakollinen",
               "koodistoUri" : "lukionkurssintyyppi"
             }
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1704,10 +1496,6 @@
         "nimi" : {
           "fi" : "Ressun lukio"
         }
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -1772,10 +1560,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -1797,10 +1581,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1831,10 +1611,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "4",
@@ -1864,10 +1640,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -1892,10 +1664,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1926,10 +1694,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -1958,10 +1722,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1992,10 +1752,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -2025,10 +1781,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2053,10 +1805,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2099,10 +1847,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -2124,10 +1868,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2158,10 +1898,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -2186,10 +1922,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2216,10 +1948,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -2245,10 +1973,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -2273,10 +1997,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2311,10 +2031,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -2336,10 +2052,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2370,10 +2082,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -2402,10 +2110,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2436,10 +2140,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -2469,10 +2169,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "1",
@@ -2501,10 +2197,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2539,10 +2231,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -2564,10 +2252,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2598,10 +2282,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -2630,10 +2310,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2664,10 +2340,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -2697,10 +2369,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2725,10 +2393,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2759,10 +2423,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -2792,10 +2452,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "2",
@@ -2824,10 +2480,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2862,10 +2514,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -2887,10 +2535,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -2921,10 +2565,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "4",
@@ -2954,10 +2594,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -2982,10 +2618,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3016,10 +2648,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "5",
@@ -3048,10 +2676,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3082,10 +2706,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "3",
@@ -3115,10 +2735,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "4",
@@ -3147,10 +2763,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3189,10 +2801,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "predicted" : false,
           "arvosana" : {
@@ -3214,10 +2822,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3248,10 +2852,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "7",
@@ -3280,10 +2880,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3314,10 +2910,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "6",
@@ -3346,10 +2938,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3380,10 +2968,6 @@
             },
             "pakollinen" : true
           },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
@@ -3413,10 +2997,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "A",
@@ -3438,10 +3018,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3467,10 +3043,6 @@
               }
             },
             "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -3523,10 +3095,6 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "B",
@@ -3561,10 +3129,6 @@
             }
           },
           "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "predicted" : false,

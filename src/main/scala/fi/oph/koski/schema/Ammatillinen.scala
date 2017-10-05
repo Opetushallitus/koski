@@ -112,7 +112,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
   val päättymispäivä: Option[LocalDate],
@@ -148,8 +147,6 @@ case class AmmatillisenTutkinnonSuoritus(
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OrganisaatioWithOid,
-  @Description("Tutkinnon suorituksen tila-tieto kertoo, onko tutkinto valmis, kesken tai keskeytetty. Valmis -tilassa oppija on suorittanut tutkintosuorituksen, ja se vahvistetaan erikseen välittämällä tutkinnon vahvistus-tieto. Kesken -tilassa tutkinnon osan suorituksia puuttuu vielä")
-  tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
@@ -180,8 +177,8 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @DefaultValue(false)
   toinenOsaamisala: Boolean = false,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto eri ajanjaksoina")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
@@ -194,7 +191,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with VahvistuksetonSuoritus
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
@@ -213,7 +210,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
-  def tila: Koodistokoodiviite
   def arviointi: Option[List[AmmatillinenArviointi]]
   @Description("Tutkinnon osalta ei vaadita vahvistusta, mikäli se sisältyy ammatillisen tutkinnon suoritukseen (jolla puolestaan on VALMIS-tilassa oltava vahvistus)")
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
@@ -239,7 +235,6 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   @KoodistoKoodiarvo("2") // Yhteiset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -263,7 +258,6 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -357,7 +351,6 @@ case class PaikallinenTutkinnonOsa(
 case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @Title("Kokonaisuus")
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   @ComplexObject
@@ -366,7 +359,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Title("Yhteisen tutkinnon osan osa-alueen suoritus")
 @Description("Yhteisen tutkinnon osan osa-alueen suorituksen tiedot")
@@ -374,7 +367,6 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   @Title("Osa-alue")
   @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Jos osa-alue on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
@@ -384,7 +376,7 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
-) extends Suoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
@@ -589,12 +581,12 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
-  tila: Koodistokoodiviite,
+  arviointi: Option[List[AmmatillinenArviointi]],
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
 
@@ -615,7 +607,6 @@ case class ValmaKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: ValmaKoulutus,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -633,7 +624,6 @@ case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: ValmaKoulutuksenOsa,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -676,7 +666,6 @@ case class TelmaKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: TelmaKoulutus,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -695,7 +684,6 @@ case class TelmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot")
   koulutusmoduuli: TelmaKoulutuksenOsa,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,

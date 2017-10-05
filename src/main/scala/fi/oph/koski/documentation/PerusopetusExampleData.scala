@@ -19,7 +19,6 @@ object PerusopetusExampleData {
   def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
-    tila = tilaValmis,
     arviointi = None
   )
 
@@ -97,7 +96,6 @@ object PerusopetusExampleData {
 
   val kahdeksannenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
     muutSuorituskielet = Some(List(sloveeni)),
@@ -109,7 +107,6 @@ object PerusopetusExampleData {
 
   val seitsemännenLuokanTuplaus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
-    tila = tilaValmis,
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
@@ -119,7 +116,6 @@ object PerusopetusExampleData {
 
   val kuudennenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero), luokka = "6A", alkamispäivä = Some(date(2012, 6, 15)),
-    tila = tilaValmis,
     toimipiste = kulosaarenAlaAste,
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet,
@@ -128,7 +124,6 @@ object PerusopetusExampleData {
 
   val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 30))
@@ -136,7 +131,6 @@ object PerusopetusExampleData {
 
   val perusopetuksenOppimääränSuoritusKesken = NuortenPerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = perusopetus,
-    tila = tilaKesken,
     toimipiste = jyväskylänNormaalikoulu,
     suoritustapa = suoritustapaKoulutus,
     suorituskieli = suomenKieli
@@ -144,7 +138,6 @@ object PerusopetusExampleData {
 
   val perusopetuksenOppimääränSuoritus = NuortenPerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = perusopetus,
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,

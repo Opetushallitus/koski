@@ -65,12 +65,11 @@ object KoskiErrorCategory {
         val arviointiEnnenAlkamispäivää = subcategory("arviointiEnnenAlkamispäivää", "Suorituksen arviointipäivä on aiempi kuin sen alkamispäivä")
         val vahvistusEnnenAlkamispäivää = subcategory("vahvistusEnnenAlkamispäivää", "Suorituksen vahvistuksen päivämäärä on aiempi kuin suorituksen alkamispäivä")
         val vahvistusEnnenArviointia = subcategory("vahvistusEnnenArviointia", "Suorituksen vahvistuksen päivämäärä on aiempi kuin sen arviointipäivä")
+        val päättymispäiväEnnenVahvistusta = subcategory("päättymispäiväEnnenVahvistusta", "Opiskeluoikeuden päättymispäivä on aiempi kuin suorituksen vahvistuksen päivämäärä")
+        val suorituksenVahvistusEnnenSuorituksenOsanVahvistusta = subcategory("suorituksenVahvistusEnnenSuorituksenOsanVahvistusta", "Suorituksen vahvistuksen päivämäärä on aiempi kuin suorituksen osan vahvistuksen päivämäärä")
 
         val alkamispäivä = subcategory("alkamispäivä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
         val päättymispäivämäärä = subcategory("päättymispäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää")
-        val päättymispäiväTulevaisuudessa = subcategory("päättymispäiväTulevaisuudessa", "Opiskeluoikeuden päättymispäivä on tulevaisuudessa")
-        val arviointipäiväTulevaisuudessa = subcategory("arviointipäiväTulevaisuudessa", "Suorituksen arviointipäivä on tulevaisuudessa")
-        val vahvistuspäiväTulevaisuudessa = subcategory("vahvistuspäiväTulevaisuudessa", "Suorituksen vahvistuspäivä on tulevaisuudessa")
       }
       val date = new Date
 
@@ -95,13 +94,11 @@ object KoskiErrorCategory {
       val rakenne = new Rakenne
 
       class Tila extends ErrorCategory(Validation.this, "tila", "Suorituksen tilaan liittyvä validointivirhe") {
-        val vahvistusVäärässäTilassa = subcategory("vahvistusVäärässäTilassa", "Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS")
-        val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS")
-        val arviointiPuuttuu = subcategory("arviointiPuuttuu", "Suoritukselta puuttuu arviointi, vaikka sen tila on VALMIS")
-        val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN")
-        val suoritusVäärässäTilassa = subcategory("suoritusVäärässäTilassa", "Suoritus on tilassa KESKEN, vaikka se kuuluu opiskeluoikeuteen jonka tila on valmistunut")
-        val oppiaineetPuuttuvat = subcategory("oppiaineetPuuttuvat", "Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sen tila on VALMIS")
-        val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun suoritus on VALMIS, eikä oppilas jää luokalle")
+        val vahvistusIlmanArviointia = subcategory("vahvistusIlmanArviointia", "Suoritukselta puuttuu arviointi, vaikka sillä on vahvistus")
+        val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Valmiiksi merkityllä suorituksella on keskeneräinen osasuoritus")
+        val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
+        val oppiaineetPuuttuvat = subcategory("oppiaineetPuuttuvat", "Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
+        val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
         val tilaMuuttunutLopullisenTilanJälkeen = subcategory("tilaMuuttunutLopullisenTilanJälkeen", "Opiskeluoikeuden tilojen valmistunut, eronnut jälkeen ei voi esiintyä muita tiloja")
       }
       val tila = new Tila

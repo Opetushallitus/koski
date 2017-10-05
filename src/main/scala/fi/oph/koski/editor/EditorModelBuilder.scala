@@ -140,7 +140,6 @@ object KoodistoEnumModelBuilder {
     "kieli" -> "FI",
     "maatjavaltiot2" -> "246",
     "arviointiasteikkoyleissivistava" -> "S",
-    "suorituksentila" -> "KESKEN",
     "perusopetuksensuoritustapa" -> "koulutus"
   )
 

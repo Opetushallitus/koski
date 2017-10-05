@@ -22,7 +22,6 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
           perusteenDiaarinumero: tutkinto.diaarinumero
         },
         toimipiste : oppilaitos,
-        tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'},
         suoritustapa: suoritustapa,
         suorituskieli : suorituskieli

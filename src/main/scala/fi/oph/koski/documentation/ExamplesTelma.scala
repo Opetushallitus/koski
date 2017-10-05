@@ -24,7 +24,6 @@ object ExamplesTelma {
         )),
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(TelmaKoulutuksenSuoritus(
-          tila = tilaValmis,
           vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto, Some(helsinki)),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = TelmaKoulutus(perusteenDiaarinumero = Some("6/011/2015")),
@@ -47,7 +46,6 @@ object ExamplesTelma {
                 """.stripMargin)
             ),
             TelmaKoulutuksenOsanSuoritus(
-              tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = arviointiHyväksytty
             )
@@ -62,7 +60,6 @@ object ExamplesTelma {
 
   private def telmaKurssinSuoritus(koodi: String, nimi: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[AmmatillinenArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None, kuvaus: Option[String] = None) = {
     TelmaKoulutuksenOsanSuoritus(
-      tila = tilaValmis,
       koulutusmoduuli = PaikallinenTelmaKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(nimi)),
         kuvaus = finnish(kuvaus.getOrElse(nimi)),

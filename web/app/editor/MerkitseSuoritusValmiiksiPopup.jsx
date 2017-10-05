@@ -1,12 +1,12 @@
 import {
-  modelLookup,
   accumulateModelStateAndValidity,
-  optionalPrototypeModel,
+  addContext,
+  modelData,
+  modelItems,
+  modelLookup,
   modelSet,
   modelSetValue,
-  modelItems,
-  modelData,
-  addContext,
+  optionalPrototypeModel,
   pushModel
 } from './EditorModel'
 import React from 'baret'
@@ -15,7 +15,6 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import ModalDialog from './ModalDialog.jsx'
-import {setTila} from './Suoritus'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {saveOrganizationalPreference} from '../organizationalPreferences'
 import Text from '../Text.jsx'
@@ -27,7 +26,6 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
   suoritus = modelSet(suoritus, vahvistus, 'vahvistus')
   let toimipiste = suoritus.context.toimipiste
   suoritus = modelSetValue(suoritus, toimipiste.value, 'vahvistus.myöntäjäOrganisaatio')
-  suoritus = setTila(suoritus, 'VALMIS')
   let { modelP, errorP } = accumulateModelStateAndValidity(suoritus)
   let validP = errorP.not()
 

@@ -20,7 +20,6 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
-  case class SuorituksenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
@@ -57,7 +56,6 @@ private object OpiskeluoikeusQueryFilterParser {
       case ("opiskeluoikeudenTyyppi", v) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", v)))
       case ("opiskeluoikeudenTila", v) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
       case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
-      case ("suorituksenTila", v) => Right(SuorituksenTila(koodisto.validateRequired("suorituksentila", v)))
       case ("tutkintohaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("tutkintohaku", hakusana) => Right(Tutkintohaku(hakusana))
       case ("toimipiste", oid) =>

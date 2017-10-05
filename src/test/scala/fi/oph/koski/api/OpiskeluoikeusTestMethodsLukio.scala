@@ -21,7 +21,6 @@ object OpiskeluoikeusTestMethodsLukio {
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistus,
     osasuoritukset = None

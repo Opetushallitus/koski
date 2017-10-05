@@ -65,10 +65,6 @@
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "alkamispäivä" : "2012-09-01",
       "vahvistus" : {
         "päivä" : "2015-05-31",
@@ -125,10 +121,25 @@
             "fi" : "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
         "tyyppi" : {
           "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -155,10 +166,25 @@
             }
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
         "tyyppi" : {
           "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -192,10 +218,6 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-05-31",
@@ -303,10 +325,6 @@
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -369,10 +387,6 @@
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -437,10 +451,6 @@
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -504,10 +514,6 @@
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -570,10 +576,6 @@
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {

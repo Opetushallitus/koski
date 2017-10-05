@@ -1,58 +1,30 @@
 import {
-  contextualizeSubModel,
-  lensedModel,
-  modelData,
-  modelItems,
-  modelLens,
-  modelLookup, modelSet,
-  modelSetValue,
-  modelSetValues,
+  contextualizeSubModel, lensedModel, modelData, modelItems, modelLookup, modelSet, modelSetValues,
   modelTitle
 } from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
-import {suorituksentilaKoodisto, toKoodistoEnumValue} from '../koodistot'
+import {t} from '../i18n'
 
-export const suoritusValmis = (suoritus) => suorituksenTila(suoritus) === 'VALMIS'
-export const suoritusKesken = (suoritus) => suorituksenTila(suoritus) === 'KESKEN'
-export const suorituksenTila = (suoritus) => modelData(suoritus, 'tila').koodiarvo
+export const suoritusValmis = (suoritus) => {
+  if (suoritus.value.classes.includes('paatasonsuoritus')) {
+    return !!modelData(suoritus, 'vahvistus')
+  } else {
+    return !!modelData(suoritus, 'arviointi.0')
+  }
+}
+export const suoritusKesken = R.complement(suoritusValmis)
+export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus valmis' : 'Suoritus kesken')
+export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
-export const tilaLens = modelLens('tila')
-export const setTila = (suoritus, koodiarvo) => {
-  let tila = modelSetValue(L.get(tilaLens, suoritus), createTila(koodiarvo))
-  return L.set(tilaLens, tila, suoritus)
-}
 export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
   return keskeneräisetOsasuoritukset(suoritus).length > 0
 }
-
 export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).flatMap(s => [s].concat(rekursiivisetOsasuoritukset(s)))
-
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
-
-const createTila = (koodiarvo) => {
-  if (!tilat[koodiarvo]) throw new Error('tila puuttuu: ' + koodiarvo)
-  return tilat[koodiarvo]
-}
-
-const tilat = R.fromPairs(R.toPairs(suorituksentilaKoodisto).map(([key, value]) => ([key, toKoodistoEnumValue('suorituksentila', key, value)])))
-
-export const fixTila = (model) => {
-  return lensedModel(model, L.rewrite(m => {
-    if (hasArvosana(m) && !suoritusValmis(m) && !model.value.classes.includes('paatasonsuoritus')) {
-      // Arvosana annettu -> asetetaan tila VALMIS
-      return setTila(m, 'VALMIS')
-    }
-    if (!hasArvosana(m)) {
-      // Arvosana puuttuu -> poistetaan arviointi, vahvistus ja asetetaan tilaksi KESKEN
-      return modelSetValues(m, { arviointi: undefined, vahvistus: undefined, tila: createTila('KESKEN')})
-    }
-    return m
-  }))
-}
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
@@ -92,4 +64,14 @@ export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
     return '15'
   }
+}
+
+export const fixArviointi = (model) => {
+  return lensedModel(model, L.rewrite(m => {
+    if (!hasArvosana(m)) {
+      // Arvosana puuttuu -> poistetaan arviointi, vahvistus ja asetetaan tilaksi KESKEN
+      return modelSetValues(m, { arviointi: undefined, vahvistus: undefined })
+    }
+    return m
+  }))
 }

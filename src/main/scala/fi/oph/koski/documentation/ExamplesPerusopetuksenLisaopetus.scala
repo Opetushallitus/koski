@@ -12,14 +12,12 @@ object ExamplesPerusopetuksenLisaopetus {
   private def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenLisäopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
-    tila = tilaValmis,
     arviointi = None,
     korotus = false
   )
 
   val lisäopetuksenSuoritus = PerusopetuksenLisäopetuksenSuoritus(
     koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suorituskieli = suomenKieli,
@@ -40,7 +38,6 @@ object ExamplesPerusopetuksenLisaopetus {
         suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true, yksilöllistettyOppimäärä = true),
         MuuPerusopetuksenLisäopetuksenSuoritus(
           MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(PaikallinenKoodi("xxx", "Monialainen oppimiskokonaisuus"), "Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista"),
-          tilaValmis,
           arviointi("S")
         )
       )
@@ -49,7 +46,6 @@ object ExamplesPerusopetuksenLisaopetus {
 
   val lisäopetuksenSuoritusToimintaAlueittain = PerusopetuksenLisäopetuksenSuoritus(
     koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
-    tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suorituskieli = suomenKieli,
@@ -67,7 +63,6 @@ object ExamplesPerusopetuksenLisaopetus {
   private def toimintaAlueenSuoritus(alue: String) = {
     PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
       koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(alue, "perusopetuksentoimintaalue")),
-      tila = tilaValmis,
       arviointi = arviointi("S")
     )
   }

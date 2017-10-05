@@ -24,7 +24,6 @@ object ExamplesLukioonValmistavaKoulutus {
           LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )),
         suoritukset = List(LukioonValmistavanKoulutuksenSuoritus(
-          tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015")),
@@ -32,7 +31,6 @@ object ExamplesLukioonValmistavaKoulutus {
           osasuoritukset = Some(List(
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f)
@@ -40,7 +38,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuutKielet(Koodistokoodiviite("LVMUUTK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "SV", koodistoUri = "kielivalikoima")),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("RU1", "Ruotsin alkeet", 1.0f)
@@ -48,7 +45,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVMALUO", "oppiaineetluva")),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("MAT1", "Matematiikan kertauskurssi", 1.0f)
@@ -56,7 +52,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVYHKU", "oppiaineetluva")),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("YHKU1", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f)
@@ -64,7 +59,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVOPO", "oppiaineetluva")),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("OPO1", "Opinto-ohjaus", 1.0f)
@@ -72,7 +66,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               PaikallinenLukioonValmistavanKoulutuksenOppiaine(PaikallinenKoodi("LVATK", "Tietojenkäsittely"), "Tietojenkäsittely", pakollinen = false),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 luvaKurssinSuoritus("ATK1", "Tietokoneen käytön peruskurssi", 1.0f)
@@ -80,7 +73,6 @@ object ExamplesLukioonValmistavaKoulutus {
             ),
             LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
               lukionKieli("A1", "EN"),
-              tila = tilaValmis,
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
                 kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(8))
@@ -100,7 +92,6 @@ object ExamplesLukioonValmistavaKoulutus {
   val examples = List(Example("lukioon valmistava koulutus", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA)", luvaTodistus, 200))
 
   private def luvaKurssinSuoritus(koodi: String, kuvaus: String, laajuusKursseissa: Float) = LukioonValmistavanKurssinSuoritus(
-    tila = tilaValmis,
     koulutusmoduuli = LukioonValmistavanKoulutuksenKurssi(
       tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
       laajuus = laajuus(laajuusKursseissa),

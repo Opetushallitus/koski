@@ -245,7 +245,6 @@ object KoskiApiOperations extends ApiGroup {
     QueryParameter("opiskeluoikeudenTyyppi","Opiskeluoikeuden tyyppi (ks. opiskeluoikeudentyyppi-koodisto)", List("ammatillinenkoulutus")),
     QueryParameter("opiskeluoikeudenTila","Opiskeluoikeuden tila (ks. koskiopiskeluoikeudentila-koodisto)", List("lasna")),
     QueryParameter("suorituksenTyyppi","Juurisuorituksen tyyppi (ks. suorituksentyyppi-koodisto)", List("ammatillinentutkinto")),
-    QueryParameter("suorituksenTila","Opiskeluoikeuden juurisuorituksen tila (ks suorituksentila-koodisto)", List("VALMIS")),
     QueryParameter("tutkintohaku","Tekstihaku kohdistuen tutkinnon nimeen, osaamisalaan ja tutkintonimikkeeseen", List("autoalan perustutkinto")),
     QueryParameter("luokkahaku", "Tekstihaku kohdistuen oppilaan nykyiseen/viimeisimpään luokkaan", List("9C")),
     QueryParameter("nimihaku", "Tekstihaku kohdistuen oppilan etunimiin ja sukunimeen", List("virtanen"))

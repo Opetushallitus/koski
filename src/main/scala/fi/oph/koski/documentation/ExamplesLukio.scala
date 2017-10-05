@@ -38,8 +38,7 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
-          tila = tilaValmis,
-          vahvistus = vahvistusPaikkakunnalla(),
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 6, 1)),
           toimipiste = toimipiste,
           todistuksellaNäkyvätLisätiedot = Some("Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"),
           ryhmä = Some("12A"),
@@ -188,17 +187,17 @@ object ExamplesLukio {
             ))),
             MuidenLukioOpintojenSuoritus(
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("TO", "lukionmuutopinnot")),
-              tila = tilaValmis,
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
-              ))
+              )),
+              arviointi = arviointi("S")
             ),
             MuidenLukioOpintojenSuoritus(
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("OA", "lukionmuutopinnot")),
-              tila = tilaValmis,
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = sanallinenArviointi("S", kuvaus=Some("Sujuvaa keskustelua"), päivä = date(2016, 6, 8)))
-              ))
+              )),
+              arviointi = arviointi("S")
             )
           ))
         )
@@ -216,8 +215,7 @@ object ExamplesLukio {
         LukionOppiaineenOppimääränSuoritus(
           koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
-          tila = tilaValmis,
-          vahvistus = vahvistusPaikkakunnalla(),
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(
@@ -253,15 +251,14 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
-          tila = tilaKesken,
           vahvistus = None,
           toimipiste = jyväskylänNormaalikoulu,
           todistuksellaNäkyvätLisätiedot = None,
           osasuoritukset = Some(List(
-            suoritus(lukionÄidinkieli("AI1")).copy(tila = tilaKesken).copy(osasuoritukset = Some(List(
+            suoritus(lukionÄidinkieli("AI1")).copy(arviointi = None).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
-              kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(tila = tilaKesken)
+              kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(arviointi = None)
             )))
           ))
         )
@@ -304,7 +301,6 @@ object LukioExampleData {
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None,
-    tila = tilaValmis,
     osasuoritukset = None
   )
 
@@ -312,7 +308,6 @@ object LukioExampleData {
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     arviointi = None,
-    tila = tilaValmis,
     suoritettuLukiodiplomina = suoritettuLukiodiplomina
   )
 
@@ -364,7 +359,6 @@ object LukioExampleData {
         koulutusmoduuli = lukionOppimäärä,
         oppimäärä = nuortenOpetussuunnitelma,
         suorituskieli = suomenKieli,
-        tila = tilaKesken,
         toimipiste = oppilaitos,
         osasuoritukset = None
       )

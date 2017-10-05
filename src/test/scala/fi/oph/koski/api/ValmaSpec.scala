@@ -18,7 +18,7 @@ class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
           |Opiskeluvalmiuksien vahvistaminen 10 Hyväksytty
           |Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen 15 Hyväksytty
           |Arjen taitojen ja hyvinvoinnin vahvistaminen 10 Hyväksytty
-          |Tietokoneen käyttäjän AB-kortti 5
+          |Tietokoneen käyttäjän AB-kortti 5 Hyväksytty
           |Auton lisävarustetyöt 1) 15 Hyväksytty
           |Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä 65
           |Lisätietoja:

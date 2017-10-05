@@ -23,7 +23,6 @@ object AmmatillinenExampleData {
 
   def ammatillinenTutkintoSuoritus(koulutusmoduuli: AmmatillinenTutkintoKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
     koulutusmoduuli = koulutusmoduuli,
-    tila = tilaKesken,
     alkamispäivä = Some(date(2016, 9, 1)),
     toimipiste = toimipiste,
     suorituskieli = suomenKieli,
@@ -75,7 +74,6 @@ object AmmatillinenExampleData {
     Some(MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = None
     )),
@@ -93,7 +91,6 @@ object AmmatillinenExampleData {
     näyttö = Some(näyttö(date(2013, 5, 20), "Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")),
     lisätiedot = None,
     suorituskieli = None,
-    tila = tilaValmis,
     alkamispäivä = None,
     toimipiste = Some(stadinToimipiste),
     arviointi = Some(List(arviointiHyväksytty)),
@@ -107,10 +104,13 @@ object AmmatillinenExampleData {
     Some(LaajuusOsaamispisteissä(15))
   )
 
-  lazy val arviointiKiitettävä = AmmatillinenArviointi(
-    arvosana = k3,
+  def arviointi(arvosana: Koodistokoodiviite) = AmmatillinenArviointi(
+    arvosana = arvosana,
     date(2014, 10, 20)
   )
+
+
+  lazy val arviointiKiitettävä = arviointi(k3)
 
   lazy val ammatillisetTutkinnonOsat = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma"))
   lazy val yhteisetTutkinnonOsat = Some(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))
@@ -147,7 +147,6 @@ object AmmatillinenExampleData {
       tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
       näyttö = None,
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
@@ -155,14 +154,13 @@ object AmmatillinenExampleData {
     )
   }
 
-  def tutkinnonOsanSuoritusTilassa(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], tila: Koodistokoodiviite, laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
+  def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
     val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,
       näyttö = None,
       suorituskieli = None,
-      tila = tila,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste)
     )
@@ -184,7 +182,6 @@ object AmmatillinenExampleData {
       tutkinnonOsanRyhmä = ryhmä,
       näyttö = None,
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
@@ -260,7 +257,6 @@ object AmmatillinenExampleData {
       suoritustapa = suoritustapaOps,
       järjestämismuodot = Some(List(Järjestämismuotojakso(date(2013, 9, 1), None, järjestämismuotoOppilaitos))),
       suorituskieli = suomenKieli,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
       vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
@@ -282,26 +278,24 @@ object AmmatillinenExampleData {
             AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
               AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
               arviointi = Some(List(arviointiHyväksytty)),
-              tila = tilaValmis
             )
           ))
         ),
         yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
           osasuoritukset = Some(List(
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä)))
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
           ))
         ),
         yhteisenTutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
           lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
           osasuoritukset = Some(List(
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), tila = tilaValmis, arviointi = Some(List(arviointiKiitettävä))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
             YhteisenTutkinnonOsanOsaAlueenSuoritus(
               koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
-              tila = tilaValmis,
               arviointi = Some(List(arviointiKiitettävä)),
               alkamispäivä = Some(date(2014, 1, 1)),
               tunnustettu = Some(tunnustettu),
@@ -329,7 +323,6 @@ object AmmatillinenExampleData {
       suoritustapa = suoritustapaOps,
       järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
       suorituskieli = suomenKieli,
-      tila = tilaKesken,
       alkamispäivä = None,
       toimipiste = toimipiste,
       työssäoppimisjaksot = työssäoppiminenSorttiAsemalla,
@@ -337,8 +330,8 @@ object AmmatillinenExampleData {
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40),
         tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35),
         tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", ammatillisetTutkinnonOsat, k3, 15),
-        tutkinnonOsanSuoritusTilassa("100442", "Ulkoilureittien rakentaminen ja hoitaminen", ammatillisetTutkinnonOsat, tilaKesken, None),
-        tutkinnonOsanSuoritusTilassa("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", ammatillisetTutkinnonOsat, tilaKeskeytynyt, None),
+        tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
+        tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
         paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", vapaavalintaisetTutkinnonOsat, k3, 5)
       ).map(_.toimipisteellä(toimipiste)))
     )
@@ -355,7 +348,7 @@ object AmmatillinenExampleData {
     toinenOsaamisala = true,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
-    tila = tilaValmis,
+    vahvistus = vahvistus(),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(

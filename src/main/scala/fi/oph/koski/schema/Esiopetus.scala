@@ -49,7 +49,6 @@ case class EsiopetuksenSuoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None

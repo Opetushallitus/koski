@@ -189,13 +189,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     HttpStatus.fold(
-      validateNotInFuture("päättymispäivä", KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa, opiskeluoikeus.päättymispäivä),
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää),
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä), KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää),
       HttpStatus.validate(päättäväJakso == None || päättäväJakso == viimeinenJakso)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.get.tila.koodiarvo}) jälkeen"))
         .then(HttpStatus.validate(!opiskeluoikeus.päättymispäivä.isDefined || opiskeluoikeus.päättymispäivä == päättävänJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Opiskeluoikeuden päättymispäivä (${formatOptionalDate(opiskeluoikeus.päättymispäivä)}) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (${formatOptionalDate(päättävänJaksonPäivä)})"))),
       DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluoikeus.tila.opiskeluoikeusjaksot, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät),
-      HttpStatus.validate(opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})"))
+      HttpStatus.validate(opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})")),
     )
   }
 
@@ -203,12 +202,17 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     val arviointipäivät: List[LocalDate] = suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä)
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
+    val parentVahvistuspäivät = parent.flatMap(_.vahvistus.map(_.päivä))
     HttpStatus.fold(
+      validateDateOrder(("suoritus.vahvistus.päivä", vahvistuspäivät), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta) ::
+      validateDateOrder(("osasuoritus.vahvistus.päivä", vahvistuspäivät), ("suoritus.vahvistus.päivä", parentVahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.suorituksenVahvistusEnnenSuorituksenOsanVahvistusta) ::
       validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät), KoskiErrorCategory.badRequest.validation.date.arviointiEnnenAlkamispäivää)
-        .then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
-          .then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
-        :: validateNotInFuture("suoritus.arviointi.päivä", KoskiErrorCategory.badRequest.validation.date.arviointipäiväTulevaisuudessa, arviointipäivät)
-        :: validateNotInFuture("suoritus.vahvistus.päivä", KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, vahvistuspäivät)
+        .then(
+          validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
+            .then(
+              validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)
+            )
+        )
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, parent)
         :: validateLaajuus(suoritus)
@@ -255,17 +259,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateStatus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
-    if (hasVahvistus && !suoritus.valmis) {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (suoritus.valmis && !hasArviointi && !suoritus.isInstanceOf[Arvioinniton]) {
-      KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu arviointi, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (suoritus.tarvitseeVahvistuksen && !hasVahvistus && suoritus.valmis && !parent.find(_.tarvitseeVahvistuksen).isDefined) {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+    if (hasVahvistus && suoritus.arviointiPuuttuu) {
+      KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
     } else {
-      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
+      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(_.kesken)) match {
         case (true, Some(keskeneräinenOsasuoritus)) =>
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
-            "Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+            "Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus))
         case _ =>
           HttpStatus.ok
       }
@@ -274,7 +274,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     if (suoritus.kesken && opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
-      KoskiErrorCategory.badRequest.validation.tila.suoritusVäärässäTilassa("Suoritus " + suorituksenTunniste(suoritus) + " on tilassa KESKEN, vaikka opiskeluoikeuden tila on valmistunut")
+      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
     } else {
       HttpStatus.ok
     }
@@ -326,9 +326,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case s: PerusopetuksenOppimääränSuoritus if s.osasuoritusLista.isEmpty && s.valmis =>
-      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sen tila on VALMIS")
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.luokkaAste == "9" && s.valmis && !s.jääLuokalle && s.osasuoritusLista.nonEmpty =>
-      KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun suoritus on VALMIS, eikä oppilas jää luokalle")
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
     case _ =>
       HttpStatus.ok
   }

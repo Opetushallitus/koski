@@ -76,7 +76,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       else KorkeakoulututkinnonSuoritus(
         koulutusmoduuli = t,
         arviointi = None,
-        tila = requiredKoodi("suorituksentila", "KESKEN"),
         vahvistus = None,
         suorituskieli = None,
         osasuoritukset = None,
@@ -94,7 +93,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             arviointi = arviointi(suoritus),
-            tila = requiredKoodi("suorituksentila", "VALMIS"),
             vahvistus = None,
             suorituskieli = None,
             toimipiste = oppilaitos(suoritus),
@@ -119,7 +117,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0).map(op => LaajuusOpintopisteissä(op))
       ),
       arviointi = arviointi(suoritus),
-      tila = requiredKoodi("suorituksentila", "VALMIS"),
       vahvistus = None,
       suorituskieli = (suoritus \\ "Kieli").headOption.map(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
       toimipiste = oppilaitos(suoritus),

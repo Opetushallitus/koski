@@ -1,22 +1,11 @@
-import {
-  addContext,
-  modelData,
-  modelItems,
-  modelLens,
-  modelLookup,
-  modelSet,
-  modelSetValue,
-  modelTitle,
-  pushModel
-} from './EditorModel'
+import {addContext, modelData, modelItems, modelLookup, modelSet, modelSetValue, pushModel} from './EditorModel'
 import React from 'baret'
 import R from 'ramda'
 import Atom from 'bacon.atom'
-import * as L from 'partial.lenses'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, setTila, suoritusKesken, suoritusValmis} from './Suoritus'
+import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis, tilaText} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
@@ -25,7 +14,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">
       <span className="tiedot">
         <span className="tila">
-          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ modelTitle(model, 'tila') }</span>
+          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ tilaText(model) }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
@@ -34,7 +23,6 @@ export const TilaJaVahvistusEditor = ({model}) => {
       </span>
       <span className="controls">
         <MerkitseValmiiksiButton model={model}/>
-        <MerkitseKeskeytyneeksiButton model={model}/>
         <MerkitseKeskeneräiseksiButton model={model}/>
       </span>
     </div>
@@ -45,25 +33,10 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   if (!model.context.edit || suoritusKesken(model)) return null
   var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').koodiarvo
   let merkitseKeskeneräiseksi = () => {
-    pushModel(setTila(modelSetValue(model, undefined, 'vahvistus'), 'KESKEN'))
+    pushModel(modelSetValue(model, undefined, 'vahvistus'))
   }
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
   return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
-}
-
-const MerkitseKeskeytyneeksiButton = ({model}) => {
-  if (!model.context.edit || !suoritusKesken(model)) return null
-
-  let merkitseKeskeytyneeksiJosKesken = (suoritus) => {
-    if (!suoritusKesken(suoritus)) return suoritus
-    let osasuorituksetKeskeytetty = L.modify([modelLens('osasuoritukset'), 'value', L.elems], merkitseKeskeytyneeksiJosKesken, suoritus)
-    return setTila(osasuorituksetKeskeytetty, 'KESKEYTYNYT')
-  }
-
-  let merkitseKeskeytyneeksi = () => {
-    pushModel(merkitseKeskeytyneeksiJosKesken(model))
-  }
-  return <button className="merkitse-keskeytyneeksi" onClick={merkitseKeskeytyneeksi}><Text name="Merkitse keskeytyneeksi"/></button>
 }
 
 const MerkitseValmiiksiButton = ({model}) => {
@@ -75,8 +48,7 @@ const MerkitseValmiiksiButton = ({model}) => {
       if (isPerusopetuksenOppimäärä(model)) {
         let ysiluokkaKesken = modelItems(model.context.opiskeluoikeus, 'suoritukset').find(R.allPass([isYsiluokka, suoritusKesken]))
         if (ysiluokkaKesken) {
-          var ysiLuokkaValmis = setTila(ysiluokkaKesken, 'VALMIS')
-          ysiLuokkaValmis = modelSet(ysiLuokkaValmis, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
+          var ysiLuokkaValmis = modelSet(ysiluokkaKesken, modelLookup(suoritusModel, 'vahvistus'), 'vahvistus')
           pushModel(ysiLuokkaValmis, model.context.changeBus)
         }
       }

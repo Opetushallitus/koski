@@ -41,7 +41,6 @@ object AmmattitutkintoExample {
     suoritukset = List(
       NäyttötutkintoonValmistavanKoulutuksenSuoritus(
         tutkinto = tutkinto,
-        tila = tilaValmis,
         alkamispäivä = Some(date(2012, 9, 1)),
         päättymispäivä = None,
         toimipiste = stadinToimipiste,
@@ -49,14 +48,14 @@ object AmmattitutkintoExample {
         suorituskieli = suomenKieli,
         osasuoritukset = Some(List(
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            tila = tilaValmis,
+            arviointi = Some(List(arviointiHyväksytty)),
             koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
               PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
               "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
             )
           ),
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            tila = tilaValmis,
+            arviointi = Some(List(arviointiHyväksytty)),
             koulutusmoduuli = autonLisävarustetyöt(false)
           )
         ))
@@ -70,7 +69,6 @@ object AmmattitutkintoExample {
           Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
         )),
         suorituskieli = suomenKieli,
-        tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = stadinToimipiste,
         vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
@@ -100,13 +98,13 @@ object AmmatillinenPerustutkintoExample {
   val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    päättymispäivä = Some(date(2016, 5, 31)),
+    päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
-        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
       )
     )
   )
@@ -135,14 +133,12 @@ object AmmatillinenPerustutkintoExample {
                  |- tunnettava venttiilikoneiston merkitys moottorin toiminnan osana
                  |osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään
                  |- noudatettava sovittuja työaikoja""".stripMargin, false, None),
-            tila = tilaValmis,
             toimipiste = None,
             näyttö = Some(näyttö(date(2002, 4, 20), "Moottorin korjaus", "Autokorjaamo Oy, Riihimäki")),
             vahvistus = vahvistusValinnaisellaTittelillä(date(2002, 5, 28), stadinAmmattiopisto, None)
           )),
           "Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)"
         )),
-        tila = tilaValmis,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiHyväksytty)),
         tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat,
@@ -167,7 +163,6 @@ object AmmatillinenOldExamples {
         suoritustapa = suoritustapaNäyttö,
         järjestämismuodot = Some(List(Järjestämismuotojakso(date(2016, 9, 1), None, järjestämismuotoOppisopimus))),
         suorituskieli = suomenKieli,
-        tila = tilaKesken,
         alkamispäivä = Some(date(2016, 9, 1)),
         toimipiste = stadinToimipiste,
         vahvistus = None,
@@ -192,7 +187,6 @@ object AmmatillinenOldExamples {
           Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
         suorituskieli = None,
-        tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiKiitettävä.copy(kuvaus=Some("Erinomaista kehitystä")))),
@@ -207,7 +201,6 @@ object AmmatillinenOldExamples {
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = suoritustapaNäyttö,
       järjestämismuodot = None,
-      tila = tilaKesken,
       toimipiste = stadinToimipiste,
       suorituskieli = suomenKieli
     ),
@@ -217,7 +210,6 @@ object AmmatillinenOldExamples {
         koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
         tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
         suorituskieli = None,
-        tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiKiitettävä)),
@@ -241,7 +233,6 @@ object AmmatillinenOldExamples {
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = suoritustapaOps,
           järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
-          tila = tilaKesken,
           toimipiste = stadinToimipiste,
           suorituskieli = suomenKieli,
 
@@ -253,7 +244,6 @@ object AmmatillinenOldExamples {
               lisätiedot = None,
               tutkinto = None,
               suorituskieli = None,
-              tila = tilaValmis,
               alkamispäivä = None,
               toimipiste = Some(stadinToimipiste),
               arviointi = Some(
@@ -306,7 +296,6 @@ object AmmatillinenOldExamples {
           suoritustapa = suoritustapaNäyttö,
           järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
           suorituskieli = suomenKieli,
-          tila = tilaValmis,
           alkamispäivä = None,
           toimipiste = stadinToimipiste,
           vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date(2016, 1, 9), Some(helsinki), stadinAmmattiopisto, List(
@@ -334,7 +323,6 @@ object AmmatillinenOldExamples {
       ),
       näyttö = Some(näyttö(date(2012, 10, 20), "Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
@@ -354,7 +342,6 @@ object AmmatillinenOldExamples {
       ),
       näyttö = Some(näyttö(date(2013, 4, 1), "Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
@@ -373,7 +360,6 @@ object AmmatillinenOldExamples {
       ),
       näyttö = Some(näyttö(date(2014, 10, 20), "Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
@@ -388,7 +374,6 @@ object AmmatillinenOldExamples {
       koulutusmoduuli = autonLisävarustetyöt(true),
       näyttö = Some(näyttö(date(2015, 4, 1), "Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
@@ -407,15 +392,14 @@ object AmmatillinenOldExamples {
       ),
       tunnustettu = Some(tunnustettu),
       suorituskieli = None,
-      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
-        date(2016, 2, 1),
+        date(2016, 1, 9),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 5, 1), stadinAmmattiopisto, helsinki),
+      vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 1, 9), stadinAmmattiopisto, helsinki),
       tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
     )
   )

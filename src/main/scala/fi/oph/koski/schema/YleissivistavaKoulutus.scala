@@ -9,7 +9,7 @@ trait OppiaineenSuoritus extends Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
 }
 
-trait KurssinSuoritus extends Suoritus with VahvistuksetonSuoritus{
+trait KurssinSuoritus extends Suoritus with Vahvistukseton{
   @Title("Kurssi")
   @Flatten
   def koulutusmoduuli: Koulutusmoduuli

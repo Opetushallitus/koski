@@ -13,7 +13,6 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
     LukionOppiaineenOppimääränSuoritus(
       koulutusmoduuli = LukionMuuValtakunnallinenOppiaine(Koodistokoodiviite("HI", "koskioppiaineetyleissivistava"), perusteenDiaarinumero = diaari),
       suorituskieli = suomenKieli,
-      tila = tilaKesken,
       toimipiste = jyväskylänNormaalikoulu,
       osasuoritukset = None
     )

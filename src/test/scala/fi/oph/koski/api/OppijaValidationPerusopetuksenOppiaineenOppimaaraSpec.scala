@@ -17,7 +17,6 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
           tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "HI"),
           perusteenDiaarinumero = diaari
         ),
-        tila = tilaValmis,
         toimipiste = jyväskylänNormaalikoulu,
         arviointi = PerusopetusExampleData.arviointi(9),
         suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,

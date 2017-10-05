@@ -8,7 +8,6 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaihe,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
@@ -32,19 +31,17 @@ case class AikuistenPerusopetuksenAlkuvaihe(
 @Description("Oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän alkuvaiheen suoritusta")
 case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenOppiaine,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Title("Kurssit")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
 case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenKurssi,
-  tila: Koodistokoodiviite,
   @Flatten
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,

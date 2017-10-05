@@ -36,7 +36,6 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PerusopetukseenValmistavaOpetus,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -52,12 +51,11 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavanopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends VahvistuksetonSuoritus with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(

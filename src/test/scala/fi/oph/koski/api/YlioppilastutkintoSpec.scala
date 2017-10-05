@@ -34,10 +34,10 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
         oikeudet(0).tyyppi.koodiarvo should equal("ylioppilastutkinto")
         oikeudet(0).suoritukset.length should equal(1)
         val tutkintoSuoritus: YlioppilastutkinnonSuoritus = oikeudet(0).asInstanceOf[YlioppilastutkinnonOpiskeluoikeus].suoritukset(0)
-        tutkintoSuoritus.tila.koodiarvo should equal("VALMIS")
+        tutkintoSuoritus.valmis should equal(true)
         tutkintoSuoritus.osasuoritusLista.length should equal(5)
         tutkintoSuoritus.osasuoritusLista.foreach { koeSuoritus =>
-          koeSuoritus.tila.koodiarvo should equal("VALMIS")
+          koeSuoritus.valmis should equal(true)
         }
       }
     }

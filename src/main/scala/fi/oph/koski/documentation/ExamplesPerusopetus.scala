@@ -36,7 +36,7 @@ object ExamplesPerusopetus {
     suoritukset = List(
       perusopetuksenOppimääränSuoritusKesken,
       kahdeksannenLuokanSuoritus,
-      yhdeksännenLuokanSuoritus.copy(tila = tilaKesken, vahvistus = None)
+      yhdeksännenLuokanSuoritus.copy(vahvistus = None)
     )
   )
 
@@ -44,7 +44,7 @@ object ExamplesPerusopetus {
     alkamispäivä = Some(date(2012, 6, 15)),
     oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
     suoritukset = List(
-      perusopetuksenOppimääränSuoritusKesken.copy(tila = tilaKeskeytynyt).copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
+      perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
       kuudennenLuokanSuoritus,
       seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
@@ -69,7 +69,6 @@ object ExamplesPerusopetus {
         NuortenPerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
           suorituskieli = suomenKieli,
-          tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
@@ -114,7 +113,7 @@ object ExamplesPerusopetus {
   )
 
   def toimintaAlueenSuoritus(toimintaAlue: String): PerusopetuksenToiminta_AlueenSuoritus = {
-    PerusopetuksenToiminta_AlueenSuoritus(koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue")), tila = tilaValmis)
+    PerusopetuksenToiminta_AlueenSuoritus(koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue")))
   }
 
   val examples = List(

@@ -96,13 +96,13 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |MAA16 Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2 1 9 4.6.2016
           |MU Musiikki 1 8
           |MU1 Musiikki ja minä 1 8 4.6.2016
-          |OA Oman äidinkielen opinnot 1
+          |OA Oman äidinkielen opinnot 1 hyväksytty
           |OA1 Oman äidinkielen keskustelukurssi 1 hyväksytty 8.6.2016
           |PS Psykologia 1 9
           |PS1 Psyykkinen toiminta ja oppiminen 1 9 4.6.2016
           |ITT Tanssi ja liike 1 10
           |ITT1 Tanssin introkurssi 1 10 4.6.2016
-          |TO Teemaopinnot 1
+          |TO Teemaopinnot 1 hyväksytty
           |MTA Monitieteinen ajattelu 1 hyväksytty 8.6.2016
           |TE Terveystieto 1 9
           |TE1 Terveyden perusteet 1 8 4.6.2016

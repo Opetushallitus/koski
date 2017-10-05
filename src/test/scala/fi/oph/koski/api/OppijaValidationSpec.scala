@@ -3,7 +3,8 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
+import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
@@ -220,10 +221,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         })
 
         "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
-          verifyResponseStatus(400,
-              exact(KoskiErrorCategory.badRequest.validation.date.päättymispäiväTulevaisuudessa, "Päivämäärä päättymispäivä (2100-05-31) on tulevaisuudessa"),
-              exact(KoskiErrorCategory.badRequest.validation.date.vahvistuspäiväTulevaisuudessa, "Päivämäärä suoritus.vahvistus.päivä (2100-05-31) on tulevaisuudessa")
-          )
+          verifyResponseStatus(200)
         })
 
         "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
@@ -249,6 +247,15 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           "alkamispäivä > arvioituPäättymispäivä"  in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
           })
+
+          "suoritus.vahvistus.päivä > päättymispäivä" in {
+            val oo = päättymispäivällä(defaultOpiskeluoikeus, date(2017, 5, 31))
+            val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.map { case s: AmmatillisenTutkinnonSuoritus => s.copy(vahvistus = vahvistus(date(2017, 6, 30), stadinAmmattiopisto, Some(helsinki)))}.head
+
+            putOpiskeluoikeus(oo.copy(suoritukset = List(tutkinto))) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-06-30) oltava sama tai aiempi kuin päättymispäivä(2017-05-31)"))
+            }
+          }
         }
 
         "Päivämäärät vs opiskeluoikeusjaksot" - {

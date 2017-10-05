@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, tilaValmis}
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.MockOppijat
@@ -14,7 +14,6 @@ import fi.oph.koski.schema._
 object ExamplesIB {
   val preIBSuoritus = PreIBSuoritus(
     toimipiste = ressunLukio,
-    tila = tilaValmis,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     suorituskieli = englanti,
     osasuoritukset = Some(List(
@@ -127,14 +126,13 @@ object ExamplesIB {
 
   def ibTutkinnonSuoritus(predicted: Boolean) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
-    tila = tilaValmis,
     suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(osasuoritukset(predicted = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
-      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(
-        IBKurssinSuoritus(ibKurssi("TOK1", "TOK1"), tilaValmis, ibKurssinArviointi("S"), None),
-        IBKurssinSuoritus(ibKurssi("TOK2", "TOK2"), tilaValmis, ibKurssinArviointi("S"), None)
+      IBOppiaineTheoryOfKnowledge(), ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(
+        IBKurssinSuoritus(ibKurssi("TOK1", "TOK1"), ibKurssinArviointi("S"), None),
+        IBKurssinSuoritus(ibKurssi("TOK2", "TOK2"), ibKurssinArviointi("S"), None)
       ))
     )),
     extendedEssay = Some(IBExtendedEssaySuoritus(
@@ -142,21 +140,19 @@ object ExamplesIB {
         aine = ibKieli("A2", "EN", higherLevel, 1),
         aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
       ),
-      tilaValmis, ibCoreArviointi("B", predicted = predicted)
+      ibCoreArviointi("B", predicted = predicted)
     )),
     creativityActionService = Some(IBCASSuoritus(
-      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S", predicted = predicted)
+      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibArviointi("S", predicted = predicted)
     )),
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
   def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
-    tila = tilaValmis,
     osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
       PreIBKurssinSuoritus(
         koulutusmoduuli = kurssi,
-        tila = tilaValmis,
         arviointi = LukioExampleData.sanallinenArviointi(arvosana)
       )
     })
@@ -164,9 +160,8 @@ object ExamplesIB {
 
   def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arviointi: Option[List[IBOppiaineenArviointi]], kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
-    tila = tilaValmis,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>
-      IBKurssinSuoritus(koulutusmoduuli = kurssi, tila = tilaValmis, arviointi = ibKurssinArviointi(kurssinArvosana, effort))
+      IBKurssinSuoritus(koulutusmoduuli = kurssi, arviointi = ibKurssinArviointi(kurssinArvosana, effort))
     }),
     arviointi = arviointi
   )
@@ -212,11 +207,11 @@ object ExamplesIB {
   val opiskeluoikeus = IBOpiskeluoikeus(
     oppilaitos = Some(ressunLukio),
     alkamispäivä = Some(date(2012, 9, 1)),
-    päättymispäivä = Some(date(2016, 1, 10)),
+    päättymispäivä = Some(date(2016, 6, 4)),
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
-        LukionOpiskeluoikeusjakso(date(2016, 1, 10), LukioExampleData.opiskeluoikeusPäättynyt)
+        LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
     suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false))

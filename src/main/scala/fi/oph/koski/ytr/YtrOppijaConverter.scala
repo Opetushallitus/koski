@@ -19,13 +19,13 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
             logger.error("Oppilaitosta " + oid + " ei löydy")
             None
           case Some(oppilaitos) =>
-            val (vahvistus, tila) = ytrOppija.graduationDate match {
+            val vahvistus = ytrOppija.graduationDate match {
               case Some(graduationDate) =>
                 val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
                 val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406").getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
-                (Some(Organisaatiovahvistus(graduationDate, helsinki, oppilaitos)), tilaValmis)
+                Some(Organisaatiovahvistus(graduationDate, helsinki, oppilaitos))
               case None =>
-                (None, tilaKesken)
+                None
             }
             Some(YlioppilastutkinnonOpiskeluoikeus(
                 lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),
@@ -35,7 +35,6 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
                 tyyppi = requiredKoodi("opiskeluoikeudentyyppi", "ylioppilastutkinto"),
                 suoritukset = List(YlioppilastutkinnonSuoritus(
                   tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinto"),
-                  tila = tila,
                   vahvistus = vahvistus,
                   toimipiste = oppilaitos,
                   koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
@@ -46,7 +45,6 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
     }
   }
   private def convertExam(exam: YtrExam) = YlioppilastutkinnonKokeenSuoritus(
-    tila = tilaValmis,
     tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
     arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
     koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi.getOrElse(exam.examId), exam.examNameSv, exam.examNameEn), Some("ytr/koetunnukset")))
@@ -55,7 +53,4 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)
   }
-
-  private def tilaValmis = requiredKoodi("suorituksentila", "VALMIS")
-  private def tilaKesken = requiredKoodi("suorituksentila", "KESKEN")
 }

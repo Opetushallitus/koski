@@ -38,7 +38,6 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PerusopetuksenLisäopetus,
   toimipiste: OrganisaatioWithOid,
-  tila: Koodistokoodiviite,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -61,38 +60,35 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
   yksilöllistettyOppimäärä: Boolean = false,
-  tila: Koodistokoodiviite,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   korotus: Boolean,
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä with MahdollisestiSuorituskielellinen
+) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
   @Title("Toiminta-alue")
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
   @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää")
-  tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   korotus: Boolean = false,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksentoimintaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus with Toiminta_AlueenSuoritus
+) extends PerusopetuksenLisäopetuksenAlisuoritus with Vahvistukseton with Toiminta_AlueenSuoritus
 
 @Description("Muu perusopetuksen lisäopetuksessa suoritettu opintokokonaisuus")
 case class MuuPerusopetuksenLisäopetuksenSuoritus(
   @Title("Suoritetut opinnot")
   koulutusmoduuli: MuuPerusopetuksenLisäopetuksenKoulutusmoduuli,
-  tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("muuperusopetuksenlisaopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "muuperusopetuksenlisaopetuksensuoritus", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with VahvistuksetonSuoritus {
+) extends PerusopetuksenLisäopetuksenAlisuoritus with Vahvistukseton {
   def korotus = false
 }
 

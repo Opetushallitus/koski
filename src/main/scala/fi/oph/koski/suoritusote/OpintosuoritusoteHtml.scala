@@ -37,7 +37,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
       })
     }
 
-    def tutkinnotHtml(oo: Opiskeluoikeus) = oo.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS" && s.koulutusmoduuli.isTutkinto).map { t =>
+    def tutkinnotHtml(oo: Opiskeluoikeus) = oo.suoritukset.filter(s => s.valmis && s.koulutusmoduuli.isTutkinto).map { t =>
       <tr>
         <td>{t.koulutusmoduuli.tunniste.koodiarvo}</td>
         <td>{i(t.koulutusmoduuli)}</td>
@@ -149,7 +149,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
     }
 
     def suoritusTaiAlisuorituksiaValmisTilassa(s: Suoritus): Boolean = {
-      s.tila.koodiarvo == "VALMIS" || s.osasuoritusLista.exists(suoritusTaiAlisuorituksiaValmisTilassa)
+      s.valmis || s.osasuoritusLista.exists(suoritusTaiAlisuorituksiaValmisTilassa)
     }
 
     roots.filter(suoritusTaiAlisuorituksiaValmisTilassa)

@@ -5,6 +5,7 @@ import {currentLocation} from '../location'
 import Text from '../Text.jsx'
 import {modelData, modelItems} from './EditorModel'
 import {invalidateOpiskeluoikeus} from '../Oppija.jsx'
+import {suoritusValmis} from './Suoritus'
 
 export class TogglableEditor extends React.Component {
   render() {
@@ -47,6 +48,6 @@ class MitätöiButton extends React.Component {
 const suorituksiaTehty = opiskeluoikeus => {
   let suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
   let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
-  return osasuoritukset.find(s => modelData(s, 'tila').koodiarvo === 'VALMIS') !== undefined
+  return osasuoritukset.find(suoritusValmis) !== undefined
 }
 

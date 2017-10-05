@@ -104,7 +104,6 @@ object OpiskeluoikeusTestData {
       oppilaitos = Some(oppilaitos),
       suoritukset = List(AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
-        tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
         toimipiste = oppilaitos,
         suorituskieli = suomenKieli,
         suoritustapa = AmmatillinenExampleData.suoritustapaOps

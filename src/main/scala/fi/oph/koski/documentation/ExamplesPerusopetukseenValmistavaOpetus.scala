@@ -20,9 +20,8 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     suoritukset = List(
       PerusopetukseenValmistavanOpetuksenSuoritus(
         koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
-        tila = tilaValmis,
         toimipiste = jyväskylänNormaalikoulu,
-        vahvistus = vahvistusPaikkakunnalla(),
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2008, 6, 1)),
         suorituskieli = suomenKieli,
         osasuoritukset = Some(List(
           PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
@@ -31,7 +30,6 @@ object ExamplesPerusopetukseenValmistavaOpetus {
               laajuus = Some(PerusopetukseenValmistavanKoulutuksenLaajuus(10, Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko"))),
               opetuksenSisältö = Some(finnish("Suullinen ilmaisu ja kuullun ymmärtäminen"))
             ),
-            tila = tilaValmis,
             arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))
           )
         ))

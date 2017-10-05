@@ -13,7 +13,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
-import {fixTila, hasArvosana} from './Suoritus'
+import {fixArviointi, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n'
 import Text from '../Text.jsx'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
@@ -149,13 +149,13 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let hasProperties = displayProperties.length > 0
     let nimi = modelTitle(model, 'koulutusmoduuli')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let arvosanaModel = modelLookup(fixTila(model), 'arviointi.-1.arvosana')
+    let arvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
 
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
-        <span className="tila" title={modelTitle(model, 'tila')}>{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
+        <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>
         {
           hasProperties
             ? <a className="nimi" onClick={() => onExpand(!expanded)}>{nimi}</a>
@@ -199,17 +199,10 @@ const suoritusProperties = suoritus => {
   let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
     suoritus.context.edit
       ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu'].includes(p.key))
-      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tila', 'tutkinnonOsanRyhmä'].includes(p.key)))
+      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
   )
   return properties.filter(shouldShowProperty(suoritus.context))
 }
 
-export const suorituksenTilaSymbol = (tila) => {
-  switch (tila) {
-    case 'VALMIS': return ''
-    case 'KESKEYTYNYT': return ''
-    case 'KESKEN': return ''
-    default: return ''
-  }
-}
+export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''

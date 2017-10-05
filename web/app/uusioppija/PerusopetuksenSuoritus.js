@@ -25,7 +25,6 @@ const makePerusopetuksenOppimääränSuoritus = (oppilaitos, oppimäärä, perus
       perusteenDiaarinumero: peruste
     },
     toimipiste: oppilaitos,
-    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
     suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
     tyyppi: oppimäärä,
     osasuoritukset: oppiaineet
@@ -43,7 +42,6 @@ const makeAikuistenPerusopetuksenAlkuvaiheenSuoritus = (oppilaitos, oppimäärä
       perusteenDiaarinumero: peruste
     },
     toimipiste: oppilaitos,
-    tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN'},
     suoritustapa: { koodistoUri: 'perusopetuksensuoritustapa', koodiarvo: 'koulutus'},
     tyyppi: oppimäärä,
     osasuoritukset: oppiaineet

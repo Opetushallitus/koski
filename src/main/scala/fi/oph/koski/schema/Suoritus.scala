@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
@@ -18,7 +19,10 @@ trait Suoritus {
   def alkamispäivä: Option[LocalDate] = None
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
-  def tila: Koodistokoodiviite
+  @SyntheticProperty
+  @ReadOnly("Suorituksen tila päätellään automaattisesti. Koski ei enää käsittele tila-kentän arvoa. Kenttä poistetaan tulevaisuudessa tarpeettomana.")
+  @Hidden
+  def tila: Option[Koodistokoodiviite] = None
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan kun suorituksen tila on VALMIS")
@@ -36,9 +40,10 @@ trait Suoritus {
     case a: SanallinenArviointi => a.kuvaus
     case _ => None
   }
-  def tarvitseeVahvistuksen = true
-  def valmis = tila.koodiarvo == "VALMIS"
-  def kesken = tila.koodiarvo == "KESKEN"
+  def tarvitseeVahvistuksen: Boolean = false
+  def valmis = vahvistus.isDefined || !tarvitseeVahvistuksen && arviointi.toList.nonEmpty
+  def arviointiPuuttuu = arviointi.isEmpty
+  def kesken = !valmis
 }
 
 trait Suorituskielellinen {
@@ -57,6 +62,8 @@ trait MahdollisestiSuorituskielellinen {
 
 trait Arvioinniton extends Suoritus {
   def arviointi = None
+  override def arviointiPuuttuu = false
+  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait Toimipisteellinen extends OrganisaatioonLiittyvä {
@@ -72,16 +79,20 @@ trait Ryhmällinen {
   def ryhmä: Option[String]
 }
 
-trait PäätasonSuoritus extends Suoritus with Toimipisteellinen
+trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
+  override def tarvitseeVahvistuksen = true
+  def mutuallyExclusivePäätasoVahvistukseton = {}
+}
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   @MultiLineString(3)
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 
-trait VahvistuksetonSuoritus extends Suoritus {
-  override def tarvitseeVahvistuksen = false
+trait Vahvistukseton extends Suoritus {
   override def vahvistus: Option[Vahvistus] = None
+  def mutuallyExclusivePäätasoVahvistukseton = {}
+  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait MonikielinenSuoritus {
