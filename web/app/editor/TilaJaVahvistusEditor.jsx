@@ -5,7 +5,10 @@ import Atom from 'bacon.atom'
 import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
-import {arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suoritusKesken, suoritusValmis, tilaText} from './Suoritus'
+import {
+  arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suorituksellaVahvistus, suoritusKesken, suoritusValmis,
+  tilaText
+} from './Suoritus'
 import Text from '../Text.jsx'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
@@ -57,8 +60,9 @@ const MerkitseValmiiksiButton = ({model}) => {
     }
   }
   let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
+  let buttonText = suorituksellaVahvistus(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
   return (<span>
-    <button className="merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}><Text name="Merkitse valmiiksi"/></button>
+    <button className="merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
     {
       addingAtom.map(adding => adding && <MerkitseSuoritusValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
     }

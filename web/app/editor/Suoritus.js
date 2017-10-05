@@ -5,14 +5,20 @@ import {
 import * as L from 'partial.lenses'
 import R from 'ramda'
 import {t} from '../i18n'
+import {parseISODate} from '../date'
 
+const isInPast = dateStr => parseISODate(dateStr) < new Date()
 export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
-    return !!modelData(suoritus, 'vahvistus')
+    let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
+    return vahvistuspäivä && isInPast(vahvistuspäivä)
   } else {
-    return !!modelData(suoritus, 'arviointi.0')
+    let arviointi = modelData(suoritus, 'arviointi.0');
+    let arviointiPäivä = modelData(arviointi, 'päivä')
+    return arviointi && arviointiPäivä ? isInPast(arviointiPäivä) : !!arviointi
   }
 }
+export const suorituksellaVahvistus = suoritus => !!modelData(suoritus, 'vahvistus')
 export const suoritusKesken = R.complement(suoritusValmis)
 export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus valmis' : 'Suoritus kesken')
 export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'
