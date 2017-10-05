@@ -16,8 +16,8 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 1.6.2016\n' +
-          'Tila 1.6.2016 Valmistunut\n' +
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.6.2016\n' +
+          'Tila 8.6.2016 Valmistunut\n' +
           '1.9.2012 Läsnä\n' +
           'Lisätiedot\n' +
           'Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa Pikkuvanha yksilö\n' +
@@ -34,7 +34,7 @@ describe('Lukiokoulutus', function( ){
           'Suorituskieli suomi\n' +
           'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
           'Ryhmä 12A\n' +
-          'Suoritus valmis Vahvistus : 1.6.2016 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 8.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
@@ -63,8 +63,17 @@ describe('Lukiokoulutus', function( ){
       })
     })
 
+    describe('Tulostettava todistus', function() {
+      before(opinnot.avaaTodistus(0))
+      it('näytetään', function() {
+        // See more detailed content specification in LukioSpec.scala
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 8.6.2016 Reijo Reksi rehtori')
+      })
+    })
+
     describe('Kurssin tiedot', function() {
       var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+      before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
       describe('Kun klikataan', function() {
         before(kurssi.toggleDetails)
         it('näyttää kurssin tiedot', function() {
@@ -93,7 +102,11 @@ describe('Lukiokoulutus', function( ){
       })
       describe('Tietojen muokkaaminen', function() {
         var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
-        before(opiskeluoikeusEditor.edit)
+        before(
+          opiskeluoikeusEditor.edit,
+          opiskeluoikeusEditor.property('tila').removeItem(0),
+          opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+        )
         describe('Arvosanan muuttaminen', function() {
           var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
           before(kurssi.arvosana.selectValue('6'), opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
@@ -101,13 +114,6 @@ describe('Lukiokoulutus', function( ){
             expect(kurssi.arvosana.getText()).to.equal('6')
           })
         })
-      })
-    })
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
-      it('näytetään', function() {
-        // See more detailed content specification in LukioSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 1.6.2016 Reijo Reksi rehtori')
       })
     })
   })

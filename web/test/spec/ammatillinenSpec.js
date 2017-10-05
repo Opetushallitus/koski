@@ -1181,7 +1181,12 @@ describe('Ammatillinen koulutus', function() {
             expect(opinnot.tutkinnonOsat().tutkinnonOsa(5).nimi()).to.equal('Tekniikan asiantuntemus')
           })
           describe('kun tallennetaan', function() {
-            before(opinnot.tutkinnonOsat().tutkinnonOsa(5).propertyBySelector('.arvosana').setValue('3'), editor.saveChanges)
+            before(
+              editor.property('tila').removeItem(0),
+              opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+              opinnot.tutkinnonOsat().tutkinnonOsa(5).propertyBySelector('.arvosana').setValue('3'),
+              editor.saveChanges
+            )
             it('tallennus onnistuu', function() {
               expect(page.isSavedLabelShown()).to.equal(true)
             })
