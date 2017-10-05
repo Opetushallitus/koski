@@ -277,7 +277,7 @@ object AmmatillinenExampleData {
           osasuoritukset = Some(List(
             AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
               AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
-              arviointi = Some(List(arviointiHyväksytty)),
+              arviointi = Some(List(arviointiHyväksytty))
             )
           ))
         ),
