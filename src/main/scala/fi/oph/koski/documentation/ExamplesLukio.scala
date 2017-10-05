@@ -16,11 +16,11 @@ object ExamplesLukio {
 
   def päättötodistus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
       alkamispäivä = Some(date(2012, 9, 1)),
-      päättymispäivä = Some(date(2016, 6, 1)),
+      päättymispäivä = Some(date(2016, 6, 8)),
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 1), tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 8), tila = opiskeluoikeusPäättynyt)
         )
       ),
       oppilaitos = Some(oppilaitos),
@@ -38,7 +38,7 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
-          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 6, 1)),
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 6, 8)),
           toimipiste = toimipiste,
           todistuksellaNäkyvätLisätiedot = Some("Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"),
           ryhmä = Some("12A"),
@@ -219,10 +219,10 @@ object ExamplesLukio {
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7)),
-            kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = numeerinenArviointi(8)),
-            kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = numeerinenArviointi(7)),
-            kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6))
+            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = numeerinenArviointi(8, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6, päivä = date(2016, 1, 10)))
           ))
         )
       ),
