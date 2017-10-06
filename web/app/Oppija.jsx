@@ -1,4 +1,4 @@
-import React, {fromBacon} from 'baret'
+import React from 'baret'
 import Bacon from 'baconjs'
 import Http from './http'
 import {
@@ -27,6 +27,7 @@ import {doActionWhileMounted} from './util'
 import Text from './Text.jsx'
 import {t} from './i18n'
 import {EditLocalizationsLink} from './EditLocalizationsLink.jsx'
+import {setOpiskeluoikeusInvalidated} from './OpiskeluoikeusInvalidation.jsx'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -188,11 +189,11 @@ export class ExistingOppija extends React.Component {
     let henkilö = modelLookup(oppija, 'henkilö')
     let hetu = modelTitle(henkilö, 'hetu')
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
+    stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
     return oppija.loading
       ? <div className="loading"/>
       : (
         <div>
-          <OpiskeluoikeusMitätöity stateP={stateP} />
           <div className={stateP.map(state => 'oppija-content ' + state)}>
             <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
@@ -241,13 +242,7 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   </div>)
 }
 
-const OpiskeluoikeusMitätöity = ({stateP}) => {
-  return fromBacon(stateP.map(e => e === 'invalidated'
-    ? (<div className="opiskeluoikeus-invalidated">
-        <h1><Text name="Opiskeluoikeus mitätöity"/></h1>
-        <a href="/koski"><Text name="Palaa opiskelijalistaukseen"/></a>
-      </div>)
-    : null))
+const opiskeluoikeusInvalidated = () => {
+  setOpiskeluoikeusInvalidated()
+  window.location = '/koski'
 }
-
-

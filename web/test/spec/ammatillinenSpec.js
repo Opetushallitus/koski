@@ -289,14 +289,16 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Painettaessa uudestaan', function() {
-          before(opinnot.confirmInvalidateOpiskeluoikeus)
+          before(opinnot.confirmInvalidateOpiskeluoikeus, wait.until(page.oppijataulukko.isReady))
           it('Opiskeluoikeus mitätöidään', function() {
             expect(page.isOpiskeluoikeusInvalidated()).to.equal(true)
           })
 
           describe('Mitätöityä opiskeluoikeutta', function() {
-            before(reloadTestFrame, wait.until(page.is404))
-            it('Ei näytetä', function (){})
+            before(wait.forMilliseconds(500), page.oppijataulukko.filterBy('nimi', 'Esimerkki'))
+            it('Ei näytetä', function (){
+              expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ ])
+            })
           })
         })
       })

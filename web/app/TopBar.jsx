@@ -3,6 +3,7 @@ import {UserInfo} from './UserInfo.jsx'
 import Link from './Link.jsx'
 import Text from './Text.jsx'
 import {naviLink} from './Tiedonsiirrot.jsx'
+import {OpiskeluoikeusInvalidatedMessage} from './OpiskeluoikeusInvalidation.jsx'
 
 export const TopBar = ({user, titleKey, inRaamit, location}) => {
   return (inRaamit
@@ -21,8 +22,12 @@ const NavList = ({location}) => {
 }
 
 const RaamitTopBar = ({location}) => {
-  return <header id="topbar" className="inraamit topbarnav"><NavList location={location}/></header>
+  return (<header id="topbar" className="inraamit topbarnav">
+    <NavList location={location}/>
+    {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+  </header>)
 }
+
 
 const LocalTopBar = ({location, user, titleKey}) => {
   return (
@@ -34,7 +39,10 @@ const LocalTopBar = ({location, user, titleKey}) => {
       </h1>
       <UserInfo user={user}/>
       {(user !== null) &&
-        <div className='topbarnav'><NavList location={location}/></div>
+        <div className='topbarnav'>
+          <NavList location={location}/>
+          {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+        </div>
       }
     </header>
   )

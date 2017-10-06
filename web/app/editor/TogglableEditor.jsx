@@ -3,9 +3,8 @@ import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../location'
 import Text from '../Text.jsx'
-import {modelData, modelItems} from './EditorModel'
-import {invalidateOpiskeluoikeus} from '../Oppija.jsx'
-import {suoritusValmis} from './Suoritus'
+import {modelData} from './EditorModel'
+import {InvalidateOpiskeluoikeusButton} from '../OpiskeluoikeusInvalidation.jsx'
 
 export class TogglableEditor extends React.Component {
   render() {
@@ -20,32 +19,9 @@ export class TogglableEditor extends React.Component {
     let editLink = showEditLink
       ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
       : showDeleteLink
-        ? <MitätöiButton opiskeluoikeus={model.context.opiskeluoikeus} />
+        ? <InvalidateOpiskeluoikeusButton opiskeluoikeus={model.context.opiskeluoikeus} />
         : null
 
     return (renderChild(contextualizeModel(model, modifiedContext), editLink))
   }
 }
-
-class MitätöiButton extends React.Component {
-  render() {
-    let { opiskeluoikeus } = this.props
-    let deleteRequested = this.state && this.state.deleteRequested
-
-    return suorituksiaTehty(opiskeluoikeus)
-      ? null
-      : deleteRequested
-        ? (<div className="invalidate">
-            <a onClick={() => this.setState({deleteRequested: false})}><Text name="Peruuta mitätöinti" /></a>
-            <button className="confirm-invalidate" onClick={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}><Text name="Vahvista mitätöinti, operaatiota ei voi peruuttaa" /></button>
-           </div>)
-        : <a className="invalidate" onClick={() => this.setState({deleteRequested: true})}><Text name="Mitätöi opiskeluoikeus" /></a>
-  }
-}
-
-const suorituksiaTehty = opiskeluoikeus => {
-  let suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
-  return osasuoritukset.find(suoritusValmis) !== undefined
-}
-

@@ -72,6 +72,28 @@
     color: white;
   }
 
+  .opiskeluoikeus-invalidated {
+    text-align: center;
+    height: 50px;
+    background: @color-topbar-message-background;
+    color: @color-topbar-message-text;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    transition: height 0.5s ease-out;
+    span {
+      line-height: 50px;
+      vertical-align: middle;
+    }
+    .hide-message {
+      float: right;
+      .RemoveSymbol;
+    }
+    &.hide {
+      a, span {
+        display: none;
+      }
+      height: 0;
+    }
+  }
 }
 
 #topbar.local {
