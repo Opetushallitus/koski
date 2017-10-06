@@ -118,9 +118,10 @@ function OpinnotPage() {
       return isElementVisible(findSingle('.invalidate'))
     },
     confirmInvalidateOpiskeluoikeusIsShown: function() {
-      return isElementVisible(findSingle('.invalidate.confirm'))
+      return isElementVisible(findSingle('.confirm-invalidate'))
     },
     invalidateOpiskeluoikeus: click(findSingle('.invalidate')),
+    confirmInvalidateOpiskeluoikeus: click(findSingle('.confirm-invalidate')),
     backToList: click(findSingle('.back-link'))
   }
 

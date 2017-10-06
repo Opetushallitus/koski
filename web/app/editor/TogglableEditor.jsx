@@ -31,17 +31,15 @@ class MitätöiButton extends React.Component {
   render() {
     let { opiskeluoikeus } = this.props
     let deleteRequested = this.state && this.state.deleteRequested
-    let mitätöi = () => {
-      if (deleteRequested) {
-        invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))
-      } else {
-        this.setState({deleteRequested: true})
-      }
-    }
 
     return suorituksiaTehty(opiskeluoikeus)
       ? null
-      : <button className={deleteRequested ? 'invalidate confirm' : 'invalidate'} onClick={mitätöi}><Text name={deleteRequested ? 'Vahvista mitätöinti, operaatiota ei voi peruuttaa' : 'Mitätöi opiskeluoikeus'}/></button>
+      : deleteRequested
+        ? (<div className="invalidate">
+            <a onClick={() => this.setState({deleteRequested: false})}><Text name="Peruuta mitätöinti" /></a>
+            <button className="confirm-invalidate" onClick={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}><Text name="Vahvista mitätöinti, operaatiota ei voi peruuttaa" /></button>
+           </div>)
+        : <a className="invalidate" onClick={() => this.setState({deleteRequested: true})}><Text name="Mitätöi opiskeluoikeus" /></a>
   }
 }
 

@@ -278,7 +278,7 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Opiskeluoikeudelle jossa ei ole valmiita suorituksia', function() {
       before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
-      it('Näytetään mitätöintinappi', function() {
+      it('Näytetään mitätöintilinkki', function() {
         expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
       })
 
@@ -289,7 +289,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Painettaessa uudestaan', function() {
-          before(opinnot.invalidateOpiskeluoikeus)
+          before(opinnot.confirmInvalidateOpiskeluoikeus)
           it('Opiskeluoikeus mitätöidään', function() {
             expect(page.isOpiskeluoikeusInvalidated()).to.equal(true)
           })
