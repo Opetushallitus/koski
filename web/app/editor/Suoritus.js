@@ -13,7 +13,7 @@ export const suoritusValmis = (suoritus) => {
     let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
     return vahvistuspäivä && isInPast(vahvistuspäivä)
   } else {
-    let arviointi = modelData(suoritus, 'arviointi.0');
+    let arviointi = modelData(suoritus, 'arviointi.0')
     let arviointiPäivä = modelData(arviointi, 'päivä')
     return arviointi && arviointiPäivä ? isInPast(arviointiPäivä) : !!arviointi
   }
