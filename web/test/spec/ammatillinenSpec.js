@@ -291,13 +291,20 @@ describe('Ammatillinen koulutus', function() {
         describe('Painettaessa uudestaan', function() {
           before(opinnot.confirmInvalidateOpiskeluoikeus, wait.until(page.oppijataulukko.isReady))
           it('Opiskeluoikeus mitätöidään', function() {
-            expect(page.isOpiskeluoikeusInvalidated()).to.equal(true)
+            expect(page.isOpiskeluoikeusInvalidatedMessageShown()).to.equal(true)
           })
 
           describe('Mitätöityä opiskeluoikeutta', function() {
-            before(wait.forMilliseconds(500), page.oppijataulukko.filterBy('nimi', 'Esimerkki'))
-            it('Ei näytetä', function (){
-              expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ ])
+            before(page.oppijataulukko.filterBy('nimi', 'Esimerkki'))
+            it('Ei näytetä', function () {
+              expect(page.oppijataulukko.names()).to.deep.equal([ ])
+            })
+          })
+
+          describe('Vahvistusviestin', function() {
+            before(opinnot.hideInvalidateMessage, wait.untilFalse(page.isOpiskeluoikeusInvalidatedMessageShown))
+            it('Voi piilottaa', function () {
+              expect(page.isOpiskeluoikeusInvalidatedMessageShown()).to.equal(false)
             })
           })
         })

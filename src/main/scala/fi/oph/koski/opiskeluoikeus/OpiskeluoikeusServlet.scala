@@ -17,6 +17,8 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
   }
 
   delete("/:oid") {
-    renderEither(application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid")))
+    val result = application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid"))
+    result.foreach(_ => application.elasticSearch.refreshIndex)
+    renderEither(result)
   }
 }

@@ -13,11 +13,11 @@ export const OpiskeluoikeusInvalidatedMessage = () => {
     return null
   }
   let hideBus = Bacon.Bus()
-  let later = Bacon.later(10000)
+  let later = Bacon.later(5000)
   let hideP = hideBus.merge(later).map('hide').toProperty('')
   hideP.filter(e => e === 'hide').onValue(resetOpiskeluoikeusInvalidated)
   return (<div id="invalidated" className={hideP.map(hideClass => 'opiskeluoikeus-invalidated ' + hideClass)}>
-    <Text name="Opiskeluoikeus mitätöity"/><a onClick={() => hideBus.push()} className="hide-message"/>
+    <Text name="Opiskeluoikeus mitätöity"/><a onClick={() => hideBus.push()} className="hide-invalidated-message"/>
   </div>)
 }
 
@@ -26,7 +26,7 @@ export class InvalidateOpiskeluoikeusButton extends React.Component {
     let { opiskeluoikeus } = this.props
     let deleteRequested = this.state && this.state.deleteRequested
 
-    return suorituksiaTehty(opiskeluoikeus)
+    return sisältääValmiitaSuorituksia(opiskeluoikeus)
       ? null
       : deleteRequested
         ? (<div className="invalidate">
@@ -37,7 +37,7 @@ export class InvalidateOpiskeluoikeusButton extends React.Component {
   }
 }
 
-const suorituksiaTehty = opiskeluoikeus => {
+const sisältääValmiitaSuorituksia = opiskeluoikeus => {
   let suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
   let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
   return osasuoritukset.find(suoritusValmis) !== undefined

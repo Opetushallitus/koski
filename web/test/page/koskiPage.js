@@ -183,8 +183,8 @@ function KoskiPage() {
     getUserName: function() {
       return S('.user-info .name').text()
     },
-    isOpiskeluoikeusInvalidated: function() {
-      return isElementVisible(S(".opiskeluoikeus-invalidated"))
+    isOpiskeluoikeusInvalidatedMessageShown: function() {
+      return isElementVisible(S(".opiskeluoikeus-invalidated")) && !isElementVisible(S(".opiskeluoikeus-invalidated.hide"));
     }
   }
 

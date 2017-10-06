@@ -122,6 +122,7 @@ function OpinnotPage() {
     },
     invalidateOpiskeluoikeus: click(findSingle('.invalidate')),
     confirmInvalidateOpiskeluoikeus: click(findSingle('.confirm-invalidate')),
+    hideInvalidateMessage: click(findSingle('.hide-invalidated-message')),
     backToList: click(findSingle('.back-link'))
   }
 
