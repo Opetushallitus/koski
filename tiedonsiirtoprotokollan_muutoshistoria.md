@@ -1,5 +1,6 @@
 ## 29.9.2017
 
+- Opiskeluoikeuden päättymispäivän sekä suorituksen vahvistuksen ja arvioinnin voi asettaa tulevaisuuteen
 - Suorituksen tilaa ei enää käsitellä tietoja vastaanotettaessa, vaan tila lasketaan Koskessa arvioinnin ja vahvistuksen perusteella
 - Ammatillisen tutkinnon osittaiseen suoritukseen lisätty vahvistus
 - Muiden lukio-opintojen suoritukseen lisätty arviointi
