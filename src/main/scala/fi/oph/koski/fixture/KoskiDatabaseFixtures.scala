@@ -45,19 +45,19 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
 
     validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
       val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö))
+      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilöRepository.opintopolku.withMasterInfo(henkilö)))
     }
   }
 
   // cached for performance boost
   private lazy val validatedOpiskeluoikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
-    validator.validateAsJson(Oppija(henkilö, List(oikeus))) match {
-      case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
+    validator.validateAsJson(Oppija(henkilö.henkilö, List(oikeus))) match {
+      case Right(oppija) => (henkilö.henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.kokonimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
     }
   }
 
-  private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = {
+  private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedotWithMasterInfo, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (MockOppijat.eero, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.eerola, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),

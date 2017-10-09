@@ -63,7 +63,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = synchronized {
-    oppijat.getOppijat.find {_.oid == id}
+    oppijat.getOppijat.find(_.oid == id).map(_.henkilö)
   }
 
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
@@ -93,7 +93,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   def modify(oppija: TäydellisetHenkilötiedot): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
-        o.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi)
+        o.copy(henkilö = o.henkilö.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi))
       else o
     })
   }
@@ -110,7 +110,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
-    oppijat.getOppijat.find(_.hetu.contains(hetu)).map(toOppijaHenkilö)
+    oppijat.getOppijat.find(_.hetu.contains(hetu)).map(h => toOppijaHenkilö(h.henkilö))
   }
 
   override def findChangedOppijaOids(since: Long): List[String] = synchronized {

@@ -56,17 +56,19 @@ object MockOppijat {
 
   def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
 
-  def oids = (defaultOppijat.map(_.oid) ++ (1 to defaultOppijat.length + 10).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
+  def oids = (defaultOppijat.map(_.henkilö.oid) ++ (1 to defaultOppijat.length + 10).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
 }
 
-class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) extends Logging {
+class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMasterInfo] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot =
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedotWithMasterInfo =
     addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, etu, suku, äidinkieli, None))
 
-  def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedot = {
+  def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
+
+  def addOppija(oppija: TäydellisetHenkilötiedotWithMasterInfo): TäydellisetHenkilötiedotWithMasterInfo = {
     oppijat = oppija :: oppijat
     oppija
   }

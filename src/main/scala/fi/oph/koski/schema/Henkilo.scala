@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.perustiedot.NimitiedotJaOid
 import fi.oph.scalaschema.annotation._
 
 object Henkilö {
@@ -38,9 +39,18 @@ case class TäydellisetHenkilötiedot(
 ) extends HenkilöWithOid with Henkilötiedot {
   def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
+  def toNimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
 }
 
-case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot])
+case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) extends HenkilöWithOid with Henkilötiedot {
+  def vainHenkilötiedot = henkilö.vainHenkilötiedot
+  def oid = henkilö.oid
+  def hetu = henkilö.hetu
+  def toHenkilötiedotJaOid = henkilö.toHenkilötiedotJaOid
+  def etunimet: String = henkilö.etunimet
+  def kutsumanimi: String = henkilö.kutsumanimi
+  def sukunimi: String = henkilö.sukunimi
+}
 
 @Title("Henkilötiedot ja henkilö-OID")
 @IgnoreInAnyOfDeserialization
