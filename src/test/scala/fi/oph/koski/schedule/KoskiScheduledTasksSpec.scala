@@ -13,7 +13,7 @@ class KoskiScheduledTasksSpec extends FreeSpec with Matchers with BeforeAndAfter
   lazy val application = KoskiApplicationForTests
   "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
     authServiceClient.modify(TäydellisetHenkilötiedot(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"))
-    new UpdateHenkilot(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
+    new UpdateHenkilotTask(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
     application.elasticSearch.refreshIndex
     val päivitettytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedot(eero.oid).get
     päivitettytPerustiedot.sukunimi should equal("Uusisukunimi")

@@ -40,7 +40,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     findOppijatByOids(List(oid)).headOption
 
   def findOppijatByOids(oids: List[Oid]): List[OppijaHenkilö] =
-    runTask(findOppijatByOidsTask(oids)).map(_.toOppijaHenkilö)
+    runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])).map(_.toOppijaHenkilö)
 
   def findChangedOppijaOids(since: Long): List[Oid] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since?amount=1000")(Http.parseJson[List[String]]))
@@ -80,9 +80,6 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
       )
     }
   ).toMap
-
-  private def findOppijatByOidsTask(oids: List[String]): Task[List[OppijaNumerorekisteriOppija]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
 }
 
 class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {

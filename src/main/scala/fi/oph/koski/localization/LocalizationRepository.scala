@@ -23,7 +23,7 @@ trait LocalizationRepository extends Logging {
 
   def createOrUpdate(localizations: List[UpdateLocalization])
 
-  def createMissing(): Unit = {
+  def createMissing {
     val inLocalizationService = localizationsFromLocalizationService
 
     val missing = DefaultLocalizations.defaultFinnishTexts.flatMap {

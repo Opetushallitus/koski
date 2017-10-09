@@ -42,9 +42,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val parallels = List(
       Future { application.perustiedotIndexer.init},
       Future { application.tiedonsiirtoService.init },
-      Future { application.scheduledTasks.toString },
-      Future { application.tiedonsiirtoService.toString },
-      Future { application.localizationRepository.createMissing() }
+      Future { application.scheduledTasks.init },
+      Future { application.localizationRepository.createMissing }
     )
 
     if (application.config.getBoolean("koodisto.create")) tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config) }
