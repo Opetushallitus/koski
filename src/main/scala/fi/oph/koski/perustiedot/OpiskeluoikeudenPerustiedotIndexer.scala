@@ -54,7 +54,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
    *
    * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
    */
-  def updateBulk(items: Seq[WithId], replaceDocument: Boolean): Either[HttpStatus, Int] = {
+  def updateBulk(items: Seq[OpiskeluoikeudenOsittaisetTiedot], replaceDocument: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }

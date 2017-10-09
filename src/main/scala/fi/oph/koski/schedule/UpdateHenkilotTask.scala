@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.authenticationservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.perustiedot.Henkilötiedot
+import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
@@ -34,21 +34,27 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(oids).sortBy(_.modified)
     // TODO: hae yllä vain ne, jotka löytyvät Koskesta!
 
-    val oppijatWithMaster: List[TäydellisetHenkilötiedotWithMasterInfo] = oppijat.map { oppija =>
-      application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot)
+    val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
+      WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
     }
 
-    val oppijatByOid: Map[Oid, OppijaHenkilö] = oppijat.groupBy(_.oidHenkilo).mapValues(_.head)
+    val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
+
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
-      .filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0)
-      .map(_.henkilö.oid)
+      .filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o.tiedot) > 0)
+      .map(_.tiedot.henkilö.oid)
 
     val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
     } else {
-      val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache).map(p => Henkilötiedot(p.id, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
+      val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
+        .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
+        .map(p => {
+          val päivitetytTiedot = oppijatByOid(p.henkilö.oid)
+          OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot.henkilö.toNimitiedotJaOid, päivitetytTiedot.tiedot.master.map(_.toNimitiedotJaOid))
+        })
 
       // TODO: indeksiin myös master-tieto
 
@@ -69,4 +75,5 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def henkilötiedotUpdateInterval = application.config.getDuration("schedule.henkilötiedotUpdateInterval")
 }
 
+case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
 case class HenkilöUpdateContext(lastRun: Long)
