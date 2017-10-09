@@ -5,20 +5,22 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
+import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 
 class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
-  def addHenkilöAction(henkilö: TäydellisetHenkilötiedot) = {
-    Henkilöt.filter(_.oid === henkilö.oid).result.map(_.toList).flatMap {
+  def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) = {
+    Henkilöt.filter(_.oid === data.henkilö.oid).result.map(_.toList).flatMap {
       case Nil =>
-        Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)
+        Henkilöt += toHenkilöRow(data)
       case _ =>
         DBIO.successful(0)
     }
   }
 
-  def updateHenkilöAction(henkilö: TäydellisetHenkilötiedot): Int =
-    runDbSync(Henkilöt.filter(_.oid === henkilö.oid).update(HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)))
+  def updateHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
+    runDbSync(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data)))
+
+  private def toHenkilöRow(data: TäydellisetHenkilötiedotWithMasterInfo) = HenkilöRow(data.henkilö.oid, data.henkilö.sukunimi, data.henkilö.etunimet, data.henkilö.kutsumanimi, data.master.map(_.oid))
 }
 
 object KoskiHenkilöCache {

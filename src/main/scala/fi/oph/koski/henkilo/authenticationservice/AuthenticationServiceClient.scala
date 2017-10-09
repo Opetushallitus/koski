@@ -48,6 +48,9 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
 
+  def findMasterOppija(oid: String): Option[OppijaHenkilö] =
+    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid/master")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
+
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid")(Http.parseJsonOptional[KäyttäjäHenkilö]).flatMap { käyttäjäHenkilö: Option[KäyttäjäHenkilö] =>
       käyttöOikeusHttp.get(uri"/kayttooikeus-service/henkilo/$oid/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
@@ -123,6 +126,7 @@ trait AuthenticationServiceClient {
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
   def findChangedOppijaOids(since: Long): List[Oid]
+  def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
   def getKäyttöikeusRyhmät: Map[String, List[String]]

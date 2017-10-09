@@ -8,6 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.Henkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
@@ -29,17 +30,28 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   }
 
   private def runUpdate(oids: List[Oid], startMillis: Long, lastContext: HenkilöUpdateContext) = {
+
     val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(oids).sortBy(_.modified)
+    // TODO: hae yllä vain ne, jotka löytyvät Koskesta!
+
+    val oppijatWithMaster: List[TäydellisetHenkilötiedotWithMasterInfo] = oppijat.map { oppija =>
+      application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot)
+    }
+
     val oppijatByOid: Map[Oid, OppijaHenkilö] = oppijat.groupBy(_.oidHenkilo).mapValues(_.head)
-    val updatedInKoskiHenkilöCache: List[Oid] = oppijat.map(_.toTäydellisetHenkilötiedot)
+    val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
       .filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0)
-      .map(_.oid)
+      .map(_.henkilö.oid)
+
     val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
     } else {
       val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache).map(p => Henkilötiedot(p.id, oppijatByOid(p.henkilö.oid).toNimitiedotJaOid))
+
+      // TODO: indeksiin myös master-tieto
+
       application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {
         case Right(updatedCount) => {
           logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")

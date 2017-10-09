@@ -50,6 +50,10 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     findHenkilötiedot(henkilöOid).map(toOppijaHenkilö)
   }
 
+  def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] = {
+    findHenkilötiedot(henkilöOid).map(toOppijaHenkilö)
+  }
+
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
     OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, henkilö.syntymäaika, Some("FI"), None, 0)
   }

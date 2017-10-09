@@ -1,0 +1,1 @@
+alter table henkilo add master_oid text null;

@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Loggable
-import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 
 object HenkilöOid {
   def isValidHenkilöOid(oid: String) = {

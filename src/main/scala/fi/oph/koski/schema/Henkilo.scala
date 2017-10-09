@@ -40,6 +40,8 @@ case class TäydellisetHenkilötiedot(
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
 
+case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot])
+
 @Title("Henkilötiedot ja henkilö-OID")
 @IgnoreInAnyOfDeserialization
 case class HenkilötiedotJaOid(

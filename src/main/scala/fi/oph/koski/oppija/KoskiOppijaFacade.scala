@@ -113,7 +113,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRe
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
-        val nimitiedotJaOid = oppijaOid.verified.getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
+        val nimitiedotJaOid: TäydellisetHenkilötiedot = oppijaOid.verified.getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedot elasticsearchiin
         val oo = opiskeluoikeus
 
         if (result.changed) {

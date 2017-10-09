@@ -63,8 +63,9 @@ object Tables {
     val sukunimi = column[String]("sukunimi")
     val etunimet = column[String]("etunimet")
     val kutsumanimi = column[String]("kutsumanimi")
+    val masterOid = column[Option[String]]("master_oid")
 
-    def * = (oid, sukunimi, etunimet, kutsumanimi) <> (HenkilöRow.tupled, HenkilöRow.unapply)
+    def * = (oid, sukunimi, etunimet, kutsumanimi, masterOid) <> (HenkilöRow.tupled, HenkilöRow.unapply)
   }
 
   class OpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
@@ -179,7 +180,7 @@ case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitos
   }
 }
 
-case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String) {
+case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String, masterOid: Option[String]) {
   def toHenkilötiedot = TäydellisetHenkilötiedot(oid, etunimet, kutsumanimi, sukunimi)
 }
 
