@@ -6,7 +6,7 @@ HIGHLIGHT_JS_VERSION="9.12.0"
 NORMALIZE_CSS_VERSION="7.0.0"
 
 # Using tmp dir command from https://unix.stackexchange.com/a/84980
-project_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+project_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 tmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 pushd . > /dev/null
   cd $tmpdir
