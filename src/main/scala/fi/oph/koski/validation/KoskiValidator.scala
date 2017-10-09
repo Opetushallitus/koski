@@ -236,7 +236,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         })
 
         yksikköValidaatio.then({
-          laajuus match {
+          suoritus.koulutusmoduuli match {
             case _: LaajuuttaEiValidoida => HttpStatus.ok
             case _ =>
               val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.flatMap(_.koulutusmoduuli.laajuus)
