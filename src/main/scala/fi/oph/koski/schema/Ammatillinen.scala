@@ -302,7 +302,7 @@ case class AmmatillinenTutkintoKoulutus(
  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Laajuudeton with Tutkinto
 
-sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
+sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli with LaajuuttaEiValidoida {
   def laajuus: Option[LaajuusOsaamispisteissä]
   def pakollinen: Boolean
 }
@@ -384,9 +384,9 @@ case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   @Description("Opintokokonaisuuden kuvaus")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä] = None
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuli with LaajuuttaEiValidoida
 
-trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli {
+trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli with LaajuuttaEiValidoida {
   def pakollinen: Boolean
 }
 
@@ -588,7 +588,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends Vahvistukseton with MahdollisestiSuorituskielellinen
 
-trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
+trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
@@ -646,9 +646,9 @@ case class ValmaKoulutus(
   perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusOsaamispisteissä] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus
+) extends DiaarinumerollinenKoulutus with LaajuuttaEiValidoida
 
-trait ValmaKoulutuksenOsa extends Koulutusmoduuli
+trait ValmaKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 @Title("Paikallinen Valma-koulutuksen osa")
@@ -706,9 +706,9 @@ case class TelmaKoulutus(
   perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusOsaamispisteissä] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus
+) extends DiaarinumerollinenKoulutus with LaajuuttaEiValidoida
 
-trait TelmaKoulutuksenOsa extends Koulutusmoduuli
+trait TelmaKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
 @Title("Paikallinen Telma-koulutuksen osa")

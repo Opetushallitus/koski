@@ -236,16 +236,20 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         })
 
         yksikköValidaatio.then({
-          val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.flatMap(_.koulutusmoduuli.laajuus)
-          (osasuoritustenLaajuudet, suoritus.valmis) match {
-            case (_, false) => HttpStatus.ok
-            case (Nil, _) => HttpStatus.ok
-            case (_, _) =>
-              osasuoritustenLaajuudet.map(_.arvo).sum match {
-                case summa if summa == laajuus.arvo =>
-                  HttpStatus.ok
-                case summa =>
-                  KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
+          laajuus match {
+            case _: LaajuuttaEiValidoida => HttpStatus.ok
+            case _ =>
+              val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.flatMap(_.koulutusmoduuli.laajuus)
+              (osasuoritustenLaajuudet, suoritus.valmis) match {
+                case (_, false) => HttpStatus.ok
+                case (Nil, _) => HttpStatus.ok
+                case (_, _) =>
+                  osasuoritustenLaajuudet.map(_.arvo).sum match {
+                    case summa if summa == laajuus.arvo =>
+                      HttpStatus.ok
+                    case summa =>
+                      KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
+                  }
               }
           }
         })

@@ -41,6 +41,8 @@ trait Laajuudeton extends Koulutusmoduuli {
   override def laajuus: Option[Laajuus] = None
 }
 
+trait LaajuuttaEiValidoida
+
 trait Tutkinto extends Koulutusmoduuli {
   override def isTutkinto = true
 }
