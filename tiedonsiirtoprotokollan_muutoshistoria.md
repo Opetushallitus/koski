@@ -1,3 +1,10 @@
+## 9.10.2017
+
+Validointimuutoksia:
+
+- Ammatillisen koulutuksen osien laajuuksien summia ei tarkisteta
+
+
 ## 29.9.2017
 
 - Opiskeluoikeuden päättymispäivän sekä suorituksen vahvistuksen ja arvioinnin voi asettaa tulevaisuuteen
