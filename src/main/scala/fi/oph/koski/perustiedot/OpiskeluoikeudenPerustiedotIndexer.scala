@@ -26,6 +26,7 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
+  implicit val formats = LegacyJsonSerialization.jsonFormats + OpiskeluoikeudenHenkilötiedotSerializer
   lazy val init = {
     index.init
 
@@ -57,7 +58,6 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     if (items.isEmpty) {
       return Right(0)
     }
-    implicit val formats = LegacyJsonSerialization.jsonFormats + OpiskeluoikeudenHenkilötiedotSerializer
     val jsonLines: Seq[JValue] = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
