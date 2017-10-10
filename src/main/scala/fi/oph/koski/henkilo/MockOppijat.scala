@@ -48,6 +48,8 @@ object MockOppijat {
   val ibFinal = oppijat.oppija("IB-final", "Iina", "040701-432D")
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
+  val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
+  val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master.henkilö)))
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
   val eiKoskessaHetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999555556", None, None, "Eino", "Eino", "EiKoskessaHetuton", None, None))
@@ -75,7 +77,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMaster
 
   def getOppijat = oppijat
 
-  private def generateId(): String = this.synchronized {
+  def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
     MockOppijat.generateOid(idCounter)
   }
