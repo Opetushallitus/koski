@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString.unlocalized
-import fi.oph.koski.localization.{Deserializer, Localized, LocalizedString}
+import fi.oph.koski.localization.{Localized, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
-import org.json4s.{Formats, JObject, JValue, TypeInfo}
 
 trait KoodiViite extends Localized {
   def koodiarvo: String
