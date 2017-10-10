@@ -118,10 +118,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 
     index.runSearch("perustiedot", doc)
       .map{ response =>
-        extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
+        extract[List[JValue]](response \ "hits" \ "hits").map(extractPerustiedot).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
       }
       .getOrElse(Nil)
   }
+
+  private def extractPerustiedot(json: JValue): OpiskeluoikeudenPerustiedot = extract[OpiskeluoikeudenPerustiedot](json, ignoreExtras = true)
 
   private def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
     "nested" -> Map(
@@ -137,7 +139,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
     index.runSearch("perustiedot", doc)
-      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")))
+      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extractPerustiedot(j \ "_source")))
       .getOrElse(Nil)
   }
 
