@@ -142,11 +142,20 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   }
 
   def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
+    findSingle(oid).map(j => extract[NimitiedotJaOid](j \ "henkilö"))
+  }
+
+  def findMasterHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
+    findSingle(oid).map(j => extract[Option[NimitiedotJaOid]](j \ "masterHenkilö")).flatten
+  }
+
+  def findSingle(oid: String): Option[JValue] = {
     val doc = toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     index.runSearch("perustiedot", doc)
-      .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[NimitiedotJaOid](j \ "_source" \ "henkilö")).headOption)
+      .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => j \ "_source").headOption)
   }
+
 
   def findOids(hakusana: String)(implicit session: KoskiSession): List[Oid] = {
     if (hakusana == "") {

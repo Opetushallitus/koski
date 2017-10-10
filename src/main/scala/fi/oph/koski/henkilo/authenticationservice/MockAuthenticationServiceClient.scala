@@ -9,7 +9,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
@@ -23,8 +23,8 @@ class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthe
     runDbSync(fullQuery.result)
   }
 
-  override protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
-    super.findHenkilötiedot(id).orElse(findFromDb(id))
+  override protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {
+    super.findHenkilötiedot(id).orElse(findFromDb(id).map(TäydellisetHenkilötiedotWithMasterInfo(_, None)))
   }
 }
 
@@ -47,11 +47,11 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).map(toOppijaHenkilö)
+    findHenkilötiedot(henkilöOid).map(_.henkilö).map(toOppijaHenkilö)
   }
 
   def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).map(toOppijaHenkilö)
+    findHenkilötiedot(henkilöOid).flatMap(_.master).map(toOppijaHenkilö)
   }
 
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
@@ -62,8 +62,8 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None))
   }
 
-  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = synchronized {
-    oppijat.getOppijat.find(_.oid == id).map(_.henkilö)
+  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = synchronized {
+    oppijat.getOppijat.find(_.oid == id)
   }
 
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
@@ -90,13 +90,15 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modify(oppija: TäydellisetHenkilötiedot): Unit = synchronized {
+  def modify(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
-        o.copy(henkilö = o.henkilö.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi))
+        o.copy(henkilö = o.henkilö.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi), master = oppija.master)
       else o
     })
   }
+
+  def modify(oppija: TäydellisetHenkilötiedot): Unit = modify(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
 
   def reset(): Unit = synchronized {
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
