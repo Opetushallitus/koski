@@ -54,7 +54,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
       </div>)
     }
     { showOppiaineet && (<div>
-        <h5><Text name="Oppiaineiden arvosanat"/></h5>
+        <h5><Text name={(isToimintaAlueittain(model) ? 'Toiminta-alueiden' : 'Oppiaineiden') + ' arvosanat'} /></h5>
         <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>
         {
           hasPakollisuus(model, uusiOppiaineenSuoritus)
@@ -152,7 +152,7 @@ class Oppiainetaulukko extends React.Component {
           <table>
             <thead>
             <tr>
-              <th className="oppiaine"><Text name="Oppiaine"/></th>
+              <th className="oppiaine"><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
               <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>
               {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
             </tr>
