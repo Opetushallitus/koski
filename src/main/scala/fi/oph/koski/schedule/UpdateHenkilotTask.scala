@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.authenticationservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
+import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenHenkilötiedot}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
@@ -53,10 +53,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
           val päivitetytTiedot = oppijatByOid(p.henkilö.oid)
-          OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot.henkilö.toNimitiedotJaOid, päivitetytTiedot.tiedot.master.map(_.toNimitiedotJaOid))
+          OpiskeluoikeudenHenkilötiedot(p.id, NimitiedotJaOid(päivitetytTiedot.tiedot.henkilö), päivitetytTiedot.tiedot.master.map(NimitiedotJaOid.apply))
         })
-
-      // TODO: indeksiin myös master-tieto
 
       application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {
         case Right(updatedCount) => {

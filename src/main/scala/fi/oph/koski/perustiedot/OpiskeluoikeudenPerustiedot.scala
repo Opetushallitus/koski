@@ -4,11 +4,12 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Description
-import org.json4s.{JArray, JValue}
+import org.json4s.JsonAST.{JInt, JNull, JObject}
+import org.json4s.{Extraction, Formats, JArray, JValue, Serializer, TypeInfo}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
   def id: Int
@@ -33,7 +34,23 @@ case class OpiskeluoikeudenPerustiedot(
 ) extends OpiskeluoikeudenOsittaisetTiedot
 
 case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
+object NimitiedotJaOid {
+  def apply(henkilö: TäydellisetHenkilötiedot): NimitiedotJaOid = NimitiedotJaOid(henkilö.oid, henkilö.etunimet, henkilö.kutsumanimi, henkilö.sukunimi)
+
+}
 case class OpiskeluoikeudenHenkilötiedot(id: Int, henkilö: NimitiedotJaOid, masterHenkilö: Option[NimitiedotJaOid]) extends OpiskeluoikeudenOsittaisetTiedot
+
+object OpiskeluoikeudenHenkilötiedotSerializer extends Serializer[OpiskeluoikeudenHenkilötiedot] {
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OpiskeluoikeudenHenkilötiedot] = PartialFunction.empty
+
+  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
+    case tiedot: OpiskeluoikeudenHenkilötiedot => JObject(
+      "id" -> JInt(tiedot.id),
+      "henkilö" -> Extraction.decompose(tiedot.henkilö),
+      "masterHenkilö" -> tiedot.masterHenkilö.map(Extraction.decompose(_)).getOrElse(JNull) // <- ensure the data is cleared using JNull
+    )
+  }
+}
 
 case class OpiskeluoikeusJaksonPerustiedot(
   alku: LocalDate,
@@ -64,8 +81,8 @@ object OpiskeluoikeudenPerustiedot {
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
       id,
-      henkilö.henkilö.toNimitiedotJaOid,
-      henkilö.master.map(_.toNimitiedotJaOid),
+      NimitiedotJaOid(henkilö.henkilö),
+      henkilö.master.map(NimitiedotJaOid.apply),
       extract[Oppilaitos](data \ "oppilaitos"),
       extract[Option[SisältäväOpiskeluoikeus]](data \ "sisältyyOpiskeluoikeuteen"),
       extract[Option[LocalDate]](data \ "alkamispäivä"),

@@ -26,7 +26,6 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
-
   lazy val init = {
     index.init
 

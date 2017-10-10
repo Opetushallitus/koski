@@ -93,7 +93,3 @@ object LocalizedStringImplicits {
     override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
   }
 }
-
-trait Deserializer[T] extends Serializer[T] {
-  def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
-}

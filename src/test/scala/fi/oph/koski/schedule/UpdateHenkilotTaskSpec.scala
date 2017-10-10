@@ -19,16 +19,22 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     }
   }
   "Oppijoiden linkitys" - {
+    "Aluksi ei linkitety" in {
+      application.perustiedotRepository.findMasterHenkilöPerustiedot(eero.oid) should equal(None)
+    }
+
     "Lisää linkityksen perustietoihin" in {
       modify(eero.copy(master = Some(eerola.henkilö)))
-      val päivitetytPerustiedot = application.perustiedotRepository.findMasterHenkilöPerustiedot(eero.oid)
-      päivitetytPerustiedot.map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((eerola.oid, eerola.sukunimi)))
+      application.perustiedotRepository.findMasterHenkilöPerustiedot(eero.oid)
+        .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((eerola.oid, eerola.sukunimi)))
     }
 
     "Poistaa linkityksen perustiedoista" in {
-      modify(eero.copy(master = None))
-      val päivitetytPerustiedot = application.perustiedotRepository.findMasterHenkilöPerustiedot(eero.oid)
-      päivitetytPerustiedot should equal(None)
+      modify(eero.copy(
+        master = None,
+        henkilö = eero.henkilö.copy(etunimet = "asdf"))  // <- muutetaan myös etunimeä koska MockAuthenticationServiceClient.findChangedOppijaOids ei muuten huomaa muutosta
+      )
+      application.perustiedotRepository.findMasterHenkilöPerustiedot(eero.oid) should equal(None)
     }
   }
 

@@ -10,13 +10,12 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
-import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenPerustiedotRepository}
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
 import org.http4s._
 
-import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
 
 object RemoteAuthenticationServiceClient {

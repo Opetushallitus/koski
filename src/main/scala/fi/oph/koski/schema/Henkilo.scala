@@ -39,7 +39,6 @@ case class TäydellisetHenkilötiedot(
 ) extends HenkilöWithOid with Henkilötiedot {
   def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
-  def toNimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
 }
 
 case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) extends HenkilöWithOid with Henkilötiedot {
