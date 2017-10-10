@@ -32,7 +32,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
   lazy val init = {
     index.init
 
-    val mappings = JObject("perustiedot" -> JObject("properties" -> JObject(
+    val mappings: JValue = JObject("perustiedot" -> JObject("properties" -> JObject(
       "tilat" -> JObject("type" -> JString("nested")),
       "suoritukset" -> JObject("type" -> JString("nested"))
     )))
