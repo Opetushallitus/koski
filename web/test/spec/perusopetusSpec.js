@@ -214,9 +214,9 @@ describe('Perusopetus', function() {
             'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
-          expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaineiden arvosanat\n' +
+          expect(extractAsText(S('.oppiaineet'))).to.equal('Toiminta-alueiden arvosanat\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Oppiaine Arvosana\n' +
+            'Toiminta-alue Arvosana\n' +
             'motoriset taidot S\n' +
             'Sanallinen arviointi Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
             'kieli ja kommunikaatio S\n' +
