@@ -8,8 +8,7 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Description
-import org.json4s.JsonAST.{JInt, JNull, JObject}
-import org.json4s.{Extraction, Formats, JArray, JValue, Serializer, TypeInfo}
+import org.json4s.{JArray, JValue}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
   def id: Int
@@ -39,18 +38,6 @@ object NimitiedotJaOid {
 
 }
 case class OpiskeluoikeudenHenkilötiedot(id: Int, henkilö: NimitiedotJaOid, masterHenkilö: Option[NimitiedotJaOid]) extends OpiskeluoikeudenOsittaisetTiedot
-
-object OpiskeluoikeudenHenkilötiedotSerializer extends Serializer[OpiskeluoikeudenHenkilötiedot] {
-  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OpiskeluoikeudenHenkilötiedot] = PartialFunction.empty
-
-  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
-    case tiedot: OpiskeluoikeudenHenkilötiedot => JObject(
-      "id" -> JInt(tiedot.id),
-      "henkilö" -> Extraction.decompose(tiedot.henkilö),
-      "masterHenkilö" -> tiedot.masterHenkilö.map(Extraction.decompose(_)).getOrElse(JNull) // <- ensure the data is cleared using JNull
-    )
-  }
-}
 
 case class OpiskeluoikeusJaksonPerustiedot(
   alku: LocalDate,

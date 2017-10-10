@@ -5,14 +5,15 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.json.{Json4sHttp4s, LegacyJsonSerialization}
+import fi.oph.koski.json.Json4sHttp4s
 import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.{PaginationSettings, Timing}
+import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -26,7 +27,8 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
-  implicit val formats = LegacyJsonSerialization.jsonFormats + OpiskeluoikeudenHenkilötiedotSerializer
+  val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
+
   lazy val init = {
     index.init
 
@@ -60,10 +62,10 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     }
     val jsonLines: Seq[JValue] = items.flatMap { perustiedot =>
       List(
-        Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
-        Map("doc_as_upsert" -> replaceDocument, "doc" -> perustiedot)
+        JObject("update" -> JObject("_id" -> JInt(perustiedot.id), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
+        JObject("doc_as_upsert" -> JBool(replaceDocument), "doc" -> Serializer.serialize(perustiedot, serializationContext))
       )
-    }.map(Extraction.decompose)
+    }
     val response: JValue = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
