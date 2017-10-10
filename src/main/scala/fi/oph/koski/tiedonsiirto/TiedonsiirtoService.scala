@@ -7,6 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -17,21 +18,20 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
-import JsonSerializer.extract
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
 import fi.oph.scalaschema.Serializer
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
-import org.json4s.{JValue, _}
 import org.json4s.jackson.JsonMethods.parse
+import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
 
   def deleteAll: Unit = {
-    val doc = toJValue(Map("query" -> Map("match_all" -> Map())))
+    val doc: JValue = JObject("query" -> JObject("match_all" -> JObject()))
 
     val deleted = Http.runTask(index.http
       .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {

@@ -3,7 +3,6 @@ package fi.oph.koski.json
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedotSerializer
 import fi.oph.koski.schema.{Opiskeluoikeus, Suoritus}
 import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s.JsonAST.{JDouble, JInt, JNull, JString}
@@ -14,7 +13,7 @@ import org.json4s.{CustomSerializer, DefaultFormats, Extraction, Formats, JValue
   * JSON (de)serialization with json4s extraction/serialization mechanisms
   */
 object LegacyJsonSerialization {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + BlockOpiskeluoikeusSerializer + OpiskeluoikeudenHenkilötiedotSerializer
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + BlockOpiskeluoikeusSerializer
 
   def toJValue(x: Map[_, _]): JValue = {
     Extraction.decompose(x)

@@ -6,7 +6,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
@@ -15,6 +14,7 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
+import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 
@@ -75,7 +75,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), status.errors)))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
     haltWithStatus(status)
   }
 
@@ -88,7 +88,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       f
     } catch {
       case e: Exception =>
-        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), KoskiErrorCategory.internalError().errors)))
+        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
         throw e
     }
   }
