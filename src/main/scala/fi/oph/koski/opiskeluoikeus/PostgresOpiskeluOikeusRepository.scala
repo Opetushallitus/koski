@@ -37,7 +37,15 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    // TODO: tässä haetaan myös slave-oideilla, mutta mites muut keissit alempana?
+    // TODO: masteroid index
+    val action = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid))
+      .map(_.oid)
+      .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
+      .result
+
+
+    runDbSync(action.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {

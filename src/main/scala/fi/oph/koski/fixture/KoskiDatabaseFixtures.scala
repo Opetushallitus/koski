@@ -39,8 +39,6 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
 
     val henkilöOids: List[Oid] = oids
     runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
-    runDbSync(DBIO.sequence(henkilöOids.flatMap(henkilöRepository.findByOid).map{ henkilö => Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None) }))
-
     runDbSync(Preferences.delete)
 
     validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
