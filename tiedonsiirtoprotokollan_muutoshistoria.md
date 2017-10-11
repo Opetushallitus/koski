@@ -1,6 +1,7 @@
 ## 11.10.2017
 
 - Lisätty lukion opiskeluoikeuden lisätietoihin sisäoppilaitosmainenMajoitus
+- Perusopetuksen lisäopetuksen toiminta-alueen suorituksen korotus-kenttä valinnaiseksi
 
 ## 9.10.2017
 
