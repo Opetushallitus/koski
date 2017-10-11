@@ -36,4 +36,24 @@ describe('Linkitetyt oppijat', function() {
       })
     })
   })
+
+  describe('Kun siirrytään oppijataulukosta tarkastelemaan slave-henkilön tietoja', function() {
+    before(
+      page.openPage,
+      page.oppijataulukko.filterBy('nimi', 'Slave'),
+      page.oppijataulukko.clickFirstOppija,
+      page.waitUntilOppijaSelected('Master')
+    )
+
+    it('Näytetään master-henkilön tiedot', function() {
+
+    })
+  })
+
+  describe('Kun siirrytään oppijahaussa tarkastelemaan slave-henkilön tietoja', function() {
+    it('Näytetään master-henkilön tiedot', function() {
+      // TODO
+    })
+  })
+
 })
