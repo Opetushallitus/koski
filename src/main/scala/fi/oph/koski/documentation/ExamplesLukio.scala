@@ -31,7 +31,8 @@ object ExamplesLukio {
         yksityisopiskelija = false,
         erityisenKoulutustehtävänJaksot = Some(List(ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2012, 9, 1)), Koodistokoodiviite("taide", Some("Erityisenä koulutustehtävänä taide"), "erityinenkoulutustehtava")))),
         ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla"))),
-        oikeusMaksuttomaanAsuntolapaikkaan = true
+        oikeusMaksuttomaanAsuntolapaikkaan = true,
+        sisäoppilaitosmainenMajoitus = Some(List(Majoitusjakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
       )),
       suoritukset = List(
         LukionOppimääränSuoritus(
