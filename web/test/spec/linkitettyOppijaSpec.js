@@ -33,6 +33,8 @@ describe('Linkitetyt oppijat', function() {
         it('Näytetään muuttuneet tiedot', function() {
           expect(editor.property('oppimäärä').getValue()).to.equal('Lukio suoritetaan aikuisten opetussuunnitelman mukaan')
         })
+
+        // TODO: tarkistettava jotenkin, että opiskeluoikeus säilyy linkitettynä slaveen (koska jatkossa tässä siirrytään aina katsomaan masterin tietoja)
       })
     })
   })
@@ -51,8 +53,13 @@ describe('Linkitetyt oppijat', function() {
   })
 
   describe('Kun siirrytään oppijahaussa tarkastelemaan slave-henkilön tietoja', function() {
+    before(
+      refreshIndices, // ensure that elasticsearch index is refreshed to reflect the changes made above
+      page.oppijaHaku.searchAndSelect('Slave')
+    )
+
     it('Näytetään master-henkilön tiedot', function() {
-      // TODO
+      // TODO: jatketaan, kun on päätetty, näytetäänkö haussa ja listassa vain master-henkilön tiedot
     })
   })
 
