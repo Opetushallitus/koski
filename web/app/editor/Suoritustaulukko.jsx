@@ -60,15 +60,16 @@ export class Suoritustaulukko extends React.Component {
 
     const laajuudetP = fetchLaajuudet(parentSuoritus, groupIds)
 
-    let showPakollisuus = modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined
-    let showArvosana = context.edit || suoritukset.find(hasArvosana) !== undefined
+    let nayttotutkintoonValmistava = parentSuoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
+    let showPakollisuus = !nayttotutkintoonValmistava && (modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined)
+    let showArvosana = !nayttotutkintoonValmistava && (context.edit || suoritukset.find(hasArvosana) !== undefined)
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
     if (laajuusModel && laajuusModel.optional && !modelData(laajuusModel)) laajuusModel = optionalPrototypeModel(laajuusModel)
     let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
-    let showLaajuus = context.edit
+    let showLaajuus = !nayttotutkintoonValmistava && (context.edit
       ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
-      : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
+      : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
     return !suoritustapa && context.edit && isAmmatillinenTutkinto
@@ -124,7 +125,7 @@ export class Suoritustaulukko extends React.Component {
             </td>
           </tr>
         </tbody>,
-        !nested && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+        !nested && !nayttotutkintoonValmistava && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>

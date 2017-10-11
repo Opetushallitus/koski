@@ -1102,11 +1102,11 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-            'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus Arvosana\n' +
-            'Johtaminen ja henkilöstön kehittäminen Hyväksytty\n' +
+            'Sulje kaikki\n' +
+            'Koulutuksen osa\n' +
+            'Johtaminen ja henkilöstön kehittäminen\n' +
             'Kuvaus Johtamisen ja henkilöstön kehittämisen valmistava koulutus\n' +
-            'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
-            'Yhteensä 15'
+            'Auton lisävarustetyöt'
           )
         })
       })
