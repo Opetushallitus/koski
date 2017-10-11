@@ -270,8 +270,7 @@ function TutkinnonOsat(groupId) {
             suorituspaikka: [
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').value(),
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').value()
-            ],
-            työssäoppimisenYhteydessä: Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').value()
+            ]
           }
         },
         avaaNäyttöModal: function() {
@@ -308,7 +307,6 @@ function TutkinnonOsat(groupId) {
               })
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
-              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
 
               if (findSingle('.näyttö .modal-content button', tutkinnonOsaElement)().prop('disabled')) {
                 throw new Error('Invalid model')
