@@ -32,5 +32,6 @@ class LinkitettyOppijaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
 
     // TODO: historian tarkastelu masterin kautta
+    // TODO: käyttäjän omat opiskeluoikeudet (master/slave)
   }
 }
