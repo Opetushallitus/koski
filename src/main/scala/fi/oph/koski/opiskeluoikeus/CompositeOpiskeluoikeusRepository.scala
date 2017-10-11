@@ -26,7 +26,5 @@ class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: Lis
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = main.findByUserOid(user.oid)
 
-  override def delete(id: Int)(implicit user: KoskiSession) = main.delete(id)
-
   override def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Oid] = main.getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid)
 }

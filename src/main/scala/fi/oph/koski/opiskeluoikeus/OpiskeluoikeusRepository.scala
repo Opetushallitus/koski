@@ -10,7 +10,6 @@ import org.json4s.JValue
 trait OpiskeluoikeusRepository extends AuxiliaryOpiskeluoikeusRepository {
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow]
   def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Henkilö.Oid]
-  def delete(id: Int)(implicit user: KoskiSession): HttpStatus
   def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
