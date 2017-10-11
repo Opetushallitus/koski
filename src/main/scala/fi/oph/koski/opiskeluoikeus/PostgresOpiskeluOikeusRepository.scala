@@ -64,10 +64,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   private def withExistenceCheck[T](things: Iterable[T]) = things.headOption
     .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
 
-  private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = if (oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")) {
-    f
-  } else {
-    Left(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
+  private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {
+    OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).right.flatMap(_ => f)
   }
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
@@ -98,12 +96,15 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
-    findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
+   (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid))
+      .map(_.oid)
+      .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
+      .result
   }
 
   private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = {
     identifier match {
-      case OpiskeluoikeusOid(oid) => findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)).map { rows =>
+      case OpiskeluoikeusByOid(oid) => findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)).map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(List(oikeus))
           case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
