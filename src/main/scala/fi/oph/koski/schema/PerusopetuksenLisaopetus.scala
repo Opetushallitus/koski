@@ -4,7 +4,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
+import fi.oph.scalaschema.annotation._
 
 @Description("Perusopetuksen lisäopetuksen opiskeluoikeus")
 case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
@@ -74,6 +74,7 @@ case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
   @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  @DefaultValue(false)
   korotus: Boolean = false,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksentoimintaalue")
