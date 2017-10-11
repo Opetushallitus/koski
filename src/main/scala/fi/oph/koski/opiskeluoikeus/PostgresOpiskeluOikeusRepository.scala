@@ -38,19 +38,17 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     // TODO: masteroid index
-    val action = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid))
-      .map(_.oid)
-      .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
-      .result
-
-
-    runDbSync(action.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
+
+  private def withSlavesQuery(oid: String) = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
-    // TODO: slaves
-    runDbSync(OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid).result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+
+    val query = withSlavesQuery(oid).flatMap(oid => OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid))
+
+    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
@@ -95,8 +93,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
-   (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid))
-      .map(_.oid)
+   withSlavesQuery(oid)
       .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
       .result
   }
