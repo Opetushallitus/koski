@@ -6,7 +6,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCacheUpdater, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
@@ -23,7 +23,7 @@ import slick.dbio.NoStream
 import slick.lifted.Query
 import slick.{dbio, lifted}
 
-class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     val query: lifted.Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -162,7 +162,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, oppijaOid, VERSIO_1, diff, row.data))
         }
     }
   }
@@ -184,7 +184,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val diff: JArray = jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
-            DBIO.successful(Right(NotChanged(id, oid, versionumero, diff, newData)))
+            DBIO.successful(Right(NotChanged(id, oid, oldRow.oppijaOid, versionumero, diff, newData)))
           case _ =>
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
@@ -193,7 +193,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, oid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                    case 1 => Right(Updated(id, oid, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }

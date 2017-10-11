@@ -7,7 +7,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 
-class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
+class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
   def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) = {
     Henkilöt.filter(_.oid === data.henkilö.oid).result.map(_.toList).flatMap {
       case Nil =>
@@ -19,6 +19,13 @@ class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) e
 
   def updateHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
     runDbSync(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data)))
+
+
+  def getCached(oppijaOid: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {
+    runDbSync((Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result).headOption.map { case (row, masterRow) =>
+      TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
+    }
+  }
 
   private def toHenkilöRow(data: TäydellisetHenkilötiedotWithMasterInfo) = HenkilöRow(data.henkilö.oid, data.henkilö.sukunimi, data.henkilö.etunimet, data.henkilö.kutsumanimi, data.master.map(_.oid))
 }

@@ -8,7 +8,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
-import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCacheUpdater}
+import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
@@ -56,8 +56,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val henkilöRepository = HenkilöRepository(this)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
-  lazy val henkilöCacheUpdater = new KoskiHenkilöCacheUpdater(masterDatabase.db, henkilöRepository)
-  lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCacheUpdater, oidGenerator, henkilöRepository.opintopolku))
+  lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db, henkilöRepository)
+  lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, henkilöRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
@@ -66,7 +66,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val koskiElasticSearchIndex = new KoskiElasticSearchIndex(elasticSearch)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(koskiElasticSearchIndex, opiskeluoikeusQueryRepository)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, koskiElasticSearchIndex, opiskeluoikeusQueryRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)

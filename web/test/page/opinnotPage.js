@@ -359,6 +359,9 @@ function TutkinnonOsat(groupId) {
 
 function Opiskeluoikeudet() {
   return {
+    opiskeluoikeustyypit: function() {
+      return textsOf(S('.opiskeluoikeustyypit .opiskeluoikeustyyppi'))
+    },
     opiskeluoikeuksienMäärä: function() {
       return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
     },

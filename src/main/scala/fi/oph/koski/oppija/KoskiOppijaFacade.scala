@@ -17,7 +17,7 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPe
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
 
@@ -114,8 +114,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, opiskeluoikeusRe
         auditLog(oppijaOid, result)
 
         if (result.changed) {
-          val henkilötiedot: TäydellisetHenkilötiedot = oppijaOid.verified.getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedot elasticsearchiin
-          val withMasterInfo = henkilöRepository.opintopolku.withMasterInfo(henkilötiedot) // TODO: tätä ei pitäis joutua tekemään päivitystapauksessa
+          val withMasterInfo = henkilöCache.getCached(result.oppijaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${result.oppijaOid}} ei löydy"))
           val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, opiskeluoikeus.luokka.orElse(opiskeluoikeus.ryhmä), withMasterInfo)
           perustiedotIndexer.update(perustiedot)
         }

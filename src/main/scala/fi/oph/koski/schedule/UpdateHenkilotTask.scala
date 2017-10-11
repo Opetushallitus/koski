@@ -41,7 +41,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
 
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
-      .filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o.tiedot) > 0)
+      .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
 
     val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)

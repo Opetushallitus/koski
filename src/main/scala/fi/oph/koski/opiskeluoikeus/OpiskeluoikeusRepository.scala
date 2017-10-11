@@ -26,17 +26,18 @@ sealed trait CreateOrUpdateResult {
 
   def id: Opiskeluoikeus.Id
   def oid: Opiskeluoikeus.Oid
+  def oppijaOid: Henkilö.Oid
   def versionumero: Int
   def diff: JValue
   def data: JValue
 }
 
-case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
+case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
   def changed = true
 }
-case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
+case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = true
 }
-case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
+case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
   def changed = false
 }
