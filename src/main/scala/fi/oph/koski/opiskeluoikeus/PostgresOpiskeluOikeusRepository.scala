@@ -37,7 +37,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    // TODO: tässä haetaan myös slave-oideilla, mutta mites muut keissit alempana?
     // TODO: masteroid index
     val action = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid))
       .map(_.oid)
@@ -50,19 +49,19 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
-    runDbSync(findAction(OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid)).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    // TODO: slaves
+    runDbSync(OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid).result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
-    withExistenceCheck(runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid))))
+    withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
   }
 
   override def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Oid] = withOidCheck(opiskeluoikeusOid) {
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === opiskeluoikeusOid).map(_.oppijaOid).result))
   }
 
-  private def withExistenceCheck[T](things: Iterable[T]) = things.headOption
-    .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+  private def withExistenceCheck[T](things: Iterable[T]) = things.headOption.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
 
   private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {
     OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).right.flatMap(_ => f)
@@ -104,7 +103,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = {
     identifier match {
-      case OpiskeluoikeusByOid(oid) => findAction(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)).map { rows =>
+      case OpiskeluoikeusByOid(oid) => OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result.map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(List(oikeus))
           case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
@@ -122,11 +121,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }).map(_.toList).map(Right(_))
     }
   }
-
-  private def findAction(query: Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq])(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
-    query.result
-  }
-
   private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, List[OpiskeluoikeusRow]] =>
       (allowUpdate, rows) match {
