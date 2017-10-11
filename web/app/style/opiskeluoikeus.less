@@ -1,796 +1,797 @@
-.oppija .opiskeluoikeus {
-  padding: 0;
-  position: relative;
+.oppija {
+  padding-bottom: 150px;
+  .opiskeluoikeus {
+    padding: 0;
+    position: relative;
 
-  .label {
-    color: @color-label;
-  }
-
-  .opiskeluoikeuden-tiedot, .suoritus {
-    .text-like-input, .dropdown, .property.oid input {
-      max-width: 300px;
-    }
-  }
-
-  .suoritus > .properties .dropdown {
-    width: 300px;
-  }
-
-  .text-like-input, .dropdown {
-    line-height: 32px;
-  }
-
-  .dropdown {
-    .option {
-      line-height: 30px;
-    }
-  }
-
-  .ajax-loading-placeholder {
-    .ajax-indicator-left;
-    height: 30px;
-    width: 40px;
-  }
-
-  li > .dropdown-wrapper {
-    margin-bottom: 8px;
-  }
-
-  h3 {
-    margin: 0;
-    padding: 17px 27px 17px 17px;
-    background: @color-dark-blue 100%;
-    font-size: 18px;
-    color: @color-white;
-    letter-spacing: 0;
-    font-weight: normal;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-
-    .otsikkotiedot > .koulutus {
-      text-transform: lowercase;
+    .label {
+      color: @color-label;
     }
 
-    .id {
-      float: right;
-      font-size: 0.8em;
-      margin-right: 20px;
+    .opiskeluoikeuden-tiedot, .suoritus {
+      .text-like-input, .dropdown, .property.oid input {
+        max-width: 300px;
+      }
     }
 
-    .versiohistoria {
-      display: inline-block;
-      float: right;
-      overflow: hidden;
+    .suoritus > .properties .dropdown {
+      width: 300px;
+    }
 
-      &.open:after {
-        content: "";
-        .Triangle(10px, @color-white, bottom);
-        position: relative;
-        margin: 0 auto;
-        bottom: 3px;
-        z-index: @z-index-base + 5;
+    .text-like-input, .dropdown {
+      line-height: 32px;
+    }
+
+    .dropdown {
+      .option {
+        line-height: 30px;
+      }
+    }
+
+    .ajax-loading-placeholder {
+      .ajax-indicator-left;
+      height: 30px;
+      width: 40px;
+    }
+
+    li > .dropdown-wrapper {
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      margin: 0;
+      padding: 17px 27px 17px 17px;
+      background: @color-dark-blue 100%;
+      font-size: 18px;
+      color: @color-white;
+      letter-spacing: 0;
+      font-weight: normal;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+
+      .otsikkotiedot > .koulutus {
+        text-transform: lowercase;
       }
 
-      .modal {
-        position: absolute;
-        right: 10px;
-        top: 50px;
-        margin: 0;
-        min-width: 250px;
-        box-sizing: border-box;
-        border-radius: 2px;
-        box-shadow: 0 1px 3px rgba(0,0,0,.3);
-        background: @color-white;
-        z-index: @z-index-base + 4;
+      .id {
+        float: right;
+        font-size: 0.8em;
+        margin-right: 20px;
+      }
 
-        .close-modal {
-          .CloseSymbol;
-          cursor: pointer;
-          position: absolute;
-          top: 6px;
-          right: 10px;
+      .versiohistoria {
+        display: inline-block;
+        float: right;
+        overflow: hidden;
+
+        &.open:after {
+          content: "";
+          .Triangle(10px, @color-white, bottom);
+          position: relative;
+          margin: 0 auto;
+          bottom: 3px;
+          z-index: @z-index-base + 5;
         }
 
-        ol {
-          box-sizing: content-box;
-          display: block;
-          left: 0;
-          right: 0;
-          margin: 20px 30px;
-          padding: 5px;
-          list-style-type: none;
-          font-size: 0.9em;
-          text-align: center;
-          max-height: 50vh;
-          overflow-y: scroll;
+        .modal {
+          position: absolute;
+          right: 10px;
+          top: 50px;
+          margin: 0;
+          min-width: 250px;
+          box-sizing: border-box;
+          border-radius: 2px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+          background: @color-white;
+          z-index: @z-index-base + 4;
 
-          li:not(:first-child) {
-            margin-top: 0.5em;
+          .close-modal {
+            .CloseSymbol;
+            cursor: pointer;
+            position: absolute;
+            top: 6px;
+            right: 10px;
           }
-          li.selected {
-            background: @color-link-blue;
-            & span {
-              color: @color-white;
-            }
-          }
-          li > a {
+
+          ol {
+            box-sizing: content-box;
             display: block;
             left: 0;
             right: 0;
-            margin: 0;
-            padding: 0;
-            &> span {
-              padding: 0;
+            margin: 20px 30px;
+            padding: 5px;
+            list-style-type: none;
+            font-size: 0.9em;
+            text-align: center;
+            max-height: 50vh;
+            overflow-y: scroll;
+
+            li:not(:first-child) {
+              margin-top: 0.5em;
+            }
+            li.selected {
+              background: @color-link-blue;
+              & span {
+                color: @color-white;
+              }
+            }
+            li > a {
+              display: block;
+              left: 0;
+              right: 0;
               margin: 0;
-            }
-          }
-          span.versionumero {
-            display: inline-block;
-            width: 20%;
-            padding-right: 0.3em;
-            text-align: right;
-          }
-          span.aikaleima {
-            display: inline-block;
-            width: 80%;
-            text-align: left;
-          }
-        }
-      }
-
-      > a {
-        display: block;
-        color: white;
-        text-decoration: underline;
-        text-align: center;
-        vertical-align: top;
-        font-size: 0.8em;
-
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-    }
-  }
-
-  .opiskeluoikeus-content {
-    padding: 27px;
-    font-size: 15px;
-
-    .sisältyyOpiskeluoikeuteen {
-      .oppilaitos {
-        margin-left: 20px;
-      }
-      .properties {
-        display: inline-block;
-      }
-      .property > .value {
-        width: 300px;
-        input {
-          width: 100%;
-          margin: 0;
-        }
-      }
-    }
-
-    .työssäoppimisjaksot {
-      .date-range {
-        margin-bottom: 9px;
-        display: inline-block;
-      }
-      li:not(:last-child) {
-        margin-bottom: 20px;
-      }
-    }
-
-    &.editing {
-      .lisätiedot  {
-        & > .value {
-          .lightgray-box;
-        }
-        .properties .property {
-          .ulkomaanjakso, .poissaolojakso {
-            display: inline-block;
-
-            .label, .dropdown-wrapper, .value {
-              display: inline-block;
-            }
-            .label {
-              min-width: initial;
               padding: 0;
-              margin-left: 12px;
+              & > span {
+                padding: 0;
+                margin: 0;
+              }
             }
-            .kuvaus > .value {
-              min-width: 310px;
+            span.versionumero {
+              display: inline-block;
+              width: 20%;
+              padding-right: 0.3em;
+              text-align: right;
+            }
+            span.aikaleima {
+              display: inline-block;
+              width: 80%;
+              text-align: left;
             }
           }
         }
+
+        > a {
+          display: block;
+          color: white;
+          text-decoration: underline;
+          text-align: center;
+          vertical-align: top;
+          font-size: 0.8em;
+
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
       }
+    }
 
-      .työssäoppimisjaksot > .value > .array > li:not(.add-item) {
-        .lightgray-box;
-        margin-bottom: 10px;
+    .opiskeluoikeus-content {
+      padding: 27px;
+      font-size: 15px;
 
+      .sisältyyOpiskeluoikeuteen {
+        .oppilaitos {
+          margin-left: 20px;
+        }
         .properties {
-          padding: 0;
-          > table {
-            width: 100%;
-          }
-        }
-
-        .remove-item {
-          position: absolute;
-          margin: 0;
-          top: 5px;
-          right: 5px;
-        }
-      }
-
-      .property.hojks .value .hojks {
-        display: inline-block;
-      }
-    }
-
-    .opiskeluoikeuden-tiedot {
-      position: relative;
-      .property .jaksollinen {
-        display: inline-block;
-      }
-      .property.tila .array {
-        .opiskeluoikeusjakso {
-          margin-bottom: 8px;
           display: inline-block;
-          label.date {
-            display: inline-block;
-            min-width: 75px;
-          }
-          .calendar-input {
-            margin-bottom: 5px;
-          }
-          label.tila {
-            padding: 3px 9px;
-            margin-left: 10px;
-          }
-          &.active {
-            font-weight: 600;
-            &:before {
-              font-family: FontAwesome, serif;
-              color: #159ECB;
-              font-weight: lighter;
-              content: "\F061";
-              font-size: 12px;
-              position: absolute;
-              left: -16px;
-              top: 4px;
-            }
-          }
-
         }
-      }
-
-      > .lisätiedot {
-        a.expandable {
-          display: inline-block;
-          &.open {
-            margin-bottom: 8px;
-          }
-          &:after {
-            font-family: FontAwesome;
-            content: '';
-            margin-left: 6px;
-            font-size: 11px;
-          }
-          &.open:after {
-            content: '';
-          }
-        }
-        .value > .properties > table > tbody > tr > .label {
-          text-align: right;
-          white-space: normal;
-          line-height: normal;
-          max-width: 310px;
-        }
-        .array > li {
-          margin-bottom: 8px;
-        }
-      }
-    }
-
-    .lisaa-suoritus-modal {
-      width: 800px;
-      right: 20px;
-      .dropdown .select {
-        height: 35px;
-        line-height: 35px;
-      }
-      .modal-content {
-
-      }
-    }
-
-    .lisaa-opiskeluoikeusjakso-modal {
-      .modal-with-arrow;
-      .modal-content {
-        width: 420px;
-
-        .property.alku {
-          label {
-            vertical-align: middle;
-          }
+        .property > .value {
+          width: 300px;
           input {
-            width: 100px;
+            width: 100%;
+            margin: 0;
           }
+        }
+      }
+
+      .työssäoppimisjaksot {
+        .date-range {
+          margin-bottom: 9px;
+          display: inline-block;
+        }
+        li:not(:last-child) {
           margin-bottom: 20px;
         }
-        .property.tila > label {
+      }
+
+      &.editing {
+        .lisätiedot {
+          & > .value {
+            .lightgray-box;
+          }
+          .properties .property {
+            .ulkomaanjakso, .poissaolojakso {
+              display: inline-block;
+
+              .label, .dropdown-wrapper, .value {
+                display: inline-block;
+              }
+              .label {
+                min-width: initial;
+                padding: 0;
+                margin-left: 12px;
+              }
+              .kuvaus > .value {
+                min-width: 310px;
+              }
+            }
+          }
+        }
+
+        .työssäoppimisjaksot > .value > .array > li:not(.add-item) {
+          .lightgray-box;
+          margin-bottom: 10px;
+
+          .properties {
+            padding: 0;
+            > table {
+              width: 100%;
+            }
+          }
+
+          .remove-item {
+            position: absolute;
+            margin: 0;
+            top: 5px;
+            right: 5px;
+          }
+        }
+
+        .property.hojks .value .hojks {
           display: inline-block;
         }
+      }
 
-
-        label {
-          vertical-align: top;
-          margin-right: 15px;
+      .opiskeluoikeuden-tiedot {
+        position: relative;
+        .property .jaksollinen {
+          display: inline-block;
         }
-        label.disabled {
+        .property.tila .array {
+          .opiskeluoikeusjakso {
+            margin-bottom: 8px;
+            display: inline-block;
+            label.date {
+              display: inline-block;
+              min-width: 75px;
+            }
+            .calendar-input {
+              margin-bottom: 5px;
+            }
+            label.tila {
+              padding: 3px 9px;
+              margin-left: 10px;
+            }
+            &.active {
+              font-weight: 600;
+              &:before {
+                font-family: FontAwesome, serif;
+                color: #159ECB;
+                font-weight: lighter;
+                content: "\F061";
+                font-size: 12px;
+                position: absolute;
+                left: -16px;
+                top: 4px;
+              }
+            }
+
+          }
+        }
+
+        > .lisätiedot {
+          a.expandable {
+            display: inline-block;
+            &.open {
+              margin-bottom: 8px;
+            }
+            &:after {
+              font-family: FontAwesome;
+              content: '';
+              margin-left: 6px;
+              font-size: 11px;
+            }
+            &.open:after {
+              content: '';
+            }
+          }
+          .value > .properties > table > tbody > tr > .label {
+            text-align: right;
+            white-space: normal;
+            line-height: normal;
+            max-width: 310px;
+          }
+          .array > li {
+            margin-bottom: 8px;
+          }
+        }
+      }
+
+      .lisaa-suoritus-modal {
+        width: 800px;
+        right: 20px;
+        .dropdown .select {
+          height: 35px;
+          line-height: 35px;
+        }
+        .modal-content {
+
+        }
+      }
+
+      .lisaa-opiskeluoikeusjakso-modal {
+        .modal-with-arrow;
+        .modal-content {
+          width: 420px;
+
+          .property.alku {
+            label {
+              vertical-align: middle;
+            }
+            input {
+              width: 100px;
+            }
+            margin-bottom: 20px;
+          }
+          .property.tila > label {
+            display: inline-block;
+          }
+
+          label {
+            vertical-align: top;
+            margin-right: 15px;
+          }
+          label.disabled {
+            color: @color-disabled;
+          }
+          label.alternative {
+            &:before {
+              content: '';
+              visibility: visible;
+              display: inline-block;
+              width: 12px;
+              height: 12px;
+              border: 2px solid @color-link-blue;
+              border-radius: 10px;
+              position: relative;
+              top: 2px;
+            }
+            &.disabled:before {
+              border: 2px solid @color-disabled;
+            }
+            &.checked:before {
+              background-color: @color-link-blue;
+            }
+          }
+
+          ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+
+            li {
+              margin-bottom: 10px;
+            }
+
+            input[type="radio"] {
+              width: auto;
+              visibility: hidden;
+              position: relative;
+              display: inline-block;
+              height: 15px;
+              margin-left: -4px;
+            }
+          }
+        }
+      }
+
+      .organisaatiohenkilo {
+        .uusi-henkilo {
+          display: block;
+          margin-top: 5px;
+          input {
+            width: initial;
+            margin-right: 5px;
+          }
+          > div {
+            margin-top: 5px;
+          }
+        }
+      }
+
+      .alku-loppu {
+        margin-bottom: 22px;
+      }
+
+      .jaksollinen {
+        & > .properties {
+          padding-left: 8px;
+        }
+      }
+
+      h4 {
+        text-transform: none;
+        font-size: 24px;
+        margin-top: 0;
+      }
+
+      h5 {
+        font-size: 1em;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      p  {
+        margin: 0;
+        color: #747474;
+      }
+
+      .suoritukset {
+        h4 {
+          margin-bottom: 10px;
+        }
+
+        margin-top: 20px;
+
+        hr {
+          margin: 18px 0 8px 0;
           color: @color-disabled;
         }
-        label.alternative {
-          &:before {
-            content: '';
-            visibility: visible;
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 2px solid @color-link-blue;
-            border-radius: 10px;
-            position: relative;
-            top: 2px;
-          }
-          &.disabled:before {
-            border: 2px solid @color-disabled;
-          }
-          &.checked:before {
-            background-color: @color-link-blue;
-          }
-        }
 
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: inline-block;
-
-          li {
-            margin-bottom: 10px;
-          }
-
-          input[type="radio"] {
-            width: auto;
-            visibility: hidden;
-            position: relative;
-            display: inline-block;
-            height: 15px;
-            margin-left: -4px;
-          }
-        }
-      }
-    }
-
-    .organisaatiohenkilo {
-      .uusi-henkilo {
-        display: block;
-        margin-top: 5px;
-        input {
-          width: initial;
-          margin-right: 5px;
-        }
-        > div {
-          margin-top: 5px;
-        }
-      }
-    }
-
-    .alku-loppu {
-      margin-bottom: 22px;
-    }
-
-    .jaksollinen {
-      & > .properties {
-        padding-left: 8px;
-      }
-    }
-
-    h4 {
-      text-transform: none;
-      font-size: 24px;
-      margin-top: 0;
-    }
-
-    h5 {
-      font-size: 1em;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    p {
-      margin: 0;
-      color: #747474;
-    }
-
-    .suoritukset {
-      h4 {
-        margin-bottom: 10px;
-      }
-
-      margin-top: 20px;
-
-      hr {
-        margin: 18px 0 8px 0;
-        color: @color-disabled;
-      }
-
-      .properties > table .property > .value {
-        width: 100%;
-      }
-
-      .suoritus-tabs {
-        margin-top: 20px;
-        position:relative;
-
-        &:before {
-          display: block;
-          position: absolute;
-          bottom: 0;
-          height: 1px;
+        .properties > table .property > .value {
           width: 100%;
-          border-bottom: 1px solid #AEAEAF;
-          content: '';
-          z-index: 0;
         }
-        margin-bottom: 30px;
-        > ul {
-          display: inline-block;
-          padding: 0;
-          list-style: none;
-        }
-        .tab {
-          display: inline-block;
-          padding: 5px 40px;
-          &.selected {
-            background: white;
-            border-left: 1px solid #AEAEAE;
-            border-right: 1px solid #AEAEAE;
-            border-top: 2px solid @color-link-blue;
-            position: relative;
-            z-index: 1;
-          }
-          a {
-            color: @color-link-blue;
-          }
-          &.add-suoritus {
-            font-size: 0.8em;
-          }
-        }
-      }
 
-      .tila-vahvistus {
-        background: @color-neutral-gray;
-        padding: 12px;
-        display: inline-block;
-        margin: 15px 0;
+        .suoritus-tabs {
+          margin-top: 20px;
+          position: relative;
 
-        .tiedot {
-          display: inline-block;
-          .tila {
-            & > span {
-              display: inline-block;
-              text-transform: lowercase;
-              margin-right: 4px;
-            }
-            & > span:first-letter {
-              text-transform: uppercase;
-            }
-            & > span.valmis {
-              color: #74b419;
-            }
-            margin-right: 13px;
-            font-weight: 600;
-          }
-
-          .vahvistus {
-            color: @color-label;
-
-            > span:not(:nth-child(1)):not(:nth-child(2)) {
-              margin-left: 10px;
-            }
-          }
-        }
-        .controls {
-          > button {
-            vertical-align: top;
-            margin-left: 20px;
-          }
-        }
-        .merkitse-valmiiksi-modal .modal-content {
-          width: 580px;
-          .jaa-tai-siirretaan {
-            cursor: pointer;
+          &:before {
             display: block;
-            margin-top: 10px;
-            input {
-              display: inline;
-              margin-right: 10px;
-            }
+            position: absolute;
+            bottom: 0;
+            height: 1px;
+            width: 100%;
+            border-bottom: 1px solid #AEAEAF;
+            content: '';
+            z-index: 0;
           }
-        }
-      }
-
-      .suoritus .properties {
-        .koulutusmoduuli {
-          .tunniste {
+          margin-bottom: 30px;
+          > ul {
             display: inline-block;
-            vertical-align: top;
+            padding: 0;
+            list-style: none;
           }
-          .diaarinumero {
-            margin-left: 1em;
-            .dropdown {
+          .tab {
+            display: inline-block;
+            padding: 5px 40px;
+            &.selected {
+              background: white;
+              border-left: 1px solid #AEAEAE;
+              border-right: 1px solid #AEAEAE;
+              border-top: 2px solid @color-link-blue;
+              position: relative;
+              z-index: 1;
+            }
+            a {
+              color: @color-link-blue;
+            }
+            &.add-suoritus {
+              font-size: 0.8em;
+            }
+          }
+        }
+
+        .tila-vahvistus {
+          background: @color-neutral-gray;
+          padding: 12px;
+          display: inline-block;
+          margin: 15px 0;
+
+          .tiedot {
+            display: inline-block;
+            .tila {
+              & > span {
+                display: inline-block;
+                text-transform: lowercase;
+                margin-right: 4px;
+              }
+              & > span:first-letter {
+                text-transform: uppercase;
+              }
+              & > span.valmis {
+                color: #74b419;
+              }
+              margin-right: 13px;
+              font-weight: 600;
+            }
+
+            .vahvistus {
+              color: @color-label;
+
+              > span:not(:nth-child(1)):not(:nth-child(2)) {
+                margin-left: 10px;
+              }
+            }
+          }
+          .controls {
+            > button {
+              vertical-align: top;
+              margin-left: 20px;
+            }
+          }
+          .merkitse-valmiiksi-modal .modal-content {
+            width: 580px;
+            .jaa-tai-siirretaan {
+              cursor: pointer;
+              display: block;
+              margin-top: 10px;
+              input {
+                display: inline;
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+
+        .suoritus .properties {
+          .koulutusmoduuli {
+            .tunniste {
               display: inline-block;
-              max-width: 500px;
-              width: 407px;
-              margin-left: 10px;
+              vertical-align: top;
             }
-          }
-        }
-
-        .property.laajuus > .value input{
-          width: 50px;
-          margin-right: 10px;
-        }
-      }
-
-      .osasuoritukset {
-        margin-top: 20px;
-      }
-    }
-
-    a.opintosuoritusote {
-      display: none; /* Element hidden, remove this if needed later. */
-      .OverlayLink;
-      margin-right: 66px;
-    }
-
-    a.todistus {
-      opacity: 0;
-      .OverlayLink;
-    }
-
-    .properties {
-      position: relative;
-      &:not(.inline) {
-        > table {
-          font-size: 1em;
-          > tbody > tr:not(:first-child) {
-            > td {
-              padding-top: 9px;
-            }
-          }
-          > tbody > tr.property {
-            > td {
-              > .label {
-                margin-bottom: 6px;
+            .diaarinumero {
+              margin-left: 1em;
+              .dropdown {
+                display: inline-block;
+                max-width: 500px;
+                width: 407px;
+                margin-left: 10px;
               }
-              &.label {
-                min-width: 100px;
-                padding-right: 12px;
+            }
+          }
+
+          .property.laajuus > .value input {
+            width: 50px;
+            margin-right: 10px;
+          }
+        }
+
+        .osasuoritukset {
+          margin-top: 20px;
+        }
+      }
+
+      a.opintosuoritusote {
+        display: none; /* Element hidden, remove this if needed later. */
+        .OverlayLink;
+        margin-right: 66px;
+      }
+
+      a.todistus {
+        opacity: 0;
+        .OverlayLink;
+      }
+
+      .properties {
+        position: relative;
+        &:not(.inline) {
+          > table {
+            font-size: 1em;
+            > tbody > tr:not(:first-child) {
+              > td {
+                padding-top: 9px;
+              }
+            }
+            > tbody > tr.property {
+              > td {
+                > .label {
+                  margin-bottom: 6px;
+                }
+                &.label {
+                  min-width: 100px;
+                  padding-right: 12px;
+                  color: @color-label;
+                  white-space: nowrap;
+                }
+                &.complex {
+                  > .value {
+                    display: block;
+                    margin-left: 20px;
+                  }
+                }
+              }
+            }
+
+            table.tabular-array {
+              border: 1px solid @color-neutral-gray;
+              border-collapse: collapse;
+              margin: 12px 0;
+
+              > thead > tr > th {
                 color: @color-label;
-                white-space: nowrap;
               }
-              &.complex {
-                > .value {
-                  display: block;
+              > thead > tr > th, > tbody > tr > td {
+                padding: 2px 10px;
+                border-right: 1px solid @color-neutral-gray;
+              }
+
+              > thead {
+                background: @color-neutral-gray
+              }
+            }
+          }
+        }
+        &.inline {
+          display: inline-block;
+          vertical-align: top;
+          > table {
+            display: inline-block;
+            > tbody {
+              display: inline-block;
+              > tr.property {
+                display: inline-block;
+                > td {
+                  display: inline-block;
+                  vertical-align: middle;
+                  &.label {
+                    margin-right: 10px;
+                  }
+                  &.value {
+                    width: initial !important; // reset
+                  }
+                }
+                &:not(:first-child) {
                   margin-left: 20px;
                 }
               }
             }
           }
-
-          table.tabular-array {
-            border: 1px solid @color-neutral-gray;
-            border-collapse: collapse;
-            margin: 12px 0;
-
-            > thead > tr > th {
-              color: @color-label;
-            }
-            > thead > tr > th, > tbody > tr > td {
-              padding: 2px 10px;
-              border-right: 1px solid @color-neutral-gray;
-            }
-
-            > thead {
-              background: @color-neutral-gray
-            }
-          }
         }
       }
-      &.inline {
-        display: inline-block;
-        vertical-align: top;
-        > table {
-          display: inline-block;
-          > tbody {
-            display: inline-block;
-            > tr.property {
-              display: inline-block;
-              > td {
-                display: inline-block;
-                vertical-align: middle;
-                &.label {
-                  margin-right: 10px;
-                }
-                &.value {
-                  width: initial !important; // reset
-                }
-              }
-              &:not(:first-child) {
-                margin-left: 20px;
-              }
-            }
-          }
-        }
-      }
-    }
 
-    ul.array {
-      list-style: none;
-      padding-left: 0;
-      &:not(.inline):not(.inline-when-collapsed) > li {
-        position: relative;
-      }
-
-      &.inline {
-        display: inline-block;
+      ul.array {
+        list-style: none;
         padding-left: 0;
-        > li {
+        &:not(.inline):not(.inline-when-collapsed) > li {
+          position: relative;
+        }
+
+        &.inline {
+          display: inline-block;
+          padding-left: 0;
+          > li {
+            display: inline-block;
+          }
+          > li:not(:last-child):after {
+            content: ", ";
+            margin-right: 5px;
+          }
+        }
+
+        > li > .object, > li > .dropdown-wrapper {
           display: inline-block;
         }
-        > li:not(:last-child):after {
-          content: ", ";
+
+        > li:not(:last-child) > .object {
+          border-bottom: solid lightgray 1px;
+          padding-bottom: 8px;
+          margin-bottom: 8px;
+        }
+
+        > li > a.remove-item {
+          .RemoveSymbol;
+          margin-left: 6px;
+          margin-top: 0;
+        }
+      }
+
+      input, select, textarea {
+        width: 100%;
+        &.date-editor {
+          width: 100px;
+        }
+        &.number {
+          width: 10em;
           margin-right: 5px;
         }
       }
 
-      > li > .object, > li > .dropdown-wrapper {
+      .date-range.error {
+        .date-editor {
+          background: #FFE9E9;
+          border: 1px solid #E09191
+        }
+      }
+
+      .suoritus {
+        position: relative;
+      }
+
+      a.remove-value {
+        .RemoveSymbol;
+        vertical-align: top;
+        margin-left: 6px;
         display: inline-block;
       }
 
-      > li:not(:last-child) > .object {
-        border-bottom: solid lightgray 1px;
-        padding-bottom: 8px;
-        margin-bottom: 8px;
+      a.edit-value {
+        .EditSymbol;
       }
 
-      > li > a.remove-item {
-        .RemoveSymbol;
-        margin-left: 6px;
-        margin-top: 0;
-      }
-    }
-
-
-    input, select, textarea {
-      width: 100%;
-      &.date-editor {
-        width: 100px;
-      }
-      &.number {
-        width: 10em;
-        margin-right: 5px;
-      }
-    }
-
-    .date-range.error {
-      .date-editor {
-        background: #FFE9E9;
-        border: 1px solid #E09191
-      }
-    }
-
-    .suoritus {
-      position: relative;
-    }
-
-    a.remove-value {
-      .RemoveSymbol;
-      vertical-align: top;
-      margin-left: 6px;
-      display: inline-block;
-    }
-
-    a.edit-value {
-      .EditSymbol;
-    }
-
-    .removable-option a.remove-value {
-      float: right;
-    }
-
-    .oppiaineensuoritus .korotus {
-      margin-left: 8px;
-    }
-    .oppiaineensuoritus label, .lukionkurssinsuoritus label {
-      display: inline-block;
-      min-width: 300px;
-    }
-    .lukionkurssinsuoritus .koodiarvo {
-      margin-right: 10px;
-    }
-
-    .osaamisentunnustaminen {
-      display: block;
-      margin-top: 8px;
-      margin-left: 20px;
-    }
-
-    .foldable-wrapper {
-      display: block;
-    }
-
-    .inline .foldable-wrapper, .foldable-wrapper.inline {
-      display: inline-block;
-    }
-
-    .foldable {
-      a.toggle-expand {
-        margin-left: 10px;
-        position: absolute;
-        top: 0;
-        left: -30px;
-        z-index: @z-index-base + 1;
+      .removable-option a.remove-value {
+        float: right;
       }
 
-      .expanded > a.toggle-expand {
-        left: -28px;
+      .oppiaineensuoritus .korotus {
+        margin-left: 8px;
+      }
+      .oppiaineensuoritus label, .lukionkurssinsuoritus label {
+        display: inline-block;
+        min-width: 300px;
+      }
+      .lukionkurssinsuoritus .koodiarvo {
+        margin-right: 10px;
       }
 
-      .representative .collapsed a.toggle-expand {
-        display: none;
+      .osaamisentunnustaminen {
+        display: block;
+        margin-top: 8px;
+        margin-left: 20px;
       }
 
-      .collapsed .collapsed a.toggle-expand {
-        display: none;
+      .foldable-wrapper {
+        display: block;
+      }
+
+      .inline .foldable-wrapper, .foldable-wrapper.inline {
+        display: inline-block;
+      }
+
+      .foldable {
+        a.toggle-expand {
+          margin-left: 10px;
+          position: absolute;
+          top: 0;
+          left: -30px;
+          z-index: @z-index-base + 1;
+        }
+
+        .expanded > a.toggle-expand {
+          left: -28px;
+        }
+
+        .representative .collapsed a.toggle-expand {
+          display: none;
+        }
+
+        .collapsed .collapsed a.toggle-expand {
+          display: none;
+        }
+      }
+
+      input[type=checkbox] {
+        height: 1.5em;
+        width: auto;
       }
     }
 
-    input[type=checkbox] {
-      height: 1.5em;
-      width: auto;
+    .toggle-edit, .invalidate {
+      .OverlayElem;
     }
-  }
 
-  .toggle-edit, .invalidate {
-    .OverlayElem;
-  }
+    button.confirm-invalidate {
+      background-color: @color-delete;
+      margin-left: 10px;
+    }
 
-  button.confirm-invalidate {
-    background-color: @color-delete;
-    margin-left: 10px;
-  }
+    .OverlayLink {
+      .OverlayElem;
+      font-size: 0.8em;
+      text-decoration: underline;
+    }
 
-  .OverlayLink {
-    .OverlayElem;
-    font-size: 0.8em;
-    text-decoration: underline;
-  }
-
-  .OverlayElem {
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: @z-index-base + 1;
+    .OverlayElem {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: @z-index-base + 1;
+    }
   }
 }
 
