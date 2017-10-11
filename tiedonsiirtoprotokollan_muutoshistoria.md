@@ -1,3 +1,7 @@
+## 11.10.2017
+
+- Lisätty lukion opiskeluoikeuden lisätietoihin sisäoppilaitosmainenMajoitus
+
 ## 9.10.2017
 
 Validointimuutoksia:
