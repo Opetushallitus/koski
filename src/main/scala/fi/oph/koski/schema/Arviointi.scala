@@ -10,6 +10,7 @@ trait Arviointi {
   def arvosana: KoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   def arviointipäivä: Option[LocalDate]
+  @Title("Arvioijat")
   def arvioitsijat: Option[List[SuorituksenArvioitsija]]
 
   def arvosanaNumeroin: Option[LocalizedString] = {

@@ -850,7 +850,7 @@ describe('Ammatillinen koulutus', function() {
             'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
@@ -874,7 +874,7 @@ describe('Ammatillinen koulutus', function() {
             'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
@@ -894,7 +894,7 @@ describe('Ammatillinen koulutus', function() {
             'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Arvioitsijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
             'Arviointikohteet Arviointikohde Arvosana\n' +
             'Työprosessin hallinta 3\n' +
             'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
