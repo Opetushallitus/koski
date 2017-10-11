@@ -1,136 +1,182 @@
-[ {
-  "koodiUri" : "lahdejarjestelma_edukit",
-  "koodiArvo" : "edukit",
-  "metadata" : [ {
-    "nimi" : "Edukit",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_helmi",
-  "koodiArvo" : "helmi",
-  "metadata" : [ {
-    "nimi" : "Helmi oppilashallintojärjestelmä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_kehatieto",
-  "koodiArvo" : "kehätieto",
-  "metadata" : [ {
-    "nimi" : "Kehätieto opintohallintojärjestelmä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_msdynamicscrmaes",
-  "koodiArvo" : "msdynamicscrm_aes",
-  "metadata" : [ {
-    "nimi" : "MS Dynamics CRM Accountor Enterprise Solutions",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_nexttime",
-  "koodiArvo" : "nexttime",
-  "metadata" : [ {
-    "nimi" : "Nexttime",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_peppi",
-  "koodiArvo" : "peppi",
-  "metadata" : [ {
-    "nimi" : "Peppi",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_primus",
-  "koodiArvo" : "primus",
-  "metadata" : [ {
-    "nimi" : "primus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_rediteq",
-  "koodiArvo" : "rediteq",
-  "metadata" : [ {
-    "nimi" : "Rediteq",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_studentaplus",
-  "koodiArvo" : "studentaplus",
-  "metadata" : [ {
-    "nimi" : "Studentaplus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_virta",
-  "koodiArvo" : "virta",
-  "metadata" : [ {
-    "nimi" : "virta",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winha",
-  "koodiArvo" : "winha",
-  "metadata" : [ {
-    "nimi" : "Winha",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnova",
-  "koodiArvo" : "winnova",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnovaeduerp",
-  "koodiArvo" : "winnova-eduerp",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, EduErp",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnovastudentaplus",
-  "koodiArvo" : "winnova-studentaplus",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, Studenta",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_ytr",
-  "koodiArvo" : "ytr",
-  "metadata" : [ {
-    "nimi" : "ytr",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "lahdejarjestelma_edukit",
+    "koodiArvo": "edukit",
+    "metadata": [
+      {
+        "nimi": "Edukit",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_helmi",
+    "koodiArvo": "helmi",
+    "metadata": [
+      {
+        "nimi": "Helmi oppilashallintojärjestelmä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_kehatieto",
+    "koodiArvo": "kehätieto",
+    "metadata": [
+      {
+        "nimi": "Kehätieto opintohallintojärjestelmä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_msdynamicscrmaes",
+    "koodiArvo": "msdynamicscrm_aes",
+    "metadata": [
+      {
+        "nimi": "MS Dynamics CRM Accountor Enterprise Solutions",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_nexttime",
+    "koodiArvo": "nexttime",
+    "metadata": [
+      {
+        "nimi": "Nexttime",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_peppi",
+    "koodiArvo": "peppi",
+    "metadata": [
+      {
+        "nimi": "Peppi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_primus",
+    "koodiArvo": "primus",
+    "metadata": [
+      {
+        "nimi": "primus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_rediteq",
+    "koodiArvo": "rediteq",
+    "metadata": [
+      {
+        "nimi": "Rediteq",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_studentaplus",
+    "koodiArvo": "studentaplus",
+    "metadata": [
+      {
+        "nimi": "Studentaplus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_virta",
+    "koodiArvo": "virta",
+    "metadata": [
+      {
+        "nimi": "virta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winha",
+    "koodiArvo": "winha",
+    "metadata": [
+      {
+        "nimi": "Winha",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnova",
+    "koodiArvo": "winnova",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovaeduerp",
+    "koodiArvo": "winnova-eduerp",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, EduErp",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovastudentaplus",
+    "koodiArvo": "winnova-studentaplus",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, Studenta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_ytr",
+    "koodiArvo": "ytr",
+    "metadata": [
+      {
+        "nimi": "ytr",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
