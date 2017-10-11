@@ -17,6 +17,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_kehatieto",
+  "koodiArvo" : "kehätieto",
+  "metadata" : [ {
+    "nimi" : "Kehätieto opintohallintojärjestelmä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_msdynamicscrmaes",
   "koodiArvo" : "msdynamicscrm_aes",
   "metadata" : [ {
