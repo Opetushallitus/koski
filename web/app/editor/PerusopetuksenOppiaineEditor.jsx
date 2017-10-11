@@ -15,7 +15,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
     let oppiaineTitle = (aine) => {
       let title = t(modelData(aine, 'tunniste.nimi')) + (kieliaine ? ', ' : '')
-      return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + title.toLowerCase()}</span> : title
+      return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + (kieliaine ? title : title.toLowerCase())}</span> : title
     }
     let pakollinen = modelData(oppiaine, 'pakollinen')
     let äidinkieli = oppiaine.value.classes.includes('aidinkieli')
