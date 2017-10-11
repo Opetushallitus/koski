@@ -1,4 +1,3 @@
-import './polyfill-bind.js'
 import 'whatwg-fetch'
 import 'es6-promise/auto'
 import './window-error-handler.js'
