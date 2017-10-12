@@ -26,7 +26,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
       // JSON queries go to PostgreSQL
       opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
-        case (opiskeluoikeusRow, henkilöRow) =>  OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
+        case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) => OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
       }
     } else {
       // Other queries got to ElasticSearch

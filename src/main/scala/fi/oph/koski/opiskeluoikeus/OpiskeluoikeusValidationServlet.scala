@@ -31,7 +31,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
 
     OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
-        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow)] = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, None, None)(koskiSession)
+        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, None, None)(koskiSession)
         streamResponse[ValidationResult](rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk)))
 
       case Left(status) =>

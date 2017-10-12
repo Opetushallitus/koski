@@ -97,8 +97,8 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     val bufferSize = 1000
     val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
-        val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
-          OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
+        val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
+          OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
         }.toList
         val changed = updateBulk(perustiedot, replaceDocument = true) match {
           case Right(count) => count

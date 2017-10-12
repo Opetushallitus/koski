@@ -22,8 +22,13 @@ class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with
     streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }
 
-  def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
-    val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
+  def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
+    val baseQuery = OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]]
+      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
+      .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
+      .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
+
+    val query = filters.foldLeft(baseQuery) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
       case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("alkamispäivä")) >= päivä.toString)
@@ -37,27 +42,27 @@ class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with
         }
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
-        query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable) => t._1.luokka ilike (hakusana + "%")})
+        query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable, _) => t._1.luokka ilike (hakusana + "%")})
       case (query, Nimihaku(hakusana)) =>
-        query.filter{ case (_, henkilö) =>
+        query.filter{ case (_, henkilö, _) =>
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
-    def ap(tuple: (OpiskeluoikeusTable, HenkilöTable)) = tuple._1.data.#>>(List("alkamispäivä"))
-    def luokka(tuple: (OpiskeluoikeusTable, HenkilöTable)) = tuple._1.luokka
-    def nimi(tuple: (OpiskeluoikeusTable, HenkilöTable)) = (tuple._2.sukunimi.toLowerCase, tuple._2.etunimet.toLowerCase)
-    def nimiDesc(tuple: (OpiskeluoikeusTable, HenkilöTable)) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
+    def alkamispäivä(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.data.#>>(List("alkamispäivä"))
+    def luokka(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.luokka
+    def nimi(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase, tuple._2.etunimet.toLowerCase)
+    def nimiDesc(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
 
     val sorted = sorting match {
       case None => query
       case Some(Ascending("oppijaOid")) => query.sortBy(_._2.oid)
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
-      case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (ap(tuple), nimi(tuple)))
-      case Some(Descending("alkamispäivä")) => query.sortBy(tuple => (ap(tuple).desc, nimiDesc(tuple)))
+      case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple), nimi(tuple)))
+      case Some(Descending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple).desc, nimiDesc(tuple)))
       case Some(Ascending("luokka")) => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))

@@ -53,7 +53,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter]): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
-    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows
+    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))
       .map(_.toList)
 

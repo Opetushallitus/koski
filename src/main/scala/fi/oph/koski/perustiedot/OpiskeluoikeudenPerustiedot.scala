@@ -46,8 +46,8 @@ case class OpiskeluoikeusJaksonPerustiedot(
 )
 
 object OpiskeluoikeudenPerustiedot {
-  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(row.id, row.data, row.luokka, TäydellisetHenkilötiedotWithMasterInfo(henkilöRow.toHenkilötiedot, None)) // TODO: master-henkilö jää puuttumaan!
+  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
+    makePerustiedot(row.id, row.data, row.luokka, TäydellisetHenkilötiedotWithMasterInfo(henkilöRow.toHenkilötiedot, masterHenkilöRow.map(_.toHenkilötiedot)))
   }
 
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenPerustiedot = {
