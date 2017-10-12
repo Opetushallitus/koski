@@ -113,12 +113,17 @@ export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
   return (model && (model.title || (model.value && model.value.title) || (model.value && '' + modelData(model)))) || ''
 }
-const modelEmptyDefaultImpl = (mainModel, path) => {
+
+export const modelEmpty = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
+  if (!model.context) throwError('context missing')
+  let editor = model.context && getEditor(model)
+  if (editor && editor.isEmpty) {
+    return editor.isEmpty(model)
+  }
   return !model.value || valueEmpty(model.value) && itemsEmpty(modelItems(model.items))
 }
 
-export const modelEmpty = modelEmptyDefaultImpl // TODO: use editor-based checking instead?
 export const recursivelyEmpty = (m) => {
   if (!m.value) return true
   if (m.type == 'object') {
@@ -226,9 +231,7 @@ export const optionalModelLens = ({model}) => {
       return getUsedModelForOptionalModel(m, {model})
     },
     (newModel, contextModel) => {
-      let editor = getEditor(model)
-      let isEmpty = (editor && editor.isEmpty) || modelEmptyDefaultImpl
-      if (isEmpty(newModel)) {
+      if (modelEmpty(newModel)) {
         return createOptionalEmpty(contextModel)
       } else {
         return modelSetValue(getUsedModelForOptionalModel(contextModel, {model}), newModel.value)
@@ -300,11 +303,11 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
       return prop ? [prop] : []
     })
   }
-  var props = modelPropertiesRaw(mainModel)
+  var props = modelPropertiesRaw(mainModel).map(contextualizeProperty(mainModel))
   if (pathsOrFilter && typeof pathsOrFilter == 'function') {
     props = props.filter(pathsOrFilter)
   }
-  return props.map(contextualizeProperty(mainModel))
+  return props
 }
 
 
