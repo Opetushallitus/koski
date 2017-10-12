@@ -23,19 +23,11 @@ export class ObjectEditor extends React.Component {
       ? objectEditor()
       : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
         ? representativeEditor() // just show the representative property, as it is the only one
-        : isArrayItem(context) // for array item always show representative property
-          ? (<span className={objectWrapperClass}>
-              <span className="representative">{representativeEditor({ forceInline: true })}</span>
-              {objectEditor()}
-             </span>)
-          : (<span className={objectWrapperClass}>
-              {objectEditor()}
-             </span>)
+        : <span className={objectWrapperClass}>{objectEditor()}</span>
   }
 }
 ObjectEditor.canShowInline = (model) => {
-  return !!findRepresentative(model) && !model.context.edit && !isArrayItem(model.context)
+  return !!findRepresentative(model) && !model.context.edit
 }
 
 const findRepresentative = (model) => findModelProperty(model, property => property.representative)
-const isArrayItem = (context) => context.arrayItems && context.arrayItems.length > 1 // TODO: looks suspicious
