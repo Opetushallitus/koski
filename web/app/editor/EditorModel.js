@@ -214,7 +214,7 @@ let getUsedModelForOptionalModel = (m, {model} = {}) => {
   }
   let prototypeModel = optionalPrototypeModel(m)
   let editor = undefined
-  if (prototypeModel) { // TODO: why enum fails?
+  if (prototypeModel) {
     editor = getEditor(prototypeModel)
   } else {
     editor = getEditor(model)
