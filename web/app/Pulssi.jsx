@@ -151,7 +151,7 @@ const KoulutusmuotoTilasto = ({tilasto}) => {
   let valmiitPercent = toPercent(tilasto.valmistuneidenMäärä / tilasto.opiskeluoikeuksienMäärä)
   return (
       <li>
-        <h4>{tilasto.nimi}</h4>
+        <span>{tilasto.koulutusmuoto}</span>
         <div className="progress-bar">
           <div style={{width: valmiitPercent + '%'}} />
         </div>
