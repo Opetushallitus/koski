@@ -37,7 +37,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    // TODO: masteroid index
     runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
