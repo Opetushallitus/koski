@@ -93,7 +93,7 @@ const getEditorFunction = (model) => {
   if (!model) return NullEditor
 
   if (model.optional) {
-    let modelForFindingEditor = model.value ? model : model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
+    let modelForFindingEditor = model.value ? model : contextualizeSubModel(model.optionalPrototype, model)
     return editorForModel(modelForFindingEditor, e => editorFunctionHandlesOptional(e)) || model.context.editorMapping.optional
   }
 

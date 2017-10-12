@@ -327,6 +327,7 @@ export const contextualizeModel = (model, context, path) => {
 }
 
 export const contextualizeSubModel = (subModel, parentModel, path) => {
+  if (!subModel) return subModel
   subModel = resolvePrototype(subModel, parentModel.context)
   var subPath = childPath(parentModel, path)
   return R.merge(subModel, { context: parentModel.context, path: subPath })
