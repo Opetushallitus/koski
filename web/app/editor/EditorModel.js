@@ -254,7 +254,7 @@ export const optionalPrototypeModel = (model) => {
   let prototype = model.optionalPrototype = preparePrototypeModel(model.optionalPrototype, model)
   if (!prototype) return prototype
   if (prototype.oneOfPrototypes && !modelData(prototype)) {
-    // This is a OneOfModel, just pick the first alternative for now. TODO: allow picking suitable prototype
+    // This is a OneOfModel, just pick the first alternative
     prototype = prototype.oneOfPrototypes[0] = preparePrototypeModel(prototype.oneOfPrototypes[0], model)
   }
   return R.merge(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
