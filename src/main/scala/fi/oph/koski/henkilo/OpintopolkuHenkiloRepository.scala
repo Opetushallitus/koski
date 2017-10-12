@@ -31,7 +31,7 @@ case class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationSe
   }
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö
-  def findMasterHenkilö(oid: Henkilö.Oid): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findMasterOppija(oid) match {
+  private def findMasterHenkilö(oid: Henkilö.Oid): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findMasterOppija(oid) match {
     case Some(master) if master.oidHenkilo != oid => Some(master.toTäydellisetHenkilötiedot)
     case _ => None
   }
