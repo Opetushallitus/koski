@@ -1266,17 +1266,17 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää tutkinnon osat', function() {
           expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
             'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus (osp) Arvosana\n' +
-            'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 osp Hyväksytty\n' +
+            'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
             'Kuvaus Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen\n' +
-            'Opiskeluvalmiuksien vahvistaminen ei 10 osp Hyväksytty\n' +
+            'Opiskeluvalmiuksien vahvistaminen ei 10 Hyväksytty\n' +
             'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
-            'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 osp Hyväksytty\n' +
+            'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen ei 15 Hyväksytty\n' +
             'Kuvaus Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen\n' +
-            'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 osp Hyväksytty\n' +
+            'Arjen taitojen ja hyvinvoinnin vahvistaminen ei 10 Hyväksytty\n' +
             'Kuvaus Arjen taitojen ja hyvinvoinnin vahvistaminen\n' +
-            'Tietokoneen käyttäjän AB-kortti ei 5 osp Hyväksytty\n' +
+            'Tietokoneen käyttäjän AB-kortti ei 5 Hyväksytty\n' +
             'Kuvaus Tietokoneen käyttäjän AB-kortti\n' +
-            'Auton lisävarustetyöt ei 15 osp Hyväksytty\n' +
+            'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
             'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
