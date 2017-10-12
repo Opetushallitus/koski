@@ -1344,35 +1344,6 @@ describe('Perusopetus', function() {
           })
         })
       })
-
-      describe('Kun tiedot ovat peräisin ulkoisesta järjestelmästä', function() {
-        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
-        it('Muutokset estetty', function() {
-          expect(opinnot.anythingEditable()).to.equal(false)
-        })
-      })
-
-      describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-        it('Muutokset estetty', function() {
-          var suoritus = opinnot.opiskeluoikeusEditor()
-          expect(suoritus.isEditable()).to.equal(false)
-        })
-        it('Uuden opiskeluoikeuden lisääminen estetty', function() {
-          expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
-        })
-      })
-
-      describe('Kun käyttäjällä on kirjoitusoikeudet, muttei luottamuksellinen roolia', function() {
-        before(Authentication().logout, Authentication().login('epäluotettava-tallentaja'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-        it('Muutokset estetty', function() {
-          var suoritus = opinnot.opiskeluoikeusEditor()
-          expect(suoritus.isEditable()).to.equal(false)
-        })
-        it('Uuden opiskeluoikeuden lisääminen estetty', function() {
-          expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
-        })
-      })
     })
   })
 

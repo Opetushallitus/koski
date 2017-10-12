@@ -144,28 +144,4 @@ describe('Oppijahaku', function() {
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
     })
   })
-
-  describe('Käyttöoikeudet', function() {
-    describe('Oppijahaku', function() {
-      before(Authentication().login('omnia-palvelukäyttäjä'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
-      it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
-
-      })
-    })
-
-    describe('Oppijan lisääminen', function() {
-      before(Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('230872-7258', page.oppijaHaku.isNoResultsLabelShown))
-      it('Ei ole mahdollista ilman kirjoitusoikeuksia', function() {
-        expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
-      })
-    })
-
-    describe('Navigointi oppijan sivulle', function() {
-      before(Authentication().login('omnia-palvelukäyttäjä'), openPage('/koski/oppija/1.2.246.562.24.00000000002', page.is404))
-
-      it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
-
-      })
-    })
-  })
 })
