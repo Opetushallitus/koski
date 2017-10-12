@@ -87,40 +87,17 @@ Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (()
 Editor.handlesOptional = (model, modifier) => editorFunctionHandlesOptional(getEditorFunction(model), modifier)
 const editorFunctionHandlesOptional = (editor, modifier) => editor && editor.handlesOptional && editor.handlesOptional(modifier)
 
-class NullEditor extends React.Component {
-  render() {
-    return null
-  }
-}
+const NullEditor = () => null
 
-const getEditorFunction = (model) => { // TODO: refactor this garbage
-  let editorByClass = filter => mdl => {
-    if (!mdl || !mdl.value) {
-      return undefined
-    }
-    for (var i in mdl.value.classes) {
-      var editor = mdl.context.editorMapping[mdl.value.classes[i]]
-      if (editor
-          && (!mdl.context.edit || filter(editor))
-          && (mdl.context.edit || !editor.writeOnly)
-      ) {
-        return editor
-      }
-    }
-  }
-
-  let notReadOnlyEditor = editorByClass(e => !e.readOnly)
-  let optionalHandlingEditor = editorByClass(editorFunctionHandlesOptional)
-
+const getEditorFunction = (model) => {
   if (!model) return NullEditor
 
   if (model.optional) {
-    let prototype = model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
-    let typeEditor = prototype && model.context.editorMapping[prototype.type]
-    return optionalHandlingEditor(prototype) || ((editorFunctionHandlesOptional(typeEditor)) && typeEditor) || model.context.editorMapping.optional
+    let modelForFindingEditor = model.value ? model : model.optionalPrototype && contextualizeSubModel(model.optionalPrototype, model)
+    return editorForModel(modelForFindingEditor, e => editorFunctionHandlesOptional(e)) || model.context.editorMapping.optional
   }
 
-  let editor = notReadOnlyEditor(model) || model.context.editorMapping[model.type]
+  let editor = editorForModel(model)
   if (!editor) {
     if (!model.type) {
       console.error('Typeless model', model)
@@ -130,6 +107,24 @@ const getEditorFunction = (model) => { // TODO: refactor this garbage
     return NullEditor
   }
   return editor
+}
+
+const editorForModel = (mdl, editorFilter = () => true) => {
+  if (!mdl) return null
+  if (mdl.value) {
+    for (var i in mdl.value.classes) {
+      var editor = mdl.context.editorMapping[mdl.value.classes[i]]
+      if (editor
+        && (editorFilter(editor, mdl))
+        && (!mdl.context.edit || !editor.readOnly)
+        && (mdl.context.edit || !editor.writeOnly)
+      ) {
+        return editor
+      }
+    }
+  }
+  let typeEditor = mdl.context.editorMapping[mdl.type]
+  if (editorFilter(typeEditor, mdl)) return typeEditor
 }
 
 const getModelEditor = (model, props) => {
