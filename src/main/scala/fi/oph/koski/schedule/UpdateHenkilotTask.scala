@@ -30,9 +30,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   }
 
   private def runUpdate(oids: List[Oid], startMillis: Long, lastContext: HenkilöUpdateContext) = {
-
-    val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(oids).sortBy(_.modified)
-    // TODO: hae yllä vain ne, jotka löytyvät Koskesta!
+    val filteredOids = application.henkilöCache.filterOidsByCache(oids)
+    val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)

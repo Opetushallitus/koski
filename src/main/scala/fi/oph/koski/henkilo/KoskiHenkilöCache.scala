@@ -27,6 +27,11 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
     }
   }
 
+  def filterOidsByCache(oids: List[String]) = {
+    // split to groups of 10000 to ensure this works with larger batches. Tested: 10000 works, 100000 does not.
+    oids.grouped(10000).flatMap(group => runDbSync(Henkilöt.map(_.oid).filter(_ inSetBind(group)).result))
+  }
+
   private def toHenkilöRow(data: TäydellisetHenkilötiedotWithMasterInfo) = HenkilöRow(data.henkilö.oid, data.henkilö.sukunimi, data.henkilö.etunimet, data.henkilö.kutsumanimi, data.master.map(_.oid))
 }
 
