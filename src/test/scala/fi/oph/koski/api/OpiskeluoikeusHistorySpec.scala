@@ -15,8 +15,7 @@ import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
-  import KoskiSchema.deserializationContext
+class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija = MockOppijat.tyhjä
 
@@ -24,26 +23,26 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     "Luotaessa uusi opiskeluoikeus" - {
       "Luodaan historiarivi" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
-        verifyHistory(oppija, opiskeluoikeus, List(1))
+        verifyHistory(opiskeluoikeus.oid.get, List(1))
       }
 
       "osasuorituksilla" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0), resetFixtures = true)
-        verifyHistory(oppija, opiskeluoikeus, List(1))
+        verifyHistory(opiskeluoikeus.oid.get, List(1))
       }
     }
     "Päivitettäessä" - {
       "Luodaan uusi versiorivi" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
-        verifyHistory(oppija, modified, List(1, 2))
+        verifyHistory(modified.oid.get, List(1, 2))
       }
 
       "Jos mikään ei ole muuttunut" - {
         "Ei luoda uutta versioriviä" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
           val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus)
-          verifyHistory(oppija, modified, List(1))
+          verifyHistory(modified.oid.get, List(1))
         }
       }
 
@@ -52,7 +51,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
           "Päivitys hyväksytään" in {
             val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
-            verifyHistory(oppija, modified, List(1, 2))
+            verifyHistory(modified.oid.get, List(1, 2))
           }
         }
 
@@ -62,7 +61,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
-            verifyHistory(oppija, modified, List(1))
+            verifyHistory(modified.oid.get, List(1))
           }
         }
       }
@@ -123,27 +122,6 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
           }
         }
       }
-    }
-  }
-
-  def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistory]](JsonMethods.parse(body)).right.get
-
-  def getHistory(opiskeluoikeusOid: String, user: UserWithPassword = defaultUser): List[OpiskeluoikeusHistory] = {
-    authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid, user = user) {
-      verifyResponseStatus(200)
-      readHistory
-    }
-  }
-
-  def verifyHistory(oppija: Henkilö, opiskeluoikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
-    val historia: List[OpiskeluoikeusHistory] = getHistory(opiskeluoikeus.oid.get)
-    historia.map(_.versionumero) should equal(versions)
-
-    markup("Validoidaan versiohistorian eheys")
-
-    authGet("api/opiskeluoikeus/validate/" + opiskeluoikeus.oid.get) {
-      // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
-      verifyResponseStatus(200)
     }
   }
 }
