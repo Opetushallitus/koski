@@ -1,0 +1,1 @@
+create index henkilo_master_oid_idx on henkilo(master_oid);
