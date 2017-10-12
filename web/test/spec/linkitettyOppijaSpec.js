@@ -37,6 +37,16 @@ describe('Linkitetyt oppijat', function() {
         // TODO: tarkistettava jotenkin, että opiskeluoikeus säilyy linkitettynä slaveen (koska jatkossa tässä siirrytään aina katsomaan masterin tietoja)
       })
     })
+
+    describe('Versiohistorian katsominen', function() {
+      var versiohistoria = opinnot.versiohistoria
+
+      before(versiohistoria.avaa, versiohistoria.valitse('v1'))
+
+      it('Toimii', function() {
+
+      })
+    })
   })
 
   describe('Kun siirrytään oppijataulukosta tarkastelemaan slave-henkilön tietoja', function() {

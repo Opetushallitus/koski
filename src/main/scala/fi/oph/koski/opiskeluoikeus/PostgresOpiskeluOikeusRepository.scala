@@ -55,11 +55,14 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
   }
 
-  override def getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, Oid] = withOidCheck(opiskeluoikeusOid) {
-    withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === opiskeluoikeusOid).map(_.oppijaOid).result))
+  override def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Oid]] = withOidCheck(opiskeluoikeusOid) {
+    withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck
+      .filter(_.oid === opiskeluoikeusOid)
+      .flatMap(row => Henkilöt.filter(_.oid === row.oppijaOid))
+      .result)).map(henkilö => henkilö.oid :: henkilö.masterOid.toList)
   }
 
-  private def withExistenceCheck[T](things: Iterable[T]) = things.headOption.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+  private def withExistenceCheck[T](things: Iterable[T]): Either[HttpStatus, T] = things.headOption.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
 
   private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {
     OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).right.flatMap(_ => f)

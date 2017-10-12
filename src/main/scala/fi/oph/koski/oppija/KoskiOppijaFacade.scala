@@ -22,8 +22,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
 
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
-    opiskeluoikeusRepository.getOppijaOidForOpiskeluoikeus(opiskeluoikeusOid).right.flatMap {
-      case oid if oid == oppijaOid =>
+    opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).right.flatMap {
+      case oids if oids.contains(oppijaOid) =>
         historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
           toOppija(oppijaOid, List(history))
         }
