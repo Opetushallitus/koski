@@ -95,7 +95,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         }
       }
 
-      "Ei näytä muutoksia käyttäjälle jolta puuttuu luottamuksellinen rooli" in {
+      "Ei näytä muutoksia käyttäjälle jolta puuttuu luottamuksellinen-rooli" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, user = MockUsers.stadinVastuukäyttäjä) {
           readHistory.map(_.muutos) should equal(List(JNothing))

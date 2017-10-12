@@ -1223,7 +1223,7 @@ describe('Ammatillinen koulutus', function() {
 
   describe('Luottamuksellinen data', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), opinnot.expandAll)
-    describe('Kun käyttäjällä on luottamuksellinen rooli', function() {
+    describe('Kun käyttäjällä on luottamuksellinen-rooli', function() {
       it('näkyy', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal(
          'Lisätiedot\n' +
@@ -1232,7 +1232,7 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
-    describe('Kun käyttäjällä ei ole luottamuksellinen roolia', function() {
+    describe('Kun käyttäjällä ei ole luottamuksellinen-roolia', function() {
       before(Authentication().logout, Authentication().login('stadin-vastuu'), page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), opinnot.expandAll)
       it('piilotettu', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot')

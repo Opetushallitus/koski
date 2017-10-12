@@ -148,11 +148,11 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     }
 
     "Luottamuksellinen data" - {
-      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN rooli" in {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
         vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(true))
       }
 
-      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN rooli" in {
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
         vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(Some(false))
       }
 

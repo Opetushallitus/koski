@@ -46,7 +46,7 @@ describe('Käyttöoikeudet', function() {
     })
   })
 
-  describe('Kun käyttäjällä on kirjoitusoikeudet, muttei luottamuksellinen roolia', function() {
+  describe('Kun käyttäjällä on kirjoitusoikeudet, muttei luottamuksellinen-roolia', function() {
     before(Authentication().logout, Authentication().login('epäluotettava-tallentaja'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
     it('Muutokset estetty', function() {
       var suoritus = opinnot.opiskeluoikeusEditor()
