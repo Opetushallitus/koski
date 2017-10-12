@@ -1241,7 +1241,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus VALMA', function() {
-    describe('Oppilaitos katselija käyttöoikeuksilla', function() {
+    describe('Oppilaitos-katselija -käyttöoikeuksilla', function() {
       before(Authentication().logout, Authentication().login('katselija'), page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
       describe('kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
