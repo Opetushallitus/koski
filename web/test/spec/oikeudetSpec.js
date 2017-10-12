@@ -56,4 +56,16 @@ describe('Käyttöoikeudet', function() {
       expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(false)
     })
   })
+
+  describe('Viranomaiskäyttäjän näkymä', function() {
+    before(Authentication().login('viranomais'), page.openPage)
+    var hetut = ['190751-739W','101097-6107','101097-6107','300996-870E','071096-317K','040701-432D','190751-739W','140176-449X','230297-6448','250989-419V','021080-725C','031112-020J','010696-971K','130404-054C','211007-442N','131025-6573','280598-2415','110738-839L','100193-948U','100292-980D','101291-954C','010675-9981','290492-9455','211097-402L','280618-402H','210163-2367','190363-279X','020655-2479','180497-112F','160932-311V','220109-784L','251019-039B','080154-770R','081165-793C','010101-123N']
+
+    hetut.forEach(function(hetu) {
+      describe(hetu, function() {
+        before(page.oppijaHaku.searchAndSelect(hetu))
+        it('toimii', function() {})
+      })
+    })
+  })
 })

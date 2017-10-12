@@ -8,6 +8,10 @@ import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.j
 import {fixArviointi} from './Suoritus'
 
 export const ArvosanaEditor = ({model}) => {
+  if (!model.context.edit) {
+    let arvosanaModel = modelLookup(model, 'arviointi.-1.arvosana')
+    return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
+  }
   model = fixArviointi(model)
   let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model: modelLookup(model, 'arviointi.-1')})), 'arvosana').startWith([])
   let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
