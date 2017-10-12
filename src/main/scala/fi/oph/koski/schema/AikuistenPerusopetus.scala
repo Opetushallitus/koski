@@ -40,8 +40,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
   ulkomailla: Option[Päätösjakso] = None,
-  @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
+  @Description("""Oppilas on vuosiluokkiin sitomattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
+  @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
   @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
   @DefaultValue(false)
