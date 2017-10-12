@@ -58,7 +58,7 @@ class Pulssi extends React.Component {
           </div>
           <div className="three-columns">
             <div className="lower-left-container column">
-              <div className="two-columns">
+              <div className="two-columns kattavuus-and-opiskeluoikeudet">
                 <section className="opiskeluoikeudet-koulutusmuodoittain opiskeluoikeudet-panel">
                   <ul className="metric-details">
                     {
