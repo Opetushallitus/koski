@@ -85,7 +85,7 @@ Editor.propTypes = {
 }
 Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
 Editor.handlesOptional = (model, modifier) => editorFunctionHandlesOptional(getEditorFunction(model), modifier)
-const editorFunctionHandlesOptional = (editor, modifier) => editor && (editor.handlesOptional || (() => false))(modifier)
+const editorFunctionHandlesOptional = (editor, modifier) => editor && editor.handlesOptional && editor.handlesOptional(modifier)
 
 class NullEditor extends React.Component {
   render() {
@@ -100,7 +100,12 @@ const getEditorFunction = (model) => { // TODO: refactor this garbage
     }
     for (var i in mdl.value.classes) {
       var editor = mdl.context.editorMapping[mdl.value.classes[i]]
-      if (editor && (!mdl.context.edit || filter(editor)) && (mdl.context.edit || !editor.writeOnly)) { return editor }
+      if (editor
+          && (!mdl.context.edit || filter(editor))
+          && (mdl.context.edit || !editor.writeOnly)
+      ) {
+        return editor
+      }
     }
   }
 
