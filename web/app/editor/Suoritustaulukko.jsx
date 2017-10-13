@@ -70,6 +70,7 @@ export class Suoritustaulukko extends React.Component {
     let showLaajuus = !näyttötutkintoonValmistava && (context.edit
       ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
       : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)
+    let showTila = !näyttötutkintoonValmistava
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
 
     return !suoritustapa && context.edit && isAmmatillinenTutkinto
@@ -135,7 +136,7 @@ export class Suoritustaulukko extends React.Component {
 
     function suoritusEditor(suoritus, key, groupId) {
       return (<TutkinnonOsanSuoritusEditor baret-lift showLaajuus={showLaajuus} showPakollisuus={showPakollisuus}
-                                           showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö}
+                                           showArvosana={showArvosana} model={suoritus} showScope={!samaLaajuusYksikkö} showTila={showTila}
                                            expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
                                            groupId={groupId}/>)
     }
@@ -144,7 +145,7 @@ export class Suoritustaulukko extends React.Component {
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
-    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, onExpand, expanded, groupId} = this.props
+    let {model, showPakollisuus, showLaajuus, showArvosana, showScope, showTila, onExpand, expanded, groupId} = this.props
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
@@ -156,7 +157,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     <tr>
       <td className="suoritus">
         <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
-        <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>
+        {showTila && <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>}
         {
           hasProperties
             ? <a className="nimi" onClick={() => onExpand(!expanded)}>{nimi}</a>
