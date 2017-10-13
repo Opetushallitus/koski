@@ -2,15 +2,15 @@
   "koodistoUri" : "tutkintonimikkeet",
   "versio" : 2,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "tutkintonimikkeet",
+    "kuvaus" : "tutkintonimikkeet"
+  }, {
     "kieli" : "EN",
     "nimi" : "tutkintonimikkeet",
     "kuvaus" : "tutkintonimikkeet"
   }, {
     "kieli" : "SV",
-    "nimi" : "tutkintonimikkeet",
-    "kuvaus" : "tutkintonimikkeet"
-  }, {
-    "kieli" : "FI",
     "nimi" : "tutkintonimikkeet",
     "kuvaus" : "tutkintonimikkeet"
   } ],
@@ -40,6 +40,10 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 6,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 7,
     "passive" : false
   } ],
   "tila" : "LUONNOS",

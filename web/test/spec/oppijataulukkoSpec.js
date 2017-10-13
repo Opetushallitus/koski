@@ -18,7 +18,7 @@ describe('Oppijataulukko', function() {
       expect(page.oppijataulukko.findOppija('Koululainen, Kaisa', 'Perusopetus')).to.deep.equal([ 'Koululainen, Kaisa',
         'Perusopetus',
         'Perusopetuksen oppimäärä',
-        'Peruskoulu',
+        'Perusopetus',
         'Valmistunut',
         'Jyväskylän normaalikoulu',
         '15.8.2008',

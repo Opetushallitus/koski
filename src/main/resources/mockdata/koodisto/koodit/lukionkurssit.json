@@ -2,9 +2,6 @@
   "koodiUri" : "lukionkurssit_bi1",
   "koodiArvo" : "BI1",
   "metadata" : [ {
-    "nimi" : "Livet och evolutionen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elämä ja evoluutio ",
     "kieli" : "FI"
   } ],
@@ -13,9 +10,6 @@
   "koodiUri" : "lukionkurssit_bi2",
   "koodiArvo" : "BI2",
   "metadata" : [ {
-    "nimi" : "Ekologi och miljö",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ekologia ja ympäristö ",
     "kieli" : "FI"
   } ],
@@ -26,18 +20,12 @@
   "metadata" : [ {
     "nimi" : "Solu ja perinnöllisyys ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Cellen och ärftligheten",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_bi4",
   "koodiArvo" : "BI4",
   "metadata" : [ {
-    "nimi" : "Människans biologi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ihmisen biologia ",
     "kieli" : "FI"
   } ],
@@ -46,9 +34,6 @@
   "koodiUri" : "lukionkurssit_bi5",
   "koodiArvo" : "BI5",
   "metadata" : [ {
-    "nimi" : "Biologins tillämpningar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Biologian sovellukset ",
     "kieli" : "FI"
   } ],
@@ -59,9 +44,6 @@
   "metadata" : [ {
     "nimi" : "Englannin kieli ja maailmani ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Engelskan och min värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -70,18 +52,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ena3",
   "koodiArvo" : "ENA3",
   "metadata" : [ {
-    "nimi" : "Kulturella fenomen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri-ilmiöitä ",
     "kieli" : "FI"
   } ],
@@ -90,9 +66,6 @@
   "koodiUri" : "lukionkurssit_ena4",
   "koodiArvo" : "ENA4",
   "metadata" : [ {
-    "nimi" : "Samhället och omvärlden",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma ",
     "kieli" : "FI"
   } ],
@@ -103,9 +76,6 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vetenskap och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -114,18 +84,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ena7",
   "koodiArvo" : "ENA7",
   "metadata" : [ {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
   } ],
@@ -136,9 +100,6 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -147,9 +108,6 @@
   "metadata" : [ {
     "nimi" : "Maailmankatsomus ja kriittinen ajattelu ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Världsåskådning och kritiskt tänkande",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -158,18 +116,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen, identiteetti ja hyvä elämä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människan, identiteten och ett gott liv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_et3",
   "koodiArvo" : "ET3",
   "metadata" : [ {
-    "nimi" : "Individen och samhället",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yksilö ja yhteisö ",
     "kieli" : "FI"
   } ],
@@ -178,9 +130,6 @@
   "koodiUri" : "lukionkurssit_et4",
   "koodiArvo" : "ET4",
   "metadata" : [ {
-    "nimi" : "Kulturens inverkan på människans livsåskådning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuurit katsomuksen muovaajina ",
     "kieli" : "FI"
   } ],
@@ -191,18 +140,12 @@
   "metadata" : [ {
     "nimi" : "Katsomusten maailma ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Livsåskådningarnas värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_et6",
   "koodiArvo" : "ET6",
   "metadata" : [ {
-    "nimi" : "Teknologi, världsåskådningar och mänsklighetens framtid",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teknologia, maailmankatsomukset ja ihmiskunnan tulevaisuus",
     "kieli" : "FI"
   } ],
@@ -211,9 +154,6 @@
   "koodiUri" : "lukionkurssit_fi1",
   "koodiArvo" : "FI1",
   "metadata" : [ {
-    "nimi" : "Introduktion i filosofiskt tänkande",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Johdatus filosofiseen ajatteluun ",
     "kieli" : "FI"
   } ],
@@ -224,18 +164,12 @@
   "metadata" : [ {
     "nimi" : "Etiikka",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Etik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fi3",
   "koodiArvo" : "FI3",
   "metadata" : [ {
-    "nimi" : "Samhällsfilosofi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteiskuntafilosofia",
     "kieli" : "FI"
   } ],
@@ -244,9 +178,6 @@
   "koodiUri" : "lukionkurssit_fi4",
   "koodiArvo" : "FI4",
   "metadata" : [ {
-    "nimi" : "Kunskap, vetenskap och verklighet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tieto, tiede ja todellisuus ",
     "kieli" : "FI"
   } ],
@@ -257,9 +188,6 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagsliv, närmiljö och hälsa",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -268,18 +196,12 @@
   "metadata" : [ {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Natur och vetenskap",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fim3",
   "koodiArvo" : "FIM3",
   "metadata" : [ {
-    "nimi" : "Teknik och konsumtion",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
   } ],
@@ -290,9 +212,6 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja tiedotusvälineet ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Medierna och samhället",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -301,9 +220,6 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning och arbetsliv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -312,9 +228,6 @@
   "metadata" : [ {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Finsk kultur och litteratur",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -323,9 +236,6 @@
   "metadata" : [ {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunicera i skrift",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -334,9 +244,6 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunicera i tal",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -345,18 +252,12 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagsliv, närmiljö och hälsa",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fina2",
   "koodiArvo" : "FINA2",
   "metadata" : [ {
-    "nimi" : "Natur och vetenskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
   } ],
@@ -365,9 +266,6 @@
   "koodiUri" : "lukionkurssit_fina3",
   "koodiArvo" : "FINA3",
   "metadata" : [ {
-    "nimi" : "Teknik och konsumtion",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
   } ],
@@ -376,9 +274,6 @@
   "koodiUri" : "lukionkurssit_fina4",
   "koodiArvo" : "FINA4",
   "metadata" : [ {
-    "nimi" : "Medierna och samhället",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteiskunta ja tiedotusvälineet ",
     "kieli" : "FI"
   } ],
@@ -389,18 +284,12 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning och arbetsliv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fina6",
   "koodiArvo" : "FINA6",
   "metadata" : [ {
-    "nimi" : "Finsk kultur och litteratur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
     "kieli" : "FI"
   } ],
@@ -409,9 +298,6 @@
   "koodiUri" : "lukionkurssit_fina7",
   "koodiArvo" : "FINA7",
   "metadata" : [ {
-    "nimi" : "Kommunicera i skrift",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
   } ],
@@ -422,9 +308,6 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunicera i tal",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -433,18 +316,12 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagsliv, närmiljö och hälsa",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_finb12",
   "koodiArvo" : "FINB12",
   "metadata" : [ {
-    "nimi" : "Natur och vetenskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
   } ],
@@ -455,9 +332,6 @@
   "metadata" : [ {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Teknik och konsumtion",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -466,9 +340,6 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta, kulttuuri ja tiedotusvälineet ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samhälle, kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -477,18 +348,12 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning och arbetsliv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_finb16",
   "koodiArvo" : "FINB16",
   "metadata" : [ {
-    "nimi" : "Kommunicera i tal",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
   } ],
@@ -499,9 +364,6 @@
   "metadata" : [ {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunicera i skrift",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -510,9 +372,6 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja suomenkieliseen kulttuuriympäristöön ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vi bekantar oss med varandra och den finskspråkiga kulturmiljön",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -521,18 +380,12 @@
   "metadata" : [ {
     "nimi" : "Suomessa suomeksi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "På finska i Finland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_finb33",
   "koodiArvo" : "FINB33",
   "metadata" : [ {
-    "nimi" : "Viktiga frågor i livet och vardagen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elämän tärkeitä vaiheita ",
     "kieli" : "FI"
   } ],
@@ -541,9 +394,6 @@
   "koodiUri" : "lukionkurssit_finb34",
   "koodiArvo" : "FINB34",
   "metadata" : [ {
-    "nimi" : "Liv och levnadssätt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Monenlaista elämää ",
     "kieli" : "FI"
   } ],
@@ -552,9 +402,6 @@
   "koodiUri" : "lukionkurssit_finb35",
   "koodiArvo" : "FINB35",
   "metadata" : [ {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointi ja terveys",
     "kieli" : "FI"
   } ],
@@ -565,18 +412,12 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och media",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_finb37",
   "koodiArvo" : "FINB37",
   "metadata" : [ {
-    "nimi" : "Studie- och arbetsliv på finska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu- ja työelämää suomeksi ",
     "kieli" : "FI"
   } ],
@@ -585,9 +426,6 @@
   "koodiUri" : "lukionkurssit_finb38",
   "koodiArvo" : "FINB38",
   "metadata" : [ {
-    "nimi" : "Vår gemensamma jord",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maapallomme ",
     "kieli" : "FI"
   } ],
@@ -598,9 +436,6 @@
   "metadata" : [ {
     "nimi" : "Fysiikka luonnontieteenä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fysiken som naturvetenskap",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -609,18 +444,12 @@
   "metadata" : [ {
     "nimi" : "Lämpö",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Värme",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fy3",
   "koodiArvo" : "FY3",
   "metadata" : [ {
-    "nimi" : "Elektricitet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sähkö ",
     "kieli" : "FI"
   } ],
@@ -631,9 +460,6 @@
   "metadata" : [ {
     "nimi" : "Voima ja liike ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kraft och rörelse",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -642,9 +468,6 @@
   "metadata" : [ {
     "nimi" : "Jaksollinen liike ja aallot ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Periodisk rörelse och vågor",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -653,18 +476,12 @@
   "metadata" : [ {
     "nimi" : "Sähkömagnetismi",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Elektromagnetism",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_fy7",
   "koodiArvo" : "FY7",
   "metadata" : [ {
-    "nimi" : "Materia och strålning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Aine ja säteily ",
     "kieli" : "FI"
   } ],
@@ -675,9 +492,6 @@
   "metadata" : [ {
     "nimi" : "Maailma muutoksessa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "En värld i förändring",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -686,18 +500,12 @@
   "metadata" : [ {
     "nimi" : "Sininen planeetta ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Den blå planeten",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ge3",
   "koodiArvo" : "GE3",
   "metadata" : [ {
-    "nimi" : "En gemensam värld",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maailma ",
     "kieli" : "FI"
   } ],
@@ -706,9 +514,6 @@
   "koodiUri" : "lukionkurssit_ge4",
   "koodiArvo" : "GE4",
   "metadata" : [ {
-    "nimi" : "Geomedia - undersök, delta och påverka",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Geomedia – tutki, osallistu ja vaikuta ",
     "kieli" : "FI"
   } ],
@@ -719,18 +524,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen ympäristön ja yhteiskuntien muutoksessa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människan i en föränderlig omvärld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_hi2",
   "koodiArvo" : "HI2",
   "metadata" : [ {
-    "nimi" : "Internationella relationer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kansainväliset suhteet ",
     "kieli" : "FI"
   } ],
@@ -739,9 +538,6 @@
   "koodiUri" : "lukionkurssit_hi3",
   "koodiArvo" : "HI3",
   "metadata" : [ {
-    "nimi" : "Det självständiga Finlands historia",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Itsenäisen Suomen historia ",
     "kieli" : "FI"
   } ],
@@ -750,9 +546,6 @@
   "koodiUri" : "lukionkurssit_hi4",
   "koodiArvo" : "HI4",
   "metadata" : [ {
-    "nimi" : "En europeisk världsbild växer fram",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Eurooppalaisen maailmankuvan kehitys ",
     "kieli" : "FI"
   } ],
@@ -763,18 +556,12 @@
   "metadata" : [ {
     "nimi" : "Ruotsin itämaasta Suomeksi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sveriges östra rikshalva blir Finland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_hi6",
   "koodiArvo" : "HI6",
   "metadata" : [ {
-    "nimi" : "Globala kulturmöten",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maailman kulttuurit kohtaavat ",
     "kieli" : "FI"
   } ],
@@ -783,9 +570,6 @@
   "koodiUri" : "lukionkurssit_ke1",
   "koodiArvo" : "KE1",
   "metadata" : [ {
-    "nimi" : "Kemi överallt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kemiaa kaikkialla ",
     "kieli" : "FI"
   } ],
@@ -796,9 +580,6 @@
   "metadata" : [ {
     "nimi" : "Ihmisen ja elinympäristön kemiaa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans kemi och kemin i livsmiljön",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -807,18 +588,12 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja energia ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Reaktioner och energi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ke4",
   "koodiArvo" : "KE4",
   "metadata" : [ {
-    "nimi" : "Material och teknologi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Materiaalit ja teknologia ",
     "kieli" : "FI"
   } ],
@@ -829,9 +604,6 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja tasapaino ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Reaktioner och jämvikt",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -840,9 +612,6 @@
   "metadata" : [ {
     "nimi" : "Kotitalouden lukiodiplomi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiediplom i huslig ekonomi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -851,18 +620,12 @@
   "metadata" : [ {
     "nimi" : "Kuvat ja kulttuurit ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Bilder och kulturer",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ku2",
   "koodiArvo" : "KU2",
   "metadata" : [ {
-    "nimi" : "Formgivna och byggda miljöer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Muotoillut ja rakennetut ympäristöt ",
     "kieli" : "FI"
   } ],
@@ -871,9 +634,6 @@
   "koodiUri" : "lukionkurssit_ku3",
   "koodiArvo" : "KU3",
   "metadata" : [ {
-    "nimi" : "Medier och delaktighet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Osallisena mediassa ",
     "kieli" : "FI"
   } ],
@@ -882,9 +642,6 @@
   "koodiUri" : "lukionkurssit_ku4",
   "koodiArvo" : "KU4",
   "metadata" : [ {
-    "nimi" : "Konstens olika världar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Taiteen monet maailmat ",
     "kieli" : "FI"
   } ],
@@ -895,18 +652,12 @@
   "metadata" : [ {
     "nimi" : "Kuvataiteen lukiodiplomi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiediplom i bildkonst",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_kald3",
   "koodiArvo" : "KÄLD3",
   "metadata" : [ {
-    "nimi" : "Gymnasiediplom i slöjd",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Käsityön lukiodiplomi ",
     "kieli" : "FI"
   } ],
@@ -915,9 +666,6 @@
   "koodiUri" : "lukionkurssit_lab21",
   "koodiArvo" : "LAB21",
   "metadata" : [ {
-    "nimi" : "Skeden i Roms historia",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Rooman historian vaiheita ",
     "kieli" : "FI"
   } ],
@@ -926,9 +674,6 @@
   "koodiUri" : "lukionkurssit_lab22",
   "koodiArvo" : "LAB22",
   "metadata" : [ {
-    "nimi" : "Framstående romare",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merkittäviä roomalaisia ",
     "kieli" : "FI"
   } ],
@@ -939,18 +684,12 @@
   "metadata" : [ {
     "nimi" : "Kulttuuriperintömme",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vårt kulturarv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lab24",
   "koodiArvo" : "LAB24",
   "metadata" : [ {
-    "nimi" : "Budskap från det förgångna",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viestejä menneisyydestä ",
     "kieli" : "FI"
   } ],
@@ -961,9 +700,6 @@
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Latinet genom seklerna",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -972,9 +708,6 @@
   "metadata" : [ {
     "nimi" : "Epiikkaa ja lyriikkaa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Epik och lyrik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -983,18 +716,12 @@
   "metadata" : [ {
     "nimi" : "Retoriikkaa ja filosofiaa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Retorik och filosofi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lab28",
   "koodiArvo" : "LAB28",
   "metadata" : [ {
-    "nimi" : "Latinet under medeltiden och nutiden",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Latina keskiajalla ja nykyaikana ",
     "kieli" : "FI"
   } ],
@@ -1005,9 +732,6 @@
   "metadata" : [ {
     "nimi" : "Ikkunat auki antiikkiin",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Antiken i fokus",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1016,9 +740,6 @@
   "metadata" : [ {
     "nimi" : "Antiikin elämää ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Livet under antiken",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1027,9 +748,6 @@
   "metadata" : [ {
     "nimi" : "Tietoa, taitoa ja taruperintöä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1038,18 +756,12 @@
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Skeden i Roms historia",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lab35",
   "koodiArvo" : "LAB35",
   "metadata" : [ {
-    "nimi" : "Framstående romare",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merkittäviä roomalaisia ",
     "kieli" : "FI"
   } ],
@@ -1058,9 +770,6 @@
   "koodiUri" : "lukionkurssit_lab36",
   "koodiArvo" : "LAB36",
   "metadata" : [ {
-    "nimi" : "Vårt kulturarv",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuriperintömme ",
     "kieli" : "FI"
   } ],
@@ -1071,18 +780,12 @@
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Budskap från det förgångna",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lab38",
   "koodiArvo" : "LAB38",
   "metadata" : [ {
-    "nimi" : "Latinet genom seklerna",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Latinaa kautta vuosisatojen ",
     "kieli" : "FI"
   } ],
@@ -1091,9 +794,6 @@
   "koodiUri" : "lukionkurssit_li1",
   "koodiArvo" : "LI1",
   "metadata" : [ {
-    "nimi" : "Motion ger energi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Energiaa liikunnasta ",
     "kieli" : "FI"
   } ],
@@ -1102,9 +802,6 @@
   "koodiUri" : "lukionkurssit_li2",
   "koodiArvo" : "LI2",
   "metadata" : [ {
-    "nimi" : "En aktiv livsstil",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Aktiivinen elämäntapa ",
     "kieli" : "FI"
   } ],
@@ -1115,9 +812,6 @@
   "metadata" : [ {
     "nimi" : "Terveyttä liikkuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Motion och hälsa",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1126,18 +820,12 @@
   "metadata" : [ {
     "nimi" : "Yhdessä liikkuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Att motionera tillsammans",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_li5",
   "koodiArvo" : "LI5",
   "metadata" : [ {
-    "nimi" : "Motion och välbefinnande",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointia liikkuen ",
     "kieli" : "FI"
   } ],
@@ -1146,9 +834,6 @@
   "koodiUri" : "lukionkurssit_lild4",
   "koodiArvo" : "LILD4",
   "metadata" : [ {
-    "nimi" : "Gymnasiediplom i gymnastik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Liikunnan lukiodiplomi ",
     "kieli" : "FI"
   } ],
@@ -1434,9 +1119,6 @@
   "metadata" : [ {
     "nimi" : "Todennäköisyys ja tilastot ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sannolikhet och statistik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1445,18 +1127,12 @@
   "metadata" : [ {
     "nimi" : "Lukuteoria ja todistaminen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Talteori och bevis",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_maa12",
   "koodiArvo" : "MAA12",
   "metadata" : [ {
-    "nimi" : "Algoritmer i matematiken",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Algoritmit matematiikassa ",
     "kieli" : "FI"
   } ],
@@ -1467,9 +1143,6 @@
   "metadata" : [ {
     "nimi" : "Differentiaali- ja integraalilaskennan jatkokurssi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fortsättningskurs i differential- och integralkalkyl",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1478,9 +1151,6 @@
   "metadata" : [ {
     "nimi" : "Polynomifunktiot ja -yhtälöt ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Polynomfunktioner och polynomekvationer",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1489,18 +1159,12 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Geometri",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_maa4",
   "koodiArvo" : "MAA4",
   "metadata" : [ {
-    "nimi" : "Vektorer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vektorit",
     "kieli" : "FI"
   } ],
@@ -1509,9 +1173,6 @@
   "koodiUri" : "lukionkurssit_maa5",
   "koodiArvo" : "MAA5",
   "metadata" : [ {
-    "nimi" : "Analytisk geometri",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Analyyttinen geometria ",
     "kieli" : "FI"
   } ],
@@ -1520,9 +1181,6 @@
   "koodiUri" : "lukionkurssit_maa6",
   "koodiArvo" : "MAA6",
   "metadata" : [ {
-    "nimi" : "Derivatan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Derivaatta",
     "kieli" : "FI"
   } ],
@@ -1533,18 +1191,12 @@
   "metadata" : [ {
     "nimi" : "Trigonometriset funktiot ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Trigonometriska funktioner",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_maa8",
   "koodiArvo" : "MAA8",
   "metadata" : [ {
-    "nimi" : "Rot- och logaritmfunktioner",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Juuri- ja logaritmifunktiot ",
     "kieli" : "FI"
   } ],
@@ -1553,9 +1205,6 @@
   "koodiUri" : "lukionkurssit_maa9",
   "koodiArvo" : "MAA9",
   "metadata" : [ {
-    "nimi" : "Integralkalkyl",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Integraalilaskenta",
     "kieli" : "FI"
   } ],
@@ -1566,9 +1215,6 @@
   "metadata" : [ {
     "nimi" : "Lausekkeet ja yhtälöt ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Uttryck och ekvationer",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1577,18 +1223,12 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Geometri",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mab4",
   "koodiArvo" : "MAB4",
   "metadata" : [ {
-    "nimi" : "Matematiska modeller",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matemaattisia malleja ",
     "kieli" : "FI"
   } ],
@@ -1597,9 +1237,6 @@
   "koodiUri" : "lukionkurssit_mab5",
   "koodiArvo" : "MAB5",
   "metadata" : [ {
-    "nimi" : "Statistik och sannolikhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tilastot ja todennäköisyys",
     "kieli" : "FI"
   } ],
@@ -1610,9 +1247,6 @@
   "metadata" : [ {
     "nimi" : "Talousmatematiikka",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ekonomisk matematik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1621,18 +1255,12 @@
   "metadata" : [ {
     "nimi" : "Matemaattinen analyysi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Matematisk analys",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mab8",
   "koodiArvo" : "MAB8",
   "metadata" : [ {
-    "nimi" : "Statistik och sannolikhet II",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tilastot ja todennäköisyys II ",
     "kieli" : "FI"
   } ],
@@ -1643,9 +1271,6 @@
   "metadata" : [ {
     "nimi" : "Luvut ja lukujonot ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Tal och talföljder",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1654,9 +1279,6 @@
   "metadata" : [ {
     "nimi" : "Median lukiodiplomi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiediplom i mediekunskap",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1665,18 +1287,12 @@
   "metadata" : [ {
     "nimi" : "Tekstien maailma",
     "kieli" : "FI"
-  }, {
-    "nimi" : "En värld av texter",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mo2",
   "koodiArvo" : "MO2",
   "metadata" : [ {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -1685,9 +1301,6 @@
   "koodiUri" : "lukionkurssit_mo3",
   "koodiArvo" : "MO3",
   "metadata" : [ {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
   } ],
@@ -1696,9 +1309,6 @@
   "koodiUri" : "lukionkurssit_mo4",
   "koodiArvo" : "MO4",
   "metadata" : [ {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -1707,9 +1317,6 @@
   "koodiUri" : "lukionkurssit_mo5",
   "koodiArvo" : "MO5",
   "metadata" : [ {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
   } ],
@@ -1720,18 +1327,12 @@
   "metadata" : [ {
     "nimi" : "Nykyajan kertomuksia ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Berättelser i samtiden",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mo7",
   "koodiArvo" : "MO7",
   "metadata" : [ {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -1740,9 +1341,6 @@
   "koodiUri" : "lukionkurssit_mo8",
   "koodiArvo" : "MO8",
   "metadata" : [ {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -1753,18 +1351,12 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mu1",
   "koodiArvo" : "MU1",
   "metadata" : [ {
-    "nimi" : "Musiken och jag",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Musiikki ja minä ",
     "kieli" : "FI"
   } ],
@@ -1775,9 +1367,6 @@
   "metadata" : [ {
     "nimi" : "Moniääninen Suomi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ett flerstämmigt Finland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1786,18 +1375,12 @@
   "metadata" : [ {
     "nimi" : "Ovet auki musiikille ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fritt fram för musik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_mu4",
   "koodiArvo" : "MU4",
   "metadata" : [ {
-    "nimi" : "Musikens budskap och makt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Musiikki viestii ja vaikuttaa ",
     "kieli" : "FI"
   } ],
@@ -1808,9 +1391,6 @@
   "metadata" : [ {
     "nimi" : "Musiikin lukiodiplomi ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiediplom i musik",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1819,9 +1399,6 @@
   "metadata" : [ {
     "nimi" : "Minä opiskelijana ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Jag som studerande",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1830,9 +1407,6 @@
   "metadata" : [ {
     "nimi" : "Jatko-opinnot ja työelämä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fortsatta studier och arbetsliv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1841,9 +1415,6 @@
   "metadata" : [ {
     "nimi" : "Psyykkinen toiminta ja oppiminen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Psykisk aktivitet och lärande",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1852,18 +1423,12 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä ihminen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans utveckling",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ps3",
   "koodiArvo" : "PS3",
   "metadata" : [ {
-    "nimi" : "Människan som informationsbehandlare",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tietoa käsittelevä ihminen ",
     "kieli" : "FI"
   } ],
@@ -1872,9 +1437,6 @@
   "koodiUri" : "lukionkurssit_ps4",
   "koodiArvo" : "PS4",
   "metadata" : [ {
-    "nimi" : "Känslor, psykiskt välbefinnande och mental hälsa",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tunteet, psyykkinen hyvinvointi ja mielenterveys ",
     "kieli" : "FI"
   } ],
@@ -1883,9 +1445,6 @@
   "koodiUri" : "lukionkurssit_ps5",
   "koodiArvo" : "PS5",
   "metadata" : [ {
-    "nimi" : "Människan som individ och social varelse",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yksilöllinen ja yhteisöllinen ihminen ",
     "kieli" : "FI"
   } ],
@@ -1894,9 +1453,6 @@
   "koodiUri" : "lukionkurssit_pso",
   "koodiArvo" : "PSO",
   "metadata" : [ {
-    "nimi" : "Lokal tillämpad kurs",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Paikallinen soveltava kurssi",
     "kieli" : "FI"
   } ],
@@ -1905,9 +1461,6 @@
   "koodiUri" : "lukionkurssit_psy",
   "koodiArvo" : "PSY",
   "metadata" : [ {
-    "nimi" : "Lokal fördjupad kurs",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Paikallinen syventävä kurssi",
     "kieli" : "FI"
   } ],
@@ -1916,9 +1469,6 @@
   "koodiUri" : "lukionkurssit_rua1",
   "koodiArvo" : "RUA1",
   "metadata" : [ {
-    "nimi" : "Min svenska värld",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ruotsinkielinen maailmani",
     "kieli" : "FI"
   } ],
@@ -1927,9 +1477,6 @@
   "koodiUri" : "lukionkurssit_rua2",
   "koodiArvo" : "RUA2",
   "metadata" : [ {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
   } ],
@@ -1940,9 +1487,6 @@
   "metadata" : [ {
     "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Nordiska kulturfenomen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1951,18 +1495,12 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samhället och omvärlden",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_rua5",
   "koodiArvo" : "RUA5",
   "metadata" : [ {
-    "nimi" : "Vetenskap och framtid",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
   } ],
@@ -1973,9 +1511,6 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1984,9 +1519,6 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1995,18 +1527,12 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_rub11",
   "koodiArvo" : "RUB11",
   "metadata" : [ {
-    "nimi" : "Min svenska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Minun ruotsini",
     "kieli" : "FI"
   } ],
@@ -2015,9 +1541,6 @@
   "koodiUri" : "lukionkurssit_rub12",
   "koodiArvo" : "RUB12",
   "metadata" : [ {
-    "nimi" : "Välbefinnande och mänskliga relationer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointi ja ihmissuhteet",
     "kieli" : "FI"
   } ],
@@ -2028,9 +1551,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2039,18 +1559,12 @@
   "metadata" : [ {
     "nimi" : "Monenlaiset elinympäristömme",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vår mångskiftande livsmiljö",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_rub15",
   "koodiArvo" : "RUB15",
   "metadata" : [ {
-    "nimi" : "Studie- och arbetsliv på svenska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu- ja työelämää ruotsiksi",
     "kieli" : "FI"
   } ],
@@ -2061,9 +1575,6 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2072,9 +1583,6 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämätapa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2083,9 +1591,6 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja ruotsinkieliseen kulttuuriympäristöön",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vi bekantar oss med varandra och den svenska kulturmiljön",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2094,9 +1599,6 @@
   "metadata" : [ {
     "nimi" : "Matkalla Pohjoismaissa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "På resa i Norden",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2105,18 +1607,12 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Viktiga frågor i livet och vardagen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_rub34",
   "koodiArvo" : "RUB34",
   "metadata" : [ {
-    "nimi" : "Liv och levnadssätt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
   } ],
@@ -2125,9 +1621,6 @@
   "koodiUri" : "lukionkurssit_rub35",
   "koodiArvo" : "RUB35",
   "metadata" : [ {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
   } ],
@@ -2136,9 +1629,6 @@
   "koodiUri" : "lukionkurssit_rub36",
   "koodiArvo" : "RUB36",
   "metadata" : [ {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
   } ],
@@ -2147,9 +1637,6 @@
   "koodiUri" : "lukionkurssit_rub37",
   "koodiArvo" : "RUB37",
   "metadata" : [ {
-    "nimi" : "Studie- och arbetsliv på svenska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu- ja työelämää ruotsiksi",
     "kieli" : "FI"
   } ],
@@ -2158,9 +1645,6 @@
   "koodiUri" : "lukionkurssit_rub38",
   "koodiArvo" : "RUB38",
   "metadata" : [ {
-    "nimi" : "Vår gemensamma jord",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -2171,9 +1655,6 @@
   "metadata" : [ {
     "nimi" : "Ruotsinkielinen maailmani",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Min svenska värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2182,18 +1663,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ruao3",
   "koodiArvo" : "RUÄO3",
   "metadata" : [ {
-    "nimi" : "Nordiska kulturfenomen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
     "kieli" : "FI"
   } ],
@@ -2202,9 +1677,6 @@
   "koodiUri" : "lukionkurssit_ruao4",
   "koodiArvo" : "RUÄO4",
   "metadata" : [ {
-    "nimi" : "Samhället och omvärlden",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
   } ],
@@ -2215,18 +1687,12 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vetenskap och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ruao6",
   "koodiArvo" : "RUÄO6",
   "metadata" : [ {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu, työ ja toimeentulo",
     "kieli" : "FI"
   } ],
@@ -2235,9 +1701,6 @@
   "koodiUri" : "lukionkurssit_ruao7",
   "koodiArvo" : "RUÄO7",
   "metadata" : [ {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
   } ],
@@ -2246,9 +1709,6 @@
   "koodiUri" : "lukionkurssit_ruao8",
   "koodiArvo" : "RUÄO8",
   "metadata" : [ {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
   } ],
@@ -2257,9 +1717,6 @@
   "koodiUri" : "lukionkurssit_s21",
   "koodiArvo" : "S21",
   "metadata" : [ {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
   } ],
@@ -2270,18 +1727,12 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_s23",
   "koodiArvo" : "S23",
   "metadata" : [ {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
   } ],
@@ -2290,9 +1741,6 @@
   "koodiUri" : "lukionkurssit_s24",
   "koodiArvo" : "S24",
   "metadata" : [ {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -2303,9 +1751,6 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2314,18 +1759,12 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samtidskultur och berättelser",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_s27",
   "koodiArvo" : "S27",
   "metadata" : [ {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -2336,9 +1775,6 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2347,9 +1783,6 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2358,9 +1791,6 @@
   "metadata" : [ {
     "nimi" : "Saamen kieli ja maailmani ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samiskan och min värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2369,9 +1799,6 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2380,18 +1807,12 @@
   "metadata" : [ {
     "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur i Sameland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ska4",
   "koodiArvo" : "SKA4",
   "metadata" : [ {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
   } ],
@@ -2400,9 +1821,6 @@
   "koodiUri" : "lukionkurssit_ska5",
   "koodiArvo" : "SKA5",
   "metadata" : [ {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelainen luontotieto ",
     "kieli" : "FI"
   } ],
@@ -2411,9 +1829,6 @@
   "koodiUri" : "lukionkurssit_ska6",
   "koodiArvo" : "SKA6",
   "metadata" : [ {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
   } ],
@@ -2424,18 +1839,12 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ska8",
   "koodiArvo" : "SKA8",
   "metadata" : [ {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
   } ],
@@ -2444,9 +1853,6 @@
   "koodiUri" : "lukionkurssit_skb1",
   "koodiArvo" : "SKB1",
   "metadata" : [ {
-    "nimi" : "Möten i Sameland",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
   } ],
@@ -2457,9 +1863,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2468,18 +1871,12 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_skb31",
   "koodiArvo" : "SKB31",
   "metadata" : [ {
-    "nimi" : "Vi bekantar oss med varandra och det samiska språket",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
     "kieli" : "FI"
   } ],
@@ -2490,9 +1887,6 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "På resa i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2501,9 +1895,6 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Möten i Sameland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2512,9 +1903,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2523,9 +1911,6 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2534,9 +1919,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2545,18 +1927,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_skb38",
   "koodiArvo" : "SKB38",
   "metadata" : [ {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
   } ],
@@ -2565,9 +1941,6 @@
   "koodiUri" : "lukionkurssit_skb4",
   "koodiArvo" : "SKB4",
   "metadata" : [ {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
   } ],
@@ -2576,9 +1949,6 @@
   "koodiUri" : "lukionkurssit_skb5",
   "koodiArvo" : "SKB5",
   "metadata" : [ {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
   } ],
@@ -2587,9 +1957,6 @@
   "koodiUri" : "lukionkurssit_skb6",
   "koodiArvo" : "SKB6",
   "metadata" : [ {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
   } ],
@@ -2600,18 +1967,12 @@
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Internationell verksamhet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_skb8",
   "koodiArvo" : "SKB8",
   "metadata" : [ {
-    "nimi" : "Muntlig och skriftlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
   } ],
@@ -2622,9 +1983,6 @@
   "metadata" : [ {
     "nimi" : "Saamen kieli ja maailmani ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samiskan och min värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2633,18 +1991,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_sma3",
   "koodiArvo" : "SMA3",
   "metadata" : [ {
-    "nimi" : "Kultur i Sameland",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
     "kieli" : "FI"
   } ],
@@ -2655,9 +2007,6 @@
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2666,9 +2015,6 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2677,9 +2023,6 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2688,9 +2031,6 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2699,9 +2039,6 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2710,9 +2047,6 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Möten i Sameland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2721,9 +2055,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2732,18 +2063,12 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Möten i Sameland",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb22",
   "koodiArvo" : "SMB22",
   "metadata" : [ {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
   } ],
@@ -2752,9 +2077,6 @@
   "koodiUri" : "lukionkurssit_smb23",
   "koodiArvo" : "SMB23",
   "metadata" : [ {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
   } ],
@@ -2763,9 +2085,6 @@
   "koodiUri" : "lukionkurssit_smb24",
   "koodiArvo" : "SMB24",
   "metadata" : [ {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
   } ],
@@ -2776,18 +2095,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb26",
   "koodiArvo" : "SMB26",
   "metadata" : [ {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
   } ],
@@ -2796,9 +2109,6 @@
   "koodiUri" : "lukionkurssit_smb27",
   "koodiArvo" : "SMB27",
   "metadata" : [ {
-    "nimi" : "Internationell verksamhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
   } ],
@@ -2809,18 +2119,12 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig och skriftlig kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb3",
   "koodiArvo" : "SMB3",
   "metadata" : [ {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
   } ],
@@ -2831,9 +2135,6 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vi bekantar oss med varandra och det samiska språket",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2842,18 +2143,12 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "På resa i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb33",
   "koodiArvo" : "SMB33",
   "metadata" : [ {
-    "nimi" : "Möten i Sameland",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
   } ],
@@ -2864,9 +2159,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2875,9 +2167,6 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sápmi - Samelandet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2886,9 +2175,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2897,18 +2183,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb38",
   "koodiArvo" : "SMB38",
   "metadata" : [ {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
   } ],
@@ -2917,9 +2197,6 @@
   "koodiUri" : "lukionkurssit_smb4",
   "koodiArvo" : "SMB4",
   "metadata" : [ {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
   } ],
@@ -2928,9 +2205,6 @@
   "koodiUri" : "lukionkurssit_smb5",
   "koodiArvo" : "SMB5",
   "metadata" : [ {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
   } ],
@@ -2941,18 +2215,12 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samisk naturkunskap",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_smb7",
   "koodiArvo" : "SMB7",
   "metadata" : [ {
-    "nimi" : "Internationell verksamhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
   } ],
@@ -2961,9 +2229,6 @@
   "koodiUri" : "lukionkurssit_smb8",
   "koodiArvo" : "SMB8",
   "metadata" : [ {
-    "nimi" : "Muntlig och skriftlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
   } ],
@@ -2974,18 +2239,12 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_sv22",
   "koodiArvo" : "SV22",
   "metadata" : [ {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -2996,9 +2255,6 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3007,9 +2263,6 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3018,18 +2271,12 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_sv26",
   "koodiArvo" : "SV26",
   "metadata" : [ {
-    "nimi" : "Berättelser i samtiden",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
   } ],
@@ -3040,9 +2287,6 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3051,9 +2295,6 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3062,9 +2303,6 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3073,18 +2311,12 @@
   "metadata" : [ {
     "nimi" : "Monitaiteellinen musiikkiprojekti ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Tvärkonstnärligt musikprojekt",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ta2",
   "koodiArvo" : "TA2",
   "metadata" : [ {
-    "nimi" : "Samtidskonst",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Nykytaiteen keinoin ",
     "kieli" : "FI"
   } ],
@@ -3093,9 +2325,6 @@
   "koodiUri" : "lukionkurssit_ta3",
   "koodiArvo" : "TA3",
   "metadata" : [ {
-    "nimi" : "Konst med alla sinnen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Taidetta kaikilla aisteilla ",
     "kieli" : "FI"
   } ],
@@ -3104,9 +2333,6 @@
   "koodiUri" : "lukionkurssit_tald7",
   "koodiArvo" : "TALD7",
   "metadata" : [ {
-    "nimi" : "Gymnasiediplom i dans",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tanssin lukiodiplomi ",
     "kieli" : "FI"
   } ],
@@ -3115,9 +2341,6 @@
   "koodiUri" : "lukionkurssit_te1",
   "koodiArvo" : "TE1",
   "metadata" : [ {
-    "nimi" : "Hälsans byggstenar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Terveyden perusteet ",
     "kieli" : "FI"
   } ],
@@ -3128,9 +2351,6 @@
   "metadata" : [ {
     "nimi" : "Ihminen, ympäristö ja terveys ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människan, miljön och hälsan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3139,18 +2359,12 @@
   "metadata" : [ {
     "nimi" : "Terveyttä tutkimassa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hälsa och forskning",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_teld8",
   "koodiArvo" : "TELD8",
   "metadata" : [ {
-    "nimi" : "Gymnasiediplom i teaterkonst",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teatterin lukiodiplomi ",
     "kieli" : "FI"
   } ],
@@ -3161,18 +2375,12 @@
   "metadata" : [ {
     "nimi" : "Monitieteinen ajattelu ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Tvärvetenskapligt tänkande",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_to2",
   "koodiArvo" : "TO2",
   "metadata" : [ {
-    "nimi" : "Undersökande projektarbete med hjälp av digitala arbetssätt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tutkiva työskentely teknologialla ",
     "kieli" : "FI"
   } ],
@@ -3181,9 +2389,6 @@
   "koodiUri" : "lukionkurssit_to3",
   "koodiArvo" : "TO3",
   "metadata" : [ {
-    "nimi" : "Vardagskompetens",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Osaaminen arjessa ",
     "kieli" : "FI"
   } ],
@@ -3194,9 +2399,6 @@
   "metadata" : [ {
     "nimi" : "Taiteiden väliset kurssit",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ämnesövergripande kurser i konststudier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3205,9 +2407,6 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3216,9 +2415,6 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen kristinusko ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kristendomen som världsomfattande religion",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3227,9 +2423,6 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religioner och religiösa rörelser i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3238,9 +2431,6 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion i det finska samhället",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3249,18 +2439,12 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ue6",
   "koodiArvo" : "UE6",
   "metadata" : [ {
-    "nimi" : "Religioner och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
   } ],
@@ -3269,9 +2453,6 @@
   "koodiUri" : "lukionkurssit_ui1",
   "koodiArvo" : "UI1",
   "metadata" : [ {
-    "nimi" : "Religion som fenomen - i islams, judendomens och kristendomens fotspår",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonto ilmiönä – islamin, juutalaisuuden ja kristinuskon jäljillä ",
     "kieli" : "FI"
   } ],
@@ -3280,9 +2461,6 @@
   "koodiUri" : "lukionkurssit_ui2",
   "koodiArvo" : "UI2",
   "metadata" : [ {
-    "nimi" : "Islam som världsomfattande religion",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maailmanlaajuinen islam ",
     "kieli" : "FI"
   } ],
@@ -3291,9 +2469,6 @@
   "koodiUri" : "lukionkurssit_ui3",
   "koodiArvo" : "UI3",
   "metadata" : [ {
-    "nimi" : "Religioner och religiösa rörelser i världen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
   } ],
@@ -3304,9 +2479,6 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion i det finska samhället",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3315,18 +2487,12 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ui6",
   "koodiArvo" : "UI6",
   "metadata" : [ {
-    "nimi" : "Religioner och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
   } ],
@@ -3335,9 +2501,6 @@
   "koodiUri" : "lukionkurssit_uj1",
   "koodiArvo" : "UJ1",
   "metadata" : [ {
-    "nimi" : "Religion som fenomen - i judendomens, kristendomens och islams fotspår",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä ",
     "kieli" : "FI"
   } ],
@@ -3348,9 +2511,6 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen juutalaisuus ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Judendomen i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3359,18 +2519,12 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religioner och religiösa rörelser i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_uj4",
   "koodiArvo" : "UJ4",
   "metadata" : [ {
-    "nimi" : "Religion i det finska samhället",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
   } ],
@@ -3381,9 +2535,6 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3392,9 +2543,6 @@
   "metadata" : [ {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religioner och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3403,9 +2551,6 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3414,9 +2559,6 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen katolisuus ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Katolicismen i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3425,18 +2567,12 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religioner och religiösa rörelser i världen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_uk4",
   "koodiArvo" : "UK4",
   "metadata" : [ {
-    "nimi" : "Religion i det finska samhället",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
   } ],
@@ -3445,9 +2581,6 @@
   "koodiUri" : "lukionkurssit_uk5",
   "koodiArvo" : "UK5",
   "metadata" : [ {
-    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
   } ],
@@ -3456,9 +2589,6 @@
   "koodiUri" : "lukionkurssit_uk6",
   "koodiArvo" : "UK6",
   "metadata" : [ {
-    "nimi" : "Religioner och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
   } ],
@@ -3469,18 +2599,12 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – ortodoksisuus, juutalaisuus ja islam ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion som fenomen - den ortodoxa läran, judendomen och islam",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_uo2",
   "koodiArvo" : "UO2",
   "metadata" : [ {
-    "nimi" : "Ortodoxin i världen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ortodoksisuus maailmassa ",
     "kieli" : "FI"
   } ],
@@ -3489,9 +2613,6 @@
   "koodiUri" : "lukionkurssit_uo3",
   "koodiArvo" : "UO3",
   "metadata" : [ {
-    "nimi" : "Religioner och religiösa rörelser i världen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
   } ],
@@ -3502,9 +2623,6 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Religion i det finska samhället",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3513,18 +2631,12 @@
   "metadata" : [ {
     "nimi" : "Taide ortodoksisuudessa ja muissa uskonnoissa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Konsten i den ortodoxa kyrkan och andra religioner",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_uo6",
   "koodiArvo" : "UO6",
   "metadata" : [ {
-    "nimi" : "Ortodox tro, religioner och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ortodoksisuus ja uskonnot mediassa ",
     "kieli" : "FI"
   } ],
@@ -3535,9 +2647,6 @@
   "metadata" : [ {
     "nimi" : "Kieli ja maailmani ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Språket och min värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3546,18 +2655,12 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Människans sociala nätverk",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vka3",
   "koodiArvo" : "VKA3",
   "metadata" : [ {
-    "nimi" : "Kulturella fenomen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri-ilmiöitä ",
     "kieli" : "FI"
   } ],
@@ -3568,9 +2671,6 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samhället och omvärlden",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3579,9 +2679,6 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vetenskap och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3590,9 +2687,6 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och ekonomi",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3601,18 +2695,12 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vka8",
   "koodiArvo" : "VKA8",
   "metadata" : [ {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
   } ],
@@ -3621,9 +2709,6 @@
   "koodiUri" : "lukionkurssit_vkaa1",
   "koodiArvo" : "VKAA1",
   "metadata" : [ {
-    "nimi" : "Vi bekantar oss med varandra och det nya språket",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
     "kieli" : "FI"
   } ],
@@ -3632,9 +2717,6 @@
   "koodiUri" : "lukionkurssit_vkaa2",
   "koodiArvo" : "VKAA2",
   "metadata" : [ {
-    "nimi" : "På resa i världen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
   } ],
@@ -3645,18 +2727,12 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Viktiga frågor i livet och vardagen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vkaa4",
   "koodiArvo" : "VKAA4",
   "metadata" : [ {
-    "nimi" : "Kulturmöten",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
   } ],
@@ -3665,9 +2741,6 @@
   "koodiUri" : "lukionkurssit_vkaa5",
   "koodiArvo" : "VKAA5",
   "metadata" : [ {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
   } ],
@@ -3678,9 +2751,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3689,18 +2759,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vkaa8",
   "koodiArvo" : "VKAA8",
   "metadata" : [ {
-    "nimi" : "Vår gemensamma jord",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -3711,9 +2775,6 @@
   "metadata" : [ {
     "nimi" : "Kieli ja maailmani ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Språket och min värld",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3722,9 +2783,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja ihmissuhteet ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och mänskliga relationer",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3733,9 +2791,6 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Viktiga frågor i livet och vardagen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3744,9 +2799,6 @@
   "metadata" : [ {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Liv och levnadssätt",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3755,9 +2807,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3766,9 +2815,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3777,18 +2823,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : " työ ja tulevaisuus",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vkb26",
   "koodiArvo" : "VKB26",
   "metadata" : [ {
-    "nimi" : "Vår gemensamma jord",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -3797,9 +2837,6 @@
   "koodiUri" : "lukionkurssit_vkb27",
   "koodiArvo" : "VKB27",
   "metadata" : [ {
-    "nimi" : "Internationell verksamhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
   } ],
@@ -3808,9 +2845,6 @@
   "koodiUri" : "lukionkurssit_vkb28",
   "koodiArvo" : "VKB28",
   "metadata" : [ {
-    "nimi" : "Muntlig och skriftlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
   } ],
@@ -3819,9 +2853,6 @@
   "koodiUri" : "lukionkurssit_vkb3",
   "koodiArvo" : "VKB3",
   "metadata" : [ {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kulttuuri ja mediat ",
     "kieli" : "FI"
   } ],
@@ -3830,9 +2861,6 @@
   "koodiUri" : "lukionkurssit_vkb31",
   "koodiArvo" : "VKB31",
   "metadata" : [ {
-    "nimi" : "Vi bekantar oss med varandra och det nya språket",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
     "kieli" : "FI"
   } ],
@@ -3841,9 +2869,6 @@
   "koodiUri" : "lukionkurssit_vkb32",
   "koodiArvo" : "VKB32",
   "metadata" : [ {
-    "nimi" : "På resa i världen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
   } ],
@@ -3854,18 +2879,12 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Viktiga frågor i livet och vardagen",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vkb34",
   "koodiArvo" : "VKB34",
   "metadata" : [ {
-    "nimi" : "Liv och levnadssätt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
   } ],
@@ -3876,9 +2895,6 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Välbefinnande och omsorg",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3887,9 +2903,6 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kultur och medier",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3898,18 +2911,12 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studier, arbete och framtid",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_vkb38",
   "koodiArvo" : "VKB38",
   "metadata" : [ {
-    "nimi" : "Vår gemensamma jord",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -3920,9 +2927,6 @@
   "metadata" : [ {
     "nimi" : "Monenlaiset elinympäristömme  ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vår mångskiftande livsmiljö",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3931,9 +2935,6 @@
   "metadata" : [ {
     "nimi" : "Opiskelija- ja työelämää",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Studie- och arbetsliv",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3942,9 +2943,6 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muntlig kommunikation och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3953,18 +2951,12 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hållbar livsstil",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_yh1",
   "koodiArvo" : "YH1",
   "metadata" : [ {
-    "nimi" : "Det finländska samhället",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Suomalainen yhteiskunta ",
     "kieli" : "FI"
   } ],
@@ -3973,9 +2965,6 @@
   "koodiUri" : "lukionkurssit_yh2",
   "koodiArvo" : "YH2",
   "metadata" : [ {
-    "nimi" : "Ekonomikunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Taloustieto",
     "kieli" : "FI"
   } ],
@@ -3986,18 +2975,12 @@
   "metadata" : [ {
     "nimi" : "Suomi, Eurooppa ja muuttuva maailma ",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Finland, Europa och en värld i förändring",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_yh4",
   "koodiArvo" : "YH4",
   "metadata" : [ {
-    "nimi" : "Medborgarens lagkunskap",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kansalaisen lakitieto ",
     "kieli" : "FI"
   } ],
@@ -4008,9 +2991,6 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4019,9 +2999,6 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4030,18 +3007,12 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ai4",
   "koodiArvo" : "ÄI4",
   "metadata" : [ {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -4050,9 +3021,6 @@
   "koodiUri" : "lukionkurssit_ai5",
   "koodiArvo" : "ÄI5",
   "metadata" : [ {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
   } ],
@@ -4061,9 +3029,6 @@
   "koodiUri" : "lukionkurssit_ai6",
   "koodiArvo" : "ÄI6",
   "metadata" : [ {
-    "nimi" : "Samtidskultur och berättelser",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
   } ],
@@ -4074,18 +3039,12 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ai8",
   "koodiArvo" : "ÄI8",
   "metadata" : [ {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -4094,9 +3053,6 @@
   "koodiUri" : "lukionkurssit_ai9",
   "koodiArvo" : "ÄI9",
   "metadata" : [ {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -4105,9 +3061,6 @@
   "koodiUri" : "lukionkurssit_air1",
   "koodiArvo" : "ÄIR1",
   "metadata" : [ {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
   } ],
@@ -4116,9 +3069,6 @@
   "koodiUri" : "lukionkurssit_air2",
   "koodiArvo" : "ÄIR2",
   "metadata" : [ {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -4129,9 +3079,6 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4140,18 +3087,12 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_air5",
   "koodiArvo" : "ÄIR5",
   "metadata" : [ {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
   } ],
@@ -4162,9 +3103,6 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samtidskultur och berättelser",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4173,9 +3111,6 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4184,9 +3119,6 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4195,9 +3127,6 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4206,18 +3135,12 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ais2",
   "koodiArvo" : "ÄIS2",
   "metadata" : [ {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -4226,9 +3149,6 @@
   "koodiUri" : "lukionkurssit_ais3",
   "koodiArvo" : "ÄIS3",
   "metadata" : [ {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
   } ],
@@ -4237,9 +3157,6 @@
   "koodiUri" : "lukionkurssit_ais4",
   "koodiArvo" : "ÄIS4",
   "metadata" : [ {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -4250,18 +3167,12 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_ais6",
   "koodiArvo" : "ÄIS6",
   "metadata" : [ {
-    "nimi" : "Samtidskultur och berättelser",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
   } ],
@@ -4270,9 +3181,6 @@
   "koodiUri" : "lukionkurssit_ais7",
   "koodiArvo" : "ÄIS7",
   "metadata" : [ {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -4283,9 +3191,6 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad skrivkompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4294,18 +3199,12 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad läskompetens",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_aiv1",
   "koodiArvo" : "ÄIV1",
   "metadata" : [ {
-    "nimi" : "Text och kommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
   } ],
@@ -4316,9 +3215,6 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Språk, kultur och identitet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4327,18 +3223,12 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Att analysera och tolka litteratur",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_aiv4",
   "koodiArvo" : "ÄIV4",
   "metadata" : [ {
-    "nimi" : "Text och påverkan",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -4349,9 +3239,6 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Text och kontext",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4360,9 +3247,6 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Samtidskultur och berättelser",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4371,9 +3255,6 @@
   "metadata" : [ {
     "nimi" : "Vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad muntlig kommunikation",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4382,18 +3263,12 @@
   "metadata" : [ {
     "nimi" : "Tekstin tuottamistaitojen syventäminen",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupad kompetens i textproduktion",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_aiv9",
   "koodiArvo" : "ÄIV9",
   "metadata" : [ {
-    "nimi" : "Fördjupad läskompetens i teckenspråk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lukutaitojen syventäminen viitotussa kielessä",
     "kieli" : "FI"
   } ],

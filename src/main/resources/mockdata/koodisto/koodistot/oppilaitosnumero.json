@@ -2,6 +2,10 @@
   "koodistoUri" : "oppilaitosnumero",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "oppilaitosnumero",
+    "kuvaus" : "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon."
+  }, {
     "kieli" : "SV",
     "nimi" : "oppilaitosnumero",
     "kuvaus" : "oppilaitosnumero"
@@ -9,15 +13,11 @@
     "kieli" : "EN",
     "nimi" : "oppilaitosnumero",
     "kuvaus" : "oppilaitosnumero"
-  }, {
-    "kieli" : "FI",
-    "nimi" : "oppilaitosnumero",
-    "kuvaus" : "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon."
   } ],
   "codesGroupUri" : "http://oppilaitoskoodistot",
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 5
+  "version" : 26
 }

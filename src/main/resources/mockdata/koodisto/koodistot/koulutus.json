@@ -1,6 +1,6 @@
 {
   "koodistoUri" : "koulutus",
-  "versio" : 6,
+  "versio" : 7,
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "koulutus",
@@ -15,9 +15,9 @@
     "kuvaus" : "koulutus"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
-  "voimassaAlkuPvm" : "2016-08-03",
+  "voimassaAlkuPvm" : "2017-09-21",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 3
+  "version" : 2
 }

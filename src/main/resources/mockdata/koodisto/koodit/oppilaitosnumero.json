@@ -411,10 +411,6 @@
     "nimi" : "Haminan lukio",
     "lyhytNimi" : "Haminan lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Haminan lukio",
-    "lyhytNimi" : "Haminan lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -533,7 +529,7 @@
   "koodiUri" : "oppilaitosnumero_00084",
   "koodiArvo" : "00084",
   "metadata" : [ {
-    "nimi" : "Helsingin ranskalais-suomalainen koulu",
+    "nimi" : "Helsingin Ranskalais-Suomalainen koulu",
     "lyhytNimi" : "Hgin ranskalais-suomal. koulu",
     "kieli" : "FI"
   } ],
@@ -563,10 +559,6 @@
     "nimi" : "Suomalais-venäläinen koulu",
     "lyhytNimi" : "Suomalais-venäläinen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Suomalais-venäläinen koulu",
-    "lyhytNimi" : "Suomalais-venäläinen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -676,7 +668,7 @@
   "koodiUri" : "oppilaitosnumero_00100",
   "koodiArvo" : "00100",
   "metadata" : [ {
-    "nimi" : "Hämeenlinnan lyseon lukio",
+    "nimi" : "Hämeenlinnan lyseon lukio 1.9.2017 alkaen Tavastian lukio",
     "lyhytNimi" : "Hämeenlinnan lyseon lukio",
     "kieli" : "FI"
   } ],
@@ -772,10 +764,6 @@
     "nimi" : "Iin lukio",
     "lyhytNimi" : "Iin lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Iin lukio",
-    "lyhytNimi" : "Iin lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1464,7 +1452,7 @@
   "koodiUri" : "oppilaitosnumero_00291",
   "koodiArvo" : "00291",
   "metadata" : [ {
-    "nimi" : "Kotkan lyseon lukio",
+    "nimi" : "Kotkan lyseo",
     "lyhytNimi" : "Kotkan lyseon lukio",
     "kieli" : "FI"
   } ],
@@ -1634,10 +1622,6 @@
   "metadata" : [ {
     "nimi" : "Kuortaneen lukio",
     "lyhytNimi" : "Kuortaneen lukio",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kuortaneen lukio",
-    "lyhytNimi" : "Kuortaneen lukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1700,10 +1684,6 @@
   "metadata" : [ {
     "nimi" : "Eiran aikuislukio",
     "lyhytNimi" : "Eiran aikuislukio",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Eiran aikuislukio",
-    "lyhytNimi" : "Eiran aikuislukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1738,10 +1718,6 @@
   "koodiUri" : "oppilaitosnumero_00323",
   "koodiArvo" : "00323",
   "metadata" : [ {
-    "nimi" : "Kyrkslätts gymnasium",
-    "lyhytNimi" : "Kyrkslätts gymnasium",
-    "kieli" : "FI"
-  }, {
     "nimi" : "Kyrkslätts gymnasium",
     "lyhytNimi" : "Kyrkslätts gymnasium",
     "kieli" : "SV"
@@ -1780,20 +1756,12 @@
     "nimi" : "Kiimingin lukio",
     "lyhytNimi" : "Kiimingin lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kiimingin lukio",
-    "lyhytNimi" : "Kiimingin lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_00327",
   "koodiArvo" : "00327",
   "metadata" : [ {
-    "nimi" : "Vaskivuoren lukio",
-    "lyhytNimi" : "Vaskivuoren lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vaskivuoren lukio",
     "lyhytNimi" : "Vaskivuoren lukio",
     "kieli" : "FI"
@@ -1983,10 +1951,6 @@
     "nimi" : "Laukaan lukio",
     "lyhytNimi" : "Laukaan lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Laukaan lukio",
-    "lyhytNimi" : "Laukaan lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2046,10 +2010,6 @@
   "koodiUri" : "oppilaitosnumero_00422",
   "koodiArvo" : "00422",
   "metadata" : [ {
-    "nimi" : "Lempäälän lukio",
-    "lyhytNimi" : "Lempäälän lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lempäälän lukio",
     "lyhytNimi" : "Lempäälän lukio",
     "kieli" : "FI"
@@ -2147,7 +2107,7 @@
   "koodiUri" : "oppilaitosnumero_00431",
   "koodiArvo" : "00431",
   "metadata" : [ {
-    "nimi" : "Myllyharjun lukio",
+    "nimi" : "Loviisan lukio",
     "lyhytNimi" : "Myllyharjun lukio",
     "kieli" : "FI"
   } ],
@@ -2240,10 +2200,6 @@
   "koodiUri" : "oppilaitosnumero_00464",
   "koodiArvo" : "00464",
   "metadata" : [ {
-    "nimi" : "Kontiolahden lukio",
-    "lyhytNimi" : "Kontiolahden lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kontiolahden lukio",
     "lyhytNimi" : "Kontiolahden lukio",
     "kieli" : "FI"
@@ -2532,10 +2488,6 @@
   "metadata" : [ {
     "nimi" : "Savonlinnan normaalikoulu",
     "lyhytNimi" : "Savonlinnan normaalikoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Savonlinnan normaalikoulu",
-    "lyhytNimi" : "Savonlinnan normaalikoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2632,10 +2584,6 @@
   "koodiUri" : "oppilaitosnumero_00505",
   "koodiArvo" : "00505",
   "metadata" : [ {
-    "nimi" : "Merikarvian lukio",
-    "lyhytNimi" : "Merikarvian lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merikarvian lukio",
     "lyhytNimi" : "Merikarvian lukio",
     "kieli" : "FI"
@@ -2948,10 +2896,6 @@
     "nimi" : "Joroisten lukio",
     "lyhytNimi" : "Joroisten lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Joroisten lukio",
-    "lyhytNimi" : "Joroisten lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3171,13 +3115,9 @@
   "koodiUri" : "oppilaitosnumero_00559",
   "koodiArvo" : "00559",
   "metadata" : [ {
-    "nimi" : "Nurmijärven Yhteiskoulun lukio",
+    "nimi" : "Nurmijärven Yhteiskoulun lukio (Lakkautettu)",
     "lyhytNimi" : "Nurmijärven Yhteiskoulun lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Nurmijärven Yhteiskoulun lukio",
-    "lyhytNimi" : "Nurmijärven Yhteiskoulun lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3332,10 +3272,6 @@
     "nimi" : "Lopen lukio",
     "lyhytNimi" : "Lopen lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Lopen lukio",
-    "lyhytNimi" : "Lopen lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3424,10 +3360,6 @@
   "metadata" : [ {
     "nimi" : "Vasa gymnasium",
     "lyhytNimi" : "Vasa gymnasium",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vasa gymnasium",
-    "lyhytNimi" : "Vasa gymnasium",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3461,10 +3393,6 @@
   "koodiUri" : "oppilaitosnumero_00586",
   "koodiArvo" : "00586",
   "metadata" : [ {
-    "nimi" : "Pirkanmaan aikuislukio",
-    "lyhytNimi" : "Pirkanmaan aikuislukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pirkanmaan aikuislukio",
     "lyhytNimi" : "Pirkanmaan aikuislukio",
     "kieli" : "FI"
@@ -3603,10 +3531,6 @@
   "metadata" : [ {
     "nimi" : "Oulun Lyseon lukio",
     "lyhytNimi" : "Oulun Lyseon lukio",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oulun Lyseon lukio",
-    "lyhytNimi" : "Oulun Lyseon lukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3626,10 +3550,6 @@
     "nimi" : "Oulun Suomalaisen Yhteiskoulun lukio",
     "lyhytNimi" : "Oulun Suomalaisen Yhteiskoulun lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Oulun Suomalaisen Yhteiskoulun lukio",
-    "lyhytNimi" : "Oulun Suomalaisen Yhteiskoulun lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3701,10 +3621,6 @@
     "nimi" : "Nurmijärven Yhteiskoulun lukio",
     "lyhytNimi" : "Nurmijärven Yhteiskoulun lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Nurmijärven Yhteiskoulun lukio",
-    "lyhytNimi" : "Nurmijärven Yhteiskoulun lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3742,10 +3658,6 @@
   "koodiUri" : "oppilaitosnumero_00612",
   "koodiArvo" : "00612",
   "metadata" : [ {
-    "nimi" : "Salon lukio",
-    "lyhytNimi" : "Salon lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Salon lukio",
     "lyhytNimi" : "Salon lukio",
     "kieli" : "FI"
@@ -3838,10 +3750,6 @@
   "koodiUri" : "oppilaitosnumero_00639",
   "koodiArvo" : "00639",
   "metadata" : [ {
-    "nimi" : "Parkanon lukio",
-    "lyhytNimi" : "Parkanon lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Parkanon lukio",
     "lyhytNimi" : "Parkanon lukio",
     "kieli" : "FI"
@@ -3940,10 +3848,6 @@
   "koodiUri" : "oppilaitosnumero_00649",
   "koodiArvo" : "00649",
   "metadata" : [ {
-    "nimi" : "Pohjois-Tapiolan lukio",
-    "lyhytNimi" : "Pohjois-Tapiolan lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pohjois-Tapiolan lukio",
     "lyhytNimi" : "Pohjois-Tapiolan lukio",
     "kieli" : "FI"
@@ -4049,10 +3953,6 @@
     "nimi" : "Puolalanmäen lukio",
     "lyhytNimi" : "Puolalanmäen lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Puolalanmäen lukio",
-    "lyhytNimi" : "Puolalanmäen lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4160,10 +4060,6 @@
     "nimi" : "Posion lukio",
     "lyhytNimi" : "Posion lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Posion lukio",
-    "lyhytNimi" : "Posion lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4212,10 +4108,6 @@
   "metadata" : [ {
     "nimi" : "Raision lukio",
     "lyhytNimi" : "Raision lukio",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Raision lukio",
-    "lyhytNimi" : "Raision lukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4232,10 +4124,6 @@
   "koodiUri" : "oppilaitosnumero_00716",
   "koodiArvo" : "00716",
   "metadata" : [ {
-    "nimi" : "Rantasalmen lukio",
-    "lyhytNimi" : "Rantasalmen lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Rantasalmen lukio",
     "lyhytNimi" : "Rantasalmen lukio",
     "kieli" : "FI"
@@ -4865,10 +4753,6 @@
   "metadata" : [ {
     "nimi" : "Tikkurilan lukio",
     "lyhytNimi" : "Tikkurilan lukio",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tikkurilan lukio",
-    "lyhytNimi" : "Tikkurilan lukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4920,10 +4804,6 @@
   "koodiUri" : "oppilaitosnumero_00831",
   "koodiArvo" : "00831",
   "metadata" : [ {
-    "nimi" : "Merikosken lukio",
-    "lyhytNimi" : "Merikosken lukio",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merikosken lukio",
     "lyhytNimi" : "Merikosken lukio",
     "kieli" : "FI"
@@ -4999,7 +4879,7 @@
   "koodiUri" : "oppilaitosnumero_00838",
   "koodiArvo" : "00838",
   "metadata" : [ {
-    "nimi" : "Luostarivuoren lukio",
+    "nimi" : "Luostarivuoren lukio (1.8.2018 lukien Luostarivuoren Lyseon lukio)",
     "lyhytNimi" : "Luostarivuoren lukio",
     "kieli" : "FI"
   } ],
@@ -5176,10 +5056,6 @@
     "nimi" : "Vaalan lukio",
     "lyhytNimi" : "Vaalan lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vaalan lukio",
-    "lyhytNimi" : "Vaalan lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5365,10 +5241,6 @@
     "nimi" : "Vimpelin lukio",
     "lyhytNimi" : "Vimpelin lukio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vimpelin lukio",
-    "lyhytNimi" : "Vimpelin lukio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6332,7 +6204,7 @@
   "koodiUri" : "oppilaitosnumero_01067",
   "koodiArvo" : "01067",
   "metadata" : [ {
-    "nimi" : "Keudan ammattiopisto",
+    "nimi" : "Keuda",
     "lyhytNimi" : "Keudan ammattiopisto",
     "kieli" : "FI"
   } ],
@@ -6889,6 +6761,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_01115",
+  "koodiArvo" : "01115",
+  "metadata" : [ {
+    "nimi" : "Noveran ammattioppilaitos",
+    "lyhytNimi" : "Noveran ammattioppilaitos",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Noveran ammattioppilaitos",
+    "lyhytNimi" : "Noveran ammattioppilaitos",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Noveran ammattioppilaitos",
+    "lyhytNimi" : "Noveran ammattioppilaitos",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_01116",
   "koodiArvo" : "01116",
   "metadata" : [ {
@@ -6976,6 +6865,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_01127",
+  "koodiArvo" : "01127",
+  "metadata" : [ {
+    "nimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "lyhytNimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "lyhytNimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "lyhytNimi" : "Outokumpu Oyj:n koulutuskeskus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_01128",
   "koodiArvo" : "01128",
   "metadata" : [ {
@@ -7038,10 +6944,6 @@
   "metadata" : [ {
     "nimi" : "Sanoma WSOY:n Akatemia",
     "lyhytNimi" : "Sanoma WSOY:n Akatemia",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Sanoma WSOY:n Akatemia",
-    "lyhytNimi" : "Sanoma WSOY:n Akatemia",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -7058,10 +6960,6 @@
   "koodiUri" : "oppilaitosnumero_01136",
   "koodiArvo" : "01136",
   "metadata" : [ {
-    "nimi" : "ABB Industry ammattioppilaitos",
-    "lyhytNimi" : "ABB Industry ammattioppilaitos",
-    "kieli" : "SV"
-  }, {
     "nimi" : "ABB Industry ammattioppilaitos",
     "lyhytNimi" : "ABB Industry ammattioppilaitos",
     "kieli" : "FI"
@@ -7144,6 +7042,23 @@
     "nimi" : "Sisun teollisuusoppilaitos",
     "lyhytNimi" : "Sisun teollisuusoppilaitos",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_01146",
+  "koodiArvo" : "01146",
+  "metadata" : [ {
+    "nimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "lyhytNimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "lyhytNimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "lyhytNimi" : "Imatra Steel Oy Ab:n teoll.opp",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -7233,10 +7148,6 @@
     "nimi" : "Kelloseppäkoulu",
     "lyhytNimi" : "Kelloseppäkoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kelloseppäkoulu",
-    "lyhytNimi" : "Kelloseppäkoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -7468,6 +7379,14 @@
   "metadata" : [ {
     "nimi" : "Päijät-Hämeen ammattioppilaitos",
     "lyhytNimi" : "Päijät-Hämeen ammattioppil.",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_01200",
+  "koodiArvo" : "01200",
+  "metadata" : [ {
+    "nimi" : "Kaukas Oy:n ammattikoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -8499,7 +8418,13 @@
   "koodiUri" : "oppilaitosnumero_01294",
   "koodiArvo" : "01294",
   "metadata" : [ {
-    "nimi" : "Helsingin Diakoniaopisto",
+    "nimi" : "Suomen Diakoniaopisto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Suomen Diakoniaopisto",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Suomen Diakoniaopisto",
     "lyhytNimi" : "Helsingin Diakoniaopisto",
     "kieli" : "FI"
   } ],
@@ -9061,10 +8986,6 @@
   "metadata" : [ {
     "nimi" : "Aitoon koulutuskeskus",
     "lyhytNimi" : "Aitoon koulutuskeskus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Aitoon koulutuskeskus",
-    "lyhytNimi" : "Aitoon koulutuskeskus",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -9110,10 +9031,6 @@
     "nimi" : "Karkun kotitalous- ja sosiaalialan oppilaitos",
     "lyhytNimi" : "Karkun kotit.- ja sos.alan opl",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Karkun kotitalous- ja sosiaalialan oppilaitos",
-    "lyhytNimi" : "Karkun kotitalous- ja sosiaalialan oppilaitos",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -9347,7 +9264,7 @@
   "koodiUri" : "oppilaitosnumero_01391",
   "koodiArvo" : "01391",
   "metadata" : [ {
-    "nimi" : "Jyväskylän kotitalousoppilaitos",
+    "nimi" : "Jyväskylän palvelualan opisto",
     "lyhytNimi" : "Jyväskylän kotitalousoppil.",
     "kieli" : "FI"
   } ],
@@ -9378,9 +9295,15 @@
   "koodiUri" : "oppilaitosnumero_01394",
   "koodiArvo" : "01394",
   "metadata" : [ {
-    "nimi" : "Kuopion talouskoulu",
+    "nimi" : "Palvelualan Opisto Kuopio",
     "lyhytNimi" : "Kuopion talouskoulu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Palvelualan Opisto Kuopio",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Palvelualan Opisto Kuopio",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -9726,10 +9649,6 @@
     "nimi" : "Jollas Instituutti",
     "lyhytNimi" : "Jollas Instituutti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Jollas Instituutti",
-    "lyhytNimi" : "Jollas Instituutti",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -10580,6 +10499,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_01523",
+  "koodiArvo" : "01523",
+  "metadata" : [ {
+    "nimi" : "Salon seudun maatalousoppil.",
+    "lyhytNimi" : "Salon seudun maatalousoppil.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Salon seudun maatalousoppil.",
+    "lyhytNimi" : "Salon seudun maatalousoppil.",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Salon seudun maatalousoppil.",
+    "lyhytNimi" : "Salon seudun maatalousoppil.",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_01524",
   "koodiArvo" : "01524",
   "metadata" : [ {
@@ -11020,10 +10956,6 @@
   "metadata" : [ {
     "nimi" : "Finnairin Ilmailuopisto",
     "lyhytNimi" : "Finnairin Ilmailuopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Finnairin Ilmailuopisto",
-    "lyhytNimi" : "Finnairin Ilmailuopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -11059,6 +10991,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_01583",
+  "koodiArvo" : "01583",
+  "metadata" : [ {
+    "nimi" : "Satakunnan aikuiskoulutuskeskus",
+    "lyhytNimi" : "Satakunnan aikuiskoulutuskeskus",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Satakunnan aikuiskoulutuskeskus",
+    "lyhytNimi" : "Satakunnan aikuiskoulutuskeskus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Satakunnan aikuiskoulutuskeskus",
+    "lyhytNimi" : "Satakunnan aikuiskoulutuskeskus",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_01584",
   "koodiArvo" : "01584",
   "metadata" : [ {
@@ -11075,7 +11024,7 @@
   "koodiUri" : "oppilaitosnumero_01585",
   "koodiArvo" : "01585",
   "metadata" : [ {
-    "nimi" : "Koillis-Suomen Aikuiskoulutus Oy",
+    "nimi" : "Koillis-Suomen Aikuiskoulutus",
     "lyhytNimi" : "Koillis-Suomen Aikuiskoulutus Oy",
     "kieli" : "FI"
   } ],
@@ -11294,6 +11243,23 @@
   }, {
     "nimi" : "Edukai",
     "lyhytNimi" : "Edukai",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_01607",
+  "koodiArvo" : "01607",
+  "metadata" : [ {
+    "nimi" : "Korsnäs kurscenter",
+    "lyhytNimi" : "Korsnäs kurscenter",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Korsnäs kurscenter",
+    "lyhytNimi" : "Korsnäs kurscenter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korsnäs kurscenter",
+    "lyhytNimi" : "Korsnäs kurscenter",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -12275,10 +12241,6 @@
     "nimi" : "Aktiivi-instituutti",
     "lyhytNimi" : "Aktiivi-instituutti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Aktiivi-instituutti",
-    "lyhytNimi" : "Aktiivi-instituutti",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -12814,10 +12776,6 @@
     "nimi" : "Saamelaisalueen koulutuskeskus",
     "lyhytNimi" : "Saamelaisalueen koulutuskesk.",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Saamelaisalueen koulutuskeskus",
-    "lyhytNimi" : "Saamelaisalueen koulutuskeskus",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -13302,7 +13260,13 @@
   "koodiUri" : "oppilaitosnumero_01829",
   "koodiArvo" : "01829",
   "metadata" : [ {
-    "nimi" : "Ingmanin käsi- ja taideteollisuusoppilaitos",
+    "nimi" : "Ingmanedu Kulttuurialan ammattiopisto",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Ingmanedu Kulttuurialan ammattiopisto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ingmanedu Kulttuurialan ammattiopisto",
     "lyhytNimi" : "Ingmanin käsi- ja taideteol.ol",
     "kieli" : "FI"
   } ],
@@ -13428,10 +13392,6 @@
     "nimi" : "Henkilöstökoulu",
     "lyhytNimi" : "Henkilöstökoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Henkilöstökoulu",
-    "lyhytNimi" : "Henkilöstökoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -13454,6 +13414,23 @@
     "nimi" : "Raja- ja merivartiokoulu",
     "lyhytNimi" : "Raja- ja merivartiokoulu",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_01851",
+  "koodiArvo" : "01851",
+  "metadata" : [ {
+    "nimi" : "Merivoimien koulutuskeskus",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Merivoimien koulutuskeskus",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Merivoimien koulutuskeskus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -13568,10 +13545,6 @@
   "metadata" : [ {
     "nimi" : "Merisotakoulu",
     "lyhytNimi" : "Merisotakoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Merisotakoulu",
-    "lyhytNimi" : "Merisotakoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -13676,18 +13649,21 @@
   "koodiUri" : "oppilaitosnumero_01904",
   "koodiArvo" : "01904",
   "metadata" : [ {
-    "nimi" : "University of Oulu",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Oulun yliopisto",
     "lyhytNimi" : "Oulun yliopisto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "University of Oulu",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_01905",
   "koodiArvo" : "01905",
   "metadata" : [ {
+    "nimi" : "University of Tampere",
+    "kieli" : "EN"
+  }, {
     "nimi" : "Tampereen yliopisto",
     "lyhytNimi" : "Tampereen yliopisto",
     "kieli" : "FI"
@@ -14112,7 +14088,7 @@
   "koodiUri" : "oppilaitosnumero_01944",
   "koodiArvo" : "01944",
   "metadata" : [ {
-    "nimi" : "Imatran musiikkiopisto",
+    "nimi" : "VIRTA-OPISTO",
     "lyhytNimi" : "Imatran musiikkiopisto",
     "kieli" : "FI"
   } ],
@@ -14206,10 +14182,6 @@
   "metadata" : [ {
     "nimi" : "Kankaanpään musiikkiopisto",
     "lyhytNimi" : "Kankaanpään musiikkiopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kankaanpään musiikkiopisto",
-    "lyhytNimi" : "Kankaanpään musiikkiopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -14235,11 +14207,7 @@
   "koodiUri" : "oppilaitosnumero_01955",
   "koodiArvo" : "01955",
   "metadata" : [ {
-    "nimi" : "Länsi-Pohjan musiikkiopisto",
-    "lyhytNimi" : "Länsi-Pohjan musiikkiopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Länsi-Pohjan musiikkiopisto",
+    "nimi" : "Meri-Lapin musiikkiopisto",
     "lyhytNimi" : "Länsi-Pohjan musiikkiopisto",
     "kieli" : "FI"
   } ],
@@ -14282,10 +14250,6 @@
     "nimi" : "Kuula-opisto-Kuula-institutet",
     "lyhytNimi" : "Kuula-opisto-Kuula-institutet",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kuula-opisto-Kuula-institutet",
-    "lyhytNimi" : "Kuula-opisto-Kuula-institutet",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14335,10 +14299,6 @@
     "nimi" : "Lapuan musiikkiopisto",
     "lyhytNimi" : "Lapuan musiikkiopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Lapuan musiikkiopisto",
-    "lyhytNimi" : "Lapuan musiikkiopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14379,10 +14339,6 @@
     "nimi" : "Oulun konservatorio",
     "lyhytNimi" : "Oulun konservatorio",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Oulun konservatorio",
-    "lyhytNimi" : "Oulun konservatorio",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14454,10 +14410,6 @@
     "nimi" : "Salon musiikkiopisto",
     "lyhytNimi" : "Salon musiikkiopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Salon musiikkiopisto",
-    "lyhytNimi" : "Salon musiikkiopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14594,10 +14546,6 @@
     "nimi" : "Lauttasaaren musiikkiopisto",
     "lyhytNimi" : "Lauttasaaren musiikkiopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Lauttasaaren musiikkiopisto",
-    "lyhytNimi" : "Lauttasaaren musiikkiopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14756,10 +14704,6 @@
     "nimi" : "Alajärven musiikkiopisto",
     "lyhytNimi" : "Alajärven musiikkiopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Alajärven musiikkiopisto",
-    "lyhytNimi" : "Alajärven musiikkiopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14788,10 +14732,6 @@
   "koodiUri" : "oppilaitosnumero_02021",
   "koodiArvo" : "02021",
   "metadata" : [ {
-    "nimi" : "Hangon suomalainen kansalaisopisto",
-    "lyhytNimi" : "Hangon suomalainen kansalaisopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hangon suomalainen kansalaisopisto",
     "lyhytNimi" : "Hangon suomalainen kansalaisopisto",
     "kieli" : "FI"
@@ -14889,10 +14829,6 @@
   "koodiUri" : "oppilaitosnumero_02030",
   "koodiArvo" : "02030",
   "metadata" : [ {
-    "nimi" : "Karkkilan työväenopisto",
-    "lyhytNimi" : "Karkkilan työväenopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Karkkilan työväenopisto",
     "lyhytNimi" : "Karkkilan työväenopisto",
     "kieli" : "FI"
@@ -15021,13 +14957,9 @@
   "koodiUri" : "oppilaitosnumero_02042",
   "koodiArvo" : "02042",
   "metadata" : [ {
-    "nimi" : "Helsingin aikuisopisto",
+    "nimi" : "Helsingin Aikuisopisto",
     "lyhytNimi" : "Helsingin aikuisopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Helsingin aikuisopisto",
-    "lyhytNimi" : "Helsingin aikuisopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -15391,12 +15323,11 @@
   "koodiUri" : "oppilaitosnumero_02077",
   "koodiArvo" : "02077",
   "metadata" : [ {
-    "nimi" : "Saariston kansalaisopisto",
+    "nimi" : "Skärsgårdens KoMbi- Saariston KoMbi",
     "lyhytNimi" : "Saariston kansalaisopisto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saariston kansalaisopisto",
-    "lyhytNimi" : "Saariston kansalaisopisto",
+    "nimi" : "Skärsgårdens KoMbi- Saariston KoMbi",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -15407,10 +15338,6 @@
     "nimi" : "Petäjä-opisto",
     "lyhytNimi" : "Petäjä-opisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Petäjä-opisto",
-    "lyhytNimi" : "Petäjä-opisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -15454,10 +15381,6 @@
   "metadata" : [ {
     "nimi" : "Rauman kansalaisopisto",
     "lyhytNimi" : "Rauman kansalaisopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Rauman kansalaisopisto",
-    "lyhytNimi" : "Rauman kansalaisopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -15474,10 +15397,6 @@
   "koodiUri" : "oppilaitosnumero_02084",
   "koodiArvo" : "02084",
   "metadata" : [ {
-    "nimi" : "Pyhäjärviseudun aikuisopisto",
-    "lyhytNimi" : "Pyhäjärviseudun aikuisopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pyhäjärviseudun aikuisopisto",
     "lyhytNimi" : "Pyhäjärviseudun aikuisopisto",
     "kieli" : "FI"
@@ -15767,7 +15686,7 @@
   "koodiUri" : "oppilaitosnumero_02109",
   "koodiArvo" : "02109",
   "metadata" : [ {
-    "nimi" : "Oriveden seud.kansalaisopisto",
+    "nimi" : "Oriveden seudun kansalaisopisto",
     "lyhytNimi" : "Oriveden seud.kansalaisopisto",
     "kieli" : "FI"
   } ],
@@ -15881,10 +15800,6 @@
   "koodiUri" : "oppilaitosnumero_02120",
   "koodiArvo" : "02120",
   "metadata" : [ {
-    "nimi" : "Valkeakoski-opisto",
-    "lyhytNimi" : "Valkeakoski-opisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Valkeakoski-opisto",
     "lyhytNimi" : "Valkeakoski-opisto",
     "kieli" : "FI"
@@ -16468,10 +16383,6 @@
   "koodiArvo" : "02171",
   "metadata" : [ {
     "nimi" : "Pielaveden-Keiteleen kansalaisopisto",
-    "lyhytNimi" : "Pielaveden-Keiteleen kansalaisopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pielaveden-Keiteleen kansalaisopisto",
     "lyhytNimi" : "Pielaveden-Keiteleen kansal.op",
     "kieli" : "FI"
   } ],
@@ -16502,10 +16413,6 @@
   "koodiUri" : "oppilaitosnumero_02174",
   "koodiArvo" : "02174",
   "metadata" : [ {
-    "nimi" : "Sisä-Savon kansalaisopisto",
-    "lyhytNimi" : "Sisä-Savon kansalaisopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sisä-Savon kansalaisopisto",
     "lyhytNimi" : "Sisä-Savon kansalaisopisto",
     "kieli" : "FI"
@@ -16566,10 +16473,6 @@
     "nimi" : "Hankasalmen kansalaisopisto",
     "lyhytNimi" : "Hankasalmen kansalaisopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hankasalmen kansalaisopisto",
-    "lyhytNimi" : "Hankasalmen kansalaisopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -16831,11 +16734,7 @@
   "koodiUri" : "oppilaitosnumero_02204",
   "koodiArvo" : "02204",
   "metadata" : [ {
-    "nimi" : "Kannuksen kansalaisopisto",
-    "lyhytNimi" : "Kannuksen kansalaisopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kannuksen kansalaisopisto",
+    "nimi" : "KanTo Kansalaisopisto",
     "lyhytNimi" : "Kannuksen kansalaisopisto",
     "kieli" : "FI"
   } ],
@@ -17005,6 +16904,9 @@
     "nimi" : "Korsholms vuxeninstitut-Mustasaaren aikuisopisto",
     "lyhytNimi" : "Korsholms vuxeninstitut-Mustasaaren aikuisopisto",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Korsholms vuxeninstitut-Mustasaaren aikuisopisto",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -17243,10 +17145,6 @@
   "metadata" : [ {
     "nimi" : "Oulujoki-Opisto",
     "lyhytNimi" : "Oulujoki-Opisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oulujoki-Opisto",
-    "lyhytNimi" : "Oulujoki-Opisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -17389,10 +17287,6 @@
   "metadata" : [ {
     "nimi" : "Enontekiön kansalaisopisto",
     "lyhytNimi" : "Enontekiön kansalaisopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Enontekiön kansalaisopisto",
-    "lyhytNimi" : "Enontekiön kansalaisopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -17409,10 +17303,6 @@
   "koodiUri" : "oppilaitosnumero_02259",
   "koodiArvo" : "02259",
   "metadata" : [ {
-    "nimi" : "Kemijärven kansalaisopisto",
-    "lyhytNimi" : "Kemijärven kansalaisopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kemijärven kansalaisopisto",
     "lyhytNimi" : "Kemijärven kansalaisopisto",
     "kieli" : "FI"
@@ -17867,13 +17757,9 @@
   "koodiUri" : "oppilaitosnumero_02297",
   "koodiArvo" : "02297",
   "metadata" : [ {
-    "nimi" : "Kempeleen kansalaisopisto",
+    "nimi" : "KEMPELE-OPISTO",
     "lyhytNimi" : "Kempeleen kansalaisopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kempeleen kansalaisopisto",
-    "lyhytNimi" : "Kempeleen kansalaisopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18058,7 +17944,7 @@
   "koodiUri" : "oppilaitosnumero_02315",
   "koodiArvo" : "02315",
   "metadata" : [ {
-    "nimi" : "Raseborg-opisto",
+    "nimi" : "JHL-opisto",
     "lyhytNimi" : "Raseborg-opisto",
     "kieli" : "FI"
   } ],
@@ -18110,6 +17996,40 @@
     "nimi" : "Tampereen urheiluhierojakoulu",
     "lyhytNimi" : "Tampereen urheiluhierojakoulu",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_02321",
+  "koodiArvo" : "02321",
+  "metadata" : [ {
+    "nimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "lyhytNimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "lyhytNimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "lyhytNimi" : "Koulutus-kurssikesk.Fysiotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_02322",
+  "koodiArvo" : "02322",
+  "metadata" : [ {
+    "nimi" : "Hyvä-Olo",
+    "lyhytNimi" : "Hyvä-Olo",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hyvä-Olo",
+    "lyhytNimi" : "Hyvä-Olo",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Hyvä-Olo",
+    "lyhytNimi" : "Hyvä-Olo",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -18183,10 +18103,6 @@
   "koodiUri" : "oppilaitosnumero_02332",
   "koodiArvo" : "02332",
   "metadata" : [ {
-    "nimi" : "Kuhmon musiikkiopisto",
-    "lyhytNimi" : "Kuhmon musiikkiopisto",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuhmon musiikkiopisto",
     "lyhytNimi" : "Kuhmon musiikkiopisto",
     "kieli" : "FI"
@@ -18560,10 +18476,6 @@
     "nimi" : "Helsingin diakonissalaitoksen sosiaalialan oppilaitos",
     "lyhytNimi" : "H:gin diakonissalait.sos.ol.",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Helsingin diakonissalaitoksen sosiaalialan oppilaitos",
-    "lyhytNimi" : "Helsingin diakonissalaitoksen sosiaalialan oppilaitos",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18664,10 +18576,6 @@
   "metadata" : [ {
     "nimi" : "Valtion Pelastusopisto",
     "lyhytNimi" : "Valtion Pelastusopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Valtion Pelastusopisto",
-    "lyhytNimi" : "Valtion Pelastusopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -18757,10 +18665,6 @@
     "nimi" : "Porin taidekoulu",
     "lyhytNimi" : "Porin taidekoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Porin taidekoulu",
-    "lyhytNimi" : "Porin taidekoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18990,6 +18894,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_02408",
+  "koodiArvo" : "02408",
+  "metadata" : [ {
+    "nimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "lyhytNimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "lyhytNimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "lyhytNimi" : "Dahlsbruk Oy-Ab:n ammattioppil",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_02409",
   "koodiArvo" : "02409",
   "metadata" : [ {
@@ -19208,6 +19129,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_02428",
+  "koodiArvo" : "02428",
+  "metadata" : [ {
+    "nimi" : "Lapuan ammatti-instituutti",
+    "lyhytNimi" : "Lapuan ammatti-instituutti",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Lapuan ammatti-instituutti",
+    "lyhytNimi" : "Lapuan ammatti-instituutti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lapuan ammatti-instituutti",
+    "lyhytNimi" : "Lapuan ammatti-instituutti",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_02429",
   "koodiArvo" : "02429",
   "metadata" : [ {
@@ -19260,7 +19198,7 @@
   "koodiUri" : "oppilaitosnumero_02434",
   "koodiArvo" : "02434",
   "metadata" : [ {
-    "nimi" : "Nivalan ammattiopisto",
+    "nimi" : "Nivalan ammattiopisto nimi 1.1.2018 lukien Koulutuskeskus Jedu",
     "lyhytNimi" : "Nivalan ammattiopisto",
     "kieli" : "FI"
   } ],
@@ -19490,6 +19428,14 @@
   }, {
     "nimi" : "Naturbruksinstitutet",
     "lyhytNimi" : "Naturbruksinstitutet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_02455",
+  "koodiArvo" : "02455",
+  "metadata" : [ {
+    "nimi" : "Pelastusopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -19769,13 +19715,12 @@
   "koodiUri" : "oppilaitosnumero_02479",
   "koodiArvo" : "02479",
   "metadata" : [ {
-    "nimi" : "Skärgårdshavets medborgarinstitut",
-    "lyhytNimi" : "Skärgårdshavets medborgarinstitut",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Skärgårdshavets medborgarinstitut",
+    "nimi" : "Skärsgårdens KoMbi- Saariston KoMbi",
     "lyhytNimi" : "Skärgårdshavets medborgarinstitut",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Skärsgårdens KoMbi- Saariston KoMbi",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -19817,7 +19762,7 @@
   "koodiUri" : "oppilaitosnumero_02483",
   "koodiArvo" : "02483",
   "metadata" : [ {
-    "nimi" : "Etelä-Karjalan ammattiopisto",
+    "nimi" : "Etelä-Karjalan ammattiopisto (1.8.1996-1.8.1997)",
     "lyhytNimi" : "Etelä-Karjalan ao.",
     "kieli" : "FI"
   } ],
@@ -19948,10 +19893,6 @@
     "nimi" : "Konecranes Instituutti",
     "lyhytNimi" : "Konecranes Instituutti",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Konecranes Instituutti",
-    "lyhytNimi" : "Konecranes Instituutti",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -20311,6 +20252,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_02527",
+  "koodiArvo" : "02527",
+  "metadata" : [ {
+    "nimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "lyhytNimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "lyhytNimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "lyhytNimi" : "Folkhäls.yrk.inst.(1.1.1997-)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_02528",
   "koodiArvo" : "02528",
   "metadata" : [ {
@@ -20349,7 +20307,7 @@
   "koodiUri" : "oppilaitosnumero_02531",
   "koodiArvo" : "02531",
   "metadata" : [ {
-    "nimi" : "Etelä-Karjalan ammattiopisto",
+    "nimi" : "Etelä-Karjalan ammattiopisto (1.8.1997-31.7.2002)",
     "lyhytNimi" : "Etelä-Karjalan ammattiopisto",
     "kieli" : "FI"
   } ],
@@ -20712,6 +20670,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_02564",
+  "koodiArvo" : "02564",
+  "metadata" : [ {
+    "nimi" : "Päijänne-instituutti",
+    "lyhytNimi" : "Päijänne-instituutti",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Päijänne-instituutti",
+    "lyhytNimi" : "Päijänne-instituutti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Päijänne-instituutti",
+    "lyhytNimi" : "Päijänne-instituutti",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_02565",
   "koodiArvo" : "02565",
   "metadata" : [ {
@@ -21018,10 +20993,6 @@
   "koodiArvo" : "02591",
   "metadata" : [ {
     "nimi" : "Porvoon ammattiopisto",
-    "lyhytNimi" : "Porvoon ammattiopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Porvoon ammattiopisto",
     "lyhytNimi" : "Amisto",
     "kieli" : "FI"
   } ],
@@ -21230,12 +21201,12 @@
   "koodiUri" : "oppilaitosnumero_02609",
   "koodiArvo" : "02609",
   "metadata" : [ {
-    "nimi" : "Saimaa University of Applied Sciences",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Saimaan ammattikorkeakoulu",
     "lyhytNimi" : "Saimaan ammattikorkeakoulu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Saimaa University of Applied Sciences",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -21782,7 +21753,13 @@
   "koodiUri" : "oppilaitosnumero_02998",
   "koodiArvo" : "02998",
   "metadata" : [ {
-    "nimi" : "Vaasan ammattiopisto - Vasa yrkesinstitut",
+    "nimi" : "Vamia",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vamia",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Vamia",
     "lyhytNimi" : "Vaasan ammattiopisto - Vasa yrkesinstitu",
     "kieli" : "FI"
   } ],
@@ -22582,7 +22559,7 @@
   "koodiUri" : "oppilaitosnumero_03098",
   "koodiArvo" : "03098",
   "metadata" : [ {
-    "nimi" : "Tehtaanpuiston yläaste",
+    "nimi" : "Puistopolun peruskoulu",
     "lyhytNimi" : "Tehtaanpuiston yläaste",
     "kieli" : "FI"
   } ],
@@ -22600,7 +22577,7 @@
   "koodiUri" : "oppilaitosnumero_03100",
   "koodiArvo" : "03100",
   "metadata" : [ {
-    "nimi" : "Vesalan yläaste",
+    "nimi" : "Vesalan peruskoulu",
     "lyhytNimi" : "Vesalan yläaste",
     "kieli" : "FI"
   } ],
@@ -22609,7 +22586,7 @@
   "koodiUri" : "oppilaitosnumero_03101",
   "koodiArvo" : "03101",
   "metadata" : [ {
-    "nimi" : "Vuosaaren peruskoulu",
+    "nimi" : "Vuoniityn peruskoulu",
     "lyhytNimi" : "Vuosaaren peruskoulu",
     "kieli" : "FI"
   } ],
@@ -23302,7 +23279,7 @@
   "koodiUri" : "oppilaitosnumero_03174",
   "koodiArvo" : "03174",
   "metadata" : [ {
-    "nimi" : "Mäntymäen ala-aste",
+    "nimi" : "Mäntymäen koulu",
     "lyhytNimi" : "Mäntymäen ala-aste",
     "kieli" : "FI"
   } ],
@@ -23320,10 +23297,6 @@
   "koodiUri" : "oppilaitosnumero_03176",
   "koodiArvo" : "03176",
   "metadata" : [ {
-    "nimi" : "Kasavuoren koulu",
-    "lyhytNimi" : "Kasavuoren koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kasavuoren koulu",
     "lyhytNimi" : "Kasavuoren koulu",
     "kieli" : "FI"
@@ -23354,10 +23327,6 @@
     "nimi" : "Hiekkaharjun koulu",
     "lyhytNimi" : "Hiekkaharjun koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hiekkaharjun koulu",
-    "lyhytNimi" : "Hiekkaharjun koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23385,10 +23354,6 @@
     "nimi" : "Kaivokselan koulu",
     "lyhytNimi" : "Kaivokselan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kaivokselan koulu",
-    "lyhytNimi" : "Kaivokselan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23442,10 +23407,6 @@
     "nimi" : "Kuusikon koulu",
     "lyhytNimi" : "Kuusikon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kuusikon koulu",
-    "lyhytNimi" : "Kuusikon koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23465,10 +23426,6 @@
   "koodiUri" : "oppilaitosnumero_03189",
   "koodiArvo" : "03189",
   "metadata" : [ {
-    "nimi" : "Leppäkorven koulu",
-    "lyhytNimi" : "Leppäkorven koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Leppäkorven koulu",
     "lyhytNimi" : "Leppäkorven koulu",
     "kieli" : "FI"
@@ -23509,10 +23466,6 @@
   "koodiUri" : "oppilaitosnumero_03193",
   "koodiArvo" : "03193",
   "metadata" : [ {
-    "nimi" : "Rajakylän koulu",
-    "lyhytNimi" : "Rajakylän koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Rajakylän koulu",
     "lyhytNimi" : "Rajakylän koulu",
     "kieli" : "FI"
@@ -23565,10 +23518,6 @@
     "nimi" : "Simonkallion koulu",
     "lyhytNimi" : "Simonkallion koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Simonkallion koulu",
-    "lyhytNimi" : "Simonkallion koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23595,10 +23544,6 @@
   "metadata" : [ {
     "nimi" : "Vantaankosken koulu",
     "lyhytNimi" : "Vantaankosken koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vantaankosken koulu",
-    "lyhytNimi" : "Vantaankosken koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -23618,20 +23563,12 @@
     "nimi" : "Viertolan koulu",
     "lyhytNimi" : "Viertolan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Viertolan koulu",
-    "lyhytNimi" : "Viertolan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03204",
   "koodiArvo" : "03204",
   "metadata" : [ {
-    "nimi" : "Vierumäen koulu",
-    "lyhytNimi" : "Vierumäen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vierumäen koulu",
     "lyhytNimi" : "Vierumäen koulu",
     "kieli" : "FI"
@@ -23689,10 +23626,6 @@
     "nimi" : "Hämeenkylän koulu",
     "lyhytNimi" : "Hämeenkylän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hämeenkylän koulu",
-    "lyhytNimi" : "Hämeenkylän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23715,20 +23648,12 @@
     "nimi" : "Kilterin koulu",
     "lyhytNimi" : "Kilterin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kilterin koulu",
-    "lyhytNimi" : "Kilterin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03213",
   "koodiArvo" : "03213",
   "metadata" : [ {
-    "nimi" : "Koivukylän koulu",
-    "lyhytNimi" : "Koivukylän koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Koivukylän koulu",
     "lyhytNimi" : "Koivukylän koulu",
     "kieli" : "FI"
@@ -23738,10 +23663,6 @@
   "koodiUri" : "oppilaitosnumero_03214",
   "koodiArvo" : "03214",
   "metadata" : [ {
-    "nimi" : "Korson koulu",
-    "lyhytNimi" : "Korson koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Korson koulu",
     "lyhytNimi" : "Korson koulu",
     "kieli" : "FI"
@@ -23789,20 +23710,12 @@
     "nimi" : "Peltolan koulu",
     "lyhytNimi" : "Peltolan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Peltolan koulu",
-    "lyhytNimi" : "Peltolan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03219",
   "koodiArvo" : "03219",
   "metadata" : [ {
-    "nimi" : "Simonkylän koulu",
-    "lyhytNimi" : "Simonkylän koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Simonkylän koulu",
     "lyhytNimi" : "Simonkylän koulu",
     "kieli" : "FI"
@@ -24000,10 +23913,6 @@
     "nimi" : "Nummelanharjun koulu",
     "lyhytNimi" : "Nummelanharjun koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Nummelanharjun koulu",
-    "lyhytNimi" : "Nummelanharjun koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24243,13 +24152,16 @@
     "nimi" : "Lagmansgårdens skola",
     "lyhytNimi" : "Lagmansgårdens skola",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Lagmansgårdenin koulukoti",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03269",
   "koodiArvo" : "03269",
   "metadata" : [ {
-    "nimi" : "Sippolan Hovin koulu",
+    "nimi" : "Sippolan koulukoti",
     "lyhytNimi" : "Sippolan Hovin koulu",
     "kieli" : "FI"
   } ],
@@ -24285,7 +24197,7 @@
   "koodiUri" : "oppilaitosnumero_03275",
   "koodiArvo" : "03275",
   "metadata" : [ {
-    "nimi" : "Myllyjoen koulu",
+    "nimi" : "Sairilan koulukoti",
     "lyhytNimi" : "Myllyjoen koulu",
     "kieli" : "FI"
   } ],
@@ -24303,7 +24215,7 @@
   "koodiUri" : "oppilaitosnumero_03277",
   "koodiArvo" : "03277",
   "metadata" : [ {
-    "nimi" : "Kylliälän koulu",
+    "nimi" : "Limingan koulutuskeskus",
     "lyhytNimi" : "Kylliälän koulu",
     "kieli" : "FI"
   } ],
@@ -24398,10 +24310,6 @@
   "metadata" : [ {
     "nimi" : "Hakametsän koulu",
     "lyhytNimi" : "Hakametsän koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Hakametsän koulu",
-    "lyhytNimi" : "Hakametsän koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -24489,11 +24397,7 @@
   "koodiUri" : "oppilaitosnumero_03298",
   "koodiArvo" : "03298",
   "metadata" : [ {
-    "nimi" : "Vuorelan koulu",
-    "lyhytNimi" : "Vuorelan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuorelan koulu",
+    "nimi" : "Vuorelan koulukoti",
     "lyhytNimi" : "Vuorelan koulu",
     "kieli" : "FI"
   } ],
@@ -24536,10 +24440,6 @@
     "nimi" : "Pähkinärinteen koulu",
     "lyhytNimi" : "Pähkinärinteen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Pähkinärinteen koulu",
-    "lyhytNimi" : "Pähkinärinteen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24629,10 +24529,6 @@
     "nimi" : "Kiinamyllyn koulu",
     "lyhytNimi" : "Kiinamyllyn koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kiinamyllyn koulu",
-    "lyhytNimi" : "Kiinamyllyn koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24841,10 +24737,6 @@
     "nimi" : "Hailuodon peruskoulu",
     "lyhytNimi" : "Hailuodon peruskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hailuodon peruskoulu",
-    "lyhytNimi" : "Hailuodon peruskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24930,10 +24822,6 @@
     "nimi" : "Ulkosaariston koulu",
     "lyhytNimi" : "Ulkosaariston koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ulkosaariston koulu",
-    "lyhytNimi" : "Ulkosaariston koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25001,10 +24889,6 @@
     "nimi" : "Edsevö skola",
     "lyhytNimi" : "Edsevö skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Edsevö skola",
-    "lyhytNimi" : "Edsevö skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -25389,10 +25273,6 @@
   "metadata" : [ {
     "nimi" : "Nurmijärven Yhteiskoulun yläaste",
     "lyhytNimi" : "Nurmijärven Yhteiskoulun yläaste",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Nurmijärven Yhteiskoulun yläaste",
-    "lyhytNimi" : "Nurmijärven Yhteiskoulun yläaste",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -25457,10 +25337,6 @@
     "nimi" : "Marjatta-koulu",
     "lyhytNimi" : "Marjatta-koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Marjatta-koulu",
-    "lyhytNimi" : "Marjatta-koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25599,10 +25475,6 @@
     "nimi" : "Koivikkopuiston koulu",
     "lyhytNimi" : "Koivikkopuiston koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Koivikkopuiston koulu",
-    "lyhytNimi" : "Koivikkopuiston koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25622,11 +25494,7 @@
   "koodiUri" : "oppilaitosnumero_03427",
   "koodiArvo" : "03427",
   "metadata" : [ {
-    "nimi" : "Kalevanpuiston koulu",
-    "lyhytNimi" : "Kalevanpuiston koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kalevanpuiston koulu",
+    "nimi" : "Puistokoulu",
     "lyhytNimi" : "Kalevanpuiston koulu",
     "kieli" : "FI"
   } ],
@@ -25762,7 +25630,7 @@
   "koodiUri" : "oppilaitosnumero_03441",
   "koodiArvo" : "03441",
   "metadata" : [ {
-    "nimi" : "Kanervikon koulu",
+    "nimi" : "Kanervikon peruskoulu",
     "lyhytNimi" : "Kanervikon koulu",
     "kieli" : "FI"
   } ],
@@ -26102,10 +25970,6 @@
   "metadata" : [ {
     "nimi" : "Järvikylien koulu",
     "lyhytNimi" : "Järvikylien koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Järvikylien koulu",
-    "lyhytNimi" : "Järvikylien koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -26186,6 +26050,23 @@
     "nimi" : "Neulamäen koulu",
     "lyhytNimi" : "Neulamäen koulu",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03483",
+  "koodiArvo" : "03483",
+  "metadata" : [ {
+    "nimi" : "Hakumäen koulu",
+    "lyhytNimi" : "Hakumäen koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Hakumäen koulu",
+    "lyhytNimi" : "Hakumäen koulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Hakumäen koulu",
+    "lyhytNimi" : "Hakumäen koulu",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -26336,20 +26217,12 @@
     "nimi" : "Askiston koulu",
     "lyhytNimi" : "Askiston koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Askiston koulu",
-    "lyhytNimi" : "Askiston koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03499",
   "koodiArvo" : "03499",
   "metadata" : [ {
-    "nimi" : "Havukosken koulu",
-    "lyhytNimi" : "Havukosken koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Havukosken koulu",
     "lyhytNimi" : "Havukosken koulu",
     "kieli" : "FI"
@@ -26402,10 +26275,6 @@
     "nimi" : "Pyhännän koulu",
     "lyhytNimi" : "Pyhännän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Pyhännän koulu",
-    "lyhytNimi" : "Pyhännän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -26569,10 +26438,6 @@
   "metadata" : [ {
     "nimi" : "Ilolan koulu",
     "lyhytNimi" : "Ilolan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ilolan koulu",
-    "lyhytNimi" : "Ilolan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -26583,10 +26448,6 @@
     "nimi" : "Kalannin koulu",
     "lyhytNimi" : "Kalannin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kalannin koulu",
-    "lyhytNimi" : "Kalannin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -26814,10 +26675,6 @@
     "nimi" : "Etelä-Pohjanmaan Rudolf Steiner koulu",
     "lyhytNimi" : "Etelä-Pohjanmaan Rudolf Steiner koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Etelä-Pohjanmaan Rudolf Steiner koulu",
-    "lyhytNimi" : "Etelä-Pohjanmaan Rudolf Steiner koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -26898,10 +26755,6 @@
   "metadata" : [ {
     "nimi" : "Juupajoen koulukeskus",
     "lyhytNimi" : "Juupajoen koulukeskus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Juupajoen koulukeskus",
-    "lyhytNimi" : "Juupajoen koulukeskus",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -26938,6 +26791,14 @@
   "metadata" : [ {
     "nimi" : "Eestinkallion koulu",
     "lyhytNimi" : "Eestinkallion koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03564",
+  "koodiArvo" : "03564",
+  "metadata" : [ {
+    "nimi" : "Vindängens skola",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -26990,7 +26851,7 @@
   "koodiUri" : "oppilaitosnumero_03571",
   "koodiArvo" : "03571",
   "metadata" : [ {
-    "nimi" : "Soppeenharjun koulu",
+    "nimi" : "Vuorentaustan koulu",
     "lyhytNimi" : "Soppeenharjun koulu",
     "kieli" : "FI"
   } ],
@@ -27002,10 +26863,6 @@
     "nimi" : "Santamäkitalon koulu",
     "lyhytNimi" : "Santamäkitalon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Santamäkitalon koulu",
-    "lyhytNimi" : "Santamäkitalon koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -27102,10 +26959,6 @@
   "koodiUri" : "oppilaitosnumero_03584",
   "koodiArvo" : "03584",
   "metadata" : [ {
-    "nimi" : "Ahjon koulu",
-    "lyhytNimi" : "Ahjon koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ahjon koulu",
     "lyhytNimi" : "Ahjon koulu",
     "kieli" : "FI"
@@ -27216,10 +27069,6 @@
   "koodiUri" : "oppilaitosnumero_03595",
   "koodiArvo" : "03595",
   "metadata" : [ {
-    "nimi" : "Kaskisten koulu",
-    "lyhytNimi" : "Kaskisten koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kaskisten koulu",
     "lyhytNimi" : "Kaskisten koulu",
     "kieli" : "FI"
@@ -27372,7 +27221,7 @@
   "koodiUri" : "oppilaitosnumero_03614",
   "koodiArvo" : "03614",
   "metadata" : [ {
-    "nimi" : "Kallahden peruskoulu",
+    "nimi" : "Merilahden peruskoulu",
     "lyhytNimi" : "Kallahden peruskoulu",
     "kieli" : "FI"
   } ],
@@ -27403,10 +27252,6 @@
   "koodiUri" : "oppilaitosnumero_03617",
   "koodiArvo" : "03617",
   "metadata" : [ {
-    "nimi" : "Sauvon koulukeskus",
-    "lyhytNimi" : "Sauvon koulukeskus",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sauvon koulukeskus",
     "lyhytNimi" : "Sauvon koulukeskus",
     "kieli" : "FI"
@@ -27484,6 +27329,31 @@
   }, {
     "nimi" : "Laukaan harjaantumiskoulu",
     "lyhytNimi" : "Laukaan harjaantumiskoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03625",
+  "koodiArvo" : "03625",
+  "metadata" : [ {
+    "nimi" : "Anttilan koulu",
+    "lyhytNimi" : "Anttilan koulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Anttilan koulu",
+    "lyhytNimi" : "Anttilan koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Anttilan koulu",
+    "lyhytNimi" : "Anttilan koulu",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03626",
+  "koodiArvo" : "03626",
+  "metadata" : [ {
+    "nimi" : "Rauhalan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -27587,6 +27457,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_03639",
+  "koodiArvo" : "03639",
+  "metadata" : [ {
+    "nimi" : "Suomen krist. yhteisk.ala-aste",
+    "lyhytNimi" : "Suomen krist. yhteisk.ala-aste",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Suomen krist. yhteisk.ala-aste",
+    "lyhytNimi" : "Suomen krist. yhteisk.ala-aste",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Suomen krist. yhteisk.ala-aste",
+    "lyhytNimi" : "Suomen krist. yhteisk.ala-aste",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_03640",
   "koodiArvo" : "03640",
   "metadata" : [ {
@@ -27649,6 +27536,40 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_03646",
+  "koodiArvo" : "03646",
+  "metadata" : [ {
+    "nimi" : "Kirkonkylän saamenk.peruskoulu",
+    "lyhytNimi" : "Kirkonkylän saamenk.peruskoulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Kirkonkylän saamenk.peruskoulu",
+    "lyhytNimi" : "Kirkonkylän saamenk.peruskoulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kirkonkylän saamenk.peruskoulu",
+    "lyhytNimi" : "Kirkonkylän saamenk.peruskoulu",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03647",
+  "koodiArvo" : "03647",
+  "metadata" : [ {
+    "nimi" : "Karigasniemen saamenk.perusk.",
+    "lyhytNimi" : "Karigasniemen saamenk.perusk.",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Karigasniemen saamenk.perusk.",
+    "lyhytNimi" : "Karigasniemen saamenk.perusk.",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Karigasniemen saamenk.perusk.",
+    "lyhytNimi" : "Karigasniemen saamenk.perusk.",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_03648",
   "koodiArvo" : "03648",
   "metadata" : [ {
@@ -27679,7 +27600,7 @@
   "koodiUri" : "oppilaitosnumero_03652",
   "koodiArvo" : "03652",
   "metadata" : [ {
-    "nimi" : "Luvian peruskoulu",
+    "nimi" : "Luvian yhtenäiskoulu",
     "lyhytNimi" : "Luvian peruskoulu",
     "kieli" : "FI"
   } ],
@@ -27745,10 +27666,6 @@
   "koodiUri" : "oppilaitosnumero_03659",
   "koodiArvo" : "03659",
   "metadata" : [ {
-    "nimi" : "Humppilan yläaste",
-    "lyhytNimi" : "Humppilan yläaste",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Humppilan yläaste",
     "lyhytNimi" : "Humppilan yläaste",
     "kieli" : "FI"
@@ -27822,10 +27739,6 @@
     "nimi" : "Mäntysalon koulu",
     "lyhytNimi" : "Mäntysalon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Mäntysalon koulu",
-    "lyhytNimi" : "Mäntysalon koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -27844,6 +27757,23 @@
     "nimi" : "Mustakiven ala-asteen koulu",
     "lyhytNimi" : "Mustakiven ala-asteen koulu",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03669",
+  "koodiArvo" : "03669",
+  "metadata" : [ {
+    "nimi" : "Vanha koulu",
+    "lyhytNimi" : "Vanha koulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vanha koulu",
+    "lyhytNimi" : "Vanha koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vanha koulu",
+    "lyhytNimi" : "Vanha koulu",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -27984,7 +27914,7 @@
   "koodiUri" : "oppilaitosnumero_03685",
   "koodiArvo" : "03685",
   "metadata" : [ {
-    "nimi" : "Honkalampikeskuksen koulu",
+    "nimi" : "Honkalampi-keskuksen koulu",
     "lyhytNimi" : "Honkalampikeskuksen koulu",
     "kieli" : "FI"
   } ],
@@ -28031,10 +27961,6 @@
   "metadata" : [ {
     "nimi" : "Rinnekodin koulu",
     "lyhytNimi" : "Rinnekodin koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Rinnekodin koulu",
-    "lyhytNimi" : "Rinnekodin koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -28069,9 +27995,8 @@
   "koodiUri" : "oppilaitosnumero_03694",
   "koodiArvo" : "03694",
   "metadata" : [ {
-    "nimi" : "Kyrkostrands - Jungmans skola",
-    "lyhytNimi" : "Kyrkostrands - Jungmans skola",
-    "kieli" : "SV"
+    "nimi" : "Kyrkostrands skola",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -28123,7 +28048,7 @@
   "koodiUri" : "oppilaitosnumero_03700",
   "koodiArvo" : "03700",
   "metadata" : [ {
-    "nimi" : "Riihenmäen koulu",
+    "nimi" : "Riihenmäen yhtenäiskoulu",
     "lyhytNimi" : "Riihenmäen koulu",
     "kieli" : "FI"
   } ],
@@ -28381,6 +28306,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_03729",
+  "koodiArvo" : "03729",
+  "metadata" : [ {
+    "nimi" : "Tehtaanmäen koulu",
+    "lyhytNimi" : "Tehtaanmäen koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tehtaanmäen koulu",
+    "lyhytNimi" : "Tehtaanmäen koulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tehtaanmäen koulu",
+    "lyhytNimi" : "Tehtaanmäen koulu",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_03730",
   "koodiArvo" : "03730",
   "metadata" : [ {
@@ -28432,10 +28374,6 @@
     "nimi" : "Oulun kansainvälinen koulu",
     "lyhytNimi" : "Oulun kansainvälinen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Oulun kansainvälinen koulu",
-    "lyhytNimi" : "Oulun kansainvälinen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28560,10 +28498,6 @@
   "metadata" : [ {
     "nimi" : "Kaakkurin koulu",
     "lyhytNimi" : "Kaakkurin koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kaakkurin koulu",
-    "lyhytNimi" : "Kaakkurin koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -28571,10 +28505,6 @@
   "koodiUri" : "oppilaitosnumero_03749",
   "koodiArvo" : "03749",
   "metadata" : [ {
-    "nimi" : "Turun kansainvälinen koulu",
-    "lyhytNimi" : "Turun kansainvälinen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Turun kansainvälinen koulu",
     "lyhytNimi" : "Turun kansainvälinen koulu",
     "kieli" : "FI"
@@ -28658,10 +28588,6 @@
     "nimi" : "Kielikylpykoulu",
     "lyhytNimi" : "Kielikylpykoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kielikylpykoulu",
-    "lyhytNimi" : "Kielikylpykoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28758,10 +28684,6 @@
   "koodiUri" : "oppilaitosnumero_03768",
   "koodiArvo" : "03768",
   "metadata" : [ {
-    "nimi" : "Isoniitun koulu",
-    "lyhytNimi" : "Isoniitun koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Isoniitun koulu",
     "lyhytNimi" : "Isoniitun koulu",
     "kieli" : "FI"
@@ -28864,10 +28786,6 @@
     "nimi" : "Ylästön koulu",
     "lyhytNimi" : "Ylästön koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ylästön koulu",
-    "lyhytNimi" : "Ylästön koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28928,7 +28846,7 @@
   "koodiUri" : "oppilaitosnumero_03786",
   "koodiArvo" : "03786",
   "metadata" : [ {
-    "nimi" : "Lahden seudun kristillinen koulu",
+    "nimi" : "Lahden kristillinen koulu",
     "lyhytNimi" : "Lahden seudun kristillinen koulu",
     "kieli" : "FI"
   } ],
@@ -28977,10 +28895,6 @@
   "koodiUri" : "oppilaitosnumero_03791",
   "koodiArvo" : "03791",
   "metadata" : [ {
-    "nimi" : "Länsituulen koulu",
-    "lyhytNimi" : "Länsituulen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Länsituulen koulu",
     "lyhytNimi" : "Länsituulen koulu",
     "kieli" : "FI"
@@ -29171,10 +29085,6 @@
   "metadata" : [ {
     "nimi" : "Kanniston koulu",
     "lyhytNimi" : "Kanniston koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kanniston koulu",
-    "lyhytNimi" : "Kanniston koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29218,7 +29128,7 @@
   "koodiUri" : "oppilaitosnumero_03816",
   "koodiArvo" : "03816",
   "metadata" : [ {
-    "nimi" : "S:t Karins svenska skola",
+    "nimi" : "Sankt Karins svenska skola",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -29457,7 +29367,7 @@
   "koodiUri" : "oppilaitosnumero_03844",
   "koodiArvo" : "03844",
   "metadata" : [ {
-    "nimi" : "Koulumäen yhtenäiskoulu",
+    "nimi" : "Koulunmäen yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29473,7 +29383,15 @@
   "koodiUri" : "oppilaitosnumero_03846",
   "koodiArvo" : "03846",
   "metadata" : [ {
-    "nimi" : "Juteinikeskus",
+    "nimi" : "Juteilin koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03847",
+  "koodiArvo" : "03847",
+  "metadata" : [ {
+    "nimi" : "Pudasjärven Hirsikampuksen yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29483,24 +29401,12 @@
   "metadata" : [ {
     "nimi" : "Soidinsuon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Soidinsuon koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Soidinsuon koulu",
-    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_03849",
   "koodiArvo" : "03849",
   "metadata" : [ {
-    "nimi" : "Seminaarin koulu",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Seminaarin koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Seminaarin koulu",
     "kieli" : "FI"
   } ],
@@ -29518,6 +29424,86 @@
   "koodiArvo" : "03851",
   "metadata" : [ {
     "nimi" : "Aurinkokiven koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03852",
+  "koodiArvo" : "03852",
+  "metadata" : [ {
+    "nimi" : "Jätkäsaaren peruskoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03853",
+  "koodiArvo" : "03853",
+  "metadata" : [ {
+    "nimi" : "Kauhajoen Yhteiskoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03854",
+  "koodiArvo" : "03854",
+  "metadata" : [ {
+    "nimi" : "Taatilan koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03855",
+  "koodiArvo" : "03855",
+  "metadata" : [ {
+    "nimi" : "Talvikankaan koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03856",
+  "koodiArvo" : "03856",
+  "metadata" : [ {
+    "nimi" : "Hiukkavaaran koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03857",
+  "koodiArvo" : "03857",
+  "metadata" : [ {
+    "nimi" : "Waltterin koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03858",
+  "koodiArvo" : "03858",
+  "metadata" : [ {
+    "nimi" : "Rovaniemen kristillinen koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03859",
+  "koodiArvo" : "03859",
+  "metadata" : [ {
+    "nimi" : "Majakan koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03860",
+  "koodiArvo" : "03860",
+  "metadata" : [ {
+    "nimi" : "Kortesjärven yhtenäiskoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_03862",
+  "koodiArvo" : "03862",
+  "metadata" : [ {
+    "nimi" : "Ylläsjärven koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29665,10 +29651,6 @@
     "nimi" : "Hetan koulu",
     "lyhytNimi" : "Hetan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hetan koulu",
-    "lyhytNimi" : "Hetan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -29687,10 +29669,6 @@
     "nimi" : "Leppäjärven koulu",
     "lyhytNimi" : "Leppäjärven koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Leppäjärven koulu",
-    "lyhytNimi" : "Leppäjärven koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -29708,10 +29686,6 @@
   "metadata" : [ {
     "nimi" : "Palojoensuun koulu",
     "lyhytNimi" : "Palojoensuun koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Palojoensuun koulu",
-    "lyhytNimi" : "Palojoensuun koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29719,10 +29693,6 @@
   "koodiUri" : "oppilaitosnumero_04023",
   "koodiArvo" : "04023",
   "metadata" : [ {
-    "nimi" : "Peltovuoman koulu",
-    "lyhytNimi" : "Peltovuoman koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Peltovuoman koulu",
     "lyhytNimi" : "Peltovuoman koulu",
     "kieli" : "FI"
@@ -29743,10 +29713,6 @@
   "metadata" : [ {
     "nimi" : "Vuontisjärven koulu",
     "lyhytNimi" : "Vuontisjärven koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuontisjärven koulu",
-    "lyhytNimi" : "Vuontisjärven koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29763,10 +29729,6 @@
   "koodiUri" : "oppilaitosnumero_04027",
   "koodiArvo" : "04027",
   "metadata" : [ {
-    "nimi" : "Henrikin koulu",
-    "lyhytNimi" : "Henrikin koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Henrikin koulu",
     "lyhytNimi" : "Henrikin koulu",
     "kieli" : "FI"
@@ -30041,10 +30003,6 @@
   "metadata" : [ {
     "nimi" : "Isokylän koulu",
     "lyhytNimi" : "Isokylän koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Isokylän koulu",
-    "lyhytNimi" : "Isokylän koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -30191,10 +30149,6 @@
   "koodiUri" : "oppilaitosnumero_04078",
   "koodiArvo" : "04078",
   "metadata" : [ {
-    "nimi" : "Sauvosaaren koulu",
-    "lyhytNimi" : "Sauvosaaren koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sauvosaaren koulu",
     "lyhytNimi" : "Sauvosaaren koulu",
     "kieli" : "FI"
@@ -30395,10 +30349,6 @@
   "metadata" : [ {
     "nimi" : "Keminmaan keskuskoulu",
     "lyhytNimi" : "Keminmaan keskuskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Keminmaan keskuskoulu",
-    "lyhytNimi" : "Keminmaan keskuskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -30461,6 +30411,23 @@
   "metadata" : [ {
     "nimi" : "Lukkarin koulu",
     "lyhytNimi" : "Lukkarin koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_04118",
+  "koodiArvo" : "04118",
+  "metadata" : [ {
+    "nimi" : "Kiistalan koulu",
+    "lyhytNimi" : "Kiistalan koulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kiistalan koulu",
+    "lyhytNimi" : "Kiistalan koulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Kiistalan koulu",
+    "lyhytNimi" : "Kiistalan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -30637,10 +30604,6 @@
   "metadata" : [ {
     "nimi" : "Kolarin peruskoulu",
     "lyhytNimi" : "Kolarin peruskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kolarin peruskoulu",
-    "lyhytNimi" : "Kolarin peruskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -30664,10 +30627,6 @@
     "nimi" : "Muonion yhtenäiskoulu",
     "lyhytNimi" : "Muonion yhtenäiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Muonion yhtenäiskoulu",
-    "lyhytNimi" : "Muonion yhtenäiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -30800,10 +30759,6 @@
   "koodiUri" : "oppilaitosnumero_04158",
   "koodiArvo" : "04158",
   "metadata" : [ {
-    "nimi" : "Pellon peruskoulu",
-    "lyhytNimi" : "Pellon peruskoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pellon peruskoulu",
     "lyhytNimi" : "Pellon peruskoulu",
     "kieli" : "FI"
@@ -31120,10 +31075,6 @@
     "nimi" : "Posion peruskoulu",
     "lyhytNimi" : "Posion peruskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Posion peruskoulu",
-    "lyhytNimi" : "Posion peruskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -31382,6 +31333,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_04228",
+  "koodiArvo" : "04228",
+  "metadata" : [ {
+    "nimi" : "Lapin yliopiston harjoittelukoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_04229",
   "koodiArvo" : "04229",
   "metadata" : [ {
@@ -31487,7 +31446,7 @@
   "koodiUri" : "oppilaitosnumero_04247",
   "koodiArvo" : "04247",
   "metadata" : [ {
-    "nimi" : "Nivan koulu",
+    "nimi" : "Nivankylän koulu",
     "lyhytNimi" : "Nivan koulu",
     "kieli" : "FI"
   } ],
@@ -31874,10 +31833,6 @@
     "nimi" : "Korvatunturin koulu",
     "lyhytNimi" : "Korvatunturin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Korvatunturin koulu",
-    "lyhytNimi" : "Korvatunturin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -32226,10 +32181,6 @@
   "metadata" : [ {
     "nimi" : "Vuotson koulu",
     "lyhytNimi" : "Vuotson koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuotson koulu",
-    "lyhytNimi" : "Vuotson koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -32246,10 +32197,6 @@
   "koodiUri" : "oppilaitosnumero_04351",
   "koodiArvo" : "04351",
   "metadata" : [ {
-    "nimi" : "Lapinnimenen koulu",
-    "lyhytNimi" : "Lapinnimenen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lapinnimenen koulu",
     "lyhytNimi" : "Lapinniemen koulu",
     "kieli" : "FI"
@@ -32629,10 +32576,6 @@
     "nimi" : "Ainiovaaran peruskoulu",
     "lyhytNimi" : "Ainiovaaran peruskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ainiovaaran peruskoulu",
-    "lyhytNimi" : "Ainiovaaran peruskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -33361,10 +33304,6 @@
   "metadata" : [ {
     "nimi" : "Taivalkosken kirkonkylän peruskoulu",
     "lyhytNimi" : "Taivalkosken kirkonkylän peruskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taivalkosken kirkonkylän peruskoulu",
-    "lyhytNimi" : "Taivalkosken kirkonkylän peruskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -33700,10 +33639,6 @@
     "nimi" : "Paunun koulu",
     "lyhytNimi" : "Paunun koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Paunun koulu",
-    "lyhytNimi" : "Paunun koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -33866,10 +33801,6 @@
     "nimi" : "Toivakan koulukeskus",
     "lyhytNimi" : "Toivakan koulukeskus",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Toivakan koulukeskus",
-    "lyhytNimi" : "Toivakan koulukeskus",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -33989,10 +33920,6 @@
   "koodiUri" : "oppilaitosnumero_04585",
   "koodiArvo" : "04585",
   "metadata" : [ {
-    "nimi" : "Varpaisjärven koulu",
-    "lyhytNimi" : "Varpaisjärven koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Varpaisjärven koulu",
     "lyhytNimi" : "Varpaisjärven koulu",
     "kieli" : "FI"
@@ -34187,11 +34114,7 @@
   "koodiUri" : "oppilaitosnumero_04612",
   "koodiArvo" : "04612",
   "metadata" : [ {
-    "nimi" : "Pirkkalan yläaste",
-    "lyhytNimi" : "Pirkkalan yläaste",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pirkkalan yläaste",
+    "nimi" : "Suupanniityn koulu",
     "lyhytNimi" : "Pirkkalan yläaste",
     "kieli" : "FI"
   } ],
@@ -34245,6 +34168,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_04617",
+  "koodiArvo" : "04617",
+  "metadata" : [ {
+    "nimi" : "Dalsbruks skola",
+    "lyhytNimi" : "Dalsbruks skola",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Dalsbruks skola",
+    "lyhytNimi" : "Dalsbruks skola",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Dalsbruks skola",
+    "lyhytNimi" : "Dalsbruks skola",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_04618",
   "koodiArvo" : "04618",
   "metadata" : [ {
@@ -34269,6 +34209,23 @@
     "nimi" : "Hitis-Rosala skola",
     "lyhytNimi" : "Hitis-Rosala skola",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_04621",
+  "koodiArvo" : "04621",
+  "metadata" : [ {
+    "nimi" : "Ytterkulla skola",
+    "lyhytNimi" : "Ytterkulla skola",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ytterkulla skola",
+    "lyhytNimi" : "Ytterkulla skola",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ytterkulla skola",
+    "lyhytNimi" : "Ytterkulla skola",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -35394,10 +35351,6 @@
   "metadata" : [ {
     "nimi" : "Keskuskoulu",
     "lyhytNimi" : "Keskuskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Keskuskoulu",
-    "lyhytNimi" : "Keskuskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -35540,10 +35493,6 @@
     "nimi" : "Kannonkosken koulu",
     "lyhytNimi" : "Kannonkosken koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kannonkosken koulu",
-    "lyhytNimi" : "Kannonkosken koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -36412,10 +36361,6 @@
   "metadata" : [ {
     "nimi" : "Nopolan koulu",
     "lyhytNimi" : "Nopolan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Nopolan koulu",
-    "lyhytNimi" : "Nopolan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -36481,7 +36426,7 @@
   "koodiUri" : "oppilaitosnumero_04919",
   "koodiArvo" : "04919",
   "metadata" : [ {
-    "nimi" : "Konneveden yläaste",
+    "nimi" : "Konneveden yläkoulu",
     "lyhytNimi" : "Konneveden yläaste",
     "kieli" : "FI"
   } ],
@@ -37483,10 +37428,6 @@
     "nimi" : "Tenetin koulu",
     "lyhytNimi" : "Tenetin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Tenetin koulu",
-    "lyhytNimi" : "Tenetin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -37618,10 +37559,6 @@
     "nimi" : "Nivan koulu",
     "lyhytNimi" : "Nivan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Nivan koulu",
-    "lyhytNimi" : "Nivan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -38108,6 +38045,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_05122",
+  "koodiArvo" : "05122",
+  "metadata" : [ {
+    "nimi" : "Loukunvaaran koulu",
+    "lyhytNimi" : "Loukunvaaran koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Loukunvaaran koulu",
+    "lyhytNimi" : "Loukunvaaran koulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Loukunvaaran koulu",
+    "lyhytNimi" : "Loukunvaaran koulu",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_05123",
   "koodiArvo" : "05123",
   "metadata" : [ {
@@ -38301,10 +38255,6 @@
   "metadata" : [ {
     "nimi" : "Paraistenseudun koulu",
     "lyhytNimi" : "Paraistenseudun koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Paraistenseudun koulu",
-    "lyhytNimi" : "Paraistenseudun koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -38321,10 +38271,6 @@
   "koodiUri" : "oppilaitosnumero_05153",
   "koodiArvo" : "05153",
   "metadata" : [ {
-    "nimi" : "Storgårdin koulu",
-    "lyhytNimi" : "Storgårdin koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Storgårdin koulu",
     "lyhytNimi" : "Storgårdin koulu",
     "kieli" : "FI"
@@ -38881,10 +38827,6 @@
   "metadata" : [ {
     "nimi" : "Vaalan yhtenäiskoulu",
     "lyhytNimi" : "Vaalan yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vaalan yhtenäiskoulu",
-    "lyhytNimi" : "Vaalan yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -39101,10 +39043,6 @@
   "koodiUri" : "oppilaitosnumero_05256",
   "koodiArvo" : "05256",
   "metadata" : [ {
-    "nimi" : "Frosteruksen koulu",
-    "lyhytNimi" : "Frosteruksen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Frosteruksen koulu",
     "lyhytNimi" : "Frosteruksen koulu",
     "kieli" : "FI"
@@ -40085,10 +40023,6 @@
   "metadata" : [ {
     "nimi" : "Ylihärmän yläkoulu",
     "lyhytNimi" : "Ylihärmän yläkoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ylihärmän yläkoulu",
-    "lyhytNimi" : "Ylihärmän yläkoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -40269,10 +40203,6 @@
   "metadata" : [ {
     "nimi" : "Soinin yhtenäiskoulu",
     "lyhytNimi" : "Soinin yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Soinin yhtenäiskoulu",
-    "lyhytNimi" : "Soinin yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -40370,20 +40300,12 @@
     "nimi" : "Forsby skola",
     "lyhytNimi" : "Forsby skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Forsby skola",
-    "lyhytNimi" : "Forsby skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_05430",
   "koodiArvo" : "05430",
   "metadata" : [ {
-    "nimi" : "Kållby-Heimbacka skola",
-    "lyhytNimi" : "Kållby-Heimbacka skola",
-    "kieli" : "FI"
-  }, {
     "nimi" : "Kållby-Heimbacka skola",
     "lyhytNimi" : "Kållby-Heimbacka skola",
     "kieli" : "SV"
@@ -40396,10 +40318,6 @@
     "nimi" : "Kyrkoby skola",
     "lyhytNimi" : "Kyrkoby skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Kyrkoby skola",
-    "lyhytNimi" : "Kyrkoby skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -40422,20 +40340,12 @@
     "nimi" : "Lepplax skola",
     "lyhytNimi" : "Lepplax skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Lepplax skola",
-    "lyhytNimi" : "Lepplax skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_05434",
   "koodiArvo" : "05434",
   "metadata" : [ {
-    "nimi" : "Sundby skola",
-    "lyhytNimi" : "Sundby skola",
-    "kieli" : "FI"
-  }, {
     "nimi" : "Sundby skola",
     "lyhytNimi" : "Sundby skola",
     "kieli" : "SV"
@@ -40448,10 +40358,6 @@
     "nimi" : "Östensö skola",
     "lyhytNimi" : "Östensö skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Östensö skola",
-    "lyhytNimi" : "Östensö skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -40467,10 +40373,6 @@
   "koodiUri" : "oppilaitosnumero_05437",
   "koodiArvo" : "05437",
   "metadata" : [ {
-    "nimi" : "Valtimon koulu",
-    "lyhytNimi" : "Valtimon koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Valtimon koulu",
     "lyhytNimi" : "Valtimon koulu",
     "kieli" : "FI"
@@ -40558,10 +40460,6 @@
   "koodiUri" : "oppilaitosnumero_05449",
   "koodiArvo" : "05449",
   "metadata" : [ {
-    "nimi" : "Rääkkylän koulu",
-    "lyhytNimi" : "Rääkkylän koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Rääkkylän koulu",
     "lyhytNimi" : "Rääkkylän koulu",
     "kieli" : "FI"
@@ -41252,10 +41150,6 @@
     "nimi" : "Sipoonjoen koulu",
     "lyhytNimi" : "Sipoonjoen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sipoonjoen koulu",
-    "lyhytNimi" : "Sipoonjoen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41349,10 +41243,6 @@
     "nimi" : "Leppälän koulu",
     "lyhytNimi" : "Leppälän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Leppälän koulu",
-    "lyhytNimi" : "Leppälän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41375,10 +41265,6 @@
     "nimi" : "Ruonan koulu",
     "lyhytNimi" : "Ruonan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ruonan koulu",
-    "lyhytNimi" : "Ruonan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41776,20 +41662,12 @@
     "nimi" : "Itälän koulu",
     "lyhytNimi" : "Itälän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Itälän koulu",
-    "lyhytNimi" : "Itälän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_05594",
   "koodiArvo" : "05594",
   "metadata" : [ {
-    "nimi" : "Ruusulehdon koulu",
-    "lyhytNimi" : "Ruusulehdon koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ruusulehdon koulu",
     "lyhytNimi" : "Ruusulehdon koulu",
     "kieli" : "FI"
@@ -42050,10 +41928,6 @@
     "nimi" : "Kristinestads högstadium",
     "lyhytNimi" : "Kristinestads högstadium",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Kristinestads högstadium",
-    "lyhytNimi" : "Kristinestads högstadium",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -42109,10 +41983,6 @@
   "koodiUri" : "oppilaitosnumero_05628",
   "koodiArvo" : "05628",
   "metadata" : [ {
-    "nimi" : "Ytteresse skola",
-    "lyhytNimi" : "Ytteresse skola",
-    "kieli" : "FI"
-  }, {
     "nimi" : "Ytteresse skola",
     "lyhytNimi" : "Ytteresse skola",
     "kieli" : "SV"
@@ -42520,10 +42390,6 @@
     "nimi" : "Hämeenkyrön Yhteiskoulu",
     "lyhytNimi" : "Hämeenkyrön Yhteiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hämeenkyrön Yhteiskoulu",
-    "lyhytNimi" : "Hämeenkyrön Yhteiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42677,10 +42543,6 @@
   "metadata" : [ {
     "nimi" : "Ikaalisten yhteiskoulu",
     "lyhytNimi" : "Ikaalisten yhteiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ikaalisten yhteiskoulu",
-    "lyhytNimi" : "Ikaalisten yhteiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -42701,7 +42563,7 @@
   "koodiUri" : "oppilaitosnumero_05701",
   "koodiArvo" : "05701",
   "metadata" : [ {
-    "nimi" : "Keskustan koulu",
+    "nimi" : "Valkean ruusun koulu",
     "lyhytNimi" : "Keskustan koulu",
     "kieli" : "FI"
   } ],
@@ -42710,10 +42572,6 @@
   "koodiUri" : "oppilaitosnumero_05702",
   "koodiArvo" : "05702",
   "metadata" : [ {
-    "nimi" : "Kilvakkalan koulu",
-    "lyhytNimi" : "Kilvakkalan koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kilvakkalan koulu",
     "lyhytNimi" : "Kilvakkalan koulu",
     "kieli" : "FI"
@@ -42749,10 +42607,6 @@
   "koodiUri" : "oppilaitosnumero_05705",
   "koodiArvo" : "05705",
   "metadata" : [ {
-    "nimi" : "Luhalahden koulu",
-    "lyhytNimi" : "Luhalahden koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Luhalahden koulu",
     "lyhytNimi" : "Luhalahden koulu",
     "kieli" : "FI"
@@ -42828,13 +42682,9 @@
   "koodiUri" : "oppilaitosnumero_05712",
   "koodiArvo" : "05712",
   "metadata" : [ {
-    "nimi" : "Jämijärven yläaste",
+    "nimi" : "Jämijärven keskuskoulu",
     "lyhytNimi" : "Jämijärven yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Jämijärven yläaste",
-    "lyhytNimi" : "Jämijärven yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42893,13 +42743,9 @@
   "koodiUri" : "oppilaitosnumero_05719",
   "koodiArvo" : "05719",
   "metadata" : [ {
-    "nimi" : "Karvian yläkoulu",
+    "nimi" : "Karvian yhtenäiskoulu",
     "lyhytNimi" : "Karvian yläkoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Karvian yläkoulu",
-    "lyhytNimi" : "Karvian yläkoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42971,10 +42817,6 @@
     "nimi" : "Kihniön yhtenäiskoulu",
     "lyhytNimi" : "Kihniön yhtenäiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kihniön yhtenäiskoulu",
-    "lyhytNimi" : "Kihniön yhtenäiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43078,6 +42920,23 @@
   }, {
     "nimi" : "Keskuskoulu",
     "lyhytNimi" : "Keskuskoulu",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_05740",
+  "koodiArvo" : "05740",
+  "metadata" : [ {
+    "nimi" : "Luvian ala-aste",
+    "lyhytNimi" : "Luvian ala-aste",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Luvian ala-aste",
+    "lyhytNimi" : "Luvian ala-aste",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Luvian ala-aste",
+    "lyhytNimi" : "Luvian ala-aste",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -43294,10 +43153,6 @@
     "nimi" : "Kuninkaanhaan koulu",
     "lyhytNimi" : "Kuninkaanhaan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kuninkaanhaan koulu",
-    "lyhytNimi" : "Kuninkaanhaan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43313,13 +43168,9 @@
   "koodiUri" : "oppilaitosnumero_05767",
   "koodiArvo" : "05767",
   "metadata" : [ {
-    "nimi" : "Kaarisillan koulu",
+    "nimi" : "Kaarisillan yhtenäiskoulu",
     "lyhytNimi" : "Kaarisillan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kaarisillan koulu",
-    "lyhytNimi" : "Kaarisillan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43329,20 +43180,12 @@
     "nimi" : "Reposaaren koulu",
     "lyhytNimi" : "Reposaaren koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Reposaaren koulu",
-    "lyhytNimi" : "Reposaaren koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_05769",
   "koodiArvo" : "05769",
   "metadata" : [ {
-    "nimi" : "Porin suomalaisen yhteislyseon koulu",
-    "lyhytNimi" : "Porin suomalaisen yhteislyseon koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Porin suomalaisen yhteislyseon koulu",
     "lyhytNimi" : "Porin suomalaisen yhteislyseon koulu",
     "kieli" : "FI"
@@ -43352,10 +43195,6 @@
   "koodiUri" : "oppilaitosnumero_05770",
   "koodiArvo" : "05770",
   "metadata" : [ {
-    "nimi" : "Itä-Porin yhtenäiskoulu",
-    "lyhytNimi" : "Itä-Porin yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Itä-Porin yhtenäiskoulu",
     "lyhytNimi" : "Itä-Porin yhtenäiskoulu",
     "kieli" : "FI"
@@ -43496,10 +43335,6 @@
     "nimi" : "Herttuan koulu",
     "lyhytNimi" : "Herttuan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Herttuan koulu",
-    "lyhytNimi" : "Herttuan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43690,10 +43525,6 @@
   "metadata" : [ {
     "nimi" : "Vinkkilän koulu",
     "lyhytNimi" : "Vinkkilän koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vinkkilän koulu",
-    "lyhytNimi" : "Vinkkilän koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -43761,10 +43592,6 @@
     "nimi" : "Evijärven keskikoulu",
     "lyhytNimi" : "Evijärven keskikoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Evijärven keskikoulu",
-    "lyhytNimi" : "Evijärven keskikoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43897,10 +43724,6 @@
   "metadata" : [ {
     "nimi" : "Isokylän koulu",
     "lyhytNimi" : "Isokylän koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Isokylän koulu",
-    "lyhytNimi" : "Isokylän koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -43908,10 +43731,6 @@
   "koodiUri" : "oppilaitosnumero_05831",
   "koodiArvo" : "05831",
   "metadata" : [ {
-    "nimi" : "Kauhavan yläkoulu",
-    "lyhytNimi" : "Kauhavan yläkoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kauhavan yläkoulu",
     "lyhytNimi" : "Kauhavan yläkoulu",
     "kieli" : "FI"
@@ -44015,10 +43834,6 @@
   "koodiArvo" : "05842",
   "metadata" : [ {
     "nimi" : "Kaustisen keskuskoulu (7.-9.)",
-    "lyhytNimi" : "Kaustisen keskuskoulu (7.-9.)",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kaustisen keskuskoulu (7.-9.)",
     "lyhytNimi" : "Kaustisen keskuskoulu",
     "kieli" : "FI"
   } ],
@@ -44104,10 +43919,6 @@
   "metadata" : [ {
     "nimi" : "Hakalahden koulu",
     "lyhytNimi" : "Hakalahden koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Hakalahden koulu",
-    "lyhytNimi" : "Hakalahden koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -44118,20 +43929,12 @@
     "nimi" : "Kiviniityn koulu",
     "lyhytNimi" : "Kiviniityn koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kiviniityn koulu",
-    "lyhytNimi" : "Kiviniityn koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_05853",
   "koodiArvo" : "05853",
   "metadata" : [ {
-    "nimi" : "Länsipuiston koulu",
-    "lyhytNimi" : "Länsipuiston koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Länsipuiston koulu",
     "lyhytNimi" : "Länsipuiston koulu",
     "kieli" : "FI"
@@ -44193,10 +43996,6 @@
     "nimi" : "Kortesjärven yläkoulu",
     "lyhytNimi" : "Kortesjärven yläkoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kortesjärven yläkoulu",
-    "lyhytNimi" : "Kortesjärven yläkoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -44538,10 +44337,6 @@
   "koodiUri" : "oppilaitosnumero_05899",
   "koodiArvo" : "05899",
   "metadata" : [ {
-    "nimi" : "Vimpelin yhteiskoulu",
-    "lyhytNimi" : "Vimpelin yhteiskoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vimpelin yhteiskoulu",
     "lyhytNimi" : "Vimpelin yhteiskoulu",
     "kieli" : "FI"
@@ -46062,10 +45857,6 @@
     "nimi" : "Keuruun yhteiskoulun yläaste",
     "lyhytNimi" : "Keuruun yhteiskoulun yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Keuruun yhteiskoulun yläaste",
-    "lyhytNimi" : "Keuruun yhteiskoulun yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -46531,7 +46322,7 @@
   "koodiUri" : "oppilaitosnumero_06127",
   "koodiArvo" : "06127",
   "metadata" : [ {
-    "nimi" : "Tammijärven koulu",
+    "nimi" : "Luhangan koulu",
     "lyhytNimi" : "Tammijärven koulu",
     "kieli" : "FI"
   } ],
@@ -46543,10 +46334,6 @@
     "nimi" : "Kintauden koulu",
     "lyhytNimi" : "Kintauden koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kintauden koulu",
-    "lyhytNimi" : "Kintauden koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -47386,10 +47173,6 @@
   "metadata" : [ {
     "nimi" : "Pertunmaan yhtenäiskoulu",
     "lyhytNimi" : "Pertunmaan yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pertunmaan yhtenäiskoulu",
-    "lyhytNimi" : "Pertunmaan yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -47458,13 +47241,9 @@
   "koodiUri" : "oppilaitosnumero_06221",
   "koodiArvo" : "06221",
   "metadata" : [ {
-    "nimi" : "Meriluodon koulu",
+    "nimi" : "Hiekanpään koulu",
     "lyhytNimi" : "Meriluodon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Meriluodon koulu",
-    "lyhytNimi" : "Meriluodon koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -47727,10 +47506,6 @@
   "metadata" : [ {
     "nimi" : "Alavieskan yhtenäiskoulu",
     "lyhytNimi" : "Alavieskan yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Alavieskan yhtenäiskoulu",
-    "lyhytNimi" : "Alavieskan yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -47940,10 +47715,6 @@
   "metadata" : [ {
     "nimi" : "Kirkonkylän yhtenäiskoulu",
     "lyhytNimi" : "Kirkonkylän yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kirkonkylän yhtenäiskoulu",
-    "lyhytNimi" : "Kirkonkylän yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -47951,10 +47722,6 @@
   "koodiUri" : "oppilaitosnumero_06279",
   "koodiArvo" : "06279",
   "metadata" : [ {
-    "nimi" : "Ylikylän yhtenäiskoulu",
-    "lyhytNimi" : "Ylikylän yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ylikylän yhtenäiskoulu",
     "lyhytNimi" : "Ylikylän yhtenäiskoulu",
     "kieli" : "FI"
@@ -48173,10 +47940,6 @@
   "metadata" : [ {
     "nimi" : "Oulaisten yläkoulu",
     "lyhytNimi" : "Oulaisten yläkoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oulaisten yläkoulu",
-    "lyhytNimi" : "Oulaisten yläkoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -48193,10 +47956,6 @@
   "koodiUri" : "oppilaitosnumero_06306",
   "koodiArvo" : "06306",
   "metadata" : [ {
-    "nimi" : "Juho Oksan koulu",
-    "lyhytNimi" : "Juho Oksan koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Juho Oksan koulu",
     "lyhytNimi" : "Juho Oksan koulu",
     "kieli" : "FI"
@@ -48335,10 +48094,6 @@
   "metadata" : [ {
     "nimi" : "Laanilan yläaste",
     "lyhytNimi" : "Laanilan yläaste",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Laanilan yläaste",
-    "lyhytNimi" : "Laanilan yläaste",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -48355,7 +48110,7 @@
   "koodiUri" : "oppilaitosnumero_06320",
   "koodiArvo" : "06320",
   "metadata" : [ {
-    "nimi" : "Merikosken yläaste",
+    "nimi" : "Merikosken koulu",
     "lyhytNimi" : "Merikosken yläaste",
     "kieli" : "FI"
   } ],
@@ -48373,10 +48128,6 @@
   "koodiUri" : "oppilaitosnumero_06323",
   "koodiArvo" : "06323",
   "metadata" : [ {
-    "nimi" : "Pateniemen koulu",
-    "lyhytNimi" : "Pateniemen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pateniemen koulu",
     "lyhytNimi" : "Pateniemen koulu",
     "kieli" : "FI"
@@ -48408,7 +48159,7 @@
   "koodiUri" : "oppilaitosnumero_06327",
   "koodiArvo" : "06327",
   "metadata" : [ {
-    "nimi" : "Heinätorin koulu",
+    "nimi" : "Tiernan koulu",
     "lyhytNimi" : "Heinätorin koulu",
     "kieli" : "FI"
   } ],
@@ -48588,10 +48339,6 @@
     "nimi" : "Rajakylän koulu",
     "lyhytNimi" : "Rajakylän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Rajakylän koulu",
-    "lyhytNimi" : "Rajakylän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49001,10 +48748,6 @@
     "nimi" : "Jussinpekan koulu",
     "lyhytNimi" : "Jussinpekan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Jussinpekan koulu",
-    "lyhytNimi" : "Jussinpekan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49120,10 +48863,6 @@
     "nimi" : "Kuulammen koulu",
     "lyhytNimi" : "Kuulammen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kuulammen koulu",
-    "lyhytNimi" : "Kuulammen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49146,10 +48885,6 @@
     "nimi" : "Kirkkomännikön koulu",
     "lyhytNimi" : "Kirkkomännikön koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kirkkomännikön koulu",
-    "lyhytNimi" : "Kirkkomännikön koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49212,10 +48947,6 @@
     "nimi" : "Utajärven yhtenäinen peruskoulu",
     "lyhytNimi" : "Utajärven yhtenäinen peruskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Utajärven yhtenäinen peruskoulu",
-    "lyhytNimi" : "Utajärven yhtenäinen peruskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49517,10 +49248,6 @@
     "nimi" : "Päivärinnan koulu",
     "lyhytNimi" : "Päivärinnan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Päivärinnan koulu",
-    "lyhytNimi" : "Päivärinnan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -49688,10 +49415,6 @@
   "metadata" : [ {
     "nimi" : "Parkkilan koulu",
     "lyhytNimi" : "Parkkilan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Parkkilan koulu",
-    "lyhytNimi" : "Parkkilan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -49821,10 +49544,6 @@
     "nimi" : "Lumijoen peruskoulu",
     "lyhytNimi" : "Lumijoen peruskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Lumijoen peruskoulu",
-    "lyhytNimi" : "Lumijoen peruskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -50231,10 +49950,6 @@
     "nimi" : "Hausjärven yläaste",
     "lyhytNimi" : "Hausjärven yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hausjärven yläaste",
-    "lyhytNimi" : "Hausjärven yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -50459,10 +50174,6 @@
     "nimi" : "Lohtajan koulu",
     "lyhytNimi" : "Lohtajan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Lohtajan koulu",
-    "lyhytNimi" : "Lohtajan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -51511,10 +51222,6 @@
   "metadata" : [ {
     "nimi" : "Pogostan koulu",
     "lyhytNimi" : "Pogostan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pogostan koulu",
-    "lyhytNimi" : "Pogostan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -51770,10 +51477,6 @@
     "nimi" : "Liperin koulu",
     "lyhytNimi" : "Liperin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Liperin koulu",
-    "lyhytNimi" : "Liperin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -51847,10 +51550,6 @@
   "metadata" : [ {
     "nimi" : "Mattisenlahden koulu",
     "lyhytNimi" : "Mattisenlahden koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mattisenlahden koulu",
-    "lyhytNimi" : "Mattisenlahden koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -51886,10 +51585,6 @@
   "metadata" : [ {
     "nimi" : "Salokylän koulu",
     "lyhytNimi" : "Salokylän koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Salokylän koulu",
-    "lyhytNimi" : "Salokylän koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -51923,10 +51618,6 @@
   "koodiUri" : "oppilaitosnumero_06724",
   "koodiArvo" : "06724",
   "metadata" : [ {
-    "nimi" : "Viinijärven koulu",
-    "lyhytNimi" : "Viinijärven koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viinijärven koulu",
     "lyhytNimi" : "Viinijärven koulu",
     "kieli" : "FI"
@@ -52108,10 +51799,6 @@
     "nimi" : "Ådalens skola",
     "lyhytNimi" : "Ådalens skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Ådalens skola",
-    "lyhytNimi" : "Ådalens skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -52290,10 +51977,6 @@
     "nimi" : "Pohjanlinnan koulu",
     "lyhytNimi" : "Pohjanlinnan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Pohjanlinnan koulu",
-    "lyhytNimi" : "Pohjanlinnan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -52950,10 +52633,6 @@
   "metadata" : [ {
     "nimi" : "Pohjankartanon yläaste",
     "lyhytNimi" : "Pohjankartanon yläaste",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pohjankartanon yläaste",
-    "lyhytNimi" : "Pohjankartanon yläaste",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -53031,7 +52710,7 @@
   "koodiUri" : "oppilaitosnumero_06859",
   "koodiArvo" : "06859",
   "metadata" : [ {
-    "nimi" : "Brändö låg- och högstadium",
+    "nimi" : "Brändö grundskola",
     "lyhytNimi" : "Brändö grundskola",
     "kieli" : "SV"
   } ],
@@ -53155,7 +52834,7 @@
   "koodiUri" : "oppilaitosnumero_06875",
   "koodiArvo" : "06875",
   "metadata" : [ {
-    "nimi" : "Kumlinge låg- och högstadiun",
+    "nimi" : "Kumlinge skola",
     "lyhytNimi" : "Kumlinge skola",
     "kieli" : "SV"
   } ],
@@ -53164,7 +52843,7 @@
   "koodiUri" : "oppilaitosnumero_06876",
   "koodiArvo" : "06876",
   "metadata" : [ {
-    "nimi" : "Kökars låg- och högstadium",
+    "nimi" : "Kökars grundskola",
     "lyhytNimi" : "Kökars grundskola",
     "kieli" : "SV"
   } ],
@@ -53253,7 +52932,7 @@
   "koodiUri" : "oppilaitosnumero_06886",
   "koodiArvo" : "06886",
   "metadata" : [ {
-    "nimi" : "Sottunga låg- och högstadium",
+    "nimi" : "Sottunga grundskola",
     "lyhytNimi" : "Sottunga grundskola",
     "kieli" : "SV"
   } ],
@@ -53393,6 +53072,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_06907",
+  "koodiArvo" : "06907",
+  "metadata" : [ {
+    "nimi" : "Harjurannan koulu",
+    "lyhytNimi" : "Harjurannan koulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Harjurannan koulu",
+    "lyhytNimi" : "Harjurannan koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Harjurannan koulu",
+    "lyhytNimi" : "Harjurannan koulu",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_06909",
   "koodiArvo" : "06909",
   "metadata" : [ {
@@ -53409,10 +53105,6 @@
   "koodiUri" : "oppilaitosnumero_06910",
   "koodiArvo" : "06910",
   "metadata" : [ {
-    "nimi" : "Kangaslammin koulu",
-    "lyhytNimi" : "Kangaslammin koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kangaslammin koulu",
     "lyhytNimi" : "Kangaslammin koulu",
     "kieli" : "FI"
@@ -53699,7 +53391,7 @@
   "koodiUri" : "oppilaitosnumero_06947",
   "koodiArvo" : "06947",
   "metadata" : [ {
-    "nimi" : "Ylistaron yläaste",
+    "nimi" : "Ylistaron yläkoulu",
     "lyhytNimi" : "Ylistaron yläaste",
     "kieli" : "FI"
   } ],
@@ -53813,10 +53505,6 @@
     "nimi" : "Variskan koulu",
     "lyhytNimi" : "Variskan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Variskan koulu",
-    "lyhytNimi" : "Variskan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -53930,7 +53618,7 @@
   "koodiUri" : "oppilaitosnumero_06974",
   "koodiArvo" : "06974",
   "metadata" : [ {
-    "nimi" : "Laihian keskuskoulu",
+    "nimi" : "Laihian yhtenäiskoulu",
     "lyhytNimi" : "Laihian keskuskoulu",
     "kieli" : "FI"
   } ],
@@ -55245,10 +54933,6 @@
     "nimi" : "Saimaanharjun yhtenäiskoulu",
     "lyhytNimi" : "Saimaanharjun yhtenäiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Saimaanharjun yhtenäiskoulu",
-    "lyhytNimi" : "Saimaanharjun yhtenäiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -55346,10 +55030,6 @@
     "nimi" : "Vehkalahden koulu",
     "lyhytNimi" : "Vehkalahden koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vehkalahden koulu",
-    "lyhytNimi" : "Vehkalahden koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -55919,10 +55599,6 @@
   "metadata" : [ {
     "nimi" : "Enonkosken koulu",
     "lyhytNimi" : "Enonkosken koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Enonkosken koulu",
-    "lyhytNimi" : "Enonkosken koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -56336,10 +56012,6 @@
     "nimi" : "Askolan koulu",
     "lyhytNimi" : "Askolan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Askolan koulu",
-    "lyhytNimi" : "Askolan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -56509,10 +56181,6 @@
     "nimi" : "Purmo skola",
     "lyhytNimi" : "Purmo skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Purmo skola",
-    "lyhytNimi" : "Purmo skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -56580,10 +56248,6 @@
     "nimi" : "Heinäveden yläkoulu",
     "lyhytNimi" : "Heinäveden yläkoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Heinäveden yläkoulu",
-    "lyhytNimi" : "Heinäveden yläkoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -56682,10 +56346,6 @@
   "koodiUri" : "oppilaitosnumero_07288",
   "koodiArvo" : "07288",
   "metadata" : [ {
-    "nimi" : "Lehtoniemen koulu",
-    "lyhytNimi" : "Lehtoniemen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lehtoniemen koulu",
     "lyhytNimi" : "Lehtoniemen koulu",
     "kieli" : "FI"
@@ -57036,10 +56696,6 @@
     "nimi" : "Kivelän koulu",
     "lyhytNimi" : "Kivelän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kivelän koulu",
-    "lyhytNimi" : "Kivelän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -57242,10 +56898,6 @@
     "nimi" : "Kuoppakankaan koulu",
     "lyhytNimi" : "Kuoppakankaan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kuoppakankaan koulu",
-    "lyhytNimi" : "Kuoppakankaan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -57432,13 +57084,9 @@
   "koodiUri" : "oppilaitosnumero_07373",
   "koodiArvo" : "07373",
   "metadata" : [ {
-    "nimi" : "Hollolan peruskoulun yläaste",
+    "nimi" : "Heinsuon koulu",
     "lyhytNimi" : "Hollolan peruskoulun yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hollolan peruskoulun yläaste",
-    "lyhytNimi" : "Hollolan peruskoulun yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -57657,10 +57305,6 @@
     "nimi" : "Vöyrinkaupungin koulu",
     "lyhytNimi" : "Vöyrinkaupungin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vöyrinkaupungin koulu",
-    "lyhytNimi" : "Vöyrinkaupungin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -57867,10 +57511,6 @@
   "metadata" : [ {
     "nimi" : "Kausan koulu",
     "lyhytNimi" : "Kausan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kausan koulu",
-    "lyhytNimi" : "Kausan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -57878,10 +57518,6 @@
   "koodiUri" : "oppilaitosnumero_07418",
   "koodiArvo" : "07418",
   "metadata" : [ {
-    "nimi" : "Miehikkälän koulu",
-    "lyhytNimi" : "Miehikkälän koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Miehikkälän koulu",
     "lyhytNimi" : "Miehikkälän koulu",
     "kieli" : "FI"
@@ -58220,7 +57856,7 @@
   "koodiUri" : "oppilaitosnumero_07450",
   "koodiArvo" : "07450",
   "metadata" : [ {
-    "nimi" : "Mansikkalan koulu",
+    "nimi" : "Mansikkalan koulukeskus",
     "lyhytNimi" : "Mansikkalan koulu",
     "kieli" : "FI"
   } ],
@@ -58564,13 +58200,9 @@
   "koodiUri" : "oppilaitosnumero_07490",
   "koodiArvo" : "07490",
   "metadata" : [ {
-    "nimi" : "Ruoveden yhteiskoulun yläaste",
+    "nimi" : "Ruoveden Yhtenäiskoulu",
     "lyhytNimi" : "Ruoveden yhteiskoulun yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ruoveden yhteiskoulun yläaste",
-    "lyhytNimi" : "Ruoveden yhteiskoulun yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -59321,7 +58953,7 @@
   "koodiUri" : "oppilaitosnumero_07572",
   "koodiArvo" : "07572",
   "metadata" : [ {
-    "nimi" : "Kissakuusen koulu",
+    "nimi" : "Karttulan Kissakuusen koulu",
     "lyhytNimi" : "Kissankuusen koulu",
     "kieli" : "FI"
   } ],
@@ -59383,10 +59015,6 @@
   "koodiUri" : "oppilaitosnumero_07581",
   "koodiArvo" : "07581",
   "metadata" : [ {
-    "nimi" : "Mertalan koulu",
-    "lyhytNimi" : "Mertalan koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Mertalan koulu",
     "lyhytNimi" : "Mertalan koulu",
     "kieli" : "FI"
@@ -59758,10 +59386,6 @@
   "metadata" : [ {
     "nimi" : "Pääskytien koulu",
     "lyhytNimi" : "Pääskytien koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pääskytien koulu",
-    "lyhytNimi" : "Pääskytien koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -60077,10 +59701,6 @@
     "nimi" : "Strömborgska skolan",
     "lyhytNimi" : "Strömborgska skolan",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Strömborgska skolan",
-    "lyhytNimi" : "Strömborgska skolan",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -60227,11 +59847,24 @@
   "metadata" : [ {
     "nimi" : "Kuoreveden koulu",
     "lyhytNimi" : "Kuoreveden koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kuoreveden koulu",
-    "lyhytNimi" : "Kuoreveden koulu",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_07670",
+  "koodiArvo" : "07670",
+  "metadata" : [ {
+    "nimi" : "Lahden koulu",
+    "lyhytNimi" : "Lahden koulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lahden koulu",
+    "lyhytNimi" : "Lahden koulu",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Lahden koulu",
+    "lyhytNimi" : "Lahden koulu",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -60292,6 +59925,23 @@
   }, {
     "nimi" : "Lylyn koulu",
     "lyhytNimi" : "Lylyn koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_07677",
+  "koodiArvo" : "07677",
+  "metadata" : [ {
+    "nimi" : "Etolan ala-aste",
+    "lyhytNimi" : "Etolan ala-aste",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Etolan ala-aste",
+    "lyhytNimi" : "Etolan ala-aste",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Etolan ala-aste",
+    "lyhytNimi" : "Etolan ala-aste",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -60729,10 +60379,6 @@
   "metadata" : [ {
     "nimi" : "Lempyyn koulu",
     "lyhytNimi" : "Lempyyn koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lempyyn koulu",
-    "lyhytNimi" : "Lempyyn koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -60989,10 +60635,6 @@
     "nimi" : "Kerkonjoen koulu",
     "lyhytNimi" : "Kerkonjoen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kerkonjoen koulu",
-    "lyhytNimi" : "Kerkonjoen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -61218,10 +60860,6 @@
     "nimi" : "Valtarin koulu",
     "lyhytNimi" : "Valtarin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Valtarin koulu",
-    "lyhytNimi" : "Valtarin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -61320,10 +60958,6 @@
     "nimi" : "Pappilansalmen koulu",
     "lyhytNimi" : "Pappilansalmen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Pappilansalmen koulu",
-    "lyhytNimi" : "Pappilansalmen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -61782,10 +61416,6 @@
   "metadata" : [ {
     "nimi" : "Närpes högstadieskola",
     "lyhytNimi" : "Närpes högstadieskola",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Närpes högstadieskola",
-    "lyhytNimi" : "Närpes högstadieskola",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -61911,10 +61541,6 @@
     "nimi" : "Korsholms högstadium",
     "lyhytNimi" : "Korsholms högstadium",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Korsholms högstadium",
-    "lyhytNimi" : "Korsholms högstadium",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -62103,10 +61729,6 @@
   "koodiUri" : "oppilaitosnumero_07887",
   "koodiArvo" : "07887",
   "metadata" : [ {
-    "nimi" : "Merenkurkun koulu",
-    "lyhytNimi" : "Merenkurkun koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merenkurkun koulu",
     "lyhytNimi" : "Merenkurkun koulu",
     "kieli" : "FI"
@@ -62438,7 +62060,7 @@
   "koodiUri" : "oppilaitosnumero_07925",
   "koodiArvo" : "07925",
   "metadata" : [ {
-    "nimi" : "Korsnäs kby skola",
+    "nimi" : "Korsnäs kyrkoby skola",
     "lyhytNimi" : "Kyrkoby lågstadium",
     "kieli" : "SV"
   } ],
@@ -62527,7 +62149,7 @@
   "koodiUri" : "oppilaitosnumero_07936",
   "koodiArvo" : "07936",
   "metadata" : [ {
-    "nimi" : "Kolinan koulu",
+    "nimi" : "Maalahden suomenkielinen koulu",
     "lyhytNimi" : "Kolinan koulu",
     "kieli" : "FI"
   } ],
@@ -62536,10 +62158,6 @@
   "koodiUri" : "oppilaitosnumero_07937",
   "koodiArvo" : "07937",
   "metadata" : [ {
-    "nimi" : "Högstadiet i Petalax",
-    "lyhytNimi" : "Högstadiet i Petalax",
-    "kieli" : "FI"
-  }, {
     "nimi" : "Högstadiet i Petalax",
     "lyhytNimi" : "Högstadiet i Petalax",
     "kieli" : "SV"
@@ -62609,10 +62227,6 @@
     "nimi" : "Kosken seudun yläaste",
     "lyhytNimi" : "Kosken seudun yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kosken seudun yläaste",
-    "lyhytNimi" : "Kosken seudun yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -63390,26 +63004,18 @@
   "koodiUri" : "oppilaitosnumero_08048",
   "koodiArvo" : "08048",
   "metadata" : [ {
-    "nimi" : "Klaukkalan yläaste",
+    "nimi" : "Urheilupuiston koulu",
     "lyhytNimi" : "Klaukkalan yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Klaukkalan yläaste",
-    "lyhytNimi" : "Klaukkalan yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_08049",
   "koodiArvo" : "08049",
   "metadata" : [ {
-    "nimi" : "Rajamäen yläaste",
+    "nimi" : "Seitsemän veljeksen koulu",
     "lyhytNimi" : "Rajamäen yläaste",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Rajamäen yläaste",
-    "lyhytNimi" : "Rajamäen yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -63536,10 +63142,6 @@
     "nimi" : "Kivenpuiston koulu",
     "lyhytNimi" : "Kivenpuiston koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kivenpuiston koulu",
-    "lyhytNimi" : "Kivenpuiston koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -63678,10 +63280,6 @@
   "metadata" : [ {
     "nimi" : "Tapainlinnan koulu",
     "lyhytNimi" : "Tapainlinnan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tapainlinnan koulu",
-    "lyhytNimi" : "Tapainlinnan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -63689,10 +63287,6 @@
   "koodiUri" : "oppilaitosnumero_08083",
   "koodiArvo" : "08083",
   "metadata" : [ {
-    "nimi" : "Pohjoispuiston koulu",
-    "lyhytNimi" : "Pohjoispuiston koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pohjoispuiston koulu",
     "lyhytNimi" : "Pohjoispuiston koulu",
     "kieli" : "FI"
@@ -63711,10 +63305,6 @@
   "koodiUri" : "oppilaitosnumero_08085",
   "koodiArvo" : "08085",
   "metadata" : [ {
-    "nimi" : "Vehkojan koulu",
-    "lyhytNimi" : "Vehkojan koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vehkojan koulu",
     "lyhytNimi" : "Vehkojan koulu",
     "kieli" : "FI"
@@ -63794,10 +63384,6 @@
     "nimi" : "Puolimatkan koulu",
     "lyhytNimi" : "Puolimatkan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Puolimatkan koulu",
-    "lyhytNimi" : "Puolimatkan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -63834,20 +63420,12 @@
     "nimi" : "Hakalanpolun koulu",
     "lyhytNimi" : "Hakalanpolun koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hakalanpolun koulu",
-    "lyhytNimi" : "Hakalanpolun koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_08099",
   "koodiArvo" : "08099",
   "metadata" : [ {
-    "nimi" : "Martinkulman koulu",
-    "lyhytNimi" : "Martinkulman koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Martinkulman koulu",
     "lyhytNimi" : "Martinkulman koulu",
     "kieli" : "FI"
@@ -63981,10 +63559,6 @@
     "nimi" : "Keravanjoen koulu",
     "lyhytNimi" : "Keravanjoen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Keravanjoen koulu",
-    "lyhytNimi" : "Keravanjoen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -64035,10 +63609,6 @@
   "koodiUri" : "oppilaitosnumero_08118",
   "koodiArvo" : "08118",
   "metadata" : [ {
-    "nimi" : "Savion koulu",
-    "lyhytNimi" : "Savion koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Savion koulu",
     "lyhytNimi" : "Savion koulu",
     "kieli" : "FI"
@@ -64233,10 +63803,6 @@
   "koodiUri" : "oppilaitosnumero_08143",
   "koodiArvo" : "08143",
   "metadata" : [ {
-    "nimi" : "Pohjolanrinteen koulu",
-    "lyhytNimi" : "Pohjolanrinteen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pohjolanrinteen koulu",
     "lyhytNimi" : "Pohjolanrinteen koulu",
     "kieli" : "FI"
@@ -64481,10 +64047,6 @@
   "metadata" : [ {
     "nimi" : "Tervakosken yhteiskoulu",
     "lyhytNimi" : "Tervakosken yhteiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tervakosken yhteiskoulu",
-    "lyhytNimi" : "Tervakosken yhteiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -64495,10 +64057,6 @@
     "nimi" : "Turengin yhteiskoulu",
     "lyhytNimi" : "Turengin yhteiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Turengin yhteiskoulu",
-    "lyhytNimi" : "Turengin yhteiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -64612,10 +64170,6 @@
   "koodiUri" : "oppilaitosnumero_08180",
   "koodiArvo" : "08180",
   "metadata" : [ {
-    "nimi" : "Haukankallion koulu",
-    "lyhytNimi" : "Haukankallion koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Haukankallion koulu",
     "lyhytNimi" : "Haukankallion koulu",
     "kieli" : "FI"
@@ -64748,10 +64302,6 @@
     "nimi" : "Kirkonkylän koulu",
     "lyhytNimi" : "Kirkonkylän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kirkonkylän koulu",
-    "lyhytNimi" : "Kirkonkylän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -64857,10 +64407,6 @@
   "metadata" : [ {
     "nimi" : "Naakan koulu",
     "lyhytNimi" : "Naakan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Naakan koulu",
-    "lyhytNimi" : "Naakan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -64889,10 +64435,6 @@
     "nimi" : "Leppälän koulu",
     "lyhytNimi" : "Leppälän koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Leppälän koulu",
-    "lyhytNimi" : "Leppälän koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -64950,10 +64492,6 @@
   "metadata" : [ {
     "nimi" : "Tarttilan koulu",
     "lyhytNimi" : "Tarttilan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tarttilan koulu",
-    "lyhytNimi" : "Tarttilan koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -64999,10 +64537,6 @@
     "nimi" : "Kartanon koulu",
     "lyhytNimi" : "Kartanon koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kartanon koulu",
-    "lyhytNimi" : "Kartanon koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -65088,10 +64622,6 @@
     "nimi" : "Parolan Yhteiskoulu",
     "lyhytNimi" : "Parolan Yhteiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Parolan Yhteiskoulu",
-    "lyhytNimi" : "Parolan Yhteiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -65803,10 +65333,6 @@
   "metadata" : [ {
     "nimi" : "Siikaisten yhtenäiskoulu",
     "lyhytNimi" : "Siikaisten yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Siikaisten yhtenäiskoulu",
-    "lyhytNimi" : "Siikaisten yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -65910,10 +65436,6 @@
   "koodiUri" : "oppilaitosnumero_08317",
   "koodiArvo" : "08317",
   "metadata" : [ {
-    "nimi" : "Huovinrinteen koulu",
-    "lyhytNimi" : "Huovinrinteen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Huovinrinteen koulu",
     "lyhytNimi" : "Huovinrinteen koulu",
     "kieli" : "FI"
@@ -66294,10 +65816,6 @@
   "metadata" : [ {
     "nimi" : "Euran yhteiskoulu",
     "lyhytNimi" : "Euran yhteiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Euran yhteiskoulu",
-    "lyhytNimi" : "Euran yhteiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -66574,7 +66092,7 @@
   "koodiUri" : "oppilaitosnumero_08396",
   "koodiArvo" : "08396",
   "metadata" : [ {
-    "nimi" : "Heikinsuon koulu",
+    "nimi" : "Karinaisten-Heikinsuon koulu",
     "lyhytNimi" : "Karinaisten-Heikinsuon koulu",
     "kieli" : "FI"
   } ],
@@ -66769,10 +66287,6 @@
   "koodiUri" : "oppilaitosnumero_08425",
   "koodiArvo" : "08425",
   "metadata" : [ {
-    "nimi" : "Koveron koulu",
-    "lyhytNimi" : "Koveron koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Koveron koulu",
     "lyhytNimi" : "Koveron koulu",
     "kieli" : "FI"
@@ -67013,10 +66527,6 @@
   "metadata" : [ {
     "nimi" : "Merikarvian yhteiskoulu",
     "lyhytNimi" : "Merikarvian yhteiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Merikarvian yhteiskoulu",
-    "lyhytNimi" : "Merikarvian yhteiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -67089,10 +66599,6 @@
   "koodiUri" : "oppilaitosnumero_08458",
   "koodiArvo" : "08458",
   "metadata" : [ {
-    "nimi" : "Ahlströmin alakoulu",
-    "lyhytNimi" : "Ahlströmin alakoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ahlströmin alakoulu",
     "lyhytNimi" : "Ahlströmin alakoulu",
     "kieli" : "FI"
@@ -67507,10 +67013,6 @@
     "nimi" : "Maijamäen koulu",
     "lyhytNimi" : "Maijamäen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Maijamäen koulu",
-    "lyhytNimi" : "Maijamäen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -67579,10 +67081,6 @@
   "koodiUri" : "oppilaitosnumero_08509",
   "koodiArvo" : "08509",
   "metadata" : [ {
-    "nimi" : "Raumanmeren peruskoulu",
-    "lyhytNimi" : "Raumanmeren peruskoulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Raumanmeren peruskoulu",
     "lyhytNimi" : "Raumanmeren peruskoulu",
     "kieli" : "FI"
@@ -67826,10 +67324,6 @@
     "nimi" : "Topeliuksen koulu",
     "lyhytNimi" : "Topeliuksen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Topeliuksen koulu",
-    "lyhytNimi" : "Topeliuksen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -67858,10 +67352,6 @@
   "koodiUri" : "oppilaitosnumero_08541",
   "koodiArvo" : "08541",
   "metadata" : [ {
-    "nimi" : "Luostarivuoren koulu",
-    "lyhytNimi" : "Luostarivuoren koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Luostarivuoren koulu",
     "lyhytNimi" : "Luostarivuoren koulu",
     "kieli" : "FI"
@@ -67918,10 +67408,6 @@
     "nimi" : "Rieskalähteen koulu",
     "lyhytNimi" : "Rieskalähteen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Rieskalähteen koulu",
-    "lyhytNimi" : "Rieskalähteen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68134,10 +67620,6 @@
     "nimi" : "Puolalan koulu",
     "lyhytNimi" : "Puolalan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Puolalan koulu",
-    "lyhytNimi" : "Puolalan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68340,10 +67822,6 @@
   "metadata" : [ {
     "nimi" : "Hyrylän yläaste",
     "lyhytNimi" : "Hyrylän yläaste",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Hyrylän yläaste",
-    "lyhytNimi" : "Hyrylän yläaste",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -68351,10 +67829,6 @@
   "koodiUri" : "oppilaitosnumero_08588",
   "koodiArvo" : "08588",
   "metadata" : [ {
-    "nimi" : "Jokelan yläaste",
-    "lyhytNimi" : "Jokelan yläaste",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Jokelan yläaste",
     "lyhytNimi" : "Jokelan yläaste",
     "kieli" : "FI"
@@ -68451,10 +67925,6 @@
   "metadata" : [ {
     "nimi" : "Riihikallion koulu",
     "lyhytNimi" : "Riihikallion koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Riihikallion koulu",
-    "lyhytNimi" : "Riihikallion koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -68514,10 +67984,6 @@
     "nimi" : "Vihdin yhteiskoulu",
     "lyhytNimi" : "Vihdin yhteiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Vihdin yhteiskoulu",
-    "lyhytNimi" : "Vihdin yhteiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68533,10 +67999,6 @@
   "koodiUri" : "oppilaitosnumero_08607",
   "koodiArvo" : "08607",
   "metadata" : [ {
-    "nimi" : "Otalammen koulu",
-    "lyhytNimi" : "Otalammen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Otalammen koulu",
     "lyhytNimi" : "Otalammen koulu",
     "kieli" : "FI"
@@ -68555,10 +68017,6 @@
   "koodiUri" : "oppilaitosnumero_08609",
   "koodiArvo" : "08609",
   "metadata" : [ {
-    "nimi" : "Kuoppanummen koulukeskus",
-    "lyhytNimi" : "Kuoppanummen koulukeskus",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuoppanummen koulukeskus",
     "lyhytNimi" : "Kuoppanummen koulukeskus",
     "kieli" : "FI"
@@ -68743,10 +68201,6 @@
   "metadata" : [ {
     "nimi" : "Papinmäen koulu",
     "lyhytNimi" : "Papinmäen koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Papinmäen koulu",
-    "lyhytNimi" : "Papinmäen koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -68885,10 +68339,6 @@
   "metadata" : [ {
     "nimi" : "Nokianvirran koulu",
     "lyhytNimi" : "Nokianvirran koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Nokianvirran koulu",
-    "lyhytNimi" : "Nokianvirran koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -68905,7 +68355,7 @@
   "koodiUri" : "oppilaitosnumero_08645",
   "koodiArvo" : "08645",
   "metadata" : [ {
-    "nimi" : "Koskenmäen koulu",
+    "nimi" : "Koskenmäki-Tervasuon koulu",
     "lyhytNimi" : "Koskenmäen koulu",
     "kieli" : "FI"
   } ],
@@ -69001,10 +68451,6 @@
     "nimi" : "Hatanpään koulu",
     "lyhytNimi" : "Hatanpään koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hatanpään koulu",
-    "lyhytNimi" : "Hatanpään koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -69051,24 +68497,16 @@
   "koodiUri" : "oppilaitosnumero_08660",
   "koodiArvo" : "08660",
   "metadata" : [ {
-    "nimi" : "Tammerkoski-Klassillinen koulu",
+    "nimi" : "Juhannuskylän koulu",
     "lyhytNimi" : "Tammerkoski-Klassillinen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Tammerkoski-Klassillinen koulu",
-    "lyhytNimi" : "Tammerkoski-Klassillinen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "oppilaitosnumero_08662",
   "koodiArvo" : "08662",
   "metadata" : [ {
-    "nimi" : "Pyynikin koulu",
-    "lyhytNimi" : "Pyynikin koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pyynikin koulu",
+    "nimi" : "Wivi Lönnin koulu",
     "lyhytNimi" : "Pyynikin koulu",
     "kieli" : "FI"
   } ],
@@ -69125,10 +68563,6 @@
   "koodiUri" : "oppilaitosnumero_08668",
   "koodiArvo" : "08668",
   "metadata" : [ {
-    "nimi" : "Tesoman koulu",
-    "lyhytNimi" : "Tesoman koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tesoman koulu",
     "lyhytNimi" : "Tesoman koulu",
     "kieli" : "FI"
@@ -69279,10 +68713,6 @@
   "koodiUri" : "oppilaitosnumero_08683",
   "koodiArvo" : "08683",
   "metadata" : [ {
-    "nimi" : "Kämmenniemen koulu",
-    "lyhytNimi" : "Kämmenniemen koulu",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kämmenniemen koulu",
     "lyhytNimi" : "Kämmenniemen koulu",
     "kieli" : "FI"
@@ -69507,10 +68937,6 @@
     "nimi" : "Saukonpuiston koulu",
     "lyhytNimi" : "Saukonpuiston koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Saukonpuiston koulu",
-    "lyhytNimi" : "Saukonpuiston koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -69532,10 +68958,6 @@
   "metadata" : [ {
     "nimi" : "Noormarkun yhtenäiskoulu",
     "lyhytNimi" : "Noormarkun yhtenäiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Noormarkun yhtenäiskoulu",
-    "lyhytNimi" : "Noormarkun yhtenäiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -69546,10 +68968,6 @@
     "nimi" : "Hakkarin koulu",
     "lyhytNimi" : "Hakkarin koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hakkarin koulu",
-    "lyhytNimi" : "Hakkarin koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -69644,10 +69062,6 @@
     "nimi" : "Sääksjärven koulu",
     "lyhytNimi" : "Sääksjärven koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Sääksjärven koulu",
-    "lyhytNimi" : "Sääksjärven koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -69696,10 +69110,6 @@
     "nimi" : "Karkkilan yhteiskoulu",
     "lyhytNimi" : "Karkkilan yhteiskoulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Karkkilan yhteiskoulu",
-    "lyhytNimi" : "Karkkilan yhteiskoulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -69742,7 +69152,7 @@
   "koodiUri" : "oppilaitosnumero_08732",
   "koodiArvo" : "08732",
   "metadata" : [ {
-    "nimi" : "Moision koulu",
+    "nimi" : "Kauraslammen koulu",
     "lyhytNimi" : "Moision koulu",
     "kieli" : "FI"
   } ],
@@ -70486,7 +69896,7 @@
   "koodiUri" : "oppilaitosnumero_08814",
   "koodiArvo" : "08814",
   "metadata" : [ {
-    "nimi" : "Ahveniston koulu",
+    "nimi" : "Nummen Yhtenäiskoulu",
     "lyhytNimi" : "Ahveniston koulu",
     "kieli" : "FI"
   } ],
@@ -70704,10 +70114,6 @@
   "metadata" : [ {
     "nimi" : "Länsinummen koulu",
     "lyhytNimi" : "Länsinummen koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Länsinummen koulu",
-    "lyhytNimi" : "Länsinummen koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -70733,7 +70139,7 @@
   "koodiUri" : "oppilaitosnumero_08847",
   "koodiArvo" : "08847",
   "metadata" : [ {
-    "nimi" : "Albert Edefeltin koulu",
+    "nimi" : "Albert Edelfeltin koulu",
     "lyhytNimi" : "Albert Edefeltin koulu",
     "kieli" : "FI"
   } ],
@@ -70767,10 +70173,6 @@
     "nimi" : "Höjdens skola",
     "lyhytNimi" : "Höjdens skola",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Höjdens skola",
-    "lyhytNimi" : "Höjdens skola",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -70823,10 +70225,6 @@
   "metadata" : [ {
     "nimi" : "Kajaanintullin koulu",
     "lyhytNimi" : "Kajaanintullin koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kajaanintullin koulu",
-    "lyhytNimi" : "Kajaanintullin koulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -70855,10 +70253,6 @@
     "nimi" : "Etelänummen koulu",
     "lyhytNimi" : "Etelänummen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Etelänummen koulu",
-    "lyhytNimi" : "Etelänummen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -70908,10 +70302,6 @@
     "nimi" : "Aapiskujan koulu",
     "lyhytNimi" : "Aapiskujan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Aapiskujan koulu",
-    "lyhytNimi" : "Aapiskujan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -70974,10 +70364,6 @@
     "nimi" : "Elomaan koulu",
     "lyhytNimi" : "Elomaan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Elomaan koulu",
-    "lyhytNimi" : "Elomaan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -71048,10 +70434,6 @@
   "metadata" : [ {
     "nimi" : "Kiukaisten yhteiskoulu",
     "lyhytNimi" : "Kiukaisten yhteiskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kiukaisten yhteiskoulu",
-    "lyhytNimi" : "Kiukaisten yhteiskoulu",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -71062,10 +70444,6 @@
     "nimi" : "Hakarinteen koulu",
     "lyhytNimi" : "Hakarinteen koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Hakarinteen koulu",
-    "lyhytNimi" : "Hakarinteen koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -71203,10 +70581,6 @@
     "nimi" : "Ali-Keravan koulu",
     "lyhytNimi" : "Ali-Keravan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Ali-Keravan koulu",
-    "lyhytNimi" : "Ali-Keravan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -71229,10 +70603,6 @@
     "nimi" : "Kalevan koulu",
     "lyhytNimi" : "Kalevan koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Kalevan koulu",
-    "lyhytNimi" : "Kalevan koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -71309,10 +70679,6 @@
     "nimi" : "Peltosaaren koulu",
     "lyhytNimi" : "Peltosaaren koulu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Peltosaaren koulu",
-    "lyhytNimi" : "Peltosaaren koulu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -71436,6 +70802,23 @@
   "metadata" : [ {
     "nimi" : "Ounasrinteen koulu",
     "lyhytNimi" : "Ounasrinteen koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_08930",
+  "koodiArvo" : "08930",
+  "metadata" : [ {
+    "nimi" : "Lappo skola",
+    "lyhytNimi" : "Lappo skola",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Lappo skola",
+    "lyhytNimi" : "Lappo skola",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lappo skola",
+    "lyhytNimi" : "Lappo skola",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -71909,6 +71292,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_10004",
+  "koodiArvo" : "10004",
+  "metadata" : [ {
+    "nimi" : "Ålands musikinstitut",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_10005",
   "koodiArvo" : "10005",
   "metadata" : [ {
@@ -71932,6 +71323,14 @@
   "metadata" : [ {
     "nimi" : "Akaan Opisto",
     "lyhytNimi" : "Akaan Opisto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_10008",
+  "koodiArvo" : "10008",
+  "metadata" : [ {
+    "nimi" : "Pietarsaaren seudun musiikkioppilaitos",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -71966,7 +71365,7 @@
   "koodiUri" : "oppilaitosnumero_10012",
   "koodiArvo" : "10012",
   "metadata" : [ {
-    "nimi" : "Luksia Länsi-Uudenmaan ammattiopisto",
+    "nimi" : "Luksia",
     "lyhytNimi" : "Luksia Länsi-Uudenmaan ammattiopisto",
     "kieli" : "FI"
   } ],
@@ -72009,6 +71408,14 @@
     "nimi" : "Yrkesinstitutet Prakticum",
     "lyhytNimi" : "Yrkesinstitutet Prakticum",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_10018",
+  "koodiArvo" : "10018",
+  "metadata" : [ {
+    "nimi" : "Etelä-Karjalan ammattiopisto (1.8.2002-1.8.2013)",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -72062,6 +71469,23 @@
     "nimi" : "Härmänmaan ammatti-instituutti",
     "lyhytNimi" : "Härmänmaan ammatti-instituutti",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_10024",
+  "koodiArvo" : "10024",
+  "metadata" : [ {
+    "nimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "lyhytNimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "lyhytNimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "lyhytNimi" : "Kainuun amm.inst.(1.8.2002-)",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -72345,11 +71769,7 @@
   "koodiUri" : "oppilaitosnumero_10051",
   "koodiArvo" : "10051",
   "metadata" : [ {
-    "nimi" : "Aker Finnyards Oy:n laivanrakennusoppilaitos",
-    "lyhytNimi" : "Aker Finnyards Oy:n laivanrakennusoppilaitos",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Aker Finnyards Oy:n laivanrakennusoppilaitos",
+    "nimi" : "Meyer Turku Oy Laivanrakennusoppilaitos",
     "lyhytNimi" : "Aker Finnyards Oy:n laivanrakennusoppila",
     "kieli" : "FI"
   } ],
@@ -72376,7 +71796,10 @@
   "koodiUri" : "oppilaitosnumero_10054",
   "koodiArvo" : "10054",
   "metadata" : [ {
-    "nimi" : "Omnian ammattiopisto",
+    "nimi" : "Omnia Koulutus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Omnia Koulutus",
     "lyhytNimi" : "Omnian ammattiopisto",
     "kieli" : "FI"
   } ],
@@ -72388,10 +71811,6 @@
     "nimi" : "Omnian aikuisopisto",
     "lyhytNimi" : "Omnian aikuisopisto",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Omnian aikuisopisto",
-    "lyhytNimi" : "Omnian aikuisopisto",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -72493,7 +71912,7 @@
   "koodiUri" : "oppilaitosnumero_10065",
   "koodiArvo" : "10065",
   "metadata" : [ {
-    "nimi" : "Helsinki Metropolia University of Applied Sciences",
+    "nimi" : "Metropolia University of Applied Sciences",
     "kieli" : "EN"
   }, {
     "nimi" : "Metropolia Ammattikorkeakoulu",
@@ -72665,10 +72084,6 @@
     "nimi" : "Koulutuskeskus Sedu",
     "lyhytNimi" : "Koulutuskeskus Sedu",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Koulutuskeskus Sedu",
-    "lyhytNimi" : "Koulutuskeskus Sedu",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -72803,6 +72218,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_10097",
+  "koodiArvo" : "10097",
+  "metadata" : [ {
+    "nimi" : "Teak Teknologiakeskus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_10098",
   "koodiArvo" : "10098",
   "metadata" : [ {
@@ -72841,11 +72264,7 @@
   "koodiUri" : "oppilaitosnumero_10102",
   "koodiArvo" : "10102",
   "metadata" : [ {
-    "nimi" : "Åland yrkesgymnasium",
-    "lyhytNimi" : "Åland yrkesgymnasium",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Åland yrkesgymnasium",
+    "nimi" : "Ålands yrkesgymnasium",
     "lyhytNimi" : "Åland yrkesgymnasium",
     "kieli" : "SV"
   } ],
@@ -72854,13 +72273,16 @@
   "koodiUri" : "oppilaitosnumero_10103",
   "koodiArvo" : "10103",
   "metadata" : [ {
-    "nimi" : "Taideyliopisto",
+    "nimi" : "Konstuniversitetet",
     "lyhytNimi" : "Taideyliopisto",
     "kieli" : "SV"
   }, {
     "nimi" : "Taideyliopisto",
     "lyhytNimi" : "Taideyliopisto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "University of the Arts Helsinki",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -72979,7 +72401,13 @@
   "koodiUri" : "oppilaitosnumero_10117",
   "koodiArvo" : "10117",
   "metadata" : [ {
-    "nimi" : "Lounais-Suomen ammattiopisto Novida",
+    "nimi" : "Novida - Ammattiopisto ja lukio",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Novida - Ammattiopisto ja lukio",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Novida - Ammattiopisto ja lukio",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -72987,10 +72415,19 @@
   "koodiUri" : "oppilaitosnumero_10118",
   "koodiArvo" : "10118",
   "metadata" : [ {
-    "nimi" : "South-Eastern Finland University of Applied Sciences (Xamk)",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kaakkois-Suomen Ammattikorkeakoulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "South-Eastern Finland University of Applied Sciences Xamk",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_10120",
+  "koodiArvo" : "10120",
+  "metadata" : [ {
+    "nimi" : "Perho Liiketalousopisto",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -73000,71 +72437,6 @@
   "metadata" : [ {
     "nimi" : "Etelä-Savon tanssiopisto",
     "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_13373",
-  "koodiArvo" : "13373",
-  "metadata" : [ {
-    "nimi" : "Kilpisjärven koulu",
-    "lyhytNimi" : "Kilpisjärven koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kilpisjärven koulu",
-    "lyhytNimi" : "Kilpisjärven koulu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_13667",
-  "koodiArvo" : "13667",
-  "metadata" : [ {
-    "nimi" : "Tikkurilan kansainvälinen koulu",
-    "lyhytNimi" : "Tikkurilan kansainvälinen koulu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tikkurilan kansainvälinen koulu",
-    "lyhytNimi" : "Tikkurilan kansainvälinen koulu",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_14290",
-  "koodiArvo" : "14290",
-  "metadata" : [ {
-    "nimi" : "Kitisenrannan koulu",
-    "lyhytNimi" : "Kitisenrannan koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kitisenrannan koulu",
-    "lyhytNimi" : "Kitisenrannan koulu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_14349",
-  "koodiArvo" : "14349",
-  "metadata" : [ {
-    "nimi" : "Vuotson koulu",
-    "lyhytNimi" : "Vuotson koulu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vuotson koulu",
-    "lyhytNimi" : "Vuotson koulu",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_14504",
-  "koodiArvo" : "14504",
-  "metadata" : [ {
-    "nimi" : "Lokan yläaste",
-    "lyhytNimi" : "Lokan yläaste",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lokan yläaste",
-    "lyhytNimi" : "Lokan yläaste",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -73217,119 +72589,6 @@
   "metadata" : [ {
     "nimi" : "Circus Helsinki",
     "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_15855",
-  "koodiArvo" : "15855",
-  "metadata" : [ {
-    "nimi" : "Mäntysalon koulu",
-    "lyhytNimi" : "Mäntysalon koulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mäntysalon koulu",
-    "lyhytNimi" : "Mäntysalon koulu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16859",
-  "koodiArvo" : "16859",
-  "metadata" : [ {
-    "nimi" : "Brändö låg- och högstadium",
-    "lyhytNimi" : "Brändö låg- och högstadium",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Brändö låg- och högstadium",
-    "lyhytNimi" : "Brändö låg- och högstadium",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16867",
-  "koodiArvo" : "16867",
-  "metadata" : [ {
-    "nimi" : "Föglö grundskola",
-    "lyhytNimi" : "Föglö grundskola",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Föglö grundskola",
-    "lyhytNimi" : "Föglö grundskola",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16875",
-  "koodiArvo" : "16875",
-  "metadata" : [ {
-    "nimi" : "Kumlinge grundskola",
-    "lyhytNimi" : "Kumlinge grundskola",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kumlinge grundskola",
-    "lyhytNimi" : "Kumlinge grundskola",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16876",
-  "koodiArvo" : "16876",
-  "metadata" : [ {
-    "nimi" : "Kökars grundskola",
-    "lyhytNimi" : "Kökars grundskola",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16886",
-  "koodiArvo" : "16886",
-  "metadata" : [ {
-    "nimi" : "Sottunga skola",
-    "lyhytNimi" : "Sottunga skola",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Sottunga skola",
-    "lyhytNimi" : "Sottunga skola",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_16973",
-  "koodiArvo" : "16973",
-  "metadata" : [ {
-    "nimi" : "Keskuskoulu",
-    "lyhytNimi" : "Keskuskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Keskuskoulu",
-    "lyhytNimi" : "Keskuskoulu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_18182",
-  "koodiArvo" : "18182",
-  "metadata" : [ {
-    "nimi" : "Linikkalan peruskoulu",
-    "lyhytNimi" : "Linikkalan peruskoulu",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Linikkalan peruskoulu",
-    "lyhytNimi" : "Linikkalan peruskoulu",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_18852",
-  "koodiArvo" : "18852",
-  "metadata" : [ {
-    "nimi" : "Höjdens skola",
-    "lyhytNimi" : "Höjdens skola",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Höjdens skola",
-    "lyhytNimi" : "Höjdens skola",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -73524,10 +72783,6 @@
   "koodiUri" : "oppilaitosnumero_30014",
   "koodiArvo" : "30014",
   "metadata" : [ {
-    "nimi" : "Induser Oy",
-    "lyhytNimi" : "Induser Oy",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Induser Oy",
     "lyhytNimi" : "Induser Oy",
     "kieli" : "FI"
@@ -73743,7 +72998,7 @@
   "koodiUri" : "oppilaitosnumero_30033",
   "koodiArvo" : "30033",
   "metadata" : [ {
-    "nimi" : "Hämeen Kosmetologikoulu",
+    "nimi" : "Koulutuskeskus Lumova",
     "lyhytNimi" : "Hämeen Kosmetologikoulu",
     "kieli" : "FI"
   } ],
@@ -73812,10 +73067,6 @@
     "nimi" : "FCG Efeko Oy",
     "lyhytNimi" : "FCG Efeko Oy",
     "kieli" : "FI"
-  }, {
-    "nimi" : "FCG Efeko Oy",
-    "lyhytNimi" : "FCG Efeko Oy",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -73898,10 +73149,6 @@
   "metadata" : [ {
     "nimi" : "Teak Teknologiakeskus",
     "lyhytNimi" : "Teak Teknologiakeskus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Teak Teknologiakeskus",
-    "lyhytNimi" : "Teak Teknologiakeskus",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -73930,10 +73177,6 @@
     "nimi" : "Pohjoiskalotin koulutussäätiö",
     "lyhytNimi" : "Pohjoiskalotin koulutussäätiö",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Pohjoiskalotin koulutussäätiö",
-    "lyhytNimi" : "Pohjoiskalotin koulutussäätiö",
-    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -74202,6 +73445,36 @@
     "kieli" : "SV"
   }, {
     "nimi" : "testitestitesti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_90078",
+  "koodiArvo" : "90078",
+  "metadata" : [ {
+    "nimi" : "Tamora Oy",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tamora Oy",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tamora Oy",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_90109",
+  "koodiArvo" : "90109",
+  "metadata" : [ {
+    "nimi" : "EU Nostokoulutus Oy",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_90114",
+  "koodiArvo" : "90114",
+  "metadata" : [ {
+    "nimi" : "Autokori- ja automaalarimestari kilta ry",
     "kieli" : "FI"
   } ],
   "versio" : 1

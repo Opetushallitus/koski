@@ -24,7 +24,7 @@ describe('Perusopetus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
-          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Peruskoulu 104/011/2014\n' +
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Perusopetus 104/011/2014\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
@@ -207,7 +207,7 @@ describe('Perusopetus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Peruskoulu 104/011/2014\n' +
+            'Koulutus Perusopetus 104/011/2014\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
@@ -769,7 +769,7 @@ describe('Perusopetus', function() {
                 expect(page.oppijataulukko.findOppija('Koululainen, Kaisa', 'Perusopetus')).to.deep.equal([ 'Koululainen, Kaisa',
                   'Perusopetus',
                   'Perusopetuksen oppimäärä',
-                  'Peruskoulu',
+                  'Perusopetus',
                   'Läsnä',
                   'Jyväskylän normaalikoulu',
                   '15.8.2008',
@@ -1469,7 +1469,7 @@ describe('Perusopetus', function() {
 
           describe('Käyttöliittymän tila', function() {
             it('Lisätty opiskeluoikeus näytetään', function() {
-              expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
+              expect(opinnot.getTutkinto()).to.equal('Perusopetus')
               expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
               expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
@@ -1583,7 +1583,7 @@ describe('Perusopetus', function() {
           it('lisätty oppija näytetään', function() {})
 
           it('lisätty opiskeluoikeus näytetään', function() {
-            expect(opinnot.getTutkinto()).to.equal('Peruskoulu')
+            expect(opinnot.getTutkinto()).to.equal('Perusopetus')
             expect(opinnot.getOppilaitos()).to.equal('Helsingin medialukio')
             expect(opinnot.getSuorituskieli()).to.equal('suomi')
             expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
@@ -2316,7 +2316,7 @@ describe('Perusopetus', function() {
               editor.saveChanges
             )
             it('Pysytään päättötodistus -täbillä', function() {
-              expect(opinnot.getTutkinto(0)).to.equal('Peruskoulu')
+              expect(opinnot.getTutkinto(0)).to.equal('Perusopetus')
             })
           })
         })

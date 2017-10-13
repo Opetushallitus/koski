@@ -141,7 +141,7 @@
     "lyhytNimi" : "Maarakennuskoneenkuljetuksen osaamisala",
     "kieli" : "FI"
   }, {
-    "nimi" : "Kompetensområdet för schaktningsmaskintransportKompetensområde för schaktningsmaskintransport",
+    "nimi" : "Kompetensområdet för schaktningsmaskintransport",
     "lyhytNimi" : "Kompetensområdet för schaktningsmaskintransport",
     "kieli" : "SV"
   } ],
@@ -1735,6 +1735,36 @@
     "nimi" : "Metallien jalostuksen osaamisala",
     "lyhytNimi" : "Metallien jalostuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för metallförädling",
+    "lyhytNimi" : "Kompetensområdet för metallförädling",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1661",
+  "koodiArvo" : "1661",
+  "metadata" : [ {
+    "nimi" : "Asennuksen ja automaation osaamisala",
+    "lyhytNimi" : "Asennuksen ja automaation osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för installation och automation",
+    "lyhytNimi" : "Kompetensområdet för installation och automation",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1662",
+  "koodiArvo" : "1662",
+  "metadata" : [ {
+    "nimi" : "Tuotantotekniikan osaamisala",
+    "lyhytNimi" : "Tuotantotekniikan osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för produktionsteknik",
+    "lyhytNimi" : "Kompetensområdet för produktionsteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4336,6 +4366,10 @@
     "nimi" : "Elintarviketuotannon osaamisala",
     "lyhytNimi" : "Elintarviketuotannon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för livsmedelsproduktion",
+    "lyhytNimi" : "Kompetensområdet för livsmedelsproduktion",
+    "kieli" : "SV"
   } ],
   "versio" : 2
 }, {
@@ -4345,6 +4379,10 @@
     "nimi" : "Rehutuotannon osaamisala",
     "lyhytNimi" : "Rehutuotannon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för foderproduktion",
+    "lyhytNimi" : "Kompetensområdet för foderproduktion",
+    "kieli" : "SV"
   } ],
   "versio" : 2
 }, {
@@ -4354,6 +4392,10 @@
     "nimi" : "Teollisen pakkaamisen osaamisala",
     "lyhytNimi" : "Teollisen pakkaamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för industriell förpackning",
+    "lyhytNimi" : "Kompetensområdet för industriell förpackning",
+    "kieli" : "SV"
   } ],
   "versio" : 2
 }, {
@@ -4363,12 +4405,20 @@
     "nimi" : "Myllytuotannon osaamisala",
     "lyhytNimi" : "Myllytuotannon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för kvarnproduktion",
+    "lyhytNimi" : "Kompetensområdet för kvarnproduktion",
+    "kieli" : "SV"
   } ],
   "versio" : 2
 }, {
   "koodiUri" : "osaamisala_3075",
   "koodiArvo" : "2206",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för dryckesproduktion",
+    "lyhytNimi" : "Kompetensområdet för dryckesproduktion",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Juomatuotannon osaamisala",
     "lyhytNimi" : "Juomatuotannon osaamisala",
     "kieli" : "FI"
@@ -4378,6 +4428,10 @@
   "koodiUri" : "osaamisala_3069",
   "koodiArvo" : "2207",
   "metadata" : [ {
+    "nimi" : "Vattentvätt vid textilvård",
+    "lyhytNimi" : "Vattentvätt vid textilvård",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstiilihuollon vesipesu",
     "lyhytNimi" : "Tekstiilihuollon vesipesu",
     "kieli" : "FI"
@@ -4387,6 +4441,10 @@
   "koodiUri" : "osaamisala_3070",
   "koodiArvo" : "2208",
   "metadata" : [ {
+    "nimi" : "Kemtvätt vid textilvård",
+    "lyhytNimi" : "Kemtvätt vid textilvård",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstiilihuollon kemiallinen pesu",
     "lyhytNimi" : "Tekstiilihuollon kemiallinen pesu",
     "kieli" : "FI"
@@ -4396,6 +4454,10 @@
   "koodiUri" : "osaamisala_3067",
   "koodiArvo" : "2209",
   "metadata" : [ {
+    "nimi" : "Arbetsledare inom bilbranschen",
+    "lyhytNimi" : "Arbetsledare inom bilbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Autoalan työnjohtaja",
     "lyhytNimi" : "Autoalan työnjohtaja",
     "kieli" : "FI"
@@ -4405,6 +4467,10 @@
   "koodiUri" : "osaamisala_3068",
   "koodiArvo" : "2210",
   "metadata" : [ {
+    "nimi" : "Arbetsledare inom transportbranschen",
+    "lyhytNimi" : "Arbetsledare inom transportbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kuljetusalan työnjohtaja",
     "lyhytNimi" : "Kuljetusalan työnjohtaja",
     "kieli" : "FI"
@@ -4450,6 +4516,10 @@
   "koodiUri" : "osaamisala_2215",
   "koodiArvo" : "2215",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för tullövervakning",
+    "lyhytNimi" : "Kompetensområdet för tullövervakning",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tullivalvonnan osaamisala",
     "lyhytNimi" : "Tullivalvonnan osaamisala",
     "kieli" : "FI"
@@ -4459,6 +4529,10 @@
   "koodiUri" : "osaamisala_2216",
   "koodiArvo" : "2216",
   "metadata" : [ {
+    "nimi" : "Tillverkning av skrov och däck för båtar av armerad plast",
+    "lyhytNimi" : "Tillverkning av skrov och däck för båtar av armerad plast",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Lujitemuoviveneen rungon ja kannen valmistus",
     "lyhytNimi" : "Lujitemuoviveneen rungon ja kannen valmistus",
     "kieli" : "FI"
@@ -4471,6 +4545,10 @@
     "nimi" : "Puuveneen rungon ja kannen valmistus",
     "lyhytNimi" : "Puuveneen rungon ja kannen valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillverkning av skrov och däck för träbåtar",
+    "lyhytNimi" : "Tillverkning av skrov och däck för träbåtar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4480,12 +4558,20 @@
     "nimi" : "Veneen kone- ja laitekorjaus",
     "lyhytNimi" : "Veneen kone- ja laitekorjaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reparation av maskiner och utrustning i båtar",
+    "lyhytNimi" : "Reparation av maskiner och utrustning i båtar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "osaamisala_2219",
   "koodiArvo" : "2219",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för företagande inom skogsbruk",
+    "lyhytNimi" : "Kompetensområdet för företagande inom skogsbruk",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Metsätalousyrittäjyyden osaamisala",
     "lyhytNimi" : "Metsätalousyrittäjyyden osaamisala",
     "kieli" : "FI"
@@ -4495,6 +4581,10 @@
   "koodiUri" : "osaamisala_2220",
   "koodiArvo" : "2220",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för företagande inom skogstjänster",
+    "lyhytNimi" : "Kompetensområdet för företagande inom skogstjänster",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Metsäpalveluyrittäjyyden osaamisala",
     "lyhytNimi" : "Metsäpalveluyrittäjyyden osaamisala",
     "kieli" : "FI"
@@ -4507,6 +4597,10 @@
     "nimi" : "Avolouhinnan osaamisala",
     "lyhytNimi" : "Avolouhinnan osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för dagbrytning",
+    "lyhytNimi" : "Kompetensområdet för dagbrytning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4516,6 +4610,10 @@
     "nimi" : "Maanalaisen kaivoksen osaamisala",
     "lyhytNimi" : "Maanalaisen kaivoksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för underjordsbrytning",
+    "lyhytNimi" : "Kompetensområdet för underjordsbrytning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4535,6 +4633,10 @@
   "koodiUri" : "osaamisala_2224",
   "koodiArvo" : "2224",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för anläggning av grönområden",
+    "lyhytNimi" : "Kompetensområdet för anläggning av grönområden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viheralueiden rakentamisen osaamisala",
     "lyhytNimi" : "Viheralueiden rakentamisen osaamisala",
     "kieli" : "FI"
@@ -4547,6 +4649,10 @@
     "nimi" : "Viheralueiden ylläpitämisen osaamisala",
     "lyhytNimi" : "Viheralueiden ylläpitämisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för skötsel av grönområden",
+    "lyhytNimi" : "Kompetensområdet för skötsel av grönområden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4556,6 +4662,10 @@
     "nimi" : "Kiinteistöjen ympäristöhuoltopalveluiden osaamisala",
     "lyhytNimi" : "Kiinteistöjen ympäristöhuoltopalveluiden osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för miljövårdstjänster för fastigheter",
+    "lyhytNimi" : "Kompetensområdet för miljövårdstjänster för fastigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4565,6 +4675,10 @@
     "nimi" : "Jätteiden ja vaarallisten aineiden kuljettamisen osaamisala",
     "lyhytNimi" : "Jätteiden ja vaarallisten aineiden kuljettamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för transport av avfall och farligt avfall",
+    "lyhytNimi" : "Kompetensområdet för transport av avfall och farligt avfall",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4574,6 +4688,10 @@
     "nimi" : "Materiaalien kierrätyksen ja käsittelyn osaamisala",
     "lyhytNimi" : "Materiaalien kierrätyksen ja käsittelyn osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för återvinning och hantering av material",
+    "lyhytNimi" : "Kompetensområdet för återvinning och hantering av material",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4583,6 +4701,10 @@
     "nimi" : "Ympäristöhuollon palvelutehtävien osaamisala",
     "lyhytNimi" : "Ympäristöhuollon palvelutehtävien osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för serviceuppgifter inom miljövården",
+    "lyhytNimi" : "Kompetensområdet för serviceuppgifter inom miljövården",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4592,6 +4714,10 @@
     "nimi" : "Haja-asutusalueiden vesihuoltopalveluiden osaamisala",
     "lyhytNimi" : "Haja-asutusalueiden vesihuoltopalveluiden osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för vattenförsörjningstjänster i glesbygdsområden",
+    "lyhytNimi" : "Kompetensområdet för vattenförsörjningstjänster i glesbygdsområden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4601,6 +4727,10 @@
     "nimi" : "Teollisuuspuhdistuspalveluiden osaamisala",
     "lyhytNimi" : "Teollisuuspuhdistuspalveluiden osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för rengöringstjänster inom industrin",
+    "lyhytNimi" : "Kompetensområdet för rengöringstjänster inom industrin",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4610,32 +4740,48 @@
     "nimi" : "Viemärihuoltopalveluiden osaamisala",
     "lyhytNimi" : "Viemärihuoltopalveluiden osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för tjänster inom avloppsservice",
+    "lyhytNimi" : "Kompetensområdet för tjänster inom avloppsservice",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "osaamisala_2233",
   "koodiArvo" : "2233",
   "metadata" : [ {
-    "nimi" : "Lavasterakentamisen osaamisala",
-    "lyhytNimi" : "Lavasterakentamisen osaamisala",
+    "nimi" : "Lavastustekniikan osaamisala",
+    "lyhytNimi" : "Lavastustekniikan osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för scenteknik",
+    "lyhytNimi" : "Kompetensområdet för scenteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "osaamisala_2234",
   "koodiArvo" : "2234",
   "metadata" : [ {
-    "nimi" : "Tarpeiston valmistamisen osaamisala",
-    "lyhytNimi" : "Tarpeiston valmistamisen osaamisala",
+    "nimi" : "Esitys- ja näytäntötyön osaamisala",
+    "lyhytNimi" : "Esitys- ja näytäntötyön osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för scenarbete",
+    "lyhytNimi" : "Kompetensområdet för scenarbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "osaamisala_2235",
   "koodiArvo" : "2235",
   "metadata" : [ {
-    "nimi" : "Kuiskaajan työn osaamisala",
-    "lyhytNimi" : "Kuiskaajan työn osaamisala",
+    "nimi" : "Kompetensområdet för teater- och evenemangsteknik",
+    "lyhytNimi" : "Kompetensområdet för teater- och evenemangsteknik",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Teatteri- ja tapahtumatekniikan osaamisala",
+    "lyhytNimi" : "Teatteri- ja tapahtumatekniikan osaamisala",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4643,9 +4789,13 @@
   "koodiUri" : "osaamisala_2236",
   "koodiArvo" : "2236",
   "metadata" : [ {
-    "nimi" : "Järjestäjän työn osaamisala",
-    "lyhytNimi" : "Järjestäjän työn osaamisala",
+    "nimi" : "Nukketeatterin osaamisala",
+    "lyhytNimi" : "Nukketeatterin osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för dockteater",
+    "lyhytNimi" : "Kompetensområdet för dockteater",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4724,6 +4874,10 @@
   "koodiUri" : "osaamisala_2245",
   "koodiArvo" : "2245",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "lyhytNimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Audiovisuaalisen viestinnän osaamisala",
     "lyhytNimi" : "Audiovisuaalisen viestinnän osaamisala",
     "kieli" : "FI"
@@ -4733,6 +4887,10 @@
   "koodiUri" : "osaamisala_2246",
   "koodiArvo" : "2246",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för grafisk kommunikation",
+    "lyhytNimi" : "Kompetensområdet för grafisk kommunikation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Painoviestinnän osaamisala",
     "lyhytNimi" : "Painoviestinnän osaamisala",
     "kieli" : "FI"
@@ -4745,6 +4903,150 @@
     "nimi" : "Kirjastoautopalvelujen osaamisala",
     "lyhytNimi" : "Kirjastoautopalvelujen osaamisala",
     "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2248",
+  "koodiArvo" : "2248",
+  "metadata" : [ {
+    "nimi" : "Kultasepäntyön osaamisala",
+    "lyhytNimi" : "Kultasepäntyön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för guldsmedsarbete",
+    "lyhytNimi" : "Kompetensområdet för guldsmedsarbete",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2249",
+  "koodiArvo" : "2249",
+  "metadata" : [ {
+    "nimi" : "Hopeasepäntyön osaamisala",
+    "lyhytNimi" : "Hopeasepäntyön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för silversmedsarbete",
+    "lyhytNimi" : "Kompetensområdet för silversmedsarbete",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2250",
+  "koodiArvo" : "2250",
+  "metadata" : [ {
+    "nimi" : "Kaiverrustyön osaamisala",
+    "lyhytNimi" : "Kaiverrustyön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för graveringsarbete",
+    "lyhytNimi" : "Kompetensområdet för graveringsarbete",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2251",
+  "koodiArvo" : "2251",
+  "metadata" : [ {
+    "nimi" : "Hitsauksen osaamisala",
+    "lyhytNimi" : "Hitsauksen osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för svetsning",
+    "lyhytNimi" : "Kompetensområdet för svetsning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2252",
+  "koodiArvo" : "2252",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för plåtarbeten",
+    "lyhytNimi" : "Kompetensområdet för plåtarbeten",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Levytöiden osaamisala",
+    "lyhytNimi" : "Levytöiden osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2253",
+  "koodiArvo" : "2253",
+  "metadata" : [ {
+    "nimi" : "Tilaus- ja toimitusprosessin hoitamisen osaamisala",
+    "lyhytNimi" : "Tilaus- ja toimitusprosessin hoitamisen osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2254",
+  "koodiArvo" : "2254",
+  "metadata" : [ {
+    "nimi" : "Hankinnan osaamisala",
+    "lyhytNimi" : "Hankinnan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2255",
+  "koodiArvo" : "2255",
+  "metadata" : [ {
+    "nimi" : "Varastologistiikan osaamisala",
+    "lyhytNimi" : "Varastologistiikan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3097",
+  "koodiArvo" : "2256",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för den kemiska industrin",
+    "lyhytNimi" : "Kompetensområdet för den kemiska industrin",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kemianteollisuuden osaamisala",
+    "lyhytNimi" : "Kemianteollisuuden osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3098",
+  "koodiArvo" : "2257",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för pappers- och cellulosaindustrin",
+    "lyhytNimi" : "Kompetensområdet för pappers- och cellulosaindustrin",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Paperi- ja selluteollisuuden osaamisala",
+    "lyhytNimi" : "Paperi- ja selluteollisuuden osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3099",
+  "koodiArvo" : "2258",
+  "metadata" : [ {
+    "nimi" : "Metallien jalostusteollisuuden osaamisala",
+    "lyhytNimi" : "Metallien jalostusteollisuuden osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för metallförädlingsindustrin",
+    "lyhytNimi" : "Kompetensområdet för metallförädlingsindustrin",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3100",
+  "koodiArvo" : "2259",
+  "metadata" : [ {
+    "nimi" : "Valimoteollisuuden osaamisala",
+    "lyhytNimi" : "Valimoteollisuuden osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för gjuteriindustrin",
+    "lyhytNimi" : "Kompetensområdet för gjuteriindustrin",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5450,6 +5752,10 @@
   "koodiUri" : "osaamisala_3067-1",
   "koodiArvo" : "3067",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för arbetsledning inom båtbranschen",
+    "lyhytNimi" : "Kompetensområdet för arbetsledning inom båtbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Venealan työnjohto",
     "lyhytNimi" : "Venealan työnjohto",
     "kieli" : "FI"
@@ -5462,6 +5768,10 @@
     "nimi" : "Puuveneen rakentaminen",
     "lyhytNimi" : "Puuveneen rakentaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för byggande av träbåtar",
+    "lyhytNimi" : "Kompetensområdet för byggande av träbåtar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5471,12 +5781,20 @@
     "nimi" : "Puuteollisuuden esimiestehtävissä toimiminen",
     "lyhytNimi" : "Puuteollisuuden esimiestehtävissä toimiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för chefsarbete inom träindustrin",
+    "lyhytNimi" : "Kompetensområdet för chefsarbete inom träindustrin",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "osaamisala_3070-1",
   "koodiArvo" : "3070",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för tillverkning av snickeriprodukter",
+    "lyhytNimi" : "Kompetensområdet för tillverkning av snickeriprodukter",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Puualan tuotteen valmistaminen",
     "lyhytNimi" : "Puualan tuotteen valmistaminen",
     "kieli" : "FI"
@@ -5513,6 +5831,10 @@
   "koodiUri" : "osaamisala_3074-1",
   "koodiArvo" : "3074",
   "metadata" : [ {
+    "nimi" : "Arbete i specialuppgifter inom målningsbranschen",
+    "lyhytNimi" : "Arbete i specialuppgifter inom målningsbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Maalausalan erikoistyötehtävissä toimiminen",
     "lyhytNimi" : "Maalausalan erikoistyötehtävissä toimiminen",
     "kieli" : "FI"
@@ -5522,6 +5844,10 @@
   "koodiUri" : "osaamisala_3075-1",
   "koodiArvo" : "3075",
   "metadata" : [ {
+    "nimi" : "Arbete i arbetsledaruppgifter inom målningsbranschen",
+    "lyhytNimi" : "Arbete i arbetsledaruppgifter inom målningsbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Maalausalan työnjohtotehtävissä toimiminen",
     "lyhytNimi" : "Maalausalan työnjohtotehtävissä toimiminen",
     "kieli" : "FI"
@@ -5603,6 +5929,10 @@
   "koodiUri" : "osaamisala_3084",
   "koodiArvo" : "3084",
   "metadata" : [ {
+    "nimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "lyhytNimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Audiovisuaalisen viestinnän osaamisala",
     "lyhytNimi" : "Audiovisuaalisen viestinnän osaamisala",
     "kieli" : "FI"
@@ -5615,6 +5945,10 @@
     "nimi" : "Painoviestinnän osaamisala",
     "lyhytNimi" : "Painoviestinnän osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för grafisk kommunikation",
+    "lyhytNimi" : "Kompetensområdet för grafisk kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5624,6 +5958,10 @@
     "nimi" : "Taloushallinnon osaamisala",
     "lyhytNimi" : "Taloushallinnon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet ekonomiförvaltning",
+    "lyhytNimi" : "Kompetensområdet ekonomiförvaltning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5633,6 +5971,10 @@
     "nimi" : "Henkilöstötyön osaamisala",
     "lyhytNimi" : "Henkilöstötyön osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet personalarbete",
+    "lyhytNimi" : "Kompetensområdet personalarbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5641,6 +5983,102 @@
   "metadata" : [ {
     "nimi" : "Sisäisen tarkastuksen osaamisala",
     "lyhytNimi" : "Sisäisen tarkastuksen osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet intern revision",
+    "lyhytNimi" : "Kompetensområdet intern revision",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3089",
+  "koodiArvo" : "3089",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för hantverksarbete",
+    "lyhytNimi" : "Kompetensområdet för hantverksarbete",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Käsityön tekemisen osaamisala",
+    "lyhytNimi" : "Käsityön tekemisen osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3090",
+  "koodiArvo" : "3090",
+  "metadata" : [ {
+    "nimi" : "Museotekniikan osaamisala",
+    "lyhytNimi" : "Museotekniikan osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för museiteknik",
+    "lyhytNimi" : "Kompetensområdet för museiteknik",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3091",
+  "koodiArvo" : "3091",
+  "metadata" : [ {
+    "nimi" : "Kultasepäntyön osaamisala",
+    "lyhytNimi" : "Kultasepäntyön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för guldsmedsarbete",
+    "lyhytNimi" : "Kompetensområdet för guldsmedsarbete",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3092",
+  "koodiArvo" : "3092",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för silversmedsarbete",
+    "lyhytNimi" : "Kompetensområdet för silversmedsarbete",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hopeasepäntyön osaamisala",
+    "lyhytNimi" : "Hopeasepäntyön osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3093",
+  "koodiArvo" : "3093",
+  "metadata" : [ {
+    "nimi" : "Kompetensområdet för graveringsarbete",
+    "lyhytNimi" : "Kompetensområdet för graveringsarbete",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kaiverrustyön osaamisala",
+    "lyhytNimi" : "Kaiverrustyön osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3094",
+  "koodiArvo" : "3094",
+  "metadata" : [ {
+    "nimi" : "Henkilöautotekniikka",
+    "lyhytNimi" : "Henkilöautotekniikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3095",
+  "koodiArvo" : "3095",
+  "metadata" : [ {
+    "nimi" : "Kuorma- ja linja-autotekniikka",
+    "lyhytNimi" : "Kuorma- ja linja-autotekniikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_3096",
+  "koodiArvo" : "3096",
+  "metadata" : [ {
+    "nimi" : "Työkonetekniikka",
+    "lyhytNimi" : "Työkonetekniikka",
     "kieli" : "FI"
   } ],
   "versio" : 1

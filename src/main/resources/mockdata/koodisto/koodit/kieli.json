@@ -125,8 +125,8 @@
     "lyhytNimi" : "amhara",
     "kieli" : "FI"
   }, {
-    "nimi" : "amhariska, amharinya",
-    "lyhytNimi" : "amhariska, amharinya",
+    "nimi" : "amhariska",
+    "lyhytNimi" : "amhariska",
     "kieli" : "SV"
   }, {
     "nimi" : "Amharic",
@@ -138,8 +138,8 @@
   "koodiUri" : "kieli_an",
   "koodiArvo" : "AN",
   "metadata" : [ {
-    "nimi" : "aragonia",
-    "lyhytNimi" : "aragonia",
+    "nimi" : "aragonska",
+    "lyhytNimi" : "aragonska",
     "kieli" : "SV"
   }, {
     "nimi" : "Aragonese",
@@ -206,8 +206,8 @@
   "koodiUri" : "kieli_ay",
   "koodiArvo" : "AY",
   "metadata" : [ {
-    "nimi" : "aimara, aymara",
-    "lyhytNimi" : "aimara, aymara",
+    "nimi" : "aimara",
+    "lyhytNimi" : "aimara",
     "kieli" : "FI"
   }, {
     "nimi" : "aymará",
@@ -223,8 +223,8 @@
   "koodiUri" : "kieli_az",
   "koodiArvo" : "AZ",
   "metadata" : [ {
-    "nimi" : "azeri, azerbaidzani",
-    "lyhytNimi" : "azeri, azerbaidzani",
+    "nimi" : "azeri",
+    "lyhytNimi" : "azeri",
     "kieli" : "FI"
   }, {
     "nimi" : "azerbajdzjanska",
@@ -240,8 +240,8 @@
   "koodiUri" : "kieli_ba",
   "koodiArvo" : "BA",
   "metadata" : [ {
-    "nimi" : "baskiiri",
-    "lyhytNimi" : "baskiiri",
+    "nimi" : "baškiiri",
+    "lyhytNimi" : "baškiiri",
     "kieli" : "FI"
   }, {
     "nimi" : "Bashkir",
@@ -435,8 +435,8 @@
     "lyhytNimi" : "Chechen",
     "kieli" : "EN"
   }, {
-    "nimi" : "tsetseeni",
-    "lyhytNimi" : "tsetseeni",
+    "nimi" : "tšetšeeni",
+    "lyhytNimi" : "tšetšeeni",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -448,8 +448,8 @@
     "lyhytNimi" : "chamorro",
     "kieli" : "SV"
   }, {
-    "nimi" : "chamorro",
-    "lyhytNimi" : "chamorro",
+    "nimi" : "tšamorro",
+    "lyhytNimi" : "tšamorro",
     "kieli" : "FI"
   }, {
     "nimi" : "Chamorro",
@@ -495,8 +495,8 @@
   "koodiUri" : "kieli_cs",
   "koodiArvo" : "CS",
   "metadata" : [ {
-    "nimi" : "tsekki",
-    "lyhytNimi" : "tsekki",
+    "nimi" : "tšekki",
+    "lyhytNimi" : "tšekki",
     "kieli" : "FI"
   }, {
     "nimi" : "tjeckiska",
@@ -533,8 +533,8 @@
     "lyhytNimi" : "tjuvasjiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "tsuvassi",
-    "lyhytNimi" : "tsuvassi",
+    "nimi" : "tšuvassi",
+    "lyhytNimi" : "tšuvassi",
     "kieli" : "FI"
   }, {
     "nimi" : "Chuvash",
@@ -546,12 +546,12 @@
   "koodiUri" : "kieli_cy",
   "koodiArvo" : "CY",
   "metadata" : [ {
-    "nimi" : "kymri, wales",
-    "lyhytNimi" : "kymri, wales",
+    "nimi" : "kymri",
+    "lyhytNimi" : "kymri",
     "kieli" : "FI"
   }, {
-    "nimi" : "kymriska, walesiska",
-    "lyhytNimi" : "kymriska, walesiska",
+    "nimi" : "kymriska",
+    "lyhytNimi" : "kymriska",
     "kieli" : "SV"
   }, {
     "nimi" : "Welsh",
@@ -597,16 +597,16 @@
   "koodiUri" : "kieli_dv",
   "koodiArvo" : "DV",
   "metadata" : [ {
-    "nimi" : "Dhivehi, Maldivian",
-    "lyhytNimi" : "Dhivehi, Maldivian",
+    "nimi" : "Divehi; Maldivian",
+    "lyhytNimi" : "Divehi; Maldivian",
     "kieli" : "EN"
   }, {
     "nimi" : "divehi",
     "lyhytNimi" : "divehi",
     "kieli" : "SV"
   }, {
-    "nimi" : "divehi, malediivi",
-    "lyhytNimi" : "divehi, malediivi",
+    "nimi" : "divehi",
+    "lyhytNimi" : "divehi",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -614,16 +614,16 @@
   "koodiUri" : "kieli_dz",
   "koodiArvo" : "DZ",
   "metadata" : [ {
-    "nimi" : "bhutani, dzongkha",
-    "lyhytNimi" : "bhutani, dzongkha",
+    "nimi" : "dzongkha",
+    "lyhytNimi" : "dzongkha",
     "kieli" : "FI"
   }, {
     "nimi" : "dzongkha",
     "lyhytNimi" : "dzongkha",
     "kieli" : "SV"
   }, {
-    "nimi" : "Bhutani, Dzongkha",
-    "lyhytNimi" : "Bhutani, Dzongkha",
+    "nimi" : "Dzongkha; Bhutani; Butanese",
+    "lyhytNimi" : "Dzongkha; Bhutani; Butanese",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -652,8 +652,8 @@
     "lyhytNimi" : "kreikka",
     "kieli" : "FI"
   }, {
-    "nimi" : "Greek",
-    "lyhytNimi" : "Greek",
+    "nimi" : "Modern Greek",
+    "lyhytNimi" : "Modern Greek",
     "kieli" : "EN"
   }, {
     "nimi" : "grekiska",
@@ -703,8 +703,8 @@
     "lyhytNimi" : "espanja",
     "kieli" : "FI"
   }, {
-    "nimi" : "Spanish",
-    "lyhytNimi" : "Spanish",
+    "nimi" : "Castilian; Spanish",
+    "lyhytNimi" : "Castilian; Spanish",
     "kieli" : "EN"
   }, {
     "nimi" : "spanska",
@@ -720,8 +720,8 @@
     "lyhytNimi" : "estniska",
     "kieli" : "SV"
   }, {
-    "nimi" : "viro, eesti",
-    "lyhytNimi" : "viro, eesti",
+    "nimi" : "viro",
+    "lyhytNimi" : "viro",
     "kieli" : "FI"
   }, {
     "nimi" : "Estonian",
@@ -741,8 +741,8 @@
     "lyhytNimi" : "Basque",
     "kieli" : "EN"
   }, {
-    "nimi" : "baski, euskera, euskara",
-    "lyhytNimi" : "baski, euskera, euskara",
+    "nimi" : "baski, euskara",
+    "lyhytNimi" : "baski, euskara",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -758,8 +758,8 @@
     "lyhytNimi" : "persiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "persia, nykypersia, farsi",
-    "lyhytNimi" : "persia, nykypersia, farsi",
+    "nimi" : "persia, farsi",
+    "lyhytNimi" : "persia, farsi",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -767,16 +767,16 @@
   "koodiUri" : "kieli_ff",
   "koodiArvo" : "FF",
   "metadata" : [ {
-    "nimi" : "fulani, fulfulde",
-    "lyhytNimi" : "fulani, fulfulde",
+    "nimi" : "fulani",
+    "lyhytNimi" : "fulani",
     "kieli" : "FI"
   }, {
     "nimi" : "fulani",
     "lyhytNimi" : "fulani",
     "kieli" : "SV"
   }, {
-    "nimi" : "Fulah, Fula, Fulani",
-    "lyhytNimi" : "Fulah, Fula, Fulani",
+    "nimi" : "Fulah; Fula; Fulani; Fulfulde; Peul",
+    "lyhytNimi" : "Fulah; Fula; Fulani; Fulfulde; Peul",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -801,12 +801,12 @@
   "koodiUri" : "kieli_fj",
   "koodiArvo" : "FJ",
   "metadata" : [ {
-    "nimi" : "fidianska, fiji",
-    "lyhytNimi" : "fidianska, fiji",
+    "nimi" : "fiji",
+    "lyhytNimi" : "fiji",
     "kieli" : "SV"
   }, {
-    "nimi" : "fidzi",
-    "lyhytNimi" : "fidzi",
+    "nimi" : "fidži",
+    "lyhytNimi" : "fidži",
     "kieli" : "FI"
   }, {
     "nimi" : "Fijian",
@@ -822,12 +822,12 @@
     "lyhytNimi" : "fääri",
     "kieli" : "FI"
   }, {
-    "nimi" : "Faroese, Faeroese",
-    "lyhytNimi" : "Faroese, Faeroese",
+    "nimi" : "Faroese; Faeroese",
+    "lyhytNimi" : "Faroese; Faeroese",
     "kieli" : "EN"
   }, {
-    "nimi" : "färiska, färöiska",
-    "lyhytNimi" : "färiska, färöiska",
+    "nimi" : "färiska",
+    "lyhytNimi" : "färiska",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -852,8 +852,8 @@
   "koodiUri" : "kieli_fy",
   "koodiArvo" : "FY",
   "metadata" : [ {
-    "nimi" : "friisi",
-    "lyhytNimi" : "friisi",
+    "nimi" : "länsifriisi",
+    "lyhytNimi" : "länsifriisi",
     "kieli" : "FI"
   }, {
     "nimi" : "frisiska",
@@ -873,8 +873,8 @@
     "lyhytNimi" : "Irish",
     "kieli" : "EN"
   }, {
-    "nimi" : "iriska, irländsk, gäliska",
-    "lyhytNimi" : "iriska, irländsk, gäliska",
+    "nimi" : "iriska",
+    "lyhytNimi" : "iriska",
     "kieli" : "SV"
   }, {
     "nimi" : "iiri",
@@ -890,8 +890,8 @@
     "lyhytNimi" : "skotsk gäliska",
     "kieli" : "SV"
   }, {
-    "nimi" : "skotti, gaeli",
-    "lyhytNimi" : "skotti, gaeli",
+    "nimi" : "gaeli",
+    "lyhytNimi" : "gaeli",
     "kieli" : "FI"
   }, {
     "nimi" : "Gaelic, Scottish Gaelic",
@@ -928,8 +928,8 @@
     "lyhytNimi" : "galiciska",
     "kieli" : "SV"
   }, {
-    "nimi" : "Galician, Gallegan",
-    "lyhytNimi" : "Galician, Gallegan",
+    "nimi" : "Galician; Gallegan",
+    "lyhytNimi" : "Galician; Gallegan",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -962,8 +962,8 @@
     "lyhytNimi" : "Gujarati",
     "kieli" : "EN"
   }, {
-    "nimi" : "gudzarati, gujarati",
-    "lyhytNimi" : "gudzarati, gujarati",
+    "nimi" : "gudžarati",
+    "lyhytNimi" : "gudžarati",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -971,8 +971,8 @@
   "koodiUri" : "kieli_gv",
   "koodiArvo" : "GV",
   "metadata" : [ {
-    "nimi" : "manx",
-    "lyhytNimi" : "manx",
+    "nimi" : "manksi",
+    "lyhytNimi" : "manksi",
     "kieli" : "FI"
   }, {
     "nimi" : "Manx",
@@ -1009,8 +1009,8 @@
     "lyhytNimi" : "Hebrew",
     "kieli" : "EN"
   }, {
-    "nimi" : "heprea, ivrit",
-    "lyhytNimi" : "heprea, ivrit",
+    "nimi" : "heprea",
+    "lyhytNimi" : "heprea",
     "kieli" : "FI"
   }, {
     "nimi" : "hebreiska",
@@ -1081,8 +1081,8 @@
     "lyhytNimi" : "Haitian, Haitian Creole",
     "kieli" : "EN"
   }, {
-    "nimi" : "haiti",
-    "lyhytNimi" : "haiti",
+    "nimi" : "haitiska, haitisk kreol",
+    "lyhytNimi" : "haitiska, haitisk kreol",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1158,8 +1158,8 @@
   "koodiUri" : "kieli_id",
   "koodiArvo" : "ID",
   "metadata" : [ {
-    "nimi" : "indonesia, bahasa indonesia",
-    "lyhytNimi" : "indonesia, bahasa indonesia",
+    "nimi" : "indonesia",
+    "lyhytNimi" : "indonesia",
     "kieli" : "FI"
   }, {
     "nimi" : "Indonesian",
@@ -1183,8 +1183,8 @@
     "lyhytNimi" : "Interlingua",
     "kieli" : "EN"
   }, {
-    "nimi" : "interlingue",
-    "lyhytNimi" : "interlingue",
+    "nimi" : "interlingue, occidental",
+    "lyhytNimi" : "interlingue, occidental",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1213,8 +1213,8 @@
     "lyhytNimi" : "sichuan yi",
     "kieli" : "SV"
   }, {
-    "nimi" : "sichuan yi",
-    "lyhytNimi" : "sichuan yi",
+    "nimi" : "inupiaq, inupiatun",
+    "lyhytNimi" : "inupiaq, inupiatun",
     "kieli" : "FI"
   }, {
     "nimi" : "Sichuan Yi",
@@ -1234,8 +1234,8 @@
     "lyhytNimi" : "inupiak",
     "kieli" : "SV"
   }, {
-    "nimi" : "inupiak",
-    "lyhytNimi" : "inupiak",
+    "nimi" : "inupiaq",
+    "lyhytNimi" : "inupiaq",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1311,8 +1311,8 @@
     "lyhytNimi" : "eskimåiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "eskimo",
-    "lyhytNimi" : "eskimo",
+    "nimi" : "inuktitut",
+    "lyhytNimi" : "inuktitut",
     "kieli" : "FI"
   }, {
     "nimi" : "Inuktitut",
@@ -1375,8 +1375,8 @@
   "koodiUri" : "kieli_ka",
   "koodiArvo" : "KA",
   "metadata" : [ {
-    "nimi" : "georgia, gruusia",
-    "lyhytNimi" : "georgia, gruusia",
+    "nimi" : "georgia",
+    "lyhytNimi" : "georgia",
     "kieli" : "FI"
   }, {
     "nimi" : "georgiska",
@@ -1413,8 +1413,8 @@
     "lyhytNimi" : "Kongo",
     "kieli" : "EN"
   }, {
-    "nimi" : "kikongo, kongo",
-    "lyhytNimi" : "kikongo, kongo",
+    "nimi" : "kongo",
+    "lyhytNimi" : "kongo",
     "kieli" : "FI"
   }, {
     "nimi" : "kikongo",
@@ -1464,8 +1464,8 @@
     "lyhytNimi" : "Kazakh",
     "kieli" : "EN"
   }, {
-    "nimi" : "kazakki, kasakki",
-    "lyhytNimi" : "kazakki, kasakki",
+    "nimi" : "kazakki",
+    "lyhytNimi" : "kazakki",
     "kieli" : "FI"
   }, {
     "nimi" : "kazakiska",
@@ -1485,8 +1485,8 @@
     "lyhytNimi" : "Greenlandic, Kalaallisut",
     "kieli" : "EN"
   }, {
-    "nimi" : "grönlanti, grönlannineskimo",
-    "lyhytNimi" : "grönlanti, grönlannineskimo",
+    "nimi" : "kalaallisut, grönlanti",
+    "lyhytNimi" : "kalaallisut, grönlanti",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1498,8 +1498,8 @@
     "lyhytNimi" : "Cambodian, Khmer",
     "kieli" : "EN"
   }, {
-    "nimi" : "khmer, kambodza",
-    "lyhytNimi" : "khmer, kambodza",
+    "nimi" : "keskikhmer",
+    "lyhytNimi" : "keskikhmer",
     "kieli" : "FI"
   }, {
     "nimi" : "khmeriska, kambodjanska",
@@ -1519,8 +1519,8 @@
     "lyhytNimi" : "kannada",
     "kieli" : "FI"
   }, {
-    "nimi" : "kannada, kanaresiska",
-    "lyhytNimi" : "kannada, kanaresiska",
+    "nimi" : "kannada",
+    "lyhytNimi" : "kannada",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1562,16 +1562,16 @@
   "koodiUri" : "kieli_ks",
   "koodiArvo" : "KS",
   "metadata" : [ {
-    "nimi" : "kashmiriska, kashmiri",
-    "lyhytNimi" : "kashmiriska, kashmiri",
+    "nimi" : "kashmiri",
+    "lyhytNimi" : "kashmiri",
     "kieli" : "SV"
   }, {
     "nimi" : "Kashmiri",
     "lyhytNimi" : "Kashmiri",
     "kieli" : "EN"
   }, {
-    "nimi" : "kasmiri",
-    "lyhytNimi" : "kasmiri",
+    "nimi" : "kašmiri",
+    "lyhytNimi" : "kašmiri",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1664,12 +1664,12 @@
   "koodiUri" : "kieli_lb",
   "koodiArvo" : "LB",
   "metadata" : [ {
-    "nimi" : "letzeburg, luxemburg",
-    "lyhytNimi" : "letzeburg, luxemburg",
+    "nimi" : "luxemburg, myös: letzeburg",
+    "lyhytNimi" : "luxemburg, myös: letzeburg",
     "kieli" : "FI"
   }, {
-    "nimi" : "letzebuergesch",
-    "lyhytNimi" : "letzebuergesch",
+    "nimi" : "letzebuergesch (luxemburgiska)",
+    "lyhytNimi" : "letzebuergesch (luxemburgiska)",
     "kieli" : "SV"
   }, {
     "nimi" : "Luxembourgish",
@@ -1685,12 +1685,12 @@
     "lyhytNimi" : "luganda",
     "kieli" : "SV"
   }, {
-    "nimi" : "Luganda, Ganda",
-    "lyhytNimi" : "Luganda, Ganda",
+    "nimi" : "Ganda; Luganda",
+    "lyhytNimi" : "Ganda; Luganda",
     "kieli" : "EN"
   }, {
-    "nimi" : "ganda, luganda",
-    "lyhytNimi" : "ganda, luganda",
+    "nimi" : "ganda",
+    "lyhytNimi" : "ganda",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1698,8 +1698,8 @@
   "koodiUri" : "kieli_li",
   "koodiArvo" : "LI",
   "metadata" : [ {
-    "nimi" : "limburg",
-    "lyhytNimi" : "limburg",
+    "nimi" : "limburgiska",
+    "lyhytNimi" : "limburgiska",
     "kieli" : "SV"
   }, {
     "nimi" : "Limburgan, Limburger",
@@ -1736,8 +1736,8 @@
     "lyhytNimi" : "lao",
     "kieli" : "FI"
   }, {
-    "nimi" : "lao, laotiska",
-    "lyhytNimi" : "lao, laotiska",
+    "nimi" : "lao",
+    "lyhytNimi" : "lao",
     "kieli" : "SV"
   }, {
     "nimi" : "Laotian, Lao",
@@ -1774,8 +1774,8 @@
     "lyhytNimi" : "Luba-Katanga",
     "kieli" : "EN"
   }, {
-    "nimi" : "luba-katanga",
-    "lyhytNimi" : "luba-katanga",
+    "nimi" : "katanganluba",
+    "lyhytNimi" : "katanganluba",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1787,8 +1787,8 @@
     "lyhytNimi" : "Latvian",
     "kieli" : "EN"
   }, {
-    "nimi" : "latvia, lätti",
-    "lyhytNimi" : "latvia, lätti",
+    "nimi" : "latvia",
+    "lyhytNimi" : "latvia",
     "kieli" : "FI"
   }, {
     "nimi" : "lettiska",
@@ -1800,8 +1800,8 @@
   "koodiUri" : "kieli_mg",
   "koodiArvo" : "MG",
   "metadata" : [ {
-    "nimi" : "malagasi, madagassi",
-    "lyhytNimi" : "malagasi, madagassi",
+    "nimi" : "malagasi",
+    "lyhytNimi" : "malagasi",
     "kieli" : "FI"
   }, {
     "nimi" : "malagassiska",
@@ -1825,8 +1825,8 @@
     "lyhytNimi" : "marshall",
     "kieli" : "SV"
   }, {
-    "nimi" : "marshallese",
-    "lyhytNimi" : "marshallese",
+    "nimi" : "marshall",
+    "lyhytNimi" : "marshall",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1910,8 +1910,8 @@
     "lyhytNimi" : "moldaviska",
     "kieli" : "SV"
   }, {
-    "nimi" : "moldavia",
-    "lyhytNimi" : "moldavia",
+    "nimi" : "moldova",
+    "lyhytNimi" : "moldova",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1974,8 +1974,8 @@
     "lyhytNimi" : "Burmese, Myanmar",
     "kieli" : "EN"
   }, {
-    "nimi" : "burmanska, burmesiska",
-    "lyhytNimi" : "burmanska, burmesiska",
+    "nimi" : "burmanska",
+    "lyhytNimi" : "burmanska",
     "kieli" : "SV"
   }, {
     "nimi" : "burma",
@@ -1991,8 +1991,8 @@
     "lyhytNimi" : "nauru",
     "kieli" : "SV"
   }, {
-    "nimi" : "Nauru",
-    "lyhytNimi" : "Nauru",
+    "nimi" : "Nauruan",
+    "lyhytNimi" : "Nauruan",
     "kieli" : "EN"
   }, {
     "nimi" : "nauru",
@@ -2004,12 +2004,12 @@
   "koodiUri" : "kieli_nb",
   "koodiArvo" : "NB",
   "metadata" : [ {
-    "nimi" : "kirjanorja",
-    "lyhytNimi" : "kirjanorja",
+    "nimi" : "norjan bokmål",
+    "lyhytNimi" : "norjan bokmål",
     "kieli" : "FI"
   }, {
-    "nimi" : "norsk bokmål",
-    "lyhytNimi" : "norsk bokmål",
+    "nimi" : "bokmål",
+    "lyhytNimi" : "bokmål",
     "kieli" : "SV"
   }, {
     "nimi" : "Norwegian Bokmål",
@@ -2021,8 +2021,8 @@
   "koodiUri" : "kieli_nd",
   "koodiArvo" : "ND",
   "metadata" : [ {
-    "nimi" : "ndebele nord",
-    "lyhytNimi" : "ndebele nord",
+    "nimi" : "ndebele (nord)",
+    "lyhytNimi" : "ndebele (nord)",
     "kieli" : "SV"
   }, {
     "nimi" : "North Ndebele",
@@ -2038,8 +2038,8 @@
   "koodiUri" : "kieli_ne",
   "koodiArvo" : "NE",
   "metadata" : [ {
-    "nimi" : "nepalesiska, nepali",
-    "lyhytNimi" : "nepalesiska, nepali",
+    "nimi" : "nepali",
+    "lyhytNimi" : "nepali",
     "kieli" : "SV"
   }, {
     "nimi" : "nepali",
@@ -2059,8 +2059,8 @@
     "lyhytNimi" : "Ndonga",
     "kieli" : "EN"
   }, {
-    "nimi" : "ambo, ndonga",
-    "lyhytNimi" : "ambo, ndonga",
+    "nimi" : "ndonga",
+    "lyhytNimi" : "ndonga",
     "kieli" : "FI"
   }, {
     "nimi" : "ndonga",
@@ -2097,8 +2097,8 @@
     "lyhytNimi" : "Norwegian Nynorsk",
     "kieli" : "EN"
   }, {
-    "nimi" : "uusnorja",
-    "lyhytNimi" : "uusnorja",
+    "nimi" : "norjan nynorsk",
+    "lyhytNimi" : "norjan nynorsk",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2123,12 +2123,12 @@
   "koodiUri" : "kieli_nr",
   "koodiArvo" : "NR",
   "metadata" : [ {
-    "nimi" : "ndebele syd",
-    "lyhytNimi" : "ndebele syd",
+    "nimi" : "ndebele (syd)",
+    "lyhytNimi" : "ndebele (syd)",
     "kieli" : "SV"
   }, {
-    "nimi" : "eteländebele",
-    "lyhytNimi" : "eteländebele",
+    "nimi" : "etelä-ndebele",
+    "lyhytNimi" : "etelä-ndebele",
     "kieli" : "FI"
   }, {
     "nimi" : "South Ndebele",
@@ -2148,8 +2148,8 @@
     "lyhytNimi" : "navaho",
     "kieli" : "SV"
   }, {
-    "nimi" : "navaho",
-    "lyhytNimi" : "navaho",
+    "nimi" : "navajo",
+    "lyhytNimi" : "navajo",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2165,8 +2165,8 @@
     "lyhytNimi" : "Chichewa, Cheva, Nyanja",
     "kieli" : "EN"
   }, {
-    "nimi" : "njandza, tseva",
-    "lyhytNimi" : "njandza, tseva",
+    "nimi" : "njandža, myös: tšitšewa, tšewa",
+    "lyhytNimi" : "njandža, myös: tšitšewa, tšewa",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2191,8 +2191,8 @@
   "koodiUri" : "kieli_oj",
   "koodiArvo" : "OJ",
   "metadata" : [ {
-    "nimi" : "ojibwa",
-    "lyhytNimi" : "ojibwa",
+    "nimi" : "odžibwa",
+    "lyhytNimi" : "odžibwa",
     "kieli" : "FI"
   }, {
     "nimi" : "Ojibwa",
@@ -2208,16 +2208,16 @@
   "koodiUri" : "kieli_om",
   "koodiArvo" : "OM",
   "metadata" : [ {
-    "nimi" : "Afan Oromo, Oromo, Galla",
-    "lyhytNimi" : "Afan Oromo, Oromo, Galla",
+    "nimi" : "Afan Oromo; Oromo; Galla",
+    "lyhytNimi" : "Afan Oromo; Oromo; Galla",
     "kieli" : "EN"
   }, {
     "nimi" : "galla, oromo",
     "lyhytNimi" : "galla, oromo",
     "kieli" : "SV"
   }, {
-    "nimi" : "galla, afan oromo, oromo",
-    "lyhytNimi" : "galla, afan oromo, oromo",
+    "nimi" : "oromo",
+    "lyhytNimi" : "oromo",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2263,8 +2263,8 @@
     "lyhytNimi" : "panjabi",
     "kieli" : "SV"
   }, {
-    "nimi" : "pandzabi",
-    "lyhytNimi" : "pandzabi",
+    "nimi" : "pandžabi",
+    "lyhytNimi" : "pandžabi",
     "kieli" : "FI"
   }, {
     "nimi" : "Punjabi, Panjabi",
@@ -2280,12 +2280,12 @@
     "lyhytNimi" : "pali",
     "kieli" : "SV"
   }, {
-    "nimi" : "Pali",
+    "nimi" : "Paali",
     "lyhytNimi" : "Pali",
     "kieli" : "EN"
   }, {
-    "nimi" : "pali",
-    "lyhytNimi" : "pali",
+    "nimi" : "paali",
+    "lyhytNimi" : "paali",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2314,8 +2314,8 @@
     "lyhytNimi" : "Pashto, Pushto",
     "kieli" : "EN"
   }, {
-    "nimi" : "afgaani, pasto",
-    "lyhytNimi" : "afgaani, pasto",
+    "nimi" : "paštu, myös: afgaani",
+    "lyhytNimi" : "paštu, myös: afgaani",
     "kieli" : "FI"
   }, {
     "nimi" : "pashto",
@@ -2344,12 +2344,12 @@
   "koodiUri" : "kieli_qu",
   "koodiArvo" : "QU",
   "metadata" : [ {
-    "nimi" : "kechua, quechua",
-    "lyhytNimi" : "kechua, quechua",
+    "nimi" : "kechua",
+    "lyhytNimi" : "kechua",
     "kieli" : "SV"
   }, {
-    "nimi" : "ketsua",
-    "lyhytNimi" : "ketsua",
+    "nimi" : "ketšua",
+    "lyhytNimi" : "ketšua",
     "kieli" : "FI"
   }, {
     "nimi" : "Quechua",
@@ -2395,16 +2395,16 @@
   "koodiUri" : "kieli_rn",
   "koodiArvo" : "RN",
   "metadata" : [ {
-    "nimi" : "rundi, kirundi",
-    "lyhytNimi" : "rundi, kirundi",
+    "nimi" : "rundi",
+    "lyhytNimi" : "rundi",
     "kieli" : "FI"
   }, {
     "nimi" : "rundi, kirundi",
     "lyhytNimi" : "rundi, kirundi",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kirundi, Rundi",
-    "lyhytNimi" : "Kirundi, Rundi",
+    "nimi" : "Kirundi; Rundi",
+    "lyhytNimi" : "Kirundi; Rundi",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -2450,8 +2450,8 @@
     "lyhytNimi" : "Kinyarwanda, Rwanda",
     "kieli" : "EN"
   }, {
-    "nimi" : "ruanda, kinjaruanda, njaruanda",
-    "lyhytNimi" : "ruanda, kinjaruanda, njaruanda",
+    "nimi" : "ruanda",
+    "lyhytNimi" : "ruanda",
     "kieli" : "FI"
   }, {
     "nimi" : "kinyarwanda",
@@ -2518,8 +2518,8 @@
     "lyhytNimi" : "samiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "saame, lappi",
-    "lyhytNimi" : "saame, lappi",
+    "nimi" : "pohjoissaame",
+    "lyhytNimi" : "pohjoissaame",
     "kieli" : "FI"
   }, {
     "nimi" : "Northern Sami",
@@ -2552,8 +2552,8 @@
     "lyhytNimi" : "serbokroatiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "serbokroatia, serbokroatiska",
-    "lyhytNimi" : "serbokroatia, serbokroatiska",
+    "nimi" : "serbokroatia",
+    "lyhytNimi" : "serbokroatia",
     "kieli" : "FI"
   }, {
     "nimi" : "Serbo-Croatian",
@@ -2565,16 +2565,16 @@
   "koodiUri" : "kieli_si",
   "koodiArvo" : "SI",
   "metadata" : [ {
-    "nimi" : "singali",
-    "lyhytNimi" : "singali",
+    "nimi" : "sinhala",
+    "lyhytNimi" : "sinhala",
     "kieli" : "FI"
   }, {
     "nimi" : "singalesiska",
     "lyhytNimi" : "singalesiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "Singalesiska, Singhalesiska",
-    "lyhytNimi" : "Singalesiska, Singhalesiska",
+    "nimi" : "Sinhala; Sinhalese; Singhalese",
+    "lyhytNimi" : "Sinhala; Sinhalese; Singhalese",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -2641,7 +2641,7 @@
     "lyhytNimi" : "Shona",
     "kieli" : "EN"
   }, {
-    "nimi" : "shona",
+    "nimi" : "šona",
     "lyhytNimi" : "shona",
     "kieli" : "FI"
   } ],
@@ -2709,8 +2709,8 @@
     "lyhytNimi" : "swazi",
     "kieli" : "SV"
   }, {
-    "nimi" : "siswati, swazi",
-    "lyhytNimi" : "siswati, swazi",
+    "nimi" : "swazi",
+    "lyhytNimi" : "swazi",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2718,8 +2718,8 @@
   "koodiUri" : "kieli_st",
   "koodiArvo" : "ST",
   "metadata" : [ {
-    "nimi" : "sotho, sesotho",
-    "lyhytNimi" : "sotho, sesotho",
+    "nimi" : "eteläsotho",
+    "lyhytNimi" : "eteläsotho",
     "kieli" : "FI"
   }, {
     "nimi" : "sotho",
@@ -2794,8 +2794,8 @@
     "lyhytNimi" : "tamili",
     "kieli" : "FI"
   }, {
-    "nimi" : "tamiliska, tamil",
-    "lyhytNimi" : "tamiliska, tamil",
+    "nimi" : "tamili",
+    "lyhytNimi" : "tamili",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2824,8 +2824,8 @@
     "lyhytNimi" : "tadzjikiska",
     "kieli" : "SV"
   }, {
-    "nimi" : "tadzikki",
-    "lyhytNimi" : "tadzikki",
+    "nimi" : "tadžikki",
+    "lyhytNimi" : "tadžikki",
     "kieli" : "FI"
   }, {
     "nimi" : "Tajiki",
@@ -2837,8 +2837,8 @@
   "koodiUri" : "kieli_th",
   "koodiArvo" : "TH",
   "metadata" : [ {
-    "nimi" : "thailändska, thai",
-    "lyhytNimi" : "thailändska, thai",
+    "nimi" : "thai",
+    "lyhytNimi" : "thai",
     "kieli" : "SV"
   }, {
     "nimi" : "thai",
@@ -2854,8 +2854,8 @@
   "koodiUri" : "kieli_ti",
   "koodiArvo" : "TI",
   "metadata" : [ {
-    "nimi" : "tigrinja, tigrinya",
-    "lyhytNimi" : "tigrinja, tigrinya",
+    "nimi" : "tigrinja",
+    "lyhytNimi" : "tigrinja",
     "kieli" : "SV"
   }, {
     "nimi" : "Tigrinya",
@@ -2888,16 +2888,16 @@
   "koodiUri" : "kieli_tl",
   "koodiArvo" : "TL",
   "metadata" : [ {
-    "nimi" : "tagalog, pilipino",
-    "lyhytNimi" : "tagalog, pilipino",
+    "nimi" : "tagalog",
+    "lyhytNimi" : "tagalog",
     "kieli" : "FI"
   }, {
     "nimi" : "Tagalog",
     "lyhytNimi" : "Tagalog",
     "kieli" : "EN"
   }, {
-    "nimi" : "tagalog, pilipino",
-    "lyhytNimi" : "tagalog, pilipino",
+    "nimi" : "tagalog",
+    "lyhytNimi" : "tagalog",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2909,8 +2909,8 @@
     "lyhytNimi" : "Setswana, Tswana",
     "kieli" : "EN"
   }, {
-    "nimi" : "tswana, setswana",
-    "lyhytNimi" : "tswana, setswana",
+    "nimi" : "tswana",
+    "lyhytNimi" : "tswana",
     "kieli" : "FI"
   }, {
     "nimi" : "tswana",
@@ -2922,16 +2922,16 @@
   "koodiUri" : "kieli_to",
   "koodiArvo" : "TO",
   "metadata" : [ {
-    "nimi" : "tonga",
-    "lyhytNimi" : "tonga",
+    "nimi" : "tongantonga",
+    "lyhytNimi" : "tongantonga",
     "kieli" : "FI"
   }, {
-    "nimi" : "tonga, tonganska",
-    "lyhytNimi" : "tonga, tonganska",
+    "nimi" : "tonga",
+    "lyhytNimi" : "tonga",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tongan",
-    "lyhytNimi" : "Tongan",
+    "nimi" : "Tongan (Tonga Islands)",
+    "lyhytNimi" : "Tongan (Tonga Islands)",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -3079,8 +3079,8 @@
     "lyhytNimi" : "Uzbek",
     "kieli" : "EN"
   }, {
-    "nimi" : "uzbekki, usbekki, ösbekki",
-    "lyhytNimi" : "uzbekki, usbekki, ösbekki",
+    "nimi" : "uzbekki",
+    "lyhytNimi" : "uzbekki",
     "kieli" : "FI"
   }, {
     "nimi" : "uzbekiska",
@@ -3168,8 +3168,8 @@
     "lyhytNimi" : "Walloon",
     "kieli" : "EN"
   }, {
-    "nimi" : "walloon",
-    "lyhytNimi" : "walloon",
+    "nimi" : "valloni",
+    "lyhytNimi" : "valloni",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3194,12 +3194,12 @@
   "koodiUri" : "kieli_xh",
   "koodiArvo" : "XH",
   "metadata" : [ {
-    "nimi" : "xhosa, xosa, kafir, kosa",
-    "lyhytNimi" : "xhosa, xosa, kafir, kosa",
+    "nimi" : "xhosa",
+    "lyhytNimi" : "xhosa",
     "kieli" : "SV"
   }, {
-    "nimi" : "xhosa, kafferi, hosa",
-    "lyhytNimi" : "xhosa, kafferi, hosa",
+    "nimi" : "xhosa",
+    "lyhytNimi" : "xhosa",
     "kieli" : "FI"
   }, {
     "nimi" : "Xhosa",
@@ -3236,8 +3236,8 @@
     "lyhytNimi" : "Yiddish",
     "kieli" : "EN"
   }, {
-    "nimi" : "jiddi, jiddis",
-    "lyhytNimi" : "jiddi, jiddis",
+    "nimi" : "jiddiš",
+    "lyhytNimi" : "jiddiš",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3249,8 +3249,8 @@
     "lyhytNimi" : "Yoruba",
     "kieli" : "EN"
   }, {
-    "nimi" : "joruba, yoruba",
-    "lyhytNimi" : "joruba, yoruba",
+    "nimi" : "joruba",
+    "lyhytNimi" : "joruba",
     "kieli" : "SV"
   }, {
     "nimi" : "joruba",
@@ -3262,16 +3262,16 @@
   "koodiUri" : "kieli_za",
   "koodiArvo" : "ZA",
   "metadata" : [ {
-    "nimi" : "tsuang",
-    "lyhytNimi" : "tsuang",
+    "nimi" : "tšuang",
+    "lyhytNimi" : "tšuang",
     "kieli" : "SV"
   }, {
     "nimi" : "Zhuang, Chuang",
     "lyhytNimi" : "Zhuang, Chuang",
     "kieli" : "EN"
   }, {
-    "nimi" : "tsuang",
-    "lyhytNimi" : "tsuang",
+    "nimi" : "zhuang",
+    "lyhytNimi" : "zhuang",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3300,8 +3300,8 @@
     "lyhytNimi" : "Zulu",
     "kieli" : "EN"
   }, {
-    "nimi" : "zuluspråk, zulu",
-    "lyhytNimi" : "zuluspråk, zulu",
+    "nimi" : "zulu",
+    "lyhytNimi" : "zulu",
     "kieli" : "SV"
   }, {
     "nimi" : "zulu",

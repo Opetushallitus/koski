@@ -272,13 +272,13 @@
   "koodiUri" : "tutkinnonosat_100027",
   "koodiArvo" : "100027",
   "metadata" : [ {
-    "nimi" : "Reparation av småmaskiner",
-    "lyhytNimi" : "Reparation av småmaskiner",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pienkoneiden korjaaminen",
     "lyhytNimi" : "Pienkoneiden korjaaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reparation av småmaskiner",
+    "lyhytNimi" : "Reparation av småmaskiner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -675,13 +675,13 @@
   "koodiUri" : "tutkinnonosat_100058",
   "koodiArvo" : "100058",
   "metadata" : [ {
-    "nimi" : "Tillverkning av specialprodukter i småskalig produktion",
-    "lyhytNimi" : "Tillverkning av specialprodukter i småskalig produktion",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Erikoistuotteiden valmistus pientuotannossa",
     "lyhytNimi" : "Erikoistuotteiden valmistus pientuotannossa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillverkning av specialprodukter i småskalig produktion",
+    "lyhytNimi" : "Tillverkning av specialprodukter i småskalig produktion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -727,13 +727,13 @@
   "koodiUri" : "tutkinnonosat_100062",
   "koodiArvo" : "100062",
   "metadata" : [ {
-    "nimi" : "Livsmedelstillverkare i en internationell miljö",
-    "lyhytNimi" : "Livsmedelstillverkare i en internationell miljö",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elintarvikkeiden valmistajana kansainvälisessä ympäristössä",
     "lyhytNimi" : "Elintarvikkeiden valmistajana kansainvälisessä ympäristössä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livsmedelstillverkare i en internationell miljö",
+    "lyhytNimi" : "Livsmedelstillverkare i en internationell miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1464,13 +1464,13 @@
   "koodiUri" : "tutkinnonosat_100119",
   "koodiArvo" : "100119",
   "metadata" : [ {
-    "nimi" : "Stilkonsultation",
-    "lyhytNimi" : "Stilkonsultation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Asiakkaan tyylipalvelut",
     "lyhytNimi" : "Asiakkaan tyylipalvelut",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Stilkonsultation",
+    "lyhytNimi" : "Stilkonsultation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1607,13 +1607,13 @@
   "koodiUri" : "tutkinnonosat_100130",
   "koodiArvo" : "100130",
   "metadata" : [ {
-    "nimi" : "Kaféservice",
-    "lyhytNimi" : "Kaféservice",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kahvilapalvelut",
     "lyhytNimi" : "Kahvilapalvelut",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kaféservice",
+    "lyhytNimi" : "Kaféservice",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2595,13 +2595,13 @@
   "koodiUri" : "tutkinnonosat_100206",
   "koodiArvo" : "100206",
   "metadata" : [ {
-    "nimi" : "Städning av samfärdsmedel",
-    "lyhytNimi" : "Städning av samfärdsmedel",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Liikennevälineiden puhtaanapito",
     "lyhytNimi" : "Liikennevälineiden puhtaanapito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Städning av samfärdsmedel",
+    "lyhytNimi" : "Städning av samfärdsmedel",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3050,13 +3050,13 @@
   "koodiUri" : "tutkinnonosat_100241",
   "koodiArvo" : "100241",
   "metadata" : [ {
-    "nimi" : "CNC-tillverkning inom plåt- och svetsbranschen",
-    "lyhytNimi" : "CNC-tillverkning inom plåt- och svetsbranschen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Levy- ja hitsausalan CNC-valmistus",
     "lyhytNimi" : "Levy- ja hitsausalan CNC-valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "CNC-tillverkning inom plåt- och svetsbranschen",
+    "lyhytNimi" : "CNC-tillverkning inom plåt- och svetsbranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3154,13 +3154,13 @@
   "koodiUri" : "tutkinnonosat_100249",
   "koodiArvo" : "100249",
   "metadata" : [ {
-    "nimi" : "Skapande av verktygsbanor i 2D med CAD/CAM",
-    "lyhytNimi" : "Skapande av verktygsbanor i 2D med CAD/CAM",
-    "kieli" : "SV"
-  }, {
     "nimi" : "CAD/CAM-2D-työstöratojen valmistus",
     "lyhytNimi" : "CAD/CAM-2D-työstöratojen valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skapande av verktygsbanor i 2D med CAD/CAM",
+    "lyhytNimi" : "Skapande av verktygsbanor i 2D med CAD/CAM",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3258,13 +3258,13 @@
   "koodiUri" : "tutkinnonosat_100257",
   "koodiArvo" : "100257",
   "metadata" : [ {
-    "nimi" : "Fleraxlig tillverkning",
-    "lyhytNimi" : "Fleraxlig tillverkning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Moniakselinen valmistus",
     "lyhytNimi" : "Moniakselinen valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fleraxlig tillverkning",
+    "lyhytNimi" : "Fleraxlig tillverkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3453,13 +3453,13 @@
   "koodiUri" : "tutkinnonosat_100272",
   "koodiArvo" : "100272",
   "metadata" : [ {
-    "nimi" : "Grundstädning",
-    "lyhytNimi" : "Grundstädning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Perussiivous",
     "lyhytNimi" : "Perussiivous",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundstädning",
+    "lyhytNimi" : "Grundstädning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3961,13 +3961,13 @@
   "koodiUri" : "tutkinnonosat_100312",
   "koodiArvo" : "100312",
   "metadata" : [ {
-    "nimi" : "Förverkligandet av målgruppsjournalistik",
-    "lyhytNimi" : "Förverkligandet av målgruppsjournalistik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kohderyhmäjournalismin toteuttaminen",
     "lyhytNimi" : "Kohderyhmäjournalismin toteuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förverkligandet av målgruppsjournalistik",
+    "lyhytNimi" : "Förverkligandet av målgruppsjournalistik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4052,13 +4052,13 @@
   "koodiUri" : "tutkinnonosat_100319",
   "koodiArvo" : "100319",
   "metadata" : [ {
-    "nimi" : "Planering av genomförande",
-    "lyhytNimi" : "Planering av genomförande",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Toteuttamisen suunnittelu",
     "lyhytNimi" : "Toteuttamisen suunnittelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Planering av genomförande",
+    "lyhytNimi" : "Planering av genomförande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4195,13 +4195,13 @@
   "koodiUri" : "tutkinnonosat_100330",
   "koodiArvo" : "100330",
   "metadata" : [ {
-    "nimi" : "Manuell tillverkning av en produkt",
-    "lyhytNimi" : "Manuell tillverkning av en produkt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tuotteen valmistaminen käsityönä",
     "lyhytNimi" : "Tuotteen valmistaminen käsityönä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Manuell tillverkning av en produkt",
+    "lyhytNimi" : "Manuell tillverkning av en produkt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4377,13 +4377,13 @@
   "koodiUri" : "tutkinnonosat_100344",
   "koodiArvo" : "100344",
   "metadata" : [ {
-    "nimi" : "Att möta och handleda barn och familjer i behov av stöd",
-    "lyhytNimi" : "Att möta och handleda barn och familjer i behov av stöd",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tukea tarvitsevien lasten ja perheiden kohtaaminen ja ohjaus",
     "lyhytNimi" : "Tukea tarvitsevien lasten ja perheiden kohtaaminen ja ohjaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att möta och handleda barn och familjer i behov av stöd",
+    "lyhytNimi" : "Att möta och handleda barn och familjer i behov av stöd",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5370,13 +5370,13 @@
   "koodiUri" : "tutkinnonosat_100423",
   "koodiArvo" : "100423",
   "metadata" : [ {
-    "nimi" : "Terminalfunktioner och lastning",
-    "lyhytNimi" : "Terminalfunktioner och lastning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Terminaalitoiminnot ja lastaus",
     "lyhytNimi" : "Terminaalitoiminnot ja lastaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Terminalfunktioner och lastning",
+    "lyhytNimi" : "Terminalfunktioner och lastning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5539,13 +5539,13 @@
   "koodiUri" : "tutkinnonosat_100436",
   "koodiArvo" : "100436",
   "metadata" : [ {
-    "nimi" : "Renskötsel",
-    "lyhytNimi" : "Renskötsel",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Poronhoito",
     "lyhytNimi" : "Poronhoito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Renskötsel",
+    "lyhytNimi" : "Renskötsel",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5591,13 +5591,13 @@
   "koodiUri" : "tutkinnonosat_100440",
   "koodiArvo" : "100440",
   "metadata" : [ {
-    "nimi" : "Iståndsättning och vård av miljöobjekt",
-    "lyhytNimi" : "Iståndsättning och vård av miljöobjekt",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ympäristökohteiden kunnostaminen ja hoitaminen",
     "lyhytNimi" : "Ympäristökohteiden kunnostaminen ja hoitaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Iståndsättning och vård av miljöobjekt",
+    "lyhytNimi" : "Iståndsättning och vård av miljöobjekt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5747,13 +5747,13 @@
   "koodiUri" : "tutkinnonosat_100452",
   "koodiArvo" : "100452",
   "metadata" : [ {
-    "nimi" : "Organisering av vattenförsörjningen",
-    "lyhytNimi" : "Organisering av vattenförsörjningen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vesihuollon järjestäminen",
     "lyhytNimi" : "Vesihuollon järjestäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Organisering av vattenförsörjningen",
+    "lyhytNimi" : "Organisering av vattenförsörjningen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6488,13 +6488,13 @@
   "koodiUri" : "tutkinnonosat_100509",
   "koodiArvo" : "100509",
   "metadata" : [ {
-    "nimi" : "Uppfödning och skötsel av farmdjur",
-    "lyhytNimi" : "Uppfödning och skötsel av farmdjur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tarhattavien eläinten kasvattaminen ja hoitaminen",
     "lyhytNimi" : "Tarhattavien eläinten kasvattaminen ja hoitaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uppfödning och skötsel av farmdjur",
+    "lyhytNimi" : "Uppfödning och skötsel av farmdjur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6852,13 +6852,13 @@
   "koodiUri" : "tutkinnonosat_100537",
   "koodiArvo" : "100537",
   "metadata" : [ {
-    "nimi" : "Sjötransportteknik",
-    "lyhytNimi" : "Sjötransportteknik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Merikuljetustekniikka",
     "lyhytNimi" : "Merikuljetustekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sjötransportteknik",
+    "lyhytNimi" : "Sjötransportteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -7927,13 +7927,13 @@
   "koodiUri" : "tutkinnonosat_100621",
   "koodiArvo" : "100621",
   "metadata" : [ {
-    "nimi" : "Dirigering av ensemble och kör",
-    "lyhytNimi" : "Dirigering av ensemble och kör",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yhtyeen ja kuoron johtaminen",
     "lyhytNimi" : "Yhtyeen ja kuoron johtaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Dirigering av ensemble och kör",
+    "lyhytNimi" : "Dirigering av ensemble och kör",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8187,13 +8187,13 @@
   "koodiUri" : "tutkinnonosat_100641",
   "koodiArvo" : "100641",
   "metadata" : [ {
-    "nimi" : "Produktionsuppgifter i marknadsföringskommunikation",
-    "lyhytNimi" : "Produktionsuppgifter i marknadsföringskommunikation",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Markkinointiviestinnän tuotantotehtävät",
     "lyhytNimi" : "Markkinointiviestinnän tuotantotehtävät",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Produktionsuppgifter i marknadsföringskommunikation",
+    "lyhytNimi" : "Produktionsuppgifter i marknadsföringskommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8330,13 +8330,13 @@
   "koodiUri" : "tutkinnonosat_100652",
   "koodiArvo" : "100652",
   "metadata" : [ {
-    "nimi" : "Grundläggande arbeten inom golvläggning",
-    "lyhytNimi" : "Grundläggande arbeten inom golvläggning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lattianpäällystyksen perustyöt",
     "lyhytNimi" : "Lattianpäällystyksen perustyöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande arbeten inom golvläggning",
+    "lyhytNimi" : "Grundläggande arbeten inom golvläggning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8759,13 +8759,13 @@
   "koodiUri" : "tutkinnonosat_100685",
   "koodiArvo" : "100685",
   "metadata" : [ {
-    "nimi" : "Skötsel av målningslinje",
-    "lyhytNimi" : "Skötsel av målningslinje",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maalauslinjan hoito",
     "lyhytNimi" : "Maalauslinjan hoito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skötsel av målningslinje",
+    "lyhytNimi" : "Skötsel av målningslinje",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8941,13 +8941,13 @@
   "koodiUri" : "tutkinnonosat_100699",
   "koodiArvo" : "100699",
   "metadata" : [ {
-    "nimi" : "Behärskande av sågindustriprocessen",
-    "lyhytNimi" : "Behärskande av sågindustriprocessen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sahateollisuuden prosessin hallinta",
     "lyhytNimi" : "Sahateollisuuden prosessin hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Behärskande av sågindustriprocessen",
+    "lyhytNimi" : "Behärskande av sågindustriprocessen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -9097,13 +9097,13 @@
   "koodiUri" : "tutkinnonosat_100711",
   "koodiArvo" : "100711",
   "metadata" : [ {
-    "nimi" : "Virkeshantering",
-    "lyhytNimi" : "Virkeshantering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puun käsittely",
     "lyhytNimi" : "Puun käsittely",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Virkeshantering",
+    "lyhytNimi" : "Virkeshantering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -9366,13 +9366,13 @@
   "koodiUri" : "tutkinnonosat_100732",
   "koodiArvo" : "100732",
   "metadata" : [ {
-    "nimi" : "Verktygsteknik och maskinunderhåll",
-    "lyhytNimi" : "Verktygsteknik och maskinunderhåll",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Terätekniikka ja konehuolto",
     "lyhytNimi" : "Terätekniikka ja konehuolto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Verktygsteknik och maskinunderhåll",
+    "lyhytNimi" : "Verktygsteknik och maskinunderhåll",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -9535,13 +9535,13 @@
   "koodiUri" : "tutkinnonosat_100745",
   "koodiArvo" : "100745",
   "metadata" : [ {
-    "nimi" : "Tillverkning av metallinredningar",
-    "lyhytNimi" : "Tillverkning av metallinredningar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Metallikalusteiden valmistus",
     "lyhytNimi" : "Metallikalusteiden valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillverkning av metallinredningar",
+    "lyhytNimi" : "Tillverkning av metallinredningar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -10887,13 +10887,13 @@
   "koodiUri" : "tutkinnonosat_100849",
   "koodiArvo" : "100849",
   "metadata" : [ {
-    "nimi" : "Genomförandet av immobiliseringsbehandling",
-    "lyhytNimi" : "Genomförandet av immobiliseringsbehandling",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Immobilisaatiohoidon toteuttaminen",
     "lyhytNimi" : "Immobilisaatiohoidon toteuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Genomförandet av immobiliseringsbehandling",
+    "lyhytNimi" : "Genomförandet av immobiliseringsbehandling",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -10939,13 +10939,13 @@
   "koodiUri" : "tutkinnonosat_100853",
   "koodiArvo" : "100853",
   "metadata" : [ {
-    "nimi" : "Maskinteknisk planering",
-    "lyhytNimi" : "Maskinteknisk planering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Konetekninen suunnittelu",
     "lyhytNimi" : "Konetekninen suunnittelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Maskinteknisk planering",
+    "lyhytNimi" : "Maskinteknisk planering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11953,13 +11953,13 @@
   "koodiUri" : "tutkinnonosat_100931",
   "koodiArvo" : "100931",
   "metadata" : [ {
-    "nimi" : "Arbete med klädsömnad och kundbetjäning",
-    "lyhytNimi" : "Arbete med klädsömnad och kundbetjäning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vaateompelun ja asiakaspalvelun tehtävissä toimiminen",
     "lyhytNimi" : "Vaateompelun ja asiakaspalvelun tehtävissä toimiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbete med klädsömnad och kundbetjäning",
+    "lyhytNimi" : "Arbete med klädsömnad och kundbetjäning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -12044,13 +12044,13 @@
   "koodiUri" : "tutkinnonosat_100938",
   "koodiArvo" : "100938",
   "metadata" : [ {
-    "nimi" : "Förverkligandet av projektarbete för modist",
-    "lyhytNimi" : "Förverkligandet av projektarbete för modist",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Modistin projektityön toteuttaminen",
     "lyhytNimi" : "Modistin projektityön toteuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förverkligandet av projektarbete för modist",
+    "lyhytNimi" : "Förverkligandet av projektarbete för modist",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -12720,13 +12720,13 @@
   "koodiUri" : "tutkinnonosat_100990",
   "koodiArvo" : "100990",
   "metadata" : [ {
-    "nimi" : "Hantering av hotsituationer",
-    "lyhytNimi" : "Hantering av hotsituationer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Uhkatilanteiden hallinta",
     "lyhytNimi" : "Uhkatilanteiden hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hantering av hotsituationer",
+    "lyhytNimi" : "Hantering av hotsituationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -13045,13 +13045,13 @@
   "koodiUri" : "tutkinnonosat_101015",
   "koodiArvo" : "101015",
   "metadata" : [ {
-    "nimi" : "Tillverkning av gardiner och lampskärmar",
-    "lyhytNimi" : "Tillverkning av gardiner och lampskärmar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Verhojen ja varjostimien valmistaminen",
     "lyhytNimi" : "Verhojen ja varjostimien valmistaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillverkning av gardiner och lampskärmar",
+    "lyhytNimi" : "Tillverkning av gardiner och lampskärmar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14864,13 +14864,13 @@
   "koodiUri" : "tutkinnonosat_101216",
   "koodiArvo" : "101216",
   "metadata" : [ {
-    "nimi" : "Montering av element och kassuner",
-    "lyhytNimi" : "Montering av element och kassuner",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elementtien ja kasuunien asennus",
     "lyhytNimi" : "Elementtien ja kasuunien asennus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Montering av element och kassuner",
+    "lyhytNimi" : "Montering av element och kassuner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -15072,13 +15072,13 @@
   "koodiUri" : "tutkinnonosat_101232",
   "koodiArvo" : "101232",
   "metadata" : [ {
-    "nimi" : "Montering av vapen",
-    "lyhytNimi" : "Montering av vapen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Aseen kokoaminen",
     "lyhytNimi" : "Aseen kokoaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Montering av vapen",
+    "lyhytNimi" : "Montering av vapen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -16419,13 +16419,13 @@
   "koodiUri" : "tutkinnonosat_101343",
   "koodiArvo" : "101343",
   "metadata" : [ {
-    "nimi" : "Datateknik och logistik inom livsmedelsförädlingen",
-    "lyhytNimi" : "Datateknik och logistik inom livsmedelsförädlingen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tietotekniikka ja logistiikka elintarvikejalostuksessa",
     "lyhytNimi" : "Tietotekniikka ja logistiikka elintarvikejalostuksessa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Datateknik och logistik inom livsmedelsförädlingen",
+    "lyhytNimi" : "Datateknik och logistik inom livsmedelsförädlingen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -16523,13 +16523,13 @@
   "koodiUri" : "tutkinnonosat_101351",
   "koodiArvo" : "101351",
   "metadata" : [ {
-    "nimi" : "Provkörningar inom produktutveckling",
-    "lyhytNimi" : "Provkörningar inom produktutveckling",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tuotekehityskoeajot",
     "lyhytNimi" : "Tuotekehityskoeajot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Provkörningar inom produktutveckling",
+    "lyhytNimi" : "Provkörningar inom produktutveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -16679,13 +16679,13 @@
   "koodiUri" : "tutkinnonosat_101364",
   "koodiArvo" : "101364",
   "metadata" : [ {
-    "nimi" : "Skötsel av djurparksmiljön",
-    "lyhytNimi" : "Skötsel av djurparksmiljön",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Eläintarhaympäristöstä huolehtiminen",
     "lyhytNimi" : "Eläintarhaympäristöstä huolehtiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skötsel av djurparksmiljön",
+    "lyhytNimi" : "Skötsel av djurparksmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -17069,13 +17069,13 @@
   "koodiUri" : "tutkinnonosat_101394",
   "koodiArvo" : "101394",
   "metadata" : [ {
-    "nimi" : "Planering och genomförande av festdekorationer",
-    "lyhytNimi" : "Planering och genomförande av festdekorationer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Juhlakoristelun suunnitteleminen ja toteuttaminen",
     "lyhytNimi" : "Juhlakoristelun suunnitteleminen ja toteuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Planering och genomförande av festdekorationer",
+    "lyhytNimi" : "Planering och genomförande av festdekorationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -17199,13 +17199,13 @@
   "koodiUri" : "tutkinnonosat_101404",
   "koodiArvo" : "101404",
   "metadata" : [ {
-    "nimi" : "Allmänna färdigheter i bilelteknik",
-    "lyhytNimi" : "Allmänna färdigheter i bilelteknik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Autosähkötekniikan yleistaidot",
     "lyhytNimi" : "Autosähkötekniikan yleistaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Allmänna färdigheter i bilelteknik",
+    "lyhytNimi" : "Allmänna färdigheter i bilelteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -17238,13 +17238,13 @@
   "koodiUri" : "tutkinnonosat_101407",
   "koodiArvo" : "101407",
   "metadata" : [ {
-    "nimi" : "Styrsystemen för motorn, växellådan och kördynamiken",
-    "lyhytNimi" : "Styrsystemen för motorn, växellådan och kördynamiken",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Moottorin, vaihteiston ja ajodynamiikan ohjausjärjestelmät",
     "lyhytNimi" : "Moottorin, vaihteiston ja ajodynamiikan ohjausjärjestelmät",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Styrsystemen för motorn, växellådan och kördynamiken",
+    "lyhytNimi" : "Styrsystemen för motorn, växellådan och kördynamiken",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -17459,13 +17459,13 @@
   "koodiUri" : "tutkinnonosat_101424",
   "koodiArvo" : "101424",
   "metadata" : [ {
-    "nimi" : "Underhåll av hissar",
-    "lyhytNimi" : "Underhåll av hissar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hissin kunnossapito",
     "lyhytNimi" : "Hissin kunnossapito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Underhåll av hissar",
+    "lyhytNimi" : "Underhåll av hissar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -17953,13 +17953,13 @@
   "koodiUri" : "tutkinnonosat_101462",
   "koodiArvo" : "101462",
   "metadata" : [ {
-    "nimi" : "Produktion av underhållstjänster och behärskande av servicesituationer",
-    "lyhytNimi" : "Produktion av underhållstjänster och behärskande av servicesituationer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Huoltopalvelujen tuottaminen ja palvelutilanteen hallinta",
     "lyhytNimi" : "Huoltopalvelujen tuottaminen ja palvelutilanteen hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Produktion av underhållstjänster och behärskande av servicesituationer",
+    "lyhytNimi" : "Produktion av underhållstjänster och behärskande av servicesituationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18018,13 +18018,13 @@
   "koodiUri" : "tutkinnonosat_101467",
   "koodiArvo" : "101467",
   "metadata" : [ {
-    "nimi" : "Elinstallationer vid anslutning av fastighetsteknisk utrustning",
-    "lyhytNimi" : "Elinstallationer vid anslutning av fastighetsteknisk utrustning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Taloteknisten komponenttien sähköistys",
     "lyhytNimi" : "Taloteknisten komponenttien sähköistys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elinstallationer vid anslutning av fastighetsteknisk utrustning",
+    "lyhytNimi" : "Elinstallationer vid anslutning av fastighetsteknisk utrustning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18096,13 +18096,13 @@
   "koodiUri" : "tutkinnonosat_101478",
   "koodiArvo" : "101478",
   "metadata" : [ {
-    "nimi" : "Produktion av informations- och bibliotekstjänster i lärmiljöer",
-    "lyhytNimi" : "Produktion av informations- och bibliotekstjänster i lärmiljöer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Informaatio- ja kirjastopalvelujen tuottaminen oppimisympäristöissä",
     "lyhytNimi" : "Informaatio- ja kirjastopalvelujen tuottaminen oppimisympäristöissä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Produktion av informations- och bibliotekstjänster i lärmiljöer",
+    "lyhytNimi" : "Produktion av informations- och bibliotekstjänster i lärmiljöer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18304,13 +18304,13 @@
   "koodiUri" : "tutkinnonosat_101494",
   "koodiArvo" : "101494",
   "metadata" : [ {
-    "nimi" : "Boenderådgivning",
-    "lyhytNimi" : "Boenderådgivning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Asumisneuvonta",
     "lyhytNimi" : "Asumisneuvonta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Boenderådgivning",
+    "lyhytNimi" : "Boenderådgivning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -18434,13 +18434,13 @@
   "koodiUri" : "tutkinnonosat_101504",
   "koodiArvo" : "101504",
   "metadata" : [ {
-    "nimi" : "Underhåll",
-    "lyhytNimi" : "Underhåll",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kunnossapito",
     "lyhytNimi" : "Kunnossapito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Underhåll",
+    "lyhytNimi" : "Underhåll",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -19149,13 +19149,13 @@
   "koodiUri" : "tutkinnonosat_101559",
   "koodiArvo" : "101559",
   "metadata" : [ {
-    "nimi" : "Borrning vid förberedande arbeten",
-    "lyhytNimi" : "Borrning vid förberedande arbeten",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Valmistavien töiden poraus",
     "lyhytNimi" : "Valmistavien töiden poraus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Borrning vid förberedande arbeten",
+    "lyhytNimi" : "Borrning vid förberedande arbeten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -19500,13 +19500,13 @@
   "koodiUri" : "tutkinnonosat_101586",
   "koodiArvo" : "101586",
   "metadata" : [ {
-    "nimi" : "Produktplanering och marknadsföring",
-    "lyhytNimi" : "Produktplanering och marknadsföring",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tuotesuunnittelu ja markkinointi",
     "lyhytNimi" : "Tuotesuunnittelu ja markkinointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Produktplanering och marknadsföring",
+    "lyhytNimi" : "Produktplanering och marknadsföring",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -20605,13 +20605,13 @@
   "koodiUri" : "tutkinnonosat_101671",
   "koodiArvo" : "101671",
   "metadata" : [ {
-    "nimi" : "Vårdarbete efter patientens immobiliseringsbehandling",
-    "lyhytNimi" : "Vårdarbete efter patientens immobiliseringsbehandling",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Potilaan immobilisaatiohoidon jälkeinen hoitotyö",
     "lyhytNimi" : "Potilaan immobilisaatiohoidon jälkeinen hoitotyö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårdarbete efter patientens immobiliseringsbehandling",
+    "lyhytNimi" : "Vårdarbete efter patientens immobiliseringsbehandling",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -21528,13 +21528,13 @@
   "koodiUri" : "tutkinnonosat_101742",
   "koodiArvo" : "101742",
   "metadata" : [ {
-    "nimi" : "Reparationssvetsning",
-    "lyhytNimi" : "Reparationssvetsning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Korjaushitsaukset",
     "lyhytNimi" : "Korjaushitsaukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reparationssvetsning",
+    "lyhytNimi" : "Reparationssvetsning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -21684,13 +21684,13 @@
   "koodiUri" : "tutkinnonosat_101754",
   "koodiArvo" : "101754",
   "metadata" : [ {
-    "nimi" : "Korrosionsskyddsmålarens allmänna färdigheter",
-    "lyhytNimi" : "Korrosionsskyddsmålarens allmänna färdigheter",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Korroosionestomaalarin yleistaidot",
     "lyhytNimi" : "Korroosionestomaalarin yleistaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Korrosionsskyddsmålarens allmänna färdigheter",
+    "lyhytNimi" : "Korrosionsskyddsmålarens allmänna färdigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -22789,13 +22789,13 @@
   "koodiUri" : "tutkinnonosat_101839",
   "koodiArvo" : "101839",
   "metadata" : [ {
-    "nimi" : "Gummering",
-    "lyhytNimi" : "Gummering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kumiointi",
     "lyhytNimi" : "Kumiointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gummering",
+    "lyhytNimi" : "Gummering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23686,13 +23686,13 @@
   "koodiUri" : "tutkinnonosat_101908",
   "koodiArvo" : "101908",
   "metadata" : [ {
-    "nimi" : "Montering av rostfri inredning",
-    "lyhytNimi" : "Montering av rostfri inredning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ruostumattomien kalusteiden asennustyöt",
     "lyhytNimi" : "Ruostumattomien kalusteiden asennustyöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Montering av rostfri inredning",
+    "lyhytNimi" : "Montering av rostfri inredning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23738,13 +23738,13 @@
   "koodiUri" : "tutkinnonosat_101912",
   "koodiArvo" : "101912",
   "metadata" : [ {
-    "nimi" : "Arbeten vid ibruktagande",
-    "lyhytNimi" : "Arbeten vid ibruktagande",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Käyttöönottotyöt",
     "lyhytNimi" : "Käyttöönottotyöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbeten vid ibruktagande",
+    "lyhytNimi" : "Arbeten vid ibruktagande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23907,13 +23907,13 @@
   "koodiUri" : "tutkinnonosat_101925",
   "koodiArvo" : "101925",
   "metadata" : [ {
-    "nimi" : "Böjning",
-    "lyhytNimi" : "Böjning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Taivutus",
     "lyhytNimi" : "Taivutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Böjning",
+    "lyhytNimi" : "Böjning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24692,13 +24692,13 @@
   "koodiUri" : "tutkinnonosat_101987",
   "koodiArvo" : "101987",
   "metadata" : [ {
-    "nimi" : "Tillskärning",
-    "lyhytNimi" : "Tillskärning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Leikkaaminen",
     "lyhytNimi" : "Leikkaaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillskärning",
+    "lyhytNimi" : "Tillskärning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -24965,13 +24965,13 @@
   "koodiUri" : "tutkinnonosat_102008",
   "koodiArvo" : "102008",
   "metadata" : [ {
-    "nimi" : "Underhåll av flygplatser",
-    "lyhytNimi" : "Underhåll av flygplatser",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lentoasemien kunnossapito",
     "lyhytNimi" : "Lentoasemien kunnossapito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Underhåll av flygplatser",
+    "lyhytNimi" : "Underhåll av flygplatser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25095,13 +25095,13 @@
   "koodiUri" : "tutkinnonosat_102018",
   "koodiArvo" : "102018",
   "metadata" : [ {
-    "nimi" : "Mätning, barkning och kapning av timmer",
-    "lyhytNimi" : "Mätning, barkning och kapning av timmer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tukkien mittaus, kuorinta ja katkaisu",
     "lyhytNimi" : "Tukkien mittaus, kuorinta ja katkaisu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Mätning, barkning och kapning av timmer",
+    "lyhytNimi" : "Mätning, barkning och kapning av timmer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25420,13 +25420,13 @@
   "koodiUri" : "tutkinnonosat_102043",
   "koodiArvo" : "102043",
   "metadata" : [ {
-    "nimi" : "Sortering av plywood med ytbeläggning",
-    "lyhytNimi" : "Sortering av plywood med ytbeläggning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pinnoitetun vanerin lajittelu",
     "lyhytNimi" : "Pinnoitetun vanerin lajittelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sortering av plywood med ytbeläggning",
+    "lyhytNimi" : "Sortering av plywood med ytbeläggning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25576,13 +25576,13 @@
   "koodiUri" : "tutkinnonosat_102055",
   "koodiArvo" : "102055",
   "metadata" : [ {
-    "nimi" : "Kvalitetskontroll av spånskivor",
-    "lyhytNimi" : "Kvalitetskontroll av spånskivor",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lastulevyn laadunvalvonta",
     "lyhytNimi" : "Lastulevyn laadunvalvonta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kvalitetskontroll av spånskivor",
+    "lyhytNimi" : "Kvalitetskontroll av spånskivor",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25628,13 +25628,13 @@
   "koodiUri" : "tutkinnonosat_102059",
   "koodiArvo" : "102059",
   "metadata" : [ {
-    "nimi" : "Bearbetning av spånskivor",
-    "lyhytNimi" : "Bearbetning av spånskivor",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lastulevyn työstäminen",
     "lyhytNimi" : "Lastulevyn työstäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bearbetning av spånskivor",
+    "lyhytNimi" : "Bearbetning av spånskivor",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -25680,13 +25680,13 @@
   "koodiUri" : "tutkinnonosat_102063",
   "koodiArvo" : "102063",
   "metadata" : [ {
-    "nimi" : "Pneumatik",
-    "lyhytNimi" : "Pneumatik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pneumatiikka",
     "lyhytNimi" : "Pneumatiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Pneumatik",
+    "lyhytNimi" : "Pneumatik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -26240,13 +26240,13 @@
   "koodiUri" : "tutkinnonosat_102107",
   "koodiArvo" : "102107",
   "metadata" : [ {
-    "nimi" : "Ingående kännedom om verksamhetsmiljön",
-    "lyhytNimi" : "Ingående kännedom om verksamhetsmiljön",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Toimintaympäristön hallinta",
     "lyhytNimi" : "Toimintaympäristön hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ingående kännedom om verksamhetsmiljön",
+    "lyhytNimi" : "Ingående kännedom om verksamhetsmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -27449,13 +27449,13 @@
   "koodiUri" : "tutkinnonosat_102200",
   "koodiArvo" : "102200",
   "metadata" : [ {
-    "nimi" : "Laddning",
-    "lyhytNimi" : "Laddning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Panostus",
     "lyhytNimi" : "Panostus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Laddning",
+    "lyhytNimi" : "Laddning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -27605,13 +27605,13 @@
   "koodiUri" : "tutkinnonosat_102212",
   "koodiArvo" : "102212",
   "metadata" : [ {
-    "nimi" : "Packning av asfaltbeläggning",
-    "lyhytNimi" : "Packning av asfaltbeläggning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Asfalttipäällysteen tiivistys",
     "lyhytNimi" : "Asfalttipäällysteen tiivistys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Packning av asfaltbeläggning",
+    "lyhytNimi" : "Packning av asfaltbeläggning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28489,13 +28489,13 @@
   "koodiUri" : "tutkinnonosat_102283",
   "koodiArvo" : "102283",
   "metadata" : [ {
-    "nimi" : "Förpackning inom mejeriindustrin",
-    "lyhytNimi" : "Förpackning inom mejeriindustrin",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pakkaaminen meijeriteollisuudessa",
     "lyhytNimi" : "Pakkaaminen meijeriteollisuudessa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förpackning inom mejeriindustrin",
+    "lyhytNimi" : "Förpackning inom mejeriindustrin",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28801,13 +28801,13 @@
   "koodiUri" : "tutkinnonosat_102307",
   "koodiArvo" : "102307",
   "metadata" : [ {
-    "nimi" : "Service och underhåll av informations- och styrsystem",
-    "lyhytNimi" : "Service och underhåll av informations- och styrsystem",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tieto- ja ohjausjärjestelmien huolto ja kunnossapito",
     "lyhytNimi" : "Tieto- ja ohjausjärjestelmien huolto ja kunnossapito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Service och underhåll av informations- och styrsystem",
+    "lyhytNimi" : "Service och underhåll av informations- och styrsystem",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28853,13 +28853,13 @@
   "koodiUri" : "tutkinnonosat_102311",
   "koodiArvo" : "102311",
   "metadata" : [ {
-    "nimi" : "Kännedom om skogsnaturen",
-    "lyhytNimi" : "Kännedom om skogsnaturen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Metsäluonnon tuntemus",
     "lyhytNimi" : "Metsäluonnon tuntemus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kännedom om skogsnaturen",
+    "lyhytNimi" : "Kännedom om skogsnaturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28957,13 +28957,13 @@
   "koodiUri" : "tutkinnonosat_102319",
   "koodiArvo" : "102319",
   "metadata" : [ {
-    "nimi" : "Virkeshandel och drivning",
-    "lyhytNimi" : "Virkeshandel och drivning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puukauppa ja puunkorjuu",
     "lyhytNimi" : "Puukauppa ja puunkorjuu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Virkeshandel och drivning",
+    "lyhytNimi" : "Virkeshandel och drivning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -29269,13 +29269,13 @@
   "koodiUri" : "tutkinnonosat_102343",
   "koodiArvo" : "102343",
   "metadata" : [ {
-    "nimi" : "Kalibrering av automatiska vågar",
-    "lyhytNimi" : "Kalibrering av automatiska vågar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Automaattisten vaakojen kalibrointi",
     "lyhytNimi" : "Automaattisten vaakojen kalibrointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kalibrering av automatiska vågar",
+    "lyhytNimi" : "Kalibrering av automatiska vågar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -29932,13 +29932,13 @@
   "koodiUri" : "tutkinnonosat_102394",
   "koodiArvo" : "102394",
   "metadata" : [ {
-    "nimi" : "Avslutande av produktionsskedet",
-    "lyhytNimi" : "Avslutande av produktionsskedet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tuotantovaiheen päättäminen",
     "lyhytNimi" : "Tuotantovaiheen päättäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Avslutande av produktionsskedet",
+    "lyhytNimi" : "Avslutande av produktionsskedet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -30452,13 +30452,13 @@
   "koodiUri" : "tutkinnonosat_102434",
   "koodiArvo" : "102434",
   "metadata" : [ {
-    "nimi" : "Cellulosakokning",
-    "lyhytNimi" : "Cellulosakokning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sellun keitto",
     "lyhytNimi" : "Sellun keitto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Cellulosakokning",
+    "lyhytNimi" : "Cellulosakokning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -31219,13 +31219,13 @@
   "koodiUri" : "tutkinnonosat_102493",
   "koodiArvo" : "102493",
   "metadata" : [ {
-    "nimi" : "Svetsning",
-    "lyhytNimi" : "Svetsning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Hitsaus",
     "lyhytNimi" : "Hitsaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Svetsning",
+    "lyhytNimi" : "Svetsning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -31375,13 +31375,13 @@
   "koodiUri" : "tutkinnonosat_102510",
   "koodiArvo" : "102510",
   "metadata" : [ {
-    "nimi" : "Att bemöta barn och familjer från olika kulturer",
-    "lyhytNimi" : "Att bemöta barn och familjer från olika kulturer",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Monikulttuuristen lasten ja perheiden kanssa toimiminen",
     "lyhytNimi" : "Monikulttuuristen lasten ja perheiden kanssa toimiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att bemöta barn och familjer från olika kulturer",
+    "lyhytNimi" : "Att bemöta barn och familjer från olika kulturer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -31973,13 +31973,13 @@
   "koodiUri" : "tutkinnonosat_102558",
   "koodiArvo" : "102558",
   "metadata" : [ {
-    "nimi" : "Teknisk planering och marknadsföring av möbler i snickeribranschen",
-    "lyhytNimi" : "Teknisk planering och marknadsföring av möbler i snickeribranschen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puusepänalan kalusteiden tekninen suunnittelu ja markkinointi",
     "lyhytNimi" : "Puusepänalan kalusteiden tekninen suunnittelu ja markkinointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Teknisk planering och marknadsföring av möbler i snickeribranschen",
+    "lyhytNimi" : "Teknisk planering och marknadsföring av möbler i snickeribranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -32389,13 +32389,13 @@
   "koodiUri" : "tutkinnonosat_102591",
   "koodiArvo" : "102591",
   "metadata" : [ {
-    "nimi" : "Produktionsstyrning och underhåll",
-    "lyhytNimi" : "Produktionsstyrning och underhåll",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tuotannonohjaus ja käynnissäpito",
     "lyhytNimi" : "Tuotannonohjaus ja käynnissäpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Produktionsstyrning och underhåll",
+    "lyhytNimi" : "Produktionsstyrning och underhåll",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -32961,13 +32961,13 @@
   "koodiUri" : "tutkinnonosat_102635",
   "koodiArvo" : "102635",
   "metadata" : [ {
-    "nimi" : "Skärning eller annan bearbetning",
-    "lyhytNimi" : "Skärning eller annan bearbetning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Leikkaus tai muu työstäminen",
     "lyhytNimi" : "Leikkaus tai muu työstäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skärning eller annan bearbetning",
+    "lyhytNimi" : "Skärning eller annan bearbetning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -33568,13 +33568,13 @@
   "koodiUri" : "tutkinnonosat_102683",
   "koodiArvo" : "102683",
   "metadata" : [ {
-    "nimi" : "Spårarbetsmaskiner",
-    "lyhytNimi" : "Spårarbetsmaskiner",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ratatyökoneet",
     "lyhytNimi" : "Ratatyökoneet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Spårarbetsmaskiner",
+    "lyhytNimi" : "Spårarbetsmaskiner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -34452,13 +34452,13 @@
   "koodiUri" : "tutkinnonosat_102751",
   "koodiArvo" : "102751",
   "metadata" : [ {
-    "nimi" : "Masurarbete",
-    "lyhytNimi" : "Masurarbete",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Pahkatyö",
     "lyhytNimi" : "Pahkatyö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Masurarbete",
+    "lyhytNimi" : "Masurarbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -34829,13 +34829,13 @@
   "koodiUri" : "tutkinnonosat_102780",
   "koodiArvo" : "102780",
   "metadata" : [ {
-    "nimi" : "Kvalitetskontroll",
-    "lyhytNimi" : "Kvalitetskontroll",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Laadunvalvonta",
     "lyhytNimi" : "Laadunvalvonta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kvalitetskontroll",
+    "lyhytNimi" : "Kvalitetskontroll",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -35193,13 +35193,13 @@
   "koodiUri" : "tutkinnonosat_102808",
   "koodiArvo" : "102808",
   "metadata" : [ {
-    "nimi" : "Tillverkning av träprodukter",
-    "lyhytNimi" : "Tillverkning av träprodukter",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Puutuotteiden valmistus",
     "lyhytNimi" : "Puutuotteiden valmistus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillverkning av träprodukter",
+    "lyhytNimi" : "Tillverkning av träprodukter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -35297,13 +35297,13 @@
   "koodiUri" : "tutkinnonosat_102816",
   "koodiArvo" : "102816",
   "metadata" : [ {
-    "nimi" : "Övrig produktionsteknisk arbetshelhet",
-    "lyhytNimi" : "Övrig produktionsteknisk arbetshelhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Muu tuotantotekninen työkokonaisuus",
     "lyhytNimi" : "Muu tuotantotekninen työkokonaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Övrig produktionsteknisk arbetshelhet",
+    "lyhytNimi" : "Övrig produktionsteknisk arbetshelhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -35770,13 +35770,13 @@
   "koodiUri" : "tutkinnonosat_102853",
   "koodiArvo" : "102853",
   "metadata" : [ {
-    "nimi" : "Styling",
-    "lyhytNimi" : "Styling",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Stailaus",
     "lyhytNimi" : "Stailaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Styling",
+    "lyhytNimi" : "Styling",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -35822,13 +35822,13 @@
   "koodiUri" : "tutkinnonosat_102857",
   "koodiArvo" : "102857",
   "metadata" : [ {
-    "nimi" : "Basfärdigheter inom instrumentbyggnadsbranschen",
-    "lyhytNimi" : "Basfärdigheter inom instrumentbyggnadsbranschen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Soitinrakennusalan perusvalmiudet",
     "lyhytNimi" : "Soitinrakennusalan perusvalmiudet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Basfärdigheter inom instrumentbyggnadsbranschen",
+    "lyhytNimi" : "Basfärdigheter inom instrumentbyggnadsbranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -36676,13 +36676,13 @@
   "koodiUri" : "tutkinnonosat_102923",
   "koodiArvo" : "102923",
   "metadata" : [ {
-    "nimi" : "Monteringsarbeten inom elektronikindustrin",
-    "lyhytNimi" : "Monteringsarbeten inom elektronikindustrin",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elektroniikkateollisuuden kokoonpanotyöt",
     "lyhytNimi" : "Elektroniikkateollisuuden kokoonpanotyöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Monteringsarbeten inom elektronikindustrin",
+    "lyhytNimi" : "Monteringsarbeten inom elektronikindustrin",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -36767,13 +36767,13 @@
   "koodiUri" : "tutkinnonosat_102930",
   "koodiArvo" : "102930",
   "metadata" : [ {
-    "nimi" : "Behärskande av ekonomi, arbete och arbetsmiljö",
-    "lyhytNimi" : "Behärskande av ekonomi, arbete och arbetsmiljö",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Talouden, työn ja työympäristön hallinta",
     "lyhytNimi" : "Talouden, työn ja työympäristön hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Behärskande av ekonomi, arbete och arbetsmiljö",
+    "lyhytNimi" : "Behärskande av ekonomi, arbete och arbetsmiljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -37443,13 +37443,13 @@
   "koodiUri" : "tutkinnonosat_102982",
   "koodiArvo" : "102982",
   "metadata" : [ {
-    "nimi" : "Löneberäkning",
-    "lyhytNimi" : "Löneberäkning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Palkanlaskenta",
     "lyhytNimi" : "Palkanlaskenta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Löneberäkning",
+    "lyhytNimi" : "Löneberäkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -37547,13 +37547,13 @@
   "koodiUri" : "tutkinnonosat_102990",
   "koodiArvo" : "102990",
   "metadata" : [ {
-    "nimi" : "Researrangemang",
-    "lyhytNimi" : "Researrangemang",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matkajärjestelyiden hoitaminen",
     "lyhytNimi" : "Matkajärjestelyiden hoitaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Researrangemang",
+    "lyhytNimi" : "Researrangemang",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -38093,13 +38093,13 @@
   "koodiUri" : "tutkinnonosat_103032",
   "koodiArvo" : "103032",
   "metadata" : [ {
-    "nimi" : "Effektmaskering",
-    "lyhytNimi" : "Effektmaskering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tehostemaskeeraus",
     "lyhytNimi" : "Tehostemaskeeraus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Effektmaskering",
+    "lyhytNimi" : "Effektmaskering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -38184,13 +38184,13 @@
   "koodiUri" : "tutkinnonosat_103039",
   "koodiArvo" : "103039",
   "metadata" : [ {
-    "nimi" : "Industriell isolering",
-    "lyhytNimi" : "Industriell isolering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Teollisuuseristäminen",
     "lyhytNimi" : "Teollisuuseristäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Industriell isolering",
+    "lyhytNimi" : "Industriell isolering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -38236,13 +38236,13 @@
   "koodiUri" : "tutkinnonosat_103043",
   "koodiArvo" : "103043",
   "metadata" : [ {
-    "nimi" : "Högtemperaturisolering",
-    "lyhytNimi" : "Högtemperaturisolering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Korkealämpöeristäminen",
     "lyhytNimi" : "Korkealämpöeristäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Högtemperaturisolering",
+    "lyhytNimi" : "Högtemperaturisolering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -38982,13 +38982,13 @@
   "koodiUri" : "tutkinnonosat_103105",
   "koodiArvo" : "103105",
   "metadata" : [ {
-    "nimi" : "Rörmontering",
-    "lyhytNimi" : "Rörmontering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Putkistoasennus",
     "lyhytNimi" : "Putkistoasennus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörmontering",
+    "lyhytNimi" : "Rörmontering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -39192,13 +39192,13 @@
   "koodiUri" : "tutkinnonosat_103124",
   "koodiArvo" : "103124",
   "metadata" : [ {
-    "nimi" : "Specialsystem",
-    "lyhytNimi" : "Specialsystem",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Erikoisjärjestelmät",
     "lyhytNimi" : "Erikoisjärjestelmät",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Specialsystem",
+    "lyhytNimi" : "Specialsystem",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -39374,13 +39374,13 @@
   "koodiUri" : "tutkinnonosat_103138",
   "koodiArvo" : "103138",
   "metadata" : [ {
-    "nimi" : "Införsel av vara",
-    "lyhytNimi" : "Införsel av vara",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tavaran saapuminen",
     "lyhytNimi" : "Tavaran saapuminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Införsel av vara",
+    "lyhytNimi" : "Införsel av vara",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -39790,13 +39790,13 @@
   "koodiUri" : "tutkinnonosat_103170",
   "koodiArvo" : "103170",
   "metadata" : [ {
-    "nimi" : "Monterings- och underhållsarbete i ett vindkraftverk",
-    "lyhytNimi" : "Monterings- och underhållsarbete i ett vindkraftverk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Toiminta tuulivoimalan asennus- ja kunnossapitotehtävissä",
     "lyhytNimi" : "Toiminta tuulivoimalan asennus- ja kunnossapitotehtävissä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Monterings- och underhållsarbete i ett vindkraftverk",
+    "lyhytNimi" : "Monterings- och underhållsarbete i ett vindkraftverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -40443,13 +40443,13 @@
   "koodiUri" : "tutkinnonosat_103231",
   "koodiArvo" : "103231",
   "metadata" : [ {
-    "nimi" : "Företagsamhet",
-    "lyhytNimi" : "Företagsamhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yrittäjyys",
     "lyhytNimi" : "Yrittäjyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Företagsamhet",
+    "lyhytNimi" : "Företagsamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41120,13 +41120,13 @@
   "koodiUri" : "tutkinnonosat_103284",
   "koodiArvo" : "103284",
   "metadata" : [ {
-    "nimi" : "Bevakningsverksamhet inom säkerhetsbranschen",
-    "lyhytNimi" : "Bevakningsverksamhet inom säkerhetsbranschen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vartiointitoiminta turvallisuusalalla",
     "lyhytNimi" : "Vartiointitoiminta turvallisuusalalla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bevakningsverksamhet inom säkerhetsbranschen",
+    "lyhytNimi" : "Bevakningsverksamhet inom säkerhetsbranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41224,13 +41224,13 @@
   "koodiUri" : "tutkinnonosat_103292",
   "koodiArvo" : "103292",
   "metadata" : [ {
-    "nimi" : "Övervakning av ordningen",
-    "lyhytNimi" : "Övervakning av ordningen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Järjestyksenvalvonta",
     "lyhytNimi" : "Järjestyksenvalvonta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Övervakning av ordningen",
+    "lyhytNimi" : "Övervakning av ordningen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41432,13 +41432,13 @@
   "koodiUri" : "tutkinnonosat_103308",
   "koodiArvo" : "103308",
   "metadata" : [ {
-    "nimi" : "Reparation och underhåll av båtar av armerad plast",
-    "lyhytNimi" : "Reparation och underhåll av båtar av armerad plast",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Lujitemuoviveneen korjaus ja ylläpito",
     "lyhytNimi" : "Lujitemuoviveneen korjaus ja ylläpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reparation och underhåll av båtar av armerad plast",
+    "lyhytNimi" : "Reparation och underhåll av båtar av armerad plast",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41484,13 +41484,13 @@
   "koodiUri" : "tutkinnonosat_103312",
   "koodiArvo" : "103312",
   "metadata" : [ {
-    "nimi" : "Tapetsering",
-    "lyhytNimi" : "Tapetsering",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Verhoilu",
     "lyhytNimi" : "Verhoilu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tapetsering",
+    "lyhytNimi" : "Tapetsering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41536,13 +41536,13 @@
   "koodiUri" : "tutkinnonosat_103316",
   "koodiArvo" : "103316",
   "metadata" : [ {
-    "nimi" : "Kännedom om processerna inom vattenförsörjning",
-    "lyhytNimi" : "Kännedom om processerna inom vattenförsörjning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Vesihuoltoalan prosessien tunteminen",
     "lyhytNimi" : "Vesihuoltoalan prosessien tunteminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kännedom om processerna inom vattenförsörjning",
+    "lyhytNimi" : "Kännedom om processerna inom vattenförsörjning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42303,13 +42303,13 @@
   "koodiUri" : "tutkinnonosat_103377",
   "koodiArvo" : "103377",
   "metadata" : [ {
-    "nimi" : "Grundläggande yrkeskompetens inom transportbranschen",
-    "lyhytNimi" : "Grundläggande yrkeskompetens inom transportbranschen",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuljetusalan perustason ammattipätevyys",
     "lyhytNimi" : "Kuljetusalan perustason ammattipätevyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande yrkeskompetens inom transportbranschen",
+    "lyhytNimi" : "Grundläggande yrkeskompetens inom transportbranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42576,13 +42576,13 @@
   "koodiUri" : "tutkinnonosat_103398",
   "koodiArvo" : "103398",
   "metadata" : [ {
-    "nimi" : "Kontroll av miljörisker",
-    "lyhytNimi" : "Kontroll av miljörisker",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ympäristöriskien hallinta",
     "lyhytNimi" : "Ympäristöriskien hallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kontroll av miljörisker",
+    "lyhytNimi" : "Kontroll av miljörisker",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -42732,13 +42732,13 @@
   "koodiUri" : "tutkinnonosat_103410",
   "koodiArvo" : "103410",
   "metadata" : [ {
-    "nimi" : "Företagsamhet",
-    "lyhytNimi" : "Företagsamhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yrittäjyys",
     "lyhytNimi" : "Yrittäjyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Företagsamhet",
+    "lyhytNimi" : "Företagsamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43075,13 +43075,13 @@
   "koodiUri" : "tutkinnonosat_103449",
   "koodiArvo" : "103449",
   "metadata" : [ {
-    "nimi" : "Genomförande av livsmedelshygien och egenkontroll",
-    "lyhytNimi" : "Genomförande av livsmedelshygien och egenkontroll",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elintarvikehygienian ja omavalvonnan toteuttaminen",
     "lyhytNimi" : "Elintarvikehygienian ja omavalvonnan toteuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Genomförande av livsmedelshygien och egenkontroll",
+    "lyhytNimi" : "Genomförande av livsmedelshygien och egenkontroll",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43310,13 +43310,13 @@
   "koodiUri" : "tutkinnonosat_103468",
   "koodiArvo" : "103468",
   "metadata" : [ {
-    "nimi" : "Avtalsteknik och bestämmelser",
-    "lyhytNimi" : "Avtalsteknik och bestämmelser",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sopimustekniikka ja määräykset",
     "lyhytNimi" : "Sopimustekniikka ja määräykset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Avtalsteknik och bestämmelser",
+    "lyhytNimi" : "Avtalsteknik och bestämmelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43505,13 +43505,13 @@
   "koodiUri" : "tutkinnonosat_103483",
   "koodiArvo" : "103483",
   "metadata" : [ {
-    "nimi" : "Kundservice och marknadsföring",
-    "lyhytNimi" : "Kundservice och marknadsföring",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Asiakaspalvelu ja markkinointi",
     "lyhytNimi" : "Asiakaspalvelu ja markkinointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kundservice och marknadsföring",
+    "lyhytNimi" : "Kundservice och marknadsföring",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -43635,13 +43635,13 @@
   "koodiUri" : "tutkinnonosat_103493",
   "koodiArvo" : "103493",
   "metadata" : [ {
-    "nimi" : "Arbetshandledning",
-    "lyhytNimi" : "Arbetshandledning",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ammatinohjaus",
     "lyhytNimi" : "Ammatinohjaus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetshandledning",
+    "lyhytNimi" : "Arbetshandledning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -45674,13 +45674,13 @@
   "koodiUri" : "tutkinnonosat_103684",
   "koodiArvo" : "103684",
   "metadata" : [ {
-    "nimi" : "Ytbehandling av fasader",
-    "lyhytNimi" : "Ytbehandling av fasader",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Julkisivujen pinnoitus",
     "lyhytNimi" : "Julkisivujen pinnoitus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ytbehandling av fasader",
+    "lyhytNimi" : "Ytbehandling av fasader",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -48190,8 +48190,8 @@
   "koodiUri" : "tutkinnonosat_104046",
   "koodiArvo" : "104046",
   "metadata" : [ {
-    "nimi" : "Koulutus-, yhteistyö- ja esimiesvalmiudet",
-    "lyhytNimi" : "Koulutus-, yhteistyö- ja esimiesvalmiudet",
+    "nimi" : "Koulutuksen ja yhteistyön organisoiminen",
+    "lyhytNimi" : "Koulutuksen ja yhteistyön organisoiminen",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -61030,6 +61030,33 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkinnonosat_121053",
+  "koodiArvo" : "121053",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus osaaminen",
+    "lyhytNimi" : "Viestintä- ja vuorovaikutus osaaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_121054",
+  "koodiArvo" : "121054",
+  "metadata" : [ {
+    "nimi" : "Matemaattis-luonnontieteellinen osaaminen",
+    "lyhytNimi" : "Matemaattis-luonnontieteellinen osaaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_121055",
+  "koodiArvo" : "121055",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta- ja työelämäosaaminen",
+    "lyhytNimi" : "Yhteiskunta. ja työelämäosaaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkinnonosat_200001",
   "koodiArvo" : "200001",
   "metadata" : [ {
@@ -61638,6 +61665,31 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkinnonosat_300008",
+  "koodiArvo" : "300008",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen toimintakyvyn vahvistaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300009",
+  "koodiArvo" : "300009",
+  "metadata" : [ {
+    "nimi" : "Opiskeluvalmiuksien vahvistaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300010",
+  "koodiArvo" : "300010",
+  "metadata" : [ {
+    "nimi" : "Työelämään valmentautuminen",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkinnonosat_300011",
   "koodiArvo" : "300011",
   "metadata" : [ {
@@ -61922,6 +61974,199 @@
   "metadata" : [ {
     "nimi" : "Toimiminen isännöitsijänä vaativassa korjaushankkeessa",
     "lyhytNimi" : "Toimiminen isännöitsijänä vaativassa korjaushankkeessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300043",
+  "koodiArvo" : "300043",
+  "metadata" : [ {
+    "nimi" : "Puhtaus- ja kiinteistöpalvelujen suunnitteleminen ja johtaminen",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelujen suunnitteleminen ja johtaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300044",
+  "koodiArvo" : "300044",
+  "metadata" : [ {
+    "nimi" : "Puhtaus- ja kiinteistöpalvelujen henkilöstön ja osaamisen johtaminen",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelujen henkilöstön ja osaamisen johtaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300045",
+  "koodiArvo" : "300045",
+  "metadata" : [ {
+    "nimi" : "Ekotehokkuuden johtaminen",
+    "lyhytNimi" : "Ekotehokkuuden johtaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300046",
+  "koodiArvo" : "300046",
+  "metadata" : [ {
+    "nimi" : "Kiinteistön toimivuuden ja toimintakunnon arviointi",
+    "lyhytNimi" : "Kiinteistön toimivuuden ja toimintakunnon arviointi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300047",
+  "koodiArvo" : "300047",
+  "metadata" : [ {
+    "nimi" : "Monipalvelujen johtaminen",
+    "lyhytNimi" : "Monipalvelujen johtaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300048",
+  "koodiArvo" : "300048",
+  "metadata" : [ {
+    "nimi" : "Puhtaus- ja kiinteistöpalvelujen kehittäminen",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelujen kehittäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300049",
+  "koodiArvo" : "300049",
+  "metadata" : [ {
+    "nimi" : "Puhtaus- ja kiinteistöpalvelujen mitoittaminen ja myynti",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelujen mitoittaminen ja myynti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300050",
+  "koodiArvo" : "300050",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvoalan kehitystehtävä",
+    "lyhytNimi" : "Ajoneuvoalan kehitystehtävä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300051",
+  "koodiArvo" : "300051",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvon vianmääritys",
+    "lyhytNimi" : "Ajoneuvon vianmääritys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300052",
+  "koodiArvo" : "300052",
+  "metadata" : [ {
+    "nimi" : "Alusta- ja jarrujärjestelmien asiantuntijana toimiminen",
+    "lyhytNimi" : "Alusta- ja jarrujärjestelmien asiantuntijana toimiminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300053",
+  "koodiArvo" : "300053",
+  "metadata" : [ {
+    "nimi" : "Koneenohjausjärjestelmien ylläpito ja säätäminen",
+    "lyhytNimi" : "Koneenohjausjärjestelmien ylläpito ja säätäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300054",
+  "koodiArvo" : "300054",
+  "metadata" : [ {
+    "nimi" : "Korjauksen haltuunotto",
+    "lyhytNimi" : "Korjauksen haltuunotto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300055",
+  "koodiArvo" : "300055",
+  "metadata" : [ {
+    "nimi" : "Päälli- ja korirakenteiden asennus sekä korjaus",
+    "lyhytNimi" : "Päälli- ja korirakenteiden asennus sekä korjaus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300056",
+  "koodiArvo" : "300056",
+  "metadata" : [ {
+    "nimi" : "Sähköajoneuvojen korjaus",
+    "lyhytNimi" : "Sähköajoneuvojen korjaus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300057",
+  "koodiArvo" : "300057",
+  "metadata" : [ {
+    "nimi" : "Teknisenä asiantuntijana toimiminen",
+    "lyhytNimi" : "Teknisenä asiantuntijana toimiminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300058",
+  "koodiArvo" : "300058",
+  "metadata" : [ {
+    "nimi" : "Testaus ja kilpailutoiminta",
+    "lyhytNimi" : "Testaus ja kilpailutoiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300059",
+  "koodiArvo" : "300059",
+  "metadata" : [ {
+    "nimi" : "Työkoneiden vianmääritykset",
+    "lyhytNimi" : "Työkoneiden vianmääritykset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300300",
+  "koodiArvo" : "300300",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300300-1",
+  "koodiArvo" : "300300",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300301",
+  "koodiArvo" : "300301",
+  "metadata" : [ {
+    "nimi" : "Opiskeluvalmiuksien vahvistaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300302",
+  "koodiArvo" : "300302",
+  "metadata" : [ {
+    "nimi" : "Työpaikalla järjestettävään koulutukseen valmentautuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkinnonosat_300303",
+  "koodiArvo" : "300303",
+  "metadata" : [ {
+    "nimi" : "Osallisuuden ja käytännön taitojen vahvistaminen",
     "kieli" : "FI"
   } ],
   "versio" : 1

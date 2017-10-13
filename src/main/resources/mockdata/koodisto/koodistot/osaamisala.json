@@ -2,13 +2,13 @@
   "koodistoUri" : "osaamisala",
   "versio" : 3,
   "metadata" : [ {
-    "kieli" : "SV",
-    "nimi" : "kompetensområde",
-    "kuvaus" : "kompetensområde"
-  }, {
     "kieli" : "FI",
     "nimi" : "osaamisala",
     "kuvaus" : "osaamisala"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "kompetensområde",
+    "kuvaus" : "kompetensområde"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
   "voimassaAlkuPvm" : "2015-09-30",
@@ -16,7 +16,7 @@
   "withinCodes" : [ {
     "codesUri" : "koulutus",
     "codesVersion" : 6,
-    "passive" : false
+    "passive" : true
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 5,
@@ -25,7 +25,11 @@
     "codesUri" : "koulutus",
     "codesVersion" : 4,
     "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 7,
+    "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 5
+  "version" : 6
 }

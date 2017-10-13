@@ -2570,12 +2570,15 @@
   "koodiArvo" : "530",
   "metadata" : [ {
     "nimi" : "Former Netherlands Antilles",
+    "lyhytNimi" : "",
     "kieli" : "EN"
   }, {
     "nimi" : "Det forna Nederländska Antillerna",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Alankomaiden Antillit",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1

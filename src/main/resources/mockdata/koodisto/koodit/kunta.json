@@ -3,9 +3,11 @@
   "koodiArvo" : "001",
   "metadata" : [ {
     "nimi" : "Ahlainen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Ahlainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -14,9 +16,11 @@
   "koodiArvo" : "002",
   "metadata" : [ {
     "nimi" : "Aitolahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Aitolahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -36,9 +40,11 @@
   "koodiArvo" : "004",
   "metadata" : [ {
     "nimi" : "Alahärmä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Alahärmä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -58,9 +64,11 @@
   "koodiArvo" : "006",
   "metadata" : [ {
     "nimi" : "Alastaro",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Alastaro",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -135,9 +143,11 @@
   "koodiArvo" : "013",
   "metadata" : [ {
     "nimi" : "Antrea",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Antrea",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -157,9 +167,11 @@
   "koodiArvo" : "015",
   "metadata" : [ {
     "nimi" : "Artsjö",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Artjärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -179,9 +191,11 @@
   "koodiArvo" : "017",
   "metadata" : [ {
     "nimi" : "Askainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Villnäs",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -278,9 +292,11 @@
   "koodiArvo" : "040",
   "metadata" : [ {
     "nimi" : "Dragsfjärd",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Dragsfjärd",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -300,9 +316,11 @@
   "koodiArvo" : "044",
   "metadata" : [ {
     "nimi" : "Elimäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Elimäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -311,9 +329,11 @@
   "koodiArvo" : "045",
   "metadata" : [ {
     "nimi" : "Eno",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Eno",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -498,9 +518,11 @@
   "koodiArvo" : "073",
   "metadata" : [ {
     "nimi" : "Halikko",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Halikko",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -575,9 +597,11 @@
   "koodiArvo" : "080",
   "metadata" : [ {
     "nimi" : "Harlu",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Harlu",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -608,9 +632,11 @@
   "koodiArvo" : "083",
   "metadata" : [ {
     "nimi" : "Hauho",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Hauho",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -619,9 +645,11 @@
   "koodiArvo" : "084",
   "metadata" : [ {
     "nimi" : "Haukipudas",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Haukipudas",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -630,9 +658,11 @@
   "koodiArvo" : "085",
   "metadata" : [ {
     "nimi" : "Haukivuori",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Haukivuori",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -652,9 +682,11 @@
   "koodiArvo" : "087",
   "metadata" : [ {
     "nimi" : "Heinjoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Heinjoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -718,9 +750,11 @@
   "koodiArvo" : "093",
   "metadata" : [ {
     "nimi" : "Hiitola",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Hiitola",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -740,9 +774,11 @@
   "koodiArvo" : "095",
   "metadata" : [ {
     "nimi" : "Himanka",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Himanka",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -806,9 +842,11 @@
   "koodiArvo" : "101",
   "metadata" : [ {
     "nimi" : "Houtskär",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Houtskari",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1015,9 +1053,11 @@
   "koodiArvo" : "147",
   "metadata" : [ {
     "nimi" : "Impilahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Impilahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1048,9 +1088,11 @@
   "koodiArvo" : "150",
   "metadata" : [ {
     "nimi" : "Iniö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Iniö",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1092,9 +1134,11 @@
   "koodiArvo" : "162",
   "metadata" : [ {
     "nimi" : "Jaakkima",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Jaakkima",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1103,9 +1147,11 @@
   "koodiArvo" : "163",
   "metadata" : [ {
     "nimi" : "Jaala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Jaala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1114,9 +1160,11 @@
   "koodiArvo" : "164",
   "metadata" : [ {
     "nimi" : "Jalasjärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Jalasjärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1158,9 +1206,11 @@
   "koodiArvo" : "168",
   "metadata" : [ {
     "nimi" : "Johannes",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Johannes",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1213,9 +1263,11 @@
   "koodiArvo" : "173",
   "metadata" : [ {
     "nimi" : "Joutseno",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Joutseno",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1224,9 +1276,11 @@
   "koodiArvo" : "174",
   "metadata" : [ {
     "nimi" : "Juankoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Juankoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1235,9 +1289,11 @@
   "koodiArvo" : "175",
   "metadata" : [ {
     "nimi" : "Jurva",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Jurva",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1290,9 +1346,11 @@
   "koodiArvo" : "180",
   "metadata" : [ {
     "nimi" : "Jyväskylä lk",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Jyväskylä mlk",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1323,9 +1381,11 @@
   "koodiArvo" : "183",
   "metadata" : [ {
     "nimi" : "Jämsänkoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Jämsänkoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1345,9 +1405,11 @@
   "koodiArvo" : "185",
   "metadata" : [ {
     "nimi" : "Jääski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Jääski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1477,9 +1539,11 @@
   "koodiArvo" : "210",
   "metadata" : [ {
     "nimi" : "Kalvola",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kalvola",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1532,9 +1596,11 @@
   "koodiArvo" : "215",
   "metadata" : [ {
     "nimi" : "Kanneljärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kanneljärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1587,9 +1653,11 @@
   "koodiArvo" : "220",
   "metadata" : [ {
     "nimi" : "Karjaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Karis",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1620,9 +1688,11 @@
   "koodiArvo" : "223",
   "metadata" : [ {
     "nimi" : "Karjalohja",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Karislojo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1664,9 +1734,11 @@
   "koodiArvo" : "227",
   "metadata" : [ {
     "nimi" : "Karttula",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Karttula",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1840,9 +1912,11 @@
   "koodiArvo" : "243",
   "metadata" : [ {
     "nimi" : "Kemiö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kimito",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1873,9 +1947,11 @@
   "koodiArvo" : "246",
   "metadata" : [ {
     "nimi" : "Kerimäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kerimäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -1884,9 +1960,11 @@
   "koodiArvo" : "247",
   "metadata" : [ {
     "nimi" : "Kestilä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kestilä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1895,9 +1973,11 @@
   "koodiArvo" : "248",
   "metadata" : [ {
     "nimi" : "Kesälahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kesälahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1939,9 +2019,11 @@
   "koodiArvo" : "252",
   "metadata" : [ {
     "nimi" : "Kiikala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kiikala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1961,9 +2043,11 @@
   "koodiArvo" : "254",
   "metadata" : [ {
     "nimi" : "Kiikoinen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kiikoinen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1972,9 +2056,11 @@
   "koodiArvo" : "255",
   "metadata" : [ {
     "nimi" : "Kiiminki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kiiminki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2016,9 +2102,11 @@
   "koodiArvo" : "259",
   "metadata" : [ {
     "nimi" : "Kisko",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kisko",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2049,9 +2137,11 @@
   "koodiArvo" : "262",
   "metadata" : [ {
     "nimi" : "Kiukainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kiukainen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2093,9 +2183,11 @@
   "koodiArvo" : "266",
   "metadata" : [ {
     "nimi" : "Kodisjoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kodisjoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2214,9 +2306,11 @@
   "koodiArvo" : "277",
   "metadata" : [ {
     "nimi" : "Korpilahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Korpilahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2236,9 +2330,11 @@
   "koodiArvo" : "279",
   "metadata" : [ {
     "nimi" : "Korpo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Korppoo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2258,9 +2354,11 @@
   "koodiArvo" : "281",
   "metadata" : [ {
     "nimi" : "Kortesjärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kortesjärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2280,9 +2378,11 @@
   "koodiArvo" : "283",
   "metadata" : [ {
     "nimi" : "Hämeenkoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Hämeenkoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2346,9 +2446,11 @@
   "koodiArvo" : "289",
   "metadata" : [ {
     "nimi" : "Kuhmalahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kuhmalahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2379,9 +2481,11 @@
   "koodiArvo" : "292",
   "metadata" : [ {
     "nimi" : "Kuivaniemi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kuivaniemi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2500,9 +2604,11 @@
   "koodiArvo" : "303",
   "metadata" : [ {
     "nimi" : "Kuru",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kuru",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2533,9 +2639,11 @@
   "koodiArvo" : "306",
   "metadata" : [ {
     "nimi" : "Kuusankoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kuusankoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2555,9 +2663,11 @@
   "koodiArvo" : "308",
   "metadata" : [ {
     "nimi" : "Kuusjoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kuusjoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2577,9 +2687,11 @@
   "koodiArvo" : "310",
   "metadata" : [ {
     "nimi" : "Kylmäkoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Kylmäkoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2632,9 +2744,11 @@
   "koodiArvo" : "315",
   "metadata" : [ {
     "nimi" : "Kälviä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kelviå",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2676,9 +2790,11 @@
   "koodiArvo" : "319",
   "metadata" : [ {
     "nimi" : "Kjulo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Köyliö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2698,9 +2814,11 @@
   "koodiArvo" : "321",
   "metadata" : [ {
     "nimi" : "Kyyrölä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kyyrölä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2764,9 +2882,11 @@
   "koodiArvo" : "401",
   "metadata" : [ {
     "nimi" : "Lammi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Lammi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2819,9 +2939,11 @@
   "koodiArvo" : "406",
   "metadata" : [ {
     "nimi" : "Lappi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Lappi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2896,9 +3018,11 @@
   "koodiArvo" : "413",
   "metadata" : [ {
     "nimi" : "Lavia",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Lavia",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2907,9 +3031,11 @@
   "koodiArvo" : "414",
   "metadata" : [ {
     "nimi" : "Lehtimäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Lehtimäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -2918,9 +3044,11 @@
   "koodiArvo" : "415",
   "metadata" : [ {
     "nimi" : "Leivonmäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Leivonmäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2962,9 +3090,11 @@
   "koodiArvo" : "419",
   "metadata" : [ {
     "nimi" : "Lemu",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Lemu",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3017,9 +3147,11 @@
   "koodiArvo" : "424",
   "metadata" : [ {
     "nimi" : "Liljendal",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Liljendal",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3072,9 +3204,11 @@
   "koodiArvo" : "429",
   "metadata" : [ {
     "nimi" : "Lochteå",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Lohtaja",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3182,9 +3316,11 @@
   "koodiArvo" : "439",
   "metadata" : [ {
     "nimi" : "Luopioinen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Luopioinen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3215,9 +3351,11 @@
   "koodiArvo" : "442",
   "metadata" : [ {
     "nimi" : "Luvia",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Luvia",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3226,9 +3364,11 @@
   "koodiArvo" : "443",
   "metadata" : [ {
     "nimi" : "Längelmäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Längelmäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3248,9 +3388,11 @@
   "koodiArvo" : "445",
   "metadata" : [ {
     "nimi" : "Pargas",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Parainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3270,9 +3412,11 @@
   "koodiArvo" : "476",
   "metadata" : [ {
     "nimi" : "Maaninka",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Maaninka",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3303,9 +3447,11 @@
   "koodiArvo" : "479",
   "metadata" : [ {
     "nimi" : "Maxmo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Maksamaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3336,9 +3482,11 @@
   "koodiArvo" : "482",
   "metadata" : [ {
     "nimi" : "Mellilä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Mellilä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3369,9 +3517,11 @@
   "koodiArvo" : "485",
   "metadata" : [ {
     "nimi" : "Merimasku",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Merimasku",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3424,9 +3574,11 @@
   "koodiArvo" : "490",
   "metadata" : [ {
     "nimi" : "Mietoinen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mietoinen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3457,9 +3609,11 @@
   "koodiArvo" : "493",
   "metadata" : [ {
     "nimi" : "Mouhijärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mouhijärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3501,9 +3655,11 @@
   "koodiArvo" : "497",
   "metadata" : [ {
     "nimi" : "Muolaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Muolaa",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3545,9 +3701,11 @@
   "koodiArvo" : "501",
   "metadata" : [ {
     "nimi" : "Muurla",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Muurla",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3600,9 +3758,11 @@
   "koodiArvo" : "506",
   "metadata" : [ {
     "nimi" : "Mänttä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mänttä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3666,9 +3826,11 @@
   "koodiArvo" : "532",
   "metadata" : [ {
     "nimi" : "Nastola",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Nastola",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3677,9 +3839,11 @@
   "koodiArvo" : "533",
   "metadata" : [ {
     "nimi" : "Nauvo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Nagu",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3688,9 +3852,11 @@
   "koodiArvo" : "534",
   "metadata" : [ {
     "nimi" : "Nilsiä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Nilsiä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3721,9 +3887,11 @@
   "koodiArvo" : "537",
   "metadata" : [ {
     "nimi" : "Norrmark",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Noormarkku",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3754,9 +3922,11 @@
   "koodiArvo" : "540",
   "metadata" : [ {
     "nimi" : "Nummi-Pusula",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Nummi-Pusula",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3798,9 +3968,11 @@
   "koodiArvo" : "544",
   "metadata" : [ {
     "nimi" : "Nurmo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Nurmo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3820,9 +3992,11 @@
   "koodiArvo" : "559",
   "metadata" : [ {
     "nimi" : "Oravais",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Oravainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3908,9 +4082,11 @@
   "koodiArvo" : "567",
   "metadata" : [ {
     "nimi" : "Oulunsalo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Oulunsalo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -3919,9 +4095,11 @@
   "koodiArvo" : "573",
   "metadata" : [ {
     "nimi" : "Parainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pargas",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4051,9 +4229,11 @@
   "koodiArvo" : "585",
   "metadata" : [ {
     "nimi" : "Pernaja",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pernå",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4062,9 +4242,11 @@
   "koodiArvo" : "586",
   "metadata" : [ {
     "nimi" : "Perniö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Bjärnå",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4073,9 +4255,11 @@
   "koodiArvo" : "587",
   "metadata" : [ {
     "nimi" : "Pertteli",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Pertteli",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4238,9 +4422,11 @@
   "koodiArvo" : "602",
   "metadata" : [ {
     "nimi" : "Pikis",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Piikkiö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4249,9 +4435,11 @@
   "koodiArvo" : "603",
   "metadata" : [ {
     "nimi" : "Piippola",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Piippola",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4282,9 +4470,11 @@
   "koodiArvo" : "606",
   "metadata" : [ {
     "nimi" : "Pohja",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pojo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4403,9 +4593,11 @@
   "koodiArvo" : "617",
   "metadata" : [ {
     "nimi" : "Pulkkila",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pulkkila",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4414,9 +4606,11 @@
   "koodiArvo" : "618",
   "metadata" : [ {
     "nimi" : "Punkaharju",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Punkaharju",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4568,9 +4762,11 @@
   "koodiArvo" : "632",
   "metadata" : [ {
     "nimi" : "Pyhäselkä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pyhäselkä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4579,9 +4775,11 @@
   "koodiArvo" : "633",
   "metadata" : [ {
     "nimi" : "Pylkönmäki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pylkönmäki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4645,9 +4843,11 @@
   "koodiArvo" : "640",
   "metadata" : [ {
     "nimi" : "Pieksänmaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pieksänmaa",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4700,9 +4900,11 @@
   "koodiArvo" : "682",
   "metadata" : [ {
     "nimi" : "Rantsila",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Rantsila",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -4810,9 +5012,11 @@
   "koodiArvo" : "692",
   "metadata" : [ {
     "nimi" : "Renko",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Renko",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4854,9 +5058,11 @@
   "koodiArvo" : "696",
   "metadata" : [ {
     "nimi" : "Ristiina",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ristiina",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4887,9 +5093,11 @@
   "koodiArvo" : "699",
   "metadata" : [ {
     "nimi" : "Rovaniemi mlk",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Rovaniemi Lk",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4909,9 +5117,11 @@
   "koodiArvo" : "701",
   "metadata" : [ {
     "nimi" : "Ruotsinpyhtää",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Strömfors",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4953,9 +5163,11 @@
   "koodiArvo" : "705",
   "metadata" : [ {
     "nimi" : "Rymättylä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Rimito",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4986,9 +5198,11 @@
   "koodiArvo" : "708",
   "metadata" : [ {
     "nimi" : "Ruukki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Ruukki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5008,9 +5222,11 @@
   "koodiArvo" : "728",
   "metadata" : [ {
     "nimi" : "Saari",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Saari",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5030,9 +5246,11 @@
   "koodiArvo" : "730",
   "metadata" : [ {
     "nimi" : "Sahalahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Sahalahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5107,9 +5325,11 @@
   "koodiArvo" : "737",
   "metadata" : [ {
     "nimi" : "Sammatti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Sammatti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5151,9 +5371,11 @@
   "koodiArvo" : "741",
   "metadata" : [ {
     "nimi" : "Savonranta",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Savonranta",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5294,9 +5516,11 @@
   "koodiArvo" : "754",
   "metadata" : [ {
     "nimi" : "Anjalankoski",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Anjalankoski",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5470,9 +5694,11 @@
   "koodiArvo" : "770",
   "metadata" : [ {
     "nimi" : "Sumiainen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Sumiainen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5492,9 +5718,11 @@
   "koodiArvo" : "772",
   "metadata" : [ {
     "nimi" : "Suodenniemi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Suodenniemi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5514,9 +5742,11 @@
   "koodiArvo" : "774",
   "metadata" : [ {
     "nimi" : "Suolahti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Suolahti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5525,9 +5755,11 @@
   "koodiArvo" : "775",
   "metadata" : [ {
     "nimi" : "Suomenniemi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Suomenniemi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5536,9 +5768,11 @@
   "koodiArvo" : "776",
   "metadata" : [ {
     "nimi" : "Suomusjärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Suomusjärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -5624,9 +5858,11 @@
   "koodiArvo" : "784",
   "metadata" : [ {
     "nimi" : "Särkisalo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Finby",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5756,9 +5992,11 @@
   "koodiArvo" : "835",
   "metadata" : [ {
     "nimi" : "Tammisaari",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ekenäs",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5789,9 +6027,11 @@
   "koodiArvo" : "838",
   "metadata" : [ {
     "nimi" : "Tarvasjoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Tarvasjoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5976,9 +6216,11 @@
   "koodiArvo" : "855",
   "metadata" : [ {
     "nimi" : "Tuulos",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Tuulos",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -5987,9 +6229,11 @@
   "koodiArvo" : "856",
   "metadata" : [ {
     "nimi" : "Tuupovaara",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Tuupovaara",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6064,9 +6308,11 @@
   "koodiArvo" : "863",
   "metadata" : [ {
     "nimi" : "Töysä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Töysä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6075,9 +6321,11 @@
   "koodiArvo" : "864",
   "metadata" : [ {
     "nimi" : "Toijala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Toijala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6086,9 +6334,11 @@
   "koodiArvo" : "885",
   "metadata" : [ {
     "nimi" : "Ullava",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Ullava",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6152,9 +6402,11 @@
   "koodiArvo" : "891",
   "metadata" : [ {
     "nimi" : "Uukuniemi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Uukuniemi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6240,9 +6492,11 @@
   "koodiArvo" : "906",
   "metadata" : [ {
     "nimi" : "Vahto",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vahto",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6273,9 +6527,11 @@
   "koodiArvo" : "909",
   "metadata" : [ {
     "nimi" : "Valkeala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Valkeala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6306,9 +6562,11 @@
   "koodiArvo" : "912",
   "metadata" : [ {
     "nimi" : "Vammala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Vammala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6317,9 +6575,11 @@
   "koodiArvo" : "913",
   "metadata" : [ {
     "nimi" : "Vampula",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vampula",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6350,9 +6610,11 @@
   "koodiArvo" : "916",
   "metadata" : [ {
     "nimi" : "Varpaisjärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Varpaisjärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6383,9 +6645,11 @@
   "koodiArvo" : "919",
   "metadata" : [ {
     "nimi" : "Vehmersalmi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vehmersalmi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6394,9 +6658,11 @@
   "koodiArvo" : "920",
   "metadata" : [ {
     "nimi" : "Velkua",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Velkua",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6427,9 +6693,11 @@
   "koodiArvo" : "923",
   "metadata" : [ {
     "nimi" : "Västanfjärd",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Västanfjärd",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6460,9 +6728,11 @@
   "koodiArvo" : "926",
   "metadata" : [ {
     "nimi" : "Vihanti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Vihanti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6482,9 +6752,11 @@
   "koodiArvo" : "928",
   "metadata" : [ {
     "nimi" : "Viiala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Viiala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6526,9 +6798,11 @@
   "koodiArvo" : "932",
   "metadata" : [ {
     "nimi" : "Viljakkala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Viljakkala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6537,9 +6811,11 @@
   "koodiArvo" : "933",
   "metadata" : [ {
     "nimi" : "Vilppula",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vilppula",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6614,9 +6890,11 @@
   "koodiArvo" : "940",
   "metadata" : [ {
     "nimi" : "Vuolijoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vuolijoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6636,9 +6914,11 @@
   "koodiArvo" : "942",
   "metadata" : [ {
     "nimi" : "Lillkyro",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vähäkyrö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6647,9 +6927,11 @@
   "koodiArvo" : "943",
   "metadata" : [ {
     "nimi" : "Värtsilä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Värtsilä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6658,9 +6940,11 @@
   "koodiArvo" : "944",
   "metadata" : [ {
     "nimi" : "Vörå",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vöyri",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6669,9 +6953,11 @@
   "koodiArvo" : "945",
   "metadata" : [ {
     "nimi" : "Vöyri-Maksmaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Vörå-Maxmo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6691,9 +6977,11 @@
   "koodiArvo" : "971",
   "metadata" : [ {
     "nimi" : "Ylihärmä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ylihärmä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6702,9 +6990,11 @@
   "koodiArvo" : "972",
   "metadata" : [ {
     "nimi" : "Yli-Ii",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Yli-Ii",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6713,9 +7003,11 @@
   "koodiArvo" : "973",
   "metadata" : [ {
     "nimi" : "Ylikiiminki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ylikiiminki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6735,9 +7027,11 @@
   "koodiArvo" : "975",
   "metadata" : [ {
     "nimi" : "Ylistaro",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ylistaro",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6768,9 +7062,11 @@
   "koodiArvo" : "978",
   "metadata" : [ {
     "nimi" : "Ylämaa",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Ylämaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -6779,9 +7075,11 @@
   "koodiArvo" : "979",
   "metadata" : [ {
     "nimi" : "Yläne",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Yläne",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6812,9 +7110,11 @@
   "koodiArvo" : "988",
   "metadata" : [ {
     "nimi" : "Äetsä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Äetsä",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -6878,9 +7178,11 @@
   "koodiArvo" : "994",
   "metadata" : [ {
     "nimi" : "Pirkkala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pirkkala",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1

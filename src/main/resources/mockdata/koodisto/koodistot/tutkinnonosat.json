@@ -2,7 +2,7 @@
   "koodistoUri" : "tutkinnonosat",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
+    "kieli" : "FI",
     "nimi" : "tutkinnon osat",
     "kuvaus" : "tutkinnon osat"
   }, {
@@ -10,7 +10,7 @@
     "nimi" : "examensdeler",
     "kuvaus" : "examensdeler"
   }, {
-    "kieli" : "FI",
+    "kieli" : "EN",
     "nimi" : "tutkinnon osat",
     "kuvaus" : "tutkinnon osat"
   } ],
@@ -19,5 +19,5 @@
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 277
+  "version" : 279
 }

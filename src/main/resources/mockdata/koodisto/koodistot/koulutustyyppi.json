@@ -2,15 +2,15 @@
   "koodistoUri" : "koulutustyyppi",
   "versio" : 2,
   "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "koulutustyyppi",
-    "kuvaus" : "koulutustyyppi"
-  }, {
     "kieli" : "FI",
     "nimi" : "koulutustyyppi",
-    "kuvaus" : "koulutustyyppi"
+    "kuvaus" : "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
   }, {
     "kieli" : "SV",
+    "nimi" : "koulutustyyppi",
+    "kuvaus" : "koulutustyyppi"
+  }, {
+    "kieli" : "EN",
     "nimi" : "koulutustyyppi",
     "kuvaus" : "koulutustyyppi"
   } ],
@@ -51,8 +51,12 @@
     "passive" : true
   }, {
     "codesUri" : "koulutus",
-    "codesVersion" : 6,
+    "codesVersion" : 7,
     "passive" : false
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 6,
+    "passive" : true
   } ],
   "tila" : "LUONNOS",
   "version" : 5

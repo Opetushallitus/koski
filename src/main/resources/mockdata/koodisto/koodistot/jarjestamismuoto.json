@@ -3,12 +3,13 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Järjestämismuoto"
+    "nimi" : "Järjestämismuoto",
+    "kuvaus" : ""
   } ],
-  "codesGroupUri" : "http://koute",
+  "codesGroupUri" : "http://koulutuskoodistot",
   "voimassaAlkuPvm" : "2014-12-01",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 0
+  "version" : 3
 }

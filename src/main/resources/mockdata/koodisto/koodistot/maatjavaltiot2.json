@@ -17,7 +17,11 @@
   "codesGroupUri" : "http://alueet",
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
+  "withinCodes" : [ {
+    "codesUri" : "maanosat",
+    "codesVersion" : 1,
+    "passive" : false
+  } ],
   "tila" : "LUONNOS",
   "version" : 4
 }

@@ -822,7 +822,7 @@ describe('Ammatillinen koulutus', function() {
             'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
-            'Järjestämismuodot 1.9.2013 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Järjestämismuodot 1.9.2013 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
             'Työssäoppimispaikka Sortti-asema\n' +
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
@@ -1051,7 +1051,7 @@ describe('Ammatillinen koulutus', function() {
           'Toinen osaamisala kyllä\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
-          'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+          'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
         )
@@ -1130,10 +1130,10 @@ describe('Ammatillinen koulutus', function() {
             'Suoritustapa Näyttötutkinto\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
-            'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
             'Yritys Autokorjaamo Oy Y-tunnus 1234567-8\n' +
-            '31.3.2016 — , Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla\n' +
+            '31.3.2016 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
             'Suoritus valmis Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori'
           )
         })
@@ -1255,7 +1255,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) 5/011/2015\n' +
+            'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 5/011/2015\n' +
             'Laajuus 65 osp\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
             'Suorituskieli suomi\n' +

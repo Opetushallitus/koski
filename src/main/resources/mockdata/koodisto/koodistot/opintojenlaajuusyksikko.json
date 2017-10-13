@@ -2,15 +2,15 @@
   "koodistoUri" : "opintojenlaajuusyksikko",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "opintojen laajuusyksikko",
+    "kuvaus" : "opintojen laajuusyksikko"
+  }, {
     "kieli" : "SV",
     "nimi" : "opintojen laajuusyksikko",
     "kuvaus" : "opintojen laajuusyksikko"
   }, {
     "kieli" : "EN",
-    "nimi" : "opintojen laajuusyksikko",
-    "kuvaus" : "opintojen laajuusyksikko"
-  }, {
-    "kieli" : "FI",
     "nimi" : "opintojen laajuusyksikko",
     "kuvaus" : "opintojen laajuusyksikko"
   } ],
@@ -31,12 +31,16 @@
     "passive" : true
   }, {
     "codesUri" : "koulutus",
+    "codesVersion" : 7,
+    "passive" : false
+  }, {
+    "codesUri" : "koulutus",
     "codesVersion" : 1,
     "passive" : true
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 6,
-    "passive" : false
+    "passive" : true
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 2,
