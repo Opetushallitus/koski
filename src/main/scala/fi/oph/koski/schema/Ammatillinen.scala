@@ -58,12 +58,9 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   vammainenJaAvustaja: Boolean = false,
-  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Välitetään osa-aikaisuuden suuruus. Yksi yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %. Rahoituksen laskennassa käytettävä tieto")
-  @MinValueExclusive(0)
-  @MaxValueExclusive(100)
-  @UnitOfMeasure("%")
-  @Title("Osa-aikaisuus")
-  osaAikaisuus: Option[Int] = None,
+  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
+  @Title("Osa-aikaisuusjaksot")
+  osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
@@ -86,6 +83,18 @@ case class Poissaolojakso(
   @Description("Poissaolon syy. Mikäli kysymys on koulutuksen järjestäjän päättämästä 4vk kestävästä kesäkeskeytyksestä, käytetään syykoodia 'Kesälomakeskeytys'")
   @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
   syy: Koodistokoodiviite
+) extends Jakso
+
+@Description("Osa-aikaisuusjakson kesto ja suuruus")
+case class OsaAikaisuusJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @Description("Osa-aikaisuuden suuruus. Yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %")
+  @MinValueExclusive(0)
+  @MaxValueExclusive(100)
+  @UnitOfMeasure("%")
+  @Title("Osa-aikaisuus")
+  osaAikaisuus: Int
 ) extends Jakso
 
 @Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen)")

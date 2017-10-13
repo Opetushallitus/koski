@@ -378,7 +378,9 @@ describe('Ammatillinen koulutus', function() {
         editor.property('majoitus').addItem,
         editor.property('majoitus').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('majoitus').propertyBySelector('.loppu').setValue('1.1.2099'),
-        editor.property('osaAikaisuus').setValue('50'),
+        editor.property('osaAikaisuusjaksot').addItem,
+        editor.property('osaAikaisuusjaksot').propertyBySelector('.alku').setValue('22.6.2017'),
+        editor.property('osaAikaisuusjaksot').property('osaAikaisuus').setValue('80'),
         editor.property('poissaolojaksot').addItem,
         editor.property('poissaolojaksot').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('poissaolojaksot').property('syy').setValue('Oma ilmoitus'),
@@ -393,7 +395,8 @@ describe('Ammatillinen koulutus', function() {
           'Ulkomaanjaksot 22.6.2017 — Maa Algeria Kuvaus Testing\n' +
           'Poissaolojaksot 22.6.2017 — Syy Oma ilmoitus\n' +
           'Hojks Opetusryhmä Erityisopetusryhmä\n' +
-          'Osa-aikaisuus 50 %'
+          'Osa-aikaisuusjaksot 22.6.2017 —\n' +
+          'Osa-aikaisuus 80 %'
           )
       })
     })
@@ -1016,6 +1019,7 @@ describe('Ammatillinen koulutus', function() {
           'Hojks Opetusryhmä Yleinen opetusryhmä\n' +
           'Vaikeasti vammainen kyllä\n' +
           'Vammainen ja avustaja kyllä\n' +
+          'Osa-aikaisuusjaksot 1.9.2012 —\n' +
           'Osa-aikaisuus 80 %\n' +
           'Henkilöstökoulutus kyllä\n' +
           'Vankilaopetuksessa kyllä')

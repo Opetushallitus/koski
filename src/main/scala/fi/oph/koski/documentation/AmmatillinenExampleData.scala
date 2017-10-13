@@ -202,7 +202,7 @@ object AmmatillinenExampleData {
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = Some(List(Majoitusjakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
     henkilöstökoulutus = true,
     vankilaopetuksessa = true,
-    osaAikaisuus = Some(80),
+    osaAikaisuusjaksot = Some(List(OsaAikaisuusJakso(date(2012, 9, 1), None, 80))),
     poissaolojaksot = Some(List(Poissaolojakso(date(2013, 10, 1), Some(date(2013, 10, 31)), Koodistokoodiviite("2", "ammatillistenopintojenpoissaolonsyy"))))
   )
 
