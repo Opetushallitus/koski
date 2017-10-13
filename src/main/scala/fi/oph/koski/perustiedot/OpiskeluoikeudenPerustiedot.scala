@@ -12,6 +12,7 @@ import org.json4s.{JArray, JValue}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
   def id: Int
+  def henkilö: NimitiedotJaOid
 }
 
 case class OpiskeluoikeudenPerustiedot(
