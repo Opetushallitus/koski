@@ -13,14 +13,17 @@ import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
 class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
-  def scheduler = new Scheduler(application.masterDatabase.db, "henkilötiedot-update", new IntervalSchedule(henkilötiedotUpdateInterval), henkilöUpdateContext(currentTimeMillis), updateHenkilöt)
+  // Start by scanning 10 minutes to the past to take possible CPU time difference into account.
+  // After first call that actually yields some changes from the data source, we'll use the timestamp
+  // of latest change (+1 millisecond) as the limit.
+  private val backBufferMs = 10 * 60 * 1000
+  def scheduler = new Scheduler(application.masterDatabase.db, "henkilötiedot-update", new IntervalSchedule(henkilötiedotUpdateInterval), henkilöUpdateContext(currentTimeMillis - backBufferMs), updateHenkilöt)
 
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
-      val startMillis = currentTimeMillis
       val changedOids = application.authenticationServiceClient.findChangedOppijaOids(oldContext.lastRun)
-      val newContext = runUpdate(changedOids, startMillis, oldContext)
+      val newContext = runUpdate(changedOids, oldContext)
       Some(JsonSerializer.serializeWithRoot(newContext))
     } catch {
       case e: Exception =>
@@ -29,7 +32,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
   }
 
-  private def runUpdate(oids: List[Oid], startMillis: Long, lastContext: HenkilöUpdateContext) = {
+  private def runUpdate(oids: List[Oid], lastContext: HenkilöUpdateContext) = {
     val filteredOids = application.henkilöCache.filterOidsByCache(oids)
     val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
 
@@ -43,7 +46,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
 
-    val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(startMillis)
+    val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(lastContext.lastRun)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
