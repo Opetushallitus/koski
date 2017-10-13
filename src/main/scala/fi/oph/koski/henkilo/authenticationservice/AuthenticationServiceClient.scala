@@ -92,7 +92,7 @@ class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidSe
         case Some(henkilö) => henkilö
         case None =>
           elasticSearch.refreshIndex
-          perustiedotRepository.findHenkilöPerustiedot(oid).map { henkilö =>
+          perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(oid).map { henkilö =>
             OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, 0)
           }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, 0))
       }

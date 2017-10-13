@@ -141,15 +141,15 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       .getOrElse(Nil)
   }
 
-  def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
-    findSingle(oid).map(j => extract[NimitiedotJaOid](j \ "henkilö"))
+  def findHenkilöPerustiedotByHenkilöOid(oid: String): Option[NimitiedotJaOid] = {
+    findSingleByHenkilöOid(oid).map(j => extract[NimitiedotJaOid](j \ "henkilö"))
   }
 
   def findMasterHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
-    findSingle(oid).map(j => extract[Option[NimitiedotJaOid]](j \ "masterHenkilö")).flatten
+    findSingleByHenkilöOid(oid).map(j => extract[Option[NimitiedotJaOid]](j \ "masterHenkilö")).flatten
   }
 
-  def findSingle(oid: String): Option[JValue] = {
+  def findSingleByHenkilöOid(oid: String): Option[JValue] = {
     val doc = toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     index.runSearch("perustiedot", doc)

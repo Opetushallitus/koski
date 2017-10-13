@@ -16,7 +16,7 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     Futures.await(application.perustiedotIndexer.init)
     "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
       modify(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"), None))
-      val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedot(eero.oid).get
+      val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).get
       päivitetytPerustiedot.sukunimi should equal("Uusisukunimi")
     }
   }
