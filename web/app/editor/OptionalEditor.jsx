@@ -38,8 +38,7 @@ export class OptionalEditor extends React.Component {
 }
 OptionalEditor.canShowInline = () => true
 
-// TODO: remove object wrapping
-export const wrapOptional = ({model}) => {
+export const wrapOptional = (model) => {
   if (!model) throw new Error('model missing. remember to wrap model like { model }')
   if (!model.optional) return model
   if (!model.context) throw new Error('cannot wrap without context')

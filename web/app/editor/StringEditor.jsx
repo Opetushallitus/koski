@@ -6,7 +6,7 @@ import {t} from '../i18n'
 
 export const StringEditor = ({model, placeholder, autoFocus}) => {
   placeholder = !placeholder && model.example ? `${t('Esimerkki')}: ${model.example}` : placeholder
-  let wrappedModel = wrapOptional({model})
+  let wrappedModel = wrapOptional(model)
   let onChange = (event) => pushModelValue(wrappedModel, { data: event.target.value })
   let data = modelData(model)
   let error = !modelValid(model)

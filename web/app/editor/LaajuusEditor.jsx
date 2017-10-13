@@ -8,7 +8,7 @@ import {t} from '../i18n'
 export class LaajuusEditor extends React.Component {
   render() {
     let { model, compact, showReadonlyScope = true } = this.props
-    let wrappedModel = wrapOptional({model: model})
+    let wrappedModel = wrapOptional(model)
     return (
       <span className="property laajuus">
         <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>

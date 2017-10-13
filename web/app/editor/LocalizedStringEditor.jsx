@@ -8,7 +8,7 @@ import {lensedModel, modelData, modelSetValue, oneOfPrototypes} from './EditorMo
 import * as L from 'partial.lenses'
 
 export const LocalizedStringEditor = ({model, ...rest}) => {
-  let wrappedModel = wrapOptional({model})
+  let wrappedModel = wrapOptional(model)
 
   let usedLanguage = getUsedLanguage(wrappedModel)
 

@@ -7,7 +7,7 @@ import {recursivelyEmpty} from './EditorModel'
 export class JaksoEditor extends React.Component {
   render() {
     let {model, className} = this.props
-    let wrappedModel = wrapOptional({model: model})
+    let wrappedModel = wrapOptional(model)
     return (
       <div className="jaksollinen">
         <PäivämääräväliEditor model={wrappedModel}/>

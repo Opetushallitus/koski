@@ -51,7 +51,7 @@ export const KurssitEditor = ({model}) => {
 }
 
 let createKurssinSuoritus = (osasuoritukset) => {
-  osasuoritukset = wrapOptional({model: osasuoritukset})
+  osasuoritukset = wrapOptional(osasuoritukset)
   let newItemIndex = modelItems(osasuoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
   let options = oneOfPrototypes(oppiaineenSuoritusProto)

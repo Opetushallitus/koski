@@ -2,9 +2,8 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {contextualizeSubModel, modelItems, oneOfPrototypes} from './EditorModel'
 export const placeholderForNonGrouped = '999999'
 
-
 export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) => {
-  osasuoritukset = wrapOptional({model: osasuoritukset})
+  osasuoritukset = wrapOptional(osasuoritukset)
   let newItemIndex = modelItems(osasuoritukset).length
   let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
   let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'

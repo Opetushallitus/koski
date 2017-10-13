@@ -6,7 +6,7 @@ import {wrapOptional} from './OptionalEditor.jsx'
 import {modelSetData} from './EditorModel'
 
 export const DateEditor = ({model, isAllowedDate}) => {
-  let wrappedModel = wrapOptional({model})
+  let wrappedModel = wrapOptional(model)
 
   let validityCallback = (valid, stringInput) => !valid && pushModelValue(wrappedModel, { data: stringInput}) // push raw string value to model in case of invalid input. will cause model validation to fail
   let valueCallback = (date) => pushModelValue(wrappedModel, date && { data: formatISODate(date), title: formatFinnishDate(date)})

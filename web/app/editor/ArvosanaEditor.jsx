@@ -13,7 +13,7 @@ export const ArvosanaEditor = ({model}) => {
     return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
   }
   model = fixArviointi(model)
-  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional({model: modelLookup(model, 'arviointi.-1')})), 'arvosana').startWith([])
+  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
   let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
   return (<span>{
     alternativesP.map(alternatives => {

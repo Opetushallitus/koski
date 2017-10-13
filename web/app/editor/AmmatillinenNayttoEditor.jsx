@@ -69,7 +69,7 @@ export class AmmatillinenNäyttöEditor extends React.Component {
     const popupVisibleA = this.state.popupVisibleA
     const edit = model.context.edit
 
-    const wrappedModel = wrapOptional({model})
+    const wrappedModel = wrapOptional(model)
     const hasData = model.modelId !== 0
 
     return (

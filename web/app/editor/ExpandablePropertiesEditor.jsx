@@ -12,7 +12,7 @@ export const ExpandablePropertiesEditor = ({model, propertyName, propertyFilter 
   let edit = model.context.edit
   let paramName = propertyName + '-expanded'
   let expanded = parseBool(currentLocation().params[paramName])
-  let wrappedModel = edit ? wrapOptional({model: propertyModel}) : propertyModel
+  let wrappedModel = edit ? wrapOptional(propertyModel) : propertyModel
   let toggleOpen = () => {
     navigateWithQueryParams({[paramName]: !expanded ? 'true' : undefined})
   }

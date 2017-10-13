@@ -6,7 +6,7 @@ import {modelSetValue, modelValid} from './EditorModel'
 export class NumberEditor extends React.Component {
   render() {
     let {model} = this.props
-    let wrappedModel = wrapOptional({model})
+    let wrappedModel = wrapOptional(model)
     let onChange = (event) => pushModelValue(wrappedModel, event.target.value ? { data: parseNumber(event.target.value) } : undefined)
 
     let data = modelData(wrappedModel)

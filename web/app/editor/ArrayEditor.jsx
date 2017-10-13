@@ -6,7 +6,7 @@ import {pushRemoval, pushModel, modelLookup} from './EditorModel'
 import Text from '../Text.jsx'
 
 export const ArrayEditor = ({model, reverse}) => {
-  let wrappedModel = wrapOptional({model})
+  let wrappedModel = wrapOptional(model)
 
   let items = modelItems(wrappedModel)
 

@@ -10,7 +10,7 @@ import {PerusteDropdown} from './PerusteDropdown.jsx'
 
 export const PerusteEditor = ({model}) => {
   if (!model.context.edit) return <StringEditor model={model}/>
-  model = wrapOptional({model})
+  model = wrapOptional(model)
   let perusteAtom = Atom(modelData(model))
   perusteAtom.filter(R.identity).changes().onValue(diaarinumero => pushModelValue(model, { data: diaarinumero }))
   return <PerusteDropdown {...{perusteAtom, suoritusTyyppiP: Bacon.constant(modelData(model.context.suoritus, 'tyyppi'))}}/>

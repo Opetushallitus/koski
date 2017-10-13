@@ -110,7 +110,7 @@ const KäyttäytymisenArvioEditor = ({model}) => {
 }
 
 let createOppiaineenSuoritus = (suoritukset) => {
-  suoritukset = wrapOptional({model: suoritukset})
+  suoritukset = wrapOptional(suoritukset)
   let newItemIndex = modelItems(suoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, newItemIndex)
   let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus'

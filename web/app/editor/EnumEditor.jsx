@@ -12,7 +12,7 @@ import {buildClassNames} from '../classnames'
 
 export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className }) => {
   if (!sortBy) sortBy = R.identity
-  let wrappedModel = wrapOptional({model})
+  let wrappedModel = wrapOptional(model)
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
   inline = parseBool(inline)
 
