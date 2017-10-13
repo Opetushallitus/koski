@@ -37,7 +37,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   private def lisättävätTutkinnonOsat(ryhmä: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
     val määrittelemättömiä = if (ryhmä.isEmpty) true else ryhmä.exists(_.sisältääMäärittelemättömiäOsia)
-    val osat = (if (määrittelemättömiä) tutkinto else ryhmä).flatMap(tutkinnonOsienKoodit).toList // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
+    val osat = (if (määrittelemättömiä) tutkinto else ryhmä).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
     LisättävätTutkinnonOsat(osat, määrittelemättömiä, määrittelemättömiä)
   }
   private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne.toList.flatMap(tutkinnonOsienKoodit)
