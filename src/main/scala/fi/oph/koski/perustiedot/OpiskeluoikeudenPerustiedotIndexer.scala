@@ -39,9 +39,10 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
 
     Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
 
-    if (index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")) {
-      Future {
-        reIndex() // Re-index on background
+    val reindexingNeeded = index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")
+    Future {
+      if (reindexingNeeded) {
+          reIndex() // Re-index on background
       }
     }
   }

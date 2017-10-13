@@ -40,7 +40,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     val parallels = List(
-      Future { application.perustiedotIndexer.init},
       Future { application.tiedonsiirtoService.init },
       Future { application.scheduledTasks.init },
       Future { application.localizationRepository.createMissing }

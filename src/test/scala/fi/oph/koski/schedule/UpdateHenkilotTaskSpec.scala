@@ -6,12 +6,14 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.MockOppijat.{eero, eerola}
 import fi.oph.koski.henkilo.authenticationservice.MockAuthenticationServiceClient
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
 class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   lazy val application = KoskiApplicationForTests
   "Nimitietojen päivittyminen" - {
+    Futures.await(application.perustiedotIndexer.init)
     "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
       modify(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"), None))
       val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedot(eero.oid).get
