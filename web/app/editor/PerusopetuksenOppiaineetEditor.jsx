@@ -16,7 +16,7 @@ import {
   oneOfPrototypes,
   pushModel
 } from './EditorModel'
-import {osasuoritukset, suoritusValmis} from './Suoritus'
+import {arvioituTaiVahvistettu, osasuoritukset} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
 import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
@@ -37,7 +37,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let painotettu = oppiaineSuoritukset.find(s => modelData(s, 'painotettuOpetus')) ? ['** = painotettu opetus'] : []
   let selitteet = korotus.concat(yksilöllistetty).concat(painotettu).join(', ')
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
-  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || oppiaineSuoritukset.filter(suoritusValmis).length > 0)
+  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
 
   if (isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
     luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
@@ -65,6 +65,11 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
       </div>)
     }
   </div>)
+}
+
+const valmiitaSuorituksia = oppiaineSuoritukset => {
+  let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
+  return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja()
 }
 
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
@@ -158,7 +163,7 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.filter(s => edit || suoritusValmis(s) || osasuoritukset(s).length).map((suoritus) => (<PerusopetuksenOppiaineRowEditor baret-lift
+              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length).map((suoritus) => (<PerusopetuksenOppiaineRowEditor baret-lift
                                                                                                                      key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
                                                                                                                      expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
                                                                                                                      showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))

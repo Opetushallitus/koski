@@ -1633,6 +1633,30 @@ describe('Perusopetus', function() {
         })
       })
 
+      describe('Oppiaineiden näyttäminen', function() {
+        it('Arvioimattomia ei näytetä', function() {
+          var oppiaineet = toArray(S('.oppiaineet td.oppiaine'));
+          console.log(oppiaineet)
+          expect(oppiaineet.length).to.equal(0)
+        })
+
+        describe('Arvioimaton oppiane jolla arvioitu kurssi', function () {
+          var äidinkieli = opinnot.oppiaineet.oppiaine('AI')
+          before(
+            editor.edit,
+            äidinkieli.avaaLisääKurssiDialog,
+            äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+            äidinkieli.lisääKurssiDialog.lisääKurssi,
+            äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+            editor.saveChanges
+          )
+
+          it('näytetään', function() {
+            expect(toArray(S('.oppiaineet td.oppiaine')).length).to.equal(1)
+          })
+        })
+      })
+
       describe('Alkuvaiheen opintojen lisääminen', function() {
         before(
           editor.edit, opinnot.lisääSuoritus, editor.saveChanges

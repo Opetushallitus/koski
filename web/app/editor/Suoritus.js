@@ -8,6 +8,15 @@ import {t} from '../i18n'
 import {parseISODate} from '../date'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
+
+export const arvioituTaiVahvistettu = suoritus => {
+  if (suoritus.value.classes.includes('paatasonsuoritus')) {
+    return !!modelData(suoritus, 'vahvistus')
+  } else {
+    return !!modelData(suoritus, 'arviointi.0')
+  }
+}
+
 export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
     let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
