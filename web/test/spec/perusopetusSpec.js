@@ -617,10 +617,31 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun suoritus on kesken', function() {
-            before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
+            before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.valitseSuoritus(1, 'Päättötodistus'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
 
             it('Valmistunut-tilaa ei voi lisätä', function() {
               expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+            })
+
+            describe('Kun suorituksella on vahvistus tulevaisuudessa', function() {
+              var tilaJaVahvistus = opinnot.tilaJaVahvistus
+              let dialog = tilaJaVahvistus.merkitseValmiiksiDialog;
+              var dialogEditor = dialog.editor
+              before(
+                opiskeluoikeus.peruuta,
+                opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                tilaJaVahvistus.merkitseValmiiksi,
+                dialogEditor.property('päivä').setValue('11.4.2117'),
+                dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+                dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+                dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+                dialog.merkitseValmiiksi,
+                opinnot.avaaLisaysDialogi
+              )
+
+              it('Valmistunut-tilan voi lisätä', function() {
+                expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(true)
+              })
             })
 
             after(opiskeluoikeus.peruuta, editor.cancelChanges)
