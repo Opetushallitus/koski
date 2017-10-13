@@ -3,14 +3,14 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {modelData, modelLookup} from './EditorModel.js'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
 import {lensedModel, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
 
 export const SelectAlternativeByEnumValueEditor = ({ model, path, className }) => {
   return (<span className={className}>
         {
-          completeWithFieldAlternatives(oneOfPrototypes(model), path).map( protos => {
+          fetchAlternativesBasedOnPrototypes(oneOfPrototypes(model), path).map(protos => {
             let enumValues = R.uniqBy(R.prop('value'), protos.map(proto => modelLookup(proto, path).value))
             let tunnisteModel = lensedModel(model, L.lens(
               (m) => modelLookup(m, path),

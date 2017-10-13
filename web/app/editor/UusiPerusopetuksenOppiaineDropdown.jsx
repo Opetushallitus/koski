@@ -6,7 +6,7 @@ import R from 'ramda'
 import {modelData, modelLookup, modelSetData} from './EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {isPaikallinen, isUusi, koulutusModuuliprototypes} from './Koulutusmoduuli'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
 import {paikallinenOppiainePrototype} from './PerusopetuksenOppiaineEditor.jsx'
 import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
 import {t} from '../i18n'
@@ -17,7 +17,7 @@ export const UusiPerusopetuksenOppiaineDropdown = ({suoritukset = [], organisaat
   let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
     .filter(R.complement(isPaikallinen))
     .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
-  let valtakunnallisetOppiaineet = completeWithFieldAlternatives(oppiaineModels, 'tunniste')
+  let valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels, 'tunniste')
   let paikallinenProto = !pakollinen && paikallinenOppiainePrototype(oppiaineenSuoritus)
   let paikallisetOppiaineet = Atom([])
   let setPaikallisetOppiaineet = oppiaineet => paikallisetOppiaineet.set(oppiaineet)

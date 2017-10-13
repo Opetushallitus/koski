@@ -4,7 +4,7 @@ import {wrapOptional} from './EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {sortGrades} from '../sorting'
-import {completeWithFieldAlternatives} from './PerusopetuksenOppiaineRowEditor.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
 import {fixArviointi} from './Suoritus'
 
 export const ArvosanaEditor = ({model}) => {
@@ -13,7 +13,7 @@ export const ArvosanaEditor = ({model}) => {
     return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
   }
   model = fixArviointi(model)
-  let alternativesP = completeWithFieldAlternatives(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
+  let alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
   let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
   return (<span>{
     alternativesP.map(alternatives => {

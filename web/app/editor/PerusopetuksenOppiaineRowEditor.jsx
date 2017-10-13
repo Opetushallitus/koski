@@ -1,9 +1,7 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
-import {EnumEditor} from './EnumEditor.jsx'
-import {modelData, modelErrorMessages, modelLookup, modelProperties, modelSetValue, pushRemoval} from './EditorModel'
+import {modelData, modelErrorMessages, modelLookup, modelProperties, pushRemoval} from './EditorModel'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
@@ -93,11 +91,4 @@ export const expandableProperties = (model) => {
   return modelProperties(oppiaine)
     .concat(modelProperties(model))
     .filter(extraPropertiesFilter)
-}
-
-// TODO: move this to a more appropriate place. Maybe rename?
-export const completeWithFieldAlternatives = (models, path) => {
-  const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, path))
-    .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, path)))
-  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten())
 }

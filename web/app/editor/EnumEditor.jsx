@@ -2,7 +2,7 @@ import React from 'baret'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import {modelTitle} from './EditorModel.js'
-import {wrapOptional} from './EditorModel'
+import {modelLookup, wrapOptional} from './EditorModel'
 import Http from '../http'
 import DropDown from '../Dropdown.jsx'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
@@ -78,6 +78,15 @@ EnumEditor.fetchAlternatives = (model) => {
   } else {
     return Bacon.constant([])
   }
+}
+
+// When selecting between more than 1 prototype, each of which has an enum field with the same same path,
+// this fetches the alternatives for all the prototypes, returning an observable list of prototypes populated with
+// each enum value.
+export const fetchAlternativesBasedOnPrototypes = (models, pathToFieldWithAlternatives) => {
+  const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, pathToFieldWithAlternatives))
+    .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, pathToFieldWithAlternatives)))
+  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten())
 }
 
 EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
