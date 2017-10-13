@@ -5,7 +5,7 @@ import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from './EditorModel.js'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
 import {lensedModel, modelSetValue, modelTitle, pushModel, pushRemoval} from './EditorModel'
-import {suoritusKesken} from './Suoritus'
+import {arvioituTaiVahvistettu} from './Suoritus'
 import {parseISODate} from '../date.js'
 import {Editor} from './Editor.jsx'
 import Text from '../Text.jsx'
@@ -15,7 +15,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
-  let suorituksiaKesken = wrappedModel.context.edit && R.any(suoritusKesken)(modelItems(wrappedModel, 'suoritukset'))
+  let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
   let showAddDialog = () => addingNew.modify(x => !x)
 
   let lisääJakso = (uusiJakso) => {
