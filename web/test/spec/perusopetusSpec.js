@@ -1630,14 +1630,13 @@ describe('Perusopetus', function() {
               'Opinto-ohjaus'])
             expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
           })
+          after(editor.cancelChanges)
         })
       })
 
       describe('Oppiaineiden näyttäminen', function() {
         it('Arvioimattomia ei näytetä', function() {
-          var oppiaineet = toArray(S('.oppiaineet td.oppiaine'));
-          console.log(oppiaineet)
-          expect(oppiaineet.length).to.equal(0)
+          expect(toArray(S('.oppiaineet td.oppiaine')).length).to.equal(0)
         })
 
         describe('Arvioimaton oppiane jolla arvioitu kurssi', function () {
