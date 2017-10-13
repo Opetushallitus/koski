@@ -27,7 +27,6 @@ export const suoritusValmis = (suoritus) => {
     return arviointi && arviointiPäivä ? isInPast(arviointiPäivä) : !!arviointi
   }
 }
-export const suorituksellaVahvistus = suoritus => !!modelData(suoritus, 'vahvistus')
 export const suoritusKesken = R.complement(suoritusValmis)
 export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus valmis' : 'Suoritus kesken')
 export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'

@@ -6,7 +6,8 @@ import {PropertyEditor} from './PropertyEditor.jsx'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
 import {
-  arviointiPuuttuu, onKeskeneräisiäOsasuorituksia, suorituksellaVahvistus, suoritusKesken, suoritusValmis,
+  arviointiPuuttuu, arvioituTaiVahvistettu, onKeskeneräisiäOsasuorituksia, suoritusKesken,
+  suoritusValmis,
   tilaText
 } from './Suoritus'
 import Text from '../Text.jsx'
@@ -60,7 +61,7 @@ const MerkitseValmiiksiButton = ({model}) => {
     }
   }
   let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
-  let buttonText = suorituksellaVahvistus(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
+  let buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
   return (<span>
     <button className="merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
     {

@@ -69,7 +69,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 
 const valmiitaSuorituksia = oppiaineSuoritukset => {
   let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
-  return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja()
+  return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja().length > 0
 }
 
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
