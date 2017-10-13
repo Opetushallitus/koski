@@ -9,8 +9,11 @@ object KoodistoMockDataUpdater extends App with Logging {
   updateMockDataFromKoodistoPalvelu(KoskiApplication.defaultConfig)
 
   def updateMockDataFromKoodistoPalvelu(config: Config): Unit = {
+    val includeKoskiKoodistot = System.getProperty("koskiKoodistot", "true").toBoolean
+    val includeMuutKoodistot = System.getProperty("muutKoodistot", "true").toBoolean
+    val koodistot = Koodistot.koskiKoodistot.filter(Function.const(includeKoskiKoodistot)) ++ Koodistot.muutKoodistot.filter(Function.const(includeMuutKoodistot))
     val kp = KoodistoPalvelu.withoutCache(config)
-    Koodistot.koodistot.foreach(koodisto => updateMockDataForKoodisto(koodisto, kp))
+    koodistot.foreach(koodisto => updateMockDataForKoodisto(koodisto, kp))
   }
 
   private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
