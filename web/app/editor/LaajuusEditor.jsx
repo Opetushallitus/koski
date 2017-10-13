@@ -2,7 +2,7 @@ import React from 'react'
 import {Editor} from './Editor.jsx'
 import {modelData, modelEmpty, modelSetValue, modelValid, modelLookup} from './EditorModel'
 import {EnumEditor} from './EnumEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {parseBool} from '../util'
 import {t} from '../i18n'
 export class LaajuusEditor extends React.Component {

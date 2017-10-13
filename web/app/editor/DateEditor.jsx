@@ -2,7 +2,7 @@ import React from 'react'
 import {modelData, pushModelValue} from './EditorModel.js'
 import {formatISODate, parseISODate, formatFinnishDate} from '../date.js'
 import DateInput from '../DateInput.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {modelSetData} from './EditorModel'
 
 export const DateEditor = ({model, isAllowedDate}) => {

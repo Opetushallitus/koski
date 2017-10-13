@@ -1,6 +1,6 @@
 import React from 'baret'
 import {Editor} from './Editor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {sortGrades} from '../sorting'

@@ -4,7 +4,7 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
 import {pushModelValue} from './EditorModel'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {StringEditor} from './StringEditor.jsx'
 import {PerusteDropdown} from './PerusteDropdown.jsx'
 

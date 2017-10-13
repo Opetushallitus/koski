@@ -1,7 +1,7 @@
 import React from 'baret'
 import {Editor} from './Editor.jsx'
 import {PropertyEditor} from './PropertyEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import R from 'ramda'
 import {
   addContext,

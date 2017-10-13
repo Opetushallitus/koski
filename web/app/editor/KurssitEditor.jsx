@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {KurssiEditor} from './KurssiEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {
   contextualizeSubModel,
   ensureArrayKey,

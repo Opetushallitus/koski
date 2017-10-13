@@ -1,6 +1,6 @@
 import React from 'react'
 import {modelData} from './EditorModel.js'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {pushModelValue, modelValid} from './EditorModel'
 import {t} from '../i18n'
 

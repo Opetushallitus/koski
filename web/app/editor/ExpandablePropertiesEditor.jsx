@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData, modelLookup} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {modelProperty} from './EditorModel'
 import {navigateWithQueryParams, currentLocation} from '../location'
 import {parseBool} from '../util'

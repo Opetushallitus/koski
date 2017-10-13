@@ -2,7 +2,7 @@ import React from 'react'
 import {Editor} from './Editor.jsx'
 import {modelData} from './EditorModel.js'
 import {modelValid} from './EditorModel'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 
 export const PäivämääräväliEditor = ({model}) => {
   let wrappedModel = wrapOptional(model)

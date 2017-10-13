@@ -1,4 +1,4 @@
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {contextualizeSubModel, modelItems, oneOfPrototypes} from './EditorModel'
 export const placeholderForNonGrouped = '999999'
 

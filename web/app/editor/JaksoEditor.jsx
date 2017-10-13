@@ -1,7 +1,7 @@
 import React from 'react'
 import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {recursivelyEmpty} from './EditorModel'
 
 export class JaksoEditor extends React.Component {

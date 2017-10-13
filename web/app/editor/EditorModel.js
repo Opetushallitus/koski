@@ -225,6 +225,14 @@ let getUsedModelForOptionalModel = (m, {model} = {}) => {
   return emptyModel
 }
 
+export const wrapOptional = (model) => {
+  if (!model) throw new Error('model missing. remember to wrap model like { model }')
+  if (!model.optional) return model
+  if (!model.context) throw new Error('cannot wrap without context')
+
+  return lensedModel(model, optionalModelLens({model}))
+}
+
 export const optionalModelLens = ({model}) => {
   return L.lens(
     m => {

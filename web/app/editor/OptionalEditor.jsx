@@ -2,7 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import {modelEmpty} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
-import {lensedModel, optionalModelLens, optionalPrototypeModel, pushModel, resetOptionalModel} from './EditorModel'
+import {optionalPrototypeModel, pushModel, resetOptionalModel} from './EditorModel'
 import Text from '../Text.jsx'
 
 export class OptionalEditor extends React.Component {
@@ -37,11 +37,3 @@ export class OptionalEditor extends React.Component {
   }
 }
 OptionalEditor.canShowInline = () => true
-
-export const wrapOptional = (model) => {
-  if (!model) throw new Error('model missing. remember to wrap model like { model }')
-  if (!model.optional) return model
-  if (!model.context) throw new Error('cannot wrap without context')
-
-  return lensedModel(model, optionalModelLens({model}))
-}

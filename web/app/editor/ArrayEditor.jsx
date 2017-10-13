@@ -1,7 +1,7 @@
 import React from 'react'
 import {contextualizeSubModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor.jsx'
-import {wrapOptional} from './OptionalEditor.jsx'
+import {wrapOptional} from './EditorModel'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'
 import Text from '../Text.jsx'
 
