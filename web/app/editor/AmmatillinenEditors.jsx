@@ -118,5 +118,6 @@ export const editorMapping = {
   'naytto': AmmatillinenNäyttöEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor,
   'ulkomaanjakso': InlineJaksoEditor,
-  'poissaolojakso': InlineJaksoEditor
+  'poissaolojakso': InlineJaksoEditor,
+  'osaaikaisuusjakso': InlineJaksoEditor
 }
