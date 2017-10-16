@@ -42,6 +42,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
                 <div className={'opiskeluoikeusjakso' + (i === getActiveIndex(items) ? ' active' : '')}>
                   <label className="date"><Editor model={item} path="alku" edit={false}/></label>
                   <label className="tila">{modelTitle(item, 'tila')}</label>
+                  <label className="rahoitus"><Editor model={item} path="opintojenRahoitus" edit="false"/></label>
                 </div>
                 {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}/>}
               </li>)

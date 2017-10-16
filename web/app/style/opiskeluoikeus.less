@@ -255,6 +255,12 @@
             label.tila {
               padding: 3px 9px;
               margin-left: 10px;
+              display: inline-block;
+              min-width: 210px;
+            }
+            label.rahoitus {
+              color: @color-darkgray;
+              text-transform: lowercase;
             }
             &.active {
               font-weight: 600;
@@ -316,28 +322,36 @@
       .lisaa-opiskeluoikeusjakso-modal {
         .modal-with-arrow;
         .modal-content {
-          width: 420px;
+          width: 500px;
 
-          .property.alku {
-            label {
-              vertical-align: middle;
+          .property {
+            margin-top: 15px;
+
+            &.alku {
+              label {
+                vertical-align: middle;
+              }
+              input {
+                width: 100px;
+              }
+              margin-bottom: 20px;
             }
-            input {
-              width: 100px;
+            &.tila > label {
+              display: inline-block;
             }
-            margin-bottom: 20px;
-          }
-          .property.tila > label {
-            display: inline-block;
+
+            > label {
+              vertical-align: top;
+              margin-right: 15px;
+              display: inline-block;
+              min-width: 85px;
+            }
           }
 
-          label {
-            vertical-align: top;
-            margin-right: 15px;
-          }
           label.disabled {
             color: @color-disabled;
           }
+
           label.alternative {
             &:before {
               content: '';
