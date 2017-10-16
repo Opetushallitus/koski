@@ -32,7 +32,7 @@ case class KoodistoCreator(config: Config) extends Logging {
     luoPuuttuvatKoodistot
     päivitäOlemassaOlevatKoodistot
 
-    Koodistot.koodistot.par.foreach { koodistoUri =>
+    Koodistot.koodistot.foreach { koodistoUri =>
       def sortListsInside(k: KoodistoKoodi) = k.copy(metadata = k.metadata.sortBy(_.kieli), withinCodeElements = k.withinCodeElements.map(_.sortBy(_.codeElementUri)))
 
       val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
