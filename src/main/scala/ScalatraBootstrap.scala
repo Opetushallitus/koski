@@ -45,7 +45,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       Future { application.localizationRepository.createMissing }
     )
 
-    tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config) }
+    tryCatch("Koodistojen luonti") { KoodistoCreator(application.config).createAndUpdateCodesBasedOnMockData }
 
     mount("/", new IndexServlet)
     mount("/login", new LoginPageServlet)
