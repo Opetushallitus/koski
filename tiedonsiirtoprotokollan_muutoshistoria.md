@@ -1,3 +1,7 @@
+## 16.10.2017
+
+- Muutettu ammatillisen opiskeluoikeuden lisätietojen osaAikaisuus-kenttä listaksi osa-aikaisuusjaksoja (osaAikaisuusJaksot)
+
 ## 11.10.2017
 
 - Lisätty lukion opiskeluoikeuden lisätietoihin sisäoppilaitosmainenMajoitus
