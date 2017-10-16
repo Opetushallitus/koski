@@ -297,7 +297,7 @@ describe('Perusopetus', function() {
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
         'Tila 4.6.2016 Valmistunut\n' +
-        '15.8.2008 Läsnä')
+        '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
     describe('Päättövaiheen opinnot', function() {
