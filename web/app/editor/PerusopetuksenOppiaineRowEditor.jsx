@@ -1,7 +1,7 @@
 import React from 'baret'
 import {Editor} from './Editor.jsx'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
-import {modelData, modelErrorMessages, modelLookup, modelProperties, pushRemoval} from './EditorModel'
+import {modelData, modelEmpty, modelErrorMessages, modelLookup, modelProperties, pushRemoval} from './EditorModel'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
@@ -26,7 +26,8 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
 
     let showExpand = extraProperties.length > 0
 
-    let sanallinenArvioProperties = modelProperties(modelLookup(model, 'arviointi.-1'), p => p.key == 'kuvaus')
+    let sanallinenArvioProperties = modelProperties(modelLookup(model, 'arviointi.-1'), p => p.key === 'kuvaus')
+    let showSanallinenArvio = (model.context.edit && sanallinenArvioProperties.length > 0) || sanallinenArvioProperties.filter(p => !modelEmpty(p.model)).length > 0
 
     return (<tbody className={className}>
     <tr>
@@ -65,7 +66,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
       }
     </tr>
     {
-      sanallinenArvioProperties.length > 0 && <tr key='sanallinenArviointi' className="sanallinen-arviointi"><td colSpan="4" className="details"><PropertiesEditor properties={sanallinenArvioProperties} context={model.context} /></td></tr>
+      showSanallinenArvio && <tr key='sanallinenArviointi' className="sanallinen-arviointi"><td colSpan="4" className="details"><PropertiesEditor properties={sanallinenArvioProperties} context={model.context} /></td></tr>
     }
     {
       expanded && <tr key='details'><td colSpan="4" className="details"><PropertiesEditor context={model.context} properties={extraProperties} /></td></tr>
