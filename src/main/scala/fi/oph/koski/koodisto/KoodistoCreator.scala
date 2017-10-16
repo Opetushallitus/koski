@@ -9,44 +9,54 @@ import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
 case class KoodistoCreator(config: Config) extends Logging {
-  private val kp = KoodistoPalvelu.withoutCache(config)
-  private val kmp = KoodistoMuokkausPalvelu(config)
+  private lazy val kp = KoodistoPalvelu.withoutCache(config)
+  private lazy val kmp = KoodistoMuokkausPalvelu(config)
 
   private val createMissingStr = config.getString("koodisto.create")
   private val updateExistingStr = config.getString("koodisto.update")
-  private def updateExisting(koodistoUri: String) = updateExistingStr match {
-    case "all" => true
-    case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
-    case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
-    case _ => updateExistingStr.split(",").contains(koodistoUri)
+
+  private val updateable = Koodistot.koodistot.filter { koodistoUri =>
+    updateExistingStr match {
+      case "all" => true
+      case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
+      case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
+      case _ => updateExistingStr.split(",").contains(koodistoUri)
+    }
   }
-  private def shouldCreateMissing(koodistoUri: String) = createMissingStr match {
-    case "all" => true
-    case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
-    case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
-    case "true" => Koodistot.koskiKoodistot.contains(koodistoUri) // the former default case
-    case _ => createMissingStr.split(",").contains(koodistoUri)
+  private val createable = Koodistot.koodistot.filter { koodistoUri =>
+    createMissingStr match {
+      case "all" => true
+      case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
+      case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
+      case "true" => Koodistot.koskiKoodistot.contains(koodistoUri) // the former default case
+      case _ => createMissingStr.split(",").contains(koodistoUri)
+    }
   }
 
   def createAndUpdateCodesBasedOnMockData {
-    luoPuuttuvatKoodistot
-    päivitäOlemassaOlevatKoodistot
+    val codesToCheck = (updateable ++ createable).distinct
+    if (codesToCheck.nonEmpty) {
+      logger.info(s"Aloitetaan ${codesToCheck.length} koodiston tarkistus ja päivitys")
+      luoPuuttuvatKoodistot
+      päivitäOlemassaOlevatKoodistot
 
-    Koodistot.koodistot.foreach { koodistoUri =>
-      def sortListsInside(k: KoodistoKoodi) = k.copy(metadata = k.metadata.sortBy(_.kieli), withinCodeElements = k.withinCodeElements.map(_.sortBy(_.codeElementUri)))
+      codesToCheck.foreach { koodistoUri =>
+        def sortListsInside(k: KoodistoKoodi) = k.copy(metadata = k.metadata.sortBy(_.kieli), withinCodeElements = k.withinCodeElements.map(_.sortBy(_.codeElementUri)))
 
-      val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
-      val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
-      val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
+        val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
+        val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
+        val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
 
-      päivitäOlemassaOlevatKoodi(koodistoUri, olemassaOlevatKoodit, mockKoodit)
+        päivitäOlemassaOlevatKoodi(koodistoUri, olemassaOlevatKoodit, mockKoodit)
 
-      luoPuuttuvatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit)
+        luoPuuttuvatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit)
+      }
+      logger.info("Koodistojen päivitys valmis")
     }
   }
 
   private def luoPuuttuvatKoodit(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
-    if (shouldCreateMissing(koodistoUri)) {
+    if (createable.contains(koodistoUri)) {
       val luotavatKoodit: List[KoodistoKoodi] = mockKoodit.filter { koodi: KoodistoKoodi => !olemassaOlevatKoodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
 
       luotavatKoodit.zipWithIndex.foreach { case (koodi, index) =>
@@ -57,7 +67,7 @@ case class KoodistoCreator(config: Config) extends Logging {
   }
 
   private def päivitäOlemassaOlevatKoodi(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
-    if (updateExisting(koodistoUri)) {
+    if (updateable.contains(koodistoUri)) {
       val päivitettävätKoodit = olemassaOlevatKoodit.flatMap { vanhaKoodi =>
         mockKoodit.find(_.koodiArvo == vanhaKoodi.koodiArvo).flatMap { uusiKoodi =>
           val uusiKoodiSamallaKoodiUrilla = uusiKoodi.copy(
@@ -85,7 +95,7 @@ case class KoodistoCreator(config: Config) extends Logging {
 
   private def päivitäOlemassaOlevatKoodistot = {
     // update existing
-    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateExisting).filter(!kp.getLatestVersion(_).isEmpty).toList
+    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateable.contains(_)).filter(!kp.getLatestVersion(_).isEmpty).toList
     val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
       val existing: Koodisto = kp.getLatestVersion(koodistoUri).flatMap(kp.getKoodisto).get
       val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
@@ -104,7 +114,7 @@ case class KoodistoCreator(config: Config) extends Logging {
 
   private def luoPuuttuvatKoodistot {
     // Create missing
-    val luotavatKoodistot = Koodistot.koodistot.filter(shouldCreateMissing).filter(kp.getLatestVersion(_).isEmpty).toList
+    val luotavatKoodistot = Koodistot.koodistot.filter(createable.contains(_)).filter(kp.getLatestVersion(_).isEmpty).toList
     luotavatKoodistot.foreach { koodistoUri =>
       MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)) match {
         case None =>
