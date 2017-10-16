@@ -625,7 +625,7 @@ describe('Perusopetus', function() {
 
             describe('Kun suorituksella on vahvistus tulevaisuudessa', function() {
               var tilaJaVahvistus = opinnot.tilaJaVahvistus
-              let dialog = tilaJaVahvistus.merkitseValmiiksiDialog;
+              var dialog = tilaJaVahvistus.merkitseValmiiksiDialog;
               var dialogEditor = dialog.editor
               before(
                 opiskeluoikeus.peruuta,
