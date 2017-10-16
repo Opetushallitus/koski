@@ -110,6 +110,7 @@ case class KoodistoCreator(config: Config) extends Logging {
         case None =>
           throw new IllegalStateException("Mock not found: " + koodistoUri)
         case Some(koodisto) =>
+          logger.info("Luodaan koodisto " + koodistoUri)
           kmp.createKoodisto(koodisto)
       }
     }
