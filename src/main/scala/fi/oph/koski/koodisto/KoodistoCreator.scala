@@ -39,7 +39,7 @@ object KoodistoCreator extends Logging {
         val existing: Koodisto = kp.getLatestVersion(koodistoUri).flatMap(kp.getKoodisto).get
         val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
 
-        if (existing.withinCodes != mock.withinCodes) {
+        if (existing.withinCodes.map(_.sortBy(_.codesUri)) != mock.withinCodes.map(_.sortBy(_.codesUri))) {
           logger.info("Päivitetään koodisto " + existing.koodistoUri + " diff " + JsonMethods.compact(objectDiff(existing, mock)) + " original " + JsonSerializer.writeWithRoot(existing))
           Some(mock)
         } else {
