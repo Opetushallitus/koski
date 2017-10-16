@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
@@ -65,7 +65,7 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
       }
     } catch {
       case e: MappingException =>
-        ValidationResult(row.oppijaOid, row.oid, List(s"Opiskeluoikeuden ${row.oid} deserialisointi epäonnistui"))
+        ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("deserializationFailed", s"Opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")))
     }
   }
 
@@ -82,7 +82,7 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
   def validateHenkilö(row: OpiskeluoikeusRow): ValidationResult = {
     henkilöRepository.findByOid(row.oppijaOid) match {
       case Some(h) => ValidationResult(row.oppijaOid, row.oid, Nil)
-      case None => ValidationResult(row.oppijaOid, row.oid, List(s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta"))
+      case None => ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
     }
   }
 
@@ -91,7 +91,7 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
   }
 }
 
-case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String, errors: List[AnyRef]) {
+case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String, errors: List[ErrorDetail]) {
   def isOk = errors.isEmpty
   def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
