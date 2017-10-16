@@ -2,11 +2,6 @@
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_naytto",
   "koodiArvo" : "naytto",
   "metadata" : [ {
-    "nimi" : "",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Fristående examen",
     "lyhytNimi" : "",
     "kuvaus" : "",
@@ -32,11 +27,6 @@
     "lyhytNimi" : "ops",
     "kuvaus" : "",
     "kieli" : "FI"
-  }, {
-    "nimi" : "",
-    "lyhytNimi" : "ops",
-    "kuvaus" : "",
-    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
