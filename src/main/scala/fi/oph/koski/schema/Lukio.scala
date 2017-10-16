@@ -332,5 +332,5 @@ case class LukionOpiskeluoikeusjakso(
   @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
-  opintojenRahoitus: Option[Koodistokoodiviite] = None
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso

@@ -109,7 +109,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
-  opintojenRahoitus: Option[Koodistokoodiviite] = None
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot")
