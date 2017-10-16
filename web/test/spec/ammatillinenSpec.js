@@ -395,8 +395,7 @@ describe('Ammatillinen koulutus', function() {
           'Ulkomaanjaksot 22.6.2017 — Maa Algeria Kuvaus Testing\n' +
           'Poissaolojaksot 22.6.2017 — Syy Oma ilmoitus\n' +
           'Hojks Opetusryhmä Erityisopetusryhmä\n' +
-          'Osa-aikaisuusjaksot 22.6.2017 —\n' +
-          'Osa-aikaisuus 80 %'
+          'Osa-aikaisuusjaksot 22.6.2017 — Osa-aikaisuus 80 %'
           )
       })
     })
@@ -1019,8 +1018,7 @@ describe('Ammatillinen koulutus', function() {
           'Hojks Opetusryhmä Yleinen opetusryhmä\n' +
           'Vaikeasti vammainen kyllä\n' +
           'Vammainen ja avustaja kyllä\n' +
-          'Osa-aikaisuusjaksot 1.9.2012 —\n' +
-          'Osa-aikaisuus 80 %\n' +
+          'Osa-aikaisuusjaksot 1.9.2012 — Osa-aikaisuus 80 %\n' +
           'Henkilöstökoulutus kyllä\n' +
           'Vankilaopetuksessa kyllä')
       })
