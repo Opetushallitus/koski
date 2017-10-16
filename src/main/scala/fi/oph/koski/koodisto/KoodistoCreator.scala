@@ -3,13 +3,15 @@ package fi.oph.koski.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonDiff.objectDiff
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
-case class KoodistoCreator(config: Config) extends Logging {
-  private lazy val kp = KoodistoPalvelu.withoutCache(config)
+case class KoodistoCreator(application: KoskiApplication) extends Logging {
+  private val config = application.config
+  private lazy val kp = application.koodistoPalvelu
   private lazy val kmp = KoodistoMuokkausPalvelu(config)
 
   private val createMissingStr = config.getString("koodisto.create")
