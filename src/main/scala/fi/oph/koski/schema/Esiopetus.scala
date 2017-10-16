@@ -20,7 +20,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   päättymispäivä: Option[LocalDate] = None,
   @Description("Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)")
-  tila: PerusopetuksenOpiskeluoikeudenTila,
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @Description("Esiopetuksen opiskeluoikeuden lisätiedot")
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)

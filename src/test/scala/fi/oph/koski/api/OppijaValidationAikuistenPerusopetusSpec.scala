@@ -14,7 +14,7 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
       aikuistenPerusopetuksenOppimääränSuoritus(diaari)
     ),
     alkamispäivä = Some(longTimeAgo),
-    tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 
   private def aikuistenPerusopetuksenOppimääränSuoritus(diaari: Option[String] = Some("19/011/2015")) = {

@@ -18,7 +18,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   @Description("oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate],
-  tila: PerusopetuksenOpiskeluoikeudenTila,
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")

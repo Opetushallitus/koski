@@ -25,7 +25,7 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
       )
     ),
     alkamispäivä = Some(longTimeAgo),
-    tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 
   def eperusteistaLöytymätönValidiDiaarinumero: String = "1/011/2004"

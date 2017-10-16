@@ -79,8 +79,8 @@ object PerusopetusExampleData {
       oppilaitos = Some(oppilaitos),
       koulutustoimija = None,
       suoritukset = suoritukset,
-      tila = PerusopetuksenOpiskeluoikeudenTila(
-        List(PerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä)) ++ päättymispäivä.toList.map (päivä => PerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut))
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+        List(NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä)) ++ päättymispäivä.toList.map (päivä => NuortenPerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut))
       )
     )
   }

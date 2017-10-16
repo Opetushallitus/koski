@@ -81,10 +81,10 @@ object ExamplesPerusopetuksenLisaopetus {
       suoritukset = List(
         lisäopetuksenSuoritus
       ),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       )
     ))
@@ -103,10 +103,10 @@ object ExamplesPerusopetuksenLisaopetus {
       suoritukset = List(
         lisäopetuksenSuoritusToimintaAlueittain
       ),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       )
     ))

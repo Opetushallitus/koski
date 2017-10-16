@@ -22,7 +22,7 @@ case class PerusopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate] = None,
-  tila: PerusopetuksenOpiskeluoikeudenTila,
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo("perusopetus")
@@ -375,12 +375,12 @@ case class LaajuusVuosiviikkotunneissa(
 ) extends Laajuus
 
 @Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
-case class PerusopetuksenOpiskeluoikeudenTila(
+case class NuortenPerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
-  opiskeluoikeusjaksot: List[PerusopetuksenOpiskeluoikeusjakso]
+  opiskeluoikeusjaksot: List[NuortenPerusopetuksenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-case class PerusopetuksenOpiskeluoikeusjakso(
+case class NuortenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
 ) extends KoskiOpiskeluoikeusjakso

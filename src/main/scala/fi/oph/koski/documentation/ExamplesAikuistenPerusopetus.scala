@@ -34,10 +34,10 @@ object ExamplesAikuistenPerusopetus {
           vahvistus = vahvistusPaikkakunnalla(),
           suorituskieli = suomenKieli
         )),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       )
     ))
@@ -51,10 +51,10 @@ object ExamplesAikuistenPerusopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015)),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       )
     ))
@@ -69,10 +69,10 @@ object ExamplesAikuistenPerusopetus {
       aikuistenPerusopetuksenAlkuvaiheenSuoritus,
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
-    tila = PerusopetuksenOpiskeluoikeudenTila(
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-        PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
       )
     )
   )
@@ -190,10 +190,10 @@ object ExamplesAikuistenPerusopetus {
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
         suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus),
-        tila = PerusopetuksenOpiskeluoikeudenTila(
+        tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
           List(
-            PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-            PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+            AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+            AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
           )
         )
       ))

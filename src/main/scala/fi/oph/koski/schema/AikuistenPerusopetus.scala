@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, Title}
 
 
 @Description("Aikuisten perusopetuksen opiskeluoikeus")
@@ -19,7 +19,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate] = None,
-  tila: PerusopetuksenOpiskeluoikeudenTila,
+  tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo("aikuistenperusopetus")
@@ -152,3 +152,19 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus
+
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
+case class AikuistenPerusopetuksenOpiskeluoikeudenTila(
+  @MinItems(1)
+  opiskeluoikeusjaksot: List[AikuistenPerusopetuksenOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class AikuistenPerusopetuksenOpiskeluoikeusjakso(
+  alku: LocalDate,
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("6")
+  opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends KoskiOpiskeluoikeusjakso

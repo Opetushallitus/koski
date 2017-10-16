@@ -25,9 +25,9 @@ object ExamplesPerusopetus {
       kahdeksannenLuokanSuoritus,
       yhdeksännenLuokanSuoritus
     ),
-    tila = PerusopetuksenOpiskeluoikeudenTila(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
       )
     )
   )
@@ -48,10 +48,10 @@ object ExamplesPerusopetus {
       kuudennenLuokanSuoritus,
       seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
-    tila = PerusopetuksenOpiskeluoikeudenTila(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        PerusopetuksenOpiskeluoikeusjakso(date(2012, 6, 15), opiskeluoikeusLäsnä),
-        PerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusEronnut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 6, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusEronnut)
       )
     )
   )
@@ -80,10 +80,10 @@ object ExamplesPerusopetus {
             toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S"))
           ))
         )),
-      tila = PerusopetuksenOpiskeluoikeudenTila(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(

@@ -19,7 +19,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate],
-  tila: PerusopetuksenOpiskeluoikeudenTila,
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @Description("Perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedot")
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)

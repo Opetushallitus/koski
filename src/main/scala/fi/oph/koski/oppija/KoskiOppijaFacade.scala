@@ -135,8 +135,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     (oo.tila match {
       case a: AmmatillinenOpiskeluoikeudenTila =>
         Right(a.copy(opiskeluoikeusjaksot = a.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
-      case p: PerusopetuksenOpiskeluoikeudenTila =>
-        Right(p.copy(opiskeluoikeusjaksot = p.opiskeluoikeusjaksot :+ PerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+      case p: NuortenPerusopetuksenOpiskeluoikeudenTila =>
+        Right(p.copy(opiskeluoikeusjaksot = p.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
       case l: LukionOpiskeluoikeudenTila =>
         Right(l.copy(opiskeluoikeusjaksot = l.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(now, mitätöity)))
       case _ => Left(KoskiErrorCategory.badRequest())

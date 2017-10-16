@@ -121,7 +121,7 @@ object OpiskeluoikeusTestData {
   lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
     ysinOpiskeluoikeusKesken.copy(tila =
       ysinOpiskeluoikeusKesken.tila.copy(opiskeluoikeusjaksot =
-        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ PerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
       )
     )
 }

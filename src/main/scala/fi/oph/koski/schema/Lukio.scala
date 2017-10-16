@@ -327,5 +327,10 @@ case class LukionOpiskeluoikeudenTila(
 
 case class LukionOpiskeluoikeusjakso(
   alku: LocalDate,
-  tila: Koodistokoodiviite
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("6")
+  opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
