@@ -12,7 +12,6 @@ object Koodistot {
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
     "ammatillisennaytonarviointikohde",
     "ammatillisennaytonsuorituspaikka",
-    "ammatillisenoppiaineet",
     "ammatillistenopintojenpoissaolonsyy",
     "ammatillisentutkinnonosanlisatieto",
     "ammatillisentutkinnonosanryhma",
@@ -54,6 +53,7 @@ object Koodistot {
   
   // Muut koodistot, joita Koski käyttää
   val muutKoodistot = List (
+    "ammatillisenoppiaineet",
     "jarjestamismuoto",
     "kieli",
     "kielivalikoima",
