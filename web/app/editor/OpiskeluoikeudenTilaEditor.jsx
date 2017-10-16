@@ -41,8 +41,12 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
               return (<li key={i}>
                 <div className={'opiskeluoikeusjakso' + (i === getActiveIndex(items) ? ' active' : '')}>
                   <label className="date"><Editor model={item} path="alku" edit={false}/></label>
-                  <label className="tila">{modelTitle(item, 'tila')}</label>
-                  <label className="rahoitus"><Editor model={item} path="opintojenRahoitus" edit="false"/></label>
+                  <label className="tila">
+                    {modelTitle(item, 'tila')}
+                    {
+                      rahoitusMuuttunut(items, i)&& <span className="rahoitus">{formatRahoitus(rahoitus(items, i))}</span>
+                    }
+                  </label>
                 </div>
                 {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}/>}
               </li>)
@@ -58,6 +62,14 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
       </div>
   )
 }
+
+const rahoitusMuuttunut = (items, index) => {
+  return rahoitus(items, index) != rahoitus(items, index + 1)
+}
+
+let formatRahoitus = rahoitus => rahoitus && ` (${rahoitus.toLowerCase()})`
+let rahoitus = (items, index) => items[index] && modelTitle(items[index], 'opintojenRahoitus')
+
 
 export const fixOpiskeluoikeudenPäättymispäivä = model =>
   lensedModel(model, L.rewrite(fixPäättymispäivä))
