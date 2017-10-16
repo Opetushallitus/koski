@@ -12,8 +12,10 @@ object KoodistoCreator extends Logging {
   def createKoodistotFromMockData(koodistot: List[String], config: Config): Unit = {
 
     val updateExistingStr = config.getString("koodisto.update")
-    def updateExisting(koodistoUri: String) = {
-      updateExistingStr == "all" || updateExistingStr.split(",").contains(koodistoUri)
+    def updateExisting(koodistoUri: String) = updateExistingStr match {
+      case "all" => true
+      case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
+      case _ => updateExistingStr.split(",").contains(koodistoUri)
     }
 
     val kp = KoodistoPalvelu.withoutCache(config)
