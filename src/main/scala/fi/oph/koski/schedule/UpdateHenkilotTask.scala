@@ -54,8 +54,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
-          val päivitetytTiedot = oppijatByOid(p.henkilö.oid)
-          OpiskeluoikeudenHenkilötiedot(p.id, NimitiedotJaOid(päivitetytTiedot.tiedot.henkilö), päivitetytTiedot.tiedot.master.map(NimitiedotJaOid.apply))
+          val päivitetytTiedot = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.oid))
+          OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 
       application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {

@@ -129,7 +129,7 @@ export class Oppijataulukko extends React.Component {
             näytettävätRivit.map( (opiskeluoikeus, i) => {
               return (<tr className="alternating" key={i}>
                 <td className="nimi">
-                  <Link href={`/koski/oppija/${(opiskeluoikeus.masterHenkilö || opiskeluoikeus.henkilö).oid}`}>
+                  <Link href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}>
                     <Highlight
                       ignoreDiacritics={true}
                       diacriticsBlacklist={'åäöÅÄÖ'}

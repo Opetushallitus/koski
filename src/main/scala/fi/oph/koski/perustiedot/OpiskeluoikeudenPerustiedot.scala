@@ -12,13 +12,16 @@ import org.json4s.{JArray, JValue}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
   def id: Int
+  // Näytettävät henkilötiedot (joko henkilö johon opiskeluoikesu on linkitetty, tai tämän henkilön "master-henkilö")
   def henkilö: NimitiedotJaOid
+  // Oid, johon opiskeluoikeus on suoraan linkitetty
+  def henkilöOid: Option[Henkilö.Oid] // TODO: remove optionality once all environments have this data on all rows
 }
 
 case class OpiskeluoikeudenPerustiedot(
   id: Int,
   henkilö: NimitiedotJaOid,
-  masterHenkilö: Option[NimitiedotJaOid],
+  henkilöOid: Option[Henkilö.Oid],
   oppilaitos: Oppilaitos,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -38,7 +41,11 @@ object NimitiedotJaOid {
   def apply(henkilö: TäydellisetHenkilötiedot): NimitiedotJaOid = NimitiedotJaOid(henkilö.oid, henkilö.etunimet, henkilö.kutsumanimi, henkilö.sukunimi)
 
 }
-case class OpiskeluoikeudenHenkilötiedot(id: Int, henkilö: NimitiedotJaOid, masterHenkilö: Option[NimitiedotJaOid]) extends OpiskeluoikeudenOsittaisetTiedot
+case class OpiskeluoikeudenHenkilötiedot(id: Int, henkilö: NimitiedotJaOid, henkilöOid: Option[Henkilö.Oid]) extends OpiskeluoikeudenOsittaisetTiedot
+
+object OpiskeluoikeudenHenkilötiedot {
+  def apply(id: Int, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenHenkilötiedot = OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(OpiskeluoikeudenPerustiedot.näytettäväHenkilö(henkilö)), Some(henkilö.henkilö.oid))
+}
 
 case class OpiskeluoikeusJaksonPerustiedot(
   alku: LocalDate,
@@ -69,8 +76,8 @@ object OpiskeluoikeudenPerustiedot {
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
       id,
-      NimitiedotJaOid(henkilö.henkilö),
-      henkilö.master.map(NimitiedotJaOid.apply),
+      NimitiedotJaOid(näytettäväHenkilö(henkilö)),
+      Some(henkilö.henkilö.oid),
       extract[Oppilaitos](data \ "oppilaitos"),
       extract[Option[SisältäväOpiskeluoikeus]](data \ "sisältyyOpiskeluoikeuteen"),
       extract[Option[LocalDate]](data \ "alkamispäivä"),
@@ -86,6 +93,8 @@ object OpiskeluoikeudenPerustiedot {
       tila.copy(loppu = Some(next.alku))
     } ++ List(tilat.last)
   }
+
+  def näytettäväHenkilö(henkilö: TäydellisetHenkilötiedotWithMasterInfo) = henkilö.master.getOrElse(henkilö.henkilö)
 }
 
 case class SuorituksenPerustiedot(

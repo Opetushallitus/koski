@@ -135,7 +135,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   }
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
-    val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
+    val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilöOid" -> oids)), "from" -> 0, "size" -> 10000))
     index.runSearch("perustiedot", doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source")))
       .getOrElse(Nil)
@@ -145,12 +145,8 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     findSingleByHenkilöOid(oid).map(j => extract[NimitiedotJaOid](j \ "henkilö"))
   }
 
-  def findMasterHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
-    findSingleByHenkilöOid(oid).map(j => extract[Option[NimitiedotJaOid]](j \ "masterHenkilö")).flatten
-  }
-
-  def findSingleByHenkilöOid(oid: String): Option[JValue] = {
-    val doc = toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
+  private def findSingleByHenkilöOid(oid: String): Option[JValue] = {
+    val doc = toJValue(Map("query" -> Map("term" -> Map("henkilöOid" -> oid))))
 
     index.runSearch("perustiedot", doc)
       .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => j \ "_source").headOption)

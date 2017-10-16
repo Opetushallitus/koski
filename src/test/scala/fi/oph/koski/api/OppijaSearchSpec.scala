@@ -53,7 +53,8 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
   private def generatePerustiedotIntoElastic(count: Int, name: String, oppilaitos: Oppilaitos): List[Oid] = {
     val tyyppi = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
     val tiedot = 0 to count map { i =>
-      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(s"1.2.246.562.24.000000000000$i", name, name, name), None, stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, ExampleData.opiskeluoikeusLäsnä))), None)
+      val henkilöOid = s"1.2.246.562.24.000000000000$i"
+      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(henkilöOid, name, name, name), Some(henkilöOid), stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, ExampleData.opiskeluoikeusLäsnä))), None)
     }
     KoskiApplicationForTests.perustiedotIndexer.updateBulk(tiedot, replaceDocument = true)
     refreshElasticSearchIndex

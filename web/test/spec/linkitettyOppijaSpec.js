@@ -3,9 +3,9 @@ describe('Linkitetyt oppijat', function() {
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
 
-  before(Authentication().login(), resetFixtures)
+  before(Authentication().login(), resetFixtures, page.openPage)
   describe('Kun katsotaan master-henkilön tietoja', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('Master'))
+    before(page.oppijaHaku.searchAndSelect('Master'))
     describe('Tietojen katsominen', function() {
       it('Näytetään myös slave-henkilön opiskeluoikeudet', function() {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.deep.equal([
@@ -23,19 +23,6 @@ describe('Linkitetyt oppijat', function() {
       it('Tallennus onnistuu', function() {
 
       })
-
-      describe('Siirryttäessä tarkastelemaan slave-henkilön tietoja', function() {
-        before(
-          refreshIndices, // ensure that elasticsearch index is refreshed to reflect the changes made above
-          page.oppijaHaku.searchAndSelect('Slave')
-        )
-
-        it('Näytetään muuttuneet tiedot', function() {
-          expect(editor.property('oppimäärä').getValue()).to.equal('Lukio suoritetaan aikuisten opetussuunnitelman mukaan')
-        })
-
-        // TODO: tarkistettava jotenkin, että opiskeluoikeus säilyy linkitettynä slaveen (koska jatkossa tässä siirrytään aina katsomaan masterin tietoja)
-      })
     })
 
     describe('Versiohistorian katsominen', function() {
@@ -43,33 +30,29 @@ describe('Linkitetyt oppijat', function() {
 
       before(versiohistoria.avaa, versiohistoria.valitse('v1'))
 
-      it('Toimii', function() {
-
-      })
+      it('Toimii', function() {})
     })
   })
 
-  describe('Kun siirrytään oppijataulukosta tarkastelemaan slave-henkilön tietoja', function() {
+  describe('Slave-henkilöön liitetyt opiskeluoikeudet oppijataulukossa', function() {
     before(
       page.openPage,
-      page.oppijataulukko.filterBy('nimi', 'Slave'),
-      page.oppijataulukko.clickFirstOppija,
-      page.waitUntilOppijaSelected('Master')
+      page.oppijataulukko.filterBy('nimi', 'Master')
     )
 
     it('Näytetään master-henkilön tiedot', function() {
-
+      expect(page.oppijataulukko.names()).to.deep.equal([ 'of Puppets, Master', 'of Puppets, Master' ])
     })
   })
 
-  describe('Kun siirrytään oppijahaussa tarkastelemaan slave-henkilön tietoja', function() {
+  describe('Oppijahaussa', function() {
     before(
       refreshIndices, // ensure that elasticsearch index is refreshed to reflect the changes made above
-      page.oppijaHaku.searchAndSelect('Slave')
+      page.oppijaHaku.search('Puppets')
     )
 
-    it('Näytetään master-henkilön tiedot', function() {
-      // TODO: jatketaan, kun on päätetty, näytetäänkö haussa ja listassa vain master-henkilön tiedot
+    it('Näytetään vain master-henkilön tiedot', function() {
+      expect(page.oppijaHaku.getSearchResults()).to.deep.equal(['of Puppets, Master (101097-6107)'])
     })
   })
 
