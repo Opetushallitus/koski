@@ -2,9 +2,10 @@ package fi.oph.koski.perustiedot
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
-import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
+import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
 class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
@@ -15,12 +16,14 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
     if (indexExists) {
       logger.info("ElasticSearch index exists")
       val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index")
-      val alreadyApplied = (serverSettings ++ settings) == serverSettings
+      val mergedSettings = serverSettings.merge(settings)
+      val alreadyApplied = mergedSettings == serverSettings
       if (alreadyApplied) {
         logger.info("Elasticsearch index settings are up to date")
         false
       } else {
-        logger.info("Updating Elasticsearch index settings")
+        val diff = JsonDiff.jsonDiff(serverSettings, mergedSettings)
+        logger.info(s"Updating Elasticsearch index settings (diff: ${JsonMethods.pretty(diff)})")
         Http.runTask(http.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
         Http.runTask(http.put(uri"/koski/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
         Http.runTask(http.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
@@ -72,4 +75,5 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
             }
           }
         }
-    }""")}
+    }""")
+}
