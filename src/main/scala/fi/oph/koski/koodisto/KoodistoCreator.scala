@@ -38,60 +38,83 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
   def createAndUpdateCodesBasedOnMockData {
     val codesToCheck = (updateable ++ createable).distinct
     if (codesToCheck.nonEmpty) {
-      logger.info(s"Aloitetaan ${codesToCheck.length} koodiston tarkistus ja päivitys")
+      logger.info(s"Aloitetaan ${codesToCheck.length} koodiston tarkistus")
       luoPuuttuvatKoodistot
       päivitäOlemassaOlevatKoodistot
 
-      codesToCheck.foreach { koodistoUri =>
+      val päivitettävätJaLuotavat = codesToCheck.par.map { koodistoUri =>
         def sortListsInside(k: KoodistoKoodi) = k.copy(metadata = k.metadata.sortBy(_.kieli), withinCodeElements = k.withinCodeElements.map(_.sortBy(_.codeElementUri)))
 
         val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
         val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
         val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
 
-        päivitäOlemassaOlevatKoodi(koodistoUri, olemassaOlevatKoodit, mockKoodit)
-
-        luoPuuttuvatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit)
+        val result = (luotavatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit), päivitettävätKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit))
+        result
       }
-      logger.info("Koodistojen päivitys valmis")
+
+      logger.info("Koodistot tarkistettu")
+
+      val luotavat = päivitettävätJaLuotavat.flatMap(_._1).toList
+      if (luotavat.nonEmpty) {
+        logger.info("Aloitetaan puuttuvien koodien lisäys")
+        luoPuuttuvatKoodit(luotavat)
+        logger.info("Puuttuvat koodit lisätty")
+      }
+      val päivitettävät = päivitettävätJaLuotavat.flatMap(_._2).toList
+      if (päivitettävät.nonEmpty) {
+        logger.info("Aloitetaan muuttuneiden koodien päivitys")
+        päivitäKoodit(päivitettävät)
+        logger.info("Muuttuneet koodit päivitetty")
+      }
     }
   }
 
-  private def luoPuuttuvatKoodit(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
+  private def luotavatKoodit(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
     if (createable.contains(koodistoUri)) {
-      val luotavatKoodit: List[KoodistoKoodi] = mockKoodit.filter { koodi: KoodistoKoodi => !olemassaOlevatKoodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
-
-      luotavatKoodit.zipWithIndex.foreach { case (koodi, index) =>
-        logger.info("Luodaan koodi (" + (index + 1) + "/" + (luotavatKoodit.length) + ") " + koodi.koodiUri)
-        kmp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
-      }
+      mockKoodit
+        .filter { koodi: KoodistoKoodi => !olemassaOlevatKoodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
+        .map(k => (koodistoUri, k))
+    } else {
+      Nil
     }
   }
 
-  private def päivitäOlemassaOlevatKoodi(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
+  private def luoPuuttuvatKoodit(luotavatKoodit: List[(String, KoodistoKoodi)]) = {
+    luotavatKoodit.zipWithIndex.foreach { case ((koodistoUri, koodi), index) =>
+      logger.info("Luodaan koodi (" + (index + 1) + "/" + (luotavatKoodit.length) + ") " + koodi.koodiUri)
+      kmp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
+    }
+  }
+
+  private def päivitettävätKoodit(koodistoUri: String, olemassaOlevatKoodit: List[KoodistoKoodi], mockKoodit: List[KoodistoKoodi]) = {
     if (updateable.contains(koodistoUri)) {
-      val päivitettävätKoodit = olemassaOlevatKoodit.flatMap { vanhaKoodi =>
+      olemassaOlevatKoodit.flatMap { vanhaKoodi =>
         mockKoodit.find(_.koodiArvo == vanhaKoodi.koodiArvo).flatMap { uusiKoodi =>
           val uusiKoodiSamallaKoodiUrilla = uusiKoodi.copy(
             koodiUri = vanhaKoodi.koodiUri
           )
 
           if (uusiKoodiSamallaKoodiUrilla != vanhaKoodi) {
-            Some(vanhaKoodi, uusiKoodi)
+            Some(koodistoUri, vanhaKoodi, uusiKoodi)
           } else {
             None
           }
         }
       }
+    } else {
+      Nil
+    }
+  }
 
-      päivitettävätKoodit.zipWithIndex.foreach { case ((vanhaKoodi, uusiKoodi), index) =>
-        logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + JsonMethods.compact(objectDiff(vanhaKoodi, uusiKoodi)) + " original " + JsonSerializer.writeWithRoot(vanhaKoodi))
-        kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
-          voimassaAlkuPvm = Some(LocalDate.now),
-          tila = uusiKoodi.tila.orElse(vanhaKoodi.tila),
-          version = uusiKoodi.version.orElse(vanhaKoodi.version)
-        ))
-      }
+  private def päivitäKoodit(päivitettävätKoodit: List[(String, KoodistoKoodi, KoodistoKoodi)]) = {
+    päivitettävätKoodit.zipWithIndex.foreach { case ((koodistoUri, vanhaKoodi, uusiKoodi), index) =>
+      logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + JsonMethods.compact(objectDiff(vanhaKoodi, uusiKoodi)) + " original " + JsonSerializer.writeWithRoot(vanhaKoodi))
+      kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
+        voimassaAlkuPvm = Some(LocalDate.now),
+        tila = uusiKoodi.tila.orElse(vanhaKoodi.tila),
+        version = uusiKoodi.version.orElse(vanhaKoodi.version)
+      ))
     }
   }
 
