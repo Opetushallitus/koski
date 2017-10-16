@@ -85,7 +85,7 @@ case class KoodistoCreator(config: Config) extends Logging {
 
   private def päivitäOlemassaOlevatKoodistot = {
     // update existing
-    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateExisting).par.filter(!kp.getLatestVersion(_).isEmpty).toList
+    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateExisting).filter(!kp.getLatestVersion(_).isEmpty).toList
     val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
       val existing: Koodisto = kp.getLatestVersion(koodistoUri).flatMap(kp.getKoodisto).get
       val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
@@ -104,7 +104,7 @@ case class KoodistoCreator(config: Config) extends Logging {
 
   private def luoPuuttuvatKoodistot {
     // Create missing
-    val luotavatKoodistot = Koodistot.koodistot.filter(shouldCreateMissing).par.filter(kp.getLatestVersion(_).isEmpty).toList
+    val luotavatKoodistot = Koodistot.koodistot.filter(shouldCreateMissing).filter(kp.getLatestVersion(_).isEmpty).toList
     luotavatKoodistot.foreach { koodistoUri =>
       MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)) match {
         case None =>
