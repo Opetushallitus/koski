@@ -19,8 +19,14 @@ case class RandomOppijaOid(fetchCount: Int) extends KoskidevHttpSpecification wi
 
   lazy val oidIterator = {
     logger.info("Looping through " + oids.length + " oids")
-    Iterator.continually(Random.shuffle(oids).iterator).flatten
+    SynchronizedIterator(Iterator.continually(Random.shuffle(oids).iterator).flatten)
   }
 
   def nextOid = oidIterator.next
+}
+
+case class SynchronizedIterator[A](i: Iterator[A]) extends Iterator[A] {
+  override def hasNext: Boolean = synchronized(i.hasNext)
+
+  override def next(): A = synchronized(i.next())
 }
