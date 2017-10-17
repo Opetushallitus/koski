@@ -70,4 +70,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_10",
+  "koodiArvo" : "10",
+  "metadata" : [ {
+    "nimi" : "Maahanmuuttajien ammatillinen koulutus (MAO)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
