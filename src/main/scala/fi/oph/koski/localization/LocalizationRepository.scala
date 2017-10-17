@@ -7,9 +7,13 @@ import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
+import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
 import fi.oph.koski.localization.LocalizedString.sanitize
+import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
 import fi.oph.koski.log.Logging
 import org.json4s._
+
+import scala.collection.immutable
 
 trait LocalizationRepository extends Logging {
   def localizations: Map[String, LocalizedString]
@@ -23,32 +27,9 @@ trait LocalizationRepository extends Logging {
 
   def createOrUpdate(localizations: List[UpdateLocalization])
 
-  def createMissing {
-    val inLocalizationService = localizationsFromLocalizationService
+  def localizationsFromLocalizationService: Map[String, Map[String, String]] = parseLocalizations(fetchLocalizations())
 
-    val missing = DefaultLocalizations.defaultFinnishTexts.flatMap {
-      case (key, defaultText) => inLocalizationService.get(key) match {
-        case Some(_) => None
-        case None => Some(List(UpdateLocalization("fi", key, defaultText), UpdateLocalization("sv", key, ""), UpdateLocalization("en", key, "")))
-      }
-    }.toList.flatten
-
-    logger.info("Creating " + missing.length + " missing localizations: " + JsonSerializer.writeWithRoot(missing))
-
-    if (missing.nonEmpty) {
-      try {
-        createOrUpdate(missing)
-      } catch {
-        case e: Exception => logger.warn(e)("Failed to create missing localizations")
-      }
-    }
-
-    logger.info("done.")
-  }
-
-  def localizationsFromLocalizationService: Map[String, Map[String, String]] = extract[List[LocalizationServiceLocalization]](fetchLocalizations(), ignoreExtras = true)
-    .groupBy(_.key)
-    .mapValues(_.map(v => (v.locale, v.value)).toMap)
+  def init
 }
 
 object DefaultLocalizations {
@@ -84,9 +65,12 @@ object LocalizationRepository {
       case "mock" =>
         new MockLocalizationRepository
       case url: Any =>
-        new RemoteLocalizationRepository(VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("localization.url"), "/lokalisointi"))
+        new RemoteLocalizationRepository(config)
     }
   }
+  def parseLocalizations(json: JValue) = extract[List[LocalizationServiceLocalization]](json, ignoreExtras = true)
+    .groupBy(_.key)
+    .mapValues(_.map(v => (v.locale, v.value)).toMap)
 }
 
 class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
@@ -97,7 +81,7 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
     _localizations
   }
 
-  override def fetchLocalizations(): JValue = JsonResources.readResource(MockLocalizationRepository.resourceName)
+  override def fetchLocalizations(): JValue = readLocalLocalizations
 
   override def createOrUpdate(toUpdate: List[UpdateLocalization]): Unit = {
     _localizations = toUpdate.foldLeft(_localizations) { (acc, n) =>
@@ -111,18 +95,81 @@ class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extend
   def reset = {
     _localizations = super.localizations
   }
+
+  def init {}
 }
 
 object MockLocalizationRepository {
   val resourceName = "/mockdata/lokalisointi/koski.json"
+  def readLocalLocalizations = JsonResources.readResource(MockLocalizationRepository.resourceName)
 }
 
-class RemoteLocalizationRepository(http: Http)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
+class RemoteLocalizationRepository(config: Config)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
+  private val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("localization.url"), "/lokalisointi")
+
   override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=koski")(Http.parseJson[JValue]))
 
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = {
     cache.strategy.invalidateCache()
     runTask(http.post(uri"/lokalisointi/cxf/rest/v1/localisation/update", localizations)(json4sEncoderOf[List[UpdateLocalization]])(Http.unitDecoder))
+  }
+
+  def init {
+    lazy val inLocalizationService = localizationsFromLocalizationService
+    if (config.getBoolean("localization.create")) {
+      val missing = DefaultLocalizations.defaultFinnishTexts.flatMap {
+        case (key, defaultText) => inLocalizationService.get(key) match {
+          case Some(_) => None
+          case None => Some(List(UpdateLocalization("fi", key, defaultText), UpdateLocalization("sv", key, ""), UpdateLocalization("en", key, "")))
+        }
+      }.toList.flatten
+
+      if (missing.nonEmpty) {
+        logger.info("Creating " + missing.length + " missing localizations: " + JsonSerializer.writeWithRoot(missing))
+        updateToRemote(missing)
+      }
+    }
+
+    if (config.getBoolean("localization.update")) {
+      logger.info(s"Updating all localizations to localization-service")
+      val mockValues: immutable.Seq[(String, String, String)] = parseLocalizations(readLocalLocalizations).toList.flatMap { case (key, localizationsForKey) =>
+        localizationsForKey.toList.map { case (lang, value) =>
+          (key, lang, value)
+        }
+      }
+      val toUpdate = mockValues.flatMap { case (key, lang, value) =>
+        inLocalizationService.getOrElse(key, Map()).get(lang) match {
+            case Some(remoteValue) if remoteValue == value =>
+              //logger.info(s"Up to date $key.$lang = $value")
+              Nil
+            case Some(remoteValue) =>
+              logger.info(s"Update $key.$lang $remoteValue => $value")
+              List(UpdateLocalization(lang, key, value))
+            case None =>
+              logger.info(s"Add $key.$lang = $value")
+              List(UpdateLocalization(lang, key, value))
+          }
+      }.toList
+
+      if (toUpdate.isEmpty) {
+        logger.info(s"Localization are up to date at ${config.getString("localization.url")}")
+      } else {
+        logger.info(s"Updating ${toUpdate.length} missing localizations to ${config.getString("localization.url")}")
+        updateToRemote(toUpdate)
+      }
+    }
+  }
+
+  private def updateToRemote(toUpdate: List[UpdateLocalization]) = {
+    if (toUpdate.nonEmpty) {
+      try {
+        createOrUpdate(toUpdate)
+      } catch {
+        case e: Exception => logger.warn(e)("Failed to create missing localizations")
+      }
+    }
+
+    logger.info("done.")
   }
 }
 

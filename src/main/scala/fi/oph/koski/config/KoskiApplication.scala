@@ -89,7 +89,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
     val parallels: immutable.Seq[Future[Any]] = List(
       Future { tiedonsiirtoService.init },
       Future { scheduledTasks.init },
-      Future { localizationRepository.createMissing }
+      Future { localizationRepository.init }
     )
 
     Future.sequence(parallels).map(_ => ())
