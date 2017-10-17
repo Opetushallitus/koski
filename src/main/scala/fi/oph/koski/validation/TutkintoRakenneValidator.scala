@@ -1,9 +1,10 @@
-package fi.oph.koski.tutkinto
+package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
+import fi.oph.koski.tutkinto._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validateTutkintoRakenne(suoritus: PäätasonSuoritus) = suoritus match {
