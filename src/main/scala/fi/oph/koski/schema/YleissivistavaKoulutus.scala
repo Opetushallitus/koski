@@ -22,7 +22,7 @@ trait Yksilöllistettävä {
 
 case class Päätösjakso(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
-  alku: Option[LocalDate],
+  alku: LocalDate,
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
   loppu: Option[LocalDate]
 )
