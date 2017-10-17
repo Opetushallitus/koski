@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{DefaultValue, Description}
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta")
 @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
@@ -13,5 +13,7 @@ case class OsaamisenTunnustaminen(
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
   @Representative
   @MultiLineString(5)
-  selite: LocalizedString
+  selite: LocalizedString,
+  @DefaultValue(false)
+  rahoituksenPiirissä: Boolean = false
 )
