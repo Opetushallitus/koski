@@ -233,6 +233,8 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   def tyyppi: Koodistokoodiviite
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus = lens[AmmatillisenTutkinnonOsanSuoritus].field[Option[OrganisaatioWithOid]]("toimipiste").set(this)(Some(toimipiste))
+
+  override def ryhmittelytekijä: Option[String] = tutkinnonOsanRyhmä.map(_.toString)
 }
 
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
@@ -385,7 +387,7 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PakollisenTaiValinnaisenSuoritus
 
 @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
@@ -395,9 +397,7 @@ case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends PaikallinenKoulutusmoduuli with LaajuuttaEiValidoida
 
-trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli with LaajuuttaEiValidoida {
-  def pakollinen: Boolean
-}
+trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli with LaajuuttaEiValidoida with Valinnaisuus
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Paikallinen tutkinnon osan osa-alue")

@@ -16,7 +16,7 @@ object PerusopetusExampleData {
 
   val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
 
-  def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
+  def suoritus(aine: PerusopetuksenOppiaine) = NuortenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None

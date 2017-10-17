@@ -45,6 +45,7 @@ trait Suoritus {
   def valmis = vahvistus.isDefined || !tarvitseeVahvistuksen && arviointi.toList.nonEmpty
   def arviointiPuuttuu = arviointi.isEmpty
   def kesken = !valmis
+  def ryhmittelytekijä: Option[String] = None
 }
 
 trait Suorituskielellinen {
@@ -101,4 +102,9 @@ trait MonikielinenSuoritus {
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID308", "koulutusorganisaation opetuskieli")
   def muutSuorituskielet: Option[List[Koodistokoodiviite]]
+}
+
+trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
+  def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
+  override def ryhmittelytekijä = Some(if (koulutusmoduuli.pakollinen) "pakolliset" else "valinnaiset")
 }

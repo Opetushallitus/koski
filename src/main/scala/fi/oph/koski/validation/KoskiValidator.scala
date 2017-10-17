@@ -214,7 +214,19 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
         :: validateTutkinnonosanRyhmä(suoritus, parent)
+        :: validateDuplicates(suoritus.osasuoritukset.toList.flatten)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
+    )
+  }
+
+  private def validateDuplicates(suoritukset: List[Suoritus]) = {
+    HttpStatus.fold(suoritukset
+      .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.tunniste, osasuoritus.ryhmittelytekijä))
+      .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
+      .map { case (tutkinnonOsa, ryhmä) =>
+        val ryhmänKuvaus = ryhmä.map(r => " ryhmässä " + r).getOrElse("")
+        KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Tutkinnon osa ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
+      }
     )
   }
 
