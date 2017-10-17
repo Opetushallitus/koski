@@ -2,6 +2,10 @@
 
 - Lisätty rahoituksenPiirissä-kenttä osaamisen tunnustamiseen
 - Lisätty opintojen rahoitus myös lukion ja aikuisten perusopetuksen opiskeluoikeuksien opiskeluoikeusjaksoihin
+- Muutettu pakolliseksi, seuraavien kenttien alku-tieto:
+  - aikuisten perusopetuksen kentät ulkomailla, majoitusetu, oikeusMaksuttomaanAsuntolapaikkaan
+  - esiopetuksen pidennettyOppivelvollisuus
+  - nuorten perusopetuksen kentät pidennettyOppivelvollisuus, tehostetunTuenPäätös, joustavaPerusopetus, kotiopetus, ulkomailla, majoitusetu, kuljetusetu, oikeusMaksuttomaanAsuntolapaikkaan
 
 ## 16.10.2017
 
