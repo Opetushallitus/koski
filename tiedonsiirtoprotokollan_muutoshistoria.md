@@ -1,3 +1,8 @@
+## 17.10.2017
+
+- Lisätty rahoituksenPiirissä-kenttä osaamisen tunnustamiseen
+- Lisätty opintojen rahoitus myös lukion ja aikuisten perusopetuksen opiskeluoikeuksien opiskeluoikeusjaksoihin
+
 ## 16.10.2017
 
 - Muutettu ammatillisen opiskeluoikeuden lisätietojen osaAikaisuus-kenttä listaksi osa-aikaisuusjaksoja (osaAikaisuusJaksot)
