@@ -198,12 +198,26 @@
   "koodiUri" : "koskioppiaineetyleissivistava_kt",
   "koodiArvo" : "KT",
   "metadata" : [ {
-    "nimi" : "Uskonto tai elämänkatsomustieto",
-    "lyhytNimi" : "Uskonto tai elämänkatsomustieto",
+    "nimi" : "Uskonto",
+    "lyhytNimi" : "Uskonto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Religion eller livsåskådningskunskap",
-    "lyhytNimi" : "Religion eller livsåskådningskunskap",
+    "nimi" : "Religion",
+    "lyhytNimi" : "Religion",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskioppiaineetyleissivistava_et",
+  "koodiArvo" : "ET",
+  "metadata" : [ {
+    "nimi" : "Elämänkatsomustieto",
+    "lyhytNimi" : "Elämänkatsomustieto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Livsåskådningskunskap",
+    "lyhytNimi" : "Livsåskådningskunskap",
     "kieli" : "SV"
   } ],
   "versio" : 1,
