@@ -242,15 +242,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 }
               }
             }
-
-            "osasuoritus.arviointi.päivä > suoritus.vahvistus.päivä" - {
-              "palautetaan HTTP 400"  in {
-                val suoritus: AmmatillisenTutkinnonSuoritus = withTutkinnonOsaSuoritus(copySuoritus(arviointiHyvä(date(2017, 5, 31)), None, Some(date(2015, 9, 1))), tutkinnonSuoritustapaNäyttönä)
-                putTutkintoSuoritus(suoritus.copy(vahvistus = vahvistus(date(2017, 5, 30)))) {
-                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.suorituksenVahvistusEnnenSuorituksenOsanArviointia("osasuoritus.arviointi.päivä (2017-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2017-05-30)"))
-                }
-              }
-            }
           }
 
           "Kun tutkinnolla on vahvistus, mutta tutkinnon osalta puuttuu arviointi" - {
