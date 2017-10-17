@@ -79,6 +79,4 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
-
-  perustiedotIndexer.init
 }

@@ -38,6 +38,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
+    application.perustiedotIndexer.init
 
     val parallels = List(
       Future { application.tiedonsiirtoService.init },
