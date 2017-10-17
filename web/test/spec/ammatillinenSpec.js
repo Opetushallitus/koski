@@ -623,7 +623,8 @@ describe('Ammatillinen koulutus', function() {
         before(
           page.oppijaHaku.searchAndSelect('280608-6619'),
           editor.edit,
-          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt')
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.expandAll
         )
 
         describe('Alussa', function() {
