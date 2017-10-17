@@ -10,7 +10,7 @@ import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
-import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
+import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{Logging, TimedProxy}
@@ -29,6 +29,9 @@ import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}
 
+import scala.collection.immutable
+import scala.concurrent.Future
+
 object KoskiApplication {
   lazy val defaultConfig = ConfigFactory.load
 
@@ -37,7 +40,7 @@ object KoskiApplication {
   def apply(config: Config): KoskiApplication = new KoskiApplication(config)
 }
 
-class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext {
+class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = TutkintoRepository(EPerusteetRepository.apply(config), koodistoViitePalvelu)
@@ -79,4 +82,16 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
+
+  lazy val init: Future[Unit] = {
+    perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
+    tryCatch("Koodistojen luonti") { KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
+    val parallels: immutable.Seq[Future[Any]] = List(
+      Future { tiedonsiirtoService.init },
+      Future { scheduledTasks.init },
+      Future { localizationRepository.createMissing }
+    )
+
+    Future.sequence(parallels).map(_ => ())
+  }
 }

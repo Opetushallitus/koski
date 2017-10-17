@@ -7,6 +7,14 @@ trait Logging {
   protected def logger : LoggerWithContext = defaultLogger
   protected def logger(user: LogUserContext): LoggerWithContext = defaultLogger.copy(context = Some(user))
   protected def logger(user: Option[LogUserContext]): LoggerWithContext = defaultLogger.copy(context = user)
+
+  protected def tryCatch(thing: String)(task: => Unit): Unit = {
+    try {
+      task
+    } catch {
+      case e: Exception => logger.error(e)(thing + " epäonnistui: " + e.getMessage)
+    }
+  }
 }
 
 case class LoggerWithContext(logger: Logger, context: Option[LogUserContext]) {

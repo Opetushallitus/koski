@@ -38,15 +38,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
-    application.perustiedotIndexer.init
 
-    val parallels = List(
-      Future { application.tiedonsiirtoService.init },
-      Future { application.scheduledTasks.init },
-      Future { application.localizationRepository.createMissing }
-    )
-
-    tryCatch("Koodistojen luonti") { KoodistoCreator(application).createAndUpdateCodesBasedOnMockData }
+    application.init // start parallel initialization tasks
 
     mount("/", new IndexServlet)
     mount("/login", new LoginPageServlet)
@@ -81,7 +74,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
-    parallels.foreach(f => Futures.await(f))
+    Futures.await(application.init) // await for all initialization tasks to complete
 
     if (Fixtures.shouldUseFixtures(application.config)) {
       context.mount(new FixtureServlet, "/fixtures")
@@ -90,13 +83,5 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   }
 
   override def destroy(context: ServletContext) = {
-  }
-
-  private def tryCatch(thing: String)(task: => Unit): Unit = {
-    try {
-      task
-    } catch {
-      case e: Exception => logger.error(e)(thing + " epäonnistui: " + e.getMessage)
-    }
   }
 }
