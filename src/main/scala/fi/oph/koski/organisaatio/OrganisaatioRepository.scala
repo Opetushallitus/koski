@@ -47,7 +47,7 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    config.getString("opintopolku.virkailija.url") match {
+    config.getString("organisaatiopalvelu.url") match {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
