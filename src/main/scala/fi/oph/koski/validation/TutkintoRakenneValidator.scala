@@ -9,7 +9,7 @@ import fi.oph.koski.tutkinto._
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validateTutkintoRakenne(suoritus: PäätasonSuoritus) = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
-      getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
+      val rakenneValidity = getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
@@ -22,6 +22,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               }, validateTutkintoField(tutkintoSuoritus, osaSuoritus))
           }))
       }
+      HttpStatus.fold(List(rakenneValidity) ++ tutkintoSuoritus.osasuoritukset.toList.flatten
+        .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.tunniste, osasuoritus.tutkinnonOsanRyhmä))
+        .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
+        .map { case (tutkinnonOsa, ryhmä) =>
+          val ryhmänKuvaus = ryhmä.map(r => " ryhmässä " + r).getOrElse("")
+          KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Tutkinnon osa ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
+        })
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)))).then { validateKurssikoodisto(suoritus) }
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>

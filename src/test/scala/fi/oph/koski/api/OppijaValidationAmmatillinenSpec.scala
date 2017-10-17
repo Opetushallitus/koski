@@ -85,6 +85,18 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("9923123", "tutkinnonosat"), true, None)), tutkinnonSuoritustapaNäyttönä)
               (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia tutkinnonosat/9923123 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
           }
+
+          "Sama tutkinnon osa kahteen kertaan" - {
+            val suoritus = autoalanPerustutkinnonSuoritus().copy(
+              osasuoritukset = Some(List(
+                tutkinnonOsaSuoritus, tutkinnonOsaSuoritus
+              ))
+            )
+
+            "Palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Tutkinnon osa tutkinnonosat/100023 esiintyy useammin kuin kerran ryhmässä ammatillisentutkinnonosanryhma/1")))
+            )
+          }
         }
 
         "Paikallinen tutkinnonosa" - {
