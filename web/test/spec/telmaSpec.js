@@ -40,11 +40,13 @@ describe('Telma', function() {
           'Tieto- ja viestintätekniikka sekä sen hyödyntäminen ei 2 Hyväksytty\n' +
           'Kuvaus Tieto- ja viestintätekniikka sekä sen hyödyntäminen\n' +
           'Tunnustettu\n' +
-          'Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti\n' +
+          'Selite Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti\n' +
+          'Rahoituksen piirissä ei\n' +
           'Uimaliikunta ja vesiturvallisuus ei 5 2\n' +
           'Kuvaus Kurssilla harjoitellaan vedessä liikkumista ja perehdytään vesiturvallisuuden perusteisiin. Kurssilla käytäviä asioita: - uinnin hengitystekniikka - perehdytystä uinnin eri tekniikoihin - allasturvallisuuden perustiedot\n' +
           'Tunnustettu\n' +
-          'Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
+          'Selite Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
+          'Rahoituksen piirissä ei\n' +
           'Auton lisävarustetyöt ei 15 Hyväksytty\n' +
           'Yhteensä 75 osp'
         )
