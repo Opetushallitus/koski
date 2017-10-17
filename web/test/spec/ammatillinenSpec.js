@@ -643,7 +643,7 @@ describe('Ammatillinen koulutus', function() {
 
           describe('Tallennuksen jälkeen', function() {
             it('Osaamisen tunnustamisen selite näytetään', function() {
-              expect(tunnustaminen.getValue()).to.equal('Tunnustamisen esimerkkiselite')
+              expect(tunnustaminen.getText()).to.equal('Tunnustettu\nSelite Tunnustamisen esimerkkiselite\nRahoituksen piirissä ei')
             })
           })
 
@@ -927,7 +927,7 @@ describe('Ammatillinen koulutus', function() {
             'Alkamispäivä 1.1.2014\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
-            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\nRahoituksen piirissä ei\n' +
             'Lisätiedot Arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen kyllä 8 3\n' +
@@ -999,7 +999,7 @@ describe('Ammatillinen koulutus', function() {
           'Kuvaus Moottorin korjaus\n' +
           'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
           'Suoritusaika 20.4.2002 — 20.4.2002\n' +
-          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\n' +
+          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\nRahoituksen piirissä ei\n' +
           'Yhteensä 15 osp'
         )
       })
@@ -1285,7 +1285,7 @@ describe('Ammatillinen koulutus', function() {
             'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
-            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\nRahoituksen piirissä ei\n' +
             'Yhteensä 65 osp'
           )
         })
