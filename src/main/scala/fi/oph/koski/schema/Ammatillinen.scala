@@ -90,7 +90,7 @@ case class Poissaolojakso(
 case class OsaAikaisuusJakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Osa-aikaisuuden suuruus. Yksi täysipäiväinen opiskelupäivä viikossa = 0.2 = 20 %")
+  @Description("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
