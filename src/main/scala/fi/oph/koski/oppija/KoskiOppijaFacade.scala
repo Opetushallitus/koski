@@ -119,7 +119,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
           perustiedotIndexer.update(perustiedot)
         }
 
-        OpiskeluoikeusVersio(result.oid, result.versionumero)
+        OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
     }
   }
@@ -168,4 +168,4 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 }
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
-case class OpiskeluoikeusVersio(oid: Opiskeluoikeus.Oid, versionumero: Int)
+case class OpiskeluoikeusVersio(oid: Opiskeluoikeus.Oid, versionumero: Int, lähdejärjestelmänId: Option[LähdejärjestelmäId]) extends Lähdejärjestelmällinen

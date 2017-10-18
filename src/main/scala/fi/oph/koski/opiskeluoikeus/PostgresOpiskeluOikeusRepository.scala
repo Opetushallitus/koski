@@ -161,7 +161,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, oppijaOid, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppijaOid, VERSIO_1, diff, row.data))
         }
     }
   }
@@ -183,7 +183,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val diff: JArray = jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
-            DBIO.successful(Right(NotChanged(id, oid, oldRow.oppijaOid, versionumero, diff, newData)))
+            DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
           case _ =>
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
@@ -192,7 +192,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, oid, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                    case 1 => Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }

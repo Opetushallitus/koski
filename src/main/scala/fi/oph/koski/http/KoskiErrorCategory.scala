@@ -3,13 +3,13 @@ package fi.oph.koski.http
 import fi.oph.koski.documentation.JsonValidationErrorExample
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OpiskeluoikeusVersio}
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
-import fi.oph.koski.schema.OidHenkilö
+import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, OidHenkilö}
 
 object KoskiErrorCategory {
   val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, unsupportedMediaType, internalError)
 
   object ok extends ErrorCategory("ok", 200, "Ok") {
-    val createdOrUpdated = subcategory("createdOrUpdated", "Päivitys/lisäys onnistui.", serializeWithRoot(HenkilönOpiskeluoikeusVersiot(OidHenkilö("1.2.246.562.24.00000000001"), List(OpiskeluoikeusVersio("1.2.246.562.15.20916518804", 3)))))
+    val createdOrUpdated = subcategory("createdOrUpdated", "Päivitys/lisäys onnistui.", serializeWithRoot(HenkilönOpiskeluoikeusVersiot(OidHenkilö("1.2.246.562.24.00000000001"), List(OpiskeluoikeusVersio("1.2.246.562.15.20916518804", 3, Some(LähdejärjestelmäId(Some("1"), Koodistokoodiviite("lahdejarjestelma_primus", "lahdejarjestelma"))))))))
     val searchOk = subcategory("searchOk", "Haku onnistui.")
     val maybeEmptyList = subcategory("maybeEmptyList", "Haku onnistui. Myös silloin kun ei löydy yhtään tulosta ja palautetaan tyhjä lista.")
     val maybeValidationErrorsInContent = subcategory("maybeValidationErrorsInContent", "Haku onnistui. Mahdolliset validointivirheet palautetaan json-vastauksessa.")
