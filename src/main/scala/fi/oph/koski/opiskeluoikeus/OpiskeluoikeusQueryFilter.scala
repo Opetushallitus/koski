@@ -28,6 +28,7 @@ object OpiskeluoikeusQueryFilter {
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
+  case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }

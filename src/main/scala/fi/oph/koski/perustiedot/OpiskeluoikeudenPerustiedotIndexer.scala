@@ -9,7 +9,7 @@ import fi.oph.koski.json.Json4sHttp4s
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.{PaginationSettings, Timing}
@@ -22,7 +22,7 @@ import scala.concurrent.Future
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
   timed("Reindex") {
-    perustiedotIndexer.reIndex(None).toBlocking.last
+    perustiedotIndexer.reIndex(filters = Nil, pagination = None).toBlocking.last
   }
 }
 
@@ -71,7 +71,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${JsonMethods.pretty(response)}"
-      perustiedotSyncRepository.needSyncing(items)
+      perustiedotSyncRepository.add(items.map(_.id))
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
@@ -94,10 +94,10 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     deleted
   }
 
-  def reIndex(pagination: Option[PaginationSettings] = None) = {
+  def reIndex(filters: List[OpiskeluoikeusQueryFilter] = Nil, pagination: Option[PaginationSettings] = None) = {
     logger.info("Starting elasticsearch re-indexing")
     val bufferSize = 1000
-    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)

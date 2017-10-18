@@ -47,6 +47,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with
         query.filter{ case (_, henkilö, _) =>
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
+      case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
