@@ -18,7 +18,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
+import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.sso.KoskiSessionRepository
@@ -68,7 +68,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val elasticSearch = ElasticSearch(config)
   lazy val koskiElasticSearchIndex = new KoskiElasticSearchIndex(elasticSearch)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(koskiElasticSearchIndex, opiskeluoikeusQueryRepository)
-  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, koskiElasticSearchIndex, opiskeluoikeusQueryRepository)
+  lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
+  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, koskiElasticSearchIndex, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)

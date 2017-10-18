@@ -129,12 +129,12 @@ object Tables {
   }
 
   class PerustiedotSyncTable(tag: Tag) extends Table[PerustiedotSyncRow](tag, "perustiedot_sync") {
-    val id = column[Int]("id", O.PrimaryKey)
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val failCount = column[Int]("fail_count")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (id, opiskeluoikeusId, failCount, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
+    def * = (opiskeluoikeusId, failCount, id, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
   }
 
   class OppilaitosIPOsoiteTable(tag: Tag) extends Table[OppilaitosIPOsoiteRow](tag, "oppilaitos_ip_osoite") {
@@ -157,6 +157,7 @@ object Tables {
 
   val Henkilöt = TableQuery[HenkilöTable]
   val Scheduler = TableQuery[SchedulerTable]
+  val PerustiedotSync = TableQuery[PerustiedotSyncTable]
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
@@ -201,7 +202,7 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
   def running: Boolean = status == 1
 }
 
-case class PerustiedotSyncRow(id: Int, opiskeluoikeusId: Int, failCount: Int, aikaleima: Timestamp)
+case class PerustiedotSyncRow(opiskeluoikeusId: Int, failCount: Int, id: Int = 0, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 

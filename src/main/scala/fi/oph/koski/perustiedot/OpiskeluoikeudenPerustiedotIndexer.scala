@@ -26,7 +26,7 @@ object PerustiedotIndexUpdater extends App with Timing {
   }
 }
 
-class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
+class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService, perustiedotSyncRepository: PerustiedotSyncRepository) extends Logging with GlobalExecutionContext {
   val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
 
   lazy val init = {
@@ -71,6 +71,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${JsonMethods.pretty(response)}"
+      perustiedotSyncRepository.needSyncing(items)
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
