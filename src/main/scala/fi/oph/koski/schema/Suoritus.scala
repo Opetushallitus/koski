@@ -42,8 +42,9 @@ trait Suoritus {
   }
   def tarvitseeVahvistuksen: Boolean = false
   /** Onko suoritus valmis tai merkitty valmistuvaksi tulevaisuuden päivämäärällä. Valmius määritellään päätason suorituksissa vahvistuksen olemassaololla ja muissa suorituksissa arvioinnin olemassaololla. */
-  def valmis = vahvistus.isDefined || !tarvitseeVahvistuksen && arviointi.toList.nonEmpty
+  def valmis = !vahvistusPuuttuu && !arviointiPuuttuu
   def arviointiPuuttuu = arviointi.isEmpty
+  def vahvistusPuuttuu = tarvitseeVahvistuksen && !vahvistus.isDefined
   def kesken = !valmis
   def ryhmittelytekijä: Option[String] = None
 }
@@ -65,7 +66,6 @@ trait MahdollisestiSuorituskielellinen {
 trait Arvioinniton extends Suoritus {
   def arviointi = None
   override def arviointiPuuttuu = false
-  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait Toimipisteellinen extends OrganisaatioonLiittyvä {
@@ -94,7 +94,6 @@ trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
 trait Vahvistukseton extends Suoritus {
   override def vahvistus: Option[Vahvistus] = None
   def mutuallyExclusivePäätasoVahvistukseton = {}
-  def mutuallyExclusiveVahvistuksetonArvioinniton = {}
 }
 
 trait MonikielinenSuoritus {
