@@ -636,7 +636,7 @@ describe('Ammatillinen koulutus', function() {
         describe('Lisääminen', function()  {
           before(
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisääOsaamisenTunnustaminen,
-            tunnustaminen.setValue('Tunnustamisen esimerkkiselite'),
+            tunnustaminen.propertyBySelector('.selite').setValue('Tunnustamisen esimerkkiselite'),
             editor.saveChanges,
             opinnot.expandAll
           )
@@ -651,10 +651,13 @@ describe('Ammatillinen koulutus', function() {
             before(
               editor.edit,
               opinnot.expandAll,
-              tunnustaminen.setValue('Tunnustamisen muokattu esimerkkiselite')
+              tunnustaminen.propertyBySelector('.selite').setValue('Tunnustamisen muokattu esimerkkiselite'),
+              tunnustaminen.property('rahoituksenPiirissä').setValue(true),
+              editor.saveChanges,
+              opinnot.expandAll
             )
             it('toimii', function() {
-              expect(tunnustaminen.getValue()).to.equal('Tunnustamisen muokattu esimerkkiselite')
+              expect(tunnustaminen.getText()).to.equal('Tunnustettu\nSelite Tunnustamisen muokattu esimerkkiselite\nRahoituksen piirissä kyllä')
             })
           })
 

@@ -3,7 +3,8 @@ import Atom from 'bacon.atom'
 import Text from '../Text.jsx'
 import {Editor} from './Editor.jsx'
 import {modelLookup, resetOptionalModel} from './EditorModel.js'
-import {optionalPrototypeModel, pushModel} from './EditorModel'
+import {modelEmpty, optionalPrototypeModel, pushModel} from './EditorModel'
+import {PropertiesEditor} from './PropertiesEditor.jsx'
 
 export class AmmatillinenTunnustettuEditor extends React.Component {
   constructor(props) {
@@ -15,14 +16,18 @@ export class AmmatillinenTunnustettuEditor extends React.Component {
 
   render() {
     const model = this.props.model
-    const hasData = model.modelId !== 0
+    const hasData = !modelEmpty(model)
     let seliteModel = modelLookup(model, 'selite')
 
     return (
       <div>
         {
           hasData
-            ? <span><Editor model={seliteModel} autoFocus={true}/><a className="remove-value" onClick={() => resetOptionalModel(model)}></a></span>
+            ? (<span>
+                <span className="selite"><Editor model={seliteModel} autoFocus={true}/></span>
+                <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>
+                <PropertiesEditor model={model} propertyFilter={(p) => ['rahoituksenPiirissä'].includes(p.key)}/>
+              </span>)
             : <span><a className="add-value" onClick={() => pushModel(optionalPrototypeModel(model))}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></span>
         }
       </div>
