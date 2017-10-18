@@ -1,7 +1,6 @@
 import React from 'baret'
 import R from 'ramda'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
 import {addContext, modelData, modelItems, modelLookup, modelTitle, modelSetValues, pushModel} from './EditorModel.js'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
