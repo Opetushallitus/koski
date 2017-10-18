@@ -1,6 +1,8 @@
 import React from 'baret'
 import R from 'ramda'
-import {addContext, modelData, modelItems, modelLookup, modelTitle} from './EditorModel.js'
+import Bacon from 'baconjs'
+import Atom from 'bacon.atom'
+import {addContext, modelData, modelItems, modelLookup, modelTitle, modelSetValues, pushModel} from './EditorModel.js'
 import {TogglableEditor} from './TogglableEditor.jsx'
 import {PropertiesEditor} from './PropertiesEditor.jsx'
 import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
@@ -27,6 +29,12 @@ export const OpiskeluoikeusEditor = ({model}) => {
       return null
     }
     let valittuSuoritus = suoritukset[index]
+
+    const alkuChangeBus = Bacon.Bus()
+    alkuChangeBus.onValue(v => {
+      const value = v[0].value
+      pushModel(modelSetValues(model, {'alkamispäivä' : value, 'tila.opiskeluoikeusjaksot.0.alku': value}))
+    })
 
     return (
       <div className="opiskeluoikeus">
@@ -55,7 +63,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
               model={mdl}
               propertyFilter={ p => !excludedProperties.includes(p.key) }
               getValueEditor={ (prop, getDefault) => prop.key === 'tila'
-                ? <OpiskeluoikeudenTilaEditor model={mdl} />
+                ? <OpiskeluoikeudenTilaEditor model={mdl} alkuChangeBus={alkuChangeBus}/>
                 : getDefault() }
              />
             {
@@ -89,7 +97,7 @@ const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
   return (<div className="alku-loppu opiskeluoikeuden-voimassaoloaika">
     <Text name="Opiskeluoikeuden voimassaoloaika"/>{': '}
-    <span className="alkamispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä" /></span>
+    <span className="alkamispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä"/></span>
     {' — '}
     <span className="päättymispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} /></span>
     {' '}

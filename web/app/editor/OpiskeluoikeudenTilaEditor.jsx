@@ -10,7 +10,7 @@ import {parseISODate} from '../date.js'
 import {Editor} from './Editor.jsx'
 import Text from '../Text.jsx'
 
-export const OpiskeluoikeudenTilaEditor = ({model}) => {
+export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
   let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
   let addingNew = Atom(false)
@@ -37,10 +37,15 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
       <div>
         <ul className="array">
           {
-            items.map((item, i) => {
-              return (<li key={i}>
+            items.map((item, i) => (
+              <li key={i}>
                 <div className={'opiskeluoikeusjakso' + (i === getActiveIndex(items) ? ' active' : '')}>
-                  <label className="date"><Editor model={item} path="alku" edit={false}/></label>
+                  <label className="date">
+                    {i === items.length - 1
+                      ? <Editor model={item} path="alku" changeBus={alkuChangeBus}/>
+                      : <Editor model={item} path="alku" edit={false}/>
+                    }
+                  </label>
                   <label className="tila">
                     {modelTitle(item, 'tila')}
                     {
@@ -50,7 +55,7 @@ export const OpiskeluoikeudenTilaEditor = ({model}) => {
                 </div>
                 {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}/>}
               </li>)
-            })
+            )
           }
           {
             showLisaaTila && <li className="add-item"><a onClick={showAddDialog}><Text name="Lisää opiskeluoikeuden tila"/></a></li>

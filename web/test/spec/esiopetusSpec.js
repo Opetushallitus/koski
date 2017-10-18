@@ -66,5 +66,22 @@ describe('Esiopetus', function() {
         expect(kuvaus.getValue()).to.equal('Uusi kuvaus')
       })
     })
+
+  })
+
+  describe('Aloituspäivä', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
+
+    describe('Opiskeluoikeuden aloituspäivän muuttaminen', function() {
+      before(
+        editor.edit,
+        opinnot.expandAll,
+        Page(function() {return S('#content')}).setInputValue('.tila .opiskeluoikeusjakso:last-child .date input', '1.1.2005')
+      )
+      it('Toimii', function() {
+        expect(S('.tila .opiskeluoikeusjakso:last-child .date input').val()).to.equal('1.1.2005')
+        expect(S('.opiskeluoikeuden-voimassaoloaika .alkamispäivä .date').html()).to.equal('1.1.2005')
+      })
+    })
   })
 })

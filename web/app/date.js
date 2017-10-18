@@ -19,7 +19,11 @@ export const formatFinnishDateTime = (date) => format(date, 'D.M.YYYY H:mm')
 export const ISO2FinnishDateTime = (date) => formatFinnishDateTime(parseISODateTime(date))
 export const parseISODate = (date) => fecha.parse(date, 'YYYY-MM-DD')
 export const formatFinnishDate = (date) => format(date, 'D.M.YYYY')
-export const yearFromIsoDateString = dateString => dateString && new Date(dateString).getFullYear()
+export const yearFromIsoDateString = dateString => {
+  const year = dateString && new Date(dateString).getFullYear()
+  if (Number.isNaN(year)) return ''
+  return year
+}
 
 export const ISO2FinnishDate = (date) => formatFinnishDate(parseISODate(date))
 
