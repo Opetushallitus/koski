@@ -14,7 +14,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Oppijan esiopetuksen lukuvuoden alkamisaika. Esiopetuksen alkamisaika 1.8")
-  alkamispäivä: Option[LocalDate] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
   @Description("Oppijan opinto-oikeuden arvioitu päättymispäivä esiopetuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
