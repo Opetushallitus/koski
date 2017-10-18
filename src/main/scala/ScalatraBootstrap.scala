@@ -1,17 +1,14 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.{IndexServlet, LoginPageServlet}
 import fi.oph.koski.cache.CacheServlet
-import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.{DocumentationServlet, DocumentationApiServlet, KoodistoServlet}
+import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
-import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
@@ -23,15 +20,14 @@ import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.servlet.RedirectServlet
+import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
-import fi.oph.koski.util.{Futures, Pools}
-import fi.oph.koski.validation.KoskiJsonSchemaValidator
+import fi.oph.koski.util.Futures
+import fi.oph.koski.{IndexServlet, LoginPageServlet}
 import org.scalatra._
-
-import scala.concurrent.Future
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
   override def init(context: ServletContext) = tryCatch("Servlet context initialization") {
