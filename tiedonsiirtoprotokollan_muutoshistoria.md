@@ -1,3 +1,7 @@
+## 18.10.2017
+
+- Lisätty PUT/POST-rajapintojen vastausdokumenttiin opiskeluoikeuksien lähdejärjestelmäId-kenttä
+
 ## 17.10.2017
 
 - Lisätty rahoituksenPiirissä-kenttä osaamisen tunnustamiseen
