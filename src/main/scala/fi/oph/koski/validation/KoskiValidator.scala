@@ -171,7 +171,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä")
     } else if (user.isPalvelukäyttäjä && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
       KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
-    } else if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä && !user.juuriOrganisaatio.isDefined) {
+    } else if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä && user.juuriOrganisaatio.isEmpty) {
       KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     } else {
       HttpStatus.ok
@@ -191,8 +191,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää),
       validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä), KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää),
-      HttpStatus.validate(päättäväJakso == None || päättäväJakso == viimeinenJakso)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.get.tila.koodiarvo}) jälkeen"))
-        .then(HttpStatus.validate(!opiskeluoikeus.päättymispäivä.isDefined || opiskeluoikeus.päättymispäivä == päättävänJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Opiskeluoikeuden päättymispäivä (${formatOptionalDate(opiskeluoikeus.päättymispäivä)}) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (${formatOptionalDate(päättävänJaksonPäivä)})"))),
+      HttpStatus.validate(päättäväJakso.isEmpty || päättäväJakso == viimeinenJakso)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.get.tila.koodiarvo}) jälkeen"))
+        .then(HttpStatus.validate(opiskeluoikeus.päättymispäivä.isEmpty || opiskeluoikeus.päättymispäivä == päättävänJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Opiskeluoikeuden päättymispäivä (${formatOptionalDate(opiskeluoikeus.päättymispäivä)}) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (${formatOptionalDate(päättävänJaksonPäivä)})"))),
       DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluoikeus.tila.opiskeluoikeusjaksot, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät),
       HttpStatus.validate(opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})"))
     )
