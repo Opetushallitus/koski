@@ -39,7 +39,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
+    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Oppimäärä"/>
     {
       suoritustyyppiAtom.map( tyyppi => koodiarvoMatch('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')(tyyppi)
         ? <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />

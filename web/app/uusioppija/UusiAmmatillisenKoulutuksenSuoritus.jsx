@@ -4,34 +4,57 @@ import Atom from 'bacon.atom'
 import Http from '../http'
 import KoodistoDropdown from '../KoodistoDropdown.jsx'
 import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
-import {doActionWhileMounted} from '../util'
+import {doActionWhileMounted, ift} from '../util'
+import Suoritustyyppi from './Suoritustyyppi.jsx'
+import {koodiarvoMatch, koodistoValues} from './koodisto'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus')
   const tutkintoAtom = Atom()
+  const suoritustyyppiAtom = Atom()
   const suoritustapaAtom = Atom()
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto'))))
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
-  const makeSuoritus = (oppilaitos, tutkinto, suorituskieli, suoritustapa) => {
-    if (tutkinto && oppilaitos && suoritustapa) {
-      return {
-        koulutusmoduuli: {
-          tunniste: {
-            koodiarvo: tutkinto.tutkintoKoodi,
-            koodistoUri: 'koulutus'
-          },
-          perusteenDiaarinumero: tutkinto.diaarinumero
+  const makeSuoritus = (oppilaitos, suoritustyyppi, tutkinto, suorituskieli, suoritustapa) => {
+    let tutkintoData = tutkinto && {
+        tunniste: {
+          koodiarvo: tutkinto.tutkintoKoodi,
+          koodistoUri: 'koulutus'
         },
+        perusteenDiaarinumero: tutkinto.diaarinumero
+      }
+    if (koodiarvoMatch('ammatillinentutkinto')(suoritustyyppi) && tutkinto && oppilaitos && suoritustapa) {
+      return {
+        koulutusmoduuli: tutkintoData,
         toimipiste : oppilaitos,
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkinto'},
         suoritustapa: suoritustapa,
         suorituskieli : suorituskieli
       }
     }
+    if (koodiarvoMatch('nayttotutkintoonvalmistavakoulutus')(suoritustyyppi) && tutkinto && oppilaitos) {
+      return {
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '999904',
+            koodistoUri: 'koulutus'
+          }
+        },
+        tutkinto: tutkintoData,
+        toimipiste : oppilaitos,
+        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'nayttotutkintoonvalmistavakoulutus'},
+        suorituskieli : suorituskieli
+      }
+    }
   }
-  Bacon.combineWith(oppilaitosAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
+  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
+    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
     <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
-    <Suoritustapa tutkintoP={tutkintoAtom} suoritustapaAtom={suoritustapaAtom}/>
+    {
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('ammatillinentutkinto')), <Suoritustapa tutkintoP={tutkintoAtom} suoritustapaAtom={suoritustapaAtom}/>)
+    }
   </div>)
 }
 
