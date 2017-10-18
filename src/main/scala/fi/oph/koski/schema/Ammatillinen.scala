@@ -61,6 +61,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
   @Title("Osa-aikaisuusjaksot")
   osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,
+  opiskeluvalmiuksiaTukevatOpinnot: Option[List[OpiskeluvalmiuksiaTukevienOpintojenJakso]] = None,
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
@@ -96,6 +97,12 @@ case class OsaAikaisuusJakso(
   @Title("Osa-aikaisuus")
   osaAikaisuus: Int
 ) extends Jakso
+
+case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
+  alku: LocalDate,
+  loppu: LocalDate,
+  kuvaus: LocalizedString
+)
 
 @Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Ammatillinen)")
 case class AmmatillinenOpiskeluoikeudenTila(
