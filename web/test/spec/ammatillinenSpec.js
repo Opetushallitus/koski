@@ -266,6 +266,22 @@ describe('Ammatillinen koulutus', function() {
         it('Näytetään virheilmoitus', wait.until(page.isErrorShown))
       })
     })
+
+    describe('Näyttötutkintoon valmistava koulutus', function() {
+      before(
+        resetFixtures,
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+        addOppija.selectOppimäärä('Näyttötutkintoon valmistava koulutus'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Näyttötutkintoon valmistava koulutus')
+      )
+
+      it('Lisätty opiskeluoikeus näytetään', function() {
+        expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+      })
+    })
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
