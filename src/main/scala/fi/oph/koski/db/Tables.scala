@@ -128,6 +128,15 @@ object Tables {
     def * = (name, nextFireTime, context, status) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
+  class PerustiedotSyncTable(tag: Tag) extends Table[PerustiedotSyncRow](tag, "perustiedot_sync") {
+    val id = column[Int]("id", O.PrimaryKey)
+    val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
+    val failCount = column[Int]("fail_count")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (id, opiskeluoikeusId, failCount, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
+  }
+
   class OppilaitosIPOsoiteTable(tag: Tag) extends Table[OppilaitosIPOsoiteRow](tag, "oppilaitos_ip_osoite") {
     val username = column[String]("username", O.PrimaryKey)
     val ip = column[String]("ip")
@@ -191,6 +200,8 @@ case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioO
 case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
   def running: Boolean = status == 1
 }
+
+case class PerustiedotSyncRow(id: Int, opiskeluoikeusId: Int, failCount: Int, aikaleima: Timestamp)
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
