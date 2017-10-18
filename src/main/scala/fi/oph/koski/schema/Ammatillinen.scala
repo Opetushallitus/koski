@@ -598,12 +598,11 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
-  arviointi: Option[List[AmmatillinenArviointi]],
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends Vahvistukseton with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen with Arvioinniton
 
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 

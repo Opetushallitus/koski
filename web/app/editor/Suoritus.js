@@ -21,6 +21,8 @@ export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
     let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
     return vahvistuspäivä && isInPast(vahvistuspäivä)
+  } else if (suoritus.value.classes.includes('arvioinniton')) {
+    return true
   } else {
     let arviointi = modelData(suoritus, 'arviointi.0')
     let arviointiPäivä = modelData(arviointi, 'päivä')
