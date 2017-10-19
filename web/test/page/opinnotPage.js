@@ -484,6 +484,18 @@ function LisääSuoritusDialog() {
         .then(click(buttonElem))
         .then(wait.until(function() { return count() == prevCount + 1 }))
     },
+    selectSuoritustapa: function(suoritustapa) {
+      return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa, false)
+    },
+    selectTutkinto: function(name) {
+      return function() {
+        function selectedTutkinto() { return elem().find('.koulutusmoduuli .selected') }
+        return wait.until(Page(elem).getInput('.koulutusmoduuli input').isVisible)()
+          .then(Page(elem).setInputValue('.koulutusmoduuli input', name))
+          .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
+          .then(click(selectedTutkinto))
+      }
+    },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
   return api

@@ -2,6 +2,6 @@ import React from 'baret'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
 
 export const ToimipisteEditor = ({model}) => {
-  return <div><OrganisaatioEditor model={model} organisaatioTyypit={['TOIMIPISTE']} /></div>
+  return <OrganisaatioEditor model={model} organisaatioTyypit={['TOIMIPISTE']} />
 }
 ToimipisteEditor.validateModel = OrganisaatioEditor.validateModel

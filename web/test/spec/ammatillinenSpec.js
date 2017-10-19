@@ -276,10 +276,28 @@ describe('Ammatillinen koulutus', function() {
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Näyttötutkintoon valmistava koulutus')
       )
 
-      it('Lisätty opiskeluoikeus näytetään', function() {
-        expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
-        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
-        expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+      describe('Lisäyksen jälkeen', function() {
+        it('Lisätty opiskeluoikeus näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+        })
+      })
+
+      describe('Ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function() {
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
+        before(
+          editor.edit,
+          lisääSuoritus.open,
+          lisääSuoritus.toimipiste.select('Stadin ammattiopisto, Sturenkadun toimipaikka'),
+          lisääSuoritus.selectTutkinto('Autoalan perustutkinto'),
+          lisääSuoritus.selectSuoritustapa('Näyttötutkinto'),
+          lisääSuoritus.lisääSuoritus,
+          editor.saveChanges
+        )
+        it('toimii', function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+        })
       })
     })
   })
