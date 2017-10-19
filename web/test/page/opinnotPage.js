@@ -496,6 +496,9 @@ function LisääSuoritusDialog() {
           .then(click(selectedTutkinto))
       }
     },
+    tutkinto: function() {
+      return Page(elem).getInputValue('.koulutusmoduuli input')
+    },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
   return api

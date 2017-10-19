@@ -288,15 +288,23 @@ describe('Ammatillinen koulutus', function() {
         var lisääSuoritus = opinnot.lisääSuoritusDialog
         before(
           editor.edit,
-          lisääSuoritus.open,
-          lisääSuoritus.toimipiste.select('Stadin ammattiopisto, Sturenkadun toimipaikka'),
-          lisääSuoritus.selectTutkinto('Autoalan perustutkinto'),
-          lisääSuoritus.selectSuoritustapa('Näyttötutkinto'),
-          lisääSuoritus.lisääSuoritus,
-          editor.saveChanges
+          lisääSuoritus.open
         )
-        it('toimii', function() {
-          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+        describe('Ennen lisäystä', function() {
+          it('Esitäyttää tutkinnon näyttötutkintoon valmistavasta koulutuksesta', function() {
+            expect(lisääSuoritus.tutkinto()).to.equal('Autoalan perustutkinto 39/011/2014')
+          })
+        })
+        describe('Lisäyksen jälkeen', function() {
+          before(
+            lisääSuoritus.selectTutkinto('Autoalan perustutkinto'),
+            lisääSuoritus.selectSuoritustapa('Näyttötutkinto'),
+            lisääSuoritus.lisääSuoritus,
+            editor.saveChanges
+          )
+          it('Tutkinnon suoritus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+          })
         })
       })
     })
