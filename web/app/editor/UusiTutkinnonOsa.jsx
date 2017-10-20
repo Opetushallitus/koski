@@ -135,7 +135,7 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
     { ift(lisääOsaToisestaTutkinnostaAtom, <ModalDialog className="lisaa-tutkinnon-osa-toisesta-tutkinnosta-modal" onDismiss={lisääOsaToisestaTutkinnosta} onSubmit={() => lisääOsaToisestaTutkinnosta(tutkintoAtom.get(), tutkinnonOsaAtom.get())} okTextKey="Lisää tutkinnon osa" validP={tutkinnonOsaAtom} submitOnEnterKey="false">
       <h2><Text name="Tutkinnon osan lisäys toisesta tutkinnosta"/></h2>
       <div className="valinnat">
-        <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} />
+        <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name="Tutkinto"/>} />
         {
           tutkintoAtom.flatMapLatest( tutkinto => {
             let osatP = tutkinto

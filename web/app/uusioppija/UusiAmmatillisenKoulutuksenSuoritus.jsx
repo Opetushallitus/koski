@@ -54,10 +54,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
     <div className="tutkinto-autocomplete">
       {
-        ift(oppilaitosAtom, <label className='tutkinto'>
-          <Text name="Tutkinto"/>
-          <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom}/>
-        </label>)
+        ift(oppilaitosAtom, <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
       }
     </div>
 
