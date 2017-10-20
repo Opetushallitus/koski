@@ -109,7 +109,7 @@ const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => 
 }
 
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasAmmatillinenTutkinto(opiskeluoikeus) || !hasValmistavaTutkinto(opiskeluoikeus)
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && (!hasAmmatillinenTutkinto(opiskeluoikeus) || !hasValmistavaTutkinto(opiskeluoikeus))
 }
 
 let hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
