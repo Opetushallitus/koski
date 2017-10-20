@@ -503,13 +503,6 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
-    describe('Suorituksen lisääminen', function() {
-      before(editor.edit)
-      it('Päätason suoritusta ei voi lisätä ammatillisissa opinnoissa', function() {
-        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
-      })
-    })
-
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Kun suoritustapa on opetussuunnitelman mukainen', function() {
