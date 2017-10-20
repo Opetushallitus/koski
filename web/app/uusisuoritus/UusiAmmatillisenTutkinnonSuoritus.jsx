@@ -45,9 +45,11 @@ let tutkintoLens = L.lens(
     })
   }
 )
-const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => {
+
+let hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
+
+const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
-  let isValmistava = hasAmmatillinenTutkinto(opiskeluoikeus)
   let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, isValmistava ? 'nayttotutkintoonvalmistavankoulutuksensuoritus' : 'ammatillisentutkinnonsuoritus')
   initialSuoritusModel = addContext(initialSuoritusModel, { editAll: true })
   initialSuoritusModel = copyToimipiste(modelItems(opiskeluoikeus, 'suoritukset')[0], initialSuoritusModel)
@@ -108,16 +110,14 @@ const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => 
   </ModalDialog>)
 }
 
+export const UusiAmmatillisenTutkinnonSuoritus = Popup(false)
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && (!hasAmmatillinenTutkinto(opiskeluoikeus) || !hasValmistavaTutkinto(opiskeluoikeus))
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
 }
+UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () => <Text name="lisää ammatillisen tutkinnon suoritus"/>
 
-let hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
-let hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
-
-UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = (opiskeluoikeus) =>
-  hasAmmatillinenTutkinto(opiskeluoikeus)
-    ? <Text name="lisää näyttötutkintoon valmistavan koulutuksen suoritus"/>
-    : <Text name="lisää ammatillisen tutkinnon suoritus"/>
-
-export default UusiAmmatillisenTutkinnonSuoritus
+export const UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus = Popup(true)
+UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (opiskeluoikeus) => {
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasValmistavaTutkinto(opiskeluoikeus)
+}
+UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.addSuoritusTitle = () => <Text name="lisää näyttötutkintoon valmistavan koulutuksen suoritus"/>
