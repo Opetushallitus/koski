@@ -284,7 +284,7 @@ function extractAsText(el, subElement) {
 }
 
 function htmlOf(el) {
-  return S(el).wrap('<div>').parent().html()
+  return S(el).clone().wrap('<div>').parent().html()
 }
 
 function isJQuery(el) {

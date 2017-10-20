@@ -47,12 +47,37 @@ describe('Ammatillinen koulutus', function() {
         before(addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}))
         before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'))
 
-        it('lisätty oppija näytetään', function() {})
+        describe('Lisäyksen jälkeen', function() {
+          it('lisätty oppija näytetään', function() {})
 
-        it('Lisätty opiskeluoikeus näytetään', function() {
-          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
-          expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+          it('Lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+            expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+            expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+          })
+        })
+
+        describe('Toisen ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          before(
+            editor.edit,
+            lisääSuoritus.open('lisää ammatillisen tutkinnon suoritus')
+          )
+          describe('Ennen lisäystä', function() {
+            it('Ei esitäytä tutkintoa', function() {
+              expect(lisääSuoritus.tutkinto()).to.equal('')
+            })
+          })
+          describe('Lisäyksen jälkeen', function() {
+            before(
+              lisääSuoritus.selectTutkinto('Autoalan työnjohdon erikoisammattitutkinto'),
+              lisääSuoritus.lisääSuoritus,
+              editor.saveChanges
+            )
+            it('Tutkinnon suoritus näytetään', function() {
+              expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+            })
+          })
         })
       })
     })
@@ -266,6 +291,79 @@ describe('Ammatillinen koulutus', function() {
         it('Näytetään virheilmoitus', wait.until(page.isErrorShown))
       })
     })
+
+    describe('Näyttötutkintoon valmistava koulutus', function() {
+      describe('Uutena opiskeluoikeutena', function() {
+        before(
+          resetFixtures,
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+          addOppija.selectOppimäärä('Näyttötutkintoon valmistava koulutus'),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Näyttötutkintoon valmistava koulutus')
+        )
+
+        describe('Lisäyksen jälkeen', function() {
+          it('Lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
+            expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+            expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+          })
+        })
+
+        describe('Ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          before(
+            editor.edit,
+            lisääSuoritus.open()
+          )
+          describe('Ennen lisäystä', function() {
+            it('Esitäyttää tutkinnon näyttötutkintoon valmistavasta koulutuksesta', function() {
+              expect(lisääSuoritus.tutkinto()).to.equal('Autoalan perustutkinto 39/011/2014')
+            })
+          })
+          describe('Lisäyksen jälkeen', function() {
+            before(
+              lisääSuoritus.selectTutkinto('Autoalan perustutkinto'),
+              lisääSuoritus.selectSuoritustapa('Näyttötutkinto'),
+              lisääSuoritus.lisääSuoritus,
+              editor.saveChanges
+            )
+            it('Tutkinnon suoritus näytetään', function() {
+              expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+            })
+          })
+        })
+      })
+      describe('Lisääminen olemassa olevaan opiskeluoikeuteen, jossa ammatillisen tutkinnon suoritus', function() {
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
+        before(
+          resetFixtures,
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'),
+          editor.edit,
+          lisääSuoritus.open('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
+        )
+        describe('Ennen lisäystä', function() {
+          it('Esitäyttää oppilaitoksen', function() {
+            expect(lisääSuoritus.toimipiste.oppilaitos()).to.equal('Stadin ammattiopisto')
+          })
+
+          it('Esitäyttää tutkinnon tutkintokoulutuksen suorituksesta', function() {
+            expect(lisääSuoritus.tutkinto()).to.equal('Autoalan perustutkinto 39/011/2014')
+          })
+        })
+        describe('Lisäyksen jälkeen', function() {
+          before(
+            lisääSuoritus.lisääSuoritus,
+            editor.saveChanges
+          )
+          it('Näyttötutkintoon valmistavan koulutuksen suoritus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
+          })
+        })
+      })
+    })
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
@@ -402,13 +500,6 @@ describe('Ammatillinen koulutus', function() {
           'Osa-aikaisuusjaksot 22.6.2017 — Osa-aikaisuus 80 %\n' +
           'Opiskeluvalmiuksia tukevat opinnot 22.6.2017 — 28.6.2017 Kuvaus Testing'
           )
-      })
-    })
-
-    describe('Suorituksen lisääminen', function() {
-      before(editor.edit)
-      it('Päätason suoritusta ei voi lisätä ammatillisissa opinnoissa', function() {
-        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
       })
     })
 

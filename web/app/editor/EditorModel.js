@@ -164,7 +164,7 @@ export const modelSetTitle = (model, title, path) => {
 }
 
 export const modelSetValue = withCatch('modelSetValue', (model, value, path) => {
-  return L.set(L.compose(modelLens(path), modelValueLens()), value, model)
+  return L.set(L.compose(modelLens(path), modelValueLens), value, model)
 })
 
 export const modelSetValues = (model, pathsAndValues) => {
@@ -175,7 +175,7 @@ export const modelSetValues = (model, pathsAndValues) => {
   )
 }
 
-let modelValueLens = ({model} = {}) => L.lens(
+export const modelValueLens = L.lens(
   (m) => {
     if (!m) {
       return undefined
@@ -196,7 +196,7 @@ let modelValueLens = ({model} = {}) => L.lens(
       }
     }
     let plainOptional = (m.optional && !m.type)
-    let usedModel = plainOptional ? getUsedModelForOptionalModel(m, {model}) : m
+    let usedModel = plainOptional ? getUsedModelForOptionalModel(m) : m
     return L.set('value', v, usedModel)
   }
 )

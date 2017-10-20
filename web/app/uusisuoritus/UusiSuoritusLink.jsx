@@ -5,6 +5,10 @@ import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluok
 import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus.jsx'
 import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus.jsx'
 import UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus from './UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus.jsx'
+import {
+  UusiAmmatillisenTutkinnonSuoritus,
+  UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus
+} from './UusiAmmatillisenTutkinnonSuoritus.jsx'
 
 export default ({opiskeluoikeus, callback}) => {
   return (<span className="add-suoritus tab">{
@@ -44,7 +48,9 @@ const popups = [
   UusiPerusopetuksenOppiaineenOppimääränSuoritus,
   UusiPerusopetuksenVuosiluokanSuoritus,
   UusiAikuistenPerusopetuksenOppimaaranSuoritus,
-  UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus
+  UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus,
+  UusiAmmatillisenTutkinnonSuoritus,
+  UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus
 ]
 
 const findPopUps = (opiskeluoikeus) => popups.filter(popup => popup.canAddSuoritus(opiskeluoikeus))

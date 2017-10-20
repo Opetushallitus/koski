@@ -16,7 +16,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     .onValue(suoritus => suoritusAtom.set(suoritus))
 
   return (<span>
-    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP}/>
+    <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Oppimäärä"/>
     <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
   </span>)
 }

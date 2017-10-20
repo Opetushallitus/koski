@@ -78,7 +78,9 @@ function OpinnotPage() {
       return S(".add-suoritus a").is(":visible")
     },
     lisääSuoritusDialog: LisääSuoritusDialog(),
-    lisääSuoritus: click(findSingle(".add-suoritus a")),
+    lisääSuoritus: function(text) {
+      return click(findSingle(".add-suoritus a:contains(" + (text || '') + ")")) 
+    },
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
@@ -465,9 +467,11 @@ function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
   var buttonElem = findSingle('button', elem)
   var api = _.merge({
-    open: function() {
-      if (!api.isVisible()) {
-        return seq(click(S(".add-suoritus a")), wait.until(api.isVisible))()
+    open: function(text) {
+      return function() {
+        if (!api.isVisible()) {
+          return seq(OpinnotPage().lisääSuoritus(text), wait.until(api.isVisible))()
+        }
       }
     },
     isVisible: function() {
@@ -483,6 +487,21 @@ function LisääSuoritusDialog() {
       return Q()
         .then(click(buttonElem))
         .then(wait.until(function() { return count() == prevCount + 1 }))
+    },
+    selectSuoritustapa: function(suoritustapa) {
+      return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa, false)
+    },
+    selectTutkinto: function(name) {
+      return function() {
+        function selectedTutkinto() { return elem().find('.koulutusmoduuli .selected') }
+        return wait.until(Page(elem).getInput('.koulutusmoduuli input').isVisible)()
+          .then(Page(elem).setInputValue('.koulutusmoduuli input', name))
+          .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
+          .then(click(selectedTutkinto))
+      }
+    },
+    tutkinto: function() {
+      return Page(elem).getInputValue('.koulutusmoduuli input, .tutkinto input')
     },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
