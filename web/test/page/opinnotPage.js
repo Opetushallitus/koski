@@ -497,7 +497,7 @@ function LisääSuoritusDialog() {
       }
     },
     tutkinto: function() {
-      return Page(elem).getInputValue('.koulutusmoduuli input')
+      return Page(elem).getInputValue('.koulutusmoduuli input, .tutkinto input')
     },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))

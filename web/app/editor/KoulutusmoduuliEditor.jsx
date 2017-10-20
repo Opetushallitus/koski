@@ -9,7 +9,7 @@ export class KoulutusmoduuliEditor extends React.Component {
   render() {
     let { model } = this.props
     let overrideEdit = model.context.editAll ? true : false
-    let suoritusTyyppi = suorituksenTyyppi(model.context.suoritus)
+    let suoritusTyyppi = model.context.suoritus && suorituksenTyyppi(model.context.suoritus)
     let propertyFilter  = p => {
       let excludedProperties = ['tunniste', 'perusteenDiaarinumero', 'pakollinen']
       let esiopetusKuvaus = suoritusTyyppi === 'esiopetuksensuoritus' && p.key === 'kuvaus'

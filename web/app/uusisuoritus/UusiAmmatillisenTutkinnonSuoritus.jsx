@@ -11,9 +11,10 @@ import {
   modelItems,
   modelLens,
   modelLookup,
-  modelProperties, modelSetValue,
+  modelProperties,
+  modelSetValue,
   modelSetValues,
-  modelTitle, modelValueLens,
+  modelValueLens,
   pushModel
 } from '../editor/EditorModel'
 import {lang, t} from '../i18n'
@@ -21,7 +22,10 @@ import ModalDialog from '../editor/ModalDialog.jsx'
 import {doActionWhileMounted} from '../util'
 import Text from '../Text.jsx'
 import {
-  copyToimipiste, newSuoritusProto, näyttötutkintoonValmistavanKoulutuksenSuoritus,
+  ammatillisenTutkinnonSuoritus,
+  copyToimipiste,
+  newSuoritusProto,
+  näyttötutkintoonValmistavanKoulutuksenSuoritus,
   suorituksenTyyppi
 } from '../editor/Suoritus'
 import SuoritustapaDropdown from '../uusioppija/SuoritustapaDropdown.jsx'
@@ -41,34 +45,34 @@ let tutkintoLens = L.lens(
     })
   }
 )
-let koulutusModuuliTutkintoLens = L.compose(modelLens('koulutusmoduuli'), tutkintoLens)
-let suoritusTapaKoodiarvoLens = L.compose(modelLens('suoritustapa'), modelValueLens, enumValueToKoodiviiteLens)
-
 const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => {
-  let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()
-  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'ammatillisentutkinnonsuoritus')
+  let isValmistava = hasAmmatillinenTutkinto(opiskeluoikeus)
+  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, isValmistava ? 'nayttotutkintoonvalmistavankoulutuksensuoritus' : 'ammatillisentutkinnonsuoritus')
   initialSuoritusModel = addContext(initialSuoritusModel, { editAll: true })
   initialSuoritusModel = copyToimipiste(modelItems(opiskeluoikeus, 'suoritukset')[0], initialSuoritusModel)
-  let valmistavanKoulutuksenTutkinto = modelLookup(näyttötutkintoonValmistavanKoulutuksenSuoritus(opiskeluoikeus), 'tutkinto')
-  if (valmistavanKoulutuksenTutkinto) {
-    initialSuoritusModel = modelSetValue(initialSuoritusModel, valmistavanKoulutuksenTutkinto.value, 'koulutusmoduuli')
+  if (isValmistava) {
+    let ammatillinenTutkinto = modelLookup(ammatillisenTutkinnonSuoritus(opiskeluoikeus), 'koulutusmoduuli')
+    if (ammatillinenTutkinto) {
+      initialSuoritusModel = modelSetValue(initialSuoritusModel, ammatillinenTutkinto.value, 'tutkinto')
+    }
+  } else {
+    let valmistavanKoulutuksenTutkinto = modelLookup(näyttötutkintoonValmistavanKoulutuksenSuoritus(opiskeluoikeus), 'tutkinto')
+    if (valmistavanKoulutuksenTutkinto) {
+      initialSuoritusModel = modelSetValue(initialSuoritusModel, valmistavanKoulutuksenTutkinto.value, 'koulutusmoduuli')
+    }
   }
-
-
-  console.log('t', valmistavanKoulutuksenTutkinto)
-
-  // TODO: default tutkinto näyttötutkintoon valmistavasta opetuksesta
 
   let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
   let validP = errorP.not()
-
+  let koulutusModuuliTutkintoLens = L.compose(modelLens(isValmistava ? 'tutkinto' : 'koulutusmoduuli'), tutkintoLens)
+  let suoritusTapaKoodiarvoLens = L.compose(modelLens('suoritustapa'), modelValueLens, enumValueToKoodiviiteLens)
 
   return (<ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
     <h2><Text name="Suorituksen lisäys"/></h2>
     {
       modelP.map(oppiaineenSuoritus => {
-        let foundProperties = modelProperties(oppiaineenSuoritus, ['toimipiste', 'koulutusmoduuli', 'suoritustapa'])
+        let foundProperties = modelProperties(oppiaineenSuoritus, ['toimipiste', isValmistava ? 'tutkinto' : 'koulutusmoduuli', 'suoritustapa'])
         let tutkintoAtom = Atom(L.get(koulutusModuuliTutkintoLens, oppiaineenSuoritus))
         let suoritustapaAtom = Atom(L.get(suoritusTapaKoodiarvoLens, oppiaineenSuoritus))
         tutkintoAtom.changes().filter(R.identity).forEach(tutkinto => {
@@ -86,6 +90,7 @@ const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => 
             properties={foundProperties}
             getValueEditor={(p, getDefault) => {
               switch(p.key) {
+                case 'tutkinto':
                 case 'koulutusmoduuli':
                   return <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(modelData(opiskeluoikeus, 'oppilaitos'))}/>
                 case 'suoritustapa':
@@ -104,11 +109,15 @@ const UusiAmmatillisenTutkinnonSuoritus = ({opiskeluoikeus, resultCallback}) => 
 }
 
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' &&
-    !modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasAmmatillinenTutkinto(opiskeluoikeus) || !hasValmistavaTutkinto(opiskeluoikeus)
 }
 
-UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () =>
-  <Text name="lisää ammatillisen tutkinnon suoritus"/>
+let hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
+let hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
+
+UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = (opiskeluoikeus) =>
+  hasAmmatillinenTutkinto(opiskeluoikeus)
+    ? <Text name="lisää näyttötutkintoon valmistavan koulutuksen suoritus"/>
+    : <Text name="lisää ammatillisen tutkinnon suoritus"/>
 
 export default UusiAmmatillisenTutkinnonSuoritus
