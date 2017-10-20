@@ -86,6 +86,7 @@ case class Poissaolojakso(
   syy: Koodistokoodiviite
 ) extends Jakso
 
+@Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")
 case class OsaAikaisuusJakso(
   alku: LocalDate,
