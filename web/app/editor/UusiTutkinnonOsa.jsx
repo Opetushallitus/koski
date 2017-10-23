@@ -35,9 +35,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
-  if (!diaarinumero || !suoritustapa) return null
-
-  let osatP = fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
+  let osatP = (diaarinumero && suoritustapa) ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId) : Bacon.constant({osat:[], paikallinenOsa: true})
 
   return (<span>
     {
