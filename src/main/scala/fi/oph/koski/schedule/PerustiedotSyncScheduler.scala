@@ -11,16 +11,24 @@ object PerustiedotSyncScheduler extends Timing {
 
   def syncPerustiedot(app: KoskiApplication)(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
     try {
-      val rows = app.perustiedotSyncRepository.get
-      if (rows.nonEmpty) {
-        app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId))))
-        app.perustiedotSyncRepository.delete(rows.map(_.id))
-      }
+      reIndex(app)
     } catch {
       case e: Exception =>
         logger.error(e)("Problem running perustiedotSync")
     }
     None
+  }
+
+  private def reIndex(app: KoskiApplication) = {
+    val rows = app.perustiedotSyncRepository.get
+    if (rows.nonEmpty) {
+      val failed = rows.groupBy(_.opiskeluoikeusId).mapValues(_.length).filter { case (id, length) => length > 10 }
+      if (failed.nonEmpty) {
+        logger.error(s"Perustiedot sync failed more than 10 times for opiskeluoikeus ids ${failed.keys.mkString(", ")}")
+      }
+      app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId))))
+      app.perustiedotSyncRepository.delete(rows.map(_.id))
+    }
   }
 }
 
