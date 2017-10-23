@@ -13,17 +13,18 @@ import fi.oph.koski.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
-class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue], intervalMillis: Int = 10000)
+class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue], runOnSingleNode: Boolean = true, intervalMillis: Int = 10000)
   extends GlobalExecutionContext with KoskiDatabaseMethods with Logging {
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
+  private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
 
-  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, context, 0)))
+  logger.info(s"Starting ${if (runOnSingleNode) "single" else "multi" } node scheduler $name with $scheduling")
+  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, 0)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, MILLISECONDS)
 
   private def fireIfTime() = {
-    val shouldFire = runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime, 1)) > 0
-    if (shouldFire) {
+    if (firingStrategy.shouldFire) {
       try {
         fire
       } catch {
@@ -53,18 +54,42 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   private def now = new Timestamp(currentTimeMillis)
   private def getScheduler: Option[SchedulerRow] =
     runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
+
+  trait FiringStrategy {
+    def shouldFire: Boolean
+  }
+
+  class FireOnSingleNode extends FiringStrategy {
+    override def shouldFire: Boolean =
+      runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime(), 1)) > 0
+  }
+
+  class FireOnAllNodes extends FiringStrategy {
+    private var lastFired: Timestamp = new Timestamp(0)
+
+    override def shouldFire: Boolean = {
+      val nextFireTime = scheduling.nextFireTime(lastFired.toLocalDateTime)
+      val shouldFire = now.after(nextFireTime)
+      if (shouldFire) {
+        lastFired = now
+      }
+      shouldFire
+    }
+  }
 }
 
 trait Schedule {
-  def nextFireTime: Timestamp = Timestamp.valueOf(scheduleNextFireTime(LocalDateTime.now))
+  def nextFireTime(seed: LocalDateTime = LocalDateTime.now): Timestamp = Timestamp.valueOf(scheduleNextFireTime(seed))
   def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime
 }
 
 class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusDays(1).withHour(hour).withMinute(minute)
+  override def toString = s"FixedTimeOfDaySchedule(hour=$hour,minute=$minute)"
 }
 
 class IntervalSchedule(duration: Duration) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plus(duration)
+  override def toString = s"IntervalSchedule(duration=$duration)"
 }
 
