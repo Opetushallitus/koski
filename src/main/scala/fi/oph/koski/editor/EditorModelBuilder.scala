@@ -161,7 +161,7 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
   def toEnumValue(k: Koodistokoodiviite) = KoodistoEnumModelBuilder.koodistoEnumValue(context)(k)
   def defaultValue = KoodistoEnumModelBuilder.defaults.get(koodistoUri).filter(arvo => koodiarvot.isEmpty || koodiarvot.contains(arvo)).orElse(koodiarvot.headOption)
-  def getPrototypeData = defaultValue.flatMap(value => MockKoodistoViitePalvelu.validate(Koodistokoodiviite(value, koodistoUri)))
+  def getPrototypeData = defaultValue.flatMap(value => context.koodisto.validate(Koodistokoodiviite(value, koodistoUri)))
   def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getPrototypeData, metadata)
 }
 
