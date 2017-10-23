@@ -25,12 +25,8 @@ class RefreshingCache(val name: String, val params: CacheParamsRefreshing, inval
   override def apply(invocation: Invocation): AnyRef = Futures.await(callAsync(invocation), 1 day)
 
   def callAsync(invocation: Invocation): Future[AnyRef] = synchronized {
-    val current = entries.getOrElseUpdate(invocation, {
-      val newEntry = new CacheEntry(invocation)
-      cleanup
-      newEntry
-    })
-
+    val current = entries.getOrElseUpdate(invocation, new CacheEntry(invocation))
+    cleanup
     current.valueFuture
   }
 
@@ -90,15 +86,12 @@ class RefreshingCache(val name: String, val params: CacheParamsRefreshing, inval
           val newValue = invocation.invoke
           statsCounter.recordLoadSuccess(System.nanoTime() - start)
           CacheEntry.this.synchronized {
-            currentValue = Some(fetcher)
+            currentValue = Some(Future(newValue))
           }
           newValue
         } catch {
           case e: Exception =>
             statsCounter.recordLoadException(System.nanoTime() - start)
-            CacheEntry.this.synchronized {
-              currentValue = currentValue.orElse(Some(fetcher))
-            }
             throw e
         } finally {
           scheduleRefresh
