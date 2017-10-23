@@ -84,6 +84,18 @@
     "withinCodeElements": []
   },
   {
+    "koodiUri": "lahdejarjestelma_pyramus",
+    "koodiArvo": "pyramus",
+    "metadata": [
+      {
+        "nimi": "Pyramus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
     "koodiUri": "lahdejarjestelma_rediteq",
     "koodiArvo": "rediteq",
     "metadata": [
