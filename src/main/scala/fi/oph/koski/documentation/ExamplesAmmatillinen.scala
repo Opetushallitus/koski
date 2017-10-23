@@ -37,7 +37,6 @@ object LisätiedotExample {
 object ReforminMukainenErikoisammattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357304", Some("Automekaanikon erikoisammattitutkinto"), "koulutus", None), Some("OPH-1886-2017"))
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(date(2018, 1, 1)),
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
@@ -100,7 +99,6 @@ object ReforminMukainenErikoisammattitutkintoExample {
 object AmmattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None), Some("40/011/2001"))
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -164,7 +162,6 @@ object AmmatillinenPerustutkintoExample {
   val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeusValmis())
 
   val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(stadinAmmattiopisto),
@@ -291,7 +288,6 @@ object AmmatillinenOldExamples {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
         oppilaitos = Some(stadinAmmattiopisto),
@@ -350,7 +346,6 @@ object AmmatillinenOldExamples {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
         oppilaitos = Some(stadinAmmattiopisto),

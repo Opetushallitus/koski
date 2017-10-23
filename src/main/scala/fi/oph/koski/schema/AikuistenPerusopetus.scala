@@ -16,8 +16,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("Oppijan oppimäärän alkamispäivä")
-  override val alkamispäivä: Option[LocalDate] = None,
   @Description("Oppijan oppimäärän päättymispäivä")
   päättymispäivä: Option[LocalDate] = None,
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,

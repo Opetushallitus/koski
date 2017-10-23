@@ -17,7 +17,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
   def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(alkamispäivä),
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
     suoritukset = List(osittainenSuoritusKesken)

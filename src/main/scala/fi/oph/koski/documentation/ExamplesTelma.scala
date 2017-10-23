@@ -16,7 +16,6 @@ object ExamplesTelma {
     MockOppijat.telma.vainHenkilötiedot,
     List(
       AmmatillinenOpiskeluoikeus(
-        alkamispäivä = Some(date(2009, 9, 14)),
         päättymispäivä = Some(date(2016, 6, 4)),
         tila = AmmatillinenOpiskeluoikeudenTila(List(
           AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),

@@ -14,7 +14,6 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", "opiskeluoikeudentyyppi")
 ) extends Opiskeluoikeus {
   override def arvioituPäättymispäivä = None
-  override def alkamispäivä = None
   override def päättymispäivä = None
   override def oid = None
   override def versionumero = None

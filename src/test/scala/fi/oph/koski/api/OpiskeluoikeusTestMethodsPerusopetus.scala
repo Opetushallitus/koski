@@ -15,7 +15,6 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluoikeusTestMethods[
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(päättötodistusSuoritus),
-    alkamispäivä = Some(longTimeAgo),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 

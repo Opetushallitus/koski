@@ -17,7 +17,6 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
   def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(alkamispäivä),
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
     suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste))

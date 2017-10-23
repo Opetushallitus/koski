@@ -12,7 +12,6 @@ object ExamplesEsiopetus {
   val esioppilas = Oppija(
     exampleHenkilö,
     List(EsiopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2006, 8, 13)),
       päättymispäivä = Some(date(2007, 6, 3)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
