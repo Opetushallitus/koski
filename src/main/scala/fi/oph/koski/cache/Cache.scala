@@ -9,9 +9,13 @@ import com.google.common.util.concurrent.MoreExecutors._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
+import scala.concurrent.duration.Duration
+
 object Cache {
-  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(durationSeconds, maxSize, true), invalidator)
-  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(durationSeconds, maxSize, false), invalidator)
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager): Cache = cacheAllRefresh(name, Duration(durationSeconds, SECONDS), maxSize)
+  def cacheAllRefresh(name: String, duration: Duration, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(duration, maxSize, true), invalidator)
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager): Cache = cacheAllNoRefresh(name, Duration(durationSeconds, SECONDS), maxSize)
+  def cacheAllNoRefresh(name: String, duration: Duration, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(duration, maxSize, false), invalidator)
   def cache(name: String, params: CacheParams)(implicit invalidator: CacheManager) = new Cache(name, params, invalidator)
   private[cache] val executorService = listeningDecorator(ExecutionContextExecutorServiceBridge(Pools.globalExecutor))
 }
@@ -66,13 +70,13 @@ class Cache protected (val name: String, val params: CacheParams, invalidator: C
       .maximumSize(params.maxSize)
 
     (if(params.backgroundRefresh) {
-      cacheBuilder.refreshAfterWrite(params.durationSeconds, SECONDS)
+      cacheBuilder.refreshAfterWrite(params.duration.length, params.duration.unit)
     } else {
-      cacheBuilder.expireAfterWrite(params.durationSeconds, SECONDS)
+      cacheBuilder.expireAfterWrite(params.duration.length, params.duration.unit)
     }).build(cacheLoader)
   }
 
   private def cacheKey(invocation: Invocation) = invocation.f.name + invocation.args.mkString(",")
 }
 
-case class CacheParams(durationSeconds: Int, maxSize: Int, backgroundRefresh: Boolean, storeValuePredicate: (Invocation, AnyRef) => Boolean = { case (invocation, value) => true })
+case class CacheParams(duration: Duration, maxSize: Int, backgroundRefresh: Boolean, storeValuePredicate: (Invocation, AnyRef) => Boolean = { case (invocation, value) => true })

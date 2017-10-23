@@ -49,7 +49,7 @@ class CacheMBean(cache: Cache) extends CacheMBeanMXBean {
   def getLoadCount = cache.stats.loadCount
   def getHitCount = cache.stats.hitCount
   def getMaxSize = cache.params.maxSize
-  def getCacheDurationSeconds = cache.params.durationSeconds
+  def getCacheDurationSeconds = cache.params.duration.toSeconds.toInt
   def getBackgroundRefresh = cache.params.backgroundRefresh
   def invalidateCache = cache.invalidateCache()
 }
