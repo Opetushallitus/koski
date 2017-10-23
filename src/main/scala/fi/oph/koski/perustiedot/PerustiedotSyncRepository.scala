@@ -7,7 +7,7 @@ import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, Perustiedo
 
 class PerustiedotSyncRepository(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods {
   def add(opiskeluoikeudet: Seq[Int]): Option[Int] =
-    runDbSync(PerustiedotSync ++= opiskeluoikeudet.map(PerustiedotSyncRow(_, 1)))
+    runDbSync(PerustiedotSync ++= opiskeluoikeudet.map(PerustiedotSyncRow(_)))
 
   def get: Seq[PerustiedotSyncRow] = runDbSync(PerustiedotSync.result)
 
