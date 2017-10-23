@@ -36,7 +36,7 @@ object HenkilöRepository {
 
 case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid {
   private val oidCache: KeyValueCache[String, Option[TäydellisetHenkilötiedot]] =
-    KeyValueCache(Cache.cache("HenkilöRepository", CacheParams(Duration(1, HOURS), 100, false, {
+    KeyValueCache(Cache.cacheNoRefresh("HenkilöRepository", CacheParamsExpiring(Duration(1, HOURS), 100, {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
   // findByOid is locally cached
