@@ -1215,6 +1215,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Tietojen muokkaus', function() {
+        before(TodistusPage().close)
         describe('Tutkinnon osan lisääminen', function() {
           before(
             editor.edit
@@ -1236,30 +1237,6 @@ describe('Ammatillinen koulutus', function() {
               before(editor.saveChanges)
               it('lisätty osa näytetään', function() {
                 expect(opinnot.tutkinnonOsat().tutkinnonOsa(2).nimi()).to.equal('Hassut temput')
-              })
-            })
-          })
-
-          describe('Ammatillisen tutkinnon osan suoritus', function() {
-            before(
-              editor.edit
-            )
-
-            describe('Ennen lisäystä', function() {
-              it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
-                expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([ '101054 Matemaattis-luonnontieteellinen osaaminen',
-                  '101056 Sosiaalinen ja kulttuurinen osaaminen',
-                  '101053 Viestintä- ja vuorovaikutusosaaminen',
-                  '101055 Yhteiskunnassa ja työelämässä tarvittava osaaminen' ])
-              })
-            })
-
-            describe('Lisäyksen jälkeen', function () {
-              before(
-                opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
-              )
-              it('lisätty osa näytetään', function() {
-                expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
               })
             })
           })
