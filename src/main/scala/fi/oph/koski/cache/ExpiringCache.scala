@@ -7,9 +7,17 @@ import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionEx
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Invocation
 
-class GuavaCache (val name: String, val params: CacheParamsExpiring, invalidator: CacheManager) extends Cache with Logging {
+import scala.concurrent.duration.Duration
+
+object ExpiringCache {
+  case class Params(duration: Duration, maxSize: Int, storeValuePredicate: (Invocation, AnyRef) => Boolean = { case (invocation, value) => true }) extends CacheParams
+
+  def apply(name: String, duration: Duration, maxSize: Int)(implicit manager: CacheManager): ExpiringCache = new ExpiringCache(name, Params(duration, maxSize))
+}
+
+class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit manager: CacheManager) extends Cache with Logging {
   logger.debug("Create guava cache " + name)
-  invalidator.registerCache(this)
+  manager.registerCache(this)
   /**
    *  Marker exception that's used for preventing caching values that we don't want to cache.
    */

@@ -2,7 +2,7 @@ package fi.oph.koski.healthcheck
 
 import java.util.concurrent.TimeoutException
 
-import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
+import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
@@ -111,7 +111,7 @@ trait HealthCheck extends Logging {
 object HealthCheck {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached = {
     CachingProxy[HealthCheck](
-      Cache.cacheAllNoRefresh("HealthCheck", durationSeconds = 10, maxSize = 1),
+      ExpiringCache("HealthCheck", 10 seconds, maxSize = 1),
       new HealthChecker(application)
     )
   }

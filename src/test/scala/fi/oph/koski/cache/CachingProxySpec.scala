@@ -2,6 +2,8 @@ package fi.oph.koski.cache
 
 import org.scalatest.{FreeSpec, Matchers}
 
+import scala.concurrent.duration._
+
 class CachingProxySpec extends FreeSpec with Matchers {
   "CachingProxy" - {
 
@@ -32,7 +34,7 @@ class CachingProxySpec extends FreeSpec with Matchers {
     }
   }
 
-  def makeCache(service: TestService) = CachingProxy[TestService](Cache.cacheAllRefresh("spec", 10, 1)(GlobalCacheManager), service)
+  def makeCache(service: TestService) = CachingProxy[TestService](RefreshingCache("spec", 10 seconds, 1)(GlobalCacheManager), service)
 
 }
 

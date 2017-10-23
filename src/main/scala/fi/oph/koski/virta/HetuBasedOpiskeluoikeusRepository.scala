@@ -1,6 +1,6 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
+import fi.oph.koski.cache.{Cache, CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
@@ -10,13 +10,14 @@ import fi.oph.koski.henkilo.{FindByOid, HenkilöRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import fi.oph.koski.validation.KoskiValidator
+import scala.concurrent.duration._
 
 abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
-  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](Cache.cacheAllNoRefresh(getClass.getSimpleName + ".organisations", 3600, 100000), doFindOrgs)
-  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](Cache.cacheAllNoRefresh(getClass.getSimpleName + ".opiskeluoikeudet", 3600, 100), doFindByHenkilö)
+  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1 hour, 100000), doFindOrgs)
+  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1 hour, 100), doFindByHenkilö)
 
   def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
     cache(hetu).map(_.getOppilaitos.oid)

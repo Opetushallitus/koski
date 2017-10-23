@@ -1,9 +1,11 @@
 package fi.oph.koski.pulssi
 
-import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
+import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.authenticationservice.KäyttöoikeusTilasto
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
+import scala.concurrent.duration._
+
 
 trait KoskiPulssi {
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto
@@ -33,7 +35,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
 object KoskiPulssi {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): KoskiPulssi with Cached = {
     CachingProxy[KoskiPulssi](
-      Cache.cacheAllNoRefresh("KoskiPulssi", durationSeconds = 10 * 60, maxSize = 5),
+      ExpiringCache("KoskiPulssi", 10 minutes, maxSize = 5),
       new KoskiStats(application)
     )
   }

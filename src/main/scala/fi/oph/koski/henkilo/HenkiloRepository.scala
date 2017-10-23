@@ -1,7 +1,5 @@
 package fi.oph.koski.henkilo
 
-import java.util.concurrent.TimeUnit.HOURS
-
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
@@ -11,8 +9,7 @@ import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid, TäydellisetHenkilötiedot, UusiHenkilö}
 import fi.oph.koski.virta.VirtaHenkilöRepository
 import fi.oph.koski.ytr.YtrHenkilöRepository
-
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 
 trait FindByOid {
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
@@ -36,7 +33,7 @@ object HenkilöRepository {
 
 case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid {
   private val oidCache: KeyValueCache[String, Option[TäydellisetHenkilötiedot]] =
-    KeyValueCache(Cache.cacheNoRefresh("HenkilöRepository", CacheParamsExpiring(Duration(1, HOURS), 100, {
+    KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1 hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
   // findByOid is locally cached

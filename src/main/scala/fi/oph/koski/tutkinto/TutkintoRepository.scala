@@ -1,10 +1,11 @@
 package fi.oph.koski.tutkinto
 
-import fi.oph.koski.cache.Cache._
-import fi.oph.koski.cache.{CacheManager, CachingProxy}
+import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
 import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
+
+import scala.concurrent.duration._
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
@@ -14,7 +15,7 @@ trait TutkintoRepository {
 
 object TutkintoRepository {
   def apply(eperusteet: EPerusteetRepository, koodistoPalvelu: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager): TutkintoRepository =
-    CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), new TutkintoRepositoryImpl(eperusteet, koodistoPalvelu).asInstanceOf[TutkintoRepository])
+    CachingProxy(RefreshingCache("TutkintoRepository", 1 hour, 100), new TutkintoRepositoryImpl(eperusteet, koodistoPalvelu).asInstanceOf[TutkintoRepository])
 }
 
 class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{

@@ -1,7 +1,7 @@
 package fi.oph.koski.localization
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
+import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -37,8 +37,9 @@ object DefaultLocalizations {
 }
 
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
+  import scala.concurrent.duration._
   protected val cache = KeyValueCache[String, Map[String, LocalizedString]](
-    Cache.cacheAllRefresh("LocalizationRepository.localizations", durationSeconds = 60, maxSize = 1),
+    new RefreshingCache("LocalizationRepository.localizations", RefreshingCache.Params(60 seconds, 1)),
     key => fetch()
   )
 

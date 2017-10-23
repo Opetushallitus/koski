@@ -4,13 +4,14 @@ import java.lang.System.currentTimeMillis
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
+import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, OrganisaatioWithOid}
+import scala.concurrent.duration._
 
+import scala.concurrent.duration._
 trait OrganisaatioRepository {
   /**
    * Organisation hierarchy containing children of requested org. Parents are not included.
@@ -69,14 +70,14 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
   private val hierarkiaCache = KeyValueCache[String, Option[OrganisaatioHierarkia]](
-    Cache.cacheAllRefresh("OrganisaatioRepository.hierarkia", durationSeconds = 3600, maxSize = 15000),
+    RefreshingCache("OrganisaatioRepository.hierarkia", 1 hour, 15000),
     oid => fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
   )
 
   def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
   private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
-    Cache.cacheAllNoRefresh("OrganisaatioRepository.oppilaitos", durationSeconds = 3600, maxSize = 1000),
+    ExpiringCache("OrganisaatioRepository.oppilaitos", 1 hour, maxSize = 1000),
     { numero: String =>
       search(numero).flatMap {
         case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)

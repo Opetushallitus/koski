@@ -13,7 +13,15 @@ import fi.oph.koski.util.{Futures, Invocation}
 
 import scala.concurrent.Future
 
-class RefreshingCache(val name: String, val params: CacheParamsRefreshing, invalidator: CacheManager) extends Cache with Logging with GlobalExecutionContext {
+object RefreshingCache {
+  def apply(name: String, duration: Duration, maxSize: Int)(implicit manager: CacheManager): RefreshingCache = new RefreshingCache(name, Params(duration, maxSize))
+
+  case class Params(duration: Duration, maxSize: Int, maxExcessRatio: Double = 0.1, refreshScatteringRatio: Double = 0.1) extends CacheParams
+
+  private val refreshExecutor = Executors.newSingleThreadScheduledExecutor
+}
+
+class RefreshingCache(val name: String, val params: RefreshingCache.Params)(implicit invalidator: CacheManager) extends Cache with Logging with GlobalExecutionContext {
   private val statsCounter = new SimpleStatsCounter()
   private val maxExcess = (params.maxSize * params.maxExcessRatio).toInt
   private val entries: MutableMap[Invocation, CacheEntry] = MutableMap.empty
@@ -116,8 +124,4 @@ class RefreshingCache(val name: String, val params: CacheParamsRefreshing, inval
       }
     }
   }
-}
-
-object RefreshingCache {
-  protected[cache] val refreshExecutor = Executors.newSingleThreadScheduledExecutor
 }

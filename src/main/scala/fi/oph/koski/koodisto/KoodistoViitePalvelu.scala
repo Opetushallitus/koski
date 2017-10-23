@@ -5,9 +5,10 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
+import scala.concurrent.duration._
 
 case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
-  private val koodiviiteCache = KeyValueCache(Cache.cacheAllRefresh("KoodistoViitePalvelu", 3600, 100), { koodisto: KoodistoViite =>
+  private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1 hour, 100), { koodisto: KoodistoViite =>
     val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map { _.map(toKoodiviite(koodisto)) }
   })
