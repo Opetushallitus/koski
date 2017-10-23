@@ -15,10 +15,9 @@ import scala.concurrent.Future
 
 class RefreshingCache(val name: String, val params: CacheParamsRefreshing, invalidator: CacheManager) extends Cache with Logging with GlobalExecutionContext {
   private val statsCounter = new SimpleStatsCounter()
-  private var maxExcess = (params.maxSize * params.maxExcessRatio).toInt
-  private var _stats = new CacheStats(0, 0, 0, 0, 0, 0)
+  private val maxExcess = (params.maxSize * params.maxExcessRatio).toInt
   private val entries: MutableMap[Invocation, CacheEntry] = MutableMap.empty
-  logger.debug("Create cache " + name)
+  logger.debug("Create refreshing cache " + name)
   invalidator.registerCache(this)
 
   override def stats: CacheStats = statsCounter.snapshot()
@@ -26,8 +25,12 @@ class RefreshingCache(val name: String, val params: CacheParamsRefreshing, inval
   override def apply(invocation: Invocation): AnyRef = Futures.await(callAsync(invocation), 1 day)
 
   def callAsync(invocation: Invocation): Future[AnyRef] = synchronized {
-    val current = entries.getOrElseUpdate(invocation, new CacheEntry(invocation))
-    cleanup
+    val current = entries.getOrElseUpdate(invocation, {
+      val newEntry = new CacheEntry(invocation)
+      cleanup
+      newEntry
+    })
+
     current.valueFuture
   }
 
@@ -36,9 +39,9 @@ class RefreshingCache(val name: String, val params: CacheParamsRefreshing, inval
     entries.clear
   }
 
-  def getEntry(invocation: Invocation) = synchronized(entries.get(invocation))
+  protected[cache] def getEntry(invocation: Invocation) = synchronized(entries.get(invocation))
 
-  private def cleanup = synchronized {
+  private def cleanup = {
     val diff = entries.size - params.maxSize
     if (diff > maxExcess) {
       entries.values.toList.sortBy(_.lastReadTimestamp).take(diff).foreach { entry =>
