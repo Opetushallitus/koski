@@ -1,3 +1,8 @@
+## 23.10.2017
+
+- Poistettu arviointi näyttötutkintoon valmistavan koulutuksen osan suorituksesta
+- Lisätty opiskeluvalmiuksia tukevat opinnot ammatillisen opiskeluoikeuden lisätietohin
+
 ## 18.10.2017
 
 - Lisätty PUT/POST-rajapintojen vastausdokumenttiin opiskeluoikeuksien lähdejärjestelmäId-kenttä
