@@ -28,7 +28,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
       case (Some(opiskeluoikeusOid), Some(versionumero)) =>
         findVersion(params("oid"), opiskeluoikeusOid, versionumero)
       case _ =>
-        findByOid(params("oid"))
+        findByHenkilöOid(params("oid"))
     })
   }
 
@@ -149,7 +149,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 
-  private def findByOid(oid: String): Either[HttpStatus, EditorModel] = {
+  private def findByHenkilöOid(oid: String): Either[HttpStatus, EditorModel] = {
     for {
       oid <- HenkilöOid.validateHenkilöOid(oid).right
       oppija <- application.oppijaFacade.findOppija(oid)
@@ -158,9 +158,9 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     }
   }
 
-  private def findVersion(oid: String, opiskeluoikeusOid: String, versionumero: Int): Either[HttpStatus, EditorModel] = {
+  private def findVersion(henkilöOid: String, opiskeluoikeusOid: String, versionumero: Int): Either[HttpStatus, EditorModel] = {
     for {
-      oid <- HenkilöOid.validateHenkilöOid(oid).right
+      oid <- HenkilöOid.validateHenkilöOid(henkilöOid).right
       oppija <- application.oppijaFacade.findVersion(oid, opiskeluoikeusOid, versionumero)
     } yield {
       toEditorModel(oppija, editable = false)
