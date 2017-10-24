@@ -13,6 +13,17 @@ import fi.oph.koski.util.{Futures, Invocation}
 
 import scala.concurrent.Future
 
+/**
+  * RefreshingCache caches results of Invocations, keeping a configured number of most recently used keys. The cached
+  * values are refreshed on the background so that subsequent requests will get a relatively fresh value from cache.
+  *
+  * Use RefreshingCache.Params to configure the details:
+  *
+  * - maximum duration
+  * - maximum size (number of items)
+  * - maxExcessRatio (default 0.1): how many excess items can be kept in the cache before actually cleaning up (it's not optimal to clean up too often)
+  * - refreshScatteringRation (default 0.1): controls how much randomization will be applied to refresh intervals, to prevent huge peak loads on the services behind the cache.
+  */
 object RefreshingCache {
   def apply(name: String, duration: Duration, maxSize: Int)(implicit manager: CacheManager): RefreshingCache = new RefreshingCache(name, Params(duration, maxSize))
 
