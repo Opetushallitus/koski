@@ -20,7 +20,7 @@ object PerustiedotSyncScheduler extends Timing {
   }
 
   private def reIndex(app: KoskiApplication) = {
-    val rows = app.perustiedotSyncRepository.get
+    val rows = app.perustiedotSyncRepository.needSyncing
     if (rows.nonEmpty) {
       val failed = rows.groupBy(_.opiskeluoikeusId).mapValues(_.length).filter { case (id, length) => length > 10 }
       if (failed.nonEmpty) {

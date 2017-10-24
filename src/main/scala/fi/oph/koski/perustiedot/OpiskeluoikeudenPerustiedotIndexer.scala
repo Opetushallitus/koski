@@ -71,7 +71,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     val errors = extract[Boolean](response \ "errors")
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${JsonMethods.pretty(response)}"
-      perustiedotSyncRepository.add(items.map(_.id))
+      perustiedotSyncRepository.syncLater(items.map(_.id))
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {

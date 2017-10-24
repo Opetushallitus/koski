@@ -44,7 +44,7 @@ class PerustiedotSyncSpec extends FreeSpec with Matchers with OpiskeluoikeusTest
   }
 
   private def markForSyncing(opiskeluoikeus: Opiskeluoikeus) =
-    KoskiApplicationForTests.perustiedotSyncRepository.add(List(opiskeluoikeusRow(opiskeluoikeus.oid.get).id))
+    Futures.await(KoskiApplicationForTests.perustiedotSyncRepository.syncLater(List(opiskeluoikeusRow(opiskeluoikeus.oid.get).id)))
 
   private def opiskeluoikeusRow(oid: String) =
     runDbSync(opiskeluoikeusRepository.findByIdentifierAction(OpiskeluoikeusByOid(oid))).right.get.head
