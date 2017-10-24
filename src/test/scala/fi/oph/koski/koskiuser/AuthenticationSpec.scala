@@ -20,14 +20,14 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
         verifyResponseStatus(401)
       }
 
-      // brute force prevented
+      // blocking because of too many login attempts
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
         verifyResponseStatus(401)
       }
 
       sleep(1000)
 
-      // brute force prevention reset
+      // blocking reset by now
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
         verifyResponseStatus(200)
       }

@@ -17,10 +17,10 @@ class BasicAuthSecurity(val db: DB, config: Config) extends GlobalExecutionConte
   private val initialDelay = config.getDuration("authenticationFailed.initialDelay")
   private val resetPeriod = config.getDuration("authenticationFailed.resetAfter")
 
-  def attemptAllowed(username: String): Boolean = {
+  def getLoginBlocked(username: String): Option[LocalDateTime] = {
     val attempt: Option[FailedLoginAttemptRow] = runDbSync(Tables.FailedLoginAttempt.filter(r => r.username === username && r.time >= resetTime).result.headOption)
     val nextAttempt: Option[LocalDateTime] = attempt.map(a => a.time.toLocalDateTime.plus(initialDelay.multipliedBy(pow(2, a.count - 1).toInt)))
-    !nextAttempt.exists(nextAllowedTime => nextAllowedTime.isAfter(now()))
+    nextAttempt.filter(_.isAfter(now()))
   }
 
   def loginFailed(username: String): Unit = {
