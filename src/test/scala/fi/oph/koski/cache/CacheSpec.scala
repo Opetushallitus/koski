@@ -1,12 +1,9 @@
 package fi.oph.koski.cache
 
-import java.util.concurrent.TimeUnit._
-
-import fi.oph.koski.util.Invocation
+import fi.oph.koski.util.{Futures, Invocation}
 import org.scalatest.{FreeSpec, Matchers}
-import scala.concurrent.duration._
 
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 
 class CacheSpec extends FreeSpec with Matchers {
   implicit val manager = GlobalCacheManager
@@ -78,10 +75,27 @@ class CacheSpec extends FreeSpec with Matchers {
       "When fetch fails" - {
         class TestException extends RuntimeException("testing")
         val cache = RefreshingCache("testcache", 10 milliseconds, 10)
-        "Initial fetch -> throws exception" in {
+        "Initial fetch -> throws exception and tries again on next call" in {
+          var perform: (String => String) = {x: String => throw new TestException}
+          val invocation = Invocation({ x: String => perform(x) }, "a")
+
           intercept[TestException] {
-            cache.apply(Invocation({x: String => throw new TestException}, "a"))
+            cache.apply(invocation)
           }
+          perform = {x: String => "hello"}
+          cache.apply(invocation) should equal("hello")
+        }
+        "Initial fetch -> throws exception, schedules fetch" in {
+          var perform: (String => String) = {x: String => throw new TestException}
+          val invocation = Invocation({ x: String => perform(x) }, "a")
+
+          intercept[TestException] {
+            cache.apply(invocation)
+          }
+          perform = {x: String => "hello"}
+          Thread.sleep(50)
+          val currentValue = cache.getEntry(invocation).get.valueFuture
+          Futures.await(currentValue) should equal("hello")
         }
         "Background fetch -> tries again after cache period" in {
           var result = {x: String => x}

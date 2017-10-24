@@ -60,8 +60,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
     private var scheduledRefreshTime: Option[Long] = None
     private var currentValue: Option[Future[AnyRef]] = None
     private var cancelled = false
-    private var fetcher = newFetcher
+    private var fetcher: Option[Future[AnyRef]] = None
 
+    newFetcher
     scheduleRefresh
 
     def valueFuture = synchronized {
@@ -74,7 +75,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         case None =>
           //logger.info("MISS " + name + " - " + invocation.toString)
           statsCounter.recordMisses(1)
-          fetcher
+          fetcher.getOrElse(newFetcher)
       }
     }
 
@@ -89,22 +90,36 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
 
     private def newFetcher: Future[AnyRef] = {
       val start = System.nanoTime()
-      Future {
+
+      val newFetcherFuture = Future {
         try {
           val newValue = invocation.invoke
           statsCounter.recordLoadSuccess(System.nanoTime() - start)
           CacheEntry.this.synchronized {
             currentValue = Some(Future(newValue))
           }
+          logger.debug(s"Stored value $newValue for $invocation")
           newValue
         } catch {
           case e: Exception =>
+            logger.debug(s"Fetch failed for $invocation")
             statsCounter.recordLoadException(System.nanoTime() - start)
             throw e
-        } finally {
-          scheduleRefresh
         }
       }
+
+      synchronized(fetcher = Some(newFetcherFuture))
+
+      newFetcherFuture.andThen { case _ =>
+        CacheEntry.this.synchronized {
+          if (Some(newFetcherFuture) == fetcher) {
+            // Remove fetcher once done
+            fetcher = None
+          }
+        }
+        scheduleRefresh
+      }
+      newFetcherFuture
     }
 
     private def scheduleRefresh = synchronized {
@@ -112,6 +127,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         val variation = params.refreshScatteringRatio // add some random variation to refresh time
         val randomizedFactor: Double = Math.random() * variation + (1.0 - variation)
         val delayMillis = (params.duration.toMillis * randomizedFactor).toLong
+        logger.debug(s"Scheduling new fetch for $invocation in " + delayMillis)
         scheduledRefreshTime = Some(System.currentTimeMillis() + delayMillis)
         RefreshingCache.refreshExecutor.schedule(new Runnable { override def run(): Unit = startScheduledRefresh }, delayMillis, MILLISECONDS)
       }
@@ -119,8 +135,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
 
     private def startScheduledRefresh = synchronized {
       scheduledRefreshTime = None
-      if (currentValue.isDefined && fetcher.isCompleted && !cancelled) {
-        fetcher = newFetcher
+      if (fetcher.isEmpty && !cancelled) {
+        logger.debug(s"Starting scheduled refresh for $invocation")
+        newFetcher
       }
     }
   }
