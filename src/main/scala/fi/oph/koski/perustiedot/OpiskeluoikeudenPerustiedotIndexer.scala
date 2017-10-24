@@ -61,14 +61,14 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     if (items.isEmpty) {
       return Right(0)
     }
-    val jsonLines: Seq[JValue] = items.flatMap { (perustiedot: OpiskeluoikeudenOsittaisetTiedot) =>
+
+    val (errors, response) = index.updateBulk(items.flatMap { (perustiedot: OpiskeluoikeudenOsittaisetTiedot) =>
       List(
         JObject("update" -> JObject("_id" -> JInt(perustiedot.id), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
         JObject("doc_as_upsert" -> JBool(replaceDocument), "doc" -> Serializer.serialize(perustiedot, serializationContext))
       )
-    }
-    val response: JValue = Http.runTask(index.http.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
-    val errors = extract[Boolean](response \ "errors")
+    })
+
     if (errors) {
       val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}: ${JsonMethods.pretty(response)}"
       perustiedotSyncRepository.syncLater(items.map(_.id))

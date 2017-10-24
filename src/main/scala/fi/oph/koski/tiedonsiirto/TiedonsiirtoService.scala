@@ -3,6 +3,7 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDate
 
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
@@ -20,14 +21,23 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
-import fi.oph.scalaschema.Serializer
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
-import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing {
+import scala.concurrent.{Future, blocking}
+
+class TiedonsiirtoService(
+  index: KoskiElasticSearchIndex,
+  mailer: TiedonsiirtoFailureMailer,
+  organisaatioRepository: OrganisaatioRepository,
+  henkilöRepository: HenkilöRepository,
+  koodistoviitePalvelu: KoodistoViitePalvelu,
+  userRepository: KoskiUserRepository,
+  tiedonsiirtoStack: ConcurrentStack[TiedonsiirtoDocument]
+) extends Logging with Timing with GlobalExecutionContext {
+
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
 
   def deleteAll: Unit = {
@@ -136,25 +146,7 @@ class TiedonsiirtoService(index: KoskiElasticSearchIndex, mailer: TiedonsiirtoFa
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                                     userOid: String, aikaleima: Timestamp) = {
 
-    val idValue: String = henkilö.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
-
-    val document = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
-
-    val documentId = org.oid + "_" + idValue
-    val docJson = Serializer.serialize(document, JsonSerializer.serializationContext(KoskiSession.systemUser).copy(omitEmptyFields = false))
-    val json: JValue = JObject("doc_as_upsert" -> JBool(true), "doc" -> docJson)
-
-    val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/${documentId}/_update?retry_on_conflict=5", json)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-
-    val result = extract[String](response \ "result")
-    if (!(List("created", "updated", "noop").contains(result))) {
-      val msg = s"Elasticsearch indexing failed: ${JsonMethods.pretty(response)}"
-      logger.error(msg)
-      Left(KoskiErrorCategory.internalError(msg))
-    } else {
-      val itemResults = extract[Option[List[JValue]]](response \ "items").toList.flatten.map(_ \ "update" \ "_shards" \ "successful").map(extract[Int](_))
-      Right(itemResults.sum)
-    }
+    Future(blocking(tiedonsiirtoStack.push(TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima))))
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
@@ -304,4 +296,8 @@ case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Opt
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp)
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
+  def id: String = tallentajaOrganisaatioOid + "_" + oppijaId
+  private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
+}
+

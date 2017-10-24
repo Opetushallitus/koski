@@ -2,6 +2,7 @@ package fi.oph.koski.perustiedot
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
@@ -48,6 +49,11 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
       None
   }
 
+  def updateBulk(jsonLines: Seq[JValue], refresh: Boolean = false): (Boolean, JValue) = {
+    val url = if (refresh) uri"/koski/_bulk?refresh=wait_for" else uri"/koski/_bulk"
+    val response: JValue = Http.runTask(http.post(url, jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    (extract[Boolean](response \ "errors"), response)
+  }
 
   private def indexExists = {
     Http.runTask(http.get(uri"/koski")(Http.statusCode)) match {

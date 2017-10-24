@@ -116,5 +116,3 @@ case class UpdateContext(user: KoskiSession, application: KoskiApplication, requ
   }
 }
 
-
-
