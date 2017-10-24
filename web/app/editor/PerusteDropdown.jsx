@@ -9,7 +9,7 @@ import {koulutustyyppiKoodi} from './Suoritus'
 const preferred = ['OPH-1280-2017', '104/011/2014']
 
 export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
-  let diaarinumerotP = suoritusTyyppiP.flatMapLatest(tyyppi =>  !tyyppi ? [] : diaarinumerot(tyyppi)).toProperty()
+  let diaarinumerotP = suoritusTyyppiP.doLog('suoritustyyppi').flatMapLatest(tyyppi =>  !tyyppi ? Bacon.never() : diaarinumerot(tyyppi)).toProperty().doLog('diaarinumerot')
   let selectedOptionP = Bacon.combineWith(diaarinumerotP, perusteAtom, (options, selected) => options.find(o => o.koodiarvo == selected))
   let selectOption = (option) => {
     perusteAtom.set(option && option.koodiarvo)
@@ -30,7 +30,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
             displayValue={option => option.koodiarvo + ' ' + t(option.nimi)}
             onSelectionChanged={selectOption}
             selected={selectedOptionP}/>
-        : <span>{ perusteAtom }</span>
+        : <input type="text" disabled value={perusteAtom}></input>
     ))}
   </span>)
 }
