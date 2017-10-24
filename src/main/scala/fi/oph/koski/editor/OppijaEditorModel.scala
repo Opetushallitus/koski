@@ -19,8 +19,7 @@ object OppijaEditorModel extends Timing {
         case (Some(x), Some(y)) => if (x.isBefore(y)) { -1 } else { 1 }
       }
     }
-
-    val tyypit = oppija.opiskeluoikeudet.groupBy(_.tyyppi).map {
+    val tyypit = oppija.opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
         val oppilaitokset = opiskeluoikeudet.groupBy(_.getOppilaitos).map {
           case (oppilaitos, opiskeluoikeudet) =>

@@ -44,9 +44,14 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
 
   def toKoodistoViite(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersion(koodiviite.koodistoUri))
 
-  def validateRequired(uri: String, koodi: String) = {
-    validate(Koodistokoodiviite(koodi, uri)).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + Koodistokoodiviite(koodi, uri))))
+  def validateRequired(uri: String, koodi: String): Koodistokoodiviite = {
+    validateRequired(Koodistokoodiviite(koodi, uri))
   }
+
+  def validateRequired(input: Koodistokoodiviite) = {
+    validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
+  }
+
 
   private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) = Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }
