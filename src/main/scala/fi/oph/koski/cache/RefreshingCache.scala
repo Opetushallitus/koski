@@ -1,9 +1,9 @@
 package fi.oph.koski.cache
 
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit.MILLIS
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit.{MILLISECONDS, _}
-import collection.mutable.{Map => MutableMap}
-import concurrent.duration._
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 import com.google.common.cache.AbstractCache.SimpleStatsCounter
 import com.google.common.cache.CacheStats
@@ -11,7 +11,9 @@ import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Futures, Invocation}
 
+import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.Future
+import scala.concurrent.duration._
 
 /**
   * RefreshingCache caches results of Invocations, keeping a configured number of most recently used keys. The cached
@@ -50,6 +52,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
   }
 
   override def invalidateCache(): Unit = synchronized {
+    logger.debug(s"$name invalidate (cache size ${entries.size})")
     entries.values.foreach(_.evict)
     entries.clear
   }
@@ -59,6 +62,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
   private def cleanup = {
     val diff = entries.size - params.maxSize
     if (diff > maxExcess) {
+      logger.debug(s"$name cleanup (${entries.size} -> ${params.maxSize})")
       entries.values.toList.sortBy(_.lastReadTimestamp).take(diff).foreach { entry =>
         entry.evict
         entries.remove(entry.invocation)
@@ -74,17 +78,16 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
     private var fetcher: Option[Future[AnyRef]] = None
 
     newFetcher
-    scheduleRefresh
 
     def valueFuture = synchronized {
       lastRead = System.currentTimeMillis
       currentValue match {
         case Some(value) =>
-          //logger.info("HIT  " + name + " - " + invocation.toString)
+          //logger.debug(s"$name.$invocation cache hit")
           statsCounter.recordHits(1)
           value
         case None =>
-          //logger.info("MISS " + name + " - " + invocation.toString)
+          //logger.debug(s"$name.$invocation cache miss")
           statsCounter.recordMisses(1)
           fetcher.getOrElse(newFetcher)
       }
@@ -109,11 +112,11 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
           CacheEntry.this.synchronized {
             currentValue = Some(Future(newValue))
           }
-          logger.debug(s"Stored value $newValue for $invocation")
+          logger.debug(s"$name.$invocation stored value $newValue")
           newValue
         } catch {
           case e: Exception =>
-            logger.debug(s"Fetch failed for $invocation")
+            logger.warn(e)(s"$name.$invocation fetch failed")
             statsCounter.recordLoadException(System.nanoTime() - start)
             throw e
         }
@@ -138,8 +141,8 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         val variation = params.refreshScatteringRatio // add some random variation to refresh time
         val randomizedFactor: Double = Math.random() * variation + (1.0 - variation)
         val delayMillis = (params.duration.toMillis * randomizedFactor).toLong
-        logger.debug(s"Scheduling new fetch for $invocation in " + delayMillis)
         scheduledRefreshTime = Some(System.currentTimeMillis() + delayMillis)
+        logger.debug(s"$name.$invocation scheduling new fetch at ${LocalDateTime.now().plus(delayMillis, MILLIS)}")
         RefreshingCache.refreshExecutor.schedule(new Runnable { override def run(): Unit = startScheduledRefresh }, delayMillis, MILLISECONDS)
       }
     }
@@ -147,7 +150,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
     private def startScheduledRefresh = synchronized {
       scheduledRefreshTime = None
       if (fetcher.isEmpty && !cancelled) {
-        logger.debug(s"Starting scheduled refresh for $invocation")
+        logger.debug(s"$name.$invocation starting scheduled refresh")
         newFetcher
       }
     }

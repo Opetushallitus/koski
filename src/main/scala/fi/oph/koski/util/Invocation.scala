@@ -31,7 +31,7 @@ case class ObjectMethod(method: Method, target: AnyRef) extends NamedFunction {
 }
 
 case class AnonymousFunction[A <: AnyRef, B <: AnyRef](f: A => B) extends NamedFunction {
-  def name = "anonymous function"
+  def name = "anonymous"
   def apply(args: List[AnyRef]) = {
     f.apply(args(0).asInstanceOf[A])
   }
