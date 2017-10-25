@@ -33,7 +33,7 @@ export class Suoritustaulukko extends React.Component {
     let koulutustyyppi = modelData(parentSuoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
-    if (suoritukset.length == 0 && !(context.edit && isAmmatillinenTutkinto)) return null
+    if (suoritukset.length == 0 && !context.edit) return null
     let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
@@ -75,7 +75,7 @@ export class Suoritustaulukko extends React.Component {
 
     return !suoritustapa && context.edit && isAmmatillinenTutkinto
         ? <Text name="Valitse ensin tutkinnon suoritustapa" />
-        : (suoritukset.length > 0 || (context.edit && isAmmatillinenTutkinto)) && (
+        : (suoritukset.length > 0 || context.edit) && (
           <div className="suoritus-taulukko">
             <table>
               <thead>
