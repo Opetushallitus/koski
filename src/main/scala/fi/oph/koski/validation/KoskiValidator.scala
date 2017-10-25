@@ -214,7 +214,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
         :: validateTutkinnonosanRyhmä(suoritus, parent)
-        :: validateDuplicates(suoritus.osasuoritukset.toList.flatten)
+        :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
   }

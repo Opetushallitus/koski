@@ -97,6 +97,21 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Tutkinnon osa tutkinnonosat/100023 esiintyy useammin kuin kerran ryhmässä ammatillisentutkinnonosanryhma/1")))
             )
           }
+
+          "Tutkinnon osan osat" - {
+            "Sama osa kahteen kertaan" - {
+              val osanOsa = AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+                AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
+                arviointi = Some(List(arviointiHyväksytty))
+              )
+
+              "Palautetaan HTTP 200" in (
+                putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(
+                  osanOsa, osanOsa
+                ))), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200))
+              )
+            }
+          }
         }
 
         "Paikallinen tutkinnonosa" - {
