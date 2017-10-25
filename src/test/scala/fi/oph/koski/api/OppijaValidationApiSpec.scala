@@ -10,7 +10,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     "Validate all - fast" in {
       resetFixtures
       authGet("api/opiskeluoikeus/validate") {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         val results = JsonSerializer.parse[List[ValidationResult]](body)
         results.length should be >= 0
         results.foreach(checkValidity)
@@ -19,7 +19,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     "Validate all - with person and history data" in {
       resetFixtures
       authGet("api/opiskeluoikeus/validate?henkilö=true&history=true") {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         val results = JsonSerializer.parse[List[ValidationResult]](body)
         results.length should be >= 0
         results.foreach(checkValidity)
@@ -28,7 +28,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     "Validate single" in {
       val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.oid.get) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         val result = JsonSerializer.parse[ValidationResult](body)
         checkValidity(result)
       }

@@ -108,7 +108,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get + "/1") {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val versio = readOpiskeluoikeus
           versio should equal(opiskeluoikeus)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))

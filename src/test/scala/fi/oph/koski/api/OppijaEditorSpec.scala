@@ -11,7 +11,7 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
       "with valid oid" in {
         AuditLogTester.clearMessages
         get("api/editor/" + MockOppijat.eero.oid, headers = authHeaders()) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
@@ -19,7 +19,7 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
         val opiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/editor/" + MockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusOid, "versionumero" -> "1"), headers = authHeaders()) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
@@ -40,7 +40,7 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
     "GET" in {
       AuditLogTester.clearMessages
       get("api/editor/" + MockOppijat.eero.oid, headers = authHeaders()) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
       }
     }

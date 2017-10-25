@@ -16,7 +16,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi muokata kaikkia opiskeluoikeuksia" in {
       resetFixtures
       putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -27,7 +27,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
       queryOppijat(user = user).length should be >= 10
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }
@@ -44,7 +44,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
       queryOppijat(user = user).length should be >= 10
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -70,7 +70,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -83,7 +83,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi hakea ja katsella opiskeluoikeuksia vain omassa organisaatiossa" in {
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -120,7 +120,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "näkee luottamuksellisen datan" in {
       resetFixtures
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         sensitiveDataShown(body)
       }
     }
@@ -130,7 +130,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.stadinVastuukäyttäjä
     "ei näe luottamusellista dataa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         sensitiveDataHidden(body)
       }
     }
@@ -155,7 +155,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi hakea ja katsella opiskeluoikeuksia omassa organisaatiossa" in {
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         sensitiveDataShown(body)
       }
     }
@@ -165,7 +165,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.omniaTallentaja
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -180,10 +180,10 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
         resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
           putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
-            verifyResponseStatus(200)
+            verifyResponseStatusOk()
             haeOpiskeluoikeudetHetulla(oppija.hetu.get, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
           }
         }

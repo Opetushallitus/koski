@@ -14,13 +14,13 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
     "GET" - {
       "with valid oid" in {
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with valid oid, hetuless oppija" in {
         get("api/oppija/" + MockOppijat.hetuton.oid, headers = authHeaders()) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
@@ -41,7 +41,7 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
         ))
         putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.eero.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))

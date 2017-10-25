@@ -9,7 +9,7 @@ class OpiskeluoikeusInvalidateSpec extends FreeSpec with Matchers with LocalJett
   "Opiskeluoikeuksien mitätöiminen" in {
     val opiskeluoikeusOid = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.flatMap(_.oid).head
     delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(paakayttaja)) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
     }
     delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(paakayttaja)) {
       verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))

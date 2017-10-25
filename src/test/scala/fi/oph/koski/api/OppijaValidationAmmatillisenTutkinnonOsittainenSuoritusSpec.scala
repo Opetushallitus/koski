@@ -30,7 +30,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
     }
@@ -47,17 +47,17 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
         "Valtakunnallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus) (verifyResponseStatus(200)))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus) (verifyResponseStatusOk()))
           }
 
           "Ilman tutkinnon osan ryhmätietoa" - {
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None)) (verifyResponseStatus(200)))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None)) (verifyResponseStatusOk()))
           }
 
 
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
             "palautetaan HTTP 200 (osittaisissa suorituksissa ei validoida rakennetta)" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen))(
-              verifyResponseStatus(200)))
+              verifyResponseStatusOk()))
           }
 
           "Tutkinnon osaa ei ei löydy koodistosta" - {
@@ -70,7 +70,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         "Paikallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
             val suoritus = paikallinenTutkinnonOsaSuoritus
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus) (verifyResponseStatus(200)))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus) (verifyResponseStatusOk()))
           }
 
           "Laajuus negatiivinen" - {
@@ -101,7 +101,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           "Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus)(
-              verifyResponseStatus(200)))
+              verifyResponseStatusOk()))
           }
 
           "Kun tutkintoa ei löydy" - {
@@ -113,13 +113,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           "Kun osa ei kuulu annetun tutkinnon rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus)(
-              verifyResponseStatus(200)))
+              verifyResponseStatusOk()))
           }
 
           "Kun tutkinnolla ei ole diaarinumeroa" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None), johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 400 (diaarinumero vaaditaan)" in (putTutkinnonOsaSuoritus(suoritus)(
-                verifyResponseStatus(400)))
+              verifyResponseStatus(400)))
           }
 
           "Kun tutkinnon diaarinumero on virheellinen" - {
@@ -143,13 +143,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
           "Arviointi puuttuu" - {
             "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
-              verifyResponseStatus(200)
+              verifyResponseStatusOk()
             ))
           }
 
           "Suorituksella arviointi ja vahvistus" - {
             "palautetaan HTTP 200" in (put(copySuoritus(arviointiHyvä(), vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-              verifyResponseStatus(200)
+              verifyResponseStatusOk()
             ))
           }
 
@@ -184,12 +184,12 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
             "Päivämäärät kunnossa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-06-01"))(
-                verifyResponseStatus(200)))
+                verifyResponseStatusOk()))
             }
 
             "Päivämäärät tulevaisuudessa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
-                verifyResponseStatus(200)))
+                verifyResponseStatusOk()))
             }
 
             "alkamispäivä > arviointi.päivä" - {
@@ -229,13 +229,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
       "Kun vahvistus puuttuu" - {
         "palautetaan HTTP 200" in (put(copySuoritus()) (
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         ))
       }
 
       "Kun vahvistus on annettu" - {
         "palautetaan HTTP 200" in (put(copySuoritus(vahvistus = vahvistus(LocalDate.now))) (
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         ))
       }
 
@@ -246,7 +246,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
         "Päivämäärät kunnossa" - {
           "palautetaan HTTP 200"  in (put(päivämäärillä("2015-08-01", "2016-06-01"))(
-            verifyResponseStatus(200)))
+            verifyResponseStatusOk()))
         }
       }
     }

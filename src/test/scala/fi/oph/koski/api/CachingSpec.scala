@@ -10,7 +10,7 @@ class CachingSpec extends FreeSpec with LocalJettyHttpSpecification with Matcher
 
   def verifyNoCache(path: String): Unit = {
     authGet(path) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       response.getHeader("Cache-Control") should equal("no-store, no-cache, must-revalidate")
     }
   }

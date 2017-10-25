@@ -24,7 +24,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Palauttaa oidin ja versiot" in {
       resetFixtures
       putOppija(Oppija(oppija, List(defaultOpiskeluoikeus))) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         val result = JsonSerializer.parse[HenkilönOpiskeluoikeusVersiot](response.body)
         result.henkilö.oid should startWith("1.2.246.562.24.000000000")
         result.opiskeluoikeudet.map(_.versionumero) should equal(List(1))
@@ -65,7 +65,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
         "Oppisopimustoimisto hyväksytään opiskeluoikeuden oppilaitokseksi" in {
           putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo, toimpiste = stadinOppisopimuskeskus).copy(oppilaitos = None), headers = authHeaders(hkiTallentaja) ++ jsonContent) {
-            verifyResponseStatus(200)
+            verifyResponseStatusOk()
           }
         }
       }
@@ -96,7 +96,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(arvioituPäättymispäivä = Some(d))}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
           result.versionumero should equal(Some(2))
@@ -123,7 +123,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, arvioituPäättymispäivä = Some(d))}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
           result.versionumero should equal(Some(2))
@@ -146,7 +146,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
         verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.lähdejärjestelmänId.map(_.id) should equal(Some(lähdejärjestelmänId2.id))
           result.versionumero should equal(Some(1))
@@ -159,7 +159,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, arvioituPäättymispäivä = Some(d))}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
           result.versionumero should equal(Some(2))
@@ -170,7 +170,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val lähdejärjestelmänId = LähdejärjestelmäId(Some("12345"), AmmatillinenExampleData.lähdeWinnova)
         verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = helsinginKaupunkiPalvelukäyttäjä, user2 = Some(kalle), change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, lähdejärjestelmänId = None)}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.versionumero should equal(Some(1))
         }
@@ -179,7 +179,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.getOppilaitos.oid should equal(MockOrganisaatiot.omnia)
           result.versionumero should equal(Some(1))
@@ -189,7 +189,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Jos tyyppi vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(oppilaitos = existing.oppilaitos)}) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.tyyppi.koodiarvo should equal(OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.tyyppi.koodiarvo)
           result.versionumero should equal(Some(1))
@@ -206,7 +206,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus))
         def poistaSuoritukset(oo: AmmatillinenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
         verifyChange(original = oo, change = poistaSuoritukset) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val result: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
           result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(vanhaValmisSuoritus.koulutusmoduuli.tunniste.koodiarvo, uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
         }
@@ -219,7 +219,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
       putOppija(Oppija(oppija, List(original)), authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         val existing = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[T]
         val updated: KoskeenTallennettavaOpiskeluoikeus = change(existing)
         putOppija(Oppija(oppija, List(updated)), authHeaders(user2.getOrElse(user)) ++ jsonContent) {

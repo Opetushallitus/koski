@@ -13,7 +13,7 @@ trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
 
   def getHistory(opiskeluoikeusOid: String, user: UserWithPassword = defaultUser): List[OpiskeluoikeusHistory] = {
     authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid, user = user) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       readHistory
     }
   }
@@ -24,7 +24,7 @@ trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
 
     authGet("api/opiskeluoikeus/validate/" + opiskeluoikeusOid) {
       // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
     }
   }
 }

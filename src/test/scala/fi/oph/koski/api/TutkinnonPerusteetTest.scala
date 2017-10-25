@@ -13,12 +13,12 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
       "myös ePerusteista löytymätön, mutta koodistosta \"koskikoulutusdiaarinumerot\" löytyvä diaarinumero kelpaa" in {
         putOpiskeluoikeus(opiskeluoikeusWithPerusteenDiaarinumero(Some(eperusteistaLöytymätönValidiDiaarinumero))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
     }
@@ -38,7 +38,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
 
     /*"Kun lisätään opiskeluoikeus ilman tutkinnon perusteen diaarinumeroa" - {
       "palautetaan HTTP 200"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(None)) (verifyResponseStatus(200))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(None)) (verifyResponseStatusOk())
       }
     }*/
 

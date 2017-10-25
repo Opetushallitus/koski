@@ -25,16 +25,16 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
 
       "opiskeluoikeuden oid tunnisteen konflikti" in {
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = opiskeluoikeudenOidKonflikti) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu))), henkilö = opiskeluoikeudenOidKonflikti) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
     }
@@ -100,13 +100,13 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
         "validi" - {
           "palautetaan HTTP 200"  in (putHenkilö(defaultHenkilö.copy(hetu = Some("010101-123N")))
-            (verifyResponseStatus(200)))
+            (verifyResponseStatusOk()))
         }
       }
 
       "Käytettäessä oppijan oidia" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatus(200)))
+          "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatusOk()))
         }
 
         "Oid virheellinen" - {
@@ -120,7 +120,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Käytettäessä oppijan kaikkia tietoja" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(MockOppijat.eero) (verifyResponseStatus(200)))
+          "palautetaan HTTP 200"  in (putHenkilö(MockOppijat.eero) (verifyResponseStatusOk()))
         }
 
         "Oid virheellinen" - {
@@ -142,7 +142,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         "Oid ok" in {
           val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
           putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus))) {
-            verifyResponseStatus(200)
+            verifyResponseStatusOk()
           }
         }
 
@@ -201,7 +201,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
       "Kun toimipiste ei ole oppilaitoksen aliorganisaatio" - {
         "Palautetaan HTTP 200" in {
           putOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.omnia)) (
-            verifyResponseStatus(200))
+            verifyResponseStatusOk())
         }
       }
     }
@@ -209,19 +209,19 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Opiskeluoikeuden tila ja päivämäärät" - {
       "Alkaminen ja päättyminen" - {
         "Päivämäärät kunnossa -> palautetaan HTTP 200" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatus(200))
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatusOk())
         }
 
         "alkamispäivä tänään -> palautetaan HTTP 200"  in (putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = LocalDate.now)) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         })
 
         "alkamispäivä tulevaisuudessa -> palautetaan HTTP 200"  in (putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         })
 
         "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         })
 
         "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
@@ -237,11 +237,11 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
         "Väärä päivämääräjärjestys" - {
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
-            verifyResponseStatus(400,
+            verifyResponseStatus(400, List(
               exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
               exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31"),
               exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
-            )
+            ))
           })
 
           "alkamispäivä > arvioituPäättymispäivä"  in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
@@ -286,17 +286,17 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "suomi riittää" in {
         putOpiskeluoikeus(withName(LocalizedString.finnish("Jotain"))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
       "ruotsi riittää" in {
         putOpiskeluoikeus(withName(LocalizedString.swedish("Något"))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
       "englanti riittää" in {
         putOpiskeluoikeus(withName(LocalizedString.english("Something"))) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
 

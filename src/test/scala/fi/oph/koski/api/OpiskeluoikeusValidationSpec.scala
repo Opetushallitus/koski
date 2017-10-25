@@ -16,7 +16,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
     "validi opiskeluoikeus" in {
       val opiskeluoikeusOid = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.flatMap(_.oid).head
       authGet(s"api/opiskeluoikeus/validate/$opiskeluoikeusOid") {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         validationResult.errors should be(empty)
       }
     }
@@ -25,7 +25,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
       val opiskeluoikeus = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.head.withPäättymispäivä(LocalDate.now)
       KoskiApplicationForTests.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(MockOppijat.eero.henkilö), opiskeluoikeus, allowUpdate = true)
       authGet(s"api/opiskeluoikeus/validate/${opiskeluoikeus.oid.get}") {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         validationResult.errors.map(_.key) should equal(List("badRequest.validation.date.päättymispäivämäärä"))
       }
     }

@@ -32,14 +32,14 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
 
   def oppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/oppija/" + oppijaOid, user) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       readOppija
     }
   }
 
   def oppijaByHetu(hetu: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/henkilo/hetu/" + hetu, user) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       val oid = JsonSerializer.parse[List[HenkilötiedotJaOid]](body).head.oid
       oppija(oid, user)
     }

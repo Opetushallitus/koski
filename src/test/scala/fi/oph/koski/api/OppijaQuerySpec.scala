@@ -167,7 +167,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
 
     def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
       putOpiskeluoikeus(opiskeluoikeus, henkilö) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }

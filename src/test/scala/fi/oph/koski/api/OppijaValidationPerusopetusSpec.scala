@@ -18,7 +18,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
   "Suoritusten tila" - {
     "Vahvistettu päättötodistus -> HTTP 200" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -30,7 +30,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
     "Vahvistamaton päättötodistus ilman yhtään oppiainetta -> HTTP 200" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None, osasuoritukset = Some(Nil))))) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
 

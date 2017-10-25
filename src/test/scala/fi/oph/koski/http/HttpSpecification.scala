@@ -14,15 +14,27 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
 
   def resetFixtures[A] = {
     post("fixtures/reset", Nil, authHeaders()) {
-      verifyResponseStatus(200)
+      verifyResponseStatus(200, Nil)
     }
   }
 
-  def verifyResponseStatus(expectedStatus: Int, details: HttpStatus): Unit = {
-    verifyResponseStatus(expectedStatus, FixedErrorMatcher(details.errors(0).key, details.errors(0).message))
+  def verifyResponseStatusOk(expectedStatus: Int = 200): Unit = {
+    verifyResponseStatus(expectedStatus, Nil)
   }
 
-  def verifyResponseStatus(expectedStatus: Int, details: ErrorMatcher*): Unit = {
+  def verifyResponseStatus(expectedStatus: Int): Unit = {
+    verifyResponseStatus(expectedStatus, Nil)
+  }
+
+  def verifyResponseStatus(expectedStatus: Int, details: HttpStatus): Unit = {
+    verifyResponseStatus(expectedStatus, List(FixedErrorMatcher(details.errors(0).key, details.errors(0).message)))
+  }
+
+  def verifyResponseStatus(expectedStatus: Int, details: ErrorMatcher): Unit = {
+    verifyResponseStatus(expectedStatus, List(details))
+  }
+
+  def verifyResponseStatus(expectedStatus: Int, details: List[ErrorMatcher]): Unit = {
     val dets: List[ErrorMatcher] = details.toList
     if (response.status != expectedStatus) {
       fail("Expected status " + expectedStatus + ", got " + response.status + ", " + response.body)

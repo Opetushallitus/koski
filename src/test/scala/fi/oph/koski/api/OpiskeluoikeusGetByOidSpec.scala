@@ -19,7 +19,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         val oid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
@@ -49,7 +49,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         resetFixtures
         val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           vankilaopetusValue should be(true)
         }
       }
@@ -57,7 +57,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
       "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
         val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinVastuukäyttäjä) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           vankilaopetusValue should be(false)
         }
       }
@@ -65,7 +65,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
   }
 
   private def mitätöiOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus) = {
-    delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders())(verifyResponseStatus(200))
+    delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders())(verifyResponseStatusOk())
     oo
   }
 

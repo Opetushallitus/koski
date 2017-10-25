@@ -50,7 +50,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         )))
       )))
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }
@@ -62,7 +62,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("9"))))
       )))
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
     "Valmis oppiaineen kurssin suoritus ei vaadi vahvistusta." in {
@@ -76,7 +76,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           )))
       )))
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }

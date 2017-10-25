@@ -20,7 +20,7 @@ trait SearchTestMethods extends HttpSpecification {
 
   def searchForHenkilötiedot(query: String, user: UserWithPassword = defaultUser): List[HenkilötiedotJaOid] = {
     search(query, user) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       JsonSerializer.parse[HenkilötiedotSearchResponse](body).henkilöt
     }
   }

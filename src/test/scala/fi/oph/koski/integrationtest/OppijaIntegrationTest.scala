@@ -15,7 +15,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     // return results, i.e. is up and running.
 
     putOpiskeluoikeus(defaultOpiskeluoikeus, OidHenkilö(testOid)) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
     }
     val o = oppija(testOid)
     val henkilö = o.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
@@ -52,7 +52,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
       def printValidity(result: ValidationResult) = {
         println(result.henkilöOid + (if (result.isOk) {" OK"} else {" FAIL " + result.errors}))
       }
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       val results = Json.read[List[ValidationResult]](body)
       results.length should be >= 0
       println(s"Löytyi ${results.length} oppijaa")

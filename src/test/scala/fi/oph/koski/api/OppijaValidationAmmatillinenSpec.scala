@@ -16,7 +16,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
     }
@@ -34,7 +34,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
-          "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+          "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
         }
         "Suoritustapa virheellinen" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
@@ -64,7 +64,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "Valtakunnallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk()))
           }
 
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
@@ -76,7 +76,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
                   koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen, tutkinnonOsanRyhmä = vapaavalintaisetTutkinnonOsat
                 ), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(200)))
+                verifyResponseStatusOk()))
             }
           }
 
@@ -108,7 +108,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "Palautetaan HTTP 200" in (
                 putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(
                   osanOsa, osanOsa
-                ))), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200))
+                ))), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk())
               )
             }
           }
@@ -117,7 +117,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "Paikallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
             val suoritus = paikallinenTutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat)
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk()))
           }
 
           "Laajuus negatiivinen" - {
@@ -148,7 +148,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
-              verifyResponseStatus(200)))
+              verifyResponseStatusOk()))
           }
 
           "Kun tutkintoa ei löydy" - {
@@ -160,7 +160,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Kun osa ei kuulu annetun tutkinnon rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(parturikampaaja, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
-              verifyResponseStatus(200)))
+              verifyResponseStatusOk()))
           }
 
           "Kun tutkinnolla ei ole diaarinumeroa" - {
@@ -196,19 +196,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Arviointi ja vahvistus puuttuu" - {
             "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
-              verifyResponseStatus(200)
+              verifyResponseStatusOk()
             ))
           }
 
           "Arviointi annettu" - {
             "palautetaan HTTP 200" in (put(copySuoritus(arviointiHyvä(), None)) (
-              verifyResponseStatus(200)
+              verifyResponseStatusOk()
             ))
           }
 
           "Suorituksella arviointi ja vahvistus" - {
             "palautetaan HTTP 200" in (put(copySuoritus(arviointiHyvä(), vahvistusValinnaisellaTittelillä(LocalDate.parse("2016-08-08")))) (
-              verifyResponseStatus(200)
+              verifyResponseStatusOk()
             ))
           }
 
@@ -243,12 +243,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
             "Päivämäärät kunnossa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-06-01"))(
-                verifyResponseStatus(200)))
+                verifyResponseStatusOk()))
             }
 
             "Päivämäärät tulevaisuudessa" - {
               "palautetaan HTTP 200"  in (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
-                verifyResponseStatus(200)))
+                verifyResponseStatusOk()))
             }
 
             "alkamispäivä > arviointi.päivä" - {
@@ -297,7 +297,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Vahvistus puuttuu, opiskeluoikeus voimassa" - {
         "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         ))
       }
 
@@ -309,7 +309,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Suorituksella on vahvistus" - {
         "palautetaan HTTP 200" in (put(copySuoritus(vahvistus(LocalDate.parse("2016-08-08")))) (
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         ))
       }
 
@@ -326,7 +326,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "Päivämäärät kunnossa" - {
           "palautetaan HTTP 200"  in (put(päivämäärillä("2015-08-01", "2016-06-01"))(
-            verifyResponseStatus(200)))
+            verifyResponseStatusOk()))
         }
 
         "alkamispäivä > vahvistus.päivä" - {
@@ -339,7 +339,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Ammatillinen perustutkinto opetussuunnitelman mukaisesti" - {
       "Tutkinnonosan ryhmä on määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Tutkinnonosan ryhmää ei ole määritetty" - {
@@ -351,12 +351,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Ammatillinen perustutkinto näyttönä" - {
       "Tutkinnonosan ryhmä on määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Tutkinnonosan ryhmää ei ole määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None))))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
     }
 
@@ -369,7 +369,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Tutkinnonosan ryhmää ei ole määritetty" - {
         val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Tutkinnonosan ryhmä on määritetty" - {
@@ -396,7 +396,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "Kun ok" - {
         "palautetaan HTTP 200" in (
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284-5"))))
-            (verifyResponseStatus(200))
+            (verifyResponseStatusOk())
         )
       }
 

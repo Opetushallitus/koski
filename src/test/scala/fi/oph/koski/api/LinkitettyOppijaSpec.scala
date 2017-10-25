@@ -20,7 +20,7 @@ class LinkitettyOppijaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Päivitettäessä slaveen liittyvä opiskeluoikeus käyttäen master-oppijaa" - {
       "Opiskeluoikeus päivittyy ja säilyy linkitettynä slaveen" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus, MockOppijat.master) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           val masterOikeudet = getOpiskeluoikeudet(MockOppijat.master.oid)
           masterOikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
           masterOikeudet(1).versionumero should equal(Some(2))

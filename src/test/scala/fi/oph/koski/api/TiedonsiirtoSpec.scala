@@ -20,7 +20,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
       }
@@ -64,7 +64,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "ei tallenneta tiedonsiirtoja" in {
       resetFixtures
       putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.stadinAmmattiopistoTallentaja) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
       getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä) should be(empty)
     }
@@ -73,10 +73,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   "Tiedonsiirtojen yhteenveto" in {
     resetFixtures
     putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
     }
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.helsinginKaupunkiPalvelukäyttäjä) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
       yhteenveto.length should be > 0
     }
@@ -85,10 +85,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   "Tiedonsiirtojen yhteenveto ei näytä muiden organisaatioiden tietoja" in {
     resetFixtures
     putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
     }
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.omniaKatselija) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
       yhteenveto.length should be(0)
     }
@@ -99,7 +99,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(stadinOpiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
@@ -108,7 +108,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "hierarkiassa alempana oleva käyttäjä näkee rivit, joiden oppilaitoksiin hänellä on katseluoikeus" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       getTiedonsiirrot(MockUsers.stadinAmmattiopistoTallentaja).length should equal(1)
@@ -117,7 +117,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "pääkäyttäjä näkee kaikki tiedonsiirrot" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       val tiedonsiirtorivit: List[TiedonsiirtoRivi] = getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).filter(_.oppija.toList.flatMap(_.hetu).contains(eerola.hetu.get))
@@ -128,11 +128,11 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "näytetään virheelliset" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
@@ -153,7 +153,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
 
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))
@@ -173,7 +173,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] =
     authGet(url, user) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       readPaginatedResponse[Tiedonsiirrot].henkilöt
     }
 

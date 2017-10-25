@@ -18,7 +18,7 @@ trait OpintosuoritusoteTestMethods extends SearchTestMethods {
 
   private def opintosuoritusote(path: String) = {
     authGet(path) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
 
       val lines: Seq[String] = scala.xml.XML.loadString(response.body).flatMap(_.descendant_or_self).flatMap {
         case tr: Node if tr.label == "tr" => Some(texts((tr \ "td") ++ (tr \ "th")))

@@ -12,7 +12,7 @@ trait TodistusTestMethods extends SearchTestMethods with OpiskeluoikeusTestMetho
     var path: String = s"todistus/${oppijaOid}?suoritustyyppi=${tyyppi}"
     koulutusmoduuli foreach { koulutusmoduuli => path = path + s"&koulutusmoduuli=${koulutusmoduuli}" }
     authGet(path) {
-      verifyResponseStatus(200)
+      verifyResponseStatusOk()
       val lines: Seq[String] = XML.loadString(response.body)
         .flatMap(_.descendant_or_self).flatMap {
         case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some(texts(tr \ "td"))
@@ -26,7 +26,7 @@ trait TodistusTestMethods extends SearchTestMethods with OpiskeluoikeusTestMetho
   private def opiskeluoikeus(searchTerm: String): Option[Opiskeluoikeus] = {
     searchForHenkilötiedot(searchTerm).flatMap { henkilötiedot =>
       val oppija: Oppija = authGet("api/oppija/" + henkilötiedot.oid) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         JsonSerializer.parse[Oppija](body)
       }
       oppija.opiskeluoikeudet.headOption

@@ -50,7 +50,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
           verifyResponseStatus(403)
         }
         putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
         }
       }
 

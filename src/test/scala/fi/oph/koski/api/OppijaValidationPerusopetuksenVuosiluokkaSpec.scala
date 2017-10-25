@@ -23,7 +23,7 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
 
     "Oppiaineita syötetty kun oppija jää luokalle -> HTTP 200" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(jääLuokalle = true, osasuoritukset = kaikkiAineet)))) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }

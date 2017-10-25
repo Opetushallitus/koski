@@ -11,7 +11,7 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
   "POST /login" - {
     "Valid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "LOGIN", "kayttajaHenkiloOid" -> MockUsers.kalle.oid))
       }
     }
@@ -29,7 +29,7 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
 
       // blocking reset by now
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
-        verifyResponseStatus(200)
+        verifyResponseStatusOk()
       }
     }
   }
