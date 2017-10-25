@@ -41,7 +41,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
       <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} fetchAlternatives={fetchTilat} />
     </div>
     {
-      ift(rahoitusModel, (<div className="property rahoitus">
+      ift(rahoitusModel, (<div className="property rahoitus" key="rahoitus">
         <label><Text name="Rahoitus"/>{':'}</label>
         <Editor baret-lift asRadiogroup={true} model={rahoitusModel}/>
       </div>))
