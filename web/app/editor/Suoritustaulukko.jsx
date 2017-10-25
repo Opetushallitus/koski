@@ -54,7 +54,7 @@ export class Suoritustaulukko extends React.Component {
       }
     } else {
       grouped = { [placeholderForNonGrouped] : suoritukset }
-      groupTitles = { [placeholderForNonGrouped] : modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title }
+      groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
       groupIds = [placeholderForNonGrouped]
     }
 
