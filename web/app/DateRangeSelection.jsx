@@ -1,6 +1,7 @@
 import {formatFinnishDate, parseFinnishDate} from './date.js'
 import React from 'react'
 import Text from './Text.jsx'
+import {t} from './i18n'
 
 export default class DateRangeSelection extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class DateRangeSelection extends React.Component {
       <div className="date-range" onKeyDown={this.onKeyDown.bind(this)} tabIndex="0" ref={root => this.root = root}>
         <div
           onClick={this.toggleOpen.bind(this)}
-          className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
+          className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : t('kaikki')}</div>
         { this.state.open &&
         <div className="date-range-container">
           <div className="date-range-input">

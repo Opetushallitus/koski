@@ -99,7 +99,7 @@ export class Oppijataulukko extends React.Component {
               <OrganisaatioPicker
                 selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
                 onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: t(org.nimi) } : { toimipiste: null, toimipisteNimi: null })}}
-                noSelectionText="kaikki"
+                noSelectionText={t('kaikki')}
               />
             </th>
             <SortingTableHeader field='alkamispäivä' titleKey='Aloitus pvm'>

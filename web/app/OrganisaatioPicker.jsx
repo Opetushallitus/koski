@@ -38,7 +38,7 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
   render() {
     let { organisaatiot = [], open, loading, searchString, singleResult } = this.state
-    let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = 'kaikki' } = this.props
+    let { onSelectionChanged, selectedOrg, canSelectOrg = () => true, shouldShowOrg = () => true, noSelectionText = '', clearText = t('kaikki') } = this.props
 
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
     let orgName = org => <span><Highlight search={searchString}>{t(org.nimi)}</Highlight> {org.aktiivinen ? null : <span>{' ('}<Text name="lakkautettu"/>{')'}</span>}</span>
