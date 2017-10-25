@@ -67,6 +67,7 @@ class CacheSpec extends FreeSpec with Matchers {
         val cache = RefreshingCache("testcache", 100 days, 100).asInstanceOf[RefreshingCache]
         cache.callAsync(counter.incInvocation("a"))
         cache.callAsync(counter.incInvocation("b"))
+        Thread.sleep(100)
 
         def getRefreshTime(key: String) = cache.getEntry(counter.incInvocation(key)).get.getScheduledRefreshTime
 
