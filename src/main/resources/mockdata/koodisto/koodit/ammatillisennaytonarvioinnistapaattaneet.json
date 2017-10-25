@@ -3,7 +3,14 @@
   "koodiArvo" : "1",
   "metadata" : [ {
     "nimi" : "Opettaja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lärare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -12,7 +19,14 @@
   "koodiArvo" : "2",
   "metadata" : [ {
     "nimi" : "Työntekijä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetstagare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -21,7 +35,14 @@
   "koodiArvo" : "3",
   "metadata" : [ {
     "nimi" : "Työnantaja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetsgivare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,7 +51,14 @@
   "koodiArvo" : "4",
   "metadata" : [ {
     "nimi" : "Itsenäinen ammatinharjoittaja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Självständig yrkesutövare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
