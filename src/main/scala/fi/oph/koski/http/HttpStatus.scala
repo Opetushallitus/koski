@@ -1,10 +1,13 @@
 package fi.oph.koski.http
 
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
+import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.{universe => ru}
+import reflect.runtime.universe.TypeTag
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   if (statusCode == 200 && errors.nonEmpty) throw new RuntimeException("HttpStatus 200 with error message " + errors.mkString(","))
@@ -15,12 +18,15 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
-case class ErrorDetail(key: String, message: JValue) {
+// Constructor is private to force force explicit usage of ErrorMessage. This allows us
+// to quickly analyze what kind of things we put into our errors
+case class ErrorDetail private(key: String, message: JValue) {
   override def toString = key + " (" + JsonMethods.compact(message) + ")"
 }
 
 object ErrorDetail {
-  def apply[T : ru.TypeTag](key: String, message: T): ErrorDetail = ErrorDetail(key, JsonSerializer.serializeWithRoot(message))
+  def apply(key: String, message: String): ErrorDetail = apply(key, StringErrorMessage(message))
+  def apply(key: String, message: ErrorMessage): ErrorDetail = new ErrorDetail(key, message.asJValue)
 }
 
 object HttpStatus {
@@ -51,4 +57,18 @@ object HttpStatus {
     case Right(_) => HttpStatus.ok
     case Left(status) => status
   }
+}
+
+trait ErrorMessage {
+  def asJValue: JValue
+}
+object ErrorMessage {
+  implicit def str2ErrorMessage(str: String) = StringErrorMessage(str)
+}
+case class StringErrorMessage(str: String) extends ErrorMessage {
+  override def asJValue: JValue = JString(str)
+}
+
+case class JsonErrorMessage[T : TypeTag](value: T) extends ErrorMessage {
+  override def asJValue: JValue = JsonSerializer.serializeWithRoot(value)
 }

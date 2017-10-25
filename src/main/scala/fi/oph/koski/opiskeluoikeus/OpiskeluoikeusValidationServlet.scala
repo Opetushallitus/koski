@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
@@ -56,7 +56,7 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {
-            KoskiErrorCategory.internalError(serialize(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(serialize(row), serialize(latestVersion)))))
+            KoskiErrorCategory.internalError(JsonErrorMessage(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(serialize(row), serialize(latestVersion)))))
           }
         case Left(error) => error
       }) match {

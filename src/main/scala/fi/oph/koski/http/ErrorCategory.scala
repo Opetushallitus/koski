@@ -7,27 +7,28 @@ import scala.reflect.runtime.{universe => ru}
 
 private object ErrorCategory {
   def makeKey(key: String, subkey: String) = key + "." + subkey
-  def defaultErrorContent[T : ru.TypeTag](key: String, message: T): List[ErrorDetail] = {
+  def defaultErrorContent(key: String, message: ErrorMessage): List[ErrorDetail] = {
     List(ErrorDetail(key, message))
   }
 }
 
 case class ErrorCategory(key: String, statusCode: Int, message: String, exampleResponse: JValue) {
   def this(key: String, statusCode: Int, message: String) = {
-    this(key, statusCode, message, JsonSerializer.serializeWithRoot(defaultErrorContent(key, message)))
+    this(key, statusCode, message, JsonSerializer.serializeWithRoot(defaultErrorContent(key, StringErrorMessage(message))))
   }
   def this(parent: ErrorCategory, key: String, message: String, exampleResponse: JValue) = {
     this(makeKey(parent.key, key), parent.statusCode, message, exampleResponse)
     parent.addSubcategory(key, this)
   }
   def this(parent: ErrorCategory, key: String, message: String) = {
-    this(parent, key, message, JsonSerializer.serializeWithRoot(defaultErrorContent(makeKey(parent.key, key), message)))
+    this(parent, key, message, JsonSerializer.serializeWithRoot(defaultErrorContent(makeKey(parent.key, key), StringErrorMessage(message))))
   }
 
   def subcategory(subkey: String, message: String, exampleResponse: JValue) = new ErrorCategory(this, subkey, message, exampleResponse)
   def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
 
-  def apply[T : ru.TypeTag](message: T): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
+  def apply(message: ErrorMessage): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
+  def apply(message: String): HttpStatus = apply(StringErrorMessage(message))
 
   def apply(): HttpStatus = statusCode match {
     case 200 => HttpStatus.ok

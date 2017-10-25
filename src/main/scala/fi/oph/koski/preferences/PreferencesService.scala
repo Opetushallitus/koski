@@ -2,7 +2,7 @@ package fi.oph.koski.preferences
 
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
@@ -30,7 +30,6 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
 
   def put(organisaatioOid: String, `type`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
     if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
-
     prefTypes.get(`type`) match {
       case Some(klass) =>
         extract[StorablePreference](value, klass) match {
@@ -38,7 +37,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
             runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, `type`, key, value)))
             HttpStatus.ok
           case Left(errors: immutable.Seq[ValidationError]) =>
-            KoskiErrorCategory.badRequest.validation.jsonSchema(errors)
+            KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors))
         }
       case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)
     }
@@ -68,7 +67,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
         val jValues = runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type`).map(_.value).result).toList
         HttpStatus.foldEithers(jValues.map(value =>
           extract[StorablePreference](value, klass)
-            .left.map(error => KoskiErrorCategory.badRequest.validation.jsonSchema(error))
+            .left.map((errors: List[ValidationError]) => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
         ))
       case None => Left(KoskiErrorCategory.notFound("Unknown pref type " + `type`))
     }
