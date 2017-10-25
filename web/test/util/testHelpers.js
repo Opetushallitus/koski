@@ -364,6 +364,10 @@ function resetFixtures() {
   return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post'}))
 }
 
+function syncTiedonsiirrot() {
+  return Q($.ajax({ url: '/koski/fixtures/sync-tiedonsiirrot', method: 'post'}))
+}
+
 function refreshIndices() {
     return Q($.ajax({ url: '/koski/fixtures/refresh', method: 'post'}))
 }

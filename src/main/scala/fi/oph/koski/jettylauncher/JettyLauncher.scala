@@ -29,7 +29,7 @@ object JettyLauncher extends App with Logging {
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) extends Logging {
   private val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
-  private val application = new KoskiApplication(config, new JMXCacheManager)
+  val application = new KoskiApplication(config, new JMXCacheManager)
 
   private val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   private val server = new Server(threadPool)

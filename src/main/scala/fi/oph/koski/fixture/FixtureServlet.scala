@@ -15,4 +15,9 @@ class FixtureServlet(implicit val application: KoskiApplication) extends ApiServ
     application.elasticSearch.refreshIndex
     "ok"
   }
+
+  post("/sync-tiedonsiirrot") {
+    application.scheduledTasks.syncTiedonsiirrot.syncTiedonsiirrot(None)
+    "ok"
+  }
 }
