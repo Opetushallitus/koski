@@ -5,6 +5,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.eerola
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.helsinginKaupunkiPalvelukäyttäjä
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
@@ -29,7 +30,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         MockEmailSender.checkMail
         resetFixtures
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400)
+          verifyResponseStatus(400, sukunimiPuuttuu)
         }
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true, expectedLähdejärjestelmä = Some("winnova"))
         val mails = MockEmailSender.checkMail
@@ -44,7 +45,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "toisesta peräkkäisestä epäonnistuneesta tiedonsiirrosta ei lähetetä emailia" in {
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400)
+          verifyResponseStatus(400, sukunimiPuuttuu)
         }
         MockEmailSender.checkMail.length should equal(0)
       }
@@ -52,7 +53,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "epäkelvosta json viestistä tallennetaan vain virhetiedot ja data" in {
         resetFixtures
         submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400)
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
         }
         refreshElasticSearchIndex
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, None, None, errorStored = true, dataStored = true, expectedLähdejärjestelmä = None)
@@ -136,7 +137,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(400)
+        verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit) should have size 1
@@ -145,11 +146,11 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "onnistunut siirto poistaa virheelliset listalta" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(400)
+        verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.henkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(400)
+        verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {

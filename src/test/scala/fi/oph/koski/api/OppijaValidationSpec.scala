@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizedString
@@ -73,9 +73,10 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
     "Henkilötiedot" - {
       "Nimenä tyhjä merkkijono" - {
-        "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(sukunimi = "")) (verifyResponseStatus(400)))
+        "palautetaan HTTP 400 virhe" in (putHenkilö(defaultHenkilö.copy(sukunimi = "")) (
+          verifyResponseStatus(400, sukunimiPuuttuu)
+        ))
       }
-
 
       "Hetun ollessa" - {
         "muodoltaan virheellinen" - {

@@ -47,7 +47,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
 
       "Sisältävän opiskeluoikeuden organisaatiolla ei ole kirjoitusoikeuksia sisältyvään opiskeluoikeuteen" in {
         putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.stadinAmmattiopistoTallentaja) ++ jsonContent) {
-          verifyResponseStatus(403)
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
         }
         putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()

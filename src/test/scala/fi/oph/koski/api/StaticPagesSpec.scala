@@ -12,7 +12,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
     def verifyAppAt(path: String, responseCode: Int = 200) = {
       "GET " + path in {
         authGet(path) {
-          verifyResponseStatus(responseCode)
+          verifyResponseStatusOk(responseCode)
           body.contains("<title>Koski - Opintopolku.fi</title>")
         }
       }

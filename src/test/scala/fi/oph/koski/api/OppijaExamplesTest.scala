@@ -11,7 +11,7 @@ class OppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpeci
       "POST " + example.name in {
         val body = JsonSerializer.writeWithRoot(example.data).getBytes("utf-8")
         put("api/oppija", body = body, headers = authHeaders() ++ jsonContent) {
-          verifyResponseStatus(example.statusCode)
+          verifyResponseStatusOk(example.statusCode)
           logger.info(example.name + ": OK")
         }
       }

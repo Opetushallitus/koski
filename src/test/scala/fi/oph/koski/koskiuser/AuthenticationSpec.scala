@@ -3,6 +3,7 @@ package fi.oph.koski.koskiuser
 import java.lang.Thread.sleep
 
 import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
@@ -17,12 +18,12 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
     }
     "Invalid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "asdf")), headers = jsonContent) {
-        verifyResponseStatus(401)
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen käyttäjätunnuksella kalle epäonnistui."))
       }
 
       // blocking because of too many login attempts
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
-        verifyResponseStatus(401)
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen käyttäjätunnuksella kalle epäonnistui."))
       }
 
       sleep(1000)
@@ -36,7 +37,7 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
 
   "GET /logout" in {
     get("user/logout") {
-      verifyResponseStatus(302)
+      verifyResponseStatusOk(302)
     }
   }
 }

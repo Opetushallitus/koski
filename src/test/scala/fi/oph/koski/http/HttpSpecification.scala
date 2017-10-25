@@ -22,10 +22,6 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
     verifyResponseStatus(expectedStatus, Nil)
   }
 
-  def verifyResponseStatus(expectedStatus: Int): Unit = {
-    verifyResponseStatus(expectedStatus, Nil)
-  }
-
   def verifyResponseStatus(expectedStatus: Int, details: HttpStatus): Unit = {
     verifyResponseStatus(expectedStatus, List(FixedErrorMatcher(details.errors(0).key, details.errors(0).message)))
   }

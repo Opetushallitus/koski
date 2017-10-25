@@ -26,7 +26,7 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
       }
       "with invalid oid" in {
         get("api/oppija/blerg", headers = authHeaders()) {
-          verifyResponseStatus(400)
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid("Virheellinen oid: blerg. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001."))
         }
       }
       "with unknown oid" in {

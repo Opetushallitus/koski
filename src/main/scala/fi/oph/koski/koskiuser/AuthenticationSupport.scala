@@ -68,24 +68,24 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
     // prevent brute-force login by blocking incorrect logins with progressive delay
+    lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen käyttäjätunnuksella $username epäonnistui."))
     val blockedUntil = application.basicAuthSecurity.getLoginBlocked(username)
     if (blockedUntil.isDefined) {
       logger(LogUserContext(request)).warn(s"Too many failed login attempts for username ${username}, blocking login until ${blockedUntil.get}")
-      return Left(KoskiErrorCategory.unauthorized.loginFail())
+      return loginFail
     }
 
     val loginResult: Boolean = application.directoryClient.authenticate(username, password)
-
     val result = if (!loginResult) {
       logger(LogUserContext(request)).info(s"Login failed with username ${username}")
-      Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen käyttäjätunnuksella $username epäonnistui."))
+      loginFail
     } else {
       DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
         case Some(user) =>
           Right(user)
         case None =>
           logger.error("User not found from LDAP after successful authentication: " + username)
-          Left(KoskiErrorCategory.unauthorized.loginFail())
+          loginFail
       }
     }
 

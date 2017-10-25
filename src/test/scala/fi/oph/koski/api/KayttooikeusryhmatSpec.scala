@@ -37,7 +37,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "ei voi muokata opiskeluoikeuksia" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403)
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.52251087186"))
       }
     }
 
@@ -61,7 +61,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.omniaTallentajaEiLuottamuksellinen
     "ei voi muokata opiskeluoikeuksia" in {
       putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403)
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
   }
@@ -93,13 +93,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403)
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.52251087186"))
       }
     }
 
     "ei voi katsella opiskeluoikeuksia muussa organisaatiossa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, user) {
-        verifyResponseStatus(404)
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa 1.2.246.562.24.00000000001 ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
 
@@ -148,7 +148,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.omniaKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403)
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 

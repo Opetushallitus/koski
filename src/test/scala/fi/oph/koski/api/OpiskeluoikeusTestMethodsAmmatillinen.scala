@@ -6,8 +6,10 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{OrganisaatioWithOid, _}
+import org.json4s.{JArray, JObject, JString}
 
 trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
@@ -31,4 +33,10 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   def lisääTila(oo: AmmatillinenOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite) = oo.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(AmmatillinenOpiskeluoikeusjakso(päivä, tila)))
   )
+
+  val sukunimiPuuttuu = KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(JArray(List(JObject(
+    "path" -> JString("henkilö.sukunimi"),
+    "value" -> JString(""),
+    "error" -> JObject("errorType" -> JString("emptyString"))
+  )))))
 }
