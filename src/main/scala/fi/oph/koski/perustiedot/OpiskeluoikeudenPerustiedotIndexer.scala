@@ -61,7 +61,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     if (items.isEmpty) {
       return Right(0)
     }
-    val jsonLines: Seq[JValue] = items.flatMap { perustiedot =>
+    val jsonLines: Seq[JValue] = items.flatMap { (perustiedot: OpiskeluoikeudenOsittaisetTiedot) =>
       List(
         JObject("update" -> JObject("_id" -> JInt(perustiedot.id), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
         JObject("doc_as_upsert" -> JBool(replaceDocument), "doc" -> Serializer.serialize(perustiedot, serializationContext))
