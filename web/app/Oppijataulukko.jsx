@@ -39,7 +39,7 @@ export class Oppijataulukko extends React.Component {
     let { rivit, edellisetRivit, pager, params } = this.props
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
-    let nullSelection = {value : 'ei valintaa'}
+    let nullSelection = {value : t('Ei valintaa')}
     sessionStorage.previousListViewPath = currentLocation().toString()
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
