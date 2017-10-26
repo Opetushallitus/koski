@@ -99,7 +99,7 @@ function KoskiPage() {
             click('body')
           )()
         } else {
-          return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "ei valintaa")().then(wait.forAjax)
+          return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "Ei valintaa")().then(wait.forAjax)
         }
       }
 
