@@ -91,11 +91,15 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     if (updateable.contains(koodistoUri)) {
       olemassaOlevatKoodit.flatMap { vanhaKoodi =>
         mockKoodit.find(_.koodiArvo == vanhaKoodi.koodiArvo).flatMap { uusiKoodi =>
-          val uusiKoodiSamallaKoodiUrilla = uusiKoodi.copy(
-            koodiUri = vanhaKoodi.koodiUri
+          val uusiKoodiSamallaKoodiUrillaJaVersiolla = uusiKoodi.copy( // ignore koodiUri and version fields in comparison to avoid unnecessary updates
+            koodiUri = vanhaKoodi.koodiUri,
+            versio = vanhaKoodi.versio,
+            version = vanhaKoodi.version
           )
 
-          if (uusiKoodiSamallaKoodiUrilla != vanhaKoodi) {
+          def järjestäMetadatat(koodi: KoodistoKoodi) = koodi.copy(metadata = koodi.metadata.sortBy(_.kieli))
+
+          if (järjestäMetadatat(uusiKoodiSamallaKoodiUrillaJaVersiolla) != järjestäMetadatat(vanhaKoodi)) {
             Some(koodistoUri, vanhaKoodi, uusiKoodi)
           } else {
             None
