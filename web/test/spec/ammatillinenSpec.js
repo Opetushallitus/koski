@@ -60,23 +60,10 @@ describe('Ammatillinen koulutus', function() {
         describe('Toisen ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(
-            editor.edit,
-            lisääSuoritus.open('lisää ammatillisen tutkinnon suoritus')
+            editor.edit
           )
-          describe('Ennen lisäystä', function() {
-            it('Ei esitäytä tutkintoa', function() {
-              expect(lisääSuoritus.tutkinto()).to.equal('')
-            })
-          })
-          describe('Lisäyksen jälkeen', function() {
-            before(
-              lisääSuoritus.selectTutkinto('Autoalan työnjohdon erikoisammattitutkinto'),
-              lisääSuoritus.lisääSuoritus,
-              editor.saveChanges
-            )
-            it('Tutkinnon suoritus näytetään', function() {
-              expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
-            })
+          it("ei ole mahdollista", function() {
+            expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
           })
         })
       })
@@ -314,7 +301,7 @@ describe('Ammatillinen koulutus', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(
             editor.edit,
-            lisääSuoritus.open()
+            lisääSuoritus.open('lisää ammatillisen tutkinnon suoritus')
           )
           describe('Ennen lisäystä', function() {
             it('Esitäyttää tutkinnon näyttötutkintoon valmistavasta koulutuksesta', function() {

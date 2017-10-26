@@ -74,13 +74,7 @@ function OpinnotPage() {
         }
       )
     },
-    lisääSuoritusVisible: function() {
-      return S(".add-suoritus a").is(":visible")
-    },
     lisääSuoritusDialog: LisääSuoritusDialog(),
-    lisääSuoritus: function(text) {
-      return click(findSingle(".add-suoritus a:contains(" + (text || '') + ")")) 
-    },
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
@@ -466,11 +460,19 @@ function MerkitseValmiiksiDialog() {
 function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
   var buttonElem = findSingle('button', elem)
+  function link(text) { return findSingle(".add-suoritus a:contains(" + (text || '') + ")") }
   var api = _.merge({
+    isLinkVisible: function(text) {
+      return isElementVisible(link(text))
+    },
+    clickLink: function(text) {
+      return click(link(text))
+    },
+
     open: function(text) {
       return function() {
         if (!api.isVisible()) {
-          return seq(OpinnotPage().lisääSuoritus(text), wait.until(api.isVisible))()
+          return seq(api.clickLink(text), wait.until(api.isVisible))()
         }
       }
     },

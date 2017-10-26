@@ -251,7 +251,7 @@ describe('Perusopetus', function() {
           before(
             editor.edit,
             editor.property('tila').removeItem(0),
-            lisääSuoritus.open(),
+            lisääSuoritus.open('lisää vuosiluokan suoritus'),
             lisääSuoritus.property('luokka').setValue('1a'),
             lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
             lisääSuoritus.lisääSuoritus
@@ -1679,7 +1679,7 @@ describe('Perusopetus', function() {
 
       describe('Alkuvaiheen opintojen lisääminen', function() {
         before(
-          editor.edit, opinnot.lisääSuoritus(), editor.saveChanges
+          editor.edit, opinnot.lisääSuoritusDialog.clickLink('lisää opintojen alkuvaiheen suoritus'), editor.saveChanges
         )
 
         it('Näytetään uusi suoritus', function() {
@@ -1747,12 +1747,12 @@ describe('Perusopetus', function() {
 
       describe('Päättövaiheen opintojen lisääminen', function() {
         before(
-          editor.edit, opinnot.lisääSuoritus()
+          editor.edit, opinnot.lisääSuoritusDialog.clickLink('lisää opintojen päättövaiheen suoritus')
         )
 
         describe('Lisäyksen jälkeen', function() {
           it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function() {
-            expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+            expect(opinnot.lisääSuoritusDialog.isLinkVisible('lisää opintojen päättövaiheen suoritus')).to.equal(false)
           })
 
           it('Esitäyttää pakolliset oppiaineet', function() {
@@ -1834,7 +1834,7 @@ describe('Perusopetus', function() {
 
           describe('Toisen oppiaineen lisääminen', function() {
             var lisääSuoritus = opinnot.lisääSuoritusDialog
-            before(editor.edit, lisääSuoritus.open(), wait.forAjax,
+            before(editor.edit, lisääSuoritus.open('lisää oppiaineen suoritus'), wait.forAjax,
               lisääSuoritus.property('tunniste').setValue('Matematiikka'),
               lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
               lisääSuoritus.lisääSuoritus
@@ -1914,7 +1914,7 @@ describe('Perusopetus', function() {
       before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna)
 
       it('Päätason suoritusta ei voi lisätä', function() {
-        expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+        expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(false)
       })
 
       after(editor.property('tila').removeItem(0))
@@ -1922,14 +1922,14 @@ describe('Perusopetus', function() {
     describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
       describe('Ennen lisäystä', function() {
         it('Päätason suorituksen voi lisätä', function() {
-          expect(opinnot.lisääSuoritusVisible()).to.equal(true)
+          expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(true)
         })
         it('Näytetään muut päätason suoritukset', function() {
           expect(opinnot.suoritusTabs(1)).to.deep.equal(['Päättötodistus'])
         })
       })
       describe('Lisättäessä ensimmäinen', function() {
-        before(lisääSuoritus.open())
+        before(lisääSuoritus.open('lisää vuosiluokan suoritus'))
         describe('Aluksi', function() {
           it('Lisää-nappi on disabloitu', function() {
             expect(lisääSuoritus.isEnabled()).to.equal(false)
@@ -2044,7 +2044,7 @@ describe('Perusopetus', function() {
                     })
 
                     describe('Lisättäessä toinen', function() {
-                      before(editor.edit, lisääSuoritus.open())
+                      before(editor.edit, lisääSuoritus.open('lisää vuosiluokan suoritus'))
                       describe('Aluksi', function() {
                         it('Lisää-nappi on disabloitu', function() {
                           expect(lisääSuoritus.isEnabled()).to.equal(false)
@@ -2098,7 +2098,7 @@ describe('Perusopetus', function() {
                             })
 
                             describe('Seuraavan luokka-asteen lisäyksessä', function() {
-                              before(lisääSuoritus.open())
+                              before(lisääSuoritus.open('lisää vuosiluokan suoritus'))
                               it('On mahdollista lisätä sama luokka-aste uudelleen', function() {
                                 expect(lisääSuoritus.property('tunniste').getValue()).to.equal('2. vuosiluokka')
                               })
@@ -2122,11 +2122,11 @@ describe('Perusopetus', function() {
                                   describe('Kun kaikki luokka-asteet on lisätty', function() {
                                     before(editor.edit)
                                     for (var i = 3; i <= 9; i++) {
-                                      before(lisääSuoritus.open(), lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
+                                      before(lisääSuoritus.open('lisää vuosiluokan suoritus'), lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.lisääSuoritus)
                                     }
 
                                     it('Suorituksia ei voi enää lisätä', function() {
-                                      expect(opinnot.lisääSuoritusVisible()).to.equal(false)
+                                      expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(false)
                                     })
 
                                     it('9. luokalle ei esitäytetä oppiaineita', function() {
@@ -2180,7 +2180,7 @@ describe('Perusopetus', function() {
 
         function lisääVuosiluokka(luokkaAste) {
           before(
-            lisääSuoritus.open(),
+            lisääSuoritus.open('lisää vuosiluokan suoritus'),
             lisääSuoritus.property('tunniste').setValue(luokkaAste + '. vuosiluokka'),
             lisääSuoritus.property('luokka').setValue(luokkaAste + 'a'),
             lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
