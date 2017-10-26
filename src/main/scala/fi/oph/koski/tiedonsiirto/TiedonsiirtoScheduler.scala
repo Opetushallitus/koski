@@ -4,12 +4,8 @@ import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
-import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.util.{ConcurrentStack, Timing}
-import fi.oph.scalaschema.{SerializationContext, Serializer}
-import org.json4s.{JBool, JObject, JValue}
-import org.json4s.JsonAST.JString
-import org.json4s.jackson.JsonMethods
+import fi.oph.koski.util.Timing
+import org.json4s.JValue
 
 class TiedonsiirtoScheduler(db: DB, config: Config, index: KoskiElasticSearchIndex, tiedonsiirtoService: TiedonsiirtoService) extends Timing {
   val scheduler: Scheduler =
