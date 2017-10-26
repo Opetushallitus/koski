@@ -40,7 +40,7 @@ class TiedonsiirtoService(
 ) extends Logging with Timing with GlobalExecutionContext {
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
-  private val tiedonsiirtoStack = new ConcurrentStack[TiedonsiirtoDocument]
+  private val tiedonsiirtoBuffer = new ConcurrentBuffer[TiedonsiirtoDocument]
 
   def deleteAll: Unit = {
     val doc: JValue = JObject("query" -> JObject("match_all" -> JObject()))
@@ -150,7 +150,7 @@ class TiedonsiirtoService(
 
     val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
     if (lahdejarjestelma.isDefined) {
-      Future(blocking(tiedonsiirtoStack.push(tiedonsiirtoDoc)))
+      Future(blocking(tiedonsiirtoBuffer.append(tiedonsiirtoDoc)))
     } else { // Store synchronously when data comes from GUI
       storeToElasticsearch(List(tiedonsiirtoDoc), refresh = false)
     }
@@ -174,7 +174,7 @@ class TiedonsiirtoService(
      .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
   }
 
-  def syncToElasticsearch(): Unit = storeToElasticsearch(tiedonsiirtoStack.popAll.reverse)
+  def syncToElasticsearch(): Unit = storeToElasticsearch(tiedonsiirtoBuffer.popAll)
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     var ordering = sorting.field match {
