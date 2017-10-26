@@ -1,3 +1,7 @@
+## 26.10.2017
+
+- Sallitaan kieliaineissa duplikaatit jos eri kielivalinta ja lukion matematiikassa jos eri oppimäärä
+
 ## 23.10.2017
 
 - Poistettu arviointi näyttötutkintoon valmistavan koulutuksen osan suorituksesta
