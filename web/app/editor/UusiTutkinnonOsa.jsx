@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelData} from './EditorModel.js'
 import {
-  ensureArrayKey,
+  ensureArrayKey, modelLookup,
   modelSet,
   modelSetData,
   modelSetTitle,
@@ -32,10 +32,10 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
 
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
-  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero') || modelData(suoritus, 'tutkinto.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
-  let osatP = (diaarinumero && suoritustapa) ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId) : Bacon.constant({osat:[], paikallinenOsa: true})
+  let osatP = diaarinumero ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId) : Bacon.constant({osat:[], paikallinenOsa: true})
 
   return (<span>
     {
@@ -59,7 +59,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
     if (groupId) {
       uusiSuoritus = modelSetValue(uusiSuoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
     }
-    if (tutkinto) {
+    if (tutkinto && modelLookup(uusiSuoritus, 'tutkinto')) {
       uusiSuoritus = modelSetData(uusiSuoritus, {
         tunniste: { koodiarvo: tutkinto.tutkintoKoodi, nimi: tutkinto.nimi, koodistoUri: 'koulutus' },
         perusteenDiaarinumero: tutkinto.diaarinumero

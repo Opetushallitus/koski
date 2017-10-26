@@ -1227,6 +1227,46 @@ describe('Ammatillinen koulutus', function() {
               })
             })
           })
+
+          describe('Ammatillinen tutkinnon osa', function() {
+            before(
+              editor.edit,
+              opinnot.tutkinnonOsat().lisääTutkinnonOsa('Projektiosaaminen')
+            )
+
+            describe('Lisäyksen jälkeen', function () {
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat().tutkinnonOsa(3).nimi()).to.equal('Projektiosaaminen')
+              })
+            })
+
+            describe('Tallennuksen jälkeen', function() {
+              before(editor.saveChanges)
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat().tutkinnonOsa(3).nimi()).to.equal('Projektiosaaminen')
+              })
+            })
+          })
+
+          describe('Tutkinnon osa toisesta tutkinnosta', function() {
+            before(
+              editor.edit,
+              opinnot.tutkinnonOsat().lisääTutkinnonOsaToisestaTutkinnosta('Autoalan perustutkinto', 'Auton korjaaminen')
+            )
+
+            describe('Lisäyksen jälkeen', function () {
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat().tutkinnonOsa(4).nimi()).to.equal('Auton korjaaminen')
+              })
+            })
+
+            describe('Tallennuksen jälkeen', function() {
+              before(editor.saveChanges)
+              it('lisätty osa näytetään', function() {
+                expect(opinnot.tutkinnonOsat().tutkinnonOsa(4).nimi()).to.equal('Auton korjaaminen')
+              })
+            })
+          })
         })
       })
     })
