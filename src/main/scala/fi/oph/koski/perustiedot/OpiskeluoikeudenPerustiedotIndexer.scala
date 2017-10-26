@@ -71,7 +71,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
 
     if (errors) {
       val failedItems: List[Int] = extract[List[JValue]](response \ "items" \ "update") .flatMap { item =>
-        if (item \ "error" == JNothing) List((item \ "_id").extract[Int]) else Nil
+        if (item \ "error" == JNothing) List(extract[Int](item \ "_id")) else Nil
       }
       perustiedotSyncRepository.syncLater(failedItems)
       val msg = s"Elasticsearch indexing failed for some of ids $failedItems: ${JsonMethods.pretty(response)}"
