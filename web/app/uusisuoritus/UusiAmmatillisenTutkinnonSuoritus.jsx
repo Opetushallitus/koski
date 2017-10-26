@@ -47,6 +47,7 @@ let tutkintoLens = L.lens(
 )
 
 let hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
+let hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
 
 const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -112,7 +113,7 @@ const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
 
 export const UusiAmmatillisenTutkinnonSuoritus = Popup(false)
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasAmmatillinenTutkinto(opiskeluoikeus)
 }
 UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () => <Text name="lisää ammatillisen tutkinnon suoritus"/>
 
