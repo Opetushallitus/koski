@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import mojave._
@@ -47,5 +48,23 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    "Kaksi samaa oppiainetta" - {
+      "Identtisillä tiedoilla -> HTTP 400" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
+          suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9))
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran ryhmässä pakolliset"))
+        }
+      }
+      "Eri kielivalinnalla -> HTTP 200" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
+          suoritus(äidinkieli("AI2")).copy(arviointi = arviointi(9))
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 }

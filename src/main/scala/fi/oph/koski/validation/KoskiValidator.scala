@@ -221,11 +221,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateDuplicates(suoritukset: List[Suoritus]) = {
     HttpStatus.fold(suoritukset
-      .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.tunniste, osasuoritus.ryhmittelytekijä))
+      .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.identiteetti, osasuoritus.ryhmittelytekijä))
       .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
       .map { case (tutkinnonOsa, ryhmä) =>
         val ryhmänKuvaus = ryhmä.map(r => " ryhmässä " + r).getOrElse("")
-        KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Tutkinnon osa ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
+        KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Osasuoritus ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
       }
     )
   }

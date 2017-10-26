@@ -12,6 +12,8 @@ trait Koulutusmoduuli extends Localizable {
   def nimi: LocalizedString
   def description(texts: LocalizationRepository): LocalizedString = nimi
   def isTutkinto = false
+  // Vertailutekijä tarkistettaessa duplikaatteja
+  def identiteetti: AnyRef = tunniste
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
@@ -73,6 +75,7 @@ trait Valinnaisuus {
 
 trait Kieliaine extends Koulutusmoduuli {
   def kieli: Koodistokoodiviite
+  override def identiteetti: AnyRef = (super.identiteetti, kieli)
 }
 
 trait Äidinkieli extends Kieliaine

@@ -311,6 +311,7 @@ case class LukionMatematiikka(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
   override def description(text: LocalizationRepository) = oppimäärä.description
+  override def identiteetti: AnyRef = (super.identiteetti, oppimäärä)
 }
 
 case class LaajuusKursseissa(

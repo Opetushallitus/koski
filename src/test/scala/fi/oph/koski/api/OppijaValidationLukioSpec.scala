@@ -55,6 +55,33 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
   }
 
+  "Kaksi samaa oppiainetta" - {
+    "Identtisillä tiedoilla -> HTTP 400" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9")),
+        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9"))
+      )))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran"))
+      }
+    }
+    "Eri kielivalinnalla -> HTTP 200" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9")),
+        suoritus(lukionÄidinkieli("AI2")).copy(arviointi = arviointi("9"))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+    "Eri matematiikan oppimäärällä -> HTTP 200" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        suoritus(matematiikka("MAA")).copy(arviointi = arviointi("9")),
+        suoritus(matematiikka("MAB")).copy(arviointi = arviointi("9"))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   "Tilat ja vahvistukset" - {
     "Valmis oppiainesuoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
