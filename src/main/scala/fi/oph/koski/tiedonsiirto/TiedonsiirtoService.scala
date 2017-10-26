@@ -36,7 +36,7 @@ class TiedonsiirtoService(
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
-  userRepository: KoskiUserRepository,
+  userRepository: KoskiUserRepository
 ) extends Logging with Timing with GlobalExecutionContext {
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
