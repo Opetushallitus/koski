@@ -17,7 +17,7 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
 
   diaarinumerotP.onValue(options => {
     let current = perusteAtom.get()
-    if (!current || !options.map(k => k.koodiarvo).includes(current)) {
+    if (!current || (options.length > 0 && !options.map(k => k.koodiarvo).includes(current))) {
       selectOption(options.find(k => preferred.includes(k.koodiarvo)) || options[0])
     }
   })
