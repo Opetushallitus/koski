@@ -16,7 +16,7 @@ import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = MockOppijat.tyhjä
-  val tiedonsiirrot = SharedJetty.application.scheduledTasks.syncTiedonsiirrot
+  val tiedonsiirtoService = SharedJetty.application.tiedonsiirtoService
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
@@ -78,7 +78,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
-    tiedonsiirrot.syncTiedonsiirrot(None)
+    tiedonsiirtoService.syncToElasticsearch()
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.helsinginKaupunkiPalvelukäyttäjä) {
       verifyResponseStatusOk()
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
@@ -175,7 +175,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] = {
-    tiedonsiirrot.syncTiedonsiirrot(None)
+    tiedonsiirtoService.syncToElasticsearch()
     authGet(url, user) {
       verifyResponseStatusOk()
       readPaginatedResponse[Tiedonsiirrot].henkilöt

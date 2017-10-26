@@ -21,8 +21,10 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
 import fi.oph.koski.util._
+import fi.oph.scalaschema.{SerializationContext, Serializer}
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
+import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
@@ -35,10 +37,10 @@ class TiedonsiirtoService(
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
   userRepository: KoskiUserRepository,
-  tiedonsiirtoStack: ConcurrentStack[TiedonsiirtoDocument]
 ) extends Logging with Timing with GlobalExecutionContext {
-
+  private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
+  private val tiedonsiirtoStack = new ConcurrentStack[TiedonsiirtoDocument]
 
   def deleteAll: Unit = {
     val doc: JValue = JObject("query" -> JObject("match_all" -> JObject()))
@@ -146,8 +148,33 @@ class TiedonsiirtoService(
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                                     userOid: String, aikaleima: Timestamp) = {
 
-    Future(blocking(tiedonsiirtoStack.push(TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima))))
+    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+    if (lahdejarjestelma.isDefined) {
+      Future(blocking(tiedonsiirtoStack.push(tiedonsiirtoDoc)))
+    } else { // Store synchronously when data comes from GUI
+      storeToElasticsearch(List(tiedonsiirtoDoc), refresh = false)
+    }
   }
+
+  def storeToElasticsearch(tiedonsiirrot: List[TiedonsiirtoDocument], refresh: Boolean = true): Unit = {
+    logger.debug(s"Updating ${tiedonsiirrot.length} tiedonsiirrot documents to elasticsearch")
+    if (tiedonsiirrot.isEmpty) {
+      return
+    }
+
+    val tiedonsiirtoChunks = tiedonsiirrot.grouped(1000).toList
+    tiedonsiirtoChunks.zipWithIndex.map { case (ts, i) =>
+      index.updateBulk(ts.flatMap { tiedonsiirto =>
+        List(
+          JObject("update" -> JObject("_id" -> JString(tiedonsiirto.id), "_index" -> JString("koski"), "_type" -> JString("tiedonsiirto"))),
+          JObject("doc_as_upsert" -> JBool(true), "doc" -> Serializer.serialize(tiedonsiirto, serializationContext))
+        )
+      }, refresh = refresh && i == tiedonsiirtoChunks.length - 1) // wait for elasticsearch to refresh after the last batch, makes testing easier
+    }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
+     .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
+  }
+
+  def syncToElasticsearch(): Unit = storeToElasticsearch(tiedonsiirtoStack.popAll.reverse)
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     var ordering = sorting.field match {

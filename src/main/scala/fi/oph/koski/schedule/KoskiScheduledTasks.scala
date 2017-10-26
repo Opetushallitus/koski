@@ -6,7 +6,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoScheduler
 class KoskiScheduledTasks(application: KoskiApplication) {
   val updateHenkilötScheduler: Scheduler = new UpdateHenkilotTask(application).scheduler
   val syncPerustiedot: Scheduler = PerustiedotSyncScheduler(application)
-  val syncTiedonsiirrot = new TiedonsiirtoScheduler(application.masterDatabase.db, application.config, application.koskiElasticSearchIndex)
+  val syncTiedonsiirrot = new TiedonsiirtoScheduler(application.masterDatabase.db, application.config, application.koskiElasticSearchIndex, application.tiedonsiirtoService)
 
   def init {}
 }
