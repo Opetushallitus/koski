@@ -11,8 +11,8 @@ import org.json4s.jackson.JsonMethods
 
 case class KoodistoCreator(application: KoskiApplication) extends Logging {
   private val config = application.config
-  private lazy val kp = application.koodistoPalvelu
-  private lazy val kmp = KoodistoMuokkausPalvelu(config)
+  private val kp = application.koodistoPalvelu
+  private val kmp = KoodistoMuokkausPalvelu(config)
 
   private val createMissingStr = config.getString("koodisto.create")
   private val updateExistingStr = config.getString("koodisto.update")

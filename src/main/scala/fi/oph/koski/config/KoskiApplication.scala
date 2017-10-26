@@ -86,7 +86,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
 
   lazy val init: Future[Unit] = {
     perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
-    tryCatch("Koodistojen luonti") { KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
+    tryCatch("Koodistojen luonti") { if (config.getString("opintopolku.virkailija.url") != "mock") KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
     val parallels: immutable.Seq[Future[Any]] = List(
       Future { tiedonsiirtoService.init },
       Future { scheduledTasks.init },
