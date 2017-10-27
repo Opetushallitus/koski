@@ -9,7 +9,7 @@ import org.json4s.JsonAST.{JObject, JString, JValue}
 import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
-  def serializeOnlyWhen(o: OnlyWhen) = JObject("modelPath" -> JString(o.modelPath), "dataPath" -> JString(o.dataPath), "value" -> JString(o.value))
+  def serializeOnlyWhen(o: OnlyWhen) = JObject("path" -> JString(o.dataPath), "value" -> JString(o.value))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
   def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 

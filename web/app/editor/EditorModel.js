@@ -660,8 +660,7 @@ const objectLens = (path) => {
 export const checkOnlyWhen = (model, conditions) => {
   if (!conditions) return true
   return conditions.some(onlyWhen => {
-    let onlyWhenModel = modelLookup(model, onlyWhen.modelPath.split('/'))
-    let data = modelData(onlyWhenModel, onlyWhen.dataPath)
+    let data = modelData(model, onlyWhen.path.split('/'))
     let match = onlyWhen.value == data
     if (!match) {
       //console.log(onlyWhen, onlyWhenModel, 'no match')
