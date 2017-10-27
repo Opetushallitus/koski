@@ -6,13 +6,14 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
+import fi.oph.koski.perustiedot.PerustiedotSyncRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
@@ -20,10 +21,9 @@ import fi.oph.koski.util.OidGenerator
 import org.json4s.{JArray, JObject, JString}
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
-import slick.lifted.Query
 import slick.{dbio, lifted}
 
-class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     val query: lifted.Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -70,7 +70,16 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
     def createOrUpdateWithRetry: Either[HttpStatus, CreateOrUpdateResult] = {
       val result = try {
-        runDbSync(createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate).transactionally)
+        runDbSync {
+          (for {
+            result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate)
+            _ <- result match {
+              case Right(u: Updated) if opiskeluoikeus.lähdejärjestelmänId.isDefined => perustiedotSyncRepository.syncAction(u.id)
+              case Right(c: Created) if opiskeluoikeus.lähdejärjestelmänId.isDefined => perustiedotSyncRepository.syncAction(c.id)
+              case _ => DBIO.successful()
+            }
+          } yield result).transactionally
+        }
       } catch {
         case e: SQLException if e.getSQLState == "23505" => // 23505 = Unique constraint violation
           if (e.getMessage.contains("""duplicate key value violates unique constraint "opiskeluoikeus_oid_key"""")) {

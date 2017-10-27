@@ -17,7 +17,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class PerustiedotSyncSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
   private implicit val session = KoskiSession.systemUser
   private lazy val application = KoskiApplicationForTests
-  private lazy val opiskeluoikeusRepository = new PostgresOpiskeluoikeusRepository(application.masterDatabase.db, application.historyRepository, application.henkilöCache, application.oidGenerator, application.henkilöRepository.opintopolku)
+  private lazy val opiskeluoikeusRepository = new PostgresOpiskeluoikeusRepository(application.masterDatabase.db, application.historyRepository, application.henkilöCache, application.oidGenerator, application.henkilöRepository.opintopolku, application.perustiedotSyncRepository)
 
   "Synkkaa perustiedot kannasta" - {
     Futures.await(application.perustiedotIndexer.init)

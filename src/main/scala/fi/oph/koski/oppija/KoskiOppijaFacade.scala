@@ -1,6 +1,5 @@
 package fi.oph.koski.oppija
 
-import java.time.LocalDate
 import java.time.LocalDate.now
 
 import com.typesafe.config.Config
@@ -113,7 +112,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
-        if (result.changed) {
+        if (result.changed && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
           val withMasterInfo = henkilöCache.getCached(result.oppijaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${result.oppijaOid}} ei löydy"))
           val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, opiskeluoikeus.luokka.orElse(opiskeluoikeus.ryhmä), withMasterInfo)
           perustiedotIndexer.update(perustiedot)
