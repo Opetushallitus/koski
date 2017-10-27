@@ -780,6 +780,7 @@ describe('Ammatillinen koulutus', function() {
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
               kuvaus: 'Näytön esimerkkikuvaus',
               suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+              työssäoppimisenYhteydessä: false,
               arvosana: '3',
               arvioinnistaPäättäneet: ['Opettaja'],
               arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
@@ -799,6 +800,7 @@ describe('Ammatillinen koulutus', function() {
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).asetaNäytönTiedot({
               kuvaus: 'Näytön muokattu esimerkkikuvaus',
               suorituspaikka: ['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'],
+              työssäoppimisenYhteydessä: true,
               arvosana: '2',
               arvioinnistaPäättäneet: ['Opettaja'],
               arviointikeskusteluunOsallistuneet: ['Opettaja', 'Opiskelija'],
@@ -818,6 +820,7 @@ describe('Ammatillinen koulutus', function() {
               var näyttö = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lueNäyttöModal()
               expect(näyttö.kuvaus).to.equal('Näytön muokattu esimerkkikuvaus')
               expect(näyttö.suorituspaikka).to.deep.equal(['työpaikka', 'Esimerkkityöpaikka, Esimerkkisijainti'])
+              expect(näyttö.työssäoppimisenYhteydessä).to.equal(true)
               expect(näyttö.arvosana).to.equal('2')
               expect(näyttö.arvioinnistaPäättäneet).to.deep.equal(['Opettaja'])
               expect(näyttö.arviointikeskusteluunOsallistuneet).to.deep.equal(['Opettaja', 'Opiskelija'])
@@ -933,6 +936,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
             'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
             'Suoritusaika 1.2.2016 — 1.2.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -956,6 +960,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
             'Suorituspaikka Sastamalan kunta\n' +
             'Suoritusaika 1.3.2016 — 1.3.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -975,6 +980,7 @@ describe('Ammatillinen koulutus', function() {
             'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
             'Suorituspaikka Vesipojat Oy\n' +
             'Suoritusaika 1.4.2016 — 1.4.2016\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
             'Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
@@ -1086,6 +1092,7 @@ describe('Ammatillinen koulutus', function() {
           'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
           'Suoritusaika 20.4.2002 — 20.4.2002\n' +
           'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\nRahoituksen piirissä ei\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
           'Yhteensä 15 osp'
         )
       })
