@@ -64,25 +64,13 @@ PropertiesEditor.canShowInline = () => false
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
   if (property.hidden) return false
-  if (property.onlyWhen) {
-    for (var i in property.onlyWhen) {
-      let onlyWhen = property.onlyWhen[i]
-      let [onlyWhenPath, onlyWhenValues] = onlyWhen.split('=')
-      let splitPath = onlyWhenPath.split('/')
-      let lastIndex = splitPath.length - 1
-      let dataPath = ''
-      let dotIndex = splitPath[lastIndex].indexOf('.')
-      if (dotIndex > 0) {
-        dataPath = splitPath[lastIndex].slice(dotIndex + 1)
-        splitPath[lastIndex] = splitPath[lastIndex].slice(0, dotIndex)
-      }
-      let onlyWhenModel = modelLookup(property.owner, splitPath)
-      let data = modelData(onlyWhenModel, dataPath)
-      let match = onlyWhenValues.includes(data)
-      console.log(property.key, onlyWhenModel, match)
-      if (!match) return false
-    }
-  }
+  if (property.onlyWhen && !property.onlyWhen.some(onlyWhen => {
+      let onlyWhenModel = modelLookup(property.owner, onlyWhen.modelPath.split('/'))
+      let data = modelData(onlyWhenModel, onlyWhen.dataPath)
+      let match = onlyWhen.value == data
+      //console.log(property.key, onlyWhenModel, match)
+      return match
+  })) return false
   return true
 }
 
