@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext
  */
 object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
-  val jettyThreads = 50
+  val jettyThreads = 100
   val globalExecutionContextThreads = jettyThreads
   val httpThreads = jettyThreads
   val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
