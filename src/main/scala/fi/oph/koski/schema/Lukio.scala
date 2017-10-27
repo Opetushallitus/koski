@@ -219,9 +219,10 @@ case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
-  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä tai soveltava")
+  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
   @KoodistoKoodiarvo("syventava")
   @KoodistoKoodiarvo("soveltava")
+  @KoodistoKoodiarvo("pakollinen")
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
