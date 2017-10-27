@@ -2451,18 +2451,18 @@ describe('Perusopetus', function() {
             äidinkieli.avaaLisääKurssiDialog
           )
           it('Näytetään vain oikean oppiaineen kurssit', function() {
-            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(21)
+            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(6)
           })
 
           describe('Kun lisätään kurssi', function() {
             before(
-              äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Uutisia ja mielipiteitä'),
               äidinkieli.lisääKurssiDialog.lisääKurssi
             )
 
             describe('Kun annetaan arvosana ja tallennetaan', function() {
               before(
-                äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+                äidinkieli.kurssi('S21').arvosana.setValue('8'),
                 editor.saveChanges
               )
 

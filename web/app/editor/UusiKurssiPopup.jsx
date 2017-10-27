@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {accumulateModelState, modelData, modelItems, modelLookup, modelValid} from './EditorModel'
+import {accumulateModelState, modelItems, modelLookup, modelValid} from './EditorModel'
 import Text from '../Text.jsx'
 import ModalDialog from './ModalDialog.jsx'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown.jsx'
@@ -14,8 +14,7 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
   let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
   let validP = selectedAtom
-  let päätasonSuoritus = uusiKurssinSuoritus.context.suoritus
-  let valtakunnallisetKurssiProtot = filterProtos(päätasonSuoritus, koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen)))
+  let valtakunnallisetKurssiProtot = koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen))
   let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
@@ -43,19 +42,4 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
         }
       </ModalDialog>
   )
-}
-
-const filterProtos = (päätasonSuoritus, protos) => {
-  if (päätasonSuoritus.value.classes.includes('aikuistenperusopetuksenoppimaaransuoritus')) {
-    let diaari = modelData(päätasonSuoritus, 'koulutusmoduuli.perusteenDiaarinumero')
-    return protos.filter(proto => {
-      switch (diaari) {
-        case 'OPH-1280-2017': return proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenpaattovaiheenkurssi2017')
-        case '19/011/2015': return proto.value.classes.includes('valtakunnallinenaikuistenperusopetuksenkurssi2015')
-        default: return true
-      }
-    })
-  } else {
-    return protos
-  }
 }

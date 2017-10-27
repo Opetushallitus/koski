@@ -259,7 +259,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val complexObject: Boolean = property.metadata.contains(ComplexObject())
     val tabular: Boolean = property.metadata.contains(Tabular())
     val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
-    val onlyWhen = property.metadata.collect{case OnlyWhen(modelPath, dataPath, value) => JObject("modelPath" -> JString(modelPath), "dataPath" -> JString(dataPath), "value" -> JString(value))}
+    val onlyWhen = property.metadata.collect{case o:OnlyWhen => EditorModelSerializer.serializeOnlyWhen(o)}
     var props  = Map.empty[String, JValue]
     if (hidden) props += ("hidden" -> JBool(true))
     if (representative) props += ("representative" -> JBool(true))

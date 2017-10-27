@@ -332,7 +332,9 @@ export const modelProperties = (mainModel, pathsOrFilter) => {
 export const oneOfPrototypes = (model) => {
   if (!model) return []
   if (model.oneOfPrototypes) {
-    return model.oneOfPrototypes = model.oneOfPrototypes.map(proto => preparePrototypeModel(proto, model))
+    return model.oneOfPrototypes = model.oneOfPrototypes
+      .map(proto => preparePrototypeModel(proto, model))
+      .filter(m => checkOnlyWhen(m, m.onlyWhen))
   }
   return [model]
 }
@@ -646,7 +648,6 @@ const toPath = (path) => {
 const justPath = path => toPath(path).filter(pathElem => typeof pathElem != 'function')
 
 const objectLens = (path) => {
-
   let pathLenses = toPath(path).map(key => {
     let index = parseInt(key)
     return Number.isNaN(index)
@@ -654,4 +655,17 @@ const objectLens = (path) => {
       : indexL(index)
   })
   return L.compose(...pathLenses)
+}
+
+export const checkOnlyWhen = (model, conditions) => {
+  if (!conditions) return true
+  return conditions.some(onlyWhen => {
+    let onlyWhenModel = modelLookup(model, onlyWhen.modelPath.split('/'))
+    let data = modelData(onlyWhenModel, onlyWhen.dataPath)
+    let match = onlyWhen.value == data
+    if (!match) {
+      //console.log(onlyWhen, onlyWhenModel, 'no match')
+    }
+    return match
+  })
 }

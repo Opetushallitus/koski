@@ -1,8 +1,8 @@
 import React from 'react'
-import { modelEmpty, modelItems, addContext } from './EditorModel.js'
-import { Editor } from './Editor.jsx'
-import { ArrayEditor } from './ArrayEditor.jsx'
-import {modelData, modelLookup, modelProperties} from './EditorModel'
+import {addContext, modelEmpty, modelItems} from './EditorModel.js'
+import {Editor} from './Editor.jsx'
+import {ArrayEditor} from './ArrayEditor.jsx'
+import {checkOnlyWhen, modelProperties} from './EditorModel'
 import Text from '../Text.jsx'
 import {buildClassNames} from '../classnames'
 
@@ -64,13 +64,7 @@ PropertiesEditor.canShowInline = () => false
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
   if (property.hidden) return false
-  if (property.onlyWhen && !property.onlyWhen.some(onlyWhen => {
-      let onlyWhenModel = modelLookup(property.owner, onlyWhen.modelPath.split('/'))
-      let data = modelData(onlyWhenModel, onlyWhen.dataPath)
-      let match = onlyWhen.value == data
-      //console.log(property.key, onlyWhenModel, match)
-      return match
-  })) return false
+  if (property.onlyWhen && !checkOnlyWhen(property.owner, property.onlyWhen)) return false
   return true
 }
 

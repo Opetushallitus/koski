@@ -2,13 +2,14 @@ package fi.oph.koski.editor
 
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Example, MultiLineString, UnitOfMeasure}
+import fi.oph.koski.schema.{Example, MultiLineString, OnlyWhen, UnitOfMeasure}
 import fi.oph.scalaschema.Metadata
 import fi.oph.scalaschema.annotation._
-import org.json4s.JsonAST.{JObject, JValue}
+import org.json4s.JsonAST.{JObject, JString, JValue}
 import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
+  def serializeOnlyWhen(o: OnlyWhen) = JObject("modelPath" -> JString(o.modelPath), "dataPath" -> JString(o.dataPath), "value" -> JString(o.value))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
   def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 
@@ -81,6 +82,13 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   }
 
   private def metadataToFields(metadata: List[Metadata]): List[JField] = {
+    val onlyWhen = metadata.collect {
+      case o: OnlyWhen => serializeOnlyWhen(o)
+    } match {
+      case Nil => Nil
+      case conditions => List(JField("onlyWhen", JArray(conditions)))
+    }
+
     metadata.collect {
       case MinItems(x) => JField("minItems", JInt(x))
       case MaxItems(x) => JField("maxItems", JInt(x))
@@ -92,7 +100,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case UnitOfMeasure(x) => JField("unitOfMeasure", JString(x))
       case RegularExpression(x) => JField("regularExpression", JString(x))
       case Example(x) => JField("example", JString(x))
-    }
+    } ++ onlyWhen
   }
 
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
