@@ -2,7 +2,7 @@ import React from 'react'
 import { modelEmpty, modelItems, addContext } from './EditorModel.js'
 import { Editor } from './Editor.jsx'
 import { ArrayEditor } from './ArrayEditor.jsx'
-import {modelProperties} from './EditorModel'
+import {modelData, modelLookup, modelProperties} from './EditorModel'
 import Text from '../Text.jsx'
 import {buildClassNames} from '../classnames'
 
@@ -64,6 +64,25 @@ PropertiesEditor.canShowInline = () => false
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
   if (property.hidden) return false
+  if (property.onlyWhen) {
+    for (var i in property.onlyWhen) {
+      let onlyWhen = property.onlyWhen[i]
+      let [onlyWhenPath, onlyWhenValues] = onlyWhen.split('=')
+      let splitPath = onlyWhenPath.split('/')
+      let lastIndex = splitPath.length - 1
+      let dataPath = ''
+      let dotIndex = splitPath[lastIndex].indexOf('.')
+      if (dotIndex > 0) {
+        dataPath = splitPath[lastIndex].slice(dotIndex + 1)
+        splitPath[lastIndex] = splitPath[lastIndex].slice(0, dotIndex)
+      }
+      let onlyWhenModel = modelLookup(property.owner, splitPath)
+      let data = modelData(onlyWhenModel, dataPath)
+      let match = onlyWhenValues.includes(data)
+      console.log(property.key, onlyWhenModel, match)
+      if (!match) return false
+    }
+  }
   return true
 }
 

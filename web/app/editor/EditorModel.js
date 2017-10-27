@@ -27,19 +27,29 @@ export const lensedModel = (model, lens) => {
 
 export const modelLens = (path) => {
   var pathElems = toPath(path)
-  let pathLenses = pathElems.map(key => {
-    let numeric = !isNaN(key)
-    let string = typeof key == 'string'
-
-    var l1 = numeric
-      ? modelItemLens(parseInt(key))
-      : string
-        ? modelPropertyValueLens(key)
-        : key // an actual lens then
-
-    return L.compose(l1, manageModelIdLens)
-  })
+  let pathLenses = pathElems.map(key => L.compose(parseModelStep(key), manageModelIdLens))
   return L.compose(manageModelIdLens, ...pathLenses)
+}
+
+let parseModelStep = (key) => {
+  if (key == '..') return modelParentLens
+  if (!isNaN(key)) return modelItemLens(parseInt(key))
+  if (typeof key == 'string') return modelPropertyValueLens(key)
+  if (typeof key == 'function') return key // an actual lens then
+  throwError('Unexpected model path element', key)
+}
+
+let modelParentLens = L.lens(
+    m => findParent(m),
+    (v, m) => throwError('Cannot set parent of model', m)
+)
+let findParent = (model) => {
+  if (!model.parent) return undefined
+  if (typeof model.path.last() == 'function') {
+    // Skip lenses in path, only consider actual path elements
+    return findParent(model.parent)
+  }
+  return model.parent
 }
 
 let ensureModelId = (model, force) => {
@@ -341,7 +351,7 @@ export const contextualizeSubModel = (subModel, parentModel, path) => {
   if (!subModel) return subModel
   subModel = resolvePrototype(subModel, parentModel.context)
   var subPath = childPath(parentModel, path)
-  return R.merge(subModel, { context: parentModel.context, path: subPath })
+  return R.merge(subModel, { context: parentModel.context, path: subPath, parent: parentModel })
 }
 
 // Add more context parameters to the current context of the model.
@@ -451,7 +461,7 @@ const modelItemsRaw = (model) => ((model && model.type == 'array' && model.value
 let contextualizeProperty = (mainModel) => (property) => {
   if (!property) return property
   let model = contextualizeChild(mainModel, property.model, property.key)
-  return R.merge(property, { model })
+  return R.merge(property, { model, owner: mainModel })
 }
 
 let arrayKeyCounter = 0

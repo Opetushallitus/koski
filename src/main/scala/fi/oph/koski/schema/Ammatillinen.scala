@@ -481,6 +481,7 @@ case class Näyttö(
   suoritusaika: Option[NäytönSuoritusaika],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   @DefaultValue(false)
+  @OnlyWhen("../../../suoritustapa.koodiarvo=ops")
   työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
   @Flatten

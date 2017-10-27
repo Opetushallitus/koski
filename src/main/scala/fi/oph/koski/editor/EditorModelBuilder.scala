@@ -15,6 +15,8 @@ import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
+import org.json4s.{JArray, JValue}
+import org.json4s.JsonAST.{JBool, JString}
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
@@ -257,14 +259,16 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val complexObject: Boolean = property.metadata.contains(ComplexObject())
     val tabular: Boolean = property.metadata.contains(Tabular())
     val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
-    var props  = Map.empty[String, Boolean]
-    if (hidden) props += ("hidden" -> true)
-    if (representative) props += ("representative" -> true)
-    if (flatten) props += ("flatten" -> true)
-    if (complexObject) props += ("complexObject" -> true)
-    if (tabular) props += ("tabular" -> true)
-    if (!readOnly) props += ("editable" -> true)
-    if (sensitiveHidden(property.metadata)(context.user)) props += ("sensitiveHidden" -> true)
+    val onlyWhen = property.metadata.collect{case OnlyWhen(condition) => JString(condition)}
+    var props  = Map.empty[String, JValue]
+    if (hidden) props += ("hidden" -> JBool(true))
+    if (representative) props += ("representative" -> JBool(true))
+    if (flatten) props += ("flatten" -> JBool(true))
+    if (complexObject) props += ("complexObject" -> JBool(true))
+    if (tabular) props += ("tabular" -> JBool(true))
+    if (!readOnly) props += ("editable" -> JBool(true))
+    if (sensitiveHidden(property.metadata)(context.user)) props += ("sensitiveHidden" -> JBool(true))
+    if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
 
     EditorProperty(property.key, property.title, propertyModel, props)
   }

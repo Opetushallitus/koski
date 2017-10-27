@@ -97,7 +97,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
 
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
 
-  private def flagsToFields(props: Map[String, Boolean]) = props.toList.map{ case (key, value) => JField(key, JBool(value)) }
+  private def flagsToFields(props: Map[String, JValue]) = props.toList.map{ case (key, value) => JField(key, value) }
 
   private def serializeEnumValue(enumValue: EnumValue)(implicit format: Formats): JObject = enumValue match {
     case fi.oph.koski.editor.EnumValue(value, title, data) => JObject(
