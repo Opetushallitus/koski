@@ -115,5 +115,5 @@ case class SuorituksenPerustiedot(
 )
 
 case class KoulutusmoduulinPerustiedot(
-  tunniste: KoodiViite
+  tunniste: Koodistokoodiviite
 )

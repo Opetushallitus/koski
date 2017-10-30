@@ -6,17 +6,17 @@ import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.json.JsonSerializer.sensitiveHidden
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
-import fi.oph.koski.json.JsonSerializer.sensitiveHidden
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
+import org.json4s.JsonAST.JBool
 import org.json4s.{JArray, JValue}
-import org.json4s.JsonAST.{JBool, JObject, JString}
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {

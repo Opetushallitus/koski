@@ -89,7 +89,6 @@ object KoskiErrorCategory {
         val vääräKoulutustyyppi = subcategory("vääräKoulutustyyppi", "Tutkinnon koulutustyyppi on väärä")
         val tutkinnonOsanRyhmäPuuttuu = subcategory("tutkinnonOsanRyhmäPuuttuu", "Tutkinnonosan ryhmä on pakollinen ammatillisen perustutkinnon tutkinnonosille")
         val koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä = subcategory("koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä", "Tutkinnonosan ryhmä voidaan määritellä vain ammatillisen perustutkinnon tutkinnonosille")
-        val vääräKurssikoodisto = subcategory("vääräKurssikoodisto", "Aikuisten perusopetuksessa käytetty väärän tyyppistä kurssikoodistoa (ei opetussuunnitelman mukainen)")
         val samaTutkintokoodi = subcategory("samaTutkintokoodi", "Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa tarvitse/saa olla erillistä tutkintotietoa")
         val duplikaattiOsasuoritus = subcategory("duplikaattiOsasuoritus", "Duplikaatti osasuoritus päätason suorituksella")
       }

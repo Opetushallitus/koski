@@ -39,7 +39,7 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
       val errors: List[ErrorDetail] = JsonSerializer.parse[List[ErrorDetail]](body)
       errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
         if (errorDetail.key != expectedErrorDetail.errorKey) {
-          fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.errorKey + "), message=" + errorDetail.message)
+          fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.errorKey + "), message=" + JsonMethods.pretty(errorDetail.message))
         }
         expectedErrorDetail.matchMessage(errorDetail.message)
       }

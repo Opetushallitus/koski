@@ -2,14 +2,14 @@ package fi.oph.koski.editor
 
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Example, MultiLineString, OnlyWhen, UnitOfMeasure}
-import fi.oph.scalaschema.Metadata
+import fi.oph.koski.schema.{Example, KoskiSchema, MultiLineString, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._
+import fi.oph.scalaschema.{Metadata, SerializationContext, Serializer}
 import org.json4s.JsonAST.{JObject, JString, JValue}
 import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
-  def serializeOnlyWhen(o: OnlyWhen) = JObject("path" -> JString(o.dataPath), "value" -> JString(o.value))
+  def serializeOnlyWhen(o: OnlyWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
   def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 

@@ -4,14 +4,14 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
-      aikuistenPerusopetuksenOppimääränSuoritus(diaari)
+      aikuistenPerusopetuksenOppimääränSuoritus(diaari).copy(osasuoritukset = None, vahvistus = None)
     ),
     alkamispäivä = Some(longTimeAgo),
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
@@ -29,13 +29,13 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
   "Kurssisuoritukset" - {
     "OPS 2015, mutta kurssisuorituksissa 2017 koodisto -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("19/011/2015")).copy(osasuoritukset = oppiaineidenSuoritukset2017)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKurssikoodisto("Aikuisten perusopetuksessa 2015 käytetty väärää kurssikoodistoa aikuistenperusopetuksenpaattovaiheenkurssit2017 (käytettävä koodistoa aikuistenperusopetuksenkurssit2015)"))
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*aikuistenperusopetuksenpaattovaiheenkurssit2017.*".r))
       }
     }
 
     "OPS 2017, mutta kurssisuorituksissa 2015 koodisto -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(osasuoritukset = oppiaineidenSuoritukset2015)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKurssikoodisto("Aikuisten perusopetuksessa 2017 käytetty väärää kurssikoodistoa aikuistenperusopetuksenkurssit2015 (käytettävä koodistoa aikuistenperusopetuksenpaattovaiheenkurssit2017)"))
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*aikuistenperusopetuksenkurssit2015.*".r))
       }
     }
   }

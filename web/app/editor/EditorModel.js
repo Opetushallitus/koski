@@ -258,13 +258,16 @@ export const optionalModelLens = ({model}) => {
   )
 }
 
-const preparePrototypeModel = (prototypeModel, parentModel) => {
+const preparePrototypeModel = (prototypeModel, forModel) => {
   if (!prototypeModel) return prototypeModel
   if (prototypeModel.context) {
     return prototypeModel
   }
-  let contextualizedProto = contextualizeSubModel(prototypeModel, parentModel)
-  let mergedModel = R.merge(parentModel, contextualizedProto) // includes all attributes from parent model (like maxLines etc that come from property annotations)
+
+  let contextualizedProto = contextualizeSubModel(prototypeModel, forModel)
+  contextualizedProto.parent = forModel.parent // parent fix
+
+  let mergedModel = R.merge(forModel, contextualizedProto) // includes all attributes from parent model (like maxLines etc that come from property annotations)
   return mergedModel
 }
 
@@ -349,6 +352,7 @@ export const contextualizeModel = (model, context, path) => {
   return R.merge(model, { context, path: childPath(model, path) })
 }
 
+// TODO: don't call this for arrayPrototype. Add arrayPrototype accessor instead
 export const contextualizeSubModel = (subModel, parentModel, path) => {
   if (!subModel) return subModel
   subModel = resolvePrototype(subModel, parentModel.context)
@@ -662,9 +666,9 @@ export const checkOnlyWhen = (model, conditions) => {
   return conditions.some(onlyWhen => {
     let data = modelData(model, onlyWhen.path.split('/'))
     let match = onlyWhen.value == data
-    if (!match) {
-      //console.log(onlyWhen, onlyWhenModel, 'no match')
-    }
+    /*if (!match) {
+      console.log('onlyWhen mismatch at ' + justPath(model.path) + ". Condition " + onlyWhen.path + "=" + onlyWhen.value, '. Value at path=' + data)
+    }*/
     return match
   })
 }

@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, Title}
+import fi.oph.scalaschema.annotation._
 
 
 @Description("Aikuisten perusopetuksen opiskeluoikeus")
@@ -116,8 +116,9 @@ case class PaikallinenAikuistenPerusopetuksenKurssi(
 }
 
 @Title("Aikuisten perusopetuksen opetussuunnitelman 2015 mukainen kurssi")
-@OnlyWhen("../../../../../../koulutusmoduuli/perusteenDiaarinumero","19/011/2015")
-@OnlyWhen("../../../../koulutusmoduuli/perusteenDiaarinumero", "19/011/2015")
+@OnlyWhen("../../../../../koulutusmoduuli/perusteenDiaarinumero","19/011/2015")
+@OnlyWhen("../../../koulutusmoduuli/perusteenDiaarinumero", "19/011/2015")
+@OnlyWhen("../..", None) // allow standalone deserialization
 case class ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
   @KoodistoUri("aikuistenperusopetuksenkurssit2015")
   @Title("Nimi")
@@ -126,8 +127,9 @@ case class ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
 @Title("Aikuisten perusopetuksen päättövaiheen opetussuunnitelman 2017 mukainen kurssi")
-@OnlyWhen("../../../../../../koulutusmoduuli/perusteenDiaarinumero", "OPH-1280-2017")
-@OnlyWhen("../../../../koulutusmoduuli/perusteenDiaarinumero", "OPH-1280-2017")
+@OnlyWhen("../../../../../koulutusmoduuli/perusteenDiaarinumero", "OPH-1280-2017")
+@OnlyWhen("../../../koulutusmoduuli/perusteenDiaarinumero", "OPH-1280-2017")
+@OnlyWhen("../..", None) // allow standalone deserialization
 case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   @KoodistoUri("aikuistenperusopetuksenpaattovaiheenkurssit2017")
   @Title("Nimi")
