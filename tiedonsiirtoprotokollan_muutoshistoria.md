@@ -1,3 +1,7 @@
+## 30.10.2017
+
+- Lisätty kenttä koulukoti nuorten perusopetuksen opiskeluoikeuden lisätietohin
+
 ## 27.10.2017
 
 - Paikallinen lukion kurssi voi olla tyyppiä "pakollinen"
