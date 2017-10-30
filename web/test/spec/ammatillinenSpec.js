@@ -351,6 +351,38 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
+
+    describe('Ammatillisen tutkinnon osittainen suoritus', function () {
+      before(
+        resetFixtures,
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+        addOppija.selectOppimäärä('Ammatillisen tutkinnon osa/osia'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
+      )
+
+      it('Lisätty opiskeluoikeus näytetään', function () {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()[0]).to.match(/^Stadin ammattiopisto,Autoalan perustutkinto, osittainen.*/)
+        expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
+      })
+
+      var suoritustapa = editor.property('suoritustapa')
+      describe('Tutkinnon osan lisääminen', function () {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'),
+          editor.saveChanges,
+          wait.forAjax
+        )
+
+        it('näyttää edelleen oikeat tiedot', function () {
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        })
+      })
+    })
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
