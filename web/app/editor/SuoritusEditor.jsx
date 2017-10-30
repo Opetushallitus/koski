@@ -53,7 +53,7 @@ export class SuoritusEditor extends React.Component {
       <TodistusLink suoritus={model} />
       <PropertiesEditor
         model={model}
-        propertyFilter={p => !excludedProperties.includes(p.key)}
+        propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
         getValueEditor={ (prop, getDefault) => {
           switch (prop.key) {
             case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>

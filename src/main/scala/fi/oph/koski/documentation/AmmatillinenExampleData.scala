@@ -346,7 +346,7 @@ object AmmatillinenExampleData {
     tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
     toinenTutkintonimike = true,
     osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-    toinenOsaamisala = true,
+    toinenOsaamisala = false,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
     vahvistus = vahvistus(),

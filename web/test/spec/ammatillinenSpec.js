@@ -1176,7 +1176,6 @@ describe('Ammatillinen koulutus', function() {
           'Tutkintonimike Autokorinkorjaaja\n' +
           'Toinen tutkintonimike kyllä\n' +
           'Osaamisala Autokorinkorjauksen osaamisala\n' +
-          'Toinen osaamisala kyllä\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
