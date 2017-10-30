@@ -1,3 +1,7 @@
+## 27.10.2017
+
+- Paikallinen lukion kurssi voi olla tyyppiä "pakollinen"
+
 ## 26.10.2017
 
 - Sallitaan kieliaineissa duplikaatit jos eri kielivalinta ja lukion matematiikassa jos eri oppimäärä
