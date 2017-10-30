@@ -152,11 +152,11 @@ class TiedonsiirtoService(
     if (lahdejarjestelma.isDefined) {
       Future(blocking(tiedonsiirtoBuffer.append(tiedonsiirtoDoc)))
     } else { // Store synchronously when data comes from GUI
-      storeToElasticsearch(List(tiedonsiirtoDoc), refresh = false)
+      storeToElasticsearch(List(tiedonsiirtoDoc), refreshIndex = false)
     }
   }
 
-  def storeToElasticsearch(tiedonsiirrot: List[TiedonsiirtoDocument], refresh: Boolean = true): Unit = {
+  def storeToElasticsearch(tiedonsiirrot: List[TiedonsiirtoDocument], refreshIndex: Boolean = true): Unit = {
     logger.debug(s"Updating ${tiedonsiirrot.length} tiedonsiirrot documents to elasticsearch")
     if (tiedonsiirrot.isEmpty) {
       return
@@ -169,12 +169,12 @@ class TiedonsiirtoService(
           JObject("update" -> JObject("_id" -> JString(tiedonsiirto.id), "_index" -> JString("koski"), "_type" -> JString("tiedonsiirto"))),
           JObject("doc_as_upsert" -> JBool(true), "doc" -> Serializer.serialize(tiedonsiirto, serializationContext))
         )
-      }, refresh = refresh && i == tiedonsiirtoChunks.length - 1) // wait for elasticsearch to refresh after the last batch, makes testing easier
+      }, refreshIndex = refreshIndex && i == tiedonsiirtoChunks.length - 1) // wait for elasticsearch to refresh after the last batch, makes testing easier
     }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
      .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
   }
 
-  def syncToElasticsearch(): Unit = storeToElasticsearch(tiedonsiirtoBuffer.popAll)
+  def syncToElasticsearch(refreshIndex: Boolean = false): Unit = storeToElasticsearch(tiedonsiirtoBuffer.popAll, refreshIndex)
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     var ordering = sorting.field match {

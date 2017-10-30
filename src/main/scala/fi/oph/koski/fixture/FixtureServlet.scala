@@ -17,7 +17,7 @@ class FixtureServlet(implicit val application: KoskiApplication) extends ApiServ
   }
 
   post("/sync-tiedonsiirrot") {
-    application.tiedonsiirtoService.syncToElasticsearch()
+    application.tiedonsiirtoService.syncToElasticsearch(refreshIndex = true)
     "ok"
   }
 }

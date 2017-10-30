@@ -49,8 +49,8 @@ class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
       None
   }
 
-  def updateBulk(jsonLines: Seq[JValue], refresh: Boolean = false): (Boolean, JValue) = {
-    val url = if (refresh) uri"/koski/_bulk?refresh=wait_for" else uri"/koski/_bulk"
+  def updateBulk(jsonLines: Seq[JValue], refreshIndex: Boolean = false): (Boolean, JValue) = {
+    val url = if (refreshIndex) uri"/koski/_bulk?refresh=wait_for" else uri"/koski/_bulk"
     val response: JValue = Http.runTask(http.post(url, jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (extract[Boolean](response \ "errors"), response)
   }
