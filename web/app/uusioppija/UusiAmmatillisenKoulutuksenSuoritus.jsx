@@ -9,11 +9,11 @@ import SuoritustapaDropdown from './SuoritustapaDropdown.jsx'
 import Text from '../Text.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus')
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen')
   const tutkintoAtom = Atom()
   const suoritustyyppiAtom = Atom()
   const suoritustapaAtom = Atom()
-  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto'))))
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen'))))
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
   const makeSuoritus = (oppilaitos, suoritustyyppi, tutkinto, suorituskieli, suoritustapa) => {
@@ -33,6 +33,14 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
         suorituskieli : suorituskieli
       }
     }
+    if (koodiarvoMatch('ammatillinentutkintoosittainen')(suoritustyyppi) && tutkinto && oppilaitos) {
+      return {
+        koulutusmoduuli: tutkintoData,
+        toimipiste : oppilaitos,
+        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkintoosittainen'},
+        suorituskieli : suorituskieli
+      }
+    }
     if (koodiarvoMatch('nayttotutkintoonvalmistavakoulutus')(suoritustyyppi) && tutkinto && oppilaitos) {
       return {
         koulutusmoduuli: {
@@ -48,6 +56,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
       }
     }
   }
+
   Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
     <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
