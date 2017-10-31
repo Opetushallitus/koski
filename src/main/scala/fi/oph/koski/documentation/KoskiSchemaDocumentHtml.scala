@@ -2,11 +2,11 @@ package fi.oph.koski.documentation
 
 import java.net.URLEncoder
 
+import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Files
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
-import com.tristanhunt.knockoff.DefaultDiscounter._
+import org.json4s.jackson.JsonMethods
 
 import scala.Function.const
 import scala.collection.mutable.ArrayBuffer
@@ -158,12 +158,22 @@ object KoskiSchemaDocumentHtml {
 
   private def descriptionHtml(p: Property): List[Elem] = descriptionHtml(p.metadata.reverse ++ p.schema.metadata)
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
-  private def descriptionHtml(metadata: List[Metadata]): List[Elem] = metadata flatMap {
+  private def descriptionHtml(metadata: List[Metadata]): List[Elem] = (metadata flatMap {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{desc}</div>)
     case _ => None
+  }) ++ onlyWhenHtml(metadata)
+
+  private def onlyWhenHtml(metadata: List[Metadata]): List[Elem] = metadata.collect { case o: OnlyWhen => o } match {
+    case Nil => Nil
+    case conditions => List(<div class="onlywhen">Vain kun { intersperse(<span>tai</span>, conditions.map(c => <code>{c.path}={JsonMethods.compact(c.serializableForm.value)}</code>)) }</div>)
   }
 
+  def intersperse[E](x: E, xs:Seq[E]): Seq[E] = (x, xs) match {
+    case (_, Nil)     => Nil
+    case (_, Seq(x))  => Seq(x)
+    case (sep, y::ys) => y+:sep+:intersperse(sep, ys)
+  }
 
   case class Cardinality(min: Int, max: Option[Int]) {
     override def toString: String = (min, max) match {

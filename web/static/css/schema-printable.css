@@ -17,6 +17,11 @@ table, th, td {
     text-align: left;
 }
 
+.onlywhen code {
+    background: #eeeeee;
+    margin: 0 5px;
+}
+
 .entity > .description {
     display: block;
     margin-bottom: 20px;
