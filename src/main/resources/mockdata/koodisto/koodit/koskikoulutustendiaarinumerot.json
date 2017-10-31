@@ -341,7 +341,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_18",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_500112006",
   "koodiArvo" : "50/011/2006",

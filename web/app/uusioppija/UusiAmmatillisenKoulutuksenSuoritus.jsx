@@ -7,16 +7,18 @@ import Suoritustyyppi from './Suoritustyyppi.jsx'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import SuoritustapaDropdown from './SuoritustapaDropdown.jsx'
 import Text from '../Text.jsx'
+import {setPeruste} from '../editor/PerusteDropdown.jsx'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen')
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma')
   const tutkintoAtom = Atom()
   const suoritustyyppiAtom = Atom()
   const suoritustapaAtom = Atom()
-  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen'))))
+  const perusteAtom = Atom()
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen', 'valma'))))
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
 
-  const makeSuoritus = (oppilaitos, suoritustyyppi, tutkinto, suorituskieli, suoritustapa) => {
+  const makeSuoritus = (oppilaitos, suoritustyyppi, tutkinto, suorituskieli, suoritustapa, peruste) => {
     let tutkintoData = tutkinto && {
         tunniste: {
           koodiarvo: tutkinto.tutkintoKoodi,
@@ -55,15 +57,30 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
         suorituskieli : suorituskieli
       }
     }
+    if (koodiarvoMatch('valma')(suoritustyyppi) && oppilaitos && peruste) {
+      return {
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '999901',
+            koodistoUri: 'koulutus'
+          },
+          perusteenDiaarinumero: peruste
+        },
+        toimipiste : oppilaitos,
+        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'valma'},
+        suorituskieli : suorituskieli
+      }
+    }
   }
 
-  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
+  ift(suoritustyyppiAtom.map(koodiarvoMatch('valma')), setPeruste(perusteAtom, {koodiarvo: 'valma'}))
+  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, perusteAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
     <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
 
     <div className="tutkinto-autocomplete">
       {
-        ift(oppilaitosAtom, <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
+        ift(oppilaitosAtom.and(suoritustyyppiAtom.map(koodiarvoMatch('valma')).not()), <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
       }
     </div>
 

@@ -83,6 +83,9 @@ export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
     return '15'
   }
+  if (suoritustyyppiKoodi == 'valma') {
+    return '18'
+  }
 }
 
 export const fixArviointi = (model) => {
