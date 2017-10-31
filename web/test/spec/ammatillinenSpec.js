@@ -414,6 +414,35 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
+
+    describe('TELMA suoritus', function () {
+      before(
+        resetFixtures,
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataAmmatillinen(),
+        addOppija.selectOppimäärä('Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)')
+      )
+
+      it('Lisätty opiskeluoikeus näytetään', function () {
+        expect(opinnot.getTutkinto()).to.equal('Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      })
+
+      var suoritustapa = editor.property('suoritustapa')
+      describe('Tutkinnon osan lisääminen', function () {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Uimaliikunta ja vesiturvallisuus'),
+          editor.saveChanges,
+          wait.forAjax
+        )
+
+        it('näyttää oikeat tiedot', function () {
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Uimaliikunta ja vesiturvallisuus')
+        })
+      })
+    })
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
