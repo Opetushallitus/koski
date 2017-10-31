@@ -383,6 +383,21 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
+
+    describe('VALMA suoritus', function () {
+      before(
+        resetFixtures,
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataAmmatillinen(),
+        addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
+      )
+
+      it('Lisätty opiskeluoikeus näytetään', function () {
+        expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      })
+    })
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
