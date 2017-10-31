@@ -378,7 +378,7 @@ describe('Ammatillinen koulutus', function() {
           wait.forAjax
         )
 
-        it('näyttää edelleen oikeat tiedot', function () {
+        it('näyttää oikeat tiedot', function () {
           expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
         })
       })
@@ -396,6 +396,22 @@ describe('Ammatillinen koulutus', function() {
       it('Lisätty opiskeluoikeus näytetään', function () {
         expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
         expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      })
+
+      var suoritustapa = editor.property('suoritustapa')
+      describe('Tutkinnon osan lisääminen', function () {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat().lisääTutkinnonOsaToisestaTutkinnosta('Autoalan perustutkinto', 'Auton korjaaminen'),
+          opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Hassut temput'),
+          editor.saveChanges,
+          wait.forAjax
+        )
+
+        it('näyttää oikeat tiedot', function () {
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Auton korjaaminen')
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+        })
       })
     })
   })
