@@ -113,7 +113,7 @@ object OpiskeluoikeusTestData {
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None))),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        vankilaopetuksessa = true
+        vankilaopetuksessa = Some(List(Aikajakso(date(2001, 1, 1), None)))
       ))
     )
   }

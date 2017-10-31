@@ -149,16 +149,16 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
-        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(true))
+        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001,1,1), None))))
       }
 
       "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
-        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(Some(false))
+        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(None)
       }
 
-      def vankilaopetuksessa(queryResult: Seq[Oppija]): Option[Boolean] = queryResult.toList match {
+      def vankilaopetuksessa(queryResult: Seq[Oppija]): Option[List[Aikajakso]] = queryResult.toList match {
         case List(oppija) =>
-          oppija.opiskeluoikeudet(0).asInstanceOf[AmmatillinenOpiskeluoikeus].lisätiedot.map(_.vankilaopetuksessa)
+          oppija.opiskeluoikeudet(0).asInstanceOf[AmmatillinenOpiskeluoikeus].lisätiedot.flatMap(_.vankilaopetuksessa)
         case oppijat =>
           fail("Unexpected number of results: " + oppijat.length)
       }

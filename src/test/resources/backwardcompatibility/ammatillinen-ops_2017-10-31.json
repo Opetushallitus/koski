@@ -1,5 +1,4 @@
 {
-  "ignoreJsonEquality": true,
   "henkilö" : {
     "oid" : "1.2.246.562.24.00000000001"
   },
@@ -58,6 +57,14 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Ammatillinen perustutkinto"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
       "tutkintonimike" : [ {
         "koodiarvo" : "10024",
         "nimi" : {
@@ -78,24 +85,12 @@
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
       },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
           "fi" : "suomi"
         },
         "koodistoUri" : "kieli"
-      },
-      "suoritustapa" : {
-        "koodiarvo" : "ops",
-        "nimi" : {
-          "fi" : "Opetussuunnitelman mukainen"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
       },
       "järjestämismuodot" : [ {
         "alku" : "2012-09-01",
@@ -140,10 +135,6 @@
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -206,6 +197,7 @@
       }
     } ],
     "lisätiedot" : {
+      "oikeusMaksuttomaanAsuntolapaikkaan" : false,
       "hojks" : {
         "opetusryhmä" : {
           "koodiarvo" : "1",
@@ -217,11 +209,9 @@
         "alku" : "2012-10-20",
         "loppu" : "2013-08-15"
       },
-      "oikeusMaksuttomaanAsuntolapaikkaan" : false,
       "vaikeastiVammainen" : false,
       "vammainenJaAvustaja" : false,
-      "henkilöstökoulutus" : false,
-      "vankilaopetuksessa" : false
+      "henkilöstökoulutus" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",

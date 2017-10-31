@@ -1,5 +1,7 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -208,10 +210,10 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     getOpiskeluoikeudet(oid, käyttäjä)
   }
 
-  private def sensitiveDataShown(body: String) = sensitiveFieldValueEquals(body, expected = true)
-  private def sensitiveDataHidden(body: String) = sensitiveFieldValueEquals(body, expected = false)
+  private def sensitiveDataShown(body: String) = sensitiveFieldValueEquals(body, expected = Some(List(Aikajakso(LocalDate.of(2001,1,1),None))))
+  private def sensitiveDataHidden(body: String) = sensitiveFieldValueEquals(body, expected = None)
 
-  private def sensitiveFieldValueEquals(body: String, expected: Boolean) = {
+  private def sensitiveFieldValueEquals(body: String, expected: Option[List[Aikajakso]]) = {
     val sensitiveField = SchemaValidatingExtractor.extract[Oppija](body).map(_.opiskeluoikeudet.head.lisätiedot.get).map { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa }
     sensitiveField should equal(Right(expected))
   }

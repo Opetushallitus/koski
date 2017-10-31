@@ -1,0 +1,1 @@
+UPDATE opiskeluoikeus SET data = data #- '{lisätiedot, vankilaopetuksessa}';

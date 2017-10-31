@@ -45,11 +45,11 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
-  majoitus: Option[List[Majoitusjakso]] = None,
+  majoitus: Option[List[Aikajakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
-  sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
+  sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   hojks: Option[Hojks],
   @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto")
@@ -65,14 +65,14 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
-  @Description("Kyseessä on vankilaopetus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole vankilaopetus. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Kysessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   @SensitiveData
-  vankilaopetuksessa: Boolean = false
+  vankilaopetuksessa: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
-@Description("Majoitusjakson pituus (alku- ja loppupäivämäärä)")
-case class Majoitusjakso (
+@Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
+case class Aikajakso (
   alku: LocalDate,
   loppu: Option[LocalDate]
 ) extends Jakso

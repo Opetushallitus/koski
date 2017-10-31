@@ -49,7 +49,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None
+  sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
 

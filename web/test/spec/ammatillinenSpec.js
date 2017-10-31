@@ -1238,7 +1238,7 @@ describe('Ammatillinen koulutus', function() {
           'Osa-aikaisuusjaksot 1.9.2012 — Osa-aikaisuus 80 %\n' +
           'Opiskeluvalmiuksia tukevat opinnot 1.10.2013 — 31.10.2013 Kuvaus Opiskeluvalmiuksia tukevia opintoja\n' +
           'Henkilöstökoulutus kyllä\n' +
-          'Vankilaopetuksessa kyllä')
+          'Vankilaopetuksessa 2.9.2013 —')
       })
     })
 
@@ -1515,7 +1515,7 @@ describe('Ammatillinen koulutus', function() {
       it('näkyy', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal(
          'Lisätiedot\n' +
-          'Vankilaopetuksessa kyllä'
+          'Vankilaopetuksessa 1.1.2001 —'
         )
       })
     })
