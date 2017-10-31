@@ -79,7 +79,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Koulukoti, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
+  @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
   koulukoti: Option[List[Majoitusjakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
