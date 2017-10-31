@@ -22,13 +22,14 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/tutkinnonosat/:diaari") {
     val ryhmä = params.get("tutkinnonOsanRyhmä")
+
     renderEither(for {
-      tutkinnonRakenne <- perusteenRakenne
+      tutkinnonRakenne <- perusteenRakenne(failWhenNotFound = false)
       ryhmänRakenne <- ryhmä match {
-        case None => perusteenRakenne
+        case None => perusteenRakenne(failWhenNotFound = false)
         case Some(ryhmä: String) =>
           val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
-          perusteenRakenne.map(rakenne => rakenne.flatMap((rakenneOsa: RakenneOsa) => findRyhmä(ryhmäkoodi, rakenneOsa)))
+          perusteenRakenne().map(rakenne => rakenne.flatMap((rakenneOsa: RakenneOsa) => findRyhmä(ryhmäkoodi, rakenneOsa)))
       }
     } yield {
       lisättävätTutkinnonOsat(ryhmänRakenne, tutkinnonRakenne)
@@ -36,7 +37,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   private def lisättävätTutkinnonOsat(ryhmä: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
-    val määrittelemättömiä = if (ryhmä.isEmpty) true else ryhmä.exists(_.sisältääMäärittelemättömiäOsia)
+    val määrittelemättömiä = ryhmä.isEmpty || ryhmä.exists(_.sisältääMäärittelemättömiäOsia)
     val osat = (if (määrittelemättömiä) tutkinto else ryhmä).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
     LisättävätTutkinnonOsat(osat, määrittelemättömiä, määrittelemättömiä)
   }
@@ -66,7 +67,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     val suoritustapa = params("suoritustapa")
 
     val laajuudet: Array[Either[HttpStatus, Option[TutkinnonOsanLaajuus]]] = ryhmäkoodit.map(rk => {
-      perusteenRakenne.flatMap {
+      perusteenRakenne().flatMap {
         case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
         case List(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))
         case _ => Right(None)
@@ -76,7 +77,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     ryhmät.zip(laajuudet).map(z => z._1 -> z._2.right.get.getOrElse(TutkinnonOsanLaajuus(None, None))).toMap
   }
 
-  private def perusteenRakenne: Either[HttpStatus, List[RakenneOsa]] = {
+  private def perusteenRakenne(failWhenNotFound: Boolean = true): Either[HttpStatus, List[RakenneOsa]] = {
     val diaari = params("diaari")
     val suoritustapa = params.get("suoritustapa")
 
@@ -88,9 +89,9 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       case None =>
         rakenteenSuoritustavat
     }
-    val rakenteet: List[RakenneOsa] = suoritustavat.flatMap(_.rakenne).toList
+    val rakenteet: List[RakenneOsa] = suoritustavat.flatMap(_.rakenne)
     rakenteet match {
-      case Nil =>
+      case Nil if failWhenNotFound =>
         Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
       case rakenteet =>
         Right(rakenteet)
