@@ -36,6 +36,15 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
 }
 
 export const diaarinumerot = suoritusTyyppi => {
-  let koulutustyyppi = koulutustyyppiKoodi(suoritusTyyppi.koodiarvo)
+  let koulutustyyppi = suoritusTyyppi && koulutustyyppiKoodi(suoritusTyyppi.koodiarvo)
   return koulutustyyppi ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyyppi}`) : []
+}
+
+export const setPeruste = (perusteAtom, suoritusTyyppi) => {
+  diaarinumerot(suoritusTyyppi).map(options => options[0]).map('.koodiarvo').onValue(peruste => {
+    let current = perusteAtom.get()
+    if (!current || peruste !== current) {
+      perusteAtom.set(peruste)
+    }
+  })
 }
