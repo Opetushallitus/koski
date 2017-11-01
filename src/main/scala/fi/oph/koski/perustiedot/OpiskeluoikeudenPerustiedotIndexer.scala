@@ -113,7 +113,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     }.scan(UpdateStatus(0, 0))(_ + _)
 
 
-    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
+    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
       {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
