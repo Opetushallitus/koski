@@ -22,12 +22,14 @@ object PerustiedotSyncScheduler extends Timing {
   private def reIndex(app: KoskiApplication) = {
     val rows = app.perustiedotSyncRepository.needSyncing
     if (rows.nonEmpty) {
+      logger.info(s"Syncing ${rows.length} rows")
       val failed = rows.groupBy(_.opiskeluoikeusId).mapValues(_.length).filter { case (id, length) => length > 10 }
       if (failed.nonEmpty) {
         logger.error(s"Perustiedot sync failed more than 10 times for opiskeluoikeus ids ${failed.keys.mkString(", ")}")
       }
       app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId))))
       app.perustiedotSyncRepository.delete(rows.map(_.id))
+      logger.info("Done")
     }
   }
 }
