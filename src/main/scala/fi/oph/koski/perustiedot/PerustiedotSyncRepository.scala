@@ -16,7 +16,7 @@ class PerustiedotSyncRepository(val db: DB) extends GlobalExecutionContext with 
 
   def needSyncing: Seq[PerustiedotSyncRow] = runDbSync(PerustiedotSync.result)
 
-  def delete(ids: Seq[Int]): Int =
-    runDbSync(PerustiedotSync.filter(_.id inSetBind ids).delete)
+  def delete(maxId: Int): Int =
+    runDbSync(PerustiedotSync.filter(_.id <= maxId).delete)
 }
 
