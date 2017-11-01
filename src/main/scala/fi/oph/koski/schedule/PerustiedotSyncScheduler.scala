@@ -19,15 +19,17 @@ object PerustiedotSyncScheduler extends Timing {
     None
   }
 
-  private def reIndex(app: KoskiApplication) = {
-    app.perustiedotSyncRepository.needSyncing.tumblingBuffer(1000).toBlocking.foreach { rows =>
+  private def reIndex(app: KoskiApplication): Unit = {
+    val syncObservable = app.perustiedotSyncRepository.needSyncing.tumblingBuffer(1000).map { rows =>
       if (rows.nonEmpty) {
         logger.info(s"Syncing ${rows.length} rows")
         app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId)))).toBlocking.last
-        app.perustiedotSyncRepository.delete(rows.map(_.id).max)
+        app.perustiedotSyncRepository.delete(rows.map(_.id))
         logger.info("Done")
       }
     }
+    syncObservable.subscribe()
+    syncObservable.toBlocking.lastOption
   }
 }
 

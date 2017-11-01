@@ -17,7 +17,7 @@ class PerustiedotSyncRepository(val db: DB) extends GlobalExecutionContext with 
     streamingQuery(PerustiedotSync)
   }
 
-  def delete(maxId: Int): Int =
-    runDbSync(PerustiedotSync.filter(_.id <= maxId).delete)
+  def delete(ids: Seq[Int]): Int =
+    runDbSync(PerustiedotSync.filter(_.id inSetBind ids).delete)
 }
 
