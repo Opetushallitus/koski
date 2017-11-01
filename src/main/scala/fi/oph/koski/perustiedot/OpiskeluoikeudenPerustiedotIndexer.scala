@@ -99,7 +99,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
 
   def reIndex(filters: List[OpiskeluoikeusQueryFilter] = Nil, pagination: Option[PaginationSettings] = None) = {
     logger.info("Starting elasticsearch re-indexing")
-    val bufferSize = 1000
+    val bufferSize = 100
     val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
