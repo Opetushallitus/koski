@@ -27,7 +27,7 @@ object PerustiedotSyncScheduler extends Timing {
       if (failed.nonEmpty) {
         logger.error(s"Perustiedot sync failed more than 10 times for opiskeluoikeus ids ${failed.keys.mkString(", ")}")
       }
-      app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId))))
+      app.perustiedotIndexer.reIndex(filters = List(IdHaku(rows.map(_.opiskeluoikeusId)))).toBlocking.last
       app.perustiedotSyncRepository.delete(rows.map(_.id))
       logger.info("Done")
     }
