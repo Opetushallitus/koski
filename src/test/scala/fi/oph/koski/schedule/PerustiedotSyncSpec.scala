@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusByOid, PostgresOpiskeluoikeusRepository}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
-import fi.oph.koski.util.Futures
+import fi.oph.koski.util.{Futures, Wait}
 import org.scalatest.{FreeSpec, Matchers}
 
 class PerustiedotSyncSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
@@ -38,9 +38,7 @@ class PerustiedotSyncSpec extends FreeSpec with Matchers with OpiskeluoikeusTest
     markForSyncing(opiskeluoikeus)
     PerustiedotSyncScheduler.syncPerustiedot(application)(None)
     application.elasticSearch.refreshIndex
-    while (opiskeluoikeus.päättymispäivä != application.perustiedotRepository.findHenkiloPerustiedotByOids(List(eskari.oid)).head.päättymispäivä) {
-      Thread.sleep(100)
-    }
+    Wait.until(opiskeluoikeus.päättymispäivä == application.perustiedotRepository.findHenkiloPerustiedotByOids(List(eskari.oid)).head.päättymispäivä, timeoutMs = 2000)
   }
 
   private def markForSyncing(opiskeluoikeus: Opiskeluoikeus) =
