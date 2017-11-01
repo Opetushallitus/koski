@@ -14,9 +14,8 @@ class PerustiedotSyncRepository(val db: DB) extends GlobalExecutionContext with 
 
   def syncAction(perustiedot: OpiskeluoikeudenOsittaisetTiedot, upsert: Boolean): FixedSqlAction[Int, NoStream, Effect.Write] = PerustiedotSync += PerustiedotSyncRow(opiskeluoikeusId = perustiedot.id, data = JsonSerializer.serializeWithRoot(perustiedot), upsert = upsert)
 
-  def needSyncing: Observable[PerustiedotSyncRow] = {
-    streamingQuery(PerustiedotSync)
-  }
+  def needSyncing(limit: Int): Seq[PerustiedotSyncRow] =
+    runDbSync(PerustiedotSync.take(limit).result)
 
   def delete(ids: Seq[Int]): Int =
     runDbSync(PerustiedotSync.filter(_.id inSetBind ids).delete)

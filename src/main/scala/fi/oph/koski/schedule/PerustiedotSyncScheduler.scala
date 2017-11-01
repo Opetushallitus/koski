@@ -21,17 +21,14 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
   }
 
   private def reIndex: Unit = {
-    val syncObservable = app.perustiedotSyncRepository.needSyncing.tumblingBuffer(1000).map { rows =>
-      if (rows.nonEmpty) {
-        logger.info(s"Syncing ${rows.length} rows")
-        val rowsMapped = rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
-          app.perustiedotIndexer.updateBulk(rows.map(row => extract[OpiskeluoikeudenOsittaisetTiedot](row.data)), upsert)
-        }
-        app.perustiedotSyncRepository.delete(rows.map(_.id))
-        logger.info("Done")
+    val rows = app.perustiedotSyncRepository.needSyncing(1000)
+    if (rows.nonEmpty) {
+      logger.info(s"Syncing ${rows.length} rows")
+      val rowsMapped = rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
+        app.perustiedotIndexer.updateBulk(rows.map(row => extract[OpiskeluoikeudenOsittaisetTiedot](row.data)), upsert)
       }
+      app.perustiedotSyncRepository.delete(rows.map(_.id))
+      logger.info("Done")
     }
-    syncObservable.subscribe()
-    syncObservable.toBlocking.lastOption
   }
 }
