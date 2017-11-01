@@ -1,9 +1,11 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -32,6 +34,16 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
         string.values.foreach { x: AnyRef => {} } // <- force lazy val to evaluate
         val jsonString = JsonSerializer.writeWithRoot(string)
         jsonString should equal("""{"fi":"rölli"}""")
+      }
+    }
+
+    "Perustiedot" - {
+      val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(0, AmmatillinenExampleData.opiskeluoikeus(), Some(MockOppijat.master))
+      "Full" in {
+        JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(perustiedot)) should equal(perustiedot)
+      }
+      "Henkilötiedot" in {
+        JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(perustiedot.henkilötiedot.get)) should equal(perustiedot.henkilötiedot.get)
       }
     }
 

@@ -7,26 +7,25 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import org.json4s.{JArray, JValue}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
   def id: Int
-  // Näytettävät henkilötiedot (joko henkilö johon opiskeluoikesu on linkitetty, tai tämän henkilön "master-henkilö")
-  def henkilö: NimitiedotJaOid
-  // Oid, johon opiskeluoikeus on suoraan linkitetty
-  def henkilöOid: Option[Henkilö.Oid] // TODO: remove optionality once all environments have this data on all rows
 }
 
 case class OpiskeluoikeudenPerustiedot(
   id: Int,
-  henkilö: NimitiedotJaOid,
+  // Näytettävät henkilötiedot (joko henkilö johon opiskeluoikesu on linkitetty, tai tämän henkilön "master-henkilö")
+  henkilö: Option[NimitiedotJaOid],
+  // Oid, johon opiskeluoikeus on suoraan linkitetty
   henkilöOid: Option[Henkilö.Oid],
   oppilaitos: Oppilaitos,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
+  @Discriminator
   tyyppi: Koodistokoodiviite,
   suoritukset: List[SuorituksenPerustiedot],
   @KoodistoUri("virtaopiskeluoikeudentila")
@@ -34,14 +33,19 @@ case class OpiskeluoikeudenPerustiedot(
   tilat: Option[List[OpiskeluoikeusJaksonPerustiedot]], // Optionality can be removed after re-indexing
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
-) extends OpiskeluoikeudenOsittaisetTiedot
+) extends OpiskeluoikeudenOsittaisetTiedot {
+  def henkilötiedot = henkilö.map(h => OpiskeluoikeudenHenkilötiedot(id, h, henkilöOid))
+}
 
 case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
 object NimitiedotJaOid {
   def apply(henkilö: TäydellisetHenkilötiedot): NimitiedotJaOid = NimitiedotJaOid(henkilö.oid, henkilö.etunimet, henkilö.kutsumanimi, henkilö.sukunimi)
 
 }
-case class OpiskeluoikeudenHenkilötiedot(id: Int, henkilö: NimitiedotJaOid, henkilöOid: Option[Henkilö.Oid]) extends OpiskeluoikeudenOsittaisetTiedot
+case class OpiskeluoikeudenHenkilötiedot(
+  id: Int, henkilö: NimitiedotJaOid,
+  henkilöOid: Option[Henkilö.Oid]
+) extends OpiskeluoikeudenOsittaisetTiedot
 
 object OpiskeluoikeudenHenkilötiedot {
   def apply(id: Int, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenHenkilötiedot = OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(OpiskeluoikeudenPerustiedot.näytettäväHenkilö(henkilö)), Some(henkilö.henkilö.oid))
@@ -55,14 +59,14 @@ case class OpiskeluoikeusJaksonPerustiedot(
 
 object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(row.id, row.data, row.luokka, TäydellisetHenkilötiedotWithMasterInfo(henkilöRow.toHenkilötiedot, masterHenkilöRow.map(_.toHenkilötiedot)))
+    makePerustiedot(row.id, row.data, row.luokka, Some(TäydellisetHenkilötiedotWithMasterInfo(henkilöRow.toHenkilötiedot, masterHenkilöRow.map(_.toHenkilötiedot))))
   }
 
-  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenPerustiedot = {
+  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: Option[TäydellisetHenkilötiedotWithMasterInfo]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(id, JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo), oo.luokka.orElse(oo.ryhmä), henkilö)
   }
 
-  def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenPerustiedot = {
+  def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: Option[TäydellisetHenkilötiedotWithMasterInfo]): OpiskeluoikeudenPerustiedot = {
     val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
       .map { suoritus =>
         SuorituksenPerustiedot(
@@ -76,8 +80,8 @@ object OpiskeluoikeudenPerustiedot {
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
       id,
-      NimitiedotJaOid(näytettäväHenkilö(henkilö)),
-      Some(henkilö.henkilö.oid),
+      henkilö.map(h => NimitiedotJaOid(näytettäväHenkilö(h))),
+      henkilö.map(h => h.henkilö.oid),
       extract[Oppilaitos](data \ "oppilaitos"),
       extract[Option[SisältäväOpiskeluoikeus]](data \ "sisältyyOpiskeluoikeuteen"),
       extract[Option[LocalDate]](data \ "alkamispäivä"),

@@ -54,10 +54,10 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
     val tyyppi = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
     val tiedot = 0 to count map { i =>
       val henkilöOid = s"1.2.246.562.24.000000000000$i"
-      OpiskeluoikeudenPerustiedot(i, NimitiedotJaOid(henkilöOid, name, name, name), Some(henkilöOid), stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, ExampleData.opiskeluoikeusLäsnä))), None)
+      OpiskeluoikeudenPerustiedot(i, Some(NimitiedotJaOid(henkilöOid, name, name, name)), Some(henkilöOid), stadinAmmattiopisto, None, None, None, tyyppi, Nil, Some(List(OpiskeluoikeusJaksonPerustiedot(LocalDate.now, None, ExampleData.opiskeluoikeusLäsnä))), None)
     }
-    KoskiApplicationForTests.perustiedotIndexer.updateBulk(tiedot, replaceDocument = true)
+    KoskiApplicationForTests.perustiedotIndexer.updateBulk(tiedot, true)
     refreshElasticSearchIndex
-    tiedot.map(t => t.henkilö.oid).toList
+    tiedot.map(t => t.henkilö.get.oid).toList
   }
 }

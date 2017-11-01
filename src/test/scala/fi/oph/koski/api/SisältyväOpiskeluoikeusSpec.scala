@@ -12,7 +12,6 @@ import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
-import fi.oph.koski.schedule.PerustiedotSyncScheduler.syncPerustiedot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
 import org.scalatest.{FreeSpec, Matchers}
@@ -97,7 +96,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
   override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 
   private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
-    syncPerustiedot(KoskiApplicationForTests)(None)
+    KoskiApplicationForTests.perustiedotSyncScheduler.syncPerustiedot(None)
     Wait.until(waitCondition)
   }
 }

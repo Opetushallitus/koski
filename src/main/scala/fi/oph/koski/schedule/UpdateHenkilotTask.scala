@@ -54,11 +54,11 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
-          val päivitetytTiedot = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.oid))
+          val päivitetytTiedot = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))
           OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 
-      application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, replaceDocument = false) match {
+      application.perustiedotIndexer.updateBulk(muuttuneidenHenkilötiedot, false) match {
         case Right(updatedCount) => {
           logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)

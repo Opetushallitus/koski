@@ -13,7 +13,7 @@ import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
-import fi.oph.koski.perustiedot.PerustiedotSyncRepository
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
@@ -74,8 +74,9 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
           (for {
             result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate)
             _ <- result match {
-              case Right(u: Updated) if opiskeluoikeus.lähdejärjestelmänId.isDefined => perustiedotSyncRepository.syncAction(u.id)
-              case Right(c: Created) if opiskeluoikeus.lähdejärjestelmänId.isDefined => perustiedotSyncRepository.syncAction(c.id)
+              case Right(result) if result.changed =>
+                val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, opiskeluoikeus, result.henkilötiedot) // in case of update, result.henkilötiedot is None and will not be updated
+                perustiedotSyncRepository.syncAction(perustiedot, result.created)
               case _ => DBIO.successful()
             }
           } yield result).transactionally
@@ -151,27 +152,28 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   private def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     oppijaOid.verified match {
       case Some(henkilö) =>
-        henkilöCache.addHenkilöAction(henkilöRepository.withMasterInfo(henkilö)).flatMap { _ =>
-          createAction(henkilö.oid, opiskeluoikeus)
+        val withMasterInfo = henkilöRepository.withMasterInfo(henkilö)
+        henkilöCache.addHenkilöAction(withMasterInfo).flatMap { _ =>
+          createAction(withMasterInfo, opiskeluoikeus)
         }
       case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
     }
   }
 
-  private def createAction(oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def createAction(oppija: TäydellisetHenkilötiedotWithMasterInfo, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     opiskeluoikeus.versionumero match {
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None)
-        val oid = oidGenerator.generateOid(oppijaOid)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, oid, tallennettavaOpiskeluoikeus)
+        val oid = oidGenerator.generateOid(oppija.oid)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppija.oid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppijaOid, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1, diff, row.data))
         }
     }
   }

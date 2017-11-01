@@ -113,9 +113,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
         auditLog(oppijaOid, result)
 
         if (result.changed && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
-          val withMasterInfo = henkilöCache.getCached(result.oppijaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${result.oppijaOid}} ei löydy"))
-          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, opiskeluoikeus.luokka.orElse(opiskeluoikeus.ryhmä), withMasterInfo)
-          perustiedotIndexer.update(perustiedot)
+          // TODO: trigger immediate update
         }
 
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)

@@ -131,9 +131,11 @@ object Tables {
   class PerustiedotSyncTable(tag: Tag) extends Table[PerustiedotSyncRow](tag, "perustiedot_sync") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
+    val data = column[JValue]("data")
+    val upsert = column[Boolean]("upsert")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (opiskeluoikeusId, id, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
+    def * = (id, opiskeluoikeusId, data, upsert, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
   }
 
   class OppilaitosIPOsoiteTable(tag: Tag) extends Table[OppilaitosIPOsoiteRow](tag, "oppilaitos_ip_osoite") {
@@ -201,7 +203,7 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
   def running: Boolean = status == 1
 }
 
-case class PerustiedotSyncRow(opiskeluoikeusId: Int, id: Int = 0, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
+case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 

@@ -22,10 +22,12 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
 
 
   def getCached(oppijaOid: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {
-    runDbSync((Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result).headOption.map { case (row, masterRow) =>
-      TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
-    }
+    runDbSync(getCachedAction(oppijaOid))
   }
+
+  private def getCachedAction(oppijaOid: String) = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
+    TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
+  })
 
   def filterOidsByCache(oids: List[String]) = {
     // split to groups of 10000 to ensure this works with larger batches. Tested: 10000 works, 100000 does not.

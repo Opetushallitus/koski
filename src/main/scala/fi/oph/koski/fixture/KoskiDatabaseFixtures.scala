@@ -40,11 +40,12 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
     val henkilöOids: List[Oid] = oids
     runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
     runDbSync(Preferences.delete)
+    runDbSync(Tables.PerustiedotSync.delete)
 
     perustiedot.updateBulk(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
       val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilöRepository.opintopolku.withMasterInfo(henkilö))
-    }, replaceDocument = true)
+      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+    }, true)
   }
 
   // cached for performance boost
