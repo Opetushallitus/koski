@@ -10,8 +10,7 @@ import slick.sql.FixedSqlAction
 import scala.concurrent.Future
 
 class PerustiedotSyncRepository(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods {
-  def syncLater(opiskeluoikeudet: Seq[Int]): Future[Option[Int]] =
-    db.run(PerustiedotSync ++= opiskeluoikeudet.map(PerustiedotSyncRow(_)))
+  def syncLater(opiskeluoikeudet: Seq[Int]) = runDbSync(PerustiedotSync ++= opiskeluoikeudet.map(PerustiedotSyncRow(_)))
 
   def syncAction(opiskeluoikeusId: Int): FixedSqlAction[Int, NoStream, Effect.Write] = PerustiedotSync += PerustiedotSyncRow(opiskeluoikeusId)
 

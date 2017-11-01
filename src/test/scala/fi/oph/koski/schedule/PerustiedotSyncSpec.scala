@@ -5,7 +5,7 @@ import java.time.LocalDate.now
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusRow}
+import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.henkilo.MockOppijat.eskari
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.koskiuser.KoskiSession
@@ -44,7 +44,7 @@ class PerustiedotSyncSpec extends FreeSpec with Matchers with OpiskeluoikeusTest
   }
 
   private def markForSyncing(opiskeluoikeus: Opiskeluoikeus) =
-    Futures.await(KoskiApplicationForTests.perustiedotSyncRepository.syncLater(List(opiskeluoikeusRow(opiskeluoikeus.oid.get).id)))
+    KoskiApplicationForTests.perustiedotSyncRepository.syncLater(List(opiskeluoikeusRow(opiskeluoikeus.oid.get).id))
 
   private def opiskeluoikeusRow(oid: String) =
     runDbSync(opiskeluoikeusRepository.findByIdentifierAction(OpiskeluoikeusByOid(oid))).right.get.head
