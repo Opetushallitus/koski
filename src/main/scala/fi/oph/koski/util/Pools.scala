@@ -11,10 +11,12 @@ object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
   val jettyThreads = 100
   val globalExecutionContextThreads = jettyThreads
+  val backgroundExecutionContextThreads = Math.max(jettyThreads / 10, 2)
   val httpThreads = jettyThreads
   val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
   val dbThreads = 20
   val globalExecutor = ExecutionContext.fromExecutor(new ThreadPoolExecutor(Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
+  val backgroundExecutor = ExecutionContext.fromExecutor(new ThreadPoolExecutor(0, Pools.backgroundExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
 }
 
 object NamedThreadPool {

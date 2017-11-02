@@ -8,13 +8,13 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SchedulerRow, Tables}
+import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue], runOnSingleNode: Boolean = true, intervalMillis: Int = 10000)
-  extends GlobalExecutionContext with KoskiDatabaseMethods with Logging {
+  extends BackgroundExecutionContext with KoskiDatabaseMethods with Logging {
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
   private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
