@@ -21,6 +21,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
   }
 
   private def reIndex: Unit = {
+    logger.debug("Checking for sync rows")
     val rows = app.perustiedotSyncRepository.needSyncing(1000)
     if (rows.nonEmpty) {
       logger.info(s"Syncing ${rows.length} rows")
@@ -28,7 +29,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
         app.perustiedotIndexer.updateBulk(rows.map(row => extract[OpiskeluoikeudenOsittaisetTiedot](row.data)), upsert)
       }
       app.perustiedotSyncRepository.delete(rows.map(_.id))
-      logger.info("Done")
+      logger.info(s"Done syncing ${rows.length} rows")
     }
   }
 }
