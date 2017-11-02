@@ -10,10 +10,9 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.{PaginationSettings, Timing}
-import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -27,8 +26,6 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService, perustiedotSyncRepository: PerustiedotSyncRepository) extends Logging with BackgroundExecutionContext {
-  val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
-
   lazy val init = {
     index.init
 
@@ -57,15 +54,25 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
    *
    * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
    */
+
+  /*
+   * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
+   *
+   * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
+   */
   def updateBulk(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
-    // TODO: päättele upsertti riveittäin tyypin perusteella
+    updateBulkRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
+  }
+
+  def updateBulkRaw(items: Seq[JValue], upsert: Boolean): Either[HttpStatus, Int] = {
+    // TODO: päättele upsertti riveittäin
 
     if (items.isEmpty) {
       return Right(0)
     }
-    val (errors, response) = index.updateBulk(items.flatMap { (perustiedot: OpiskeluoikeudenOsittaisetTiedot) =>
+    val (errors, response) = index.updateBulk(items.flatMap { (perustiedot: JValue) =>
 
-      val doc = Serializer.serialize(perustiedot, serializationContext).asInstanceOf[JObject] match {
+      val doc = perustiedot.asInstanceOf[JObject] match {
         case JObject(fields) => JObject(
           fields.filter {
             case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch. TODO: not a nice way to do it, improve! Probably should have a separate class for Perustiedot without henkilö/henkilöOid fields, so that nulls wouldn't be there.
@@ -76,7 +83,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       }
 
       List(
-        JObject("update" -> JObject("_id" -> JInt(perustiedot.id), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
+        JObject("update" -> JObject("_id" -> (doc \ "id"), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
         JObject("doc_as_upsert" -> JBool(upsert), "doc" -> doc)
       )
     })
@@ -85,8 +92,8 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update") .flatMap { item =>
         if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
       }
-      perustiedotSyncRepository.syncLater(failedOpiskeluoikeusIds.flatMap { id =>
-        items.find(_.id == id).orElse{logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(_.id)}"); None}
+      perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
+        items.find{doc => docId(doc) == id}.orElse{logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}"); None}
       }, upsert)
       val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}"
       logger.error(msg)

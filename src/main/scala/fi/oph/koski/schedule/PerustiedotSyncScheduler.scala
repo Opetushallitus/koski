@@ -1,8 +1,6 @@
 package fi.oph.koski.schedule
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.perustiedot.OpiskeluoikeudenOsittaisetTiedot
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
@@ -25,8 +23,8 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     val rows = app.perustiedotSyncRepository.needSyncing(1000)
     if (rows.nonEmpty) {
       logger.info(s"Syncing ${rows.length} rows")
-      val rowsMapped = rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
-        app.perustiedotIndexer.updateBulk(rows.map(row => extract[OpiskeluoikeudenOsittaisetTiedot](row.data)), upsert)
+      rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
+        app.perustiedotIndexer.updateBulkRaw(rows.map(_.data), upsert)
       }
       app.perustiedotSyncRepository.delete(rows.map(_.id))
       logger.info(s"Done syncing ${rows.length} rows")

@@ -8,6 +8,7 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
+import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.{JArray, JValue}
 
 trait OpiskeluoikeudenOsittaisetTiedot {
@@ -58,6 +59,8 @@ case class OpiskeluoikeusJaksonPerustiedot(
 )
 
 object OpiskeluoikeudenPerustiedot {
+  val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
+
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(row.id, row.data, row.luokka, Some(TäydellisetHenkilötiedotWithMasterInfo(henkilöRow.toHenkilötiedot, masterHenkilöRow.map(_.toHenkilötiedot))))
   }
@@ -92,11 +95,15 @@ object OpiskeluoikeudenPerustiedot {
       luokka)
   }
 
+  def serializePerustiedot(tiedot: OpiskeluoikeudenOsittaisetTiedot) = Serializer.serialize(tiedot, serializationContext)
+
   private def fixTilat(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
     tilat.zip(tilat.drop(1)).map { case (tila, next) =>
       tila.copy(loppu = Some(next.alku))
     } ++ List(tilat.last)
   }
+
+  def docId(doc: JValue) = extract[Int](doc \ "id")
 
   def näytettäväHenkilö(henkilö: TäydellisetHenkilötiedotWithMasterInfo) = henkilö.master.getOrElse(henkilö.henkilö)
 }
