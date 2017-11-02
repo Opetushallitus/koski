@@ -44,11 +44,6 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     }
   }
 
-  /**
-    * Update (replace) or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
-    */
-  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot), true)
-
   /*
    * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
    *
