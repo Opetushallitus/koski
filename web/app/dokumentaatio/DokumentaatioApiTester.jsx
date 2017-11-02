@@ -39,14 +39,9 @@ const curlCommand = (method, url) => {
   return curl
 }
 
-const QueryParameters = ({operation, collectorBus}) => {
-  const valueAList = R.map(p => Atom({name: p.name, value: p.examples[0], type: p.type}), operation.parameters)
-
-  collectorBus.push(valueAList)
-
-  R.forEach(v => {
-    v.changes().onValue(() => collectorBus.push(valueAList))
-  }, valueAList)
+const QueryParameters = ({operation, queryParametersAtom}) => {
+  const valueAtomList = R.map(p => Atom({name: p.name, type: p.type}), operation.parameters)
+  Bacon.combineAsArray(valueAtomList).forEach(values => queryParametersAtom.set(values))
 
   return (
     <div className="parameters">
@@ -60,7 +55,7 @@ const QueryParameters = ({operation, collectorBus}) => {
         </tr>
         </thead>
         <tbody>
-        {R.zip(operation.parameters, R.map(v => v.view('value'), valueAList)).map(([parameter, selectedValueA], i) => (
+        {R.zip(operation.parameters, valueAtomList.map(v => v.view('value'))).map(([parameter, selectedValueA], i) => (
           <tr key={i}>
             <td>
               {parameter.name}
@@ -73,7 +68,7 @@ const QueryParameters = ({operation, collectorBus}) => {
                 ? (
                   <Dropdown options={parameter.examples} keyValue={R.identity} displayValue={R.identity} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
                 )
-                : <input value={selectedValueA} onChange={e => selectedValueA.set(e.target.value)}/>
+                : <input placeholder={parameter.examples[0]} value={selectedValueA} onChange={e => selectedValueA.set(e.target.value)}/>
               }
             </td>
           </tr>
@@ -84,15 +79,12 @@ const QueryParameters = ({operation, collectorBus}) => {
   )
 }
 
-const PostDataExamples = ({operation, collectorBus}) => {
+const PostDataExamples = ({operation, postDataAtom}) => {
   const selectedValueA = Atom(operation.examples[0])
-  const codeA = Atom(JSON.stringify(operation.examples[0].data, null, 2))
 
   selectedValueA.onValue(v => {
-    codeA.set(JSON.stringify(v.data, null, 2))
+    postDataAtom.set(JSON.stringify(v.data, null, 2))
   })
-
-  codeA.onValue(code => collectorBus.push(code))
 
   return (
     <div className="postdata">
@@ -102,38 +94,30 @@ const PostDataExamples = ({operation, collectorBus}) => {
           <Dropdown options={operation.examples} keyValue={v => v.name} displayValue={v => v.name} selected={selectedValueA} onSelectionChanged={v => selectedValueA.set(v)}/>
         </label>
       </div>
-      <CodeMirror baret-lift value={codeA} onChange={c => codeA.set(c)} options={{mode: {name: 'javascript', json: true}}}/>
+      <CodeMirror baret-lift value={postDataAtom} onChange={c => postDataAtom.set(c)} options={{mode: {name: 'javascript', json: true}}}/>
     </div>
   )
 }
 
-const ApiOperationTesterParameters = ({operation, queryCollectorBus, postCollectorBus}) => {
+const ApiOperationTesterParameters = ({operation, queryParametersAtom, postDataAtom}) => {
   if (operation.examples.length > 0) {
-    return <PostDataExamples operation={operation} collectorBus={postCollectorBus}/>
+    return <PostDataExamples operation={operation} postDataAtom={postDataAtom}/>
   } else if (operation.parameters.length > 0) {
-    return <QueryParameters operation={operation} collectorBus={queryCollectorBus}/>
+    return <QueryParameters operation={operation} queryParametersAtom={queryParametersAtom}/>
   } else {
     return <div></div>
   }
 }
 
 const ApiOperationTester = ({operation}) => {
-  const parametersA = Atom([])
+  const queryParametersAtom = Atom([])
   const loadingA = Atom(false)
   const curlVisibleA = Atom(false)
   const curlValueA = Atom(curlCommand(operation.method, makeApiUrl(operation.path, [])))
-  const postDataA = Atom()
+  const postDataAtom = Atom()
   const resultA = Atom('')
-  const queryCollectorBus = Bacon.Bus()
-  const postCollectorBus = Bacon.Bus()
 
-  queryCollectorBus.onValue(v => {
-    parametersA.set(R.map(x => x.get(), v))
-  })
-
-  postCollectorBus.onValue(v => postDataA.set(v))
-
-  parametersA.changes().onValue(v => {
+  queryParametersAtom.changes().onValue(v => {
     curlValueA.set(curlCommand(operation.method, makeApiUrl(operation.path, v)))
   })
 
@@ -142,12 +126,12 @@ const ApiOperationTester = ({operation}) => {
 
     let options = {credentials: 'include', method: operation.method, headers: {'Content-Type': 'application/json'}}
 
-    const pd = postDataA.get()
+    const pd = postDataAtom.get()
     if (pd !== undefined) {
       options.body = pd
     }
 
-    fetch(makeApiUrl(operation.path, parametersA.get()), options).then(response => {
+    fetch(makeApiUrl(operation.path, queryParametersAtom.get()), options).then(response => {
       return response.text().then(function(text) {
         loadingA.set(false)
         if (response.status == 401) {
@@ -164,12 +148,12 @@ const ApiOperationTester = ({operation}) => {
   }
 
   const tryRequestNewWindow = () => {
-    window.open(makeApiUrl(operation.path, parametersA.get()))
+    window.open(makeApiUrl(operation.path, queryParametersAtom.get()))
   }
 
   return (
     <div className="api-tester">
-      <ApiOperationTesterParameters operation={operation} queryCollectorBus={queryCollectorBus} postCollectorBus={postCollectorBus}/>
+      <ApiOperationTesterParameters operation={operation} queryParametersAtom={queryParametersAtom} postDataAtom={postDataAtom}/>
       <div className="buttons">
         <button disabled={loadingA} className="try button blue" onClick={tryRequest}>{'Kokeile'}</button>
         {operation.method === 'GET' &&
