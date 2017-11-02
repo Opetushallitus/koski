@@ -16,7 +16,7 @@ class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext w
   }
 
   def needSyncing(limit: Int): Seq[PerustiedotSyncRow] =
-    runDbSync(PerustiedotSync.take(limit).result)
+    runDbSync(PerustiedotSync.sortBy(_.id).take(limit).result)
 
   def delete(ids: Seq[Int]): Int =
     runDbSync(PerustiedotSync.filter(_.id inSetBind ids).delete)

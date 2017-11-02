@@ -95,7 +95,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
         items.find{doc => docId(doc) == id}.orElse{logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}"); None}
       }, upsert)
-      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}"
+      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
