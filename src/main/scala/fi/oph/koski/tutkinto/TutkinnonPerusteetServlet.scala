@@ -56,7 +56,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     Map.empty
   }
 
-  get[Map[String, TutkinnonOsanLaajuus]]("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
+  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
     val ryhmät = params("ryhmat").split(',')
     val ryhmäkoodit: Array[Koodistokoodiviite] = ryhmät.map(ryhmä =>
       application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)
@@ -66,15 +66,17 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
-    val laajuudet: Array[Either[HttpStatus, Option[TutkinnonOsanLaajuus]]] = ryhmäkoodit.map(rk => {
+    val laajuudet: Either[HttpStatus, List[(String, TutkinnonOsanLaajuus)]] = ryhmäkoodit.map(rk => {
       perusteenRakenne().flatMap {
         case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
         case List(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))
         case _ => Right(None)
-      }
-    })
+      }.map(laajuus => (rk.koodiarvo, laajuus.getOrElse(TutkinnonOsanLaajuus(None, None))))
+    }).foldRight(Right(Nil): Either[HttpStatus, List[(String, TutkinnonOsanLaajuus)]]) { (e, acc) =>
+      for (rakenteet <- acc; rakenne <- e) yield rakenne :: rakenteet
+    }
 
-    ryhmät.zip(laajuudet).map(z => z._1 -> z._2.right.get.getOrElse(TutkinnonOsanLaajuus(None, None))).toMap
+    renderEither(laajuudet.map(_.toMap))
   }
 
   private def perusteenRakenne(failWhenNotFound: Boolean = true): Either[HttpStatus, List[RakenneOsa]] = {
