@@ -472,8 +472,8 @@ describe('Ammatillinen koulutus', function() {
           })
 
           describe('Mitätöityä opiskeluoikeutta', function() {
-            before(wait.forMilliseconds(2000), page.oppijataulukko.filterBy('nimi', 'Esimerkki'))
-            it('Ei näytetä', function () { // TODO: replace wait with a smarter solution that ensures that PerustiedotSyncScheduler is done
+            before(syncPerustiedot, page.oppijataulukko.filterBy('nimi', 'Esimerkki'))
+            it('Ei näytetä', function () {
               expect(page.oppijataulukko.names()).to.deep.equal([ ])
             })
           })

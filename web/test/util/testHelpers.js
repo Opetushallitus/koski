@@ -368,6 +368,10 @@ function syncTiedonsiirrot() {
   return Q($.ajax({ url: '/koski/fixtures/sync-tiedonsiirrot', method: 'post'}))
 }
 
+function syncPerustiedot() {
+  return Q($.ajax({ url: '/koski/fixtures/sync-perustiedot', method: 'post'}))
+}
+
 function refreshIndices() {
     return Q($.ajax({ url: '/koski/fixtures/refresh', method: 'post'}))
 }

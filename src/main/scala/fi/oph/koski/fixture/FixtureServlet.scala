@@ -20,4 +20,10 @@ class FixtureServlet(implicit val application: KoskiApplication) extends ApiServ
     application.tiedonsiirtoService.syncToElasticsearch(refreshIndex = true)
     "ok"
   }
+
+  post("/sync-perustiedot") {
+    application.perustiedotSyncScheduler.sync
+    application.elasticSearch.refreshIndex
+    "ok"
+  }
 }
