@@ -1,5 +1,5 @@
 package fi.oph.koski.opiskeluoikeus
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -29,6 +29,7 @@ object OpiskeluoikeusQueryFilter {
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
   case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter
+  case class MuuttunutJälkeen(aikaleima: LocalDateTime) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }
@@ -40,6 +41,14 @@ private object OpiskeluoikeusQueryFilterParser {
         Right(LocalDate.parse(v))
       } catch {
         case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
+      }
+    }
+
+    def dateTimeParam(q: (String, String)): Either[HttpStatus, LocalDateTime] = q match {
+      case (p, v) => try {
+        Right(LocalDateTime.parse(v))
+      } catch {
+        case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid datetime parameter: " + p + "=" + v))
       }
     }
 
@@ -73,6 +82,7 @@ private object OpiskeluoikeusQueryFilterParser {
         case Success(json) => Right(SuoritusJsonHaku(json))
         case Failure(e) => Left(KoskiErrorCategory.badRequest.queryParam("Epävalidi json-dokumentti parametrissa suoritusJson"))
       }
+      case (p, v) if (p == "muuttunutJälkeen") => dateTimeParam((p, v)).right.map(MuuttunutJälkeen(_))
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
     }
 

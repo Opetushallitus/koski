@@ -1,6 +1,10 @@
 package fi.oph.koski.opiskeluoikeus
 
+import java.sql.Timestamp
+
 import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
 import fi.oph.koski.db.{Tables, _}
 import fi.oph.koski.henkilo.KoskiHenkilöCache
@@ -9,13 +13,11 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
 import fi.oph.koski.servlet.InvalidRequestException
+import fi.oph.koski.util.QueryPagination.applyPagination
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
-import fi.oph.koski.util.{PaginationSettings, QueryPagination, ReactiveStreamsToRx, SortOrder}
+import fi.oph.koski.util.{PaginationSettings, SortOrder}
 import rx.lang.scala.Observable
 import slick.lifted.Query
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.util.QueryPagination.applyPagination
 
 class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
@@ -49,6 +51,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with
         }
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
+      case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima > Timestamp.valueOf(aikaleima))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
