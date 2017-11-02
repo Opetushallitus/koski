@@ -44,6 +44,6 @@ object MixedOpiskeluoikeusInserterScenarioUpdater extends FixtureDataInserterSce
       .items
       .field[Option[Vahvistus]]("vahvistus")
       .items.field[LocalDate]("päivä")
-      .modify(perusopetuksenOpiskeluoikeus)(_.plusDays(1))
+      .modify(perusopetuksenOpiskeluoikeus)(_.minusDays(1))
   }
 }
