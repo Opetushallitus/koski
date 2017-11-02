@@ -23,6 +23,8 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, 0)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
+  def shutdown: Unit = taskExecutor.shutdown()
+
   private def fireIfTime() = {
     if (firingStrategy.shouldFire) {
       try {
@@ -47,27 +49,35 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
     val newContext: Option[JValue] = task(context)
     runDbSync(Tables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
   } finally {
-    endRun
+    firingStrategy.endRun
   }
 
-  private def endRun = runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(0))
   private def now = new Timestamp(currentTimeMillis)
   private def getScheduler: Option[SchedulerRow] =
     runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
 
   trait FiringStrategy {
     def shouldFire: Boolean
+    def endRun: Unit
   }
 
   class FireOnSingleNode extends FiringStrategy {
     override def shouldFire: Boolean =
       runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime(), 1)) > 0
+
+    override def endRun: Unit =
+      runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(0))
   }
 
   class FireOnAllNodes extends FiringStrategy {
     private var lastFired: Timestamp = new Timestamp(0)
+    private var active: Boolean = false
 
     override def shouldFire: Boolean = {
+      if (active) {
+        return false
+      }
+
       val nextFireTime = scheduling.nextFireTime(lastFired.toLocalDateTime)
       val shouldFire = now.after(nextFireTime)
       if (shouldFire) {
@@ -75,6 +85,8 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
       }
       shouldFire
     }
+
+    override def endRun: Unit = active = false
   }
 }
 
