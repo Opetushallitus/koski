@@ -156,7 +156,7 @@ class TiedonsiirtoService(
     if (tiedonsiirrot.isEmpty) {
       return
     }
-    logger.debug(s"Updating ${tiedonsiirrot.length} tiedonsiirrot documents to elasticsearch")
+    logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
 
     val tiedonsiirtoChunks = tiedonsiirrot.grouped(1000).toList
     tiedonsiirtoChunks.zipWithIndex.map { case (ts, i) =>
@@ -168,6 +168,7 @@ class TiedonsiirtoService(
       }, refreshIndex = refreshIndex && i == tiedonsiirtoChunks.length - 1) // wait for elasticsearch to refresh after the last batch, makes testing easier
     }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
      .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
+    logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
