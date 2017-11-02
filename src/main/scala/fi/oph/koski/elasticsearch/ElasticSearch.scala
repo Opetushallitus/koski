@@ -7,9 +7,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.PaginationSettings
 import org.http4s.EntityEncoder
 
-/**
-  * Created by jpaanane on 02/06/2017.
-  */
 case class ElasticSearch(config: Config) extends Logging {
   private val host = config.getString("elasticsearch.host")
   private val port = config.getInt("elasticsearch.port")
