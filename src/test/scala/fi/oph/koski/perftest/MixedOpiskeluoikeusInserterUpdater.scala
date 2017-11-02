@@ -1,4 +1,5 @@
 package fi.oph.koski.perftest
+import java.time.LocalDate
 import java.util.UUID
 
 import fi.oph.koski.documentation._
@@ -7,11 +8,11 @@ import fi.oph.koski.schema.{Koodistokoodiviite, _}
 
 import scala.util.Random
 
-object MixedOpiskeluoikeusInserter extends App {
-  PerfTestRunner.executeTest(MixedOpiskeluoikeusInserterScenario)
+object MixedOpiskeluoikeusInserterUpdater extends App {
+  PerfTestRunner.executeTest(MixedOpiskeluoikeusInserterScenarioUpdater)
 }
 
-object MixedOpiskeluoikeusInserterScenario extends FixtureDataInserterScenario {
+object MixedOpiskeluoikeusInserterScenarioUpdater extends FixtureDataInserterScenario {
   def lähdejärjestelmät = List("primus", "winnova", "helmi", "winha", "peppi", "studentaplus", "rediteq")
   def lähdejärjestelmäId = Some(LähdejärjestelmäId(Some(UUID.randomUUID().toString), Koodistokoodiviite(lähdejärjestelmät(Random.nextInt(lähdejärjestelmät.length)), "lahdejarjestelma")))
 
@@ -30,7 +31,19 @@ object MixedOpiskeluoikeusInserterScenario extends FixtureDataInserterScenario {
 
     List(
       perusopetuksenOpiskeluoikeus,
-      lukioTaiAmmattikouluOpiskeluoikeus
+      muokkaa(perusopetuksenOpiskeluoikeus),
+      lukioTaiAmmattikouluOpiskeluoikeus,
+      muokkaa(perusopetuksenOpiskeluoikeus)
     )
+  }
+
+  private def muokkaa(perusopetuksenOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    import mojave._
+    traversal[KoskeenTallennettavaOpiskeluoikeus]
+      .field[List[PäätasonSuoritus]]("suoritukset")
+      .items
+      .field[Option[Vahvistus]]("vahvistus")
+      .items.field[LocalDate]("päivä")
+      .modify(perusopetuksenOpiskeluoikeus)(_.plusDays(1))
   }
 }
