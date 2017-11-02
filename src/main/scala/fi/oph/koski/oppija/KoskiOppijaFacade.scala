@@ -75,35 +75,6 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
-    def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
-      val verb = result match {
-        case updated: Updated =>
-          val tila = updated.old.tila.opiskeluoikeusjaksot.last
-          if (tila.opiskeluoikeusPäättynyt) {
-            s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
-          } else {
-            "Päivitetty"
-          }
-        case _: Created => "Luotu"
-        case _: NotChanged => "Päivitetty (ei muutoksia)"
-      }
-      val tutkinto = opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",")
-      val oppilaitos = opiskeluoikeus.getOppilaitos.oid
-      logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa ${oppilaitos}")
-    }
-
-    def auditLog(oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult): Unit = {
-      (result match {
-        case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
-        case _: Created => Some(OPISKELUOIKEUS_LISAYS)
-        case _ => None
-      }).foreach { operaatio =>
-        AuditLog.log(AuditLogMessage(operaatio, user,
-          Map(oppijaHenkiloOid -> oppijaOid.oppijaOid, opiskeluoikeusId -> result.id.toString, opiskeluoikeusVersio -> result.versionumero.toString))
-        )
-      }
-    }
-
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
@@ -111,13 +82,40 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
-
         if (result.changed && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
-          // TODO: trigger immediate update
+          // Currently we don't trigger an immediate update to elasticsearch, as we've a 1 sec poll interval anyway. This is where we would do it.
         }
-
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
+    }
+  }
+
+  private def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult)(implicit user: KoskiSession): Unit = {
+    val verb = result match {
+      case updated: Updated =>
+        val tila = updated.old.tila.opiskeluoikeusjaksot.last
+        if (tila.opiskeluoikeusPäättynyt) {
+          s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
+        } else {
+          "Päivitetty"
+        }
+      case _: Created => "Luotu"
+      case _: NotChanged => "Päivitetty (ei muutoksia)"
+    }
+    val tutkinto = opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",")
+    val oppilaitos = opiskeluoikeus.getOppilaitos.oid
+    logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa ${oppilaitos}")
+  }
+
+  private def auditLog(oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)(implicit user: KoskiSession): Unit = {
+    (result match {
+      case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
+      case _: Created => Some(OPISKELUOIKEUS_LISAYS)
+      case _ => None
+    }).foreach { operaatio =>
+      AuditLog.log(AuditLogMessage(operaatio, user,
+        Map(oppijaHenkiloOid -> oppijaOid.oppijaOid, opiskeluoikeusId -> result.id.toString, opiskeluoikeusVersio -> result.versionumero.toString))
+      )
     }
   }
 
