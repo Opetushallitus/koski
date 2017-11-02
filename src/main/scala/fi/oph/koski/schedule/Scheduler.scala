@@ -21,7 +21,7 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
 
   logger.info(s"Starting ${if (runOnSingleNode) "single" else "multi" } node scheduler $name with $scheduling")
   runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, 0)))
-  taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, MILLISECONDS)
+  taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
   private def fireIfTime() = {
     if (firingStrategy.shouldFire) {
