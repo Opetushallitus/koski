@@ -21,12 +21,12 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     logger.debug("Checking for sync rows")
     val rows = app.perustiedotSyncRepository.needSyncing(1000)
     if (rows.nonEmpty) {
-      logger.info(s"Syncing ${rows.length} rows")
+      logger.debug(s"Syncing ${rows.length} rows")
       rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
         app.perustiedotIndexer.updateBulkRaw(rows.map(_.data), upsert)
       }
       app.perustiedotSyncRepository.delete(rows.map(_.id))
-      logger.info(s"Done syncing ${rows.length} rows")
+      logger.debug(s"Done syncing ${rows.length} rows")
     }
   }
 }
