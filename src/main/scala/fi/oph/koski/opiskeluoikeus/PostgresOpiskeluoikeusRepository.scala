@@ -75,8 +75,9 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
             result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate)
             _ <- result match {
               case Right(result) if result.changed =>
-                val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, opiskeluoikeus, result.henkilötiedot) // in case of update, result.henkilötiedot is None and will not be updated
-                perustiedotSyncRepository.syncAction(perustiedot, result.created)
+                val henkilötiedot = result.henkilötiedot.orElse(henkilöCache.getCached(oppijaOid.oppijaOid)).getOrElse(throw new RuntimeException(s"Oppija not found: $oppijaOid"))
+                val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, opiskeluoikeus, Some(henkilötiedot))
+                perustiedotSyncRepository.syncAction(perustiedot, true)
               case _ => DBIO.successful()
             }
           } yield result).transactionally
