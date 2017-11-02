@@ -3,30 +3,32 @@ package fi.oph.koski.fixture
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation._
-import fi.oph.koski.henkilo.{HenkilöRepository, MockOppijat, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotIndexer}
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.validation.KoskiValidator
 import slick.dbio.DBIO
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotIndexer, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
+  val database = application.masterDatabase
   val db = database.db
   implicit val accessType = AccessType.write
 
   def resetFixtures: Unit = {
+    application.perustiedotSyncScheduler.sync
+
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
     val oids = MockOppijat.oids
@@ -35,22 +37,22 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
 
-    perustiedot.deleteByOppijaOids(oids)
+    application.perustiedotIndexer.deleteByOppijaOids(oids)
 
     val henkilöOids: List[Oid] = oids
     runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
     runDbSync(Preferences.delete)
     runDbSync(Tables.PerustiedotSync.delete)
 
-    perustiedot.updateBulk(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
-      val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+    application.perustiedotIndexer.updateBulk(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
+      val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
+      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
     }, true)
   }
 
   // cached for performance boost
   private lazy val validatedOpiskeluoikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
-    validator.validateAsJson(Oppija(henkilö.henkilö, List(oikeus))) match {
+    application.validator.validateAsJson(Oppija(henkilö.henkilö, List(oikeus))) match {
       case Right(oppija) => (henkilö.henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.kokonimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
     }

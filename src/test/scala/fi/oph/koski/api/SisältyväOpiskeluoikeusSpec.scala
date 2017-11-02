@@ -96,7 +96,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
   override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 
   private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
-    KoskiApplicationForTests.perustiedotSyncScheduler.syncPerustiedot(None)
+    KoskiApplicationForTests.perustiedotSyncScheduler.syncAndLogErrors(None)
     Wait.until(waitCondition)
   }
 }

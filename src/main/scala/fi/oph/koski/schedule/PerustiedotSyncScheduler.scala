@@ -5,12 +5,11 @@ import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
 case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
-  def scheduler: Scheduler =
-    new Scheduler(app.masterDatabase.db, "perustiedot-sync", new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")), None, syncPerustiedot, intervalMillis = 1000)
+  def scheduler: Scheduler = new Scheduler(app.masterDatabase.db, "perustiedot-sync", new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")), None, syncAndLogErrors, intervalMillis = 1000)
 
-  def syncPerustiedot(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
+  def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
     try {
-      reIndex
+      sync
     } catch {
       case e: Exception =>
         logger.error(e)("Problem running perustiedotSync")
@@ -18,7 +17,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     None
   }
 
-  private def reIndex: Unit = {
+  def sync: Unit = synchronized {
     logger.debug("Checking for sync rows")
     val rows = app.perustiedotSyncRepository.needSyncing(1000)
     if (rows.nonEmpty) {
