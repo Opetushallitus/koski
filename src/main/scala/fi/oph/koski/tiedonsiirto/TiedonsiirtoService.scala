@@ -147,20 +147,16 @@ class TiedonsiirtoService(
                                    oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                                     userOid: String, aikaleima: Timestamp) = {
-
     val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
-    if (lahdejarjestelma.isDefined) {
-      Future(blocking(tiedonsiirtoBuffer.append(tiedonsiirtoDoc)))
-    } else { // Store synchronously when data comes from GUI
-      storeToElasticsearch(List(tiedonsiirtoDoc), refreshIndex = false)
-    }
+    Future(blocking(tiedonsiirtoBuffer.append(tiedonsiirtoDoc)))
   }
 
-  def storeToElasticsearch(tiedonsiirrot: List[TiedonsiirtoDocument], refreshIndex: Boolean = true): Unit = {
-    logger.debug(s"Updating ${tiedonsiirrot.length} tiedonsiirrot documents to elasticsearch")
+  def syncToElasticsearch(refreshIndex: Boolean = false): Unit = {
+    val tiedonsiirrot = tiedonsiirtoBuffer.popAll
     if (tiedonsiirrot.isEmpty) {
       return
     }
+    logger.debug(s"Updating ${tiedonsiirrot.length} tiedonsiirrot documents to elasticsearch")
 
     val tiedonsiirtoChunks = tiedonsiirrot.grouped(1000).toList
     tiedonsiirtoChunks.zipWithIndex.map { case (ts, i) =>
@@ -173,8 +169,6 @@ class TiedonsiirtoService(
     }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
      .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
   }
-
-  def syncToElasticsearch(refreshIndex: Boolean = false): Unit = storeToElasticsearch(tiedonsiirtoBuffer.popAll, refreshIndex)
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     var ordering = sorting.field match {
