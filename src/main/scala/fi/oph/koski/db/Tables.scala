@@ -13,6 +13,7 @@ object Tables {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
     val versionumero = column[Int]("versionumero")
+    val aikaleima = column[Timestamp]("aikaleima")
     val oppijaOid = column[String]("oppija_oid")
     val data = column[JValue]("data")
     val oppilaitosOid = column[String]("oppilaitos_oid")
@@ -22,7 +23,7 @@ object Tables {
     val luokka = column[Option[String]]("luokka")
     val mitätöity = column[Boolean]("mitatoity")
 
-    def * = (id, oid, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def * = (id, oid, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, aikaleima, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, mitätöity)
   }
 
@@ -40,6 +41,7 @@ object Tables {
         opiskeluoikeus.getOppilaitos.oid,
         opiskeluoikeus.koulutustoimija.map(_.oid),
         Opiskeluoikeus.VERSIO_1,
+        new Timestamp(0), // Will be replaced by db trigger (see V51__refresh_timestamp_on_insert_too.sql)
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
         serialize(opiskeluoikeus),
@@ -180,7 +182,7 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
+case class OpiskeluoikeusRow(id: Int, oid: String, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, aikaleima: Timestamp, sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
       import fi.oph.koski.db.Tables.OpiskeluoikeusTable
