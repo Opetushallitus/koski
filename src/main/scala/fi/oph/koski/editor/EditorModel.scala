@@ -1,6 +1,6 @@
 package fi.oph.koski.editor
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.Metadata
@@ -24,6 +24,7 @@ case class EnumValue(value: String, title: String, data: JValue)
 case class NumberModel(value: ValueWithData[Number], metadata: List[Metadata]) extends EditorModel
 case class BooleanModel(value: ValueWithData[Boolean], metadata: List[Metadata]) extends EditorModel
 case class DateModel(value: ValueWithData[LocalDate], metadata: List[Metadata]) extends EditorModel
+case class DateTimeModel(value: ValueWithData[LocalDateTime], metadata: List[Metadata]) extends EditorModel
 case class StringModel(value: ValueWithData[String], metadata: List[Metadata]) extends EditorModel
 case class ValueWithData[T](data: T, classes: Option[List[String]])
 

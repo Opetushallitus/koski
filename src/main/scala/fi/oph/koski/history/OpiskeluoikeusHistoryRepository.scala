@@ -12,7 +12,7 @@ import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, Opiskelu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Opiskeluoikeus, RequiresRole}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, RequiresRole}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
@@ -32,7 +32,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
     }
   }
 
-  def findVersion(oid: String, version: Int)(implicit user: KoskiSession): Either[HttpStatus, Opiskeluoikeus] = {
+  def findVersion(oid: String, version: Int)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     findByOpiskeluoikeusOid(oid, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {
@@ -43,7 +43,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
             patch.apply(current)
           }
           try {
-            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), oid, version))
+            Right(Tables.OpiskeluoikeusTable.readData(fromJsonNode(oikeusVersion), oid, version, diffs.last.aikaleima))
           } catch {
             case e: Exception =>
               logger.error(e)(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui")
@@ -63,4 +63,5 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
   def toOpiskeluoikeusHistory(row: (OpiskeluoikeusRow, OpiskeluoikeusHistoryRow)) = OpiskeluoikeusHistory(row._1.oid, row._2.versionumero, row._2.aikaleima, row._2.kayttajaOid, row._2.muutos)
 }
 
+// TODO: use LocalDateTime instead of Timestamp for consistency with KoskeenTallennettavaOpiskeluoikeus
 case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @RequiresRole("LUOTTAMUKSELLINEN") muutos: JValue)

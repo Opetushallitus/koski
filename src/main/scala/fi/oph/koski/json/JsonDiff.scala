@@ -16,3 +16,10 @@ object JsonDiff extends Logging {
     jsonDiff(JsonSerializer.serializeWithRoot(a), JsonSerializer.serializeWithRoot(b))
   }
 }
+
+object JsonManipulation {
+  def removeFields(o: JValue, fieldsToRemove: Set[String]) = {
+    val JObject(foundFields) = o
+    JObject(foundFields.filter(f => !fieldsToRemove.contains(f._1)))
+  }
+}

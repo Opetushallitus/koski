@@ -166,7 +166,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
-        val tallennettavaOpiskeluoikeus = opiskeluoikeus.withOidAndVersion(oid = None, versionumero = None)
+        val tallennettavaOpiskeluoikeus = opiskeluoikeus
         val oid = oidGenerator.generateOid(oppija.oid)
         val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppija.oid, oid, tallennettavaOpiskeluoikeus)
         for {
@@ -189,9 +189,9 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
 
-        val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus).withVersion(nextVersionumero)
+        val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
 
-        val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus)
+        val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
 
         val diff: JArray = jsonDiff(oldRow.data, newData)
         diff.values.length match {

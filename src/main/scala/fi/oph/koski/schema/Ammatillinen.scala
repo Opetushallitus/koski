@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
@@ -12,6 +13,7 @@ import mojave._
 case class AmmatillinenOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
+  aikaleima: Option[LocalDateTime] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
@@ -28,7 +30,6 @@ case class AmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
-  override def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = this.copy(oid = oid, versionumero = versionumero)
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }

@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
@@ -8,6 +9,7 @@ import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 case class EsiopetuksenOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int]  = None,
+  aikaleima: Option[LocalDateTime] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
@@ -28,7 +30,6 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("esiopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetus", koodistoUri = "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
-  override def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = this.copy(oid = oid, versionumero = versionumero)
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }

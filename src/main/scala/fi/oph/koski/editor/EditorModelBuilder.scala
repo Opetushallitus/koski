@@ -1,6 +1,7 @@
 package fi.oph.koski.editor
 
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
@@ -93,8 +94,11 @@ case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[Stri
   override def getPrototypeData = ""
 }
 
-case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[LocalDate] {
-  override def buildModelForObject(x: LocalDate, metadata: List[Metadata]) = DateModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
+case class DateModelBuilder(t: DateSchema) extends ModelBuilderWithData[AnyRef] {
+  override def buildModelForObject(x: AnyRef, metadata: List[Metadata]) = x match {
+    case x: LocalDate => DateModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
+    case x: LocalDateTime => DateTimeModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
+  }
   override def getPrototypeData = LocalDate.now
 }
 

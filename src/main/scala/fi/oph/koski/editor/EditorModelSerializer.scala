@@ -75,6 +75,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
         case (NumberModel(value, metadata)) => serializeValueModel("number", value, metadata)
         case (BooleanModel(value, metadata)) => serializeValueModel("boolean", value, metadata)
         case (DateModel(value, metadata)) => serializeValueModel("date", value, metadata)
+        case (DateTimeModel(value, metadata)) => serializeValueModel("date", value, metadata)
         case (StringModel(value, metadata)) => serializeValueModel("string", value, metadata)
         case _ => throw new RuntimeException("No match : " + model)
       }

@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.scalaschema.annotation._
@@ -72,10 +73,15 @@ trait OpiskeluoikeudenLisätiedot
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   import mojave._
+  @Hidden
+  @ReadOnly("Aikaleima muodostetaan Koski-palvelimella tallennettaessa")
+  def aikaleima: Option[LocalDateTime]
   @MinItems(1)
   def suoritukset: List[PäätasonSuoritus]
-  def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
-  def withVersion(version: Int) = this.withOidAndVersion(this.oid, Some(version))
+  def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = {
+    val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[Int]]("versionumero").set(withOid)(versionumero)
+  }
   final def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus = {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
   }
