@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -94,12 +94,15 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Käytettäessä opiskeluoikeus-oid:ia" - {
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
         resetFixtures
+        import fi.oph.koski.date.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(arvioituPäättymispäivä = Some(d))}) {
+        var aikaleima: Option[LocalDateTime] = None
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => aikaleima = existing.aikaleima ; existing.copy(arvioituPäättymispäivä = Some(d))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
           result.versionumero should equal(Some(2))
+          result.aikaleima.get should be > aikaleima.get
         }
       }
 

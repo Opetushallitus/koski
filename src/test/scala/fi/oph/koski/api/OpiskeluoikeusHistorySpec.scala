@@ -1,18 +1,15 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.http.KoskiErrorCategory.notFound
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Henkilö, KoskiSchema, Opiskeluoikeus}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.koski.schema.Opiskeluoikeus
 import org.json4s.JsonAST.{JArray, JNothing}
-import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
 class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods {
@@ -40,7 +37,8 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
 
       "Jos mikään ei ole muuttunut" - {
         "Ei luoda uutta versioriviä" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+          val uusiAikaleima = Some(LocalDateTime.now())
+          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true).copy(aikaleima = uusiAikaleima) // varmistetaan samalla että uusi arvo aikaleima-kentässä ei vaikuta vertailuun
           val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus)
           verifyHistory(modified.oid.get, List(1))
         }
