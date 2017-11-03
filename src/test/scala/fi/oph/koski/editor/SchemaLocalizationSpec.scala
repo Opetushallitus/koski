@@ -19,7 +19,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
 
         println("Missing properties by class: " + newStuff.map { case (schema, title) => schema.simpleName + "." + title }.toList.mkString("\n"))
 
-        fail(newStuff.size +  " missing schema localizations. Copy the above JSON snippet into /localization/default-texts.json")
+        fail(missingKeys.size +  " missing schema localization(s). Copy the above JSON snippet into /localization/default-texts.json")
       }
     }
   }
