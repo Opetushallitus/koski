@@ -28,8 +28,6 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
-import scala.concurrent.{Future, blocking}
-
 class TiedonsiirtoService(
   index: KoskiElasticSearchIndex,
   mailer: TiedonsiirtoFailureMailer,
@@ -148,7 +146,7 @@ class TiedonsiirtoService(
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                                     userOid: String, aikaleima: Timestamp) = {
     val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
-    Future(blocking(tiedonsiirtoBuffer.append(tiedonsiirtoDoc)))
+    tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
   def syncToElasticsearch(refreshIndex: Boolean = false): Unit = {
