@@ -62,4 +62,15 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "Muu koulutuksen järjestäjän edustaja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
