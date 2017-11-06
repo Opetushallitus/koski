@@ -4,9 +4,12 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluoikeusTable
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 
@@ -31,9 +34,11 @@ object Tables {
 
   object OpiskeluoikeusTable {
     private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
+
     private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+
     private def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: Opiskeluoikeus) = {
@@ -52,16 +57,14 @@ object Tables {
         opiskeluoikeus.mitätöity)
     }
 
-
-    def readData(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): KoskeenTallennettavaOpiskeluoikeus = {
-      val withOidVersionAndTimestamp = data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
-
-      SchemaValidatingExtractor.extract[Opiskeluoikeus](withOidVersionAndTimestamp) match {
-        case Right(oo) => oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
-        case Left(errors) =>
-          throw new RuntimeException("Deserialization errors: " + errors)
-      }
+    def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
+      data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
     }
+
+    def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
+      SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
+    }
+
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
@@ -192,12 +195,16 @@ case class SSOSessionRow(serviceTicket: String, username: String, userOid: Strin
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima: Timestamp, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
+  import fi.oph.koski.db.Tables.OpiskeluoikeusTable
+  lazy val toOpiskeluoikeusData: JValue = {
+    OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+  }
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
-    try {
-      import fi.oph.koski.db.Tables.OpiskeluoikeusTable
-      OpiskeluoikeusTable.readData(data, oid, versionumero, aikaleima)
-    } catch {
-      case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
+    OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+      case Right(oo) =>
+        oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+      case Left(errors) =>
+        throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}: ${errors}")
     }
   }
 }

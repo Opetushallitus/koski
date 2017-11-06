@@ -1,31 +1,44 @@
 package fi.oph.koski.opiskeluoikeus
 
+import javax.servlet.http.HttpServletRequest
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
-import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
+import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.schema.Henkilö.{apply => _, _}
+import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
-import fi.oph.koski.util.Pagination
+import fi.oph.koski.util.SortOrder.Ascending
+import fi.oph.koski.util.{Pagination, PaginationSettings}
 import org.scalatra._
 import rx.lang.scala.Observable
 
 trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with Pagination {
   def application: KoskiApplication
+  def query = Asdf(request, params, paginationSettings)(koskiSession, application).query match {
+    case Right(observable) => observable
+    case Left(status) => haltWithStatus(status)
+  }
+}
 
-  def query(params: Map[String, String]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
+/**
+  *  Operating context for data streaming in queries. Operates outside the lecixal scope of OpiskeluoikeusQueries to ensure that none of the
+  *  Scalatra threadlocals are used.
+  */
+case class Asdf(request: HttpServletRequest, params: Map[String, String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+  def query: Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
         AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
-        query(filters)
+        Right(query(filters))
       case Left(status) =>
-        haltWithStatus(status)
+        Left(status)
     }
   }
 
@@ -67,7 +80,3 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
     }
   }
 }
-
-
-
-

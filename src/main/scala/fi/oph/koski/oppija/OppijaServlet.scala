@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
@@ -20,8 +21,7 @@ import org.scalatra.GZipSupport
 
 import scala.collection.immutable
 
-class OppijaServlet(implicit val application: KoskiApplication)
-  extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
+class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
 
@@ -55,9 +55,8 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/") {
-    streamResponse[Oppija](query(params).map {
-      case (henkilö: TäydellisetHenkilötiedot, rivit: immutable.Seq[OpiskeluoikeusRow]) => Oppija(henkilö, rivit.map(_.toOpiskeluoikeus))
-    })
+    val serialize = SensitiveDataFilter.rowSerializer
+    streamResponse(query.map(serialize))
   }
 
   get("/:oid") {
