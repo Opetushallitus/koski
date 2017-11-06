@@ -1,0 +1,1 @@
+create index opiskeluoikeus_aikaleima_idx on opiskeluoikeus(aikaleima);
