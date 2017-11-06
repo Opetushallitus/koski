@@ -18,6 +18,7 @@ object Koodistot {
     "ammatillisentutkinnonsuoritustapa",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "arviointiasteikkoammatillinent1k3",
+    "arviointiasteikkoammatillinen15",
     "arviointiasteikkocorerequirementsib",
     "arviointiasteikkoib",
     "arviointiasteikkolisapisteetib",
