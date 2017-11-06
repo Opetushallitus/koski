@@ -55,7 +55,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/") {
-    val serialize = SensitiveDataFilter.rowSerializer
+    val serialize = SensitiveDataFilter(koskiSession).rowSerializer
     streamResponse(query.map(serialize))
   }
 

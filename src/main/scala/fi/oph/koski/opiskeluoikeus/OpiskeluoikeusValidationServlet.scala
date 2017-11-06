@@ -9,7 +9,7 @@ import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, RequiresRole}
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, SensitiveData}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
@@ -96,4 +96,4 @@ case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String
   def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
 
-case class HistoryInconsistency(message: String, @RequiresRole("LUOTTAMUKSELLINEN") diff: JValue)
+case class HistoryInconsistency(message: String, @SensitiveData diff: JValue)

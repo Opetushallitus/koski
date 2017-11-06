@@ -1,13 +1,11 @@
 package fi.oph.koski.editor
 
-import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
-import fi.oph.koski.json.SensitiveDataFilter.sensitiveHidden
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
@@ -247,7 +245,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
     val value = schema.getPropertyValue(property, obj)
-    val propertyModel = if (sensitiveHidden(property.metadata)(context.user)) {
+    val propertyModel = if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) {
       EditorModelBuilder.builder(property.schema).buildPrototype(Nil)
     } else {
       EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
@@ -271,7 +269,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (complexObject) props += ("complexObject" -> JBool(true))
     if (tabular) props += ("tabular" -> JBool(true))
     if (!readOnly) props += ("editable" -> JBool(true))
-    if (sensitiveHidden(property.metadata)(context.user)) props += ("sensitiveHidden" -> JBool(true))
+    if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
 
     EditorProperty(property.key, property.title, propertyModel, props)

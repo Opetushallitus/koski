@@ -3,7 +3,7 @@ package fi.oph.koski.json
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
-import fi.oph.koski.schema.{KoskiSchema, Oppija, RequiresRole, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskiSchema, Oppija, SensitiveData, TäydellisetHenkilötiedot}
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods
@@ -37,11 +37,11 @@ object JsonSerializer {
   }
 
   def serialize[T: TypeTag](obj: T)(implicit user: KoskiSession): JValue = {
-    Serializer.serialize(obj, SensitiveDataFilter.serializationContext)
+    Serializer.serialize(obj, SensitiveDataFilter(user).serializationContext)
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: KoskiSession): JValue = {
-    Serializer.serialize(obj, schema, SensitiveDataFilter.serializationContext)
+    Serializer.serialize(obj, schema, SensitiveDataFilter(user).serializationContext)
   }
 
   def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false): T = {
@@ -55,28 +55,5 @@ object JsonSerializer {
         throw new RuntimeException(s"Validation error while de-serializing as ${implicitly[TypeTag[T]].tpe.toString}: " + error)
     }
   }
-}
-
-object SensitiveDataFilter {
-  def filterSensitiveData(s: ClassSchema, p: Property)(implicit user: KoskiSession) = if (sensitiveHidden(p.metadata)) Nil else List(p)
-
-  def serializationContext(implicit user: KoskiSession) = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
-
-  def rowSerializer(implicit user: KoskiSession): ((TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    val shortcut = user.hasRole("LUOTTAMUKSELLINEN")
-    def ser(tuple: (TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = (tuple, shortcut) match {
-      case ((henkilö, rivit), true) =>
-        JObject("henkilö" -> JsonSerializer.serialize(henkilö), "opiskeluoikeudet" -> JArray(rivit.toList.map(_.toOpiskeluoikeusData)))
-      case ((henkilö, rivit), false) =>
-        JsonSerializer.serialize(Oppija(henkilö, rivit.map(_.toOpiskeluoikeus)))
-    }
-    ser
-  }
-
-  def sensitiveHidden(metadata: List[Metadata])(implicit user: KoskiSession): Boolean = metadata.exists {
-    case RequiresRole(role) => !user.hasRole(role)
-    case _ => false
-  }
-
 }
 
