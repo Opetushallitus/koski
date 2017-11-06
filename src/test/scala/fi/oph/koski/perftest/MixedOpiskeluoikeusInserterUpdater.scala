@@ -33,17 +33,31 @@ object MixedOpiskeluoikeusInserterScenarioUpdater extends FixtureDataInserterSce
       perusopetuksenOpiskeluoikeus,
       muokkaa(perusopetuksenOpiskeluoikeus),
       lukioTaiAmmattikouluOpiskeluoikeus,
-      muokkaa(perusopetuksenOpiskeluoikeus)
+      muokkaa(lukioTaiAmmattikouluOpiskeluoikeus)
     )
   }
 
   private def muokkaa(perusopetuksenOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     import mojave._
-    traversal[KoskeenTallennettavaOpiskeluoikeus]
+
+
+    val suorituksetT = traversal[KoskeenTallennettavaOpiskeluoikeus]
       .field[List[PäätasonSuoritus]]("suoritukset")
       .items
+
+    val vahvistusPäiväT = suorituksetT
       .field[Option[Vahvistus]]("vahvistus")
       .items.field[LocalDate]("päivä")
+
+    val osasuoritustenVahvistusT = suorituksetT
+      .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+      .filter(_.vahvistus.isDefined)
+      .field[Option[Vahvistus]]("vahvistus")
+
+    val vahvistusSiirretty = vahvistusPäiväT
       .modify(perusopetuksenOpiskeluoikeus)(_.minusDays(1))
+
+
+    osasuoritustenVahvistusT.set(vahvistusSiirretty)(None)
   }
 }
