@@ -40,4 +40,15 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+},{
+  "koodiUri" : "ammatillisentutkinnonsuoritustapa_reformi",
+  "koodiArvo" : "reformi",
+  "metadata" : [ {
+    "nimi" : "Reformi",
+    "lyhytNimi" : "reformi",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
