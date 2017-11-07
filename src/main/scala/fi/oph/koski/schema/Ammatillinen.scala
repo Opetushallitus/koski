@@ -51,7 +51,6 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Majoitusjakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  poissaolojaksot: Option[List[Poissaolojakso]] = None,
   hojks: Option[Hojks],
   @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
@@ -76,15 +75,6 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
 case class Majoitusjakso (
   alku: LocalDate,
   loppu: Option[LocalDate]
-) extends Jakso
-
-@Description("Tieto siitä, kun kyseessä on on yli 4 vk kestävä poissaolojakso. Rahoituksen laskennassa käytettävä tieto")
-case class Poissaolojakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  @Description("Poissaolon syy. Mikäli kysymys on koulutuksen järjestäjän päättämästä 4vk kestävästä kesäkeskeytyksestä, käytetään syykoodia 'Kesälomakeskeytys'")
-  @KoodistoUri("ammatillistenopintojenpoissaolonsyy")
-  syy: Koodistokoodiviite
 ) extends Jakso
 
 @Title("Osa-aikaisuusjakso")
