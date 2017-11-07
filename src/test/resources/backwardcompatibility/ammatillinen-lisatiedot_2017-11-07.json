@@ -87,14 +87,6 @@
           "fi" : "Harjoittelua ulkomailla"
         }
       } ],
-      "poissaolojaksot" : [ {
-        "alku" : "2013-10-01",
-        "loppu" : "2013-10-31",
-        "syy" : {
-          "koodiarvo" : "2",
-          "koodistoUri" : "ammatillistenopintojenpoissaolonsyy"
-        }
-      } ],
       "hojks" : {
         "opetusryhmä" : {
           "koodiarvo" : "1",
