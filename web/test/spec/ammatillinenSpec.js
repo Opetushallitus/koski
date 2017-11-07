@@ -373,7 +373,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           editor.edit,
           opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
-          opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'),
+          opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
           editor.saveChanges,
           wait.forAjax
         )
@@ -651,7 +651,7 @@ describe('Ammatillinen koulutus', function() {
                 expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
               })
               describe('Arvosanan lisääminen', function() {
-                before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'))
+                before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1))
 
                 describe('Lisättäessä', function() {
                   it('Merkitsee tutkinnon osan tilaan VALMIS', function() {
@@ -1474,7 +1474,7 @@ describe('Ammatillinen koulutus', function() {
             before(
               editor.property('tila').removeItem(0),
               opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
-              opinnot.tutkinnonOsat().tutkinnonOsa(5).propertyBySelector('.arvosana').setValue('3'),
+              opinnot.tutkinnonOsat().tutkinnonOsa(5).propertyBySelector('.arvosana').setValue('3', 1),
               editor.saveChanges
             )
             it('tallennus onnistuu', function() {
@@ -1494,7 +1494,7 @@ describe('Ammatillinen koulutus', function() {
         before(
             editor.edit,
             opinnot.tutkinnonOsat().lisääTutkinnonOsa('Tekniikan asiantuntemus'),
-            opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3'),
+            opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
             editor.saveChanges,
             wait.until(page.isSavedLabelShown)
         )

@@ -10,7 +10,7 @@ import {t} from '../i18n.js'
 import {parseBool} from '../util'
 import {buildClassNames} from '../classnames'
 
-export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className }) => {
+export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, keyValue = option => option.value, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className}) => {
   if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional(model)
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
@@ -41,7 +41,7 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
             {
               alternativesP.map(alternatives =>
                 alternatives.map(alternative =>
-                  (<li key={ alternative.value }>
+                  (<li key={ keyValue(alternative) }>
                     <label className={labelClass(alternative)}>
                       <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
                       {alternative.title}
@@ -57,7 +57,7 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
              <DropDown
                inline={inline}
                options={alternativesWithZeroValueP}
-               keyValue={option => option.value}
+               keyValue={ keyValue }
                displayValue={option => option.title}
                onSelectionChanged={option => onChange(option)}
                selected={defaultValue}

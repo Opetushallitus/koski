@@ -20,6 +20,7 @@ import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
 import UusiTutkinnonOsa from './UusiTutkinnonOsa.jsx'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
+import {sortGrades, sortGradesF} from '../sorting';
 
 
 export class Suoritustaulukko extends React.Component {
@@ -153,6 +154,19 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let arvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
 
+    let sortByKoodistoUriAndGrade = (grades) => {
+      let sort = (x, y) => {
+        if (x.data.koodistoUri < y.data.koodistoUri) {
+          return -1
+        }
+        if (x.data.koodistoUri > y.data.koodistoUri) {
+          return 1
+        }
+        return sortGradesF(x, y)
+      }
+      return grades.sort(sort)
+    }
+
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       <td className="suoritus">
@@ -167,7 +181,13 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       </td>
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
-      {showArvosana && arvosanaModel && <td className="arvosana"><Editor model={ arvosanaModel } showEmptyOption="true"/></td>}
+      {showArvosana && arvosanaModel && <td className="arvosana">
+        <Editor model={arvosanaModel} showEmptyOption="true"
+                keyValue={option => (option.data ? (option.data.koodistoUri + '-') : '') + option.value}
+                sortBy={sortByKoodistoUriAndGrade}
+        />
+      </td>
+      }
       {
         model.context.edit && (
           <td className="remove">

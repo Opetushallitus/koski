@@ -15,13 +15,13 @@ function Page(mainElement) {
         return mainElement().find(selector)
       })
     },
-    setInputValue: function(selector, value, exact) {
+    setInputValue: function(selector, value, exact, index) {
       return function() {
         var input = api.getInput(selector)
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(function() {return input.setValue(value, exact)})
+          .then(function() {return input.setValue(value, exact, index)})
           .then(wait.forAjax)
       }
     },
@@ -77,7 +77,7 @@ function Page(mainElement) {
       isEnabled: function () {
         return el().is(':enabled')
       },
-      setValue: function(value, exact) {
+      setValue: function(value, exact, index) {
         var input = el()
         switch (inputType(input)) {
           case 'EMAIL':
@@ -118,14 +118,16 @@ function Page(mainElement) {
             }
 
             if (exact) {
-              var result = S(input).find('.options li').filter(function(i, v) {return $(v).text().trim() === value})
+              var selector = index !== undefined ? '.options li:nth(' + index + ')' : '.options li'
+              var result = S(input).find(selector).filter(function(i, v) {return $(v).text().trim() === value})
               if (result.length !== 1) {
-                throw new Error("Element '.options li' filtered by text '"+value+"' result length "+result.length+' !== 1 in '+S(input))
+                throw new Error("Element '" + selector + "' filtered by text '" + value + "' result length " + result.length + ' !== 1 in ' + S(input))
               }
               return triggerEvent(result, 'mousedown')()
             }
             else {
-              return triggerEvent(findSingle('.options li:contains(' + value + ')', S(input)), 'mousedown')()
+              var selector = index !== undefined ? '.options li:contains(' + value + '):nth(' + index + ')' : '.options li:contains(' + value + ')'
+              return triggerEvent(findSingle(selector, S(input)), 'mousedown')()
             }
             break
           case 'AUTOCOMPLETE': // Autocomplete.jsx

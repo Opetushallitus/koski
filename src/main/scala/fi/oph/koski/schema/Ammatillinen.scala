@@ -748,6 +748,7 @@ case class PaikallinenTelmaKoulutuksenOsa(
 trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  @KoodistoUri("arviointiasteikkoammatillinen15")
   override def arvosana: Koodistokoodiviite
   override def arvioitsijat: Option[List[SuorituksenArvioitsija]]
   override def hyväksytty = arvosana.koodiarvo match {

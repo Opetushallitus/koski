@@ -1,21 +1,22 @@
 export const sortGrades = grades => {
-  let sort = (gradeX, gradeY) => {
-    let x = gradeX.value
-    let y = gradeY.value
-    let xAsFloat = parseFloat(x)
-    let yAsFloat = parseFloat(y)
-    if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
-      return (x < y) ? -1 : (x > y) ? 1 : 0
-    }
-    if (isNaN(xAsFloat)) {
-      return 1
-    }
-    if (isNaN(yAsFloat)) {
-      return -1
-    }
-    return parseFloat(x) - parseFloat(y)
+  return grades.sort(sortGradesF)
+}
+
+export const sortGradesF = (gradeX, gradeY) => {
+  let x = gradeX.value
+  let y = gradeY.value
+  let xAsFloat = parseFloat(x)
+  let yAsFloat = parseFloat(y)
+  if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
+    return (x < y) ? -1 : (x > y) ? 1 : 0
   }
-  return grades.sort(sort)
+  if (isNaN(xAsFloat)) {
+    return 1
+  }
+  if (isNaN(yAsFloat)) {
+    return -1
+  }
+  return parseFloat(x) - parseFloat(y)
 }
 
 // expects that the list is already sorted, just puts the preordered ones first

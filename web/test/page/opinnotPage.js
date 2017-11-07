@@ -630,9 +630,9 @@ function Property(elem) {
         return Page(elem).setInputValue('.dropdown', value.toString())().then(wait.forAjax)
       }
     },
-    setValue: function(value) {
+    setValue: function(value, index) {
       return function() {
-        return Page(elem).setInputValue('.dropdown, .editor-input', value)()
+        return Page(elem).setInputValue('.dropdown, .editor-input', value, false, index)()
       }
     },
     getLanguage: function() {
