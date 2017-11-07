@@ -16,10 +16,10 @@ class ValidointiTaulukko extends React.Component {
 
   render() {
     let { validationStatus } = this.props
-    let { expandedJsonKeys, expandedIdsKeys, message } = this.state
+    let { expandedJsonKeys, expandedIdsKeys } = this.state
 
     return (
-      <div onMouseUp={this.updateSelection.bind(this)} >
+      <div className="validointi-taulukko" onMouseUp={this.updateSelection.bind(this)} >
         <table>
           <thead>
           <tr><th className="virhetyyppi"><Text name="Virhetyyppi"/></th><th className="virheteksti"><Text name="Virheteksti"/></th><th className="lukumäärä"><Text name="Lukumäärä"/></th></tr>
@@ -56,8 +56,8 @@ class ValidointiTaulukko extends React.Component {
         </table>
         {
           this.state.selectedRows.length ? (<div className="oids">
-              <button className="show-oids" onClick={() => this.setState({showOids: !this.state.showOids})}>Näytä oidit</button>
-              { this.state.showOids && <div id="message">{ '(' + this.state.selectedRows.flatMap((row) => row.oids).map(oids => oids.opiskeluoikeusOid).map((id) => '\'' + id + '\'').join(', ') + ')' }</div>}
+              <button className="show-oids" onClick={() => this.setState({showOids: !this.state.showOids})}>{'Näytä oidit'}</button>
+              { this.state.showOids && <div className="oid-list">{ '(' + this.state.selectedRows.flatMap((row) => row.oids).map(oids => oids.opiskeluoikeusOid).map((id) => '\'' + id + '\'').join(', ') + ')' }</div>}
             </div>)
             : null
         }
@@ -69,8 +69,9 @@ class ValidointiTaulukko extends React.Component {
       let {validationStatus} = this.props
       if (!window.getSelection().focusNode || !window.getSelection().anchorNode) return []
       let elementIndex = (el) => el ? Array.prototype.indexOf.call(el.parentElement.children, el) : -1
-      var startIndex = elementIndex(window.getSelection().focusNode.parentElement.closest('tr.row'))
-      var endIndex = elementIndex(window.getSelection().anchorNode.parentElement.closest('tr.row'))
+      let closestRow = (el) => el.closest ? el.closest('tr.row') : closestRow(el.parentElement)
+      var startIndex = elementIndex(closestRow(window.getSelection().focusNode))
+      var endIndex = elementIndex(closestRow(window.getSelection().anchorNode))
       if (startIndex < 0 || endIndex < 0) return []
       if (endIndex < startIndex) {
         var x = endIndex
@@ -79,7 +80,9 @@ class ValidointiTaulukko extends React.Component {
       }
       return validationStatus.slice(startIndex, endIndex + 1)
     }
-    userP.filter('.hasGlobalReadAccess').forEach(() => this.setState({selectedRows: getSelectedRows(), showOids: false}))
+    userP.filter('.hasGlobalReadAccess').forEach(() => {
+      this.setState({selectedRows: getSelectedRows(), showOids: false})
+    })
   }
 }
 
@@ -124,7 +127,7 @@ export const validointiContentP = (query) => {
           ? (finished
             ? <Text name="Kaikki opiskeluoikeudet validoitu."/>
             : <Text name="Odota, tietoja validoidaan."/>)
-          : <button onClick={() => startedAtom.set(true)}><Text name="Aloita validointi"/></button>
+          : <button className="aloita" onClick={() => startedAtom.set(true)}><Text name="Aloita validointi"/></button>
         }
         <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>
