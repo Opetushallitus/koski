@@ -6,22 +6,20 @@ import delays from './delays'
 import Text from './Text.jsx'
 import Atom from 'bacon.atom'
 import Link from './Link.jsx'
-
+import {userP} from './user'
 class ValidointiTaulukko extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { expandedJsonKeys: [], expandedIdsKeys: []}
+    this.state = { expandedJsonKeys: [], expandedIdsKeys: [], selectedRows: []}
   }
-
 
   render() {
     let { validationStatus } = this.props
     let { expandedJsonKeys, expandedIdsKeys, message } = this.state
 
     return (
-      <div>
-        <div id="message">{message}</div>
+      <div onMouseUp={this.updateSelection.bind(this)} >
         <table>
           <thead>
           <tr><th className="virhetyyppi"><Text name="Virhetyyppi"/></th><th className="virheteksti"><Text name="Virheteksti"/></th><th className="lukumäärä"><Text name="Lukumäärä"/></th></tr>
@@ -30,7 +28,7 @@ class ValidointiTaulukko extends React.Component {
           { validationStatus.map(({errors, oids, key}) => {
             let jsonExpanded = expandedJsonKeys.indexOf(key) >= 0
             let idsExpanded = expandedIdsKeys.indexOf(key) >= 0
-            return (<tr key={key}>
+            return (<tr className="row" key={key}>
               <td className="virhetyyppi">{
                 errors.length
                   ? errors.map((error, i) => <div key={i}>{error.key}</div>)
@@ -56,38 +54,32 @@ class ValidointiTaulukko extends React.Component {
           })}
           </tbody>
         </table>
+        {
+          this.state.selectedRows.length ? (<div className="oids">
+              <button className="show-oids" onClick={() => this.setState({showOids: !this.state.showOids})}>Näytä oidit</button>
+              { this.state.showOids && <div id="message">{ '(' + this.state.selectedRows.flatMap((row) => row.oids).map(oids => oids.opiskeluoikeusOid).map((id) => '\'' + id + '\'').join(', ') + ')' }</div>}
+            </div>)
+            : null
+        }
       </div>)
   }
 
-  componentDidMount() {
-    document.addEventListener('keyup', this.showSelection)
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keyup', this.showSelection)
-  }
-
-  showSelection(e) {
-    if (e.keyCode == 27) { // esc
-      this.setState({ message: null })
-    } else if (e.keyCode == 67) { // C
+  updateSelection() {
+    const getSelectedRows = () => {
       let {validationStatus} = this.props
-      if (!window.getSelection().focusNode || !window.getSelection().anchorNode) return
-      let elementIndex = (el) => Array.prototype.indexOf.call(el.parentElement.children, el)
-      var startIndex = elementIndex(window.getSelection().focusNode.parentElement.closest('tr'))
-      var endIndex = elementIndex(window.getSelection().anchorNode.parentElement.closest('tr'))
-      if (startIndex < 0 || endIndex < 0) return
+      if (!window.getSelection().focusNode || !window.getSelection().anchorNode) return []
+      let elementIndex = (el) => el ? Array.prototype.indexOf.call(el.parentElement.children, el) : -1
+      var startIndex = elementIndex(window.getSelection().focusNode.parentElement.closest('tr.row'))
+      var endIndex = elementIndex(window.getSelection().anchorNode.parentElement.closest('tr.row'))
+      if (startIndex < 0 || endIndex < 0) return []
       if (endIndex < startIndex) {
         var x = endIndex
         endIndex = startIndex
         startIndex = x
       }
-      let selectedRows = validationStatus.slice(startIndex, endIndex + 1)
-      let selectedIds = selectedRows.flatMap((row) => row.ids)
-      var messageElem = document.getElementById('message')
-      messageElem.textContent='(' + selectedIds.map((id) => '\'' + id + '\'').join(', ') + ')'
-      window.getSelection().selectAllChildren(messageElem)
+      return validationStatus.slice(startIndex, endIndex + 1)
     }
+    userP.filter('.hasGlobalReadAccess').forEach(() => this.setState({selectedRows: getSelectedRows(), showOids: false}))
   }
 }
 
