@@ -35,7 +35,8 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
 
-  const opiskeluoikeudenTilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu')
+  const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
+  const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) => tyyppi === 'ammatillinenkoulutus' ? tilat : tilat.filter(tila => tila.koodiarvo !== 'loma'))
 
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 

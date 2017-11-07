@@ -115,6 +115,14 @@ case class AmmatillinenOpiskeluoikeudenTila(
 @Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain")
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("peruutettu")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("valmistunut")
+  @KoodistoKoodiarvo("loma")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
