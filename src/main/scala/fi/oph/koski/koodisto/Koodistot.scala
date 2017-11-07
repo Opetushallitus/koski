@@ -43,6 +43,7 @@ object Koodistot {
     "oppiaineentasoib",
     "oppiaineetib",
     "oppiaineetluva",
+    "osaamisenhankkimistapa",
     "perusopetuksenluokkaaste",
     "perusopetuksentodistuksenliitetieto",
     "perusopetuksensuoritustapa",

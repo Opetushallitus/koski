@@ -569,6 +569,7 @@ trait Järjestämismuoto {
 case class JärjestämismuotoIlmanLisätietoja(
   @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
+  @KoodistoUri("osaamisenhankkimistapa")
   @Representative
   tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
@@ -578,6 +579,8 @@ case class OppisopimuksellinenJärjestämismuoto(
   @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
+  @KoodistoUri("osaamisenhankkimistapa")
+  @KoodistoKoodiarvo("oppisopimus")
   tunniste: Koodistokoodiviite,
   @Discriminator
   @FlattenInUI

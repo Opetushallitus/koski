@@ -20,7 +20,7 @@ import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
 import UusiTutkinnonOsa from './UusiTutkinnonOsa.jsx'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
-import {sortGrades, sortGradesF} from '../sorting';
+import {sortGradesF} from '../sorting'
 
 
 export class Suoritustaulukko extends React.Component {
@@ -154,6 +154,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let arvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
 
+    // TODO, Parempi tapa erotella eri koodistoista tulevat arvot
     let sortByKoodistoUriAndGrade = (grades) => {
       let sort = (x, y) => {
         if (x.data.koodistoUri < y.data.koodistoUri) {
