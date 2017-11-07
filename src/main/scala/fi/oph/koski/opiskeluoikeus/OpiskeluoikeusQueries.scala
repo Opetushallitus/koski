@@ -19,7 +19,7 @@ import rx.lang.scala.Observable
 
 trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with Pagination {
   def application: KoskiApplication
-  def query = Asdf(request, params, paginationSettings)(koskiSession, application).query match {
+  def query = OpiskeluoikeusQueryContext(request, params, paginationSettings)(koskiSession, application).query match {
     case Right(observable) => observable
     case Left(status) => haltWithStatus(status)
   }
@@ -29,7 +29,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   *  Operating context for data streaming in queries. Operates outside the lecixal scope of OpiskeluoikeusQueries to ensure that none of the
   *  Scalatra threadlocals are used.
   */
-case class Asdf(request: HttpServletRequest, params: Map[String, String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+case class OpiskeluoikeusQueryContext(request: HttpServletRequest, params: Map[String, String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
   def query: Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
