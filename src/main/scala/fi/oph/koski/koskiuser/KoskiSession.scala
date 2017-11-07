@@ -31,6 +31,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
+  def hasAnyReadAccess = globalAccess.contains(AccessType.read) || orgKäyttöoikeudet.nonEmpty
 
   def hasRole(role: String): Boolean = {
     val palveluRooli = Palvelurooli("KOSKI", role)

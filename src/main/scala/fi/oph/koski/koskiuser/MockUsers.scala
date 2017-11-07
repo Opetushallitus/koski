@@ -25,6 +25,7 @@ object MockUsers {
   val hkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosTallentaja)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
+  val eiOikkia = MockUser("EiOikkia", "Otto", "1.2.246.562.24.99999999902", Set())
 
   val users = List(
     kalle,
@@ -42,7 +43,8 @@ object MockUsers {
     omattiedot,
     stadinVastuukäyttäjä,
     omniaTallentajaEiLuottamuksellinen,
-    hkiTallentaja
+    hkiTallentaja,
+    eiOikkia
   )
 }
 

@@ -128,5 +128,16 @@ describe('Koski', function() {
       before(Authentication().login(), openPage('/koski/asdf', page.is404))
       it('näytetään 404-sivu', function() {})
     })
+
+    describe('Kun käyttäjällä ei ole Koski-oikeuksia', function() {
+      before(login.openPage)
+      before(login.login('Otto', 'Otto'))
+      before(wait.untilVisible(findSingle('.no-access')))
+      it('Näytetään Ei käyttöoikeuksia-teksti', function() {
+        expect(S('h1').text()).to.equal('Koski')
+        expect(S('h2').text()).to.equal('Ei käyttöoikeuksia')
+      })
+    })
+
   })
 })

@@ -9,6 +9,7 @@ import {omatTiedotContentP} from './OmatTiedot.jsx'
 import {oppijataulukkoContentP} from './Oppijataulukko.jsx'
 import {validointiContentP} from './Validointi.jsx'
 import {dokumentaatioContentP} from './dokumentaatio/Dokumentaatio.jsx'
+import {onlyIfHasReadAccess} from './accessCheck.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
@@ -19,7 +20,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   } else if (path === '/koski/uusioppija' && (uusiOppijaHetu || uusiOppijaOid)) {
     return { content: (<UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />), title: 'Uuden opiskelijan lisäys' }
   } else if (path === '/koski/') {
-    return oppijataulukkoContentP(queryString, params)
+    return onlyIfHasReadAccess(oppijataulukkoContentP(queryString, params))
   } else if (path === '/koski/tiedonsiirrot') {
     return tiedonsiirtolokiContentP(queryString)
   } else if (path === '/koski/tiedonsiirrot/virheet') {
