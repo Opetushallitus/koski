@@ -5,10 +5,10 @@
     "kieli" : "SV",
     "nimi" : "Arviointiasteikko ammatillinen 1-5"
   }, {
-    "kieli" : "FI",
+    "kieli" : "EN",
     "nimi" : "Arviointiasteikko ammatillinen 1-5"
   }, {
-    "kieli" : "EN",
+    "kieli" : "FI",
     "nimi" : "Arviointiasteikko ammatillinen 1-5"
   } ],
   "codesGroupUri" : "http://koski",
@@ -16,5 +16,5 @@
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 1
+  "version" : 0
 }

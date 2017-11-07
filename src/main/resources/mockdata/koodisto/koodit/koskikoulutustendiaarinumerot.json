@@ -343,7 +343,7 @@
   "versio" : 1,
   "withinCodeElements" : [ {
     "codeElementUri" : "koulutustyyppi_18",
-    "codeElementVersion" : 1,
+    "codeElementVersion" : 2,
     "passive" : false
   } ]
 }, {
@@ -423,7 +423,7 @@
   "versio" : 1,
   "withinCodeElements" : [ {
     "codeElementUri" : "koulutustyyppi_5",
-    "codeElementVersion" : 1,
+    "codeElementVersion" : 2,
     "passive" : false
   } ]
 }, {
