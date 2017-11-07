@@ -204,7 +204,7 @@ case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima:
       case Right(oo) =>
         oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
       case Left(errors) =>
-        throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}: ${errors}")
+        throw new MappingException(s"Error deserializing opiskeluoikeus ${oid} for oppija ${oppijaOid}: ${errors}")
     }
   }
 }
