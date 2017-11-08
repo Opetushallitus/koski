@@ -1195,7 +1195,6 @@ describe('Ammatillinen koulutus', function() {
           'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
           'Vaativan erityisen tuen yhteydessä järjestettävä majoitus 1.9.2012 — 1.9.2013\n' +
           'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
-          'Poissaolojaksot 1.10.2013 — 31.10.2013 Syy Oma ilmoitus\n' +
           'Hojks Opetusryhmä Yleinen opetusryhmä\n' +
           'Vaikeasti vammainen kyllä\n' +
           'Vammainen ja avustaja kyllä\n' +
