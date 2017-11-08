@@ -39,7 +39,6 @@
   "kyllä": "kyllä",
   "ei": "ei",
   "Ei valintaa": "Ei valintaa",
-  "Yhteensä": "Yhteensä",
   "Perusteen diaarinumero": "Perusteen diaarinumero",
   "httpStatus.400": "Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.",
   "httpStatus.404": "Etsimääsi sivua ei löytynyt",
@@ -394,5 +393,6 @@
   "Koulukoti": "Koulukoti",
   "Ei käyttöoikeuksia": "Ei käyttöoikeuksia",
   "Käyttääksesi Koski-palvelua tarvitset käyttöoikeudet.": "Käyttääksesi Koski-palvelua tarvitset käyttöoikeudet."
+  "Koulutussopimukset": "Koulutussopimukset"
 }
 
