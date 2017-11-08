@@ -15,7 +15,9 @@ export const SelectAlternativeByEnumValueEditor = ({ model, path, className }) =
             let tunnisteModel = lensedModel(model, L.lens(
               (m) => modelLookup(m, path),
               (enumModel, m) => {
-                let foundProto = R.reverse(protos).find(proto => R.equals(modelData(enumModel), modelData(proto, path)))
+                // The proto with least options is the most specific one, choose that one.
+                let protosMostSpecificFirst = R.compose(R.flatten, R.sortBy(a => a.length), R.values, R.groupBy(proto => proto.value.classes[0]))(protos)
+                let foundProto = protosMostSpecificFirst.find(proto => R.equals(modelData(enumModel), modelData(proto, path)))
                 return modelSetValue(m, foundProto.value)
               }
             ))

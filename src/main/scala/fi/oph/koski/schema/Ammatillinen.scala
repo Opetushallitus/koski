@@ -566,19 +566,41 @@ trait Järjestämismuoto {
 }
 
 @Description("Järjestämismuoto ilman lisätietoja")
+@OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
+@OnlyWhen("../../../suoritustapa/koodiarvo", "naytto")
+@OnlyWhen("../../../suoritustapa", None)
 case class JärjestämismuotoIlmanLisätietoja(
   @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
-  @KoodistoUri("osaamisenhankkimistapa")
   @Representative
   tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
 
 @Description("Koulutuksen järjestäminen oppisopimuskoulutuksena. Sisältää oppisopimuksen lisätiedot")
+@OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
+@OnlyWhen("../../../suoritustapa/koodiarvo", "naytto")
+@OnlyWhen("../../../suoritustapa", None)
 case class OppisopimuksellinenJärjestämismuoto(
   @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("jarjestamismuoto")
   @KoodistoKoodiarvo("20")
+  tunniste: Koodistokoodiviite,
+  @Discriminator
+  @Flatten
+  oppisopimus: Oppisopimus
+) extends Järjestämismuoto
+
+@OnlyWhen("../../../suoritustapa/koodiarvo","reformi")
+case class OsaamisenHankkimistapaIlmanLisätietoja(
+  @Description("Koulutuksen järjestämismuodon tunniste")
+  @KoodistoUri("osaamisenhankkimistapa")
+  @Representative
+  tunniste: Koodistokoodiviite
+) extends Järjestämismuoto
+
+@OnlyWhen("../../../suoritustapa/koodiarvo","reformi")
+case class OppisopimuksellinenOsaamisenHankkimistapa(
+  @Description("Koulutuksen järjestämismuodon tunniste")
   @KoodistoUri("osaamisenhankkimistapa")
   @KoodistoKoodiarvo("oppisopimus")
   tunniste: Koodistokoodiviite,

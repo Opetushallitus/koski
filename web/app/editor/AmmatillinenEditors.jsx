@@ -125,6 +125,7 @@ export const editorMapping = {
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
   'jarjestamismuotojakso': JärjestämismuotojaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
+  'oppisopimuksellinenosaamisenhankkimistapa': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
   'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
   'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
