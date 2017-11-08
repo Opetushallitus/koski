@@ -551,6 +551,9 @@ function OpiskeluoikeusDialog() {
     },
     radioEnabled: function(value) {
       return !findSingle('input[value="' + value + '"]', elem())().is(':disabled')
+    },
+    tilat: function() {
+      return toArray(elem().find('.tila input[type="radio"]')).map(function(i) { return i.value })
     }
   }
 }

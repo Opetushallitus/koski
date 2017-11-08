@@ -544,6 +544,13 @@ describe('Perusopetus', function() {
       describe('Opiskeluoikeuden tila', function() {
         before(editor.edit, editor.property('tila').removeItem(0), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
+        describe('Perusopetuksen tilat', function() {
+          before(editor.edit, opinnot.avaaLisaysDialogi)
+          it('Ei sisällä loma-tilaa', function() {
+            expect(opiskeluoikeus.tilat()).to.deep.equal([ 'eronnut', 'katsotaaneronneeksi', 'lasna', 'peruutettu', 'valmistunut', 'valiaikaisestikeskeytynyt' ])
+          })
+        })
+
         describe('Eronnut', function() {
           it('Alkutila', function() {
             expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')

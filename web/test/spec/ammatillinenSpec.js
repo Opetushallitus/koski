@@ -445,6 +445,17 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
+  describe('Opiskeluoikeuden tila', function() {
+    before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit, editor.property('tila').removeItem(0), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+    describe('Ammatillisen koulutuksen tilat', function () {
+      before(editor.edit, opinnot.avaaLisaysDialogi)
+      it('Sisältää loma-tilan', function () {
+        expect(OpiskeluoikeusDialog().tilat()).to.deep.equal(['eronnut', 'katsotaaneronneeksi', 'loma', 'lasna', 'peruutettu', 'valmistunut', 'valiaikaisestikeskeytynyt'])
+      })
+    })
+  })
+
   describe('Opiskeluoikeuden mitätöiminen', function() {
     before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit)
     describe('Opiskeluoikeudelle jossa on valmiita suorituksia', function() {
