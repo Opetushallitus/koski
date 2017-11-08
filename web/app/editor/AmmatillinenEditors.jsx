@@ -11,8 +11,9 @@ import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx
 import {TutkinnonOsanSuoritusEditor} from './Suoritustaulukko.jsx'
 import {InlineJaksoEditor} from './JaksoEditor.jsx'
 import {wrapOptional} from './EditorModel'
+import {hasModelProperty} from './EditorModel'
 
-export class NäytönSuorituspaikkaEditor extends React.Component {
+class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
     let {model} = this.props
     return <Editor model={model} path="kuvaus"/>
@@ -20,7 +21,7 @@ export class NäytönSuorituspaikkaEditor extends React.Component {
 }
 NäytönSuorituspaikkaEditor.readOnly = true
 
-export class NäytönArvioitsijaEditor extends React.Component {
+class NäytönArvioitsijaEditor extends React.Component {
   render() {
     let {model} = this.props
     return <span>{modelTitle(model, 'nimi')} { modelData(model, 'ntm') ? <span>{' ('}<Text name='näyttötutkintomestari'/>{')'}</span> : null}</span>
@@ -54,25 +55,25 @@ class TutkinnonOsanLisätietoEditor extends React.Component {
   }
 }
 
-export class JärjestämismuotojaksoEditor extends React.Component {
+class JärjestämismuotojaksoEditor extends React.Component {
   render() {
     let {model} = this.props
-
+    let propertyName = hasModelProperty(model, 'järjestämismuoto') ? 'järjestämismuoto' : 'osaamisenHankkimistapa'
     return (
         <div className="jarjestamismuotojakso">
           <PäivämääräväliEditor model={model}/>
           {', '}
           <span className="jarjestamismuoto">
-            <SelectAlternativeByEnumValueEditor model={modelLookup(model, 'järjestämismuoto')} path="tunniste" className="järjestämismuoto" />
+            <SelectAlternativeByEnumValueEditor model={modelLookup(model, propertyName)} path="tunniste" className="järjestämismuoto" />
             <PropertiesEditor
               className="inline"
-              model = {modelLookup(model, 'järjestämismuoto')}
+              model = {modelLookup(model, propertyName)}
               propertyFilter={p => !['tunniste'].includes(p.key)}
             />
             <PropertiesEditor
               className="inline"
               model = {model}
-              propertyFilter={p => !['alku', 'loppu', 'järjestämismuoto'].includes(p.key)}
+              propertyFilter={p => !['alku', 'loppu', propertyName].includes(p.key)}
             />
           </span>
         </div>
@@ -124,6 +125,7 @@ export const editorMapping = {
   'naytonsuoritusaika': PäivämääräväliEditor,
   'tyossaoppimisjakso': TyössäoppimisjaksoEditor,
   'jarjestamismuotojakso': JärjestämismuotojaksoEditor,
+  'osaamisenhankkimistapajakso': JärjestämismuotojaksoEditor,
   'oppisopimuksellinenjarjestamismuoto': OppisopimusEditor,
   'oppisopimuksellinenosaamisenhankkimistapa': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
