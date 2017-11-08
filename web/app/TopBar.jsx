@@ -17,7 +17,7 @@ const NavList = ({location, user}) => {
     <li>{naviLink('/koski/', 'Opiskelijat', location.path, '', (path, loc) => loc == path || loc.startsWith('/koski/oppija'))}</li>
     <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
     {user && user.hasGlobalReadAccess && <li>{naviLink('/koski/validointi', 'Validointi', location.path, '')}</li>}
-    <li>{naviLink('/koski/documentation', 'Dokumentaatio', location.path, '')}</li>
+    <li>{naviLink('/koski/dokumentaatio', 'Dokumentaatio', location.path, '')}</li>
   </ul>)
 }
 

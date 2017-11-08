@@ -29,7 +29,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
     return tiedonsiirtojenYhteenvetoContentP(queryString)
   } else if (path === '/koski/validointi') {
     return validointiContentP(queryString, params)
-  } else if (path === '/koski/documentation') {
+  } else if (path === '/koski/dokumentaatio') {
     return dokumentaatioContentP()
   } else if (path === '/koski/omattiedot') {
     return omatTiedotContentP()

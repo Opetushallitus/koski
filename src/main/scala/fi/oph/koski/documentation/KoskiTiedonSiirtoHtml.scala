@@ -6,7 +6,7 @@ import fi.oph.scalaschema.ClassSchema
 
 object KoskiTiedonSiirtoHtml {
   private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"
-  private val schemaDocumentUrl = "/koski/documentation/koski-oppija-schema.html"
+  private val schemaDocumentUrl = "/koski/dokumentaatio/koski-oppija-schema.html"
   private val schemaFileUrl = "/koski/api/documentation/koski-oppija-schema.json"
   private def general =s"""
 
@@ -65,7 +65,7 @@ Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.
 </div>
 
 Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).
-Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/koski/documentation/koodisto/koulutus/latest).
+Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/koski/dokumentaatio/koodisto/koulutus/latest).
 
 Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/schema/Oppija.scala),
 että [esimerkkien](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/documentation/Examples.scala) lähdekoodit.
@@ -93,21 +93,6 @@ Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä
 Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
     """
 
-  def htmlExamples = {
-    <div>
-      { examplesHtml(ExamplesEsiopetus.examples, "Esiopetus") }
-      { examplesHtml(ExamplesPerusopetukseenValmistavaOpetus.examples, "Perusopetukseen valmistava opetus") }
-      { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
-      { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
-      { examplesHtml(ExamplesAikuistenPerusopetus.examples, "Aikuisten perusopetus") }
-      { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
-      { examplesHtml(ExamplesIB.examples, "IB-koulutus") }
-      { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
-      { examplesHtml(ExamplesValma.examples ++ ExamplesTelma.examples, "Valmentava koulutus") }
-      { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
-      { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
-    </div>
-  }
 
   val categoryNames: Seq[String] = Seq(
     "Esiopetus",
@@ -155,37 +140,4 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
   val apiOperations: List[ApiOperation] = KoskiApiOperations.operations
 
   val htmlTextSections = List(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
-
-
-  def examplesJson(examples: List[Example], title: String) = {
-    Map(
-      "title" -> title,
-      "examples" -> examples.map { e: Example =>
-        Map (
-          "link" -> s"/koski/documentation/examples/${e.name}.json",
-          "description" -> e.description,
-          "jsontable" -> <table class="json">{SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], e.data).map(_.toString()).toVector}</table>
-        )
-      }.toVector
-    )
-  }
-
-  def examplesHtml(examples: List[Example], title: String) = {
-    <h3>{title}</h3>
-    <ul class="example-list">
-      {
-        examples.map { example: Example =>
-          <li class="example-item">
-            <a class="example-link">
-              {example.description}
-            </a>
-            <a class="example-as-json" href={"/koski/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
-            <table class="json">
-              {SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], example.data)}
-            </table>
-          </li>
-        }
-      }
-    </ul>
-  }
 }
