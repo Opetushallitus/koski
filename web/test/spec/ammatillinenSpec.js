@@ -558,9 +558,6 @@ describe('Ammatillinen koulutus', function() {
         editor.property('osaAikaisuusjaksot').addItem,
         editor.property('osaAikaisuusjaksot').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('osaAikaisuusjaksot').property('osaAikaisuus').setValue('80'),
-        editor.property('poissaolojaksot').addItem,
-        editor.property('poissaolojaksot').propertyBySelector('.alku').setValue('22.6.2017'),
-        editor.property('poissaolojaksot').property('syy').setValue('Oma ilmoitus'),
         editor.property('opiskeluvalmiuksiaTukevatOpinnot').addItem,
         editor.property('opiskeluvalmiuksiaTukevatOpinnot').propertyBySelector('.alku').setValue('22.6.2017'),
         editor.property('opiskeluvalmiuksiaTukevatOpinnot').propertyBySelector('.loppu').setValue('28.6.2017'),
@@ -574,7 +571,6 @@ describe('Ammatillinen koulutus', function() {
           'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
           'Majoitus 22.6.2017 — 1.1.2099\n' +
           'Ulkomaanjaksot 22.6.2017 — Maa Algeria Kuvaus Testing\n' +
-          'Poissaolojaksot 22.6.2017 — Syy Oma ilmoitus\n' +
           'Hojks Opetusryhmä Erityisopetusryhmä\n' +
           'Osa-aikaisuusjaksot 22.6.2017 — Osa-aikaisuus 80 %\n' +
           'Opiskeluvalmiuksia tukevat opinnot 22.6.2017 — 28.6.2017 Kuvaus Testing'

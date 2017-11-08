@@ -2452,7 +2452,7 @@ describe('Perusopetus', function() {
             äidinkieli.avaaLisääKurssiDialog
           )
           it('Näytetään vain oikean oppiaineen kurssit', function() {
-            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(6)
+            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(11)
           })
 
           describe('Kun lisätään kurssi', function() {
