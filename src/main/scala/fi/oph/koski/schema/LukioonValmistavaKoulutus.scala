@@ -148,7 +148,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
 case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
-  @Flatten
+  @FlattenInUI
   arviointi: Option[List[LukionKurssinArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
@@ -157,7 +157,7 @@ case class LukioonValmistavanKurssinSuoritus(
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(
-  @Flatten
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString

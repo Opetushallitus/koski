@@ -42,7 +42,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
 case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenKurssi,
-  @Flatten
+  @FlattenInUI
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenkurssi")
@@ -104,7 +104,7 @@ sealed trait AikuistenPerusopetuksenAlkuvaiheenKurssi extends Koulutusmoduuli {
 }
 
 case class PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(
-  @Flatten
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {

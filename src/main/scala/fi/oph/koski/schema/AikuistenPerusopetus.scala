@@ -96,7 +96,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
 case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenKurssi,
-  @Flatten
+  @FlattenInUI
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenkurssi")
@@ -108,7 +108,7 @@ sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
 }
 
 case class PaikallinenAikuistenPerusopetuksenKurssi(
-  @Flatten
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends AikuistenPerusopetuksenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {
@@ -141,11 +141,11 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaine")
-  @Flatten
+  @FlattenInUI
   koulutusmoduuli: PerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Title("Arvosana")
-  @Flatten
+  @FlattenInUI
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,

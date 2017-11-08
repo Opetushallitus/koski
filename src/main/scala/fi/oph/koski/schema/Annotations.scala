@@ -15,7 +15,7 @@ case class Representative() extends RepresentationalMetadata
 case class ComplexObject() extends RepresentationalMetadata
 
 /* This property should be flattened in the UI */
-case class Flatten() extends RepresentationalMetadata
+case class FlattenInUI() extends RepresentationalMetadata
 
 /* This property contains a list of items that should be represented in a table */
 case class Tabular() extends RepresentationalMetadata

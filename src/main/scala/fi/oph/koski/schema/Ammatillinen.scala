@@ -483,7 +483,7 @@ case class Näyttö(
   @OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
   työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
-  @Flatten
+  @FlattenInUI
   arviointi: Option[NäytönArviointi],
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä")
   haluaaTodistuksen: Option[Boolean] = None
@@ -547,7 +547,7 @@ case class NäytönArvioitsija(
 
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
-  @Flatten
+  @FlattenInUI
   työnantaja: Yritys
 )
 
@@ -571,7 +571,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
   @Discriminator
-  @Flatten
+  @FlattenInUI
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 

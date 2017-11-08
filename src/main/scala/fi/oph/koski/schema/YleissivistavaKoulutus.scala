@@ -11,7 +11,7 @@ trait OppiaineenSuoritus extends Suoritus {
 
 trait KurssinSuoritus extends Suoritus with Vahvistukseton{
   @Title("Kurssi")
-  @Flatten
+  @FlattenInUI
   def koulutusmoduuli: Koulutusmoduuli
 }
 

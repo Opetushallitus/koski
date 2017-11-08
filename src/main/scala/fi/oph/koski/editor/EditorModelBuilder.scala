@@ -257,7 +257,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   def createModelProperty(property: Property, propertyModel: EditorModel): EditorProperty = {
     val hidden = property.metadata.contains(Hidden())
     val representative: Boolean = property.metadata.contains(Representative())
-    val flatten: Boolean = property.metadata.contains(Flatten())
+    val flatten: Boolean = property.metadata.contains(FlattenInUI())
     val complexObject: Boolean = property.metadata.contains(ComplexObject())
     val tabular: Boolean = property.metadata.contains(Tabular())
     val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
