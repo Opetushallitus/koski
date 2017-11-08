@@ -1,3 +1,8 @@
+## 8.11.2017
+
+- Poistettu ammatillisen opiskeluoikeuden lisätietojen poissaolojaksot
+- Lisätty ammatillisen opiskeluoikeuden tila "Loma" yli 4 viikkoa kestävälle lomajaksolle
+
 ## 30.10.2017
 
 - Lisätty kenttä koulukoti nuorten perusopetuksen opiskeluoikeuden lisätietohin
