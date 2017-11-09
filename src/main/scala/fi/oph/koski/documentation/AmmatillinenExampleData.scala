@@ -61,14 +61,18 @@ object AmmatillinenExampleData {
 
   lazy val suoritustapaNäyttö = Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val suoritustapaOps = Koodistokoodiviite("ops", Some("Ammatillinen perustutkinto"), "ammatillisentutkinnonsuoritustapa", Some(1))
+  lazy val suoritustapaReformi = Koodistokoodiviite("reformi", Some("Ammatillinen perustutkinto"), "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val järjestämismuotoOppisopimus = OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))
   lazy val järjestämismuotoOppilaitos = JärjestämismuotoIlmanLisätietoja(Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1)))
+  lazy val osaamisenHankkimistapaOppilaitos = OsaamisenHankkimistapaIlmanLisätietoja(Koodistokoodiviite("oppilaitosmuotoinenkoulutus", Some("Oppilaitosmuotoinen"), "osaamisenhankkimistapa", Some(1)))
+  lazy val osaamisenHankkimistapaOppisopimus = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", Some("Oppisopimus"), "osaamisenhankkimistapa", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus, Some("Stadin oppisopimuskeskus"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", "8406")
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdeWinnova)
+  lazy val arvosanaViisi = Koodistokoodiviite("5", Some("5"), "arviointiasteikkoammatillinen15", Some(1))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(MuunAmmatillisenTutkinnonOsanSuoritus(
@@ -242,8 +246,10 @@ object AmmatillinenExampleData {
   )
 
   val työssäoppiminenSorttiAsemalla = Some(List(
-    Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
+    työssäoppimisjakso
   ))
+
+  lazy val työssäoppimisjakso = Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
 
   def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
     AmmatillisenTutkinnonSuoritus(

@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
@@ -24,12 +25,76 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
     Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400),
-    Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example)
+    Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example),
+    Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Erikoisammattitutkinto, joka on suoritettu reformin jälkeisten perusteiden mukaisesti", ReforminMukainenErikoisammattitutkintoExample.example)
   )
 }
 
 object LisätiedotExample {
   val example = AmmatillinenExampleData.oppija(opiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lisätiedot = Some(AmmatillinenExampleData.opiskeluoikeudenLisätiedot)))
+}
+
+object ReforminMukainenErikoisammattitutkintoExample {
+  lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357304", Some("Automekaanikon erikoisammattitutkinto"), "koulutus", None), Some("OPH-1886-2017"))
+  lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    alkamispäivä = Some(date(2018, 1, 1)),
+    arvioituPäättymispäivä = Some(date(2020, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+    )),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      hojks = None,
+      erityinenTuki = Some(List(Aikajakso(date(2018, 1, 1), None))),
+      vaativanErityisenTuenErityinenTehtävä = Some(List(Aikajakso(date(2018,1,1), None)))
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = tutkinto,
+        suoritustapa = suoritustapaReformi,
+        osaamisenHankkimistavat = Some(List(
+          OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos),
+          OsaamisenHankkimistapajakso(date(2018, 8, 1), None, osaamisenHankkimistapaOppisopimus)
+        )),
+        koulutussopimukset = Some(List(
+          Työssäoppimisjakso(
+            alku = date(2018, 8, 1),
+            loppu = None,
+            työssäoppimispaikka = Some("Volkswagen Center"),
+            paikkakunta = jyväskylä,
+            maa = suomi,
+            työtehtävät = Some(finnish("Autojen vuosihuollot")),
+            laajuus = LaajuusOsaamispisteissä(5)
+          )
+        )),
+        suorituskieli = suomenKieli,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        osasuoritukset = Some(List(
+          tutkinnonOsanSuoritus("300054", "Korjauksen haltuunotto", None, arvosanaViisi).copy(
+            näyttö = Some(
+              näyttö(
+                date(2018, 2, 2),
+                "Vuosihuoltojen suorittaminen",
+                "Volkswagen Center",
+                Some(näytönArviointi.copy(
+                  arvioinnistaPäättäneet = List(Koodistokoodiviite("5", Some("Muu koulutuksen järjestäjän edustaja"), "ammatillisennaytonarvioinnistapaattaneet", None))
+                ))
+              )
+            )
+          ),
+          tutkinnonOsanSuoritus("300051", "Ajoneuvon vianmääritys", None, arvosanaViisi),
+          tutkinnonOsanSuoritus("300057", "Teknisenä asiantuntijana toiminen", None, arvosanaViisi),
+          tutkinnonOsanSuoritus("300058", "Testaus ja kilpailutoiminta", None, arvosanaViisi)
+        ))
+      )
+    )
+  )
+
+  lazy val example = Oppija(
+    exampleHenkilö,
+    List(opiskeluoikeus)
+  )
 }
 
 object AmmattitutkintoExample {

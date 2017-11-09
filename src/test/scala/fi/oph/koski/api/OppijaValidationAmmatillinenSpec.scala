@@ -346,6 +346,16 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None))))
         "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta tutkinnonosat/100023 puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille, kun suoritustapa on opetussuunnitelman mukainen."))))
       }
+
+      "Syötetään osaamisen hankkimistapa" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
+        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+      }
+
+      "Syötetään koulutussopimus" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(koulutussopimukset = Some(List(työssäoppimisjakso)))
+        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+      }
     }
 
     "Ammatillinen perustutkinto näyttönä" - {
@@ -357,6 +367,28 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "Tutkinnonosan ryhmää ei ole määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None))))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+      }
+
+      "Syötetään osaamisen hankkimistapa" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
+        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+      }
+
+      "Syötetään koulutussopimus" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, koulutussopimukset = Some(List(työssäoppimisjakso)))
+        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+      }
+    }
+
+    "Reformin mukainen tutkinto" - {
+      "Syötetään osaamisen hankkimistapa" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaReformi, osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
+        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+      }
+
+      "Syötetään koulutussopimus" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaReformi, koulutussopimukset = Some(List(työssäoppimisjakso)))
+        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
       }
     }
 
@@ -428,6 +460,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val tutkinnonSuoritustapaNäyttönä = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
   lazy val tutkinnonSuoritustapaOps = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")
+  lazy val tutkinnonSuoritustapaReformi = Koodistokoodiviite("reformi", "ammatillisentutkinnonsuoritustapa")
 
   lazy val tutkinnonOsaSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = tutkinnonOsa,

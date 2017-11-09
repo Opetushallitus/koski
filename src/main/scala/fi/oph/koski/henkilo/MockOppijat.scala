@@ -41,6 +41,7 @@ object MockOppijat {
   val toimintaAlueittainOpiskelija = oppijat.oppija("Toiminta", "Tommi", "031112-020J")
   val telma = oppijat.oppija("Telmanen", "Tuula", "021080-725C")
   val erikoisammattitutkinto = oppijat.oppija("Erikoinen", "Erja", "250989-419V")
+  val reformitutkinto = oppijat.oppija("Reformi", "Reijo", "251176-003P")
   val osittainenammattitutkinto = oppijat.oppija("Osittainen", "Outi", "230297-6448")
   val paikallinenTunnustettu = oppijat.oppija("Tunnustettu", "Teuvo", "140176-449X")
   val tiedonsiirto = oppijat.oppija("Tiedonsiirto", "Tiina", "270303-281N")
