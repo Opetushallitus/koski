@@ -466,6 +466,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
 }
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
+@SensitiveData
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
   @KoodistoUri("ammatillisentutkinnonosanlisatieto")
@@ -579,7 +580,8 @@ case class OppisopimuksellinenJärjestämismuoto(
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
-@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty. Rahoituksessa käytettävä tieto.")
+@SensitiveData
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija)")
