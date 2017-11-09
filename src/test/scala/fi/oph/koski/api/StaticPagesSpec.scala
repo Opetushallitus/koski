@@ -28,7 +28,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
   }
 
   "Documentation" in {
-    get("documentation") { verifyResponseStatusOk(304)}
+    get("documentation") { verifyResponseStatusOk(302)}
     get("documentaatio") { verifyResponseStatusOk()}
   }
 }
