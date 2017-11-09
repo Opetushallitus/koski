@@ -11,15 +11,7 @@ import {ISO2FinnishDateTime} from './date'
 
 export const tiedonsiirtojenYhteenvetoContentP = (queryString) => {
   const getData = () => Http.get('/koski/api/tiedonsiirrot/yhteenveto' + queryString, { willHandleErrors: true})
-  const reloadBus = Bacon.Bus()
   const yhteenvetoA = Atom([])
-
-  reloadBus.onValue(() => {
-    getData().onValue(v => {
-      yhteenvetoA.set(v)
-    })
-  })
-  reloadBus.push()
 
   return tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoA.flatMap((rivit) =>
     ({
@@ -53,7 +45,6 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => {
           </tbody>
         </table>
       </div>),
-      title: 'Tiedonsiirrot',
-      reloadBus: reloadBus
+      title: 'Tiedonsiirrot'
     })))
 }

@@ -13,8 +13,7 @@ export const tiedonsiirtolokiContentP = (queryString) => {
           <Text name="Viimeisimmät KOSKI-palveluun siirtyneet opiskelijatiedot"/><OppilaitosTitle oppilaitos={oppilaitos}/>
           <Tiedonsiirtotaulukko rivit={henkilöt} showError={false} pager={pager}/>
         </div>),
-      title: 'Tiedonsiirrot',
-      reloadBus: pager.reloadBus
+      title: 'Tiedonsiirrot'
     })
   ))
 }
