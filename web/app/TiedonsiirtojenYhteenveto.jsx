@@ -1,7 +1,5 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Http from './http'
 import {tiedonsiirrotContentP} from './Tiedonsiirrot.jsx'
 import Link from './Link.jsx'
 import SortingTableHeader from './SortingTableHeader.jsx'
@@ -9,8 +7,7 @@ import {t} from './i18n'
 import Text from './Text.jsx'
 import {ISO2FinnishDateTime} from './date'
 
-export const tiedonsiirtojenYhteenvetoContentP = (queryString) => {
-  const getData = () => Http.get('/koski/api/tiedonsiirrot/yhteenveto' + queryString, { willHandleErrors: true})
+export const tiedonsiirtojenYhteenvetoContentP = () => {
   const yhteenvetoA = Atom([])
 
   return tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoA.flatMap((rivit) =>

@@ -26,7 +26,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   } else if (path === '/koski/tiedonsiirrot/virheet') {
     return tiedonsiirtovirheetContentP(queryString)
   } else if (path === '/koski/tiedonsiirrot/yhteenveto') {
-    return tiedonsiirtojenYhteenvetoContentP(queryString)
+    return tiedonsiirtojenYhteenvetoContentP()
   } else if (path === '/koski/validointi') {
     return validointiContentP(queryString, params)
   } else if (path === '/koski/dokumentaatio') {
