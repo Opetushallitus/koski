@@ -32,9 +32,10 @@ case class LukionOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-@Description("Lukion opiskeluoikeuden lisätiedot")
+@Description("Lukion opiskeluoikeuden lisätiedot. Tietoja käytetään rahoituksen laskennassa.")
 case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
+  @SensitiveData
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false)")
   @Title("Ulkomainen vaihto-opiskelija")
@@ -46,7 +47,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka.")
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None
@@ -321,7 +322,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
 
-@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-LukioIBkoulutus)")
+@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-LukioIBkoulutus). Tilan yhteydessä välitetään tieto rahoituksesta.")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
@@ -330,7 +331,7 @@ case class LukionOpiskeluoikeudenTila(
 case class LukionOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
-  @Description("Opintojen rahoitus")
+  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoistutkinto-opiskelija jonka rahoituksen saaja on ammatillinen oppilaitos, käytetään arvoa 6: Muuta kautta rahoitettu.")
   @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
