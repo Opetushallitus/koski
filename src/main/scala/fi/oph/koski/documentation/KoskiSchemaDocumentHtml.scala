@@ -18,7 +18,7 @@ object KoskiSchemaDocumentHtml {
     val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities, expandEntities).toList
       .sortBy(-_._2.toList.length) // Nones last
     val schemaBacklog = backlog.map {
-      case (name, breadcrumbs) => (mainSchema.getSchema(name).get.asInstanceOf[ClassSchema], breadcrumbs)
+      case (name, breadcrumbs) => (KoskiSchema.schemaFactory.createSchema(name).asInstanceOf[ClassSchema], breadcrumbs)
     }
 
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
@@ -123,7 +123,7 @@ object KoskiSchemaDocumentHtml {
   }
 
   private def resolveSchema(schema: Schema): Schema = schema match {
-    case s: ClassRefSchema => mainSchema.getSchema(s.fullClassName).get
+    case s: ClassRefSchema => s.resolve(KoskiSchema.schemaFactory)
     case _ => schema
   }
 

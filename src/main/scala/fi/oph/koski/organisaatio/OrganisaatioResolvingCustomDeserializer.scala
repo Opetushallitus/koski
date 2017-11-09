@@ -7,7 +7,7 @@ import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, Valida
 
 case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: OrganisaatioRepository) extends CustomDeserializer with Logging {
   override def extract(cursor: JsonCursor, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext): Either[List[ValidationError], Any] = {
-    SchemaValidatingExtractor.extract(cursor, schema, metadata)(context.copy(customDeserializers = Nil), KoskiSchema.schema) match {
+    SchemaValidatingExtractor.extract(cursor, schema, metadata)(context.copy(customDeserializers = Nil)) match {
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
         organisaatioRepository.getOrganisaatio(o.oid) match {

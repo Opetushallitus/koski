@@ -9,7 +9,7 @@ import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, Valida
 
 case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePalvelu) extends CustomDeserializer with Logging {
   override def extract(json: JsonCursor, schema: SchemaWithClassName, metadata: List[Metadata])(implicit context: ExtractionContext) = {
-    val viite = SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil), schema)
+    val viite = SchemaValidatingExtractor.extract(json, schema, metadata)(context.copy(customDeserializers = Nil))
     viite match {
       case Right(viite: Koodistokoodiviite) =>
         val validated: Option[Koodistokoodiviite] = try {
