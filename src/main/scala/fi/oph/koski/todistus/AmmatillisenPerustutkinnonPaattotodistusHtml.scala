@@ -33,7 +33,7 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h1>Päättötodistus</h1>
           <h2 class="koulutus">{i(tutkintoSuoritus.koulutusmoduuli.nimi)}</h2>
-          <h3 class="osaamisala-tutkintonimike">{(tutkintoSuoritus.osaamisala.toList.flatten ++ tutkintoSuoritus.tutkintonimike.toList.flatten).map(s => i(s.nimi)).mkString(", ")}</h3>
+          <h3 class="osaamisala-tutkintonimike">{(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala) ++ tutkintoSuoritus.tutkintonimike.toList.flatten).map(s => i(s.nimi)).mkString(", ")}</h3>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">({oppijaHenkilö.hetuStr})</span>

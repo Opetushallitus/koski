@@ -12,7 +12,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
         case Right(rakenne) =>
-          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
+          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>

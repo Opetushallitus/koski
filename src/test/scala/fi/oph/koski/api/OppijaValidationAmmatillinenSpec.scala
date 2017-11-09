@@ -32,28 +32,28 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "Osaamisala ja suoritustapa ok" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
-            osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
+            osaamisala = Some(List(OsaamisalaJakso(Koodistokoodiviite("1527", "osaamisala")))))
 
           "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
         }
         "Suoritustapa virheellinen" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Koodistokoodiviite("blahblahtest", "ammatillisentutkinnonsuoritustapa"),
-            osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
+            osaamisala = Some(List(OsaamisalaJakso(Koodistokoodiviite("1527", "osaamisala")))))
 
           "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia ammatillisentutkinnonsuoritustapa/blahblahtest ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
         }
         "Osaamisala ei löydy tutkintorakenteesta" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
-            osaamisala = Some(List(Koodistokoodiviite("3053", "osaamisala"))))
+            osaamisala = Some(List(OsaamisalaJakso(Koodistokoodiviite("3053", "osaamisala")))))
 
           "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
         }
         "Osaamisala virheellinen" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
-            osaamisala = Some(List(Koodistokoodiviite("0", "osaamisala"))))
+            osaamisala = Some(List(OsaamisalaJakso(Koodistokoodiviite("0", "osaamisala")))))
 
           "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia osaamisala/0 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
         }
