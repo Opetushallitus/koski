@@ -2,9 +2,10 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.Pools
+import fi.oph.koski.util.{Futures, Pools}
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
@@ -91,7 +92,11 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
       if (System.getProperty("koski.db.clean", "false").equals("true")) {
         flyway.clean
       }
-      flyway.migrate
+      if (serverProcess.isEmpty && Environment.databaseIsLarge(db) && Environment.isLocalDevelopmentEnvironment) {
+        logger.warn("Skipping database migration for database larger than 100 rows, when running in local development environment")
+      } else {
+        flyway.migrate
+      }
     } catch {
       case e: Exception => logger.warn(e)("Migration failure")
     }

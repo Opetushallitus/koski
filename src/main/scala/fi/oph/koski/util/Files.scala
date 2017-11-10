@@ -27,10 +27,3 @@ object Files extends Logging {
     java.nio.file.Files.write(Paths.get(filename), content.getBytes(StandardCharsets.UTF_8))
   }
 }
-
-trait FileOps {
-  def exists(filename: String) = asSource(filename).isDefined
-  def asByteArray(filename: String): Option[Array[Byte]] = asSource(filename).map(_.takeWhile(_ != -1).map(_.toByte).toArray)
-  def asString(filename: String): Option[String] = asSource(filename).map(_.mkString)
-  def asSource(filename: String): Option[Source]
-}

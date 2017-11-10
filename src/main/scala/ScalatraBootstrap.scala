@@ -5,7 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.EditorServlet
-import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
+import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
@@ -72,7 +72,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
     Futures.await(application.init) // await for all initialization tasks to complete
 
-    if (Fixtures.shouldUseFixtures(application.config)) {
+    if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/fixtures")
       application.fixtureCreator.resetFixtures
     }
