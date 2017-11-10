@@ -49,12 +49,15 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
   joustavaPerusopetus: Option[Päätösjakso] = None,
   @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.""")
@@ -66,9 +69,11 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
   @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @DefaultValue(false)
   vammainen: Boolean = false,
   @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
   @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
@@ -79,7 +84,8 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   sisäoppilaitosmainenMajoitus: Option[List[Majoitusjakso]] = None,
-  @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
+  @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData
   koulukoti: Option[List[Majoitusjakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
@@ -123,6 +129,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
+  @SensitiveData
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
@@ -203,6 +210,7 @@ case class PerusopetuksenToiminta_AlueenSuoritus(
   @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää. Toiminta-alueesta muodostuu oppiaineen kaltaisia suorituksia")
   @Title("Toiminta-alue")
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
+  @SensitiveData
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")
@@ -255,6 +263,7 @@ object PerusopetuksenOppiaineenArviointi {
 }
 
 @Description("Perusopetuksen toiminta-alueen tunnistetiedot")
+@SensitiveData
 case class PerusopetuksenToiminta_Alue(
   @Description("Toiminta-alueen tunniste")
   @KoodistoUri("perusopetuksentoimintaalue")
