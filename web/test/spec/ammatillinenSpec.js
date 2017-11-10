@@ -589,6 +589,32 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Osaamisala', function() {
+      describe('Tallennus ilman päivämääriä', function() {
+        before(
+          editor.edit,
+          editor.property('osaamisala').itemEditor(0).property('osaamisala').setValue('Automyynnin osaamisala'),
+          editor.saveChanges
+        )
+        it('toimii', function() {
+          expect(editor.property('osaamisala').getText()).to.equal('Osaamisala Automyynnin osaamisala')
+        })
+      })
+
+      describe('Päivämäärien lisäys', function() {
+        before(
+          editor.edit,
+          editor.property('osaamisala').itemEditor(0).property('alku').setValue('1.1.2017'),
+          editor.saveChanges
+        )
+
+        it('toimii', function() {
+          expect(editor.property('osaamisala').getText()).to.equal('Osaamisala Automyynnin osaamisala 1.1.2017 —')
+        })
+      })
+    })
+
+
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Kun suoritustapa on opetussuunnitelman mukainen', function() {

@@ -1,15 +1,15 @@
 import React from 'react'
 import {Editor} from './Editor.jsx'
 import {modelData} from './EditorModel.js'
-import {modelValid} from './EditorModel'
-import {wrapOptional} from './EditorModel'
+import {modelEmpty, modelValid, wrapOptional} from './EditorModel'
 
 export const PäivämääräväliEditor = ({model}) => {
   let wrappedModel = wrapOptional(model)
   let validRange = modelValid(wrappedModel, false)
+  if (!model.context.edit && modelEmpty(model, 'alku') && modelEmpty(model, 'loppu')) return null
 
   return (<span className={validRange ? 'date-range' : 'date-range error'}>
-    <span className="alku"><Editor model={wrappedModel} path="alku"/></span>{' — '}<span className="loppu"><Editor model={wrappedModel} path="loppu"/></span>
+    <span className="property alku"><Editor model={wrappedModel} path="alku"/></span>{' — '}<span className="property loppu"><Editor model={wrappedModel} path="loppu"/></span>
   </span>)
 }
 

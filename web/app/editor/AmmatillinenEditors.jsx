@@ -110,7 +110,7 @@ const OsaamisalajaksoEditor = ({model}) => {
   let wrappedModel = wrapOptional(model)
   return (
     <span className="osaamisalajakso">
-      <span className="osaamisala"><Editor model={model} path="osaamisala"/></span>
+      <span className="property osaamisala"><Editor model={model} path="osaamisala"/></span>
       <PäivämääräväliEditor model={wrappedModel}/>
     </span>
   )
