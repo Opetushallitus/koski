@@ -12,7 +12,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
             tyyppi.key,
             tyyppi.doc_count,
             tyyppi.tila.tila.buckets.headOption.map(_.doc_count).getOrElse(0),
-            tyyppi.toimipiste.count.value
+            tyyppi.oppilaitos.value
           )
         }
       )
@@ -67,17 +67,10 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
           |            }
           |          }
           |        },
-          |        "toimipiste": {
-          |          "nested": {
-          |            "path": "suoritukset"
-          |          },
-          |          "aggs": {
-          |            "count": {
-          |              "cardinality": {
-          |                "field": "suoritukset.toimipiste.oid.keyword",
-          |                "precision_threshold": 10000
-          |              }
-          |            }
+          |        "oppilaitos": {
+          |          "cardinality": {
+          |            "field": "oppilaitos.oid.keyword",
+          |            "precision_threshold": 10000
           |          }
           |        }
           |      }
@@ -86,7 +79,6 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
           |}
         """.stripMargin)
     )
-
     result.map { r =>
       val total = extract[Int](r \ "hits" \ "total")
       OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](r \ "aggregations" \ "tyyppi" \ "buckets", ignoreExtras = true))
@@ -106,9 +98,8 @@ case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäär�
 }
 
 case class OpiskeluoikeudetTyypeittäin(total: Int, tyypit: List[Tyyppi])
-case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, toimipiste: ToimipisteNested)
+case class Tyyppi(key: String, doc_count: Int, tila: TilaNested, oppilaitos: Count)
 case class TilaNested(tila: Buckets)
-case class ToimipisteNested(count: Count)
 case class Count(value: Int)
 case class Buckets(buckets: List[Bucket])
 case class Bucket(key: String, doc_count: Int)
