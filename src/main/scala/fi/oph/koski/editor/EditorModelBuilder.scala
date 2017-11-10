@@ -48,7 +48,6 @@ object EditorModelBuilder {
       }
     case t: ClassRefSchema => modelBuilderForClass(resolveSchema(t))
     case t: AnyOfSchema => OneOfModelBuilder(t)
-    case t: ReadFlattenedSchema => modelBuilderForClass(t.classSchema)
   }
 
   def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
