@@ -10,6 +10,7 @@ import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor.jsx'
 import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor.jsx'
 import {TutkinnonOsanSuoritusEditor} from './Suoritustaulukko.jsx'
 import {InlineJaksoEditor} from './JaksoEditor.jsx'
+import {wrapOptional} from './EditorModel'
 
 export class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
@@ -106,8 +107,15 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
 }
 
 const OsaamisalajaksoEditor = ({model}) => {
-  return <Editor model={model} path="osaamisala"/>
+  let wrappedModel = wrapOptional(model)
+  return (
+    <span className="osaamisalajakso">
+      <span className="osaamisala"><Editor model={model} path="osaamisala"/></span>
+      <PäivämääräväliEditor model={wrappedModel}/>
+    </span>
+  )
 }
+OsaamisalajaksoEditor.handlesOptional = () => true
 
 export const editorMapping = {
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
