@@ -30,7 +30,7 @@ import fi.oph.koski.{IndexServlet, LoginPageServlet}
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
-  override def init(context: ServletContext) = tryCatch("Servlet context initialization") {
+  override def init(context: ServletContext) = try {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
@@ -76,6 +76,10 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new FixtureServlet, "/fixtures")
       application.fixtureCreator.resetFixtures
     }
+  } catch {
+    case e: Exception =>
+      logger.error(e)("Server startup failed: " + e.getMessage)
+      System.exit(1)
   }
 
   override def destroy(context: ServletContext) = {
