@@ -105,7 +105,7 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
   return <span><span className="id"><Editor model={model} path="oid"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
 }
 
-const OsaamisalaJaksoEditor = ({model}) => {
+const OsaamisalajaksoEditor = ({model}) => {
   return <Editor model={model} path="osaamisala"/>
 }
 
@@ -124,6 +124,6 @@ export const editorMapping = {
   'ulkomaanjakso': InlineJaksoEditor,
   'poissaolojakso': InlineJaksoEditor,
   'osaaikaisuusjakso': InlineJaksoEditor,
-  'osaamisalajakso': OsaamisalaJaksoEditor,
+  'osaamisalajakso': OsaamisalajaksoEditor,
   'opiskeluvalmiuksiatukevienopintojenjakso': InlineJaksoEditor
 }

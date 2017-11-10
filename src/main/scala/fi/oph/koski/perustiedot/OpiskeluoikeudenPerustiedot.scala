@@ -75,7 +75,7 @@ object OpiskeluoikeudenPerustiedot {
         SuorituksenPerustiedot(
           extract[Koodistokoodiviite](suoritus \ "tyyppi"),
           (KoulutusmoduulinPerustiedot(extract[Koodistokoodiviite](suoritus \ "koulutusmoduuli" \ "tunniste"))), // TODO: voi olla paikallinen koodi
-          extract[Option[List[OsaamisalaJakso]]](suoritus \ "osaamisala").map(_.map(_.osaamisala)),
+          extract[Option[List[Osaamisalajakso]]](suoritus \ "osaamisala").map(_.map(_.osaamisala)),
           extract[Option[List[Koodistokoodiviite]]](suoritus \ "tutkintonimike"),
           extract[OidOrganisaatio](suoritus \ "toimipiste", ignoreExtras = true)
         )

@@ -126,7 +126,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, johon valmistava koulutus tähtää")
   tutkinto: AmmatillinenTutkintoKoulutus,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  override val osaamisala: Option[List[OsaamisalaJakso]] = None,
+  override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
@@ -161,7 +161,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
   suoritustapa: Koodistokoodiviite,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  override val osaamisala: Option[List[OsaamisalaJakso]] = None,
+  override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
@@ -180,7 +180,7 @@ case class AmmatillisenTutkinnonSuoritus(
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
 @ReadFlattened
-case class OsaamisalaJakso(
+case class Osaamisalajakso(
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Koodistokoodiviite,
@@ -197,7 +197,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Description("Onko kyse uuden tutkintonimikkeen suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
   @DefaultValue(false)
   toinenTutkintonimike: Boolean = false,
-  override val osaamisala: Option[List[OsaamisalaJakso]] = None,
+  override val osaamisala: Option[List[Osaamisalajakso]] = None,
   @Description("Onko kyse uuden osaamisalan suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
   @DefaultValue(false)
   toinenOsaamisala: Boolean = false,
@@ -775,5 +775,5 @@ trait Tutkintonimikkeellinen {
 trait Osaamisalallinen {
   @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-  def osaamisala: Option[List[OsaamisalaJakso]] = None
+  def osaamisala: Option[List[Osaamisalajakso]] = None
 }
