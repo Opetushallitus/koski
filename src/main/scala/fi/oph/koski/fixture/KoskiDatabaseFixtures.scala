@@ -31,12 +31,9 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
 
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    val oids = MockOppijat.oids
+    val oids = MockOppijat.oids.sorted
 
-    val deleteOpiskeluOikeudet = oids.map{oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid).delete}
-
-    runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
-
+    runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind (oids)).delete)
     application.perustiedotIndexer.deleteByOppijaOids(oids)
 
     val henkilöOids: List[Oid] = oids
