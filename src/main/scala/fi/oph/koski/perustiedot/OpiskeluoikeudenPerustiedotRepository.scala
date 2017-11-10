@@ -7,6 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
+import fi.oph.koski.json.Json4sHttp4s
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
@@ -17,8 +18,8 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
-import org.http4s.EntityEncoder
 import org.json4s.JValue
+import org.json4s.JsonAST.{JObject, JString}
 
 class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
 
@@ -200,7 +201,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     }
 
   private def analyzeString(string: String): List[String] = {
-    val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", string)(EntityEncoder.stringEncoder)(Http.parseJson[JValue]))
+    val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", JObject("analyzer" -> JString("default"), "text" -> JString(string)))(Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue]))
     val tokens: List[JValue] = extract[List[JValue]](document \ "tokens")
     tokens.map(token => extract[String](token \ "token"))
   }
