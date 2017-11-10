@@ -116,6 +116,7 @@ const OsaamisalajaksoEditor = ({model}) => {
   )
 }
 OsaamisalajaksoEditor.handlesOptional = () => true
+OsaamisalajaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
 export const editorMapping = {
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor,
