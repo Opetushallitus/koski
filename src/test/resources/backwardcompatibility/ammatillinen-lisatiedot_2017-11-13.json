@@ -110,7 +110,9 @@
         }
       } ],
       "henkilöstökoulutus" : true,
-      "vankilaopetuksessa" : true
+      "vankilaopetuksessa" : [ {
+        "alku" : "2013-09-02"
+      } ]
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
