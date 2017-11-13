@@ -522,8 +522,7 @@
       } ],
       "vaikeastiVammainen" : false,
       "vammainenJaAvustaja" : false,
-      "henkilöstökoulutus" : false,
-      "vankilaopetuksessa" : false
+      "henkilöstökoulutus" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",

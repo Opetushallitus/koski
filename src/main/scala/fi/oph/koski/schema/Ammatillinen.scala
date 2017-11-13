@@ -602,7 +602,7 @@ case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoKoodiarvo("20")
   tunniste: Koodistokoodiviite,
   @Discriminator
-  @Flatten
+  @FlattenInUI
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
