@@ -44,7 +44,7 @@
     "less": "^2.7.2",
     "less-loader": "^4",
     "mocha": "^3.5.3",
-    "mocha-chrome": "github:kkainu/mocha-chrome#9ef9273",
+    "mocha-chrome": "^1.0.1",
     "mocha-phantomjs": "^4.1",
     "nodemon": "^1.12.1",
     "phantomjs": "2.1.7",
@@ -61,6 +61,6 @@
     "test": "mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP}",
     "unit-test": "mocha --compilers js:babel-core/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --compilers js:babel-core/register --reporter spec ./test/unit-test",
-    "test-chrome": "mocha-chrome http://localhost:7021/koski/test/runner.html --mocha '{\"timeout\":\"10000\"}' --screenshots '{\"fail\": true, \"outputDirectory\": \"target/screenshots/\"}'"
+    "test-chrome": "mocha-chrome http://localhost:7021/koski/test/runner.html"
   }
 }
