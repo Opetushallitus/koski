@@ -564,6 +564,7 @@ case class NäytönArviointikohde(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  @KoodistoUri("arviointiasteikkoammatillinen15")
   arvosana: Koodistokoodiviite
 )
 
