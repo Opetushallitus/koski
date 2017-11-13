@@ -11,6 +11,12 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.{FreeSpec, Tag}
 
+/**
+  * Runs our mocha UI tests remotely on BrowserStack. To run this you need to
+  *
+  * - Run the BrowserStackLocal executable with a valid browserstack key. See https://www.browserstack.com/local-testing
+  * - Supply the BROWSERSTACK_USERNAME and BROWSERSTACK_AUTOMATE_KEY environment variables (or system properties) to the JVM
+  */
 class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables {
   lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
   lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
