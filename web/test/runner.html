@@ -112,9 +112,21 @@
     if (window.callPhantom) {
         console.log("PhantomJS mode")
     }
+
+    runner.errors = []
+    function mapError(e) {
+      var logEntry = {
+        title: e.title
+      }
+      if (e.err) logEntry.message = e.err.message
+      if (e.parent) logEntry.parent = mapError(e.parent)
+      return logEntry
+    }
     runner.on("fail", function(e) {
-        takeScreenshot(e.title)()
+      takeScreenshot(e.title)()
+      runner.errors.push(mapError(e))
     })
+
     $(document).keyup(function(e) { 
       if(e.keyCode==27) {
           runner._abort = true
