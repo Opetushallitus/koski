@@ -1,3 +1,7 @@
+## 13.11.2017
+
+- Muutettu vankilaopetuksessa kenttä boolean-tyyppisestä listaksi alku-loppu päivämäääräpareja
+
 ## 8.11.2017
 
 - Poistettu ammatillisen opiskeluoikeuden lisätietojen poissaolojaksot
