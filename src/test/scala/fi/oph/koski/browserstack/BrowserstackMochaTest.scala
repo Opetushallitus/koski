@@ -10,9 +10,9 @@ import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.{FreeSpec, Tag}
 
 class BrowserstackMochaTest extends FreeSpec with EnvVariables {
-  val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
-  val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
-  val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"
+  lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
+  lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
+  lazy val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"
 
   "Mocha tests on BrowserStack" - {
     "Chrome" taggedAs(BrowserStack) in {
