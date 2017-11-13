@@ -98,6 +98,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_waiko",
+  "koodiArvo" : "waiko",
+  "metadata" : [ {
+    "nimi" : "Winha aikuiskoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_winha",
   "koodiArvo" : "winha",
   "metadata" : [ {
