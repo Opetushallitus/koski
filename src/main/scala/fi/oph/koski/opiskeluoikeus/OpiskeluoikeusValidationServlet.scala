@@ -19,17 +19,23 @@ import rx.lang.scala.Observable
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
-    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
+    val extractOnly = params.get("extractOnly").map(_.toBoolean).getOrElse(false)
+
+    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
     def validate(row: OpiskeluoikeusRow): ValidationResult = {
-      var result = context.validateOpiskeluoikeus(row)
+      var result = if (extractOnly) {
+        context.extractOpiskeluoikeus(row)
+      } else {
+        context.validateOpiskeluoikeus(row)
+      }
       if (validateHistory) result = result + context.validateHistory(row)
       if (validateHenkilö) result = result + context.validateHenkilö(row)
       result
     }
 
-    OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+    OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö", "extractOnly").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
         val rows: Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, None, None)(koskiSession)
         streamResponse[ValidationResult](rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk)))
@@ -69,8 +75,15 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
     }
   }
 
+  def extractOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
+    renderValidationResult(row, validator.extractOpiskeluoikeus(row.data))
+  }
+
   def validateOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
-    val validationResult: Either[HttpStatus, Opiskeluoikeus] = validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read)
+    renderValidationResult(row, validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read))
+  }
+
+  private def renderValidationResult(row: OpiskeluoikeusRow, validationResult: Either[HttpStatus, Opiskeluoikeus]) = {
     validationResult match {
       case Right(oppija) =>
         ValidationResult(row.oppijaOid, row.oid, Nil)
