@@ -26,16 +26,19 @@ class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification wi
     "Chrome" taggedAs(BrowserStack) in {
       runMochaTests(Chrome)
     }
-    /*
     // Currently doesn't pass, needs investigation
     "IE11" taggedAs(BrowserStack) in {
       runMochaTests(IE11)
     }
-    */
     "Edge 16" taggedAs(BrowserStack) in {
       runMochaTests(Edge16)
     }
-
+    "Firefox" taggedAs(BrowserStack) in {
+      runMochaTests(Firefox)
+    }
+    "Safari" taggedAs(BrowserStack) in {
+      runMochaTests(Safari)
+    }
     // To generate browser capabilities for more browsers, see this page: https://www.browserstack.com/automate/java
   }
 
@@ -111,7 +114,18 @@ object Edge16 extends BrowserCapabilities {
   caps.setCapability("os_version", "10")
 }
 
-
+object Firefox extends BrowserCapabilities {
+  caps.setCapability("browser", "Firefox")
+  caps.setCapability("browser_version", "57.0 beta")
+  caps.setCapability("os", "Windows")
+  caps.setCapability("os_version", "10")
+}
+object Safari extends BrowserCapabilities {
+  caps.setCapability("browser", "Safari")
+  caps.setCapability("browser_version", "11.0")
+  caps.setCapability("os", "OS X")
+  caps.setCapability("os_version", "High Sierra")
+}
 case class MochaStats(suites: Int, tests: Int, passes: Int, pending: Int, failures: Int, start: Date, end: Option[Date], duration: Option[Int]) {
   def ended = end.isDefined
 }
