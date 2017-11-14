@@ -34,19 +34,14 @@ case class AmmatillinenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Työssäoppimisjaksollinen with Koulutussopimuksellinen with Suorituskielellinen
+sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Koulutussopimuksellinen with Suorituskielellinen
 
 trait Työssäoppimisjaksollinen {
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
-  @OnlyWhen("suoritustapa", None)
   @Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
-trait Koulutussopimuksellinen {
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
-  @OnlyWhen("suoritustapa", None)
+trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
   @Description("Tutkinnon suoritukseen kuuluvien koulutusjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
   def koulutussopimukset: Option[List[Työssäoppimisjakso]]
 }
@@ -143,11 +138,12 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
-  val päättymispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  override val järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
-  override val osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina")
+  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
   @Title("Koulutuksen osat")
@@ -156,7 +152,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen with Järjestysmuodollinen
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
 @Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
 case class NäyttötutkintoonValmistavaKoulutus(
@@ -169,10 +165,6 @@ case class NäyttötutkintoonValmistavaKoulutus(
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä")
-  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
-  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
   suoritustapa: Koodistokoodiviite,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
@@ -180,9 +172,18 @@ case class AmmatillisenTutkinnonSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  override val järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
-  override val osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina")
+  @OnlyWhen("suoritustapa/koodiarvo","reformi")
+  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
@@ -207,6 +208,7 @@ case class Osaamisalajakso(
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  suoritustapa: Koodistokoodiviite,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   @Description("Onko kyse uuden tutkintonimikkeen suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
   @DefaultValue(false)
@@ -219,9 +221,18 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  override val järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
-  override val osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
+  järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina")
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
+  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
@@ -233,8 +244,13 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 
-trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen with Järjestysmuodollinen {
+trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
+  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä")
+  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
+  def suoritustapa: Koodistokoodiviite
 }
 
 trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen {
@@ -823,17 +839,4 @@ trait Osaamisalallinen {
   @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   def osaamisala: Option[List[Osaamisalajakso]] = None
-}
-
-trait Järjestysmuodollinen {
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
-  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
-  @OnlyWhen("suoritustapa", None)
-  def järjestämismuodot: Option[List[Järjestämismuotojakso]] = None
-  @Description("Osaamisen hankkimistavat eri ajanjaksoina")
-  @OnlyWhen("suoritustapa/koodiarvo","reformi")
-  @OnlyWhen("suoritustapa", None)
-  def osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None
 }

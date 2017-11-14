@@ -368,7 +368,6 @@ describe('Ammatillinen koulutus', function() {
         expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
       })
 
-      var suoritustapa = editor.property('suoritustapa')
       describe('Tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
@@ -1265,6 +1264,7 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Suoritustapa Ammatillinen perustutkinto\n' +
           'Tutkintonimike Autokorinkorjaaja\n' +
           'Toinen tutkintonimike kyllä\n' +
           'Osaamisala Autokorinkorjauksen osaamisala\n' +

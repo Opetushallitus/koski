@@ -38,11 +38,12 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
         suorituskieli : suorituskieli
       }
     }
-    if (koodiarvoMatch('ammatillinentutkintoosittainen')(suoritustyyppi) && tutkinto && oppilaitos) {
+    if (koodiarvoMatch('ammatillinentutkintoosittainen')(suoritustyyppi) && tutkinto && oppilaitos && suoritustapa) {
       return {
         koulutusmoduuli: tutkintoData,
         toimipiste : oppilaitos,
         tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'ammatillinentutkintoosittainen'},
+        suoritustapa: suoritustapa,
         suorituskieli : suorituskieli
       }
     }

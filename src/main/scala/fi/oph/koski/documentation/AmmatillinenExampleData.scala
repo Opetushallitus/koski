@@ -352,6 +352,7 @@ object AmmatillinenExampleData {
     toinenTutkintonimike = true,
     osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
     toinenOsaamisala = false,
+    suoritustapa = suoritustapaOps,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
     vahvistus = vahvistus(),

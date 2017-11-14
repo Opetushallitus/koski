@@ -53,6 +53,14 @@
         },
         "perusteenDiaarinumero" : "62/011/2014"
       },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Ammatillinen perustutkinto"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
       "tutkintonimike" : [ {
         "koodiarvo" : "10024",
         "nimi" : {

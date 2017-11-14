@@ -45,7 +45,7 @@ export class Suoritustaulukko extends React.Component {
 
     let grouped, groupIds, groupTitles
 
-    if (isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo == 'ops') {
+    if (isAmmatillinenTutkinto && isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo === 'ops') {
       grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
       groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
       groupIds = R.keys(grouped).sort()
