@@ -45,7 +45,7 @@ class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification wi
   private def runMochaTests(capabilities: BrowserCapabilities) = {
     SharedJetty.start
     val driver = new RemoteWebDriver(new URL(URL), capabilities.caps)
-    driver.get(SharedJetty.baseUrl + "/test/runner.html?grep=Ammatillinen%20koulutus%20Opiskeluoikeuden%20lis%C3%A4%C3%A4minen%20Validointi%20Kun%20kutsumanimi%20l%C3%B6ytyy%20v%C3%A4liviivallisesta%20nimest%C3%A4") // <- add some grep params here if you want to run a subset
+    driver.get(SharedJetty.baseUrl + "/test/runner.html") // <- add some grep params here if you want to run a subset
     verifyMochaStarted(driver)
     var stats = getMochaStats(driver)
     while (!stats.ended) {
