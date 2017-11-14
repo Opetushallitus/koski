@@ -1,3 +1,16 @@
+## 14.11.2017
+- Ammatillisen reformin mukaiset muutokset
+  - Lisätty koulutussopimukset kaikille ammatillisen päätason suorituksille
+  - Lisätty osaamisenhankkimistavat ammatillisen tutkinnon-, ammatillisen tutkinnon osittaiselle- ja näyttötutkintoon valmistavan koulutuksen suorituksille
+  - Lisätty erityinen tuki ja vaativan erityisen tuen erityinen tehtävä ammatillisen opiskeluoikeuden lisätiedoille
+  - Ammatillisen tutkinnon ja osittaisen ammatillisen tutkinnon suorituksilla hyväksytään koulutussopimukset ja osaamisen hankkimistavat vain, jos suoritustapa on `reformi`
+  - Ammatillisen tutkinnon ja osittaisen ammatillisen tutkinnon suorituksilla hyväksytään järjestämismuodot ja työssäoppimisjaksot vain, jos suoritustapa on `ops` tai `naytto`
+  - Osittaisen ammatillisen tutkinnon suoritukseen on lisätty pakollinen suoritustapa tieto (`ops`, `naytto` tai `reformi`)
+  - suoritustapa-koodistoon on lisätty arvo `reformi`
+  - Lisätty uusi koodisto `osaamisenhankkimistapa`
+  - Lisätty uusi ammatillisen arviointi-asteikon koodisto `arviointiasteikkoammatillinen15`
+  - Lisätty koodistoon `ammatillisennaytonarvioinnistapaattaneet` uusi arvo `5` - `muu koulutuksen järjestäjän edustaja`
+
 ## 13.11.2017
 
 - Muutettu vankilaopetuksessa kenttä boolean-tyyppisestä listaksi alku-loppu päivämäääräpareja
