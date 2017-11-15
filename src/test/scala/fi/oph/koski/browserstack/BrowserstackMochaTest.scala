@@ -12,21 +12,63 @@ import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.{FreeSpec, Tag}
 
 class ChromeTest extends BrowserstackMochaTest {
+  object Chrome extends BrowserCapabilities {
+    caps.setCapability("browser", "Chrome")
+    caps.setCapability("browser_version", "62.0")
+    caps.setCapability("os", "Windows")
+    caps.setCapability("os_version", "8")
+  }
   runMochaTests(Chrome)
 }
 
 class FirefoxTest extends BrowserstackMochaTest {
+  object Firefox extends BrowserCapabilities {
+    caps.setCapability("browser", "Firefox")
+    caps.setCapability("browser_version", "57.0 beta")
+    caps.setCapability("os", "Windows")
+    caps.setCapability("os_version", "10")
+  }
   runMochaTests(Firefox)
 }
 
 class IE11Test extends BrowserstackMochaTest {
-  runMochaTests(IE11)}
+  object IE11 extends BrowserCapabilities {
+    caps.setCapability("browser", "IE")
+    caps.setCapability("browser_version", "11.0")
+    caps.setCapability("os", "Windows")
+    caps.setCapability("os_version", "10")
+  }
+
+  runMochaTests(IE11) // Some tests pass some fail
+}
+
+class IE10Test extends BrowserstackMochaTest {
+  object IE10 extends BrowserCapabilities {
+    caps.setCapability("browser", "IE")
+    caps.setCapability("browser_version", "10.0")
+    caps.setCapability("os", "Windows")
+    caps.setCapability("os_version", "7")
+  }
+  //runMochaTests(IE10) // 'openPage' is undefined
+}
 
 class Edge16Test extends BrowserstackMochaTest {
+  object Edge16 extends BrowserCapabilities {
+    caps.setCapability("browser", "Edge")
+    caps.setCapability("browser_version", "16.0")
+    caps.setCapability("os", "Windows")
+    caps.setCapability("os_version", "10")
+  }
   runMochaTests(Edge16)
 }
 
 class SafariTest extends BrowserstackMochaTest {
+  object Safari extends BrowserCapabilities {
+    caps.setCapability("browser", "Safari")
+    caps.setCapability("browser_version", "11.0")
+    caps.setCapability("os", "OS X")
+    caps.setCapability("os_version", "High Sierra")
+  }
   runMochaTests(Safari)
 }
 
@@ -92,39 +134,6 @@ sealed trait BrowserCapabilities {
   //caps.setCapability("browserstack.video", "true")
 }
 
-object Chrome extends BrowserCapabilities {
-  caps.setCapability("browser", "Chrome")
-  caps.setCapability("browser_version", "62.0")
-  caps.setCapability("os", "Windows")
-  caps.setCapability("os_version", "8")
-}
-
-object IE11 extends BrowserCapabilities {
-  caps.setCapability("browser", "IE")
-  caps.setCapability("browser_version", "11.0")
-  caps.setCapability("os", "Windows")
-  caps.setCapability("os_version", "10")
-}
-
-object Edge16 extends BrowserCapabilities {
-  caps.setCapability("browser", "Edge")
-  caps.setCapability("browser_version", "16.0")
-  caps.setCapability("os", "Windows")
-  caps.setCapability("os_version", "10")
-}
-
-object Firefox extends BrowserCapabilities {
-  caps.setCapability("browser", "Firefox")
-  caps.setCapability("browser_version", "57.0 beta")
-  caps.setCapability("os", "Windows")
-  caps.setCapability("os_version", "10")
-}
-object Safari extends BrowserCapabilities {
-  caps.setCapability("browser", "Safari")
-  caps.setCapability("browser_version", "11.0")
-  caps.setCapability("os", "OS X")
-  caps.setCapability("os_version", "High Sierra")
-}
 case class MochaStats(suites: Int, tests: Int, passes: Int, pending: Int, failures: Int, start: Date, end: Option[Date], duration: Option[Int]) {
   def ended = end.isDefined
 }
