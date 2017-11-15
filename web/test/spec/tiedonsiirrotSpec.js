@@ -13,7 +13,7 @@ describe('Tiedonsiirrot', function() {
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
     insertExample('tiedonsiirto - vain syntymäaika.json'),
     syncTiedonsiirrot,
-    tiedonsiirrot.openPage,
+    tiedonsiirrot.openPage
   )
 
   describe("Tiedonsiirtoloki", function() {
