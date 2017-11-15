@@ -156,6 +156,8 @@ function goForward() {
   testFrame().history.forward()
 }
 
+var isIE = (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1))
+
 function triggerEvent(selector, eventName) {
   return function() {
     var element = toElement(selector)
@@ -164,7 +166,7 @@ function triggerEvent(selector, eventName) {
     }
 
     var evt
-    if(window.callPhantom) {
+    if(window.callPhantom || isIE) {
       evt = testFrame().document.createEvent('HTMLEvents');
       evt.initEvent(eventName, true, true);
     } else {
