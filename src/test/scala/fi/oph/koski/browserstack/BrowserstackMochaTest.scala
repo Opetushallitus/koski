@@ -11,56 +11,55 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.{FreeSpec, Tag}
 
+class ChromeTest extends BrowserstackMochaTest {
+  runMochaTests(Chrome)
+}
+
+class FirefoxTest extends BrowserstackMochaTest {
+  runMochaTests(Firefox)
+}
+
+class IE11Test extends BrowserstackMochaTest {
+  runMochaTests(IE11)}
+
+class Edge16Test extends BrowserstackMochaTest {
+  runMochaTests(Edge16)
+}
+
+class SafariTest extends BrowserstackMochaTest {
+  runMochaTests(Safari)
+}
+
 /**
   * Runs our mocha UI tests remotely on BrowserStack. To run this you need to
   *
   * - Run the BrowserStackLocal executable with a valid browserstack key. See https://www.browserstack.com/local-testing
   * - Supply the BROWSERSTACK_USERNAME and BROWSERSTACK_AUTOMATE_KEY environment variables (or system properties) to the JVM
   */
-class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables {
+abstract class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables {
   lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
   lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
   lazy val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"
 
-  "Mocha tests on BrowserStack" - {
-    "Chrome" taggedAs(BrowserStack) in {
-      runMochaTests(Chrome)
-    }
-    // Currently doesn't pass, needs investigation
-    "IE11" taggedAs(BrowserStack) in {
-      runMochaTests(IE11)
-    }
-    "Edge 16" taggedAs(BrowserStack) in {
-      runMochaTests(Edge16)
-    }
-    "Firefox" taggedAs(BrowserStack) in {
-      runMochaTests(Firefox)
-    }
-    "Safari" taggedAs(BrowserStack) in {
-      runMochaTests(Safari)
-    }
-    // To generate browser capabilities for more browsers, see this page: https://www.browserstack.com/automate/java
-  }
+  def runMochaTests(capabilities: BrowserCapabilities) = {
+    "Mocha tests on BrowserStack" taggedAs(BrowserStack) in {
+      val driver = new RemoteWebDriver(new URL(URL), capabilities.caps)
+      driver.get(baseUrl + "/test/runner.html") // <- add some grep params here if you want to run a subset
+      verifyMochaStarted(driver)
+      var stats = getMochaStats(driver)
+      while (!stats.ended) {
+        Thread.sleep(1000)
+        stats = getMochaStats(driver)
+      }
+      println("Mocha tests ended")
 
-  private def runMochaTests(capabilities: BrowserCapabilities) = {
-    SharedJetty.start
-    val driver = new RemoteWebDriver(new URL(URL), capabilities.caps)
-    driver.get(SharedJetty.baseUrl + "/test/runner.html") // <- add some grep params here if you want to run a subset
-    verifyMochaStarted(driver)
-    var stats = getMochaStats(driver)
-    while (!stats.ended) {
-      Thread.sleep(1000)
-      stats = getMochaStats(driver)
-    }
-    println("Mocha tests ended")
+      val errorLines = getMochaLog(driver).map(_.toOneLiner)
+      if (errorLines.nonEmpty) {
+        fail("Mocha tests failed:\n" + errorLines.mkString("\n"))
+      }
 
-    val errorLines = getMochaLog(driver).map(_.toOneLiner)
-    if (errorLines.nonEmpty) {
-      println("ERRORS: \n" + errorLines.mkString("\n"))
-      fail("Mocha tests failed")
+      driver.quit()
     }
-
-    driver.quit()
   }
 
   private def verifyMochaStarted(driver: RemoteWebDriver) = {
