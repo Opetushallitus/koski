@@ -1,9 +1,9 @@
 package fi.oph.koski.koskiuser
 
-import fi.vm.sade.security.ldap.LdapUser
+import fi.oph.koski.userdirectory.DirectoryUser
 
 case class AuthenticationUser(oid: String, username: String, name: String, serviceTicket: Option[String]) extends UserWithUsername with UserWithOid
 
 object AuthenticationUser {
-  def fromLdapUser(username: String, ldapUser: LdapUser) = AuthenticationUser(ldapUser.oid, username, ldapUser.givenNames + " " + ldapUser.lastName, None)
+  def fromDirectoryUser(username: String, user: DirectoryUser) = AuthenticationUser(user.oid, username, user.etunimet + " " + user.sukunimi, None)
 }

@@ -2,6 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.OidOrganisaatio
+import fi.oph.koski.userdirectory.LdapKayttooikeudet
 import fi.vm.sade.security.ldap.LdapUser
 import org.scalatest.{FreeSpec, Matchers}
 

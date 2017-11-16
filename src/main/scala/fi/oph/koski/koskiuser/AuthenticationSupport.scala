@@ -6,8 +6,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
-import fi.vm.sade.security.ldap.DirectoryClient
-import org.scalatra.{Cookie, CookieOptions}
+import fi.oph.koski.userdirectory.DirectoryClient
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
@@ -84,7 +83,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         case Some(user) =>
           Right(user)
         case None =>
-          logger.error("User not found from LDAP after successful authentication: " + username)
+          logger.error(s"User not found, after successful authentication: $username")
           loginFail
       }
     }
@@ -108,13 +107,13 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 object DirectoryClientLogin extends Logging {
   def findUser(directoryClient: DirectoryClient, request: HttpServletRequest, username: String): Option[AuthenticationUser] = {
     directoryClient.findUser(username).map { ldapUser =>
-      AuthenticationUser.fromLdapUser(username, ldapUser)
+      AuthenticationUser.fromDirectoryUser(username, ldapUser)
     } match {
       case Some(user) =>
         logger(LogUserContext(request, user.oid, username)).debug("Login successful")
         Some(user)
       case _ =>
-        logger(LogUserContext(request)).error("User " + username + " not found from LDAP")
+        logger(LogUserContext(request)).error(s"User $username not found")
         None
     }
   }

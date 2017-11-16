@@ -5,7 +5,6 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.RemoteOpintopolkuHenkilöFacade
 import fi.oph.koski.henkilo.kayttooikeusservice.Käyttäjätiedot
-import fi.oph.koski.henkilo.opintopolku._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException, KoskiErrorCategory, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -40,7 +39,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid/master")(Http.parseJsonOptional[OppijaNumerorekisteriOppija]).map(_.map(_.toOppijaHenkilö))
 }
 
-case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
+case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot], asiointiKieli: Option[Kieli])
 case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
   def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified)
 }

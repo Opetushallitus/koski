@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.log.Logging
-import fi.vm.sade.security.ldap.DirectoryClient
+import fi.oph.koski.userdirectory.DirectoryClient
 import org.scalatra.servlet.RichResponse
 import org.scalatra.{Cookie, CookieOptions}
 
@@ -12,12 +12,9 @@ object KoskiUserLanguage extends Logging {
     val username = user.username
     directoryClient.findUser(username) match {
       case Some(ldapUser) =>
-        val pattern = "LANG_(.*)".r
-        ldapUser.roles.collect {
-          case pattern(s) => s
-        }.headOption.getOrElse("fi")
+        ldapUser.asiointikieli.map(_.toLowerCase).getOrElse("fi")
       case _ =>
-        logger.warn(s"User $username not found from LDAP")
+        logger.warn(s"User $username not found")
         "fi"
     }
   }

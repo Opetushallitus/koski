@@ -2,8 +2,8 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
-import fi.vm.sade.security.ldap.DirectoryClient
 
 import scala.concurrent.duration._
 
@@ -19,7 +19,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
     val username = user.username
     directoryClient.findUser(username) match {
       case Some(ldapUser) =>
-        LdapKayttooikeudet.käyttöoikeudet(ldapUser).toSet.flatMap { k: Käyttöoikeus =>
+        ldapUser.käyttöoikeudet.toSet.flatMap { k: Käyttöoikeus =>
           k match {
             case k: KäyttöoikeusGlobal =>
               List(k)
@@ -35,7 +35,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
           }
         }
       case None =>
-        logger.warn(s"User $username not found from LDAP")
+        logger.warn(s"User $username not found")
         Set.empty
     }
   }

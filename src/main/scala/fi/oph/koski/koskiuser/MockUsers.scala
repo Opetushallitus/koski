@@ -1,10 +1,11 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.AuthenticationUser.fromLdapUser
+import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät._
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{lehtikuusentienToimipiste, omnia, oppilaitokset}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{OidOrganisaatio, Organisaatio}
+import fi.oph.koski.userdirectory.DirectoryUser
 import fi.vm.sade.security.ldap.LdapUser
 
 object MockUsers {
@@ -48,24 +49,25 @@ object MockUsers {
   )
 }
 
-case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
+case class MockUser(ldapUser: DirectoryUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
   def toKoskiUser(käyttöoikeudet: KäyttöoikeusRepository) = {
-    val authUser: AuthenticationUser = fromLdapUser(ldapUser.oid, ldapUser)
+    val authUser: AuthenticationUser = fromDirectoryUser(ldapUser.oid, ldapUser)
     new KoskiSession(authUser, "fi", "192.168.0.10", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
   }
   def oid = ldapUser.oid
-  def username = ldapUser.givenNames
+  def username = ldapUser.etunimet
   def password = username
 }
 
 object MockUser {
   def apply(lastname: String, firstname: String, oid: String, käyttöoikeusryhmät: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)], lang: String = "fi"): MockUser = {
-    val roolit = s"LANG_$lang" :: käyttöoikeusryhmät.flatMap { case (oid, ryhmä) =>
-      ryhmä.palveluroolit.map { palveluRooli =>
-        LdapKayttooikeudet.roleString(palveluRooli.palveluName, palveluRooli.rooli, oid)
+    val oikeudet = käyttöoikeusryhmät.map { case (oid, ryhmä) =>
+      oid match {
+        case Opetushallitus.organisaatioOid => KäyttöoikeusGlobal(ryhmä.palveluroolit)
+        case oid => KäyttöoikeusOrg(OidOrganisaatio(oid), ryhmä.palveluroolit, true, None)
       }
     }.toList
-    MockUser(LdapUser(roolit, lastname, firstname, oid), käyttöoikeusryhmät)
+    MockUser(DirectoryUser(oid, oikeudet, firstname, lastname, Some(lang)), käyttöoikeusryhmät)
   }
 }
 

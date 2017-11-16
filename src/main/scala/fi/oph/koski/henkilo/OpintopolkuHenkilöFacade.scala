@@ -31,7 +31,6 @@ trait OpintopolkuHenkilöFacade {
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
-  def getKäyttöikeusRyhmät: Map[String, List[String]]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -88,8 +87,6 @@ class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: Authenticatio
       })
     }
   )
-
-  def getKäyttöikeusRyhmät: Map[String, List[String]] = runTask(käyttöoikeusServiceClient.getKäyttöikeusRyhmät)
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(authenticationServiceClient: AuthenticationServiceClient, oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(authenticationServiceClient, oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {
@@ -108,7 +105,7 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(authenticationServiceClient: A
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = super.findKäyttäjäByOid(oid).orElse {
-    Some(KäyttäjäHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Tuntematon", "Tuntematon", None))
+    Some(KäyttäjäHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Tuntematon", "Tuntematon", None, None))
   }
 }
 
@@ -159,7 +156,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
-    findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None))
+    findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None, None))
   }
 
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = synchronized {
@@ -218,7 +215,4 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   override def findChangedOppijaOids(since: Long): List[String] = synchronized {
     MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
   }
-
-  override def getKäyttöikeusRyhmät: Map[String, List[String]] =
-    MockUsers.users.flatMap(u => u.käyttöoikeudet.map(_._2.nimi).map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
 }

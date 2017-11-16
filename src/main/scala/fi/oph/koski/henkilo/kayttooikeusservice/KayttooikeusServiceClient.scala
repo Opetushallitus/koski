@@ -5,28 +5,17 @@ import fi.oph.koski.henkilo.RemoteOpintopolkuHenkilöFacade
 import fi.oph.koski.http.Http.{parseJson, _}
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
-
-import scalaz.concurrent.Task
-import scalaz.concurrent.Task.gatherUnordered
 
 case class KäyttöoikeusServiceClient(config: Config) {
   private val http = VirkailijaHttpClient(RemoteOpintopolkuHenkilöFacade.makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
 
   def getKäyttäjätiedot(oid: String) = http.get(uri"/kayttooikeus-service/henkilo/$oid/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
 
-  // TODO: rename
-  def getKäyttöikeusRyhmät: Task[Map[String, List[String]]] =
-    findKäyttöoikeusryhmät.flatMap { ryhmät =>
-      gatherUnordered(ryhmät
-        .filter(_.description.texts.exists(t => t.lang == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
-        .map { ryhmä =>
-          http.get(uri"/kayttooikeus-service/kayttooikeusryhma/${ryhmä.id}/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(h => (ryhmä.nimi, h.personOids))
-        }
-      )
-    }.map(_.toMap)
-
   def findKäyttöoikeusryhmät = http.get(uri"/kayttooikeus-service/kayttooikeusryhma")(parseJson[List[KäyttöoikeusRyhmä]])
+
+  def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int) = http.get(uri"/kayttooikeus-service/kayttooikeusryhma/${ryhmäId}/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(_.personOids)
+
+  def findKäyttöoikeudetByUsername(username: String) = http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username")(parseJson[List[HenkilönKäyttöoikeudet]])
 }
 
 case class KäyttöoikeusRyhmä(id: Int, name: String, description: KäyttöoikeusRyhmäDescriptions) {
@@ -41,3 +30,6 @@ case class KäyttöoikeusRyhmäDescriptions(texts: List[KäyttöoikeusRyhmäDesc
 case class KäyttöoikeusRyhmäDescription(text: String, lang: String)
 case class KäyttöoikeusRyhmäHenkilöt(personOids: List[String])
 case class Käyttäjätiedot(username: Option[String])
+case class HenkilönKäyttöoikeudet(oidHenkilo: String, organisaatiot: List[OrganisaatioJaKäyttöoikeudet])
+case class OrganisaatioJaKäyttöoikeudet(organisaatioOid: String, kayttooikeudet: List[PalveluJaOikeus])
+case class PalveluJaOikeus(palvelu: String, oikeus: String)

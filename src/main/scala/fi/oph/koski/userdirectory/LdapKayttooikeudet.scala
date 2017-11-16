@@ -1,5 +1,6 @@
-package fi.oph.koski.koskiuser
+package fi.oph.koski.userdirectory
 
+import fi.oph.koski.koskiuser.{Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio

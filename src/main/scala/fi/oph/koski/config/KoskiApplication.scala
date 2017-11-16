@@ -23,6 +23,7 @@ import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
+import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.OidGenerator
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
@@ -41,7 +42,7 @@ object KoskiApplication {
 
 class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
-  lazy val directoryClient = DirectoryClientFactory.directoryClient(config)
+  lazy val directoryClient = DirectoryClient(config)
   lazy val tutkintoRepository = TutkintoRepository(EPerusteetRepository.apply(config), koodistoViitePalvelu)
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
