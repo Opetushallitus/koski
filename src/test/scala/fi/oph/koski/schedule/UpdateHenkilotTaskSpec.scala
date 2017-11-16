@@ -3,8 +3,8 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
 import fi.oph.koski.henkilo.MockOppijat.{eero, eerola}
-import fi.oph.koski.henkilo.authenticationservice.MockAuthenticationServiceClient
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
@@ -41,11 +41,11 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
   }
 
   private def modify(tiedot: TäydellisetHenkilötiedotWithMasterInfo): Unit = {
-    authServiceClient.modify(tiedot)
+    henkilöFacade.modify(tiedot)
     new UpdateHenkilotTask(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
     application.elasticSearch.refreshIndex
   }
 
-  override def afterEach(): Unit = authServiceClient.reset()
-  private def authServiceClient = application.authenticationServiceClient.asInstanceOf[MockAuthenticationServiceClient]
+  override def afterEach(): Unit = henkilöFacade.reset()
+  private def henkilöFacade = application.opintopolkuHenkilöFacade.asInstanceOf[MockOpintopolkuHenkilöFacade]
 }

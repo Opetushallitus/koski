@@ -2,7 +2,7 @@ package fi.oph.koski.fixture
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiDatabaseConfig
-import fi.oph.koski.henkilo.authenticationservice.MockAuthenticationServiceClient
+import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
@@ -13,7 +13,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   def resetFixtures = if(shouldUseFixtures) {
     application.cacheManager.invalidateAllCaches
     databaseFixtures.resetFixtures
-    application.henkilöRepository.opintopolku.henkilöPalveluClient.asInstanceOf[MockAuthenticationServiceClient].resetFixtures
+    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
     application.localizationRepository.asInstanceOf[MockLocalizationRepository].reset
     application.tiedonsiirtoService.deleteAll
     logger.info("Reset application fixtures")

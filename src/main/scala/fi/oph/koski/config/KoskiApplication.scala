@@ -7,8 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
-import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
-import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache}
+import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
@@ -47,9 +46,9 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
-  lazy val authenticationServiceClient = AuthenticationServiceClient(config, masterDatabase.db, perustiedotRepository, elasticSearch)
-  lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository, directoryClient)
-  lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
+  lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, perustiedotRepository, elasticSearch)
+  lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)
+  lazy val userRepository = new KoskiUserRepository(opintopolkuHenkilöFacade)
   lazy val masterDatabase = KoskiDatabase.master(config)
   lazy val replicaDatabase = KoskiDatabase.replica(config, masterDatabase)
   lazy val virtaClient = VirtaClient(config)
@@ -75,7 +74,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(config, opintopolkuHenkilöFacade), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)

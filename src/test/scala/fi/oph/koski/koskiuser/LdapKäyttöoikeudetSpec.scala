@@ -1,6 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.authenticationservice.Palvelurooli
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.security.ldap.LdapUser

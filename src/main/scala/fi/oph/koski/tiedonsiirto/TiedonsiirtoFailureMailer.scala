@@ -5,10 +5,10 @@ import java.time.LocalDateTime.now
 
 import com.typesafe.config.Config
 import fi.oph.koski.email._
-import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
+import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
 import fi.oph.koski.log.Logging
 
-class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: AuthenticationServiceClient) extends Logging {
+class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: OpintopolkuHenkilöFacade) extends Logging {
   val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
   val sender = EmailSender(config)
   val ryhmä = "Vastuukayttajat"

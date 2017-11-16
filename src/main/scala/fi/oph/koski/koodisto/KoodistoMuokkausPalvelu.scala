@@ -2,21 +2,21 @@ package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{Http, HttpStatusException, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.log.Logging
 
 /** Koodistojen ja koodien lisäyspalvelu **/
 
 object KoodistoMuokkausPalvelu {
   def apply(config: Config) = {
-    new KoodistoMuokkausPalvelu(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"))
+    new KoodistoMuokkausPalvelu(ServiceConfig.apply(config, "opintopolku.virkailija"))
   }
 }
 
-class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl: String) extends Logging {
+class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
   import fi.oph.koski.json.Json4sHttp4s._
 
-  val secureHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
+  val secureHttp = VirkailijaHttpClient(serviceConfig, "/koodisto-service")
 
   def updateKoodisto(koodisto: Koodisto): Unit = {
     runTask(secureHttp.put(uri"/koodisto-service/rest/codes/save", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))

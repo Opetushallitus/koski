@@ -1,7 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.authenticationservice.Palvelurooli
-import fi.oph.koski.koskiuser.AccessType.{read, write}
 import fi.oph.koski.koskiuser.Rooli._
 
 object Käyttöoikeusryhmät {

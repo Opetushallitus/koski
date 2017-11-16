@@ -3,10 +3,10 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.authenticationservice.OppijaHenkilö
+import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.perustiedot.{NimitiedotJaOid, OpiskeluoikeudenHenkilötiedot}
+import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
@@ -22,7 +22,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
-      val changedOids = application.authenticationServiceClient.findChangedOppijaOids(oldContext.lastRun)
+      val changedOids = application.opintopolkuHenkilöFacade.findChangedOppijaOids(oldContext.lastRun)
       val newContext = runUpdate(changedOids, oldContext)
       Some(JsonSerializer.serializeWithRoot(newContext))
     } catch {
@@ -34,7 +34,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
   private def runUpdate(oids: List[Oid], lastContext: HenkilöUpdateContext) = {
     val filteredOids = application.henkilöCache.filterOidsByCache(oids)
-    val oppijat: List[OppijaHenkilö] = application.authenticationServiceClient.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
+    val oppijat: List[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)

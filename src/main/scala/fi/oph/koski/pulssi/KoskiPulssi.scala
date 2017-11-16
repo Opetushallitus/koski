@@ -2,8 +2,8 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.authenticationservice.KäyttöoikeusTilasto
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
+
 import scala.concurrent.duration._
 
 
@@ -22,7 +22,13 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto = perustiedotStats.statistics
   def metriikka: JulkinenMetriikka = metrics.toPublic
   def oppijoidenMäärä: Int = perustiedotStats.henkilöCount.getOrElse(0)
-  def käyttöoikeudet: KäyttöoikeusTilasto = application.authenticationServiceClient.henkilötPerKäyttöoikeusryhmä
+  def käyttöoikeudet: KäyttöoikeusTilasto = {
+    val ryhmät = application.opintopolkuHenkilöFacade.getKäyttöikeusRyhmät
+    KäyttöoikeusTilasto(
+      ryhmät.values.flatten.toList.distinct.size,
+      ryhmät.map { case (x, y) => (x, y.size) }
+    )
+  }
   def metrics: KoskiMetriikka = application.prometheusRepository.koskiMetrics
 
   def oppilaitosMäärät = OppilaitosMäärät(Map(
@@ -44,3 +50,5 @@ object KoskiPulssi {
 case class OppilaitosMäärät(koulutusmuodoittain: Map[String, Int]) {
   def yhteensä: Int = koulutusmuodoittain.values.sum
 }
+
+case class KäyttöoikeusTilasto(kokonaismäärä: Int, ryhmienMäärät: Map[String, Int])

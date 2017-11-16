@@ -1,6 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.authenticationservice.Palvelurooli
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio

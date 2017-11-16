@@ -1,7 +1,7 @@
 package fi.oph.koski.email
 
 import com.typesafe.config.Config
-import fi.oph.koski.http.{Http, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 
@@ -38,7 +38,7 @@ object MockEmailSender extends EmailSender with Logging {
 case class RyhmäsähköpostiSender(config: Config) extends EmailSender {
   import Http._
 
-  val http = VirkailijaHttpClient(config.getString("ryhmäsähköposti.virkailija.username"), config.getString("ryhmäsähköposti.virkailija.password"), config.getString("ryhmäsähköposti.virkailija.url"), "/ryhmasahkoposti-service")
+  val http = VirkailijaHttpClient(ServiceConfig.apply(config, "ryhmäsähköposti.virkailija"), "/ryhmasahkoposti-service")
 
   override def sendEmail(envelope: Email): Unit = {
     http.post(uri"/ryhmasahkoposti-service/email", envelope)(json4sEncoderOf[Email])(Http.expectSuccess)

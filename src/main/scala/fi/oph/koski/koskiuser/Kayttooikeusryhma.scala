@@ -1,7 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.authenticationservice.Palvelurooli
-
 sealed trait Käyttöoikeusryhmä {
   def nimi: String
   def kuvaus: String

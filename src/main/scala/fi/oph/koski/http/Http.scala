@@ -114,6 +114,7 @@ object Http extends Logging {
   object Encoders extends Logging {
     def xml: EntityEncoder[Elem] = EntityEncoder.stringEncoder(Charset.`UTF-8`).contramap[Elem](item => item.toString)
       .withContentType(`Content-Type`(MediaType.`text/xml`))
+    def formData: EntityEncoder[String] = EntityEncoder.stringEncoder.withContentType(`Content-Type`(MediaType.`application/x-www-form-urlencoded`))
   }
 }
 

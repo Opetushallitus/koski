@@ -3,7 +3,7 @@ package fi.oph.koski.localization
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{Http, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
@@ -106,7 +106,7 @@ object MockLocalizationRepository {
 }
 
 class RemoteLocalizationRepository(config: Config)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
-  private val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("localization.url"), "/lokalisointi")
+  private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "localization", "opintopolku.virkailija"), "/lokalisointi")
 
   override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=koski")(Http.parseJson[JValue]))
 

@@ -1,14 +1,13 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 
 import scala.concurrent.duration._
 
-class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
+class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
   def käyttäjänKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = käyttöoikeusCache(user)
 
   def käyttäjänOppilaitostyypit(user: AuthenticationUser): Set[String] = {

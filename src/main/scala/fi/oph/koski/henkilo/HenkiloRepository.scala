@@ -21,7 +21,7 @@ trait FindByHetu {
 
 object HenkilöRepository {
   def apply(application: KoskiApplication)(implicit cacheInvalidator: CacheManager): HenkilöRepository = {
-    val opintopolku = new OpintopolkuHenkilöRepository(application.authenticationServiceClient, application.koodistoViitePalvelu)
+    val opintopolku = new OpintopolkuHenkilöRepository(application.opintopolkuHenkilöFacade, application.koodistoViitePalvelu)
     HenkilöRepository(
       opintopolku,
       TimedProxy(VirtaHenkilöRepository(application.virtaClient, opintopolku, application.virtaAccessChecker).asInstanceOf[FindByHetu]),
