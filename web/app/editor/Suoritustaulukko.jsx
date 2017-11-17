@@ -183,10 +183,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       {showPakollisuus && <td className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>}
       {showLaajuus && <td className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>}
       {showArvosana && arvosanaModel && <td className="arvosana">
-        <Editor model={arvosanaModel} showEmptyOption="true"
-                keyValue={option => (option.data ? (option.data.koodistoUri + '-') : '') + option.value}
-                sortBy={sortByKoodistoUriAndGrade}
-        />
+        <Editor model={arvosanaModel} showEmptyOption="true" sortBy={sortByKoodistoUriAndGrade} />
       </td>
       }
       {

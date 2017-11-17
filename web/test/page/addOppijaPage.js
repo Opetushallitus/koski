@@ -32,7 +32,7 @@ function AddOppijaPage() {
       params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
-          .then(pageApi.setInputValue('.kutsumanimi input[disabled], .kutsumanimi .dropdown', params.kutsumanimi, true))
+          .then(pageApi.setInputValue('.kutsumanimi input[disabled], .kutsumanimi .dropdown', params.kutsumanimi))
           .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
       }
     },
@@ -131,7 +131,7 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.oppimaara .dropdown')
     },
     selectOppimäärä: function(oppimäärä) {
-      return selectFromDropdown('.oppimaara .dropdown', oppimäärä, true)
+      return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
     },
     selectOppiaine: function(oppiaine) {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
@@ -147,7 +147,7 @@ function AddOppijaPage() {
   function selectFromDropdown(selector, value, exact) {
     return function () {
       return wait.until(pageApi.getInput(selector).isVisible)().then(wait.forAjax).then(
-        pageApi.setInputValue(selector, value, exact)
+        pageApi.setInputValue(selector, value)
       )
     }
   }

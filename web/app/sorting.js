@@ -24,7 +24,7 @@ export const sortLanguages = languages => {
   let preordered = ['FI', 'SV', 'EN']
 
   return languages
-    .filter(l => preordered.includes(l.value))
-    .sort((l1, l2) => preordered.findIndex(v => v === l1.value) - preordered.findIndex(v => v === l2.value))
-    .concat(languages.filter(l => !preordered.includes(l.value)))
+    .filter(l => preordered.includes(l.data.koodiarvo))
+    .sort((l1, l2) => preordered.findIndex(v => v === l1.data.koodiarvo) - preordered.findIndex(v => v === l2.data.koodiarvo))
+    .concat(languages.filter(l => !preordered.includes(l.data.koodiarvo)))
 }

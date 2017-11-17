@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
+import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
@@ -13,9 +14,6 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import org.json4s.jackson.Serialization
-
-import scala.collection.immutable
-import KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 
 /**
   *  Endpoints for the Koski UI
@@ -37,12 +35,12 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/koodit/:koodistoUri") {
-    getKooditFromRequestParams()
+    toKoodistoEnumValues(getKooditFromRequestParams())
   }
 
   get("/koodit/:koodistoUri/:koodiarvot") {
     val koodiarvot = params("koodiarvot").split(",").toSet
-    getKooditFromRequestParams().filter(v => koodiarvot.contains(v.value))
+    toKoodistoEnumValues(getKooditFromRequestParams().filter(k => koodiarvot.contains(k.koodiarvo)))
   }
 
   get("/organisaatiot") {
@@ -132,9 +130,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
   override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 
-  private def getKooditFromRequestParams() = {
-    toKoodistoEnumValues(koodistojenKoodit(koodistotByString(params("koodistoUri"))))
-  }
+  private def getKooditFromRequestParams() = koodistojenKoodit(koodistotByString(params("koodistoUri")))
 
   private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_).toList.flatten)
 

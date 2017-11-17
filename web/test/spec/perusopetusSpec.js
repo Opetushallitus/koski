@@ -547,7 +547,16 @@ describe('Perusopetus', function() {
         describe('Perusopetuksen tilat', function() {
           before(editor.edit, opinnot.avaaLisaysDialogi)
           it('Ei sisällä loma-tilaa', function() {
-            expect(opiskeluoikeus.tilat()).to.deep.equal([ 'eronnut', 'katsotaaneronneeksi', 'lasna', 'peruutettu', 'valmistunut', 'valiaikaisestikeskeytynyt' ])
+            expect(opiskeluoikeus.tilat()).to.deep.equal(
+                [
+                  'koskiopiskeluoikeudentila_eronnut',
+                  'koskiopiskeluoikeudentila_katsotaaneronneeksi',
+                  'koskiopiskeluoikeudentila_lasna',
+                  'koskiopiskeluoikeudentila_peruutettu',
+                  'koskiopiskeluoikeudentila_valmistunut',
+                  'koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt'
+                ]
+            )
           })
         })
 
@@ -557,7 +566,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.tallenna, editor.saveChanges)
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
             })
@@ -591,7 +600,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
@@ -663,7 +672,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun lisätään', function() {
-            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="peruutettu"]'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('peruutettu'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
@@ -688,7 +697,7 @@ describe('Perusopetus', function() {
             expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="lasna"]'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('lasna'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
               expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
@@ -709,7 +718,7 @@ describe('Perusopetus', function() {
             expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
           })
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valiaikaisestikeskeytynyt'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivää ei aseteta', function() {
               expect(opinnot.opiskeluoikeusEditor().property('päättymispäivä').isVisible()).to.equal(false)
@@ -720,28 +729,28 @@ describe('Perusopetus', function() {
         describe('Päivämäärän validointi', function() {
           before(editor.edit, opinnot.avaaLisaysDialogi)
           describe('Virheellinen päivämäärä', function() {
-            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'))
+            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'))
             it('Tallennus on estetty', function() {
               expect(opiskeluoikeus.isEnabled()).to.equal(false)
             })
           })
 
           describe('Virheellinen päivämäärä ja tilan muutos', function() {
-            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.tila().click('input[value="valmistunut"]'))
+            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.tila().aseta('valmistunut'))
             it('Tallennus on estetty', function() {
               expect(opiskeluoikeus.isEnabled()).to.equal(false)
             })
           })
 
           describe('Uusi alkupäivä on aikaisempi kuin viimeisen tilan alkupäivämäärä', function() {
-            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('14.8.2008'))
+            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('14.8.2008'))
             it('Tallennus on estetty', function() {
               expect(opiskeluoikeus.isEnabled()).to.equal(false)
             })
           })
 
           describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
-            before(opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
+            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
             it('Tallennus on sallittu', function() {
               expect(opiskeluoikeus.isEnabled()).to.equal(true)
             })
@@ -757,10 +766,10 @@ describe('Perusopetus', function() {
           describe('Kun lisätään useita tähän päivään', function() {
             before(editor.edit,
               opinnot.avaaLisaysDialogi,
-              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
+              opiskeluoikeus.tila().aseta('valiaikaisestikeskeytynyt'),
               opiskeluoikeus.tallenna,
               opinnot.avaaLisaysDialogi,
-              opiskeluoikeus.tila().click('input[value="lasna"]'),
+              opiskeluoikeus.tila().aseta('lasna'),
               opiskeluoikeus.tallenna,
               editor.saveChanges)
 
@@ -776,7 +785,7 @@ describe('Perusopetus', function() {
           describe('Kun lisätään tulevaisuuteen "väliaikaisesti keskeytynyt"', function() {
             before(editor.edit,
               opinnot.avaaLisaysDialogi,
-              opiskeluoikeus.tila().click('input[value="valiaikaisestikeskeytynyt"]'),
+              opiskeluoikeus.tila().aseta('valiaikaisestikeskeytynyt'),
               opiskeluoikeus.alkuPaiva().setValue('9.5.2117'),
               opiskeluoikeus.tallenna,
               editor.saveChanges)
@@ -1549,7 +1558,7 @@ describe('Perusopetus', function() {
 
           describe('Toisen samanlaisen opiskeluoikeuden lisääminen kun opiskeluoikeus on päättynyt', function() {
             before(
-              editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="eronnut"]'), opiskeluoikeus.tallenna, editor.saveChanges,
+              editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.tallenna, editor.saveChanges,
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
               addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
@@ -1919,7 +1928,7 @@ describe('Perusopetus', function() {
       editor.edit
     )
     describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
-      before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().click('input[value="valmistunut"]'), opiskeluoikeus.tallenna)
+      before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
 
       it('Päätason suoritusta ei voi lisätä', function() {
         expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(false)

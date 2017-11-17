@@ -27,3 +27,8 @@ if (!String.prototype.endsWith) {
     return lastIndex !== -1 && lastIndex === position
   }
 }
+if (!String.prototype.includes) {
+  String.prototype.includes = function (substring) {
+    return this.indexOf(substring) >= 0
+  }
+}

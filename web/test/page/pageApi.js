@@ -15,13 +15,13 @@ function Page(mainElement) {
         return mainElement().find(selector)
       })
     },
-    setInputValue: function(selector, value, exact, index) {
+    setInputValue: function(selector, value, index) {
       return function() {
         var input = api.getInput(selector)
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(function() {return input.setValue(value, exact, index)})
+          .then(function() {return input.setValue(value, index)})
           .then(wait.forAjax)
       }
     },
@@ -77,8 +77,9 @@ function Page(mainElement) {
       isEnabled: function () {
         return el().is(':enabled')
       },
-      setValue: function(value, exact, index) {
+      setValue: function(value, i) {
         var input = el()
+        var index = i || 0
         switch (inputType(input)) {
           case 'EMAIL':
           case 'TEXT':
@@ -117,17 +118,12 @@ function Page(mainElement) {
               click(findSingle('.select', S(input)), 'click')()
             }
 
-            if (exact) {
-              var selector = index !== undefined ? '.options li:nth(' + index + ')' : '.options li'
-              var result = S(input).find(selector).filter(function(i, v) {return $(v).text().trim() === value})
-              if (result.length !== 1) {
-                throw new Error("Element '" + selector + "' filtered by text '" + value + "' result length " + result.length + ' !== 1 in ' + S(input))
-              }
+            var result = S(input).find('.options li').filter(function(i, v) {return $(v).text().includes(value)})[index]
+
+            if(result) {
               return triggerEvent(result, 'mousedown')()
-            }
-            else {
-              var selector = index !== undefined ? '.options li:contains(' + value + '):nth(' + index + ')' : '.options li:contains(' + value + ')'
-              return triggerEvent(findSingle(selector, S(input)), 'mousedown')()
+            } else {
+              throw new Error('Option with value ' + value + ' and index ' + index + ' was not found.')
             }
             break
           case 'AUTOCOMPLETE': // Autocomplete.jsx

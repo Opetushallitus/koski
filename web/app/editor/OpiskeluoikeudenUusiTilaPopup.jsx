@@ -38,7 +38,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
     </div>
     <div className="property tila">
       <label><Text name="Tila"/>{':'}</label>
-      <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'valmistunut'} fetchAlternatives={fetchTilat} />
+      <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'koskiopiskeluoikeudentila_valmistunut'} fetchAlternatives={fetchTilat} />
     </div>
     {
       ift(rahoitusModel, (<div className="property rahoitus" key="rahoitus">
@@ -50,5 +50,5 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 }
 
 const fetchTilat = model => {
-  return EnumEditor.fetchAlternatives(model).map(alts => alts.filter(a => a.value !== 'mitatoity'))
+  return EnumEditor.fetchAlternatives(model).map(alts => alts.filter(a => a.data.koodiarvo !== 'mitatoity'))
 }

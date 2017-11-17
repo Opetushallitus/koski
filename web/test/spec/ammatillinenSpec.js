@@ -450,7 +450,17 @@ describe('Ammatillinen koulutus', function() {
     describe('Ammatillisen koulutuksen tilat', function () {
       before(editor.edit, opinnot.avaaLisaysDialogi)
       it('Sisältää loma-tilan', function () {
-        expect(OpiskeluoikeusDialog().tilat()).to.deep.equal(['eronnut', 'katsotaaneronneeksi', 'loma', 'lasna', 'peruutettu', 'valmistunut', 'valiaikaisestikeskeytynyt'])
+        expect(OpiskeluoikeusDialog().tilat()).to.deep.equal(
+            [
+              'koskiopiskeluoikeudentila_eronnut',
+              'koskiopiskeluoikeudentila_katsotaaneronneeksi',
+              'koskiopiskeluoikeudentila_loma',
+              'koskiopiskeluoikeudentila_lasna',
+              'koskiopiskeluoikeudentila_peruutettu',
+              'koskiopiskeluoikeudentila_valmistunut',
+              'koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt'
+            ]
+        )
       })
     })
   })

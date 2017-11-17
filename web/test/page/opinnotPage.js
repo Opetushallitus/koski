@@ -293,16 +293,16 @@ function TutkinnonOsat(groupId) {
                 })
               }
             }).then(wait.forAjax).then(function () {
-              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, exact = true)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvosana .value .dropdown').setValue(tiedot.arvosana, 1)
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .päivä .value input').setValue(tiedot.arviointipäivä)
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .kuvaus .value textarea').setValue(tiedot.kuvaus)
               tiedot.arvioinnistaPäättäneet.map(function (v, i) {
-                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arvioinnistaPäättäneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v)
               })
               tiedot.arviointikeskusteluunOsallistuneet.map(function (v, i) {
-                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v, exact = true)
+                Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:'+(i===0?'first':'last')+'-child .dropdown').setValue(v)
               })
-              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0], exact = true)
+              Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value .dropdown').setValue(tiedot.suorituspaikka[0])
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
 
@@ -493,7 +493,7 @@ function LisääSuoritusDialog() {
         .then(wait.until(function() { return count() == prevCount + 1 }))
     },
     selectSuoritustapa: function(suoritustapa) {
-      return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa, false)
+      return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa)
     },
     selectTutkinto: function(name) {
       return function() {
@@ -539,7 +539,11 @@ function OpiskeluoikeusDialog() {
   var button = findSingle('button', elem)
   return {
     tila: function() {
-      return Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
+      var p = Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
+      p.aseta = function(tila) {
+        return p.click('input[value="koskiopiskeluoikeudentila_' + tila + '"]')
+      }
+      return p
     },
     alkuPaiva: function() {
       return Property(findSingle('.property.alku', elem))
@@ -550,7 +554,7 @@ function OpiskeluoikeusDialog() {
       return !button().is(':disabled')
     },
     radioEnabled: function(value) {
-      return !findSingle('input[value="' + value + '"]', elem())().is(':disabled')
+      return !findSingle('input[value="koskiopiskeluoikeudentila_' + value + '"]', elem())().is(':disabled')
     },
     tilat: function() {
       return toArray(elem().find('.tila input[type="radio"]')).map(function(i) { return i.value })
@@ -632,7 +636,7 @@ function Property(elem) {
     },
     setValue: function(value, index) {
       return function() {
-        return Page(elem).setInputValue('.dropdown, .editor-input', value, false, index)()
+        return Page(elem).setInputValue('.dropdown, .editor-input', value, index)()
       }
     },
     getLanguage: function() {

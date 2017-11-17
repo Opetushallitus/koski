@@ -153,7 +153,7 @@ object KoodistoEnumModelBuilder {
     } else {
       localization.i(k.description)
     }
-    EnumValue(k.koodiarvo, title, JsonSerializer.serializeWithRoot(k))
+    EnumValue(k.koodistoUri + "_" + k.koodiarvo, title, JsonSerializer.serializeWithRoot(k))
   }
 }
 
