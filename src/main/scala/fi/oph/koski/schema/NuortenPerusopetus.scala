@@ -196,7 +196,9 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
-trait PerusopetuksenOppiaineenSuoritus extends OppiaineenSuoritus with PakollisenTaiValinnaisenSuoritus
+trait PerusopetuksenOppiaineenSuoritus extends OppiaineenSuoritus with PakollisenTaiValinnaisenSuoritus {
+  override def salliDuplikaatit = !koulutusmoduuli.pakollinen
+}
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös")
 case class PerusopetuksenToiminta_AlueenSuoritus(

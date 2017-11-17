@@ -46,6 +46,7 @@ trait Suoritus {
   def vahvistusPuuttuu = tarvitseeVahvistuksen && !vahvistus.isDefined
   def kesken = !valmis
   def ryhmittelytekijä: Option[String] = None
+  def salliDuplikaatit = false
 }
 
 trait Suorituskielellinen {

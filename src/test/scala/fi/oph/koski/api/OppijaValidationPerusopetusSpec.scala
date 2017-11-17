@@ -65,6 +65,14 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verifyResponseStatusOk()
         }
       }
+      "Valinnaisissa oppiaineissa -> HTTP 200" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          suoritus(äidinkieli("AI1").copy(pakollinen = false)).copy(arviointi = arviointi(9)),
+          suoritus(äidinkieli("AI1").copy(pakollinen = false)).copy(arviointi = arviointi(9))
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
     }
   }
 }

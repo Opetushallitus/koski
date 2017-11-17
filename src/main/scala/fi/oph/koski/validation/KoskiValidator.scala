@@ -224,6 +224,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateDuplicates(suoritukset: List[Suoritus]) = {
     HttpStatus.fold(suoritukset
+      .filterNot(_.salliDuplikaatit)
       .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.identiteetti, osasuoritus.ryhmittelytekijä))
       .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
       .map { case (tutkinnonOsa, ryhmä) =>
