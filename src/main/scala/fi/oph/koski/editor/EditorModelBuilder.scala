@@ -278,7 +278,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
 
-    EditorProperty(property.key, property.title, propertyModel, props)
+    val description = property.metadata.collect({ case Description(d) => d })
+
+    EditorProperty(property.key, property.title, description, propertyModel, props)
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {

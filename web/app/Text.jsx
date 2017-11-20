@@ -6,7 +6,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {buildClassNames} from './classnames'
 
-export default ({name, ignoreMissing, lang, edit, className}) => {
+export default ({name, ignoreMissing, lang, edit, className, ...rest}) => {
   let editP = edit == undefined ? editAtom : Bacon.constant(parseBool(edit))
 
   if (typeof name != 'string') {
@@ -14,7 +14,7 @@ export default ({name, ignoreMissing, lang, edit, className}) => {
     return <span>{'NOT A STRING'}</span>
   }
 
-  return (<span className={buildClassNames([className, 'localized'])}>{
+  return (<span className={buildClassNames([className, 'localized'])} {...rest}>{
     editP.map(e => e
       ? <TextEditor {...{name, lang}}/>
       : t(name, ignoreMissing, lang))

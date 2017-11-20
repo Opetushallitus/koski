@@ -14,7 +14,7 @@ case class ObjectModel(classes: List[String], properties: List[EditorProperty], 
 
 case class PrototypeModel(key: String, metadata: List[Metadata]) extends EditorModel
 
-case class EditorProperty(key: String, title: String, model: EditorModel, flags: Map[String, JValue])
+case class EditorProperty(key: String, title: String, description: List[String], model: EditorModel, flags: Map[String, JValue])
 
 case class ListModel(items: List[EditorModel], prototype: Option[EditorModel], metadata: List[Metadata]) extends EditorModel
 

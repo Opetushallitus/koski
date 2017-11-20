@@ -41,10 +41,10 @@ export class PropertiesEditor extends React.Component {
           {
             property.complexObject
               ? (<td className="complex" colSpan="2">
-              <div className="label"><Text name={property.title}/></div>
+              <div className="label"><PropertyTitle property={property}/></div>
               <div className={valueClass}>{ valueEditor }</div>
             </td>)
-              : [<td className="label" key="label"><Text name={property.title}/></td>,
+              : [<td className="label" key="label"><PropertyTitle property={property}/></td>,
               <td className={valueClass} key="value">{ valueEditor }</td>
             ]
           }
@@ -60,6 +60,15 @@ export class PropertiesEditor extends React.Component {
   }
 }
 PropertiesEditor.canShowInline = () => false
+
+const PropertyTitle = ({property}) => {
+  let description = property.description && property.description.join(' ')
+  if (description) {
+    return <Text name={property.title} title={description} className="with-description"/>
+  } else {
+    return <Text name={property.title}/>
+  }
+}
 
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false

@@ -25,12 +25,12 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
             JField("value", JObject(
               JField("classes", JArray(c.map(JString(_)))),
               JField("title", title.map(JString(_)).getOrElse(JNothing)),
-              JField("properties", JArray(properties.map{ case EditorProperty(key, title, model, flags) =>
+              JField("properties", JArray(properties.map{ case EditorProperty(key, title, description, model, flags) =>
                 JObject(List(
                   JField("key", JString(key)),
                   JField("title", JString(title)),
                   JField("model", serialize(format)(model))
-                ) ++ flagsToFields(flags))
+                ) ++ flagsToFields(flags) ++ descriptionToField(description))
               }))
             )),
             JField("editable", JBool(editable)),
@@ -107,6 +107,13 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
 
   private def flagsToFields(props: Map[String, JValue]) = props.toList.map{ case (key, value) => JField(key, value) }
+
+  private def descriptionToField(description: List[String]): List[JField] = description match {
+    case Nil =>
+      Nil
+    case descriptions =>
+      List(JField("description", JArray(descriptions.map(JString(_)))))
+  }
 
   private def serializeEnumValue(enumValue: EnumValue)(implicit format: Formats): JValue = JsonSerializer.serializeWithRoot(enumValue)
 
