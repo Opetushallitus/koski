@@ -92,7 +92,7 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
       if (System.getProperty("koski.db.clean", "false").equals("true")) {
         flyway.clean
       }
-      if (serverProcess.isEmpty && Environment.databaseIsLarge(db) && Environment.isLocalDevelopmentEnvironment) {
+      if (Environment.databaseIsLarge(db) && Environment.isLocalDevelopmentEnvironment) {
         logger.warn("Skipping database migration for database larger than 100 rows, when running in local development environment")
       } else {
         flyway.migrate
