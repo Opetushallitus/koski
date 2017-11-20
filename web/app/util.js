@@ -20,9 +20,14 @@ export const ift = (obs, value) => toObservable(obs).map(show => show ? value : 
 
 export const scrollElementBottomVisible = elem => {
   if (elem) {
-    let marginBottom = window.innerHeight - (elem.getBoundingClientRect().y + elem.getBoundingClientRect().height) - 20
-    if (marginBottom < 0) {
-      window.scrollBy(0, -marginBottom)
+    let elementTopPositionOnScreen = elem.getBoundingClientRect().y
+    let elementBottomPositionOnScreen = (elementTopPositionOnScreen + elem.getBoundingClientRect().height)
+    let marginBottom = window.innerHeight - elementBottomPositionOnScreen - 20
+    let marginTop = elementTopPositionOnScreen - 20
+    let toScroll = -marginBottom
+
+    if (toScroll > 0 && toScroll <= marginTop) {
+      window.scrollBy(0, toScroll)
     }
   }
 }
