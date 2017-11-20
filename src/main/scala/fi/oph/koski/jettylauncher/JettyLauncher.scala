@@ -77,6 +77,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
     context.setParentLoaderPriority(true)
     context.setContextPath("/koski")
     context.setResourceBase(resourceBase)
+    context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
     handlers.addHandler(context)
   }
 

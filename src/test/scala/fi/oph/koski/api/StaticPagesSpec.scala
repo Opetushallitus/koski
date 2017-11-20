@@ -27,6 +27,15 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
     get("js/codemirror/codemirror.js") { verifyResponseStatusOk()}
   }
 
+  "No directory browsing" in {
+    get("js/") { verifyResponseStatusOk(403) }
+    get("css/") { verifyResponseStatusOk(403) }
+    get("external_css/") { verifyResponseStatusOk(403) }
+    get("js") { verifyResponseStatusOk(302) }
+    get("css") { verifyResponseStatusOk(302) }
+    get("external_css") { verifyResponseStatusOk(302) }
+  }
+
   "Documentation" in {
     get("documentation") { verifyResponseStatusOk(302)}
     get("dokumentaatio") { verifyResponseStatusOk()}
