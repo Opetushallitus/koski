@@ -118,7 +118,7 @@ function Page(mainElement) {
               click(findSingle('.select', S(input)), 'click')()
             }
 
-            var result = S(input).find('.options li').filter(function(i, v) {return $(v).text().includes(value)})[index]
+            var result = S(input).find('.options li.option').filter(function(i, v) {return $(v).text().includes(value)})[index]
 
             if(result) {
               return triggerEvent(result, 'mousedown')()

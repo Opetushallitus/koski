@@ -52,7 +52,7 @@ object EditorModelBuilder {
 
   def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
-  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o))
+  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o), None)
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
     case s: ClassRefSchema => context.deserializationContext.schemaFactory.createSchema(s.fullClassName)
     case _ => schema
@@ -147,14 +147,20 @@ object KoodistoEnumModelBuilder {
     "perusopetuksensuoritustapa" -> "koulutus"
   )
 
-  def koodistoEnumValue(localization: LocalizedHtml)(k: Koodistokoodiviite) = {
+  def koodistoEnumValue(k: Koodistokoodiviite)(localization: LocalizedHtml, koodisto: KoodistoViitePalvelu) = {
+    def koodistoName(k: Koodistokoodiviite) = {
+      val kp = koodisto.koodistoPalvelu
+      kp.getLatestVersion(k.koodistoUri).flatMap(kp.getKoodisto(_)).flatMap(_.nimi).map(_.get(localization.lang))
+    }
+
     val title = if (List("arviointiasteikkoammatillinent1k3").contains(k.koodistoUri)) {
       k.koodiarvo
     } else {
       localization.i(k.description)
     }
-    EnumValue(k.koodistoUri + "_" + k.koodiarvo, title, JsonSerializer.serializeWithRoot(k))
+    EnumValue(k.koodistoUri + "_" + k.koodiarvo, title, JsonSerializer.serializeWithRoot(k), koodistoName(k))
   }
+
 }
 
 case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[Koodistokoodiviite] {
@@ -163,7 +169,7 @@ case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuild
   val koodiarvot: List[String] = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(Nil).asInstanceOf[List[String]]
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
   val alternativesPath = s"/koski/api/editor/koodit/$koodistoUri$koodiarvotString"
-  def toEnumValue(k: Koodistokoodiviite) = KoodistoEnumModelBuilder.koodistoEnumValue(context)(k)
+  def toEnumValue(k: Koodistokoodiviite) = KoodistoEnumModelBuilder.koodistoEnumValue(k)(context, context.koodisto)
   def defaultValue = KoodistoEnumModelBuilder.defaults.get(koodistoUri).filter(arvo => koodiarvot.isEmpty || koodiarvot.contains(arvo)).orElse(koodiarvot.headOption)
   def getPrototypeData = defaultValue.flatMap(value => context.koodisto.validate(Koodistokoodiviite(value, koodistoUri)))
   def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getPrototypeData, metadata)

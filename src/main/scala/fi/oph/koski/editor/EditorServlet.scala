@@ -57,7 +57,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     renderEither(OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
-        case Some(kotipaikka) => Right(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(kotipaikka))
+        case Some(kotipaikka) => Right(KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localization, application.koodistoViitePalvelu))
       }
     })
   }
@@ -134,7 +134,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
   private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_).toList.flatten)
 
-  private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(localization)(_)).sortBy(_.title)
+  private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(_)(localization, application.koodistoViitePalvelu)).sortBy(_.title)
 
   private def koodistotByString(str: String): List[KoodistoViite] = {
     val koodistoUriParts = str.split(",").toList

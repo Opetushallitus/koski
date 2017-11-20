@@ -26,7 +26,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                   inline = false,
                   enableFilter = false,
                   newItem, isRemovable = () => false, onRemoval, removeText}) => {
-  let optionsP = toObservable(options)
+  options = toObservable(options)
   let selectedP = toObservable(selected)
   inline = parseBool(inline)
   enableFilter = parseBool(enableFilter)
@@ -35,7 +35,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
   let queryAtom = Atom(undefined)
   let openAtom = Atom(false)
   selectedP.changes().onValue(() => openAtom.set(false))
-  let filteredOptionsP = Bacon.combineWith(optionsP, queryAtom, Bacon.constant(displayValue), queryFilter)
+  let filteredOptionsP = Bacon.combineWith(options, queryAtom, Bacon.constant(displayValue), queryFilter)
   let allOptionsP = filteredOptionsP.map(opts => opts.concat(newItem ? [newItem] : []))
   var inputElem = null
   var listElem = null
@@ -108,9 +108,12 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
     e.stopPropagation()
     onRemoval(keyValue(option))
   }
-  let className = buildClassNames(['dropdown', inline && 'inline'])
+
   return (<span>{
-    elementWithLoadingIndicator(allOptionsP.map(allOptions => (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
+    elementWithLoadingIndicator(allOptionsP.map(allOptions => {
+      let grouped = R.keys(R.groupBy((opt) => opt.groupName)(allOptions)).length > 1
+      let className = buildClassNames(['dropdown', inline && 'inline', grouped && 'grouped'])
+      return (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
             enableFilter ?
               <div className="input-container" onClick={toggleOpen}>
@@ -133,17 +136,18 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
           {
             (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')} ref={ref => listElem = ref}>
               {
-                allOptions.map((o,i) => {
+                allOptions.flatMap((o,i) => {
                   let isNew = isNewItem(allOptions, o, i)
+                  let isZeroValue = keyValue(o) == 'eivalintaa'
                   let itemClassName = Bacon.combineWith(
                     (s, r) => s + r,
-                    selectionIndexAtom.map(selectionIndex => 'option' + (i === selectionIndex ? ' selected' : '') + (isNew ? ' new-item' : '')),
+                    selectionIndexAtom.map(selectionIndex => buildClassNames(['option', i === selectionIndex && 'selected', isNew && 'new-item', isZeroValue && 'zero-value'])),
                     removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''))
-                  return (<li key={keyValue(o) || displayValue(o)}
-                              className={itemClassName}
-                              onMouseDown={(e) => {selectOption(e, o)}}
-                              onClick={(e) => {selectOption(e, o)}}
-                              onMouseOver={() => handleMouseOver(allOptions, o)}>
+                  let itemElement = (<li key={keyValue(o) || displayValue(o)}
+                                         className={itemClassName}
+                                         onMouseDown={(e) => {selectOption(e, o)}}
+                                         onClick={(e) => {selectOption(e, o)}}
+                                         onMouseOver={() => handleMouseOver(allOptions, o)}>
                     {
                       isNew ?
                         <span><span className="plus">{''}</span>{displayValue(newItem)}</span> :
@@ -159,13 +163,20 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                           displayValue(o)
                     }
                   </li>)
+                  let groupName = grouped && (i == 0 || allOptions[i - 1].groupName != o.groupName) ? o.groupName : ''
+                  if (groupName) {
+                    return [<li className="group-header">{groupName}</li>, itemElement]
+                  } else {
+                    return [itemElement]
+                  }
+
                 })
               }
             </ul>
           }
         </div>
       )
-    ))
+    }))
   }</span>)
 }
 

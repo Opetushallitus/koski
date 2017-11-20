@@ -19,7 +19,7 @@ case class EditorProperty(key: String, title: String, model: EditorModel, flags:
 case class ListModel(items: List[EditorModel], prototype: Option[EditorModel], metadata: List[Metadata]) extends EditorModel
 
 case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String], metadata: List[Metadata]) extends EditorModel
-case class EnumValue(value: String, title: String, data: JValue)
+case class EnumValue(value: String, title: String, data: JValue, groupName: Option[String])
 
 case class NumberModel(value: ValueWithData[Number], metadata: List[Metadata]) extends EditorModel
 case class BooleanModel(value: ValueWithData[Boolean], metadata: List[Metadata]) extends EditorModel

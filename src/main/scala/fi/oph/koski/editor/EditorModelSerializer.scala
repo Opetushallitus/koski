@@ -1,6 +1,6 @@
 package fi.oph.koski.editor
 
-import fi.oph.koski.json.LegacyJsonSerialization
+import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Example, KoskiSchema, MultiLineString, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._
@@ -108,13 +108,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
 
   private def flagsToFields(props: Map[String, JValue]) = props.toList.map{ case (key, value) => JField(key, value) }
 
-  private def serializeEnumValue(enumValue: EnumValue)(implicit format: Formats): JObject = enumValue match {
-    case fi.oph.koski.editor.EnumValue(value, title, data) => JObject(
-      JField("value", JString(value)),
-      JField("title", JString(title)),
-      JField("data", data)
-    )
-  }
+  private def serializeEnumValue(enumValue: EnumValue)(implicit format: Formats): JValue = JsonSerializer.serializeWithRoot(enumValue)
 
   private def serializeValueModel(tyep: String, value: ValueWithData[_], metadata: List[Metadata])(implicit format: Formats) = JObject(List(
     JField("type", JString(tyep)),
