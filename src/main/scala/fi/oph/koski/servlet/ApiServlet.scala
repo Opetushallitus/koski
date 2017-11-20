@@ -12,7 +12,7 @@ import org.scalatra._
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
-trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZipSupport {
+trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with GZipSupport with CacheControlSupport {
   def withJsonBody(block: JValue => Any)(parseErrorHandler: HttpStatus => Any = haltWithStatus) = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
