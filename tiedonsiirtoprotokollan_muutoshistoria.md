@@ -1,3 +1,7 @@
+## 21.11.2017
+
+- Sallitaan saman valinnaisen oppiaineen esiintyminen useampaan kertaan perusopetuksessa
+
 ## 14.11.2017
 - Ammatillisen reformin mukaiset muutokset
   - Lisätty koulutussopimukset kaikille ammatillisen päätason suorituksille
