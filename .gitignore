@@ -29,3 +29,5 @@ elastic-data
 /elasticsearch/data
 /elasticsearch/log
 !/src/main/resources/reference.conf
+fact_cache
+scripts/deploy.retry
