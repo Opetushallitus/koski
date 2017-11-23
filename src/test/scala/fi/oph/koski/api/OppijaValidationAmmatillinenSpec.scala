@@ -349,12 +349,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Syötetään osaamisen hankkimistapa" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
-        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Syötetään koulutussopimus" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(koulutussopimukset = Some(List(työssäoppimisjakso)))
-        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
     }
 
@@ -371,12 +371,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Syötetään osaamisen hankkimistapa" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
-        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Syötetään koulutussopimus" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, koulutussopimukset = Some(List(työssäoppimisjakso)))
-        "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*\"oneOfMustMatch\":\\[\\{\"path\":\"suoritustapa/koodiarvo\",\"value\":\"reformi\".*".r)))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
     }
 

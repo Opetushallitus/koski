@@ -1,3 +1,8 @@
+## 23.11.2017
+
+- Poistettu rajoitus, jossa koulutussopimukset ja osaamisen hankkimistavat hyväksytään vain, jos kyseessä on reformi-suoritustapa
+- Poistettu rajoitus, jossa työssäoppimisjaksot ja järjestämismuodot hyväksytään vain, jos kyseessä on ops tai näyttö-suoritustapa
+
 ## 21.11.2017
 
 - Sallitaan saman valinnaisen oppiaineen esiintyminen useampaan kertaan perusopetuksessa

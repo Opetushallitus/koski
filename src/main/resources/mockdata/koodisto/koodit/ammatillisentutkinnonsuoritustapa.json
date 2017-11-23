@@ -44,8 +44,8 @@
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_reformi",
   "koodiArvo" : "reformi",
   "metadata" : [ {
-    "nimi" : "Reformi",
-    "lyhytNimi" : "reformi",
+    "nimi" : "Reformin mukainen näyttö",
+    "lyhytNimi" : "Reformi",
     "kuvaus" : "",
     "kieli" : "FI"
   } ],

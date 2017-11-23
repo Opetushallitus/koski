@@ -174,16 +174,10 @@ case class AmmatillisenTutkinnonSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina")
-  @OnlyWhen("suoritustapa/koodiarvo","reformi")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
@@ -223,16 +217,10 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina")
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @OnlyWhen("suoritustapa/koodiarvo", "naytto")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
