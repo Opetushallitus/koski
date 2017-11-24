@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
+import mojave.{Traversal, traversal}
 
 trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
@@ -49,6 +50,21 @@ trait Suoritus {
   def salliDuplikaatit = false
 }
 
+object Suoritus {
+  def toimipisteetTraversal: Traversal[Suoritus, OrganisaatioWithOid] = new Traversal[Suoritus, OrganisaatioWithOid] {
+    def modify(suoritus: Suoritus)(f: OrganisaatioWithOid => OrganisaatioWithOid) = {
+      val toimipisteTraversal = traversal[Suoritus].ifInstanceOf[Toimipisteellinen].field[OrganisaatioWithOid]("toimipiste")
+      val withModifiedToimipiste = toimipisteTraversal.modify(suoritus)(f)
+      if (suoritus.osasuoritusLista.nonEmpty) {
+        val osasuorituksetTraversal = traversal[Suoritus].field[Option[List[Suoritus]]]("osasuoritukset").items.items
+        toimipisteetTraversal.compose(osasuorituksetTraversal).modify(withModifiedToimipiste)(f)
+      } else {
+        withModifiedToimipiste
+      }
+    }
+  }
+}
+
 trait Suorituskielellinen {
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
@@ -68,7 +84,7 @@ trait Arvioinniton extends Suoritus {
   override def arviointiPuuttuu = false
 }
 
-trait Toimipisteellinen extends OrganisaatioonLiittyvä {
+trait Toimipisteellinen extends Suoritus with OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")

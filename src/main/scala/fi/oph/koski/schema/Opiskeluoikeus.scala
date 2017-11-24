@@ -5,12 +5,28 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.scalaschema.annotation._
+import mojave.Traversal
 
 object Opiskeluoikeus {
   type Id = Int
   type Oid = String
   type Versionumero = Int
   val VERSIO_1 = 1
+
+  def oppilaitosTraversal: Traversal[Opiskeluoikeus, Oppilaitos] = {
+    import mojave._
+    traversal[Opiskeluoikeus].field[Option[Oppilaitos]]("oppilaitos").items
+  }
+
+  def koulutustoimijaTraversal: Traversal[Opiskeluoikeus, Koulutustoimija] = {
+    import mojave._
+    traversal[Opiskeluoikeus].field[Option[Koulutustoimija]]("koulutustoimija").items
+  }
+
+  def toimipisteetTraversal: Traversal[Opiskeluoikeus, OrganisaatioWithOid] = {
+    import mojave._
+    Suoritus.toimipisteetTraversal.compose(traversal[Opiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
+  }
 }
 
 object OpiskeluoikeusOid {
