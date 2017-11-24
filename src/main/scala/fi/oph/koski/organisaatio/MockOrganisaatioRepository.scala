@@ -1,5 +1,7 @@
 package fi.oph.koski.organisaatio
 
+import java.time.LocalDate
+
 import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
@@ -75,4 +77,8 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
   def hierarchyFilename(oid: String): String = "src/main/resources" + hierarchyResourcename(oid)
 
   override def findHierarkia(query: String) = OrganisaatioHierarkiaFilter(query, "fi").filter(rootOrgs).toList
+
+  override def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate) = {
+    getOrganisaatioHierarkia(oid).map(_.nimi)
+  }
 }

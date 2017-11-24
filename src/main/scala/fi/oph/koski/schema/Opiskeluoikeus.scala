@@ -13,19 +13,19 @@ object Opiskeluoikeus {
   type Versionumero = Int
   val VERSIO_1 = 1
 
-  def oppilaitosTraversal: Traversal[Opiskeluoikeus, Oppilaitos] = {
+  def oppilaitosTraversal: Traversal[KoskeenTallennettavaOpiskeluoikeus, Oppilaitos] = {
     import mojave._
-    traversal[Opiskeluoikeus].field[Option[Oppilaitos]]("oppilaitos").items
+    traversal[KoskeenTallennettavaOpiskeluoikeus].field[Option[Oppilaitos]]("oppilaitos").items
   }
 
-  def koulutustoimijaTraversal: Traversal[Opiskeluoikeus, Koulutustoimija] = {
+  def koulutustoimijaTraversal: Traversal[KoskeenTallennettavaOpiskeluoikeus, Koulutustoimija] = {
     import mojave._
-    traversal[Opiskeluoikeus].field[Option[Koulutustoimija]]("koulutustoimija").items
+    traversal[KoskeenTallennettavaOpiskeluoikeus].field[Option[Koulutustoimija]]("koulutustoimija").items
   }
 
-  def toimipisteetTraversal: Traversal[Opiskeluoikeus, OrganisaatioWithOid] = {
+  def toimipisteetTraversal: Traversal[KoskeenTallennettavaOpiskeluoikeus, OrganisaatioWithOid] = {
     import mojave._
-    Suoritus.toimipisteetTraversal.compose(traversal[Opiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
+    Suoritus.toimipisteetTraversal.compose(traversal[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
   }
 }
 

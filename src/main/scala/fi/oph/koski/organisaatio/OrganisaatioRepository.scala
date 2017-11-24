@@ -1,15 +1,16 @@
 package fi.oph.koski.organisaatio
 
 import java.lang.System.currentTimeMillis
+import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
+import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, OrganisaatioWithOid}
-import scala.concurrent.duration._
 
 import scala.concurrent.duration._
 trait OrganisaatioRepository {
@@ -28,6 +29,7 @@ trait OrganisaatioRepository {
     }
     flatten(List(hierarkia)).map(_.oid).toSet
   }
+  def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate): Option[LocalizedString]
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
   def findKoulutustoimijaForOppilaitos(oppilaitos: Oppilaitos): Option[Koulutustoimija] = findParentWith(oppilaitos, _.toKoulutustoimija)
   def findOppilaitosForToimipiste(toimipiste: OrganisaatioWithOid): Option[Oppilaitos] = findParentWith(toimipiste, _.toOppilaitos)
@@ -107,8 +109,15 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 
+  override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
+    import DateOrdering._
+    val nimet: List[OrganisaationNimihakuTulos] = runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
+    nimet.sortBy(_.alkuPvm)
+      .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))
+      .lastOption.flatMap(n => LocalizedString.sanitize(n.nimi))
+  }
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
-
+case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
