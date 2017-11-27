@@ -88,6 +88,22 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         opiskeluoikeus.koulutustoimija.map(_.oid) should equal(Some("1.2.246.562.10.346830761110"))
       }
     }
+    "Organisaation nimi on muuttunut" - {
+
+      "Käytetään uusinta nimeä, jos opiskeluoikeus ei ole päättynyt" in {
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
+        opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
+        opiskeluoikeus.koulutustoimija.get.nimi.get.get("fi") should equal("HELSINGIN KAUPUNKI")
+        opiskeluoikeus.suoritukset.head.toimipiste.nimi.get.get("fi") should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
+      }
+
+      "Käytetään nimeä joka organisaatiolla oli opiskeluoikeuden päättymisen aikaan" in {
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, päättymispäivällä(defaultOpiskeluoikeus, LocalDate.of(2010, 10, 10)))
+        opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto -vanha")
+        opiskeluoikeus.koulutustoimija.get.nimi.get.get("fi") should equal("HELSINGIN KAUPUNKI -vanha")
+        opiskeluoikeus.suoritukset.head.toimipiste.nimi.get.get("fi") should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
+      }
+    }
   }
 
   "Opiskeluoikeuden muokkaaminen" - {

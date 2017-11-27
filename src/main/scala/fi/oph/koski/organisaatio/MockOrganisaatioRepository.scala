@@ -5,6 +5,8 @@ import java.time.LocalDate
 import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.schema.Oppilaitos
 
 // Testeissä käytetyt organisaatio-oidit
@@ -79,6 +81,12 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
   override def findHierarkia(query: String) = OrganisaatioHierarkiaFilter(query, "fi").filter(rootOrgs).toList
 
   override def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate) = {
-    getOrganisaatioHierarkia(oid).map(_.nimi)
+    getOrganisaatioHierarkia(oid).map {
+      if (localDate.isEqual(LocalDate.of(2010, 10, 10))) {
+        _.nimi.concat(finnish(" -vanha"))
+      } else {
+        _.nimi
+      }
+    }
   }
 }

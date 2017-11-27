@@ -99,9 +99,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     // Opiskeluoikeus on päättynyt, asetetaan organisaation nimi siksi, kuin mitä se oli päättymishetkellä.
     // Tämä siksi, ettei mahdollinen organisaation nimenmuutos opiskeluoikeuden päättymisen jälkeen vaikuttaisi näytettävään nimeen
     if (oo.tila.opiskeluoikeusjaksot.lastOption.exists(_.opiskeluoikeusPäättynyt)) {
-      oppilaitosTraversal.modify(oo)(modifyName)
-      koulutustoimijaTraversal.modify(oo)(modifyName)
-      toimipisteetTraversal.modify(oo)(modifyName)
+      val ooWithModifiedOppilaitos = oppilaitosTraversal.modify(oo)(modifyName)
+      val ooWithModifiedKoulutustoimija = koulutustoimijaTraversal.modify(ooWithModifiedOppilaitos)(modifyName)
+      toimipisteetTraversal.modify(ooWithModifiedKoulutustoimija)(modifyName)
     } else {
       oo
     }
