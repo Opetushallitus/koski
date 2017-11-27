@@ -86,7 +86,7 @@ export class TabularArrayEditor extends React.Component {
     let properties = modelProperties(items[0])
     return (<table className="tabular-array">
       <thead>
-      <tr>{ properties.map((p, i) => <th key={i}><Text name={p.title}/></th>) }</tr>
+      <tr>{ properties.map((p, i) => <th key={i}><PropertyTitle property={p}/></th>) }</tr>
       </thead>
       <tbody>
       {
