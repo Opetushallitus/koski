@@ -76,7 +76,10 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     oid => fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
   )
 
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = hierarkiaCache(oid)
+  private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
+    RefreshingCache("OrganisaatioRepository.nimet", 1 hour, 15000),
+    oid => runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
+  )
 
   private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
     ExpiringCache("OrganisaatioRepository.oppilaitos", 1 hour, maxSize = 1000),
@@ -87,6 +90,8 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
       }.headOption
     }
   )
+
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = oppilaitosnumeroCache(numero)
 
@@ -111,7 +116,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
 
   override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
     import DateOrdering._
-    val nimet: List[OrganisaationNimihakuTulos] = runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
+    val nimet: List[OrganisaationNimihakuTulos] = nimetCache(oid)
     nimet.sortBy(_.alkuPvm)
       .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))
       .lastOption.flatMap(n => LocalizedString.sanitize(n.nimi))
