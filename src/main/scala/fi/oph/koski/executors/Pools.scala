@@ -1,8 +1,5 @@
 package fi.oph.koski.executors
 
-import java.util.concurrent.ThreadPoolExecutor.AbortPolicy
-import java.util.concurrent._
-
 import scala.concurrent.ExecutionContext
 
 /**

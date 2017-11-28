@@ -11,7 +11,7 @@ import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, _}
 
 import scala.math.pow
 
-class BasicAuthSecurity(val db: DB, config: Config) extends GlobalExecutionContext with KoskiDatabaseMethods {
+class BasicAuthSecurity(val db: DB, config: Config) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
   private val initialDelay = config.getDuration("authenticationFailed.initialDelay")

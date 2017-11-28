@@ -19,7 +19,7 @@ import fi.oph.koski.util.{PaginationSettings, SortOrder}
 import rx.lang.scala.Observable
 import slick.lifted.Query
 
-class OpiskeluoikeusQueryService(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
     streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }

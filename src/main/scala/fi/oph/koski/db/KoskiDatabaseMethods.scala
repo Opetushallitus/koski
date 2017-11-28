@@ -1,10 +1,10 @@
 package fi.oph.koski.db
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.util.{Futures, PaginationSettings, QueryPagination, ReactiveStreamsToRx}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.{Futures, ReactiveStreamsToRx}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.lifted.Query
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 trait KoskiDatabaseMethods {
   protected def db: DB
