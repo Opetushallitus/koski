@@ -73,12 +73,11 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         runDbSync {
           (for {
             result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate)
-            _ <- result match {
+            syncAction <- result match {
               case Right(result) if result.changed =>
-                val henkilötiedot = result.henkilötiedot.orElse(henkilöCache.getCached(oppijaOid.oppijaOid)).getOrElse(throw new RuntimeException(s"Oppija not found: $oppijaOid"))
-                val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, opiskeluoikeus, Some(henkilötiedot))
-                perustiedotSyncRepository.syncAction(perustiedot, true)
-              case _ => DBIO.successful()
+                syncHenkilötiedotAction(result.id, oppijaOid.oppijaOid, opiskeluoikeus, result.henkilötiedot)
+              case _ =>
+                DBIO.successful()
             }
           } yield result).transactionally
         }
@@ -109,6 +108,20 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
    withSlavesQuery(oid)
       .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
       .result
+  }
+
+  private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[TäydellisetHenkilötiedotWithMasterInfo]) = {
+    val henkilötiedotAction = henkilötiedot match {
+      case Some(henkilötiedot) => DBIO.successful(Some(henkilötiedot))
+      case None => henkilöCache.getCachedAction(oppijaOid)
+    }
+    henkilötiedotAction.flatMap {
+      case Some(henkilötiedot) =>
+        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(henkilötiedot))
+        perustiedotSyncRepository.syncAction(perustiedot, true)
+      case None =>
+        throw new RuntimeException(s"Oppija not found: $oppijaOid")
+    }
   }
 
   def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, List[OpiskeluoikeusRow]], NoStream, Read] = {

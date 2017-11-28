@@ -21,11 +21,7 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
     runDbSync(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data)))
 
 
-  def getCached(oppijaOid: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {
-    runDbSync(getCachedAction(oppijaOid))
-  }
-
-  private def getCachedAction(oppijaOid: String) = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
+  def getCachedAction(oppijaOid: String): DBIOAction[Option[TäydellisetHenkilötiedotWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
     TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
   })
 
