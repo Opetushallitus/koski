@@ -241,7 +241,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäät
   def suoritustapa: Koodistokoodiviite
 }
 
-trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen {
+trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiToimipisteellinen {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
   @Discriminator
@@ -291,7 +291,7 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends AmmatillisenTutkinnonOsanSuoritus
+) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
 
 @Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus")
 @Title("Muun tutkinnon osan suoritus")
@@ -313,7 +313,7 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends AmmatillisenTutkinnonOsanSuoritus
+) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
 
 case class Järjestämismuotojakso(
   alku: LocalDate,

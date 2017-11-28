@@ -4,17 +4,18 @@ import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{Finnish, LocalizedString}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import mojave.traversal
 import org.scalatest.FreeSpec
 
 class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -90,18 +91,28 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
     "Organisaation nimi on muuttunut" - {
 
+      val tutkinto: AmmatillisenTutkinnonSuoritus = defaultOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+      val tutkintoOsasuorituksilla = tutkinto.copy(osasuoritukset = Some(List(tutkinnonOsanSuoritus("100031", "Moottorin ja voimansiirron huolto ja korjaus", ammatillisetTutkinnonOsat, k3, 40).copy(vahvistus = None))))
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoOsasuorituksilla))
+
+      def nimi(org: OrganisaatioWithOid) = org.nimi.get.get("fi")
+      def tutkinnonSuoritus(opiskeluoikeus: Opiskeluoikeus): AmmatillisenTutkinnonSuoritus = opiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+      def osasuoritus(opiskeluoikeus: Opiskeluoikeus): AmmatillisenTutkinnonOsanSuoritus = tutkinnonSuoritus(opiskeluoikeus).osasuoritukset.toList.flatten.head
+
       "Käytetään uusinta nimeä, jos opiskeluoikeus ei ole päättynyt" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
-        opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
-        opiskeluoikeus.koulutustoimija.get.nimi.get.get("fi") should equal("HELSINGIN KAUPUNKI")
-        opiskeluoikeus.suoritukset.head.toimipiste.nimi.get.get("fi") should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, oo)
+        nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammattiopisto")
+        nimi(opiskeluoikeus.koulutustoimija.get) should equal("HELSINGIN KAUPUNKI")
+        nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
+        nimi(osasuoritus(opiskeluoikeus).toimipiste.get) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
       }
 
       "Käytetään nimeä joka organisaatiolla oli opiskeluoikeuden päättymisen aikaan" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, päättymispäivällä(defaultOpiskeluoikeus, LocalDate.of(2010, 10, 10)))
-        opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto -vanha")
-        opiskeluoikeus.koulutustoimija.get.nimi.get.get("fi") should equal("HELSINGIN KAUPUNKI -vanha")
-        opiskeluoikeus.suoritukset.head.toimipiste.nimi.get.get("fi") should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, päättymispäivällä(oo, LocalDate.of(2010, 10, 10)))
+        nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammattiopisto -vanha")
+        nimi(opiskeluoikeus.koulutustoimija.get) should equal("HELSINGIN KAUPUNKI -vanha")
+        nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
+        nimi(osasuoritus(opiskeluoikeus).toimipiste.get) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
       }
     }
   }

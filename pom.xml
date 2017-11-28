@@ -197,9 +197,8 @@
     <dependency>
       <groupId>com.github.raimohanska</groupId>
       <artifactId>mojave</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
     </dependency>
-
     <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
