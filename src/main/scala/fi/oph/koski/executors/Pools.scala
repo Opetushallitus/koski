@@ -1,8 +1,7 @@
 package fi.oph.koski.executors
 
-import java.lang.management.ManagementFactory
+import java.util.concurrent.ThreadPoolExecutor.AbortPolicy
 import java.util.concurrent._
-import javax.management.ObjectName
 
 import scala.concurrent.ExecutionContext
 
@@ -15,14 +14,9 @@ object Pools {
   val globalExecutionContextThreads = jettyThreads
   val backgroundExecutionContextThreads = Math.max(jettyThreads / 10, 2)
   val httpThreads = jettyThreads
-  val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
+  val httpPool = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
   val dbThreads = 20
-  val globalExecutor = ManagedExecutionContext.fromExecutor("globalPool", new ThreadPoolExecutor(Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
-  val backgroundExecutor = ManagedExecutionContext.fromExecutor("backgroundPool", new ThreadPoolExecutor(0, Pools.backgroundExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
-}
-
-object ManagedExecutionContext {
-  def fromExecutor(name: String, executor: ThreadPoolExecutor) = {
-    ExecutionContext.fromExecutor(ManagedThreadPoolExecutor.register(name, executor))
-  }
+  val globalExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
+  val databaseExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("databasePool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
+  val backgroundExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("backgroundPool", 0, Pools.backgroundExecutionContextThreads,1000))
 }

@@ -18,7 +18,7 @@ class ManagedThreadPoolExecutor(executor: ThreadPoolExecutor) extends ThreadPool
 
 object ManagedThreadPoolExecutor {
   private val mbeanServer = ManagementFactory.getPlatformMBeanServer()
-  def register(name: String, executor: ThreadPoolExecutor) = {
+  def register(name: String, executor: ThreadPoolExecutor): ThreadPoolExecutor = {
     mbeanServer.registerMBean(new ManagedThreadPoolExecutor(executor), new ObjectName(s"fi.oph.koski:type=ThreadPool,name=$name"))
     executor
   }
