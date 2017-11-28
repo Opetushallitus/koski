@@ -2,12 +2,14 @@ package fi.oph.koski.jettylauncher
 
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
+import javax.management.ObjectName
 
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging}
-import fi.oph.koski.util.{Pools, PortChecker}
+import fi.oph.koski.util.PortChecker
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
@@ -28,10 +30,12 @@ object JettyLauncher extends App with Logging {
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) extends Logging {
+
   private val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
   val application = new KoskiApplication(config, new JMXCacheManager)
 
-  private val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
+  private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10);
+
   private val server = new Server(threadPool)
 
   application.masterDatabase // <- force evaluation to make sure DB is up
@@ -101,7 +105,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   }
 
   private def setupPrometheusMetrics = {
-    val context = new ServletContextHandler();
+    val context = new ServletContextHandler()
     val pathSpec = if (isRunningAws) "/koski-metrics" else "/metrics"
     context.setContextPath("/")
     context.addServlet(new ServletHolder(new MetricsServlet), pathSpec)
@@ -116,3 +120,12 @@ object TestConfig {
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, TestConfig.overrides)
+
+class ManagedQueuedThreadPool(maxThreads: Int, minThreads: Int) extends QueuedThreadPool(maxThreads, minThreads) with QueuedThreadPoolMXBean
+
+trait QueuedThreadPoolMXBean {
+  def getQueueSize: Int
+  def getBusyThreads: Int
+  def getMinThreads: Int
+  def getMaxThreads: Int
+}

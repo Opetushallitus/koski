@@ -2,7 +2,8 @@ package fi.oph.koski.cache
 
 import com.google.common.cache.CacheStats
 import com.google.common.util.concurrent.MoreExecutors._
-import fi.oph.koski.util.{Invocation, Pools}
+import fi.oph.koski.executors.Pools
+import fi.oph.koski.util.Invocation
 
 import scala.concurrent.duration.Duration
 
