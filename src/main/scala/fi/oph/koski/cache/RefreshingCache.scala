@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 import com.google.common.cache.AbstractCache.SimpleStatsCounter
 import com.google.common.cache.CacheStats
 import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.executors.NamedThreadFactory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Futures, Invocation}
 
@@ -31,7 +32,7 @@ object RefreshingCache {
 
   case class Params(duration: Duration, maxSize: Int, maxExcessRatio: Double = 0.1, refreshScatteringRatio: Double = 0.1) extends CacheParams
 
-  private val refreshExecutor = Executors.newSingleThreadScheduledExecutor
+  private val refreshExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory("refreshingcache"))
 }
 
 class RefreshingCache(val name: String, val params: RefreshingCache.Params)(implicit invalidator: CacheManager) extends Cache with Logging with GlobalExecutionContext {
