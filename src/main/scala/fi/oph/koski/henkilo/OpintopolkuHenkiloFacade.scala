@@ -117,7 +117,7 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
   }
 
   def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
-    runDbSync(fullQuery.result)
+    runDbSync(fullQuery.result, skipCheck = true)
   }
 
   override protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {

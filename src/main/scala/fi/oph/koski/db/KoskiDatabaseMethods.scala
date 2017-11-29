@@ -10,8 +10,8 @@ import slick.lifted.Query
 trait KoskiDatabaseMethods {
   protected def db: DB
 
-  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing]): R = {
-    if (Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
+  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], skipCheck: Boolean = false): R = {
+    if (!skipCheck && Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
       throw new RuntimeException("Nested transaction detected! Don't call runDbSync in a nested manner, as it will cause deadlocks.")
     }
     Futures.await(db.run(a))
