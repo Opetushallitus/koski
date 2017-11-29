@@ -21,7 +21,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Perusopetuksen oppimäärä', function() {
-      describe('Kaikki tiedot näkyvissä', function() {
+      describe('Kaikki tiedot näkyvissä BrowserStack', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Perusopetus 104/011/2014\n' +
