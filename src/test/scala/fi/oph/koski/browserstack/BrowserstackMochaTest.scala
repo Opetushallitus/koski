@@ -24,7 +24,7 @@ class ChromeTest extends BrowserstackMochaTest {
 class FirefoxTest extends BrowserstackMochaTest {
   object Firefox extends BrowserCapabilities {
     caps.setCapability("browser", "Firefox")
-    caps.setCapability("browser_version", "57.0 beta")
+    caps.setCapability("browser_version", "57.0")
     caps.setCapability("os", "Windows")
     caps.setCapability("os_version", "10")
   }
