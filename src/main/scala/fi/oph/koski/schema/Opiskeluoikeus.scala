@@ -60,7 +60,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def versionumero: Option[Int]
   @Description("Muoto YYYY-MM-DD")
   @SyntheticProperty
-  def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.map(_.alku)
+  def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
   @Description("Muoto YYYY-MM-DD")
   def arvioituPäättymispäivä: Option[LocalDate]
   @Description("Muoto YYYY-MM-DD")

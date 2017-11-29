@@ -24,7 +24,6 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
         suorituskieli = suomenKieli
       )
     ),
-    alkamispäivä = Some(longTimeAgo),
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 

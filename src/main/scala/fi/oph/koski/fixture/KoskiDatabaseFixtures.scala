@@ -110,7 +110,6 @@ object OpiskeluoikeusTestData {
         suorituskieli = suomenKieli,
         suoritustapa = AmmatillinenExampleData.suoritustapaOps
       )),
-      alkamispäivä = Some(date(2000, 1, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None))),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,

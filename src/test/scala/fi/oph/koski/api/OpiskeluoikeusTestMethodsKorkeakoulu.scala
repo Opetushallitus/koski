@@ -9,7 +9,6 @@ trait OpiskeluoikeusTestMethodsKorkeakoulu extends PutOpiskeluoikeusTestMethods[
   def tag = implicitly[reflect.runtime.universe.TypeTag[KorkeakoulunOpiskeluoikeus]]
 
   override def defaultOpiskeluoikeus = KorkeakoulunOpiskeluoikeus(
-    alkamispäivä = Some(date(2016, 9, 1)),
     arvioituPäättymispäivä = Some(date(2020, 5, 1)),
     oppilaitos = Some(KorkeakouluTestdata.helsinginYliopisto),
     suoritukset = Nil,

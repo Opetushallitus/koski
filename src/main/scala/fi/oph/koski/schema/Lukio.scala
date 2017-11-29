@@ -16,8 +16,6 @@ case class LukionOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
-  override val alkamispäivä: Option[LocalDate] = None,
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")

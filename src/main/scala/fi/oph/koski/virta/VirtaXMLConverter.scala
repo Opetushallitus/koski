@@ -37,7 +37,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
-        alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
         oppilaitos = Some(oppilaitos(opiskeluoikeusNode)),
@@ -56,7 +55,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
       KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "virta"))),
-        alkamispäivä = None,
         arvioituPäättymispäivä = None,
         päättymispäivä = None,
         oppilaitos = Some(organisaatio),

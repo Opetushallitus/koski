@@ -15,7 +15,6 @@ object ExamplesLukioonValmistavaKoulutus {
     MockOppijat.luva.vainHenkilötiedot,
     List(
       LukioonValmistavanKoulutuksenOpiskeluoikeus(
-        alkamispäivä = Some(date(2008, 8, 15)),
         päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,

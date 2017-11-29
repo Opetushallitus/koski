@@ -127,7 +127,6 @@ object AmmatillinenExampleData {
                      tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinnonSuoritus(stadinToimipiste),
                      osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
-      alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, None))),
       oppilaitos = Some(oppilaitos),
@@ -213,7 +212,6 @@ object AmmatillinenExampleData {
   )
 
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
     oppilaitos = Some(oppilaitos),
@@ -228,7 +226,6 @@ object AmmatillinenExampleData {
   )
 
   def perustutkintoOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),
     suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste)),

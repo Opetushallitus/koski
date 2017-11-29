@@ -225,17 +225,6 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           verifyResponseStatusOk()
         })
 
-        "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
-          putOpiskeluoikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015.01-12")){
-            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*opiskeluoikeudet.0.alkamispäivä.*yyyy-MM-dd.*".r))
-          }
-        }
-        "Päivämäärä virheellinen -> palautetaan HTTP 400" in {
-          putOpiskeluoikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015-01-32")){
-            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*opiskeluoikeudet.0.alkamispäivä.*yyyy-MM-dd.*".r))
-          }
-        }
-
         "Väärä päivämääräjärjestys" - {
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
             verifyResponseStatus(400, List(
@@ -260,12 +249,6 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
 
         "Päivämäärät vs opiskeluoikeusjaksot" - {
-          "alkamispäivä puuttuu, vaikka opiskeluoikeusjakso on olemassa" in { putOpiskeluoikeus(defaultOpiskeluoikeus.copy(alkamispäivä = None)) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä("Opiskeluoikeuden alkamispäivä (null) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (2000-01-01)"))
-          }}
-          "alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson päivämäärää" in { putOpiskeluoikeus(defaultOpiskeluoikeus.copy(alkamispäivä = Some(date(1999, 12, 31)))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä("Opiskeluoikeuden alkamispäivä (1999-12-31) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (2000-01-01)"))
-          }}
           "päättymispäivä on annettu, vaikka viimeinen opiskeluoikeus on tilassa Läsnä" in { putOpiskeluoikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2010, 12, 31)))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (null)"))
           }}

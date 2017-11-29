@@ -21,7 +21,6 @@ object ExamplesAikuistenPerusopetus {
   lazy val aineopiskelija = Oppija(
     MockOppijat.eero.vainHenkilötiedot,
     List(AikuistenPerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
@@ -46,7 +45,6 @@ object ExamplesAikuistenPerusopetus {
   def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
     exampleHenkilö,
     List(AikuistenPerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
@@ -61,7 +59,6 @@ object ExamplesAikuistenPerusopetus {
   )
 
   def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = AikuistenPerusopetuksenOpiskeluoikeus(
-    alkamispäivä = Some(date(2008, 8, 15)),
     päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
@@ -185,7 +182,6 @@ object ExamplesAikuistenPerusopetus {
     Oppija(
       exampleHenkilö,
       List(AikuistenPerusopetuksenOpiskeluoikeus(
-        alkamispäivä = Some(date(2008, 8, 15)),
         päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
