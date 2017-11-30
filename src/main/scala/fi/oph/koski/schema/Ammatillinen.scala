@@ -261,6 +261,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @Description("Suoritukseen liittyvän näytön tiedot")
   @ComplexObject
   def näyttö: Option[Näyttö]
+  @ComplexObject
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
   def suorituskieli: Option[Koodistokoodiviite]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")

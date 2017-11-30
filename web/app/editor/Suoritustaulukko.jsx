@@ -34,8 +34,8 @@ export class Suoritustaulukko extends React.Component {
     let koulutustyyppi = modelData(parentSuoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
-    if (suoritukset.length == 0 && !context.edit) return null
-    let isAmmatillinenPerustutkinto = koulutustyyppi == '1'
+    if (suoritukset.length === 0 && !context.edit) return null
+    let isAmmatillinenPerustutkinto = koulutustyyppi === '1'
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
@@ -218,7 +218,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
 const suoritusProperties = suoritus => {
   let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
     suoritus.context.edit
-      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu'].includes(p.key))
+      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'lisätiedot'].includes(p.key))
       : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä'].includes(p.key)))
       .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
   )

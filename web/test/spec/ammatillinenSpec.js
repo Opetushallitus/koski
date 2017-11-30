@@ -29,7 +29,6 @@ describe('Ammatillinen koulutus', function() {
       describe('Kun lisätään oppija', function() {
         before(addOppija.submitAndExpectSuccess('Tunkkila-Fagerlund, Tero Petteri Gustaf (280608-6619)', 'Autoalan perustutkinto'))
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          
         })
       })
     })
@@ -892,7 +891,71 @@ describe('Ammatillinen koulutus', function() {
             })
           })
         })
+      })
 
+      describe('Tutkinnon osan lisätietojen muokkaus', function() {
+
+        function lisätiedot() {
+          return opinnot.tutkinnonOsat('1').tutkinnonOsa(0).lisätiedot()
+        }
+
+        before(
+            page.oppijaHaku.searchAndSelect('280608-6619'),
+            editor.edit,
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+            opinnot.expandAll
+        )
+
+        describe('Alussa', function() {
+          it('ei lisätietoja', function() {
+            expect(lisätiedot().getValue()).to.equal('lisää uusi')
+          })
+        })
+
+        describe('Lisääminen', function()  {
+          before(
+              lisätiedot().addItem,
+              lisätiedot().propertyBySelector('.ammatillisentutkinnonosanlisatieto .dropdown-wrapper').setValue('Muu lisätieto'),
+              lisätiedot().propertyBySelector('.kuvaus').setValue('Muita tietoja'),
+              editor.saveChanges,
+              opinnot.expandAll
+          )
+
+          describe('Tallennuksen jälkeen', function() {
+            it('toimii', function() {
+              expect(lisätiedot().getText()).to.equal('Lisätiedot\nMuu lisätieto\nMuita tietoja')
+            })
+          })
+
+          describe('Muokkaus', function() {
+            before(
+                editor.edit,
+                opinnot.expandAll,
+                lisätiedot().propertyBySelector('.ammatillisentutkinnonosanlisatieto .dropdown-wrapper').setValue('Arvioinnin mukauttaminen'),
+                lisätiedot().propertyBySelector('.kuvaus').setValue('Arviointia on mukautettu'),
+                editor.saveChanges,
+                opinnot.expandAll
+            )
+            it('toimii', function() {
+              expect(lisätiedot().getText()).to.equal('Lisätiedot\nArvioinnin mukauttaminen\nArviointia on mukautettu')
+            })
+          })
+
+          describe('Poistaminen', function() {
+            before(
+                editor.edit,
+                opinnot.expandAll,
+                opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaLisätieto,
+                editor.saveChanges,
+                editor.edit,
+                opinnot.expandAll
+            )
+            it('toimii', function() {
+              expect(lisätiedot().getValue()).to.equal('lisää uusi')
+            })
+          })
+        })
       })
 
       describe('Näytön muokkaus', function() {
@@ -1058,7 +1121,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equal('Sulje kaikki\n' +
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines('Sulje kaikki\n' +
             'Ammatilliset tutkinnon osat Pakollisuus Laajuus (osp) Arvosana\n' +
             'Kestävällä tavalla toimiminen kyllä 40 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +

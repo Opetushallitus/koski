@@ -244,6 +244,7 @@ function TutkinnonOsat(groupId) {
         toggleExpand: click(findSingle('.suoritus .toggle-expand', tutkinnonOsaElement)),
         lisääOsaamisenTunnustaminen: click(findSingle('.tunnustettu .add-value', tutkinnonOsaElement)),
         poistaOsaamisenTunnustaminen: click(findSingle('.tunnustettu .remove-value', tutkinnonOsaElement)),
+        poistaLisätieto: click(findSingle('.lisätiedot .remove-item', tutkinnonOsaElement)),
         poistaTutkinnonOsa: function() {
           var removeElement = findSingle('.remove-value', tutkinnonOsaElement)
           if (isElementVisible(removeElement)) {
@@ -252,6 +253,9 @@ function TutkinnonOsat(groupId) {
         },
         näyttö: function() {
           return api.property('näyttö')
+        },
+        lisätiedot: function() {
+          return api.property('lisätiedot')
         },
         lueNäyttöModal: function() {
           function extractDropdownArray(elem) {

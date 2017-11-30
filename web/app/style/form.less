@@ -25,8 +25,8 @@ input[type=text], input[type=password], .text-like-input, textarea {
   border-radius: 2px;
   &:not(textarea) {
     height: 35px;
+    padding: 0 0.7em;
   }
-  padding: 0 0.7em;
 
   &:focus {
     outline: none;
@@ -43,6 +43,10 @@ input[type=text], input[type=password], .text-like-input, textarea {
   &.error:not(:focus) {
     .ErrorMixin
   }
+}
+
+textarea {
+  padding: 0.7em 0.7em;
 }
 
 .error-messages {
