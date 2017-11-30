@@ -8,6 +8,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_ekurs",
+  "koodiArvo" : "ekurs",
+  "metadata" : [ {
+    "nimi" : "e-Kurs",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_helmi",
   "koodiArvo" : "helmi",
   "metadata" : [ {
