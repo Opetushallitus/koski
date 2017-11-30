@@ -71,7 +71,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
-  @Description("Kysessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Kyseessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   @SensitiveData
   vankilaopetuksessa: Option[List[Aikajakso]] = None
