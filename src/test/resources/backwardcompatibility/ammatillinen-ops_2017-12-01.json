@@ -213,7 +213,7 @@
       "vaikeastiVammainen" : false,
       "vammainenJaAvustaja" : false,
       "henkilöstökoulutus" : false,
-      "koulutusVienti" : false
+      "koulutusvienti" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",

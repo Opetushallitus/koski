@@ -112,7 +112,7 @@
       "vankilaopetuksessa" : [ {
         "alku" : "2013-09-02"
       } ],
-      "koulutusVienti" : false
+      "koulutusvienti" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
