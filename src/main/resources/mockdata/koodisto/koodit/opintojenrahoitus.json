@@ -20,7 +20,7 @@
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "Työvoimapoliittinen aikuiskoulutus (kansallinen rahoitus)",
+    "nimi" : "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -29,7 +29,7 @@
   "koodiUri" : "opintojenrahoitus_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "Työvoimapoliittinen aikuiskoulutus (ESR-rahoitteinen)",
+    "nimi" : "Työvoimakoulutus (ESR-rahoitteinen)",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -79,4 +79,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+    "koodiUri" : "opintojenrahoitus_11",
+    "koodiArvo" : "11",
+    "metadata" : [ {
+      "nimi" : "Työvoimakoulutus (OKM rahoitus)",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
 } ]
