@@ -45,6 +45,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
+  @SensitiveData
   pidennettyOppivelvollisuus: Option[Päätösjakso] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
@@ -53,14 +54,17 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  @SensitiveData
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  @SensitiveData
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa.""")
   @SensitiveData
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
+  @SensitiveData
   joustavaPerusopetus: Option[Päätösjakso] = None,
   @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.""")
   kotiopetus: Option[Päätösjakso] = None,
@@ -74,6 +78,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilas on vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
   @DefaultValue(false)
+  @SensitiveData
   vammainen: Boolean = false,
   @Description("""Oppilas on vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
@@ -139,6 +144,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @SensitiveData
   @DefaultValue(false)
   @Title("Oppilas jää luokalle")
+  @SensitiveData
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
@@ -219,7 +225,9 @@ trait PerusopetuksenOppiaineenSuoritus extends OppiaineenSuoritus with Pakollise
 case class PerusopetuksenToiminta_AlueenSuoritus(
   @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää. Toiminta-alueesta muodostuu oppiaineen kaltaisia suorituksia")
   @Title("Toiminta-alue")
+  @SensitiveData
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
+  @SensitiveData
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")

@@ -73,7 +73,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   @SensitiveData
   vammainenJaAvustaja: Boolean = false,
-  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa (opiskeluvuosi) käytettävä tieto")
   @Title("Osa-aikaisuusjaksot")
   osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,
   @Description("Opiskeluvalmiuksia tukevat opinnot, Laki ammatillisesta koulutuksesta 531/2017 63 §, välitetään jaksoina kun kyseessä on päätoiminen opiskelu.")
@@ -275,6 +275,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @ComplexObject
   def näyttö: Option[Näyttö]
   @ComplexObject
+  @SensitiveData
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
   def suorituskieli: Option[Koodistokoodiviite]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
