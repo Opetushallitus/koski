@@ -1,6 +1,7 @@
 ## 1.12.2017
 
 - Lisätty oppimäärä (aikuisten/nuorten ops) lukioon valmistavan koulutuksen suoritukseen
+- Lisätty ammatillisen opiskeluoikeuden lisätietoihin koulutusvienti
 
 ## 23.11.2017
 
