@@ -2,21 +2,22 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät._
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{lehtikuusentienToimipiste, omnia, oppilaitokset}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, lehtikuusentienToimipiste, omnia, oppilaitokset}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.{OidOrganisaatio, Organisaatio}
 import fi.oph.koski.userdirectory.DirectoryUser
-import fi.vm.sade.security.ldap.LdapUser
 
 object MockUsers {
+  private val ilmanLuottamuksellisiaTietoja = oppilaitosTallentaja.copy(palveluroolit = oppilaitosTallentaja.palveluroolit.filterNot(_.rooli == "LUOTTAMUKSELLINEN"))
+
   val kalle = MockUser("käyttäjä", "kalle", "1.2.246.562.24.99999999987", (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosTallentaja)))
   val pärre = MockUser("käyttäjä", "pärre", "1.2.246.562.24.99999999901", (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosTallentaja)), "sv")
   val localkoski = MockUser("käyttäjä", "localkoski", "1.2.246.562.24.99999999988", oppilaitokset.toSet.map((_: String, oppilaitosTallentaja)))
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set((omnia, oppilaitosPalvelukäyttäjä)))
   val omniaKatselija = MockUser("käyttäjä", "omnia-katselija", "1.2.246.562.24.99999999990", Set((omnia, oppilaitosKatselija)))
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set((omnia, oppilaitosTallentaja)))
-  val omniaTallentajaEiLuottamuksellinen = MockUser("epäluotettava-tallentaja", "epäluotettava-tallentaja", "1.2.246.562.24.99999999997",
-    Set((omnia, oppilaitosTallentaja.copy(palveluroolit = oppilaitosTallentaja.palveluroolit.filterNot(_.rooli == "LUOTTAMUKSELLINEN")))))
+  val tallentajaEiLuottamuksellinen = MockUser("epäluotettava-tallentaja", "epäluotettava-tallentaja", "1.2.246.562.24.99999999997",
+    Set((omnia, ilmanLuottamuksellisiaTietoja), (jyväskylänNormaalikoulu, ilmanLuottamuksellisiaTietoja)))
   val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä), (Opetushallitus.organisaatioOid, localizationAdmin)))
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
@@ -43,7 +44,7 @@ object MockUsers {
     kahdenOrganisaatioPalvelukäyttäjä,
     omattiedot,
     stadinVastuukäyttäjä,
-    omniaTallentajaEiLuottamuksellinen,
+    tallentajaEiLuottamuksellinen,
     hkiTallentaja,
     eiOikkia
   )
