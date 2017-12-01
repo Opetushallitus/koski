@@ -74,6 +74,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   vammainen: Boolean = false,
   @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
   @DefaultValue(false)
+  @SensitiveData
   vaikeastiVammainen: Boolean = false,
   @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
   majoitusetu: Option[Päätösjakso] = None,
@@ -210,7 +211,6 @@ trait PerusopetuksenOppiaineenSuoritus extends OppiaineenSuoritus with Pakollise
 case class PerusopetuksenToiminta_AlueenSuoritus(
   @Description("Toiminta-alueet voivat sisältää yksittäisen oppiaineen tavoitteita ja sisältöjä, jos oppilaalla on vahvuuksia jossakin yksittäisessä oppiaineessa. Opetuksen toteuttamisessa eri toiminta-alueiden sisältöjä voidaan yhdistää. Toiminta-alueesta muodostuu oppiaineen kaltaisia suorituksia")
   @Title("Toiminta-alue")
-  @SensitiveData
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
   @SensitiveData
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
