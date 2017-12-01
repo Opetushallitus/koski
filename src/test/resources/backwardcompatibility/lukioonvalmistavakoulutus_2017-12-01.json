@@ -16,7 +16,6 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "alkamispäivä" : "2008-08-15",
     "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
@@ -48,6 +47,14 @@
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "56/011/2015"
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Nuorten ops"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -503,6 +510,7 @@
         }
       } ],
       "oikeusMaksuttomaanAsuntolapaikkaan" : true
-    }
+    },
+    "alkamispäivä" : "2008-08-15"
   } ]
 }

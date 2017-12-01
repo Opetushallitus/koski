@@ -35,6 +35,10 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 case class LukioonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: LukioonValmistavaKoulutus,
+  @KoodistoUri("lukionoppimaara")
+  @Description("Tieto siitä, suoritetaanko nuorten vai aikuisten oppimäärän mukaisesti")
+  @Title("Opetussuunnitelma")
+  oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @Description("Lukiokoulutukseen valmistavan koulutuksen suorituskieli eli se kieli, jolla opiskelija suorittaa tutkinnon (suorituksen kieli (tutkintotasoinen tieto))")

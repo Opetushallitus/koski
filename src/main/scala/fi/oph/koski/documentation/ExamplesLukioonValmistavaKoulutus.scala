@@ -23,6 +23,7 @@ object ExamplesLukioonValmistavaKoulutus {
           LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )),
         suoritukset = List(LukioonValmistavanKoulutuksenSuoritus(
+          oppimäärä = nuortenOpetussuunnitelma,
           vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015")),
