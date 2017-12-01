@@ -75,7 +75,10 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Kyseessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @DefaultValue(false)
   @SensitiveData
-  vankilaopetuksessa: Option[List[Aikajakso]] = None
+  vankilaopetuksessa: Option[List[Aikajakso]] = None,
+  @Description("Koulutusvienti tai koulutusvientikokeilu")
+  @DefaultValue(false)
+  koulutusvienti: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
 
 @Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
