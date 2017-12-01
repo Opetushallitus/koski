@@ -1,3 +1,7 @@
+## 1.12.2017
+
+- Lisätty oppimäärä (aikuisten/nuorten ops) lukioon valmistavan koulutuksen suoritukseen
+
 ## 23.11.2017
 
 - Poistettu rajoitus, jossa koulutussopimukset ja osaamisen hankkimistavat hyväksytään vain, jos kyseessä on reformi-suoritustapa
