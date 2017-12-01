@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(

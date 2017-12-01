@@ -1,6 +1,6 @@
-package fi.oph.koski.schema
+package fi.oph.koski.schema.annotation
 
-import fi.oph.koski.schema.SchemaClassMapper.mapClasses
+import fi.oph.koski.schema.annotation.SchemaClassMapper.mapClasses
 import fi.oph.scalaschema._
 import org.json4s.JsonAST
 

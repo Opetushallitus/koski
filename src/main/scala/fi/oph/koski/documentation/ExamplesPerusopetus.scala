@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.Finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{annotation, _}
 
 object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(

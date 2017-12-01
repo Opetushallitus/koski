@@ -3,7 +3,7 @@ package fi.oph.koski.json
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
-import fi.oph.koski.schema.{KoskiSchema, Oppija, SensitiveData, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskiSchema, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods

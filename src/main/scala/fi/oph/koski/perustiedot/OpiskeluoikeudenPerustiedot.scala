@@ -7,6 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.{JArray, JValue}

@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
+import fi.oph.koski.schema.annotation.{Hidden, MultiLineString, Representative}
 import fi.oph.scalaschema.annotation._
 
 trait Arviointi {

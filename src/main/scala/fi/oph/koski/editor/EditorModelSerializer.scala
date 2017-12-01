@@ -2,7 +2,8 @@ package fi.oph.koski.editor
 
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Example, KoskiSchema, MultiLineString, UnitOfMeasure}
+import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.annotation.{Example, MultiLineString, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._
 import fi.oph.scalaschema.{Metadata, SerializationContext, Serializer}
 import org.json4s.JsonAST.{JObject, JString, JValue}

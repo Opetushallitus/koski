@@ -12,7 +12,8 @@ import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, Opiskelu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, SensitiveData}
+import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.schema.annotation.SensitiveData
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction

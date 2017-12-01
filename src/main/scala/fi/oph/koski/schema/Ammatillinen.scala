@@ -7,6 +7,7 @@ import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.schema.annotation._
 import mojave._
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")

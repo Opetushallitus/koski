@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{annotation, _}
 
 object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))

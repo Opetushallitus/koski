@@ -2,7 +2,7 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.Representative
+import fi.oph.koski.schema.annotation.Representative
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.{Formats, JObject, JValue, Serializer}
 import org.json4s.reflect.TypeInfo

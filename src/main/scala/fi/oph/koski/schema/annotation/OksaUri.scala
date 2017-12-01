@@ -1,4 +1,4 @@
-package fi.oph.koski.schema
+package fi.oph.koski.schema.annotation
 
 import fi.oph.scalaschema.Metadata
 import org.json4s.JsonAST.JObject

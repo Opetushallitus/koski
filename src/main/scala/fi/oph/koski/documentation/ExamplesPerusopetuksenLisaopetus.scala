@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{annotation, _}
 
 object ExamplesPerusopetuksenLisaopetus {
   private def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenLisäopetuksenOppiaineenSuoritus(

@@ -3,6 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description

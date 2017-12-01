@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Title}
 import LocalizedString._
+import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 
 case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")

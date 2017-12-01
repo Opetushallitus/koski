@@ -10,6 +10,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._

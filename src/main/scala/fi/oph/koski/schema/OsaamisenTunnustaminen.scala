@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.schema.annotation.{FlattenInUI, MultiLineString, OksaUri, Representative}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description}
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta")

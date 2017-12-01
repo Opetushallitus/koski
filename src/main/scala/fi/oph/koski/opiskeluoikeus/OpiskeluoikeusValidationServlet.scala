@@ -9,7 +9,8 @@ import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, SensitiveData}
+import fi.oph.koski.schema.annotation.SensitiveData
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.validation.KoskiValidator
 import org.json4s._

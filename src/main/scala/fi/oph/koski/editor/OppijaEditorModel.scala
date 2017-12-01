@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.Timing
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 

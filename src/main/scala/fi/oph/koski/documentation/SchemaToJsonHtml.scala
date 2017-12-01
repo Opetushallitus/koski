@@ -1,9 +1,9 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.json.JsonSerializer.serialize
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.koskiuser.KoskiSession.untrustedUser
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue

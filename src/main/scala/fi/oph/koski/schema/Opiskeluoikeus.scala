@@ -4,6 +4,7 @@ import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
 

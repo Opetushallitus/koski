@@ -4,6 +4,7 @@ import java.net.URLEncoder
 
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s.jackson.JsonMethods

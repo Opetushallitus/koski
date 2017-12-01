@@ -9,7 +9,7 @@ import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{annotation, _}
 
 object ExamplesAmmatillinen {
   lazy val examples = List(

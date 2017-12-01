@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
 

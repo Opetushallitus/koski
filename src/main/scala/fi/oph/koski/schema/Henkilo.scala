@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.perustiedot.NimitiedotJaOid
+import fi.oph.koski.schema.annotation.{KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
 object Henkilö {
