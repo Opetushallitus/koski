@@ -177,7 +177,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Päättötodistus toiminta-alueittain', function() {
-      before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
+      before(resetFixtures, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
 
@@ -273,6 +273,19 @@ describe('Perusopetus', function() {
         it('näytetään', function() {
           // See more detailed content specification in PerusopetusSpec.scala
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        })
+      })
+
+      describe('Ilman luottamuksellinen-roolia', function() {
+        before(Authentication().logout, Authentication().login('epäluotettava-tallentaja'))
+        before(page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
+        it('näyttää suorituksen tiedot', function() {
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+            'Koulutus Perusopetus 104/011/2014\n' +
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
       })
     })
