@@ -1,3 +1,7 @@
+## 4.12.2017
+
+- Lisätty sisäoppilaitosmainen majoitus Luva-koulutuksen lisätietoihin
+
 ## 1.12.2017
 
 - Lisätty oppimäärä (aikuisten/nuorten ops) lukioon valmistavan koulutuksen suoritukseen

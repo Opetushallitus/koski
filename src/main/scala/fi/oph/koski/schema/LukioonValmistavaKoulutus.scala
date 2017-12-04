@@ -175,5 +175,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton asuntolapaikka")
   @DefaultValue(false)
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
