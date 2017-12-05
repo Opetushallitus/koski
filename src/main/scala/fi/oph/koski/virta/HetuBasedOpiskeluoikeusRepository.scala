@@ -61,4 +61,9 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
     accessCheck(oppijat.par.filter(oppija => oppija.hetu.exists(organizationsCache(_).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty)).toList)
 
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
+
+  def findByUserOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
+    assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
+    getHenkilötiedot(oid).toList.flatMap(_.hetu.toList.flatMap(cache(_)))
+  }
 }

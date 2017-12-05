@@ -20,6 +20,7 @@ trait OpiskeluoikeusRepository extends AuxiliaryOpiskeluoikeusRepository {
 trait AuxiliaryOpiskeluoikeusRepository {
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 sealed trait CreateOrUpdateResult {
