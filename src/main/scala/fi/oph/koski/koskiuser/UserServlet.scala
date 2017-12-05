@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {
@@ -12,4 +13,8 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
   }
 }
 
-case class UserWithAccessRights(name: String, hasWriteAccess: Boolean = false, hasLocalizationWriteAccess: Boolean = false, hasGlobalReadAccess: Boolean = false, hasAnyReadAccess: Boolean = false)
+case class UserWithAccessRights(name: String, hasWriteAccess: Boolean = false, hasLocalizationWriteAccess: Boolean = false, hasGlobalReadAccess: Boolean = false, hasAnyReadAccess: Boolean = false) {
+  //TODO: eksplisiittisempi tapa päätellä
+  @SyntheticProperty
+  def kansalainen: Boolean = !hasAnyReadAccess
+}
