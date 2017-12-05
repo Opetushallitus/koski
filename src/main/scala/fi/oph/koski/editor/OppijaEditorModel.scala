@@ -33,7 +33,9 @@ object OppijaEditorModel extends Timing {
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
     }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
-    val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
+    val henkilötiedot = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
+    val kansalainen = henkilötiedot.oid == koskiSession.user.oid && !koskiSession.hasAnyWriteAccess
+    val editorView = OppijaEditorView(henkilötiedot, kansalainen, tyypit)
     buildModel(editorView, editable)
   }
 
@@ -72,6 +74,7 @@ object EditorSchema {
 case class OppijaEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
+  kansalainen: Boolean,
   opiskeluoikeudet: List[OpiskeluoikeudetTyypeittäin]
 )
 
