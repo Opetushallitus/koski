@@ -35,6 +35,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
@@ -42,8 +43,10 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Oppilas on vuosiluokkiin sitomattomassa opetuksessa (true/false)""")
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
+  @SensitiveData
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
   @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @DefaultValue(false)
   vammainen: Boolean = false,
   @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
