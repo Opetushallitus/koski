@@ -60,7 +60,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   "tallennusoikeudet muttei luottamuksellinen-roolia" - {
-    val user = MockUsers.omniaTallentajaEiLuottamuksellinen
+    val user = MockUsers.tallentajaEiLuottamuksellinen
     "ei voi muokata opiskeluoikeuksia" in {
       putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
