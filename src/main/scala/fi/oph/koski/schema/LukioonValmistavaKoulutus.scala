@@ -169,12 +169,15 @@ case class LukioonValmistavanKoulutuksenKurssi(
 case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")
   pidennettyPäättymispäivä: Boolean = false,
-  @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false)")
+  @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa hyödynnettävä tieto.")
   ulkomainenVaihtoopiskelija: Boolean = false,
-  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
+  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot. Rahoituksen laskennassa hyödynnettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Tieto onko oppijalla maksuton asuntolapaikka")
+  @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa hyödynnettävä tieto.")
   @DefaultValue(false)
+  @SensitiveData
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")
+  @SensitiveData
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
