@@ -58,6 +58,7 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
+  @SensitiveData
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
