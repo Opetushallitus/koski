@@ -15,6 +15,7 @@ case class OsaamisenTunnustaminen(
   @Representative
   @MultiLineString(5)
   selite: LocalizedString,
+  @Description("Mikäli oppija on kaksoistutkintoa suorittava, jonka rahoituksen saaja on ammatillinen oppilaitos, tulee lukio-opinnoista tunnustetut suoritukset merkitä RahoituksenPiirissä: Kyllä.")
   @DefaultValue(false)
   rahoituksenPiirissä: Boolean = false
 )
