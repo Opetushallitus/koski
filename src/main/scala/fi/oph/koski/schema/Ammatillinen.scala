@@ -57,7 +57,9 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @SensitiveData
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
   @SensitiveData
+  @Description("Tieto siitä että oppija on erityisopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   erityinenTuki: Option[List[Aikajakso]] = None,
+  @Description("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
@@ -244,7 +246,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
 
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
-  @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
+  @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
@@ -643,7 +645,7 @@ case class OppisopimuksellinenOsaamisenHankkimistapa(
   oppisopimus: Oppisopimus
 ) extends OsaamisenHankkimistapa
 
-@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Objektin puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Käytetään vain mikäli HOJKS-päätös on tehty ennen 2018. 2018 lähtien tieto välitetään erityinenTuki -rakenteen kautta. Rahoituksen laskennassa hyödynnettävä tieto.")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija)")
