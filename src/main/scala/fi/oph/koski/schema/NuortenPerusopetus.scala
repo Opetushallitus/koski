@@ -35,50 +35,64 @@ case class PerusopetuksenOpiskeluoikeus(
 
 case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Perusopetuksen aloittamisesta lykkäys (true/false). Oppilas saa luvan  aloittaa perusopetuksen myöhemmin.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(false)
   perusopetuksenAloittamistaLykätty: Boolean = false,
-  @Description("""Perusopetuksen aikastaminen (true/false). Oppilas aloittaa ennen oppivelvollisuusikää.""")
+  @Description("""Perusopetuksen aikaistaminen (true/false). Oppilas aloittaa ennen oppivelvollisuusikää.""")
   @DefaultValue(false)
   aloittanutEnnenOppivelvollisuutta: Boolean = false,
-  @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.""")
+  @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Päätösjakso] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
+  @SensitiveData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
   @Description("""Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa.""")
+  @SensitiveData
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
   joustavaPerusopetus: Option[Päätösjakso] = None,
   @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.""")
   kotiopetus: Option[Päätösjakso] = None,
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
   ulkomailla: Option[Päätösjakso] = None,
-  @Description("""Oppilas on vuosiluokkiin sitomattomassa opetuksessa (true/false)""")
+  @Description("""Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei)""")
+  @SensitiveData
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("""Oppilas on vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("""Oppilas on vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @DefaultValue(false)
   vammainen: Boolean = false,
-  @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("""Oppilas on vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   @DefaultValue(false)
   vaikeastiVammainen: Boolean = false,
   @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
+  @SensitiveData
   majoitusetu: Option[Päätösjakso] = None,
-  @Description("""Oppilaalla on kuljetusetu. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("""Oppilaalla on kuljetusetu.""")
+  @SensitiveData
   kuljetusetu: Option[Päätösjakso] = None,
-  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan.""")
+  @SensitiveData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @SensitiveData
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja.")
+  @SensitiveData
   koulukoti: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
@@ -122,6 +136,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
+  @SensitiveData
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
@@ -224,6 +239,7 @@ case class NumeerinenPerusopetuksenOppiaineenArviointi(
 @Description("Sanallisessa arvioinnissa suorituksen hyväksymisen ilmaisuun käytetään koodiarvoja S (suoritettu) ja H (hylätty). Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään")
 case class SanallinenPerusopetuksenOppiaineenArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  @SensitiveData
   kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
@@ -235,6 +251,7 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
 @IgnoreInAnyOfDeserialization
 case class PerusopetuksenKäyttäytymisenArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  @SensitiveData
   kuvaus: Option[LocalizedString] = None,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   @Hidden
