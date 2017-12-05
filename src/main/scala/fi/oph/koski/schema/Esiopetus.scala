@@ -35,6 +35,7 @@ case class EsiopetuksenOpiskeluoikeus(
 
 case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta")
+  @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Päätösjakso] = None
 ) extends OpiskeluoikeudenLisätiedot
