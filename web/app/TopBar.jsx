@@ -13,6 +13,9 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
 }
 
 const NavList = ({location, user}) => {
+  if (!user.hasAnyReadAccess) {
+    return null
+  }
   return (<ul>
     <li>{naviLink('/koski/', 'Opiskelijat', location.path, '', (path, loc) => loc == path || loc.startsWith('/koski/oppija'))}</li>
     <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
