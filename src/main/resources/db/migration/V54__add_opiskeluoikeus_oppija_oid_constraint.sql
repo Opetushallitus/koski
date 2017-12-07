@@ -1,0 +1,1 @@
+ALTER TABLE opiskeluoikeus ADD CONSTRAINT opiskeluoikeus_oppija_oid FOREIGN KEY (oppija_oid) REFERENCES henkilo(oid);
