@@ -16,6 +16,11 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
+    //TODO: Kansalaisen länderi
+    redirect("/virkailija")
+  }
+
+  get("/virkailija") {
     indexHtml()
   }
 

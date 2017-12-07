@@ -23,7 +23,7 @@ const Login = () => {
       inProgress.set(false)
       error.set(e)
     } }))
-  loginResultE.onValue(() => document.location='/koski')
+  loginResultE.onValue(() => document.location='/koski/virkailija')
   const doLogin = (e) => {
     e.preventDefault()
     inProgress.set(true)
