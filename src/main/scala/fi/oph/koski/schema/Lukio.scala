@@ -43,6 +43,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
+  @DefaultValue(false)
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,

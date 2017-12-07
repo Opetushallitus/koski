@@ -4,7 +4,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo}
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation._
 
 @Description("Perusopetuksen lisäopetuksen opiskeluoikeus")
@@ -58,6 +58,7 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
+  @DefaultValue(false)
   @SensitiveData
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")

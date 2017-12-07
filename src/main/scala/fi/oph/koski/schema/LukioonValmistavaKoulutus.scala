@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
 
 @Description("Lukioon valmistava koulutus (LUVA)")

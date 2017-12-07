@@ -6,7 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString.{concat, finnish, unlocalized}
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.annotation._
 
@@ -137,6 +137,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   kielikylpykieli: Option[Koodistokoodiviite] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData
+  @DefaultValue(false)
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
