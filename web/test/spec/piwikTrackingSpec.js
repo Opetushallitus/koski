@@ -28,7 +28,7 @@ describe('Piwik-seuranta', function() {
       })
 
       it('Sivu raportoi lataamisen', function() {
-        expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/')
+        expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/virkailija')
       })
 
       describe('Siirryttäessä oppijan tietoihin', function() {
@@ -49,7 +49,7 @@ describe('Piwik-seuranta', function() {
           before(piwik.reset, opinnotPage.backToList)
 
           it('Sivu raportoi lataamisen', function() {
-            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/')
+            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
           })
         })
 
@@ -71,7 +71,7 @@ describe('Piwik-seuranta', function() {
             wait.until(koskiPage.isReady))
 
           it('Sivu raportoi lataamisen', function() {
-            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/')
+            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
           })
         })
       })
@@ -108,7 +108,7 @@ describe('Piwik-seuranta', function() {
 
         it('Sivu raportoi RuntimeError-tapahtuman', function() {
           expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {
-            location: /\/koski\/$/,
+            location: /\/koski\/virkailija$/,
             url: /\/koski\/api\/henkilo\/search\?query=%23error%23$/,
             httpStatus: 500,
             message: 'http error 500'

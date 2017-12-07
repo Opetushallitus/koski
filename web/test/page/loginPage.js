@@ -5,7 +5,7 @@ function LoginPage() {
   var api = {
     openPage: function() {
       return Authentication().logout().then(function() {
-          return openPage('/koski/', api.isVisible)()
+          return openPage('/koski/virkailija', api.isVisible)()
         }
       )
     },

@@ -117,7 +117,7 @@ function KoskiPage() {
 
   var api = {
     openPage: function() {
-      return openPage('/koski/', api.isReady)()
+      return openPage('/koski/virkailija', api.isReady)()
     },
     isVisible: function() {
       return isElementVisible(S('#content .oppija-haku')) || isElementVisible(S('#content .oppija'))

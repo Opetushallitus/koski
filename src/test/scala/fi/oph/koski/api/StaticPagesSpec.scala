@@ -4,7 +4,8 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
   "Single page app" - {
-    verifyAppAt("")
+    //TODO: kansalainen
+    verifyAppAt("virkailija")
     verifyAppAt("oppija/asdf")
     verifyAppAt("uusioppija")
     verifyAppAt("asdf", 404)

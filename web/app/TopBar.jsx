@@ -13,7 +13,7 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
 }
 
 const NavList = ({location, user}) => {
-  if (!user.hasAnyReadAccess) {
+  if (!user || !user.hasAnyReadAccess) {
     return null
   }
   return (<ul>
