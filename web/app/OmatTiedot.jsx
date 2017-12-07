@@ -23,7 +23,7 @@ const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
   userP,
   (omattiedot, user) => {
-    return addContext(omattiedot, {kansalainen: user.kansalainen})
+    return omattiedot && addContext(omattiedot, {kansalainen: user.kansalainen})
   }
 )
 
