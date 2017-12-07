@@ -35,7 +35,7 @@ export class KurssiEditor extends React.Component {
     let className = buildClassNames(['tunniste', kurssinTyyppi, !edit && 'hoverable'])
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e}>
-        <a onClick={showDetails} onMouseEnter={!edit && showDetails} onMouseLeave={!edit && hideDetails} className={className} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</a>
+        <a onClick={showDetails} onMouseEnter={!edit ? showDetails : undefined} onMouseLeave={!edit ? hideDetails : undefined} className={className} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</a>
         {
           edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
