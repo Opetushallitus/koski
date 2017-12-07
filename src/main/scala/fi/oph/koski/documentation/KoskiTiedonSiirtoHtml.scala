@@ -2,6 +2,7 @@ package fi.oph.koski.documentation
 
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema.ClassSchema
 
 object KoskiTiedonSiirtoHtml {
@@ -131,5 +132,5 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
 
   val apiOperations: List[ApiOperation] = KoskiApiOperations.operations
 
-  val htmlTextSections = List(general, rest_apis, annotated_data).map(s => toXHTML(knockoff(s)).toString())
+  val htmlTextSections = List(general, rest_apis, annotated_data).map(Markdown.markdownToXhtmlString)
 }

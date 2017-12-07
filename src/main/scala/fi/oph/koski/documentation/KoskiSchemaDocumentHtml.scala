@@ -5,13 +5,14 @@ import java.net.URLEncoder
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
+import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s.jackson.JsonMethods
 
 import scala.Function.const
 import scala.collection.mutable.ArrayBuffer
-import scala.xml.Elem
+import scala.xml.{Elem, Node}
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
@@ -184,8 +185,8 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private def formatDescription(s: String) = {
+  private def formatDescription(s: String): Array[Node] = {
     val v = if (s.endsWith(".")) { s } else { s + "." }
-    v.split("\n").map(line => toXHTML(knockoff(line)))
+    v.split("\n").map(Markdown.markdownToXhtml)
   }
 }
