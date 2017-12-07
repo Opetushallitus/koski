@@ -5,6 +5,8 @@ import {Editor} from './editor/Editor.jsx'
 import Bacon from 'baconjs'
 import Text from './Text.jsx'
 import {editorMapping} from './editor/Editors.jsx'
+import {userP} from './user'
+import {addContext} from './editor/EditorModel'
 
 export const omatTiedotContentP = () => innerContentP().map(inner =>
   ({
@@ -17,7 +19,13 @@ export const omatTiedotContentP = () => innerContentP().map(inner =>
   })
 )
 
-const omatTiedotP = () => Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty()
+const omatTiedotP = () => Bacon.combineWith(
+  Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
+  userP,
+  (omattiedot, user) => {
+    return addContext(omattiedot, {kansalainen: user.kansalainen})
+  }
+)
 
 const innerContentP = () => omatTiedotP().map(oppija =>
   oppija

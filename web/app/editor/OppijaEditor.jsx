@@ -7,7 +7,6 @@ import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar.jsx'
 
 export const OppijaEditor = ({model}) => {
   let oppijaOid = modelData(model, 'henkilö.oid')
-  let kansalainen = modelData(model, 'kansalainen')
   let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
   var opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
 
@@ -24,7 +23,7 @@ export const OppijaEditor = ({model}) => {
             return modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
               (<li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                 <OpiskeluoikeusEditor
-                  model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid, kansalainen, opiskeluoikeusIndex }) }
+                  model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid, opiskeluoikeusIndex }) }
                 />
               </li>)
             )
