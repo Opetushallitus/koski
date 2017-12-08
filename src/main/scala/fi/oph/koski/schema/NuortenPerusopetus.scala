@@ -339,6 +339,7 @@ case class MuuPeruskoulunOppiaine(
   @KoodistoKoodiarvo("BI")
   @KoodistoKoodiarvo("PS")
   @KoodistoKoodiarvo("KT")
+  @KoodistoKoodiarvo("ET")
   @KoodistoKoodiarvo("KO")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("KE")
