@@ -71,8 +71,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-    "koodiUri" : "opintojenrahoitus_11",
-    "koodiArvo" : "11",
+    "koodiUri" : "opintojenrahoitus_10",
+    "koodiArvo" : "10",
     "metadata" : [ {
       "nimi" : "Työvoimakoulutus (OKM rahoitus)",
       "kieli" : "FI"
