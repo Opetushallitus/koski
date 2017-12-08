@@ -1,3 +1,7 @@
+## 8.12.2017
+
+- Erotettu uskonto ja elämänkatsomustieto omiksi oppiaineikseen perusopetuksessa ja lukiossa
+
 ## 4.12.2017
 
 - Lisätty sisäoppilaitosmainen majoitus Luva-koulutuksen lisätietoihin
