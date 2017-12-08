@@ -26,39 +26,37 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 
 ## Käyttäjän kirjautuminen ja käyttöoikeudet
 
-Koski sallii käyttäjän kirjautumisen, jos
+Koski sallii käytön, jos
 
-1. CAS-palvelu sallii kirjautumisen käyttäjän syöttämällä käyttäjätunnuksella ja salasanalla, ja
-2. Opintopolun LDAP:sta löytyy käyttäjän hakemisto kohdan #1 käyttäjätunnuksella.
+A CAS-palvelu sallii kirjautumisen käyttäjän syöttämällä käyttäjätunnuksella ja salasanalla, tai
+B Kosken REST-rajapintoja käytettäessä HTTP-pyynnössä on HTTP Basic Authentication -käyttäjätunnus ja salasana, jotka ovat validit Opintopolun käyttöoikeuspalvelussa.
 
-Käyttäjä kuuluu ryhmiin, jotka määrittävät hänen käyttöoikeudet Koskessa. Käyttäjän ryhmät haetaan yllä kohdassa #2 LDAP:sta. Ne ovat hakemiston attribuutissa `description` JSON-enkoodattuna listana. Koski tunnistaa listasta arvot, jotka ovat muotoa:
+Käyttäjä kuuluu käyttöoikeusryhmiin, joiden kautta hänelle määräytyvät hänen käyttöoikeutensa (roolit) Koskessa. 
+Käyttäjän käyttöoikeudet haetaan Opintopolun käyttöoikeuspalvelusta. Käyttöoikeudet muodostuvat kolmesta osasta:
 
-> APP\_{app}\_{rooli}\_{oid}
-
-Missä parametri
-
-* _app_ on joko KOSKI tai LOKALISOINTI,
-* _rooli_ kertoo käyttäjäoikeustyypin, ja
-* _oid_ on organisaation oid-tunniste.
+* Sovellus: joko KOSKI tai LOKALISOINTI,
+* Rooli: kertoo käyttäjäoikeustyypin, ja
+* Oid: organisaation oid-tunniste.
 
 Esimerkki arvosta:
 
-> APP_KOSKI_READ_UPDATE_1.2.246.562.10.48002002061
+> KOSKI READ_UPDATE 1.2.246.562.10.48002002061
 
 Tämä määrittää Kosken käyttäjälle luku- ja kirjoitusoikeuden organisaatioon, jonka oid-tunnus on 1.2.246.562.10.48002002061.
 
-Tuetut yhdistelmät _app_, _rooli_ ja _oid_ -parametreille:
+Tuetut yhdistelmät sovellus, rooli ja oid -parametreille:
 
-app | rooli | oid | selite
+sovellus | rooli | oid | selite
 ---|---|---|---
 KOSKI | READ | (organisaation oid) | Organisaatiokohtainen lukuoikeus
-KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjoitusoikeus
+KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjoitusoikeus. Kirjoittamiseen tarvitaan aina myös alla oleve LUOTTAMUKSELLINEN-rooli.
+KOSKI | LUOTTAMUKSELLINEN | (organisaation oid) | Oikeus katsella luottamukselliseksi määriteltyjä tietoja (ks. @SensiviveData -annotaatio). Tämä rooli vaaditaan aina myös tiedon kirjoittamiseen.
 KOSKI | TIEDONSIIRTO | (organisaation oid) | Organisaatiokohtainen Kosken API:n palvelukäyttö
 KOSKI | OPHKATSELIJA | (OPH:n organisaation oid) | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
 KOSKI | OPHPAAKAYTTAJA | (OPH:n organisaation oid) | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
 LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
 
-Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `ldap.host = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
+Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `opintopolku.virkailija.url = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
 
 ## Teknologiat
 
