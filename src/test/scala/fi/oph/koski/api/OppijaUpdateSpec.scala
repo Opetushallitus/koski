@@ -7,7 +7,8 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.henkilo.MockOppijat.koululainen
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
@@ -118,6 +119,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   "Opiskeluoikeuden muokkaaminen" - {
+
     "Käytettäessä opiskeluoikeus-oid:ia" - {
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
         resetFixtures
@@ -139,7 +141,6 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.versionumero should equal(Some(2))
-          //verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
 
@@ -156,6 +157,23 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo) should equal(Some(primusLähdejärjestelmäId.lähdejärjestelmä.koodiarvo))
+        }
+      }
+
+      "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
+        val original = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
+
+        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), oppija) {
+          verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
+        }
+      }
+
+      "Sallii opiskeluoikeuden päivittämisen Master-henkilön oidilla" in {
+        createOpiskeluoikeus(MockOppijat.master.henkilö, defaultOpiskeluoikeus)
+        val original = createOpiskeluoikeus(MockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), MockOppijat.master.henkilö) {
+          verifyResponseStatusOk()
         }
       }
     }
@@ -198,6 +216,17 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           result.lähdejärjestelmänId.map(_.id) should equal(Some(lähdejärjestelmänId2.id))
           result.versionumero should equal(Some(1))
         }
+      }
+
+      "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
+        resetFixtures
+        val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
+        createOpiskeluoikeus(koululainen.henkilö, original, user = helsinginKaupunkiPalvelukäyttäjä)
+        val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
+
+        createOrUpdate(koululainen.henkilö, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)), {
+          verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
+        }, helsinginKaupunkiPalvelukäyttäjä)
       }
     }
 

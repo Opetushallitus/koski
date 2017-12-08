@@ -20,7 +20,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.OidGenerator
 import org.json4s.{JArray, JObject, JString}
 import slick.dbio.Effect.{Read, Transactional, Write}
-import slick.dbio.NoStream
+import slick.dbio.{DBIOAction, NoStream}
 import slick.{dbio, lifted}
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends OpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
@@ -65,6 +65,17 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {
     OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).right.flatMap(_ => f)
+  }
+
+  private def oppijaOidsByOppijaOid(oid: String): DBIOAction[List[String], NoStream, Read] = {
+    Henkilöt.filter(_.oid === oid).result.map { henkilöt =>
+      henkilöt.headOption match {
+        case Some(h) =>
+          h.oid :: h.masterOid.toList
+        case None =>
+          throw new RuntimeException(s"Oppija not found: $oid")
+      }
+    }
   }
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
@@ -150,7 +161,17 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       (allowUpdate, rows) match {
         case (_, Right(Nil)) => createAction(oppijaOid, opiskeluoikeus)
         case (true, Right(List(vanhaOpiskeluoikeus))) =>
-          updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+          if (oppijaOid.oppijaOid == vanhaOpiskeluoikeus.oppijaOid) {
+            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+          } else { // Check if oppija oid belongs to master of slave oppija oids
+            oppijaOidsByOppijaOid(vanhaOpiskeluoikeus.oppijaOid).flatMap { oids =>
+              if (oids.contains(oppijaOid.oppijaOid)) {
+                updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+              } else {
+                DBIO.successful(Left(KoskiErrorCategory.forbidden.oppijaOidinMuutos("Oppijan oid: " + oppijaOid.oppijaOid + " ei löydy opiskeluoikeuden oppijan oideista: " + oids.mkString(", "))))
+              }
+            }
+          }
         case (true, Right(rows)) =>
           DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
         case (false, Right(rows)) =>
