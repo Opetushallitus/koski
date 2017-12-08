@@ -3,18 +3,18 @@ package fi.oph.koski.documentation
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoKoodiMetadata
-import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 import scala.Function.const
 
-class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with Unauthenticated with KoodistoFinder {
+class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("/") {
-    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
+    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet && isAuthenticated)
   }
 
   get("/koski-oppija-schema.html") {
