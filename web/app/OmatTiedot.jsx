@@ -6,7 +6,7 @@ import Bacon from 'baconjs'
 import Text from './Text.jsx'
 import {editorMapping} from './editor/Editors.jsx'
 import {userP} from './user'
-import {addContext} from './editor/EditorModel'
+import {addContext, modelData} from './editor/EditorModel'
 
 export const omatTiedotContentP = () => innerContentP().map(inner =>
   ({
@@ -23,7 +23,8 @@ const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
   userP,
   (omattiedot, user) => {
-    return omattiedot && addContext(omattiedot, {kansalainen: user.kansalainen})
+    let kansalainen = user.oid === modelData(omattiedot, 'henkilö.oid')
+    return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen})
   }
 )
 
