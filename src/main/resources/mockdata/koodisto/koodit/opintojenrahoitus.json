@@ -8,10 +8,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "opintojenrahoitus_10",
-  "koodiArvo" : "10",
+  "koodiUri" : "opintojenrahoitus_9",
+  "koodiArvo" : "9",
   "metadata" : [ {
-    "nimi" : "Maahanmuuttajien ammatillinen koulutus (MAO)",
+    "nimi" : "Maahanmuuttajien ammatillinen koulutus (valtionavustus)",
     "kieli" : "FI"
   } ],
   "versio" : 1,
