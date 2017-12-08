@@ -17,7 +17,7 @@ class PerusopetusSpec extends FreeSpec with Matchers with TodistusTestMethods wi
           |B1-kieli, ruotsi Hyvä 8
           |Valinnainen b1-kieli, ruotsi 1.0 Hyväksytty
           |A1-kieli, englanti Hyvä 8
-          |Uskonto tai elämänkatsomustieto Erinomainen 10
+          |Uskonto Erinomainen 10
           |Historia Hyvä 8
           |Yhteiskuntaoppi Erinomainen 10
           |Matematiikka Kiitettävä 9
@@ -73,7 +73,7 @@ class PerusopetusSpec extends FreeSpec with Matchers with TodistusTestMethods wi
           |B1-kieli, ruotsi Hyvä 8
           |Valinnainen b1-kieli, ruotsi 1.0 Hyväksytty
           |A1-kieli, englanti Hyvä 8
-          |Uskonto tai elämänkatsomustieto Erinomainen 10
+          |Uskonto Erinomainen 10
           |Historia Hyvä 8
           |Yhteiskuntaoppi Erinomainen 10
           |Matematiikka Kiitettävä 9

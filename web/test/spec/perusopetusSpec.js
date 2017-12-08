@@ -39,7 +39,7 @@ describe('Perusopetus', function() {
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
-            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Uskonto 10\n' +
             'Historia 8\n' +
             'Yhteiskuntaoppi 10\n' +
             'Matematiikka 9\n' +
@@ -103,7 +103,7 @@ describe('Perusopetus', function() {
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
-            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Uskonto 10\n' +
             'Historia 8\n' +
             'Yhteiskuntaoppi 10\n' +
             'Matematiikka 9\n' +
@@ -319,7 +319,7 @@ describe('Perusopetus', function() {
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9\n' +
           'B1-kieli, ruotsi 8\n' +
           'A1-kieli, englanti 8\n' +
-          'Uskonto tai elämänkatsomustieto 10\n' +
+          'Uskonto 10\n' +
           'Historia 8\n' +
           'Yhteiskuntaoppi 10\n' +
           'Matematiikka 9\n' +
@@ -1425,7 +1425,7 @@ describe('Perusopetus', function() {
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
-            'Uskonto tai elämänkatsomustieto 10\n' +
+            'Uskonto 10\n' +
             'Historia 8\n' +
             'Yhteiskuntaoppi 10\n' +
             'Matematiikka 9\n' +
@@ -1530,7 +1530,7 @@ describe('Perusopetus', function() {
                 'Fysiikka',
                 'Kemia',
                 'Terveystieto',
-                'Uskonto tai elämänkatsomustieto',
+                'Uskonto',
                 'Historia',
                 'Yhteiskuntaoppi',
                 'Musiikki',
@@ -1657,7 +1657,7 @@ describe('Perusopetus', function() {
               'Fysiikka',
               'Kemia',
               'Terveystieto',
-              'Uskonto tai elämänkatsomustieto',
+              'Uskonto',
               'Historia',
               'Yhteiskuntaoppi',
               'Musiikki',
@@ -1782,7 +1782,7 @@ describe('Perusopetus', function() {
               'Fysiikka',
               'Kemia',
               'Terveystieto',
-              'Uskonto tai elämänkatsomustieto',
+              'Uskonto',
               'Historia',
               'Yhteiskuntaoppi',
               'Musiikki',
@@ -2211,7 +2211,7 @@ describe('Perusopetus', function() {
             expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
               'Matematiikka',
               'Ympäristöoppi',
-              'Uskonto tai elämänkatsomustieto',
+              'Uskonto',
               'Musiikki',
               'Kuvataide',
               'Käsityö',
@@ -2228,7 +2228,7 @@ describe('Perusopetus', function() {
               'A1-kieli,',
               'Matematiikka',
               'Ympäristöoppi',
-              'Uskonto tai elämänkatsomustieto',
+              'Uskonto',
               'Historia',
               'Yhteiskuntaoppi',
               'Musiikki',
@@ -2252,7 +2252,7 @@ describe('Perusopetus', function() {
               'Fysiikka',
               'Kemia',
               'Terveystieto',
-              'Uskonto tai elämänkatsomustieto',
+              'Uskonto',
               'Historia',
               'Yhteiskuntaoppi',
               'Musiikki',
