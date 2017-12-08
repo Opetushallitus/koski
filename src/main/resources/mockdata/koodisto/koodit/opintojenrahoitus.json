@@ -71,15 +71,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "opintojenrahoitus_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "Henkilöstökoulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
     "koodiUri" : "opintojenrahoitus_11",
     "koodiArvo" : "11",
     "metadata" : [ {
