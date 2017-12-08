@@ -31,16 +31,17 @@ case class LukionOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-@Description("Lukion opiskeluoikeuden lisätiedot. Tietoja käytetään rahoituksen laskennassa.")
+@Description("Lukion opiskeluoikeuden lisätiedot")
 case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
   @SensitiveData
+  @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
   @Title("Ulkomainen vaihto-opiskelija.")
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele aikuisten lukiokoulutuksessa alle 18-vuotiaana")
-  @Title("Syy alle 18-vuotiaana aloitettuun opisqkeluun aikuisten lukiokoulutuksessa")
+  @Title("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa")
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
