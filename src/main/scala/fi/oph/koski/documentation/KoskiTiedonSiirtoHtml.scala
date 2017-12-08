@@ -11,7 +11,7 @@ object KoskiTiedonSiirtoHtml {
   private val schemaFileUrl = "/koski/api/documentation/koski-oppija-schema.json"
   private def general =s"""
 
-# Koski-tiedonsiirtoprotokolla
+## Koski-tiedonsiirtoprotokolla
 
 Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla. Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta](https://confluence.csc.fi/display/OPHPALV/Koski). Järjestelmän lähdekoodit ja kehitysdokumentaatio [Githubissa](https://github.com/Opetushallitus/koski).
 
@@ -25,11 +25,11 @@ Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä
 - Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille,
   jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
 
-## JSON-dataformaatti
+### JSON-dataformaatti
 
 Käytettävällä JSON-formaatilla voidaan siirtää tietoja perusopetusta, lukiokoulutusta ja ammatillista koulutusta tarjoavien koulutustoimijoiden tietojärjestelmistä Koskeen ja eteenpäin tietoja tarvitsevien viranomaisten järjestelmiin ja loppukäyttäjiä, kuten oppilaitosten virkailijoita palveleviin käyttöliittymiin.
 
-### JSON Schema
+#### JSON Schema
 
 Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
 
@@ -67,7 +67,7 @@ että [esimerkkien](https://github.com/Opetushallitus/koski/blob/master/src/main
 
   def rest_apis ="""
 
-## REST-rajapinnat
+### REST-rajapinnat
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
@@ -80,7 +80,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
   """
 
   def annotated_data="""
-## Esimerkkidata annotoituna
+### Esimerkkidata annotoituna
 
 Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
 Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.

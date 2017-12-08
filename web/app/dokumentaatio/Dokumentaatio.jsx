@@ -38,7 +38,7 @@ const DokumentaatioSivu = ({info}) => {
   return (
     <div className='content content-area'>
       {stillLoading &&
-        <section><h1>{'Ladataan...'}</h1></section>
+        <section><h2>{'Ladataan...'}</h2></section>
       }
 
       <section dangerouslySetInnerHTML={{__html: htmlSections[0]}}></section>
@@ -54,7 +54,7 @@ const DokumentaatioSivu = ({info}) => {
 
         {R.map(c => (
           <div key={c}>
-            <h1>{c}</h1>
+            <h4>{c}</h4>
             <ul className="example-list">
             {
               R.addIndex(R.map)((e, idx) => <JsonExample key={idx} category={c} example={e}/>, examples[c])
