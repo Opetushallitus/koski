@@ -150,9 +150,9 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   päättymispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Mikäli kyseessä on ammatilisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Description("Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
-  @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttääjärjestämismuodon sijaan.")
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
@@ -182,7 +182,7 @@ case class AmmatillisenTutkinnonSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatilisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
@@ -225,7 +225,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatilisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
