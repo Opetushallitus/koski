@@ -96,10 +96,11 @@ object Tables {
     val serviceTicket = column[String]("serviceticket")
     val username = column[String]("username")
     val userOid = column[String]("useroid")
+    val name = column[String]("name")
     val started = column[Timestamp]("started")
     val updated = column[Timestamp]("updated")
 
-    def * = (serviceTicket, username, userOid, started, updated) <> (SSOSessionRow.tupled, SSOSessionRow.unapply)
+    def * = (serviceTicket, username, userOid, name, started, updated) <> (SSOSessionRow.tupled, SSOSessionRow.unapply)
   }
 
   class TiedonsiirtoTable(tag: Tag) extends Table[TiedonsiirtoRow] (tag, "tiedonsiirto") {
@@ -191,7 +192,7 @@ object Tables {
     }).filterNot(_.mitätöity)
 }
 
-case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
+case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima: Timestamp, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
