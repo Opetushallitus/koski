@@ -9,7 +9,7 @@ import org.scalatra.ScalatraServlet
 import scala.util.Try
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
-  before() {
+  before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin
     }
