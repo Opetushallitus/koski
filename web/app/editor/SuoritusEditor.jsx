@@ -15,10 +15,6 @@ import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from '
 import Text from '../Text.jsx'
 
 const resolveEditor = (mdl) => {
-  if (mdl.context.kansalainen) {
-    return null
-  }
-
   if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
