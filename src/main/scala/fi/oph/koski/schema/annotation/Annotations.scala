@@ -36,3 +36,5 @@ case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
 case class Example(text: String) extends RepresentationalMetadata
 
 case class SensitiveData() extends RepresentationalMetadata
+
+case class Tooltip(text: String) extends RepresentationalMetadata

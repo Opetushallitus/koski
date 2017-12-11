@@ -93,6 +93,7 @@ trait Arvioinniton extends Suoritus {
 
 trait Toimipisteellinen extends Suoritus with OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
+  @Tooltip("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
   def toimipiste: OrganisaatioWithOid

@@ -279,7 +279,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
 
-    val description = property.metadata.collect({ case Description(d) => d })
+    val description = property.metadata.collect({ case Tooltip(d) => d })
 
     EditorProperty(property.key, property.title, description, propertyModel, props)
   }
