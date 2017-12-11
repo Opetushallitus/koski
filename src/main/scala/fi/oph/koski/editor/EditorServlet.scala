@@ -165,6 +165,6 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
   private def findByUserOppija: Either[HttpStatus, EditorModel] = {
     val oppija: Either[HttpStatus, Oppija] = application.oppijaFacade.findUserOppija
-    oppija.right.map(oppija => toEditorModel(oppija, editable = false))
+    oppija.right.map(oppija => OmatTiedotEditorModel.toEditorModel(oppija))
   }
 }
