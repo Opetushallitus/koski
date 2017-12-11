@@ -43,7 +43,7 @@ describe('Koski', function() {
       })
 
       describe('Kun ladataan sivu uudelleen', function() {
-        before(openPage('/koski', login.isVisible))
+        before(openPage('/koski/virkailija', login.isVisible))
 
         it('Sessio on päättynyt ja login-sivu näytetään', function() {
           expect(login.isVisible()).to.equal(true)
