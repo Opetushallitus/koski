@@ -244,5 +244,5 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
 
 const opiskeluoikeusInvalidated = () => {
   setOpiskeluoikeusInvalidated()
-  window.location = '/koski'
+  window.location = '/koski/virkailija'
 }

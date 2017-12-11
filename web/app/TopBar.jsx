@@ -27,10 +27,9 @@ const NavList = ({location, user}) => {
 const RaamitTopBar = ({location, user}) => {
   return (<header id="topbar" className="inraamit topbarnav">
     <NavList location={location} user={user}/>
-    {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+    <OpiskeluoikeusInvalidatedMessage location={location} />
   </header>)
 }
-
 
 const LocalTopBar = ({location, user, titleKey}) => {
   return (
@@ -44,7 +43,7 @@ const LocalTopBar = ({location, user, titleKey}) => {
       {(user !== null) &&
         <div className='topbarnav'>
           <NavList location={location} user={user}/>
-          {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+          <OpiskeluoikeusInvalidatedMessage location={location} />
         </div>
       }
     </header>
