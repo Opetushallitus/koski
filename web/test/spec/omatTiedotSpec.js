@@ -7,9 +7,8 @@ describe('Omat tiedot', function() {
     before(authentication.login('Oili'), omattiedot.openPage)
     it('ne näytetään', function() {
       expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
-
-      expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.deep.equal([
-        'Ammatillinen koulutus', 'Lukiokoulutus', 'Perusopetus'
+      expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
+        'Stadin ammattiopisto', 'Jyväskylän normaalikoulu', 'Jyväskylän normaalikoulu'
       ])
     })
   })
