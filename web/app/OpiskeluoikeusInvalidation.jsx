@@ -8,8 +8,8 @@ import {invalidateOpiskeluoikeus} from './Oppija.jsx'
 export const setOpiskeluoikeusInvalidated = () => sessionStorage.setItem('opiskeluoikeusInvalidated', true)
 export const resetOpiskeluoikeusInvalidated = () => sessionStorage.removeItem('opiskeluoikeusInvalidated')
 
-export const OpiskeluoikeusInvalidatedMessage = () => {
-  if (!sessionStorage.getItem('opiskeluoikeusInvalidated')) {
+export const OpiskeluoikeusInvalidatedMessage = ({location}) => {
+  if (!location || location.path !== '/koski/virkailija' || !sessionStorage.getItem('opiskeluoikeusInvalidated')) {
     return null
   }
   let hideBus = Bacon.Bus()
