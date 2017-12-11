@@ -9,15 +9,14 @@ import org.scalatra.ScalatraServlet
 import scala.util.Try
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
-  before() {
+  before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin
     }
   }
 
   get("/") {
-    //TODO: Kansalaisen länderi
-    redirect("/virkailija")
+    htmlIndex("koski-lander.js")
   }
 
   get("/virkailija") {
