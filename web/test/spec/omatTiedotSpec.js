@@ -6,7 +6,7 @@ describe('Omat tiedot', function() {
   describe("Kun oppijalla on opiskeluoikeuksia", function() {
     before(authentication.login('Oili'), omattiedot.openPage)
     it('ne näytetään', function() {
-      expect(omattiedot.oppija()).to.equal("Oppija, Oili (190751-739W)")
+      expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
 
       expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.deep.equal([
         'Ammatillinen koulutus', 'Lukiokoulutus', 'Perusopetus'
