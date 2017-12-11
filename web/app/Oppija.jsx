@@ -195,10 +195,13 @@ export class ExistingOppija extends React.Component {
       : (
         <div>
           <div className={stateP.map(state => 'oppija-content ' + state)}>
-            <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
-              className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
-              <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
-            </h2>
+            {oppija.context.kansalainen
+              ? <h2><Text name="Opintosuorituksesi" /></h2>
+              : <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
+                  className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
+                  <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
+                </h2>
+            }
             {
               // Set location as key to ensure full re-render when context changes
               oppija
