@@ -198,7 +198,7 @@ describe('Perusopetus', function() {
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
             'Vammainen kyllä\n' +
-            'Vaikeasti vammainen kyllä\n' +
+            'Vaikeasti vammainen 14.8.2010 —\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
             'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016\n' +
@@ -2405,7 +2405,9 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
-          '15.8.2008 Läsnä')
+          '15.8.2008 Läsnä\n' +
+          'Lisätiedot\n' +
+          'Vaikeasti vammainen 6.6.2014 —')
       })
 
       it('näyttää suorituksen tiedot', function() {

@@ -49,9 +49,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData
   @DefaultValue(false)
   vammainen: Boolean = false,
-  @Description("""Oppilas on vaikeasti vammainen (true/false). Rahoituksen laskennassa käytettävä tieto.""")
-  @DefaultValue(false)
-  vaikeastiVammainen: Boolean = false,
+  @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData
+  vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
   majoitusetu: Option[Päätösjakso] = None,
   @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.""")

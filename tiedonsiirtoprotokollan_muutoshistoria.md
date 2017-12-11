@@ -1,3 +1,8 @@
+## 11.12.2017
+
+- Muutettu ammatillisen opiskeluoikeuden lisätiedon kenttä `vaikeastiVammainen` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
+- Muutettu ammatillisen opiskeluoikeuden lisätiedon kenttä `vammainenJaAvustaja` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
+ 
 ## 8.12.2017
 
 - Erotettu uskonto ja elämänkatsomustieto omiksi oppiaineikseen perusopetuksessa ja lukiossa

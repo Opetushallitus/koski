@@ -65,14 +65,12 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @SensitiveData
   hojks: Option[Hojks],
-  @Description("Onko oppija vaikeasti vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.")
-  @DefaultValue(false)
+  @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
-  vaikeastiVammainen: Boolean = false,
-  @Description("Onko oppija vammainen ja hänellä on avustaja. Rahoituksen laskennassa käytettävä tieto")
-  @DefaultValue(false)
+  vaikeastiVammainen: Option[List[Aikajakso]] = None,
+  @Description("Onko oppija vammainen ja hänellä on avustaja. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData
-  vammainenJaAvustaja: Boolean = false,
+  vammainenJaAvustaja: Option[List[Aikajakso]] = None,
   @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
   @Title("Osa-aikaisuusjaksot")
   osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,

@@ -16,7 +16,6 @@
         "fi" : "Stadin ammattiopisto"
       }
     },
-    "alkamispäivä" : "2018-01-01",
     "arvioituPäättymispäivä" : "2020-05-31",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
@@ -520,13 +519,13 @@
       "vaativanErityisenTuenErityinenTehtävä" : [ {
         "alku" : "2018-01-01"
       } ],
-      "vaikeastiVammainen" : false,
-      "vammainenJaAvustaja" : false,
-      "henkilöstökoulutus" : false
+      "henkilöstökoulutus" : false,
+      "koulutusvienti" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
-    }
+    },
+    "alkamispäivä" : "2018-01-01"
   } ]
 }

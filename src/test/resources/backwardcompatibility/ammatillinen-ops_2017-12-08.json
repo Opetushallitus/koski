@@ -13,7 +13,6 @@
         "fi" : "Stadin ammattiopisto"
       }
     },
-    "alkamispäivä" : "2012-09-01",
     "arvioituPäättymispäivä" : "2015-05-31",
     "päättymispäivä" : "2016-01-09",
     "tila" : {
@@ -73,11 +72,13 @@
         "koodistoUri" : "tutkintonimikkeet"
       } ],
       "osaamisala" : [ {
-        "koodiarvo" : "1525",
-        "nimi" : {
-          "fi" : "Autokorinkorjauksen osaamisala"
-        },
-        "koodistoUri" : "osaamisala"
+        "osaamisala" : {
+          "koodiarvo" : "1525",
+          "nimi" : {
+            "fi" : "Autokorinkorjauksen osaamisala"
+          },
+          "koodistoUri" : "osaamisala"
+        }
       } ],
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
@@ -209,13 +210,13 @@
         "alku" : "2012-10-20",
         "loppu" : "2013-08-15"
       },
-      "vaikeastiVammainen" : false,
-      "vammainenJaAvustaja" : false,
-      "henkilöstökoulutus" : false
+      "henkilöstökoulutus" : false,
+      "koulutusvienti" : false
     },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
-    }
+    },
+    "alkamispäivä" : "2012-09-01"
   } ]
 }

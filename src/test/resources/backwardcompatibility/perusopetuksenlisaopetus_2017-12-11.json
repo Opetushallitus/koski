@@ -16,7 +16,6 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "alkamispäivä" : "2008-08-15",
     "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
@@ -49,8 +48,7 @@
         "loppu" : "2016-06-04"
       },
       "vuosiluokkiinSitoutumatonOpetus" : false,
-      "vammainen" : false,
-      "vaikeastiVammainen" : false
+      "vammainen" : false
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -430,6 +428,7 @@
     "tyyppi" : {
       "koodiarvo" : "perusopetuksenlisaopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
-    }
+    },
+    "alkamispäivä" : "2008-08-15"
   } ]
 }

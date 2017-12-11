@@ -95,8 +95,14 @@
           "koodistoUri" : "opetusryhma"
         }
       },
-      "vaikeastiVammainen" : true,
-      "vammainenJaAvustaja" : true,
+      "vaikeastiVammainen" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "vammainenJaAvustaja" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
       "osaAikaisuusjaksot" : [ {
         "alku" : "2012-09-01",
         "osaAikaisuus" : 80
