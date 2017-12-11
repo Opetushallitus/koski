@@ -209,7 +209,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
-    oppijat.getOppijat.find(_.hetu.contains(hetu)).map(h => toOppijaHenkilö(h.henkilö))
+    oppijat.getOppijat.find(_.hetu.contains(hetu)).map(h => h.master.map(toOppijaHenkilö).getOrElse(toOppijaHenkilö(h.henkilö)))
   }
 
   override def findChangedOppijaOids(since: Long): List[String] = synchronized {
