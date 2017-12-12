@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './style/main.less'
 import {TopBar} from './TopBar.jsx'
 import Text from './Text.jsx'
+import {IdLogin} from './IdLogin.jsx'
 
 const Lander = () => (
   <div className={'lander'}>
@@ -12,9 +13,7 @@ const Lander = () => (
       <p><Text name="Lander ingressi 1"/></p>
       <p><Text name="Lander ingressi 2"/></p>
     </div>
-    <button className='button blue'>
-      {'Kirjaudu sisään'}
-    </button>
+    <IdLogin/>
   </div>
 )
 

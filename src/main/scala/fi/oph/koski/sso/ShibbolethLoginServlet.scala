@@ -7,8 +7,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache{
   get("/") {
-    //request.header("nationalidentificationnumber") match {
-    Some("190751-739W") match {
+    request.header("nationalidentificationnumber") match {
       case Some(hetu) =>
         application.henkilöRepository.findOppijat(hetu)(KoskiSession.untrustedUser).headOption match {
           case Some(oppija) =>
