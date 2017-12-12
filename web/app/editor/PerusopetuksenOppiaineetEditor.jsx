@@ -24,8 +24,8 @@ import Text from '../Text.jsx'
 import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor.jsx'
 
-var pakollisetTitle = t('Pakolliset oppiaineet')
-var valinnaisetTitle = t('Valinnaiset oppiaineet')
+var pakollisetTitle = 'Pakolliset oppiaineet'
+var valinnaisetTitle = 'Valinnaiset oppiaineet'
 let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
@@ -152,7 +152,7 @@ class Oppiainetaulukko extends React.Component {
             : 'Lisää valinnainen oppiaine')))
 
     return (<section>
-        {title && <h5>{title}</h5>}
+        {title && <h5><Text name={title} /></h5>}
         { suoritukset.length > 0 && (
           <table>
             <thead>
