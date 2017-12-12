@@ -30,9 +30,11 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
-  def setUserCookie(user: AuthenticationUser) = {
-    response.addCookie(Cookie("koskiUser", URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+  def setUserCookie(user: AuthenticationUser, parentDomain: Boolean) = {
+    val domain = if (parentDomain) cookieDomain else ""
+    response.addCookie(Cookie("koskiUser", URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
+
   def getUserCookie: Option[AuthenticationUser] = {
     Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
       try {
@@ -77,6 +79,8 @@ trait SSOSupport extends ScalatraBase with Logging {
   def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login"
+
+  private def cookieDomain = application.config.getString("koski.cookieDomain")
 }
 
 case class SSOConfig(config: Config) {

@@ -11,8 +11,8 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
       case Some(hetu) =>
         application.henkilöRepository.findOppijat(hetu)(KoskiSession.untrustedUser).headOption match {
           case Some(oppija) =>
-            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None))))
-            redirect("/omattiedot")
+            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None))), parentDomain = true)
+            redirect(s"${application.config.getString("koski.root.url")}/omattiedot")
           case _ =>
             haltWithStatus(KoskiErrorCategory.notFound("oppija not found"))
         }
