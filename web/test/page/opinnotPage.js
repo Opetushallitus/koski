@@ -362,10 +362,10 @@ function TutkinnonOsat(groupId) {
 function Opiskeluoikeudet() {
   return {
     oppilaitokset: function() {
-      return textsOf(S('.opiskeluoikeustyypit .oppilaitos'))
+      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav'))
     },
     opiskeluoikeustyypit: function() {
-      return textsOf(S('.opiskeluoikeustyypit .opiskeluoikeustyyppi'))
+      return textsOf(S('.opiskeluoikeustyypit-nav .opiskeluoikeustyyppi'))
     },
     opiskeluoikeuksienMäärä: function() {
       return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
@@ -377,7 +377,7 @@ function Opiskeluoikeudet() {
 
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
-        return click(findSingle('.opiskeluoikeustyypit .' + tyyppi + ' a'))()
+        return click(findSingle('.opiskeluoikeustyypit-nav .' + tyyppi + ' a'))()
       }
     },
     lisääOpiskeluoikeus: click(findSingle('.add-opiskeluoikeus a')),

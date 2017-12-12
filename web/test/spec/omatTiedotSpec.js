@@ -8,8 +8,7 @@ describe('Omat tiedot', function() {
     it('ne näytetään', function() {
       expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
       expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
-        'Stadin ammattiopisto', 'Jyväskylän normaalikoulu', 'Jyväskylän normaalikoulu'
-      ])
+        'Stadin ammattiopisto', 'Jyväskylän normaalikoulu' ])
     })
   })
 
