@@ -1,8 +1,8 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Http from './http'
-import Text from './Text.jsx'
+import Http from '../http'
+import Text from '../Text.jsx'
 
 const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'

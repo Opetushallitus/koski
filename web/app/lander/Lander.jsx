@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './style/main.less'
-import {TopBar} from './TopBar.jsx'
-import Text from './Text.jsx'
+import '../style/main.less'
+import {TopBar} from '../TopBar.jsx'
+import Text from '../Text.jsx'
 import {IdLogin} from './IdLogin.jsx'
 
 const Lander = () => (
