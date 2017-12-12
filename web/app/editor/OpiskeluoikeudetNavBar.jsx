@@ -33,7 +33,7 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   }
 
   let canAddOpiskeluoikeusP = userP.map(u => !!u.hasWriteAccess)
-  return (<ul className="opiskeluoikeustyypit">
+  return (<ul className="opiskeluoikeustyypit-nav">
     {
       opiskeluoikeusTyypit.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
         let selected = tyyppiIndex == selectedIndex

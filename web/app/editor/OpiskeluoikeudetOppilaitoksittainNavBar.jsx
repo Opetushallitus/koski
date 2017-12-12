@@ -6,18 +6,17 @@ import {näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor.jsx'
 import {modelItems} from './EditorModel'
 
 export default ({ opiskeluoikeudet, selectedIndex }) => {
-  return (<ul className="opiskeluoikeustyypit">
+  return (<ul className="oppilaitokset-nav">
     {
       opiskeluoikeudet.map((oppilaitos, oppilaitosIndex) => {
         let selected = oppilaitosIndex == selectedIndex
         let className = selected ? 'selected' : ''
         let content = (<div>
-          <div className="opiskeluoikeustyyppi">{ modelTitle(oppilaitos, 'tyyppi') }</div>
+          <div className="oppilaitos">{modelTitle(oppilaitos, 'oppilaitos')}</div>
           <ul className="oppilaitokset">
             {
               modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
                 (<li key={opiskeluoikeusIndex}>
-                  <span className="oppilaitos">{modelTitle(oppilaitos, 'oppilaitos')}</span>
                   <ul className="opiskeluoikeudet">
                     {
                       näytettävätPäätasonSuoritukset(opiskeluoikeus).map((suoritusRyhmä, suoritusIndex) =>
