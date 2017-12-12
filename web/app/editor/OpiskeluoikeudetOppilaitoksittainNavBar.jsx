@@ -12,7 +12,7 @@ export default ({ opiskeluoikeudet, selectedIndex }) => {
         let selected = oppilaitosIndex == selectedIndex
         let className = selected ? 'selected' : ''
         let content = (<div>
-          <div className="oppilaitos">{modelTitle(oppilaitos, 'oppilaitos')}</div>
+          <div className="oppilaitos-nav">{modelTitle(oppilaitos, 'oppilaitos')}</div>
           <ul className="oppilaitokset">
             {
               modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
