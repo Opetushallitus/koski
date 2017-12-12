@@ -8,7 +8,7 @@ import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString, SchemaLocalization}
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.todistus.LocalizedHtml
@@ -279,7 +279,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
 
-    val description = property.metadata.collect({ case Tooltip(d) => d })
+    val description = SchemaLocalization.tooltip(property).map{ case (key, text) => context.localizationRepository.get(key).get(context.user.lang) }
 
     EditorProperty(property.key, property.title, description, propertyModel, props)
   }
