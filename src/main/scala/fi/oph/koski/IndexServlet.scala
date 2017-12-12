@@ -16,7 +16,11 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    htmlIndex("koski-lander.js")
+    if (application.env.isDevEnvironment) {
+      htmlIndex("koski-landerWithLogin.js")
+    } else {
+      htmlIndex("koski-lander.js")
+    }
   }
 
   get("/virkailija") {

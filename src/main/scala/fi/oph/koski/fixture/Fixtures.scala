@@ -26,14 +26,13 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     } else {
       KoskiDatabaseConfig(config).isLocal && config.getString("opintopolku.virkailija.url") == "mock"
     }
-    val environment = Environment(application)
     if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
       throw new RuntimeException("Trying to use fixtures when running in a server environment")
     }
-    if (useFixtures && environment.databaseIsLarge) {
+    if (useFixtures && application.env.databaseIsLarge) {
       throw new RuntimeException("Trying to use fixtures against a database with more than 100 rows")
     }
-    if (useFixtures && environment.indexIsLarge) {
+    if (useFixtures && application.env.indexIsLarge) {
       throw new RuntimeException("Trying to use fixtures against an ElasticSearch index with more than 100 rows")
     }
     useFixtures
