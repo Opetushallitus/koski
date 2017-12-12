@@ -13,6 +13,9 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
 }
 
 const NavList = ({location, user}) => {
+  if (!user || !user.hasAnyReadAccess) {
+    return null
+  }
   return (<ul>
     <li>{naviLink('/koski/', 'Opiskelijat', location.path, '', (path, loc) => loc == path || loc.startsWith('/koski/oppija'))}</li>
     <li>{naviLink('/koski/tiedonsiirrot', 'Tiedonsiirrot', location.path, '', (path, loc) => loc.startsWith(path))}</li>
@@ -24,10 +27,9 @@ const NavList = ({location, user}) => {
 const RaamitTopBar = ({location, user}) => {
   return (<header id="topbar" className="inraamit topbarnav">
     <NavList location={location} user={user}/>
-    {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+    <OpiskeluoikeusInvalidatedMessage location={location} />
   </header>)
 }
-
 
 const LocalTopBar = ({location, user, titleKey}) => {
   return (
@@ -41,7 +43,7 @@ const LocalTopBar = ({location, user, titleKey}) => {
       {(user !== null) &&
         <div className='topbarnav'>
           <NavList location={location} user={user}/>
-          {location.path === '/koski/' && <OpiskeluoikeusInvalidatedMessage/>}
+          <OpiskeluoikeusInvalidatedMessage location={location} />
         </div>
       }
     </header>

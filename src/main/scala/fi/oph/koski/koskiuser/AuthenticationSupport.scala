@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -101,6 +102,14 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
       case Right(user) =>
       case Left(error) => haltWithStatus(error)
     }
+  }
+
+  def localLogin(user: AuthenticationUser): AuthenticationUser = {
+    val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
+    application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request))
+    logger.info("Local session ticket created: " + fakeServiceTicket)
+    KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
+    user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 }
 

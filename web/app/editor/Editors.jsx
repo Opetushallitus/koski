@@ -14,6 +14,7 @@ import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
 import {InlineJaksoEditor, JaksoEditor} from './JaksoEditor.jsx'
 import {BooleanEditor} from './BooleanEditor.jsx'
 import {OppijaEditor} from './OppijaEditor.jsx'
+import {OmatTiedotEditor} from './OmatTiedotEditor.jsx'
 import {ToimipisteEditor} from './ToimipisteEditor.jsx'
 import * as AmmatillinenEditors from './AmmatillinenEditors.jsx'
 import {OrganisaatioEditor} from './OrganisaatioEditor.jsx'
@@ -33,6 +34,7 @@ export const editorMapping = R.mergeAll([{
   'boolean': BooleanEditor,
   'enum': EnumEditor,
   'oppijaeditorview': OppijaEditor,
+  'omattiedoteditorview': OmatTiedotEditor,
   'paatasonsuoritus': SuoritusEditor,
   'vahvistus': VahvistusEditor,
   'laajuus' : LaajuusEditor,

@@ -14,7 +14,7 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
 
   def store(ticket: String, user: AuthenticationUser, clientIp: String) = {
     AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, user, clientIp, Map()))
-    runDbSync((Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, now, now)))
+    runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now))
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 10) {
@@ -28,8 +28,8 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
       result
     }
 
-    runDbSync(action).map{row =>
-      AuthenticationUser(row.userOid, row.username, row.username, Some(ticket))
+    runDbSync(action).map { row =>
+      AuthenticationUser(row.userOid, row.username, row.name, Some(ticket))
     }.headOption
   }
 

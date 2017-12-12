@@ -361,6 +361,9 @@ function TutkinnonOsat(groupId) {
 
 function Opiskeluoikeudet() {
   return {
+    oppilaitokset: function() {
+      return textsOf(S('.opiskeluoikeustyypit .oppilaitos'))
+    },
     opiskeluoikeustyypit: function() {
       return textsOf(S('.opiskeluoikeustyypit .opiskeluoikeustyyppi'))
     },

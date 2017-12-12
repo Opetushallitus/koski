@@ -10,35 +10,38 @@ import fi.oph.koski.util.Timing
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 
 object OppijaEditorModel extends Timing {
+  implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
+    override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
+      case (None, Some(_)) => 1
+      case (Some(_), None) => -1
+      case (None, None) => 0
+      case (Some(x), Some(y)) => if (x.isBefore(y)) { -1 } else { 1 }
+    }
+  }
+
   // Note: even with editable=true, editability will be checked based on organizational access on the lower level
   def toEditorModel(oppija: Oppija, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
-    implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
-      override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
-        case (None, Some(_)) => 1
-        case (Some(_), None) => -1
-        case (None, None) => 0
-        case (Some(x), Some(y)) => if (x.isBefore(y)) { -1 } else { 1 }
-      }
-    }
     val tyypit = oppija.opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
         val oppilaitokset = opiskeluoikeudet.groupBy(_.getOppilaitos).map {
-          case (oppilaitos, opiskeluoikeudet) =>
-            OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).map {
-              case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
-              case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
-              case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
-              case oo: Any => oo
-            })
+          case (oppilaitos, opiskeluoikeudet) => toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
     }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
-    val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
-    buildModel(editorView, editable)
+    buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit), editable)
   }
 
   def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+  }
+
+  def toOppilaitoksenOpiskeluoikeus(oppilaitos: Oppilaitos, opiskeluoikeudet: Seq[Opiskeluoikeus]) = {
+    OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).map {
+      case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
+      case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
+      case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
+      case oo: Any => oo
+    })
   }
 
   def aikuistenPerusopetuksenSuoritustenJärjestysKriteeri(s: AikuistenPerusopetuksenPäätasonSuoritus) = {

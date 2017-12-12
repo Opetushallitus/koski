@@ -19,7 +19,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
     return oppijaContentP(oppijaId)
   } else if (path === '/koski/uusioppija' && (uusiOppijaHetu || uusiOppijaOid)) {
     return { content: (<UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />), title: 'Uuden opiskelijan lisäys' }
-  } else if (path === '/koski/') {
+  } else if (path === '/koski/virkailija') {
     return onlyIfHasReadAccess(oppijataulukkoContentP(queryString, params))
   } else if (path === '/koski/tiedonsiirrot') {
     return tiedonsiirtolokiContentP(queryString)

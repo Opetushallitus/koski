@@ -24,7 +24,7 @@ class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: Lis
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession) = (main :: aux).par.flatMap(_.findByOppijaOid(oid)).toList
 
-  override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = main.findByUserOid(user.oid)
+  override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = (main :: aux).par.flatMap(_.findByUserOid(oid)).toList
 
   override def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Oid]] = main.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)
 }
