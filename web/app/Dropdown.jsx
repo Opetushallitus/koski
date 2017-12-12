@@ -165,7 +165,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                   </li>)
                   let groupName = grouped && (i == 0 || allOptions[i - 1].groupName != o.groupName) ? o.groupName : ''
                   if (groupName) {
-                    return [<li className="group-header">{groupName}</li>, itemElement]
+                    return [<li key={groupName} className="group-header">{groupName}</li>, itemElement]
                   } else {
                     return [itemElement]
                   }
