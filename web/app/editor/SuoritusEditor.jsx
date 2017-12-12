@@ -24,7 +24,7 @@ const resolveEditor = (mdl) => {
   if (['esiopetuksensuoritus'].includes(mdl.value.classes[0])) {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
   }
-  if (mdl.value.classes.includes('ammatillinenpaatasonsuoritus')) {
+  if (['ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus'].some(c => mdl.value.classes.includes(c))) {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
