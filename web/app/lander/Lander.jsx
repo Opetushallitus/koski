@@ -6,7 +6,7 @@ import {LanderInfo} from './LanderInfo.jsx'
 
 ReactDOM.render((
   <div>
-    <TopBar user={null} saved={null} title={''}/>
+    <TopBar user={null} />
     <LanderInfo/>
   </div>
 ), document.getElementById('content'))

@@ -45,7 +45,7 @@ const Login = () => {
 
 ReactDOM.render(
   (<div>
-    <TopBar user={null} saved={null} title={''} />
+    <TopBar user={null} />
     <Login/>
   </div>),
   document.getElementById('content')
