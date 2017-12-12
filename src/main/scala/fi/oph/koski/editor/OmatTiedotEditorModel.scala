@@ -1,6 +1,7 @@
 package fi.oph.koski.editor
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.editor.OppijaEditorModel.{aikuistenPerusopetuksenSuoritustenJärjestysKriteeri, perusopetuksenSuoritustenJärjestysKriteeri}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
@@ -10,7 +11,13 @@ object OmatTiedotEditorModel extends Timing {
   def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     import OppijaEditorModel.opiskeluoikeusOrdering
     val view = OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppija.opiskeluoikeudet.groupBy(_.getOppilaitos).map {
-      case (oppilaitos, opiskeluoikeudet) => OppijaEditorModel.toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
+      case (oppilaitos, opiskeluoikeudet) =>
+        OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).reverse.map {
+          case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
+          case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
+          case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.alkamispäivä).reverse)
+          case oo: Any => oo
+        })
     }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä).reverse)
     buildModel(view)
   }
