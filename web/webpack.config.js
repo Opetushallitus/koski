@@ -8,7 +8,8 @@ module.exports = {
     main: './app/Koski.jsx',
     login: './app/Login.jsx',
     pulssi: './app/Pulssi.jsx',
-    lander: './app/Lander.jsx'
+    lander: './app/lander/Lander.jsx',
+    landerWithLogin: './app/lander/LanderWithLogin.jsx'
   },
   output: {
     path: __dirname + '/../target/webapp',
