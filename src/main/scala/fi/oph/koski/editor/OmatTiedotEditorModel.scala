@@ -9,7 +9,6 @@ import fi.oph.koski.util.Timing
 object OmatTiedotEditorModel extends Timing {
   def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     import OppijaEditorModel.opiskeluoikeusOrdering
-    println(oppija.opiskeluoikeudet)
     val view = OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppija.opiskeluoikeudet.groupBy(_.getOppilaitos).map {
       case (oppilaitos, opiskeluoikeudet) => OppijaEditorModel.toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
     }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä).reverse)
