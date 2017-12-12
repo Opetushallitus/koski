@@ -111,7 +111,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
 
   return (<span>{
     elementWithLoadingIndicator(allOptionsP.map(allOptions => {
-      let grouped = R.keys(R.groupBy((opt) => opt.groupName)(allOptions)).length > 1
+      let grouped = R.keys(R.groupBy((opt) => opt.groupName)(R.filter(o => o.groupName, allOptions))).length > 1
       let className = buildClassNames(['dropdown', inline && 'inline', grouped && 'grouped'])
       return (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
           {
