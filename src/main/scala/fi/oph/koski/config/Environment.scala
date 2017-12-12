@@ -11,6 +11,8 @@ case class Environment(application: KoskiApplication) {
   def databaseIsLarge = Environment.databaseIsLarge(application.masterDatabase.db)
 
   def indexIsLarge = application.koskiPulssi.opiskeluoikeusTilasto.opiskeluoikeuksienMäärä > 100
+
+  def isDevEnvironment = List("local", "OPHKoskiDev").contains(application.config.getString("env"))
 }
 
 object Environment {
