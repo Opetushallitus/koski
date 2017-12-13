@@ -1,26 +1,18 @@
 function LoginPage() {
   function loginElement() { return S('#content .login') }
   var pageApi = Page(loginElement);
-
+  function isVisible() {
+    return isElementVisible(loginElement)
+  }
   var api = {
-    openPage: function() {
-      return Authentication().logout().then(function() {
-          return openPage('/koski/virkailija', api.isVisible)()
-        }
-      )
-    },
+    openPage: seq(Authentication().logout, openPage('/koski/virkailija', isVisible)),
     login: function(username, password) {
-      return function() {
-        wait.forMilliseconds(100)()
-          .then(pageApi.setInputValue('#username', username))
-          .then(pageApi.setInputValue('#password', password))
-          .then(pageApi.button(function() { return loginElement().find('button') }).click)
-      }
+      return seq(wait.forMilliseconds(100),
+          pageApi.setInputValue('#username', username),
+          pageApi.setInputValue('#password', password),
+          click(findSingle('button', loginElement)))
     },
-    isVisible: function() {
-      return isElementVisible(loginElement())
-
-    },
+    isVisible: isVisible,
     isLoginErrorVisible: function() {
       return loginElement().hasClass('error')
     }
