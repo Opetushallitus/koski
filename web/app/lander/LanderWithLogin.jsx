@@ -7,7 +7,7 @@ import {IdLogin} from './IdLogin.jsx'
 
 ReactDOM.render((
   <div>
-    <TopBar user={null} saved={null} title={''}/>
+    <TopBar user={null} />
     <LanderInfo/>
     <IdLogin/>
   </div>
