@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import '../style/main.less'
 import {TopBar} from '../TopBar.jsx'
 import {LanderInfo} from './LanderInfo.jsx'
+import Text from '../Text.jsx'
 
 ReactDOM.render((
   <div>
