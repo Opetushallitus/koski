@@ -44,11 +44,11 @@ export const OpiskeluoikeusEditor = ({model}) => {
             { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">{'('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
-                <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{','}</span>
+                <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
+                <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
                 </span>
               : null
             }
-            <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
           </span>
           {!model.context.kansalainen && <Versiohistoria opiskeluoikeusOid={oid} oppijaOid={context.oppijaOid}/>}
           {!model.context.kansalainen && <OpiskeluoikeudenId opiskeluoikeus={mdl}/>}
