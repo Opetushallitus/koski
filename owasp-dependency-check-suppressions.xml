@@ -11,9 +11,12 @@
         <cve>CVE-2016-7051</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-   file name: alpn-api-1.1.2.v20150522.jar
-   ]]></notes>
+        <notes><![CDATA[file name: postgresql-9.4.1207.jre7.jar]]></notes>
+        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
+        <cve>CVE-2017-8806</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: alpn-api-1.1.2.v20150522.jar]]></notes>
         <gav regex="true">^org\.eclipse\.jetty\.alpn:alpn-api:.*$</gav>
         <cpe>cpe:/a:eclipse:jetty</cpe>
     </suppress>
