@@ -16,9 +16,13 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    htmlIndex("koski-lander.js", scripts =
-      <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>
-    )
+    if (application.features.shibboleth) {
+      htmlIndex("koski-lander.js", scripts =
+        <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>
+      )
+    } else {
+      redirect("/virkailija")
+    }
   }
 
   get("/virkailija") {
