@@ -17,6 +17,7 @@ trait LocalizedString extends Localized {
     Finnish(fi, Some(sv), Some(en))
   }
   def description = this
+  def hasLanguage(lang: String): Boolean = valueList.map(_._1).contains(lang)
 }
 
 trait Localizable {

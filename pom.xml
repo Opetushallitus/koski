@@ -412,7 +412,7 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>koskidev,browserstack</tagsToExclude>
+              <tagsToExclude>koskidev,browserstack,localization</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
@@ -427,6 +427,20 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <wildcardSuites>fi.oph.koski.integrationtest</wildcardSuites>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>localization</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <configuration>
+              <wildcardSuites>fi.oph.koski.localization</wildcardSuites>
             </configuration>
           </plugin>
         </plugins>

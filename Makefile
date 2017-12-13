@@ -50,6 +50,8 @@ test: front
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
 browserstack: front
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pbrowserstack
+localizationtest:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Plocalization
 testresults:
 	less -R +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
 js-unit-test:
