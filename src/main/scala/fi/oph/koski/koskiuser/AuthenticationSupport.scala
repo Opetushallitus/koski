@@ -17,10 +17,14 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def haltWithStatus(status: HttpStatus)
 
-  def setUser(user: Either[HttpStatus, AuthenticationUser], parentDomain: Boolean = false) = {
+  def setUser(user: Either[HttpStatus, AuthenticationUser], kansalainen: Boolean = false): Either[HttpStatus, AuthenticationUser] = {
     request.setAttribute("authUser", user)
     user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
-      setUserCookie(user, parentDomain)
+      if (kansalainen) {
+        setKansalaisCookie(user)
+      } else {
+        setUserCookie(user)
+      }
     }
     user
   }

@@ -30,13 +30,18 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
-  def setUserCookie(user: AuthenticationUser, parentDomain: Boolean) = {
-    val domain = if (parentDomain) cookieDomain else ""
-    response.addCookie(Cookie("koskiUser", URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
-  }
+  def setUserCookie(user: AuthenticationUser) =
+    setCookie("koskiUser", user)
+
+  def setKansalaisCookie(user: AuthenticationUser) =
+    setCookie("koskiOppija", user, domain = cookieDomain)
+
+  private def setCookie(name: String, user: AuthenticationUser, domain: String = "") =
+    response.addCookie(Cookie(name, URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
 
   def getUserCookie: Option[AuthenticationUser] = {
-    Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
+    def findCookie(name: String) = Option(request.getCookies).toList.flatten.find(_.getName == name)
+    findCookie("koskiUser").orElse(findCookie("koskiOppija")).map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
       try {
         Some(JsonSerializer.parse[AuthenticationUser](json))
       } catch {
@@ -47,7 +52,8 @@ trait SSOSupport extends ScalatraBase with Logging {
       }
     )
   }
-  def removeUserCookie = removeCookie("koskiUser")
+
+  def removeUserCookie = List("koskiOppija", "koskiUser").foreach(removeCookie)
 
   def casServiceUrl = {
     koskiRoot + "/cas"
