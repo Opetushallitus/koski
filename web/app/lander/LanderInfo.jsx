@@ -9,6 +9,7 @@ const LanderInfo = () => (
       <p><Text name="Lander ingressi 1"/></p>
       <p><Text name="Lander ingressi 2"/></p>
       <p><Text name="Virkailijapalvelut löydät jatkossa osoitteesta"/> <a href="/koski/virkailija">{window.location.origin + '/koski/virkailija'}</a></p>
+      <p><button onClick={() => window.location=window.kansalaisenAuthUrl}><Text name="Kirjaudu sisään" /></button></p>
     </div>
   </div>
 )

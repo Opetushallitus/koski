@@ -1,12 +1,11 @@
 package fi.oph.koski
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
-import scala.xml.NodeSeq.Empty
 import scala.xml.Unparsed
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
@@ -17,12 +16,9 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    val (bundle, scripts) = if (application.features.shibboleth) {
-      ("koski-lander.js", <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>)
-    }  else {
-      ("koski-landerWithLogin.js", Empty)
-    }
-    htmlIndex(bundle, scripts = scripts)
+    htmlIndex("koski-lander.js", scripts =
+      <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>
+    )
   }
 
   get("/virkailija") {
@@ -60,6 +56,14 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
       redirect("/")
     } else {
       htmlIndex("koski-login.js")
+    }
+  }
+
+  get("/shibboleth") {
+    if (Environment.isLocalDevelopmentEnvironment) {
+      htmlIndex("koski-shibbolethLogin.js")
+    } else {
+      redirect("/")
     }
   }
 }
