@@ -45,6 +45,22 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskiopiskeluoikeudentila_loma",
+  "koodiArvo" : "loma",
+  "metadata" : [ {
+    "nimi" : "Loma",
+    "lyhytNimi" : "",
+    "kuvaus" : "Ammatillisen koulutuksen opiskelija on yli 4 viikkoa kestävällä lomajaksolla",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Semester",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskiopiskeluoikeudentila_mitatoity",
   "koodiArvo" : "mitatoity",
   "metadata" : [ {
@@ -108,15 +124,4 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-    "koodiUri" : "koskiopiskeluoikeudentila_loma",
-    "koodiArvo" : "loma",
-    "metadata" : [ {
-      "nimi" : "Loma",
-      "lyhytNimi" : "",
-      "kuvaus" : "Ammatillisen koulutuksen opiskelija on yli 4 viikkoa kestävällä lomajaksolla",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
 } ]

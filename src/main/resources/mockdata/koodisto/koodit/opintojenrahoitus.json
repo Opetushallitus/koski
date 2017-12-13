@@ -2,16 +2,23 @@
   "koodiUri" : "opintojenrahoitus_1",
   "koodiArvo" : "1",
   "metadata" : [ {
+    "nimi" : "Statsandelsfinansierad utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Valtionosuusrahoitteinen koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "Valtionosuusrahoitteisella koulutuksella tarkoitetaan koulutusta, jonka kustannuksista\nosa on rahoitettu ammatillisen perus- tai lisäkoulutukseen tarkoitetulla valtion osuudella.",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "opintojenrahoitus_9",
-  "koodiArvo" : "9",
+  "koodiUri" : "opintojenrahoitus_10",
+  "koodiArvo" : "10",
   "metadata" : [ {
-    "nimi" : "Maahanmuuttajien ammatillinen koulutus (valtionavustus)",
+    "nimi" : "Työvoimakoulutus (OKM rahoitus)",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -20,7 +27,14 @@
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
   "metadata" : [ {
+    "nimi" : "Arbetskraftspolitisk vuxenutbildning (nationell finansiering)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -30,7 +44,14 @@
   "koodiArvo" : "3",
   "metadata" : [ {
     "nimi" : "Työvoimakoulutus (ESR-rahoitteinen)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetskraftspolitisk vuxenutbildning (ESF-finansierad)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,7 +60,14 @@
   "koodiArvo" : "4",
   "metadata" : [ {
     "nimi" : "Työnantajan kokonaan rahoittama",
+    "lyhytNimi" : "",
+    "kuvaus" : "Työnantajan\nkokonaan rahoittamalla koulutuksella tarkoitetaan koulutusta, johon ei ole käytetty valtionosuutta\neikä sitä ole rahoitettu työvoimapoliittisena aikuiskoulutuksena. Ko. koulutuksessa pääasiallinen\nkoulutuksen rahoittaja on työnantaja.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "I sin helhet finansierad av arbetsgivaren",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -47,7 +75,14 @@
   "koodiUri" : "opintojenrahoitus_6",
   "koodiArvo" : "6",
   "metadata" : [ {
+    "nimi" : "Finansierad på annat sätt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Muuta kautta rahoitettu",
+    "lyhytNimi" : "",
+    "kuvaus" : "Esimerkiksi opiskelijan kokonaan itse maksama",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -56,7 +91,14 @@
   "koodiUri" : "opintojenrahoitus_7",
   "koodiArvo" : "7",
   "metadata" : [ {
+    "nimi" : "Kompetensprogrammet för unga vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuorten aikuisten osaamisohjelma",
+    "lyhytNimi" : "",
+    "kuvaus" : "Nuorten\naikuisten osaamisohjelmalla tarkoitetaan hallituksen käynnistämää määräaikaista ohjelmaa, joka\ntarjoaa pelkän peruskoulun varassa oleville 20 - 29-vuotiaille lisämahdollisuuden hakea tutkintoon\njohtavaan koulutukseen.",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -66,17 +108,31 @@
   "koodiArvo" : "8",
   "metadata" : [ {
     "nimi" : "Aikuisten osaamisperustan vahvistaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "Aikuisten osaamisperustan vahvistamisella tarkoitetaan hallituksen\nkäynnistämää määräaikaista ohjelmaa, joka on tarkoitettu 30–50-vuotiaille henkilöille, joilla ei ole\nsuoritettuna perusopetuksen oppimäärää tai perusasteen jälkeistä tutkintoa.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Stärkande av vuxnas kompetensgrund",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-    "koodiUri" : "opintojenrahoitus_10",
-    "koodiArvo" : "10",
-    "metadata" : [ {
-      "nimi" : "Työvoimakoulutus (OKM rahoitus)",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
+  "koodiUri" : "opintojenrahoitus_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "Maahanmuuttajien ammatillinen koulutus (valtionavustus)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesutbildning för invandrare (statsunderstöd)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
