@@ -16,7 +16,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    if (application.env.isDevEnvironment) {
+    if (application.config.getString("shibboleth.url") != "mock") {
       htmlIndex("koski-landerWithLogin.js")
     } else {
       htmlIndex("koski-lander.js")

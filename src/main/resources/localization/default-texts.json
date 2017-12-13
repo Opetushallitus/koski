@@ -786,6 +786,7 @@
   "description:Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä..." : "Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto",
   "description:Mikäli kyseessä on ammatillisen reformin..." : "Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.",
   "description:Osaamisen hankkimistavat eri ajanjaksoina. Reformin..." : "Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.",
-  "description:Onko oppija vaikeasti vammainen. Lista..." : "Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto."
+  "description:Onko oppija vaikeasti vammainen. Lista..." : "Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
+  "Virkailijapalvelut löydät jatkossa osoitteesta": "Virkailijapalvelut löydät jatkossa osoitteesta"
 }
 

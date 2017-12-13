@@ -8,6 +8,7 @@ const LanderInfo = () => (
     <div className={'lander__caption'}>
       <p><Text name="Lander ingressi 1"/></p>
       <p><Text name="Lander ingressi 2"/></p>
+      <p><Text name="Virkailijapalvelut löydät jatkossa osoitteesta"/> <a href="/koski/virkailija">{window.location.origin + '/koski/virkailija'}</a></p>
     </div>
   </div>
 )
