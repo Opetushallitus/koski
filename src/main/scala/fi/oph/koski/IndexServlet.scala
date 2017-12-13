@@ -6,7 +6,8 @@ import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
-import scala.util.Try
+import scala.xml.NodeSeq.Empty
+import scala.xml.Unparsed
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before("/.+".r) {
@@ -16,11 +17,12 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    if (application.config.getString("shibboleth.url") != "mock") {
-      htmlIndex("koski-landerWithLogin.js")
-    } else {
-      htmlIndex("koski-lander.js")
+    val (bundle, scripts) = if (application.features.shibboleth) {
+      ("koski-lander.js", <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>)
+    }  else {
+      ("koski-landerWithLogin.js", Empty)
     }
+    htmlIndex(bundle, scripts = scripts)
   }
 
   get("/virkailija") {

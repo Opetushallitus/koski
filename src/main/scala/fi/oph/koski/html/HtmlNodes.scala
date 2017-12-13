@@ -17,7 +17,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.localizationRepository
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false): Elem = {
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false, scripts: NodeSeq = Empty): Elem = {
     <html>
       <head>
         {commonHead ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
@@ -28,6 +28,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
       <script id="localization">
         {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
       </script>
+      {scripts}
       <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
   }

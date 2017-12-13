@@ -85,6 +85,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
   lazy val env = Environment(this)
+  lazy val features = Features(config)
 
   lazy val init: Future[Unit] = {
     perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
