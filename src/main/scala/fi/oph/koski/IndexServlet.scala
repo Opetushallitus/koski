@@ -40,15 +40,15 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/omattiedot") {
-    indexHtml()
+    indexHtml(disableRaamit = true)
   }
 
   get("/tiedonsiirrot*") {
     indexHtml()
   }
 
-  private def indexHtml() = {
-    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet)
+  private def indexHtml(disableRaamit: Boolean = false) = {
+    htmlIndex("koski-main.js", raamitEnabled = !disableRaamit && raamitHeaderSet)
   }
 }
 
