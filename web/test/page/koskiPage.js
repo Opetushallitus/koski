@@ -119,6 +119,9 @@ function KoskiPage() {
     openPage: function() {
       return openPage('/koski/virkailija', api.isReady)()
     },
+    openFromMenu:  function() {
+      return click(findSingle('.opiskelijat.navi-link-container'))
+    },
     isVisible: function() {
       return isElementVisible(S('#content .oppija-haku')) || isElementVisible(S('#content .oppija'))
     },

@@ -160,4 +160,9 @@ describe('Oppijataulukko', function() {
       })
     })
   })
+
+  describe('Opiskelijat linkki', function() {
+    before(page.openFromMenu, wait.until(page.oppijataulukko.isReady))
+    it('avaa oppijataulukon', function() {})
+  })
 })

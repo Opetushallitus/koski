@@ -22,6 +22,7 @@ export const tiedonsiirrotContentP = (location, contentP) => onlyIfHasReadAccess
 })))
 
 export const naviLink = (path, textKey, location, linkClassName, isSelected = (p, l) => p === l) => {
-  const className = isSelected(path, location) ? 'navi-link-container selected' : 'navi-link-container'
+  let className = textKey.toLowerCase().replace(/ /g,'') + ' navi-link-container'
+  className = isSelected(path, location) ? className + ' selected' : className
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
