@@ -6,6 +6,7 @@ import {
   modelData,
   modelItems,
   modelLookup,
+  recursivelyEmpty,
   lensedModel,
   modelSetValue,
   modelTitle,
@@ -75,6 +76,8 @@ export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
       </div>
   )
 }
+
+OpiskeluoikeudenTilaEditor.isEmpty = m => recursivelyEmpty(m, 'opiskeluoikeusjaksot')
 
 const rahoitusMuuttunut = (items, index) => {
   return rahoitus(items, index) != rahoitus(items, index + 1)

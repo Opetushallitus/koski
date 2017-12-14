@@ -22,6 +22,7 @@ import {OrganisaatioHenkilöEditor} from './OrganisaatioHenkiloEditor.jsx'
 import {SuoritusEditor} from './SuoritusEditor.jsx'
 import {PerusteEditor} from './PerusteEditor.jsx'
 import {PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor.jsx'
+import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor.jsx'
 
 export const editorMapping = R.mergeAll([{
   'optional': OptionalEditor,
@@ -35,6 +36,7 @@ export const editorMapping = R.mergeAll([{
   'enum': EnumEditor,
   'oppijaeditorview': OppijaEditor,
   'omattiedoteditorview': OmatTiedotEditor,
+  'opiskeluoikeudentila': OpiskeluoikeudenTilaEditor,
   'paatasonsuoritus': SuoritusEditor,
   'vahvistus': VahvistusEditor,
   'laajuus' : LaajuusEditor,
