@@ -17,10 +17,10 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def haltWithStatus(status: HttpStatus)
 
-  def setUser(user: Either[HttpStatus, AuthenticationUser], kansalainen: Boolean = false): Either[HttpStatus, AuthenticationUser] = {
+  def setUser(user: Either[HttpStatus, AuthenticationUser]): Either[HttpStatus, AuthenticationUser] = {
     request.setAttribute("authUser", user)
     user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
-      if (kansalainen) {
+      if (user.kansalainen) {
         setKansalaisCookie(user)
       } else {
         setUserCookie(user)
@@ -33,18 +33,6 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
     Option(request.getAttribute("authUser").asInstanceOf[Either[HttpStatus, AuthenticationUser]]) match {
       case Some(user) => user
       case _ =>
-        def userFromCookie = getUserCookie.flatMap { authUser =>
-          authUser.serviceTicket.flatMap { ticket =>
-            application.koskiSessionRepository.getUserByTicket(ticket) match {
-              case Some(user) =>
-                Some(user)
-              case None =>
-                setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
-                logger.warn("User not found by ticket " + ticket)
-                None
-            }
-          }
-        }
         def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
           implicit def request2BasicAuthRequest(r: HttpServletRequest) = new BasicAuthStrategy.BasicAuthRequest(r)
           if (request.isBasicAuth && request.providesAuth) {
@@ -53,6 +41,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
             Left(KoskiErrorCategory.unauthorized.notAuthenticated())
           }
         }
+
         val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
           case Some(user) => Right(user)
           case None => userFromBasicAuth
@@ -60,6 +49,21 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         setUser(authUser)
         authUser
     }
+  }
+
+
+  private def userFromCookie: Option[AuthenticationUser] = {
+    def getUser(authUser: Option[AuthenticationUser]): Option[AuthenticationUser] =
+      authUser.flatMap(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
+        case Some((_, Some(usr))) => Some(usr)
+        case Some((ticket, None)) =>
+          setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
+          logger.warn("User not found by ticket " + ticket)
+          None
+        case noTicket => None
+      }
+
+    getUser(getUserCookie).orElse(getUser(getKansalaisCookie).map(u => u.copy(kansalainen = true)))
   }
 
   def isAuthenticated = getUser.isRight
