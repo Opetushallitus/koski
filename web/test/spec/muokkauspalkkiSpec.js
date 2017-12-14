@@ -8,10 +8,11 @@ describe('Muokkauspalkki', function () {
   }
 
   var page = KoskiPage()
+  var auth = Authentication()
   describe('Näkyvyys', function () {
-    beforeEach(Authentication().login())
+    beforeEach(auth.login())
 
-    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
+    before(auth.login(), page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
 
     describe('Näyttötilassa', function () {
       it('piilossa', function () {
