@@ -57,7 +57,9 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <div className="opiskeluoikeuden-tiedot">
             {editLink}
             <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
-            <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={mdl}/>
+            {
+              modelData(mdl, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={mdl}/>
+            }
             <PropertiesEditor
               model={mdl}
               propertyFilter={ p => !excludedProperties.includes(p.key) }
