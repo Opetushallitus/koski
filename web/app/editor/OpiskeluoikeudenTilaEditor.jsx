@@ -2,9 +2,17 @@ import React from 'baret'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
-import {modelData, modelItems, modelLookup} from './EditorModel.js'
+import {
+  modelData,
+  modelItems,
+  modelLookup,
+  lensedModel,
+  modelSetValue,
+  modelTitle,
+  pushModel,
+  pushRemoval
+} from './EditorModel.js'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup.jsx'
-import {lensedModel, modelSetValue, modelTitle, pushModel, pushRemoval} from './EditorModel'
 import {arvioituTaiVahvistettu} from './Suoritus'
 import {parseISODate} from '../date.js'
 import {Editor} from './Editor.jsx'
