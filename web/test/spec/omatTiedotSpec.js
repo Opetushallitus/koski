@@ -3,7 +3,7 @@ describe('Omat tiedot', function() {
   var opinnot = OpinnotPage()
   var authentication = Authentication()
 
-  describe("Kun oppijalla on opiskeluoikeuksia", function() {
+  describe("Kun virkailijalla on opiskeluoikeuksia", function() {
     before(authentication.login('Oili'), omattiedot.openPage)
     it('ne näytetään', function() {
       expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
@@ -17,5 +17,12 @@ describe('Omat tiedot', function() {
     it('näytetään viesti', function() {
       expect(omattiedot.virhe()).to.equal("Tiedoillasi ei löydy opiskeluoikeuksia")
     })
+  })
+
+  var etusivu = LandingPage()
+  var korhopankki = KorhoPankki()
+  describe("Kun kansalainen kirjautuu ulos", function() {
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('190751-739W'), wait.until(omattiedot.isVisible) , authentication.logout, wait.until(etusivu.isVisible))
+    it("Näytetään etusivu", function() { })
   })
 })
