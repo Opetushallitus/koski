@@ -2,6 +2,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_bi1",
   "koodiArvo" : "BI1",
   "metadata" : [ {
+    "nimi" : "Organismernas värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Eliömaailma",
     "kieli" : "FI"
   } ],
@@ -11,6 +14,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_bi2",
   "koodiArvo" : "BI2",
   "metadata" : [ {
+    "nimi" : "Cellen och ärftligheten",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Solu ja perinnöllisyys",
     "kieli" : "FI"
   } ],
@@ -22,6 +28,9 @@
   "metadata" : [ {
     "nimi" : "Ympäristöekologia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljöekologi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -29,6 +38,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_bi4",
   "koodiArvo" : "BI4",
   "metadata" : [ {
+    "nimi" : "Människans biologi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ihmisen biologia",
     "kieli" : "FI"
   } ],
@@ -38,6 +50,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_bi5",
   "koodiArvo" : "BI5",
   "metadata" : [ {
+    "nimi" : "Bioteknologi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Bioteknologia",
     "kieli" : "FI"
   } ],
@@ -47,6 +62,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eaa1",
   "koodiArvo" : "EAA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -58,6 +76,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -67,6 +88,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -76,6 +100,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -83,6 +110,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eaa5",
   "koodiArvo" : "EAA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -94,6 +124,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -103,6 +136,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -110,8 +146,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eaa8",
   "koodiArvo" : "EAA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -119,6 +158,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab11",
   "koodiArvo" : "EAB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -128,6 +170,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab12",
   "koodiArvo" : "EAB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -137,6 +182,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab13",
   "koodiArvo" : "EAB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -146,6 +194,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab14",
   "koodiArvo" : "EAB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -155,6 +206,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab15",
   "koodiArvo" : "EAB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -166,6 +220,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -173,8 +230,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab17",
   "koodiArvo" : "EAB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -182,7 +242,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab21",
   "koodiArvo" : "EAB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -191,6 +254,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab22",
   "koodiArvo" : "EAB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -202,6 +268,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -211,6 +280,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -220,6 +292,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -227,6 +302,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab26",
   "koodiArvo" : "EAB26",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -236,8 +314,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab27",
   "koodiArvo" : "EAB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -247,6 +328,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -256,6 +340,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -263,6 +350,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab32",
   "koodiArvo" : "EAB32",
   "metadata" : [ {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
   } ],
@@ -272,6 +362,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab33",
   "koodiArvo" : "EAB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -281,6 +374,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab34",
   "koodiArvo" : "EAB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -290,6 +386,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab35",
   "koodiArvo" : "EAB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -299,6 +398,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_eab36",
   "koodiArvo" : "EAB36",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -310,6 +412,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -319,6 +424,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -326,6 +434,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ena1",
   "koodiArvo" : "ENA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -335,6 +446,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ena2",
   "koodiArvo" : "ENA2",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -346,6 +460,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -355,6 +472,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -364,6 +484,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -371,6 +494,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ena6",
   "koodiArvo" : "ENA6",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -382,6 +508,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -389,8 +518,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ena8",
   "koodiArvo" : "ENA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -400,6 +532,9 @@
   "metadata" : [ {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -407,6 +542,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb12",
   "koodiArvo" : "ENB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -416,6 +554,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb13",
   "koodiArvo" : "ENB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -425,6 +566,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb14",
   "koodiArvo" : "ENB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -434,6 +578,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb15",
   "koodiArvo" : "ENB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -443,6 +590,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb16",
   "koodiArvo" : "ENB16",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -452,8 +602,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb17",
   "koodiArvo" : "ENB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -461,8 +614,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb21",
   "koodiArvo" : "ENB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -470,6 +626,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb22",
   "koodiArvo" : "ENB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -479,6 +638,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb23",
   "koodiArvo" : "ENB23",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -490,6 +652,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -499,6 +664,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -508,6 +676,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -515,7 +686,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb27",
   "koodiArvo" : "ENB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -526,6 +700,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -535,6 +712,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -544,6 +724,9 @@
   "metadata" : [ {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -551,6 +734,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb33",
   "koodiArvo" : "ENB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -560,6 +746,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb34",
   "koodiArvo" : "ENB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -569,6 +758,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb35",
   "koodiArvo" : "ENB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -578,6 +770,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb36",
   "koodiArvo" : "ENB36",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -587,6 +782,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_enb37",
   "koodiArvo" : "ENB37",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -598,6 +796,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -607,6 +808,9 @@
   "metadata" : [ {
     "nimi" : "Hyvä elämä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ett gott liv",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -614,6 +818,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_et2",
   "koodiArvo" : "ET2",
   "metadata" : [ {
+    "nimi" : "Världsbilden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Maailmankuva",
     "kieli" : "FI"
   } ],
@@ -623,6 +830,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_et3",
   "koodiArvo" : "ET3",
   "metadata" : [ {
+    "nimi" : "Individen och samhället",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yksilö ja yhteisö",
     "kieli" : "FI"
   } ],
@@ -634,6 +844,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuriperintö ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Det kulturella arvet och identiteten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -643,6 +856,9 @@
   "metadata" : [ {
     "nimi" : "Maailman selittäminen katsomusperinteissä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Olika sätt att förklara världen i livsåskådningstraditionen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -652,6 +868,9 @@
   "metadata" : [ {
     "nimi" : "Johdatus filosofiseen ajatteluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Introduktion i filosofiskt tänkande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -659,6 +878,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fi2",
   "koodiArvo" : "FI2",
   "metadata" : [ {
+    "nimi" : "Filosofisk etik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Filosofinen etiikka",
     "kieli" : "FI"
   } ],
@@ -670,6 +892,9 @@
   "metadata" : [ {
     "nimi" : "Tiedon ja todellisuuden filosofia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap och verklighet i filosofin",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -679,6 +904,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskuntafilosofia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällsfilosofi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -688,6 +916,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans vardag och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -695,6 +926,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fim2",
   "koodiArvo" : "FIM2",
   "metadata" : [ {
+    "nimi" : "Natur och miljö",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja ympäristö",
     "kieli" : "FI"
   } ],
@@ -704,6 +938,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fim3",
   "koodiArvo" : "FIM3",
   "metadata" : [ {
+    "nimi" : "Handel, teknik och kommunikation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kaupankäynti, tekniikka ja viestintä",
     "kieli" : "FI"
   } ],
@@ -715,6 +952,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja tiedotusvälineet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och massmedia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -722,6 +962,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fim5",
   "koodiArvo" : "FIM5",
   "metadata" : [ {
+    "nimi" : "Utbildning, yrkes- och näringsliv",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Koulutus, ammatti- ja elinkeinoelämä",
     "kieli" : "FI"
   } ],
@@ -731,6 +974,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fim6",
   "koodiArvo" : "FIM6",
   "metadata" : [ {
+    "nimi" : "Finsk kultur och litteratur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus",
     "kieli" : "FI"
   } ],
@@ -740,6 +986,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fim7",
   "koodiArvo" : "FIM7",
   "metadata" : [ {
+    "nimi" : "Muntlig uttrycksförmåga",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Esitä ja keskustele!",
     "kieli" : "FI"
   } ],
@@ -751,6 +1000,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamisen taito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skrivandets konst",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -758,6 +1010,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fina1",
   "koodiArvo" : "FINA1",
   "metadata" : [ {
+    "nimi" : "Människans vardag och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Arkielämä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -767,6 +1022,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fina2",
   "koodiArvo" : "FINA2",
   "metadata" : [ {
+    "nimi" : "Natur och miljö",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja ympäristö",
     "kieli" : "FI"
   } ],
@@ -778,6 +1036,9 @@
   "metadata" : [ {
     "nimi" : "Kaupankäynti, tekniikka ja viestintä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Handel, teknik och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -787,6 +1048,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja tiedotusvälineet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och massmedia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -796,6 +1060,9 @@
   "metadata" : [ {
     "nimi" : "Koulutus, ammatti- ja talouselämä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning, yrkes- och näringsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -803,6 +1070,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fina6",
   "koodiArvo" : "FINA6",
   "metadata" : [ {
+    "nimi" : "Finsk kultur och litteratur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus",
     "kieli" : "FI"
   } ],
@@ -814,6 +1084,9 @@
   "metadata" : [ {
     "nimi" : "Esitä ja keskustele!",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skriv och tala finska bättre!",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -823,6 +1096,9 @@
   "metadata" : [ {
     "nimi" : "Maailma ja me",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -832,6 +1108,9 @@
   "metadata" : [ {
     "nimi" : "Arkipäivän suomi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsfinska",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -839,6 +1118,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_finb2",
   "koodiArvo" : "FINB2",
   "metadata" : [ {
+    "nimi" : "Människor, natur och sevärdheter i Finland",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomen ihmiset, luonto ja nähtävyydet",
     "kieli" : "FI"
   } ],
@@ -848,6 +1130,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_finb3",
   "koodiArvo" : "FINB3",
   "metadata" : [ {
+    "nimi" : "Utbildning, intressen och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Koulutus, harrastukset ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -857,6 +1142,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_finb4",
   "koodiArvo" : "FINB4",
   "metadata" : [ {
+    "nimi" : "Affärs- och yrkesliv",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Liike- ja ammattielämä",
     "kieli" : "FI"
   } ],
@@ -866,6 +1154,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_finb5",
   "koodiArvo" : "FINB5",
   "metadata" : [ {
+    "nimi" : "Trafik, teknik och miljö",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Liikenne, tekniikka ja ympäristö",
     "kieli" : "FI"
   } ],
@@ -875,6 +1166,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_finb6",
   "koodiArvo" : "FINB6",
   "metadata" : [ {
+    "nimi" : "Att förstå, tala och skriva finska bättre",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Puhu ja ymmärrä paremmin",
     "kieli" : "FI"
   } ],
@@ -886,6 +1180,9 @@
   "metadata" : [ {
     "nimi" : "Suomi tänään",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finland i dag",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -895,6 +1192,9 @@
   "metadata" : [ {
     "nimi" : "Fysiikka luonnontieteenä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysiken som naturvetenskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -902,6 +1202,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fy2",
   "koodiArvo" : "FY2",
   "metadata" : [ {
+    "nimi" : "Värme",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Lämpö",
     "kieli" : "FI"
   } ],
@@ -911,6 +1214,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fy3",
   "koodiArvo" : "FY3",
   "metadata" : [ {
+    "nimi" : "Vågrörelse",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Aallot ",
     "kieli" : "FI"
   } ],
@@ -922,6 +1228,9 @@
   "metadata" : [ {
     "nimi" : "Liikkeen lait",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörelselagarna",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -931,6 +1240,9 @@
   "metadata" : [ {
     "nimi" : "Pyöriminen ja gravitaatio",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rotation och gravitation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -940,6 +1252,9 @@
   "metadata" : [ {
     "nimi" : "Sähkö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elektricitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -947,6 +1262,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_fy7",
   "koodiArvo" : "FY7",
   "metadata" : [ {
+    "nimi" : "Elektromagnetism",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Sähkömagnetismi",
     "kieli" : "FI"
   } ],
@@ -958,6 +1276,9 @@
   "metadata" : [ {
     "nimi" : "Aine ja säteily",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Materia och strålning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -967,6 +1288,9 @@
   "metadata" : [ {
     "nimi" : "Sininen planeetta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den blå planeten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -976,6 +1300,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En gemensam värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -983,6 +1310,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ge3",
   "koodiArvo" : "GE3",
   "metadata" : [ {
+    "nimi" : "Riskernas värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Riskien maailma",
     "kieli" : "FI"
   } ],
@@ -992,6 +1322,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ge4",
   "koodiArvo" : "GE4",
   "metadata" : [ {
+    "nimi" : "Regionstudier",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Aluetutkimus",
     "kieli" : "FI"
   } ],
@@ -1001,6 +1334,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_hi1",
   "koodiArvo" : "HI1",
   "metadata" : [ {
+    "nimi" : "Människan, miljön och kulturen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ihminen, ympäristö ja kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1010,6 +1346,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_hi2",
   "koodiArvo" : "HI2",
   "metadata" : [ {
+    "nimi" : "Den europeiska människan",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Eurooppalainen ihminen",
     "kieli" : "FI"
   } ],
@@ -1019,6 +1358,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_hi3",
   "koodiArvo" : "HI3",
   "metadata" : [ {
+    "nimi" : "Internationella relationer",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kansainväliset suhteet",
     "kieli" : "FI"
   } ],
@@ -1030,6 +1372,9 @@
   "metadata" : [ {
     "nimi" : "Suomen historian käännekohtia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vändpunkter i Finlands historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1039,6 +1384,9 @@
   "metadata" : [ {
     "nimi" : "Suomen vaiheet esihistoriasta autonomian aikaan",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finland från förhistorien till autonomin",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1046,6 +1394,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_hi6",
   "koodiArvo" : "HI6",
   "metadata" : [ {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuurien kohtaaminen",
     "kieli" : "FI"
   } ],
@@ -1055,6 +1406,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iaa1",
   "koodiArvo" : "IAA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -1066,6 +1420,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1075,6 +1432,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1084,6 +1444,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1091,6 +1454,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iaa5",
   "koodiArvo" : "IAA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1102,6 +1468,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1111,6 +1480,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1118,8 +1490,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iaa8",
   "koodiArvo" : "IAA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1127,6 +1502,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab11",
   "koodiArvo" : "IAB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -1136,6 +1514,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab12",
   "koodiArvo" : "IAB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -1145,6 +1526,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab13",
   "koodiArvo" : "IAB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -1154,6 +1538,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab14",
   "koodiArvo" : "IAB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1163,6 +1550,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab15",
   "koodiArvo" : "IAB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -1174,6 +1564,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1181,8 +1574,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab17",
   "koodiArvo" : "IAB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1190,7 +1586,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab21",
   "koodiArvo" : "IAB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -1199,6 +1598,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab22",
   "koodiArvo" : "IAB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -1210,6 +1612,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1219,6 +1624,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1228,6 +1636,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1235,6 +1646,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab26",
   "koodiArvo" : "IAB26",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -1244,8 +1658,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab27",
   "koodiArvo" : "IAB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1255,6 +1672,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1264,6 +1684,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1271,6 +1694,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab32",
   "koodiArvo" : "IAB32",
   "metadata" : [ {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
   } ],
@@ -1280,6 +1706,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab33",
   "koodiArvo" : "IAB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -1289,6 +1718,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab34",
   "koodiArvo" : "IAB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -1298,6 +1730,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab35",
   "koodiArvo" : "IAB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -1307,6 +1742,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_iab36",
   "koodiArvo" : "IAB36",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -1318,6 +1756,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1327,6 +1768,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1334,6 +1778,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ke1",
   "koodiArvo" : "KE1",
   "metadata" : [ {
+    "nimi" : "Människans kemi och kemin i livsmiljön",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ihmisen ja elinympäristön kemia",
     "kieli" : "FI"
   } ],
@@ -1343,6 +1790,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ke2",
   "koodiArvo" : "KE2",
   "metadata" : [ {
+    "nimi" : "Kemins mikrovärld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kemian mikromaailma",
     "kieli" : "FI"
   } ],
@@ -1354,6 +1804,9 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja energia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reaktioner och energi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1363,6 +1816,9 @@
   "metadata" : [ {
     "nimi" : "Metallit ja materiaalit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Metaller och material",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1372,6 +1828,9 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja tasapaino",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reaktioner och jämvikt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1379,6 +1838,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ku1",
   "koodiArvo" : "KU1",
   "metadata" : [ {
+    "nimi" : "Jag, bilden och kulturen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Minä, kuva ja kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1390,6 +1852,9 @@
   "metadata" : [ {
     "nimi" : "Ympäristö, paikka ja tila",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö, plats och rum",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1399,6 +1864,9 @@
   "metadata" : [ {
     "nimi" : "Media ja kuvien viestit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medierna och bildernas budskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1408,6 +1876,9 @@
   "metadata" : [ {
     "nimi" : "Taiteen kuvista omiin kuviin",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från bildkonst till egna bilder",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1415,6 +1886,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ku5",
   "koodiArvo" : "KU5",
   "metadata" : [ {
+    "nimi" : "Verkstad för samtidskonst",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nykytaiteen työpaja",
     "kieli" : "FI"
   } ],
@@ -1424,6 +1898,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa1",
   "koodiArvo" : "KXA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -1433,6 +1910,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa2",
   "koodiArvo" : "KXA2",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -1442,6 +1922,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa3",
   "koodiArvo" : "KXA3",
   "metadata" : [ {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
   } ],
@@ -1451,6 +1934,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa4",
   "koodiArvo" : "KXA4",
   "metadata" : [ {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
   } ],
@@ -1462,6 +1948,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1471,6 +1960,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1478,6 +1970,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa7",
   "koodiArvo" : "KXA7",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -1487,7 +1982,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxa8",
   "koodiArvo" : "KXA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -1496,8 +1994,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb11",
   "koodiArvo" : "KXB11",
   "metadata" : [ {
-    "nimi" : "nuori ja hänen maailmansa",
+    "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1507,6 +2008,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1516,6 +2020,9 @@
   "metadata" : [ {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1523,6 +2030,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb14",
   "koodiArvo" : "KXB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1534,6 +2044,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1543,6 +2056,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1550,8 +2066,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb17",
   "koodiArvo" : "KXB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1559,7 +2078,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb21",
   "koodiArvo" : "KXB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -1568,6 +2090,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb22",
   "koodiArvo" : "KXB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -1577,6 +2102,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb23",
   "koodiArvo" : "KXB23",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -1586,6 +2114,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb24",
   "koodiArvo" : "KXB24",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -1595,6 +2126,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb25",
   "koodiArvo" : "KXB25",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
   } ],
@@ -1606,6 +2140,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1613,8 +2150,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb27",
   "koodiArvo" : "KXB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1622,6 +2162,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb28",
   "koodiArvo" : "KXB28",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -1631,6 +2174,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb31",
   "koodiArvo" : "KXB31",
   "metadata" : [ {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
   } ],
@@ -1642,6 +2188,9 @@
   "metadata" : [ {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1651,6 +2200,9 @@
   "metadata" : [ {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1660,6 +2212,9 @@
   "metadata" : [ {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1667,6 +2222,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_kxb35",
   "koodiArvo" : "KXB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -1678,6 +2236,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1687,6 +2248,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1696,6 +2260,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1703,6 +2270,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa1",
   "koodiArvo" : "LAA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -1712,6 +2282,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa2",
   "koodiArvo" : "LAA2",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -1721,6 +2294,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa3",
   "koodiArvo" : "LAA3",
   "metadata" : [ {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
   } ],
@@ -1730,6 +2306,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa4",
   "koodiArvo" : "LAA4",
   "metadata" : [ {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
   } ],
@@ -1739,6 +2318,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa5",
   "koodiArvo" : "LAA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -1750,6 +2332,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1759,6 +2344,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1766,7 +2354,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_laa8",
   "koodiArvo" : "LAA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -1775,6 +2366,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab11",
   "koodiArvo" : "LAB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -1786,6 +2380,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1795,6 +2392,9 @@
   "metadata" : [ {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1804,6 +2404,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1811,6 +2414,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab15",
   "koodiArvo" : "LAB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -1822,6 +2428,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1829,8 +2438,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab17",
   "koodiArvo" : "LAB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1840,6 +2452,9 @@
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1847,6 +2462,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab22",
   "koodiArvo" : "LAB22",
   "metadata" : [ {
+    "nimi" : "Framstående romare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Roomalaisia suurmiehiä",
     "kieli" : "FI"
   } ],
@@ -1856,6 +2474,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab23",
   "koodiArvo" : "LAB23",
   "metadata" : [ {
+    "nimi" : "Vårt kulturarv",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuriperintömme",
     "kieli" : "FI"
   } ],
@@ -1865,6 +2486,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab24",
   "koodiArvo" : "LAB24",
   "metadata" : [ {
+    "nimi" : "Budskap från det förgångna",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestejä menneisyydestä",
     "kieli" : "FI"
   } ],
@@ -1874,6 +2498,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab25",
   "koodiArvo" : "LAB25",
   "metadata" : [ {
+    "nimi" : "Latinet genom seklerna",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Latinaa kautta vuosisatojen",
     "kieli" : "FI"
   } ],
@@ -1883,6 +2510,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab26",
   "koodiArvo" : "LAB26",
   "metadata" : [ {
+    "nimi" : "Epik och lyrik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Epiikkaa ja lyriikkaa",
     "kieli" : "FI"
   } ],
@@ -1894,6 +2524,9 @@
   "metadata" : [ {
     "nimi" : "Retoriikkaa ja filosofiaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Retorik och filosofi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1903,6 +2536,9 @@
   "metadata" : [ {
     "nimi" : "Latina keskiajalla ja nykyaikana",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet under medeltiden och nutiden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1910,6 +2546,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab31",
   "koodiArvo" : "LAB31",
   "metadata" : [ {
+    "nimi" : "Antiken i fokus",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ikkunat auki antiikkiin",
     "kieli" : "FI"
   } ],
@@ -1919,6 +2558,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab32",
   "koodiArvo" : "LAB32",
   "metadata" : [ {
+    "nimi" : "Livet under antiken",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Antiikin elämää",
     "kieli" : "FI"
   } ],
@@ -1930,6 +2572,9 @@
   "metadata" : [ {
     "nimi" : "Tietoa, taitoa ja taruperintöä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1939,6 +2584,9 @@
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1948,6 +2596,9 @@
   "metadata" : [ {
     "nimi" : "Roomalaisia suurmiehiä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framstående romare",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1955,6 +2606,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_lab36",
   "koodiArvo" : "LAB36",
   "metadata" : [ {
+    "nimi" : "Vårt kulturarv",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuriperintömme",
     "kieli" : "FI"
   } ],
@@ -1966,6 +2620,9 @@
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Budskap från det förgångna",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1975,6 +2632,9 @@
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet genom seklerna",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1984,6 +2644,9 @@
   "metadata" : [ {
     "nimi" : "Taitoa ja kuntoa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Färdighet och kondition",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1991,6 +2654,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_li2",
   "koodiArvo" : "LI2",
   "metadata" : [ {
+    "nimi" : "Träning ensam och tillsammans med andra",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Liikuntaa yhdessä ja erikseen",
     "kieli" : "FI"
   } ],
@@ -2000,6 +2666,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_li3",
   "koodiArvo" : "LI3",
   "metadata" : [ {
+    "nimi" : "Stimulerande motion",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Virkisty liikunnasta",
     "kieli" : "FI"
   } ],
@@ -2009,6 +2678,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_li4",
   "koodiArvo" : "LI4",
   "metadata" : [ {
+    "nimi" : "Motion tillsammans",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhdessä liikkuen",
     "kieli" : "FI"
   } ],
@@ -2018,6 +2690,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_li5",
   "koodiArvo" : "LI5",
   "metadata" : [ {
+    "nimi" : "Motionsidrott",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kuntoliikunta",
     "kieli" : "FI"
   } ],
@@ -2027,6 +2702,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_maa1",
   "koodiArvo" : "MAA1",
   "metadata" : [ {
+    "nimi" : "Funktioner och ekvationer",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Funktiot ja yhtälöt",
     "kieli" : "FI"
   } ],
@@ -2038,6 +2716,9 @@
   "metadata" : [ {
     "nimi" : "Integraalilaskenta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Integralkalkyl",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2047,6 +2728,9 @@
   "metadata" : [ {
     "nimi" : "Lukuteoria ja logiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Talteori och logik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2054,6 +2738,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_maa12",
   "koodiArvo" : "MAA12",
   "metadata" : [ {
+    "nimi" : "Numeriska och algebraiska metoder",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Numeerisia ja algebrallisia menetelmiä",
     "kieli" : "FI"
   } ],
@@ -2063,6 +2750,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_maa13",
   "koodiArvo" : "MAA13",
   "metadata" : [ {
+    "nimi" : "Fortsättningskurs i differential- och integralkalkyl",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Differentiaali- ja integraalilaskennan jatkokurssi",
     "kieli" : "FI"
   } ],
@@ -2074,6 +2764,9 @@
   "metadata" : [ {
     "nimi" : "Polynomifunktiot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Polynomfunktioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2083,6 +2776,9 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2092,6 +2788,9 @@
   "metadata" : [ {
     "nimi" : "Analyyttinen geometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analytisk geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2099,6 +2798,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_maa5",
   "koodiArvo" : "MAA5",
   "metadata" : [ {
+    "nimi" : "Vektorer",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vektorit",
     "kieli" : "FI"
   } ],
@@ -2110,6 +2812,9 @@
   "metadata" : [ {
     "nimi" : "Todennäköisyys ja tilastot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sannolikhet och statistik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2119,6 +2824,9 @@
   "metadata" : [ {
     "nimi" : "Derivaatta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Derivatan",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2128,6 +2836,9 @@
   "metadata" : [ {
     "nimi" : "Juuri- ja logaritmifunktiot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rot- och logaritmfunktioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2135,6 +2846,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_maa9",
   "koodiArvo" : "MAA9",
   "metadata" : [ {
+    "nimi" : "Trigonometriska funktioner och talföljder",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Trigonometriset funktiot ja lukujonot",
     "kieli" : "FI"
   } ],
@@ -2144,6 +2858,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab1",
   "koodiArvo" : "MAB1",
   "metadata" : [ {
+    "nimi" : "Uttryck och ekvationer",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Lausekkeet ja yhtälöt",
     "kieli" : "FI"
   } ],
@@ -2153,6 +2870,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab2",
   "koodiArvo" : "MAB2",
   "metadata" : [ {
+    "nimi" : "Geometri",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Geometria",
     "kieli" : "FI"
   } ],
@@ -2162,6 +2882,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab3",
   "koodiArvo" : "MAB3",
   "metadata" : [ {
+    "nimi" : "Matematiska modeller I",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Matemaattisia malleja I",
     "kieli" : "FI"
   } ],
@@ -2171,6 +2894,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab4",
   "koodiArvo" : "MAB4",
   "metadata" : [ {
+    "nimi" : "Matematisk analys",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Matemaattinen analyysi",
     "kieli" : "FI"
   } ],
@@ -2182,6 +2908,9 @@
   "metadata" : [ {
     "nimi" : "Tilastot ja todennäköisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik och sannolikhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2191,6 +2920,9 @@
   "metadata" : [ {
     "nimi" : "Matemaattisia malleja II",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematiska modeller II",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2198,6 +2930,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab7",
   "koodiArvo" : "MAB7",
   "metadata" : [ {
+    "nimi" : "Ekonomisk matematik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Talousmatematiikka",
     "kieli" : "FI"
   } ],
@@ -2207,6 +2942,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mab8",
   "koodiArvo" : "MAB8",
   "metadata" : [ {
+    "nimi" : "Matematiska modeller III",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Matemaattisia malleja III ",
     "kieli" : "FI"
   } ],
@@ -2218,6 +2956,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En värld av texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2227,6 +2968,9 @@
   "metadata" : [ {
     "nimi" : "Kertomakirjallisuus ja mediatekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Epik och medietexter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2236,6 +2980,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Texter, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2243,6 +2990,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mo4",
   "koodiArvo" : "MO4",
   "metadata" : [ {
+    "nimi" : "Texter i Norden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Pohjoismaisia tekstejä",
     "kieli" : "FI"
   } ],
@@ -2254,6 +3004,9 @@
   "metadata" : [ {
     "nimi" : "Moderneja tekstejä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Moderna texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2263,6 +3016,9 @@
   "metadata" : [ {
     "nimi" : "Tekstin valta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Textens makt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2272,6 +3028,9 @@
   "metadata" : [ {
     "nimi" : "Suullinen viestintä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2279,6 +3038,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mo8",
   "koodiArvo" : "MO8",
   "metadata" : [ {
+    "nimi" : "Fördjupad skriv- och textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjoitus- ja tekstitaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -2288,6 +3050,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mo9",
   "koodiArvo" : "MO9",
   "metadata" : [ {
+    "nimi" : "Litteratur som glädje och kunskap",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjallisuus ilon ja tiedon lähteenä",
     "kieli" : "FI"
   } ],
@@ -2297,6 +3062,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mu1",
   "koodiArvo" : "MU1",
   "metadata" : [ {
+    "nimi" : "Musiken och jag",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Musiikki ja minä",
     "kieli" : "FI"
   } ],
@@ -2306,6 +3074,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mu2",
   "koodiArvo" : "MU2",
   "metadata" : [ {
+    "nimi" : "Ett flerstämmigt Finland",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Moniääninen Suomi",
     "kieli" : "FI"
   } ],
@@ -2315,6 +3086,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_mu3",
   "koodiArvo" : "MU3",
   "metadata" : [ {
+    "nimi" : "Fritt fram för musik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ovet auki musiikille",
     "kieli" : "FI"
   } ],
@@ -2326,6 +3100,9 @@
   "metadata" : [ {
     "nimi" : "Musiikki viestii ja vaikuttaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Musikens budskap och makt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2335,6 +3112,9 @@
   "metadata" : [ {
     "nimi" : "Musiikkiprojekti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ett musikaliskt projekt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2342,6 +3122,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_op1",
   "koodiArvo" : "OP1",
   "metadata" : [ {
+    "nimi" : "Utbildning, arbete och framtid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Koulutus, työ ja tulevaisuus",
     "kieli" : "FI"
   } ],
@@ -2351,6 +3134,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_op2",
   "koodiArvo" : "OP2",
   "metadata" : [ {
+    "nimi" : "Studier, arbetsliv och yrkesval",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu, työelämä ja ammatinvalinta",
     "kieli" : "FI"
   } ],
@@ -2362,6 +3148,9 @@
   "metadata" : [ {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2371,6 +3160,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2380,6 +3172,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2387,6 +3182,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_poa4",
   "koodiArvo" : "POA4",
   "metadata" : [ {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
   } ],
@@ -2398,6 +3196,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2407,6 +3208,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2416,6 +3220,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2423,7 +3230,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_poa8",
   "koodiArvo" : "POA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -2432,6 +3242,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob11",
   "koodiArvo" : "POB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -2441,6 +3254,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob12",
   "koodiArvo" : "POB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -2450,6 +3266,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob13",
   "koodiArvo" : "POB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -2459,6 +3278,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob14",
   "koodiArvo" : "POB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -2470,6 +3292,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2479,6 +3304,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2486,7 +3314,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob17",
   "koodiArvo" : "POB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -2495,7 +3326,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob21",
   "koodiArvo" : "POB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -2506,6 +3340,9 @@
   "metadata" : [ {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2515,6 +3352,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2524,6 +3364,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2531,6 +3374,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob25",
   "koodiArvo" : "POB25",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
   } ],
@@ -2542,6 +3388,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2549,8 +3398,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob27",
   "koodiArvo" : "POB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2560,6 +3412,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2567,6 +3422,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob31",
   "koodiArvo" : "POB31",
   "metadata" : [ {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
   } ],
@@ -2576,6 +3434,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob32",
   "koodiArvo" : "POB32",
   "metadata" : [ {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
   } ],
@@ -2585,6 +3446,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob33",
   "koodiArvo" : "POB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -2594,6 +3458,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob34",
   "koodiArvo" : "POB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -2603,6 +3470,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob35",
   "koodiArvo" : "POB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -2614,6 +3484,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2623,6 +3496,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2630,6 +3506,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_pob38",
   "koodiArvo" : "POB38",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -2639,6 +3518,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ps1",
   "koodiArvo" : "PS1",
   "metadata" : [ {
+    "nimi" : "Psykisk aktivitet, lärande och interaktion",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Psyykkinen toiminta, oppiminen ja vuorovaikutus",
     "kieli" : "FI"
   } ],
@@ -2650,6 +3532,9 @@
   "metadata" : [ {
     "nimi" : "Ihmisen psyykkinen kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans psykiska utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2659,6 +3544,9 @@
   "metadata" : [ {
     "nimi" : "Ihmisen tiedonkäsittelyn perusteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna för människans informationsbehandling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2668,6 +3556,9 @@
   "metadata" : [ {
     "nimi" : "Motivaatio, tunteet ja älykäs toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Motivation, känslor och intelligent aktivitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2675,6 +3566,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ps5",
   "koodiArvo" : "PS5",
   "metadata" : [ {
+    "nimi" : "Personligheten och den mentala hälsan",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Persoonallisuus ja mielenterveys",
     "kieli" : "FI"
   } ],
@@ -2686,6 +3580,9 @@
   "metadata" : [ {
     "nimi" : "Paikallinen soveltava kurssi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lokal tillämpad kurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2695,6 +3592,9 @@
   "metadata" : [ {
     "nimi" : "Paikallinen syventävä kurssi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lokal fördjupad kurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2704,6 +3604,9 @@
   "metadata" : [ {
     "nimi" : "Perusteet hallintaan",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna stabiliseras",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2711,6 +3614,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r22",
   "koodiArvo" : "R22",
   "metadata" : [ {
+    "nimi" : "Text och dialog",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Teksti ja dialogi",
     "kieli" : "FI"
   } ],
@@ -2720,6 +3626,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r23",
   "koodiArvo" : "R23",
   "metadata" : [ {
+    "nimi" : "Språkbruket omkring oss",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli ympärillämme",
     "kieli" : "FI"
   } ],
@@ -2729,6 +3638,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r24",
   "koodiArvo" : "R24",
   "metadata" : [ {
+    "nimi" : "Finlandssvensk, finländsk och nordisk kultur och identitet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomenruotsalainen, suomalainen ja pohjoismainen kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -2738,6 +3650,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r25",
   "koodiArvo" : "R25",
   "metadata" : [ {
+    "nimi" : "Att tolka och skriva texter",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstien tulkinta ja tuottaminen",
     "kieli" : "FI"
   } ],
@@ -2747,6 +3662,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r26",
   "koodiArvo" : "R26",
   "metadata" : [ {
+    "nimi" : "Språk och påverkan",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli ja vaikuttaminen",
     "kieli" : "FI"
   } ],
@@ -2758,6 +3676,9 @@
   "metadata" : [ {
     "nimi" : "Syvempi tekstinhallinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad textkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2767,6 +3688,9 @@
   "metadata" : [ {
     "nimi" : "Suullinen viestintä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2774,6 +3698,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_r29",
   "koodiArvo" : "R29",
   "metadata" : [ {
+    "nimi" : "Litteratur som glädje och kunskap",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjallisuus tiedon ja ilon lähteenä",
     "kieli" : "FI"
   } ],
@@ -2783,6 +3710,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_raa1",
   "koodiArvo" : "RAA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -2794,6 +3724,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2803,6 +3736,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2812,6 +3748,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2819,6 +3758,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_raa5",
   "koodiArvo" : "RAA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -2830,6 +3772,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2839,6 +3784,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2846,8 +3794,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_raa8",
   "koodiArvo" : "RAA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2855,6 +3806,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab11",
   "koodiArvo" : "RAB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -2864,6 +3818,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab12",
   "koodiArvo" : "RAB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -2873,6 +3830,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab13",
   "koodiArvo" : "RAB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -2882,6 +3842,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab14",
   "koodiArvo" : "RAB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -2891,6 +3854,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab15",
   "koodiArvo" : "RAB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -2902,6 +3868,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2909,8 +3878,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab17",
   "koodiArvo" : "RAB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2918,7 +3890,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab21",
   "koodiArvo" : "RAB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -2927,6 +3902,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab22",
   "koodiArvo" : "RAB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -2938,6 +3916,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2947,6 +3928,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2956,6 +3940,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2963,6 +3950,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab26",
   "koodiArvo" : "RAB26",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -2972,8 +3962,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab27",
   "koodiArvo" : "RAB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2983,6 +3976,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2992,6 +3988,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -2999,6 +3998,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab32",
   "koodiArvo" : "RAB32",
   "metadata" : [ {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
   } ],
@@ -3008,6 +4010,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab33",
   "koodiArvo" : "RAB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -3017,6 +4022,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab34",
   "koodiArvo" : "RAB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -3026,6 +4034,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab35",
   "koodiArvo" : "RAB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -3035,6 +4046,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rab36",
   "koodiArvo" : "RAB36",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -3046,6 +4060,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3055,6 +4072,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3062,6 +4082,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rua1",
   "koodiArvo" : "RUA1",
   "metadata" : [ {
+    "nimi" : "Vardagsliv i de nordiska länderna",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Arkielämää Pohjoismaissa",
     "kieli" : "FI"
   } ],
@@ -3071,6 +4094,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rua2",
   "koodiArvo" : "RUA2",
   "metadata" : [ {
+    "nimi" : "Människor omkring oss",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ihmiset ympärillämme",
     "kieli" : "FI"
   } ],
@@ -3082,6 +4108,9 @@
   "metadata" : [ {
     "nimi" : "Suomi – osa Pohjolaa ja Eurooppaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finland – en del av Norden och Europa",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3091,6 +4120,9 @@
   "metadata" : [ {
     "nimi" : "Elinympäristömme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår livsmiljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3100,6 +4132,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3107,6 +4142,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rua6",
   "koodiArvo" : "RUA6",
   "metadata" : [ {
+    "nimi" : "Kultur och kulturutövare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri ja sen tekijöitä",
     "kieli" : "FI"
   } ],
@@ -3116,8 +4154,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rua7",
   "koodiArvo" : "RUA7",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3127,6 +4168,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3134,6 +4178,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub1",
   "koodiArvo" : "RUB1",
   "metadata" : [ {
+    "nimi" : "Skola och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Koulu ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -3143,6 +4190,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub2",
   "koodiArvo" : "RUB2",
   "metadata" : [ {
+    "nimi" : "Vardagsliv i de nordiska länderna",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Arkielämää Pohjoismaissa",
     "kieli" : "FI"
   } ],
@@ -3152,8 +4202,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub21",
   "koodiArvo" : "RUB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3163,6 +4216,9 @@
   "metadata" : [ {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3170,6 +4226,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub23",
   "koodiArvo" : "RUB23",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -3181,6 +4240,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3190,6 +4252,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3199,6 +4264,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3206,8 +4274,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub27",
   "koodiArvo" : "RUB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3215,6 +4286,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub28",
   "koodiArvo" : "RUB28",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -3224,6 +4298,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub3",
   "koodiArvo" : "RUB3",
   "metadata" : [ {
+    "nimi" : "Finland, Norden och Europa",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomi, Pohjoismaat ja Eurooppa",
     "kieli" : "FI"
   } ],
@@ -3233,6 +4310,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub4",
   "koodiArvo" : "RUB4",
   "metadata" : [ {
+    "nimi" : "Att leva ensam och tillsammans med andra",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Elämää yhdessä ja erikseen",
     "kieli" : "FI"
   } ],
@@ -3242,6 +4322,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub5",
   "koodiArvo" : "RUB5",
   "metadata" : [ {
+    "nimi" : "Vår livsmiljö",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Elinympäristömme",
     "kieli" : "FI"
   } ],
@@ -3251,7 +4334,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_rub6",
   "koodiArvo" : "RUB6",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Kultur i ord och handling",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kulttuurin tekijöitä ja näkijöitä",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -3262,6 +4348,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3271,6 +4360,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämää Pohjoismaissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsliv i de nordiska länderna",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3278,6 +4370,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ruao2",
   "koodiArvo" : "RUÄO2",
   "metadata" : [ {
+    "nimi" : "Människor omkring oss",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ihmiset ympärillämme",
     "kieli" : "FI"
   } ],
@@ -3287,6 +4382,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ruao3",
   "koodiArvo" : "RUÄO3",
   "metadata" : [ {
+    "nimi" : "Finland – en del av Norden och Europa",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Suomi – osa Pohjolaa ja Eurooppaa",
     "kieli" : "FI"
   } ],
@@ -3298,6 +4396,9 @@
   "metadata" : [ {
     "nimi" : "Elinympäristömme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår livsmiljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3305,6 +4406,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ruao5",
   "koodiArvo" : "RUÄO5",
   "metadata" : [ {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
   } ],
@@ -3314,6 +4418,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ruao6",
   "koodiArvo" : "RUÄO6",
   "metadata" : [ {
+    "nimi" : "Kultur och kulturutövare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri ja sen tekijöitä",
     "kieli" : "FI"
   } ],
@@ -3323,7 +4430,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ruao7",
   "koodiArvo" : "RUÄO7",
   "metadata" : [ {
-    "nimi" : "Esitä ja keskustele",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -3334,6 +4444,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3343,6 +4456,9 @@
   "metadata" : [ {
     "nimi" : "Perusteet hallintaan",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Säkrare grunder",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3350,6 +4466,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_s22",
   "koodiArvo" : "S22",
   "metadata" : [ {
+    "nimi" : "Språket i bruk",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli käyttöön",
     "kieli" : "FI"
   } ],
@@ -3359,6 +4478,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_s23",
   "koodiArvo" : "S23",
   "metadata" : [ {
+    "nimi" : "Påverkan genom språket",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kielellä vaikutetaan",
     "kieli" : "FI"
   } ],
@@ -3370,6 +4492,9 @@
   "metadata" : [ {
     "nimi" : "Syvemmät tekstitaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad textkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3379,6 +4504,9 @@
   "metadata" : [ {
     "nimi" : "Suomalainen kulttuuri tutuksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den finländska kulturen blir bekant",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3388,6 +4516,9 @@
   "metadata" : [ {
     "nimi" : "Kohti toimivaa kaksikielisyyttä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Mot en fungerande tvåspråkighet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3395,6 +4526,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_s27",
   "koodiArvo" : "S27",
   "metadata" : [ {
+    "nimi" : "Talspråket i fokus",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Puhekieli tarkasteluun",
     "kieli" : "FI"
   } ],
@@ -3406,6 +4540,9 @@
   "metadata" : [ {
     "nimi" : "Erilaisten tekstien kirjoittamista",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att skriva olika texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3415,6 +4552,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "I texternas värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3424,6 +4564,9 @@
   "metadata" : [ {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3431,6 +4574,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa2",
   "koodiArvo" : "SAA2",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -3440,6 +4586,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa3",
   "koodiArvo" : "SAA3",
   "metadata" : [ {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
   } ],
@@ -3449,6 +4598,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa4",
   "koodiArvo" : "SAA4",
   "metadata" : [ {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
   } ],
@@ -3458,6 +4610,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa5",
   "koodiArvo" : "SAA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -3467,6 +4622,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa6",
   "koodiArvo" : "SAA6",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -3478,6 +4636,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3485,8 +4646,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_saa8",
   "koodiArvo" : "SAA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3494,6 +4658,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab11",
   "koodiArvo" : "SAB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -3503,6 +4670,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab12",
   "koodiArvo" : "SAB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -3514,6 +4684,9 @@
   "metadata" : [ {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3523,6 +4696,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3532,6 +4708,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3539,6 +4718,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab16",
   "koodiArvo" : "SAB16",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -3548,8 +4730,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab17",
   "koodiArvo" : "SAB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3557,8 +4742,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab21",
   "koodiArvo" : "SAB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3568,6 +4756,9 @@
   "metadata" : [ {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3575,6 +4766,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab23",
   "koodiArvo" : "SAB23",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -3584,6 +4778,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab24",
   "koodiArvo" : "SAB24",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -3593,6 +4790,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab25",
   "koodiArvo" : "SAB25",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
   } ],
@@ -3602,6 +4802,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab26",
   "koodiArvo" : "SAB26",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -3611,7 +4814,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab27",
   "koodiArvo" : "SAB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -3622,6 +4828,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3631,6 +4840,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3638,6 +4850,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab32",
   "koodiArvo" : "SAB32",
   "metadata" : [ {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
   } ],
@@ -3647,6 +4862,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab33",
   "koodiArvo" : "SAB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -3658,6 +4876,9 @@
   "metadata" : [ {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3667,6 +4888,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3676,6 +4900,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3683,6 +4910,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sab37",
   "koodiArvo" : "SAB37",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -3694,6 +4924,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3703,6 +4936,9 @@
   "metadata" : [ {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3712,6 +4948,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3728,6 +4967,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sma4",
   "koodiArvo" : "SMA4",
   "metadata" : [ {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
   } ],
@@ -3746,6 +4988,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sma6",
   "koodiArvo" : "SMA6",
   "metadata" : [ {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
   } ],
@@ -3773,6 +5018,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb11",
   "koodiArvo" : "SMB11",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -3782,6 +5030,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb12",
   "koodiArvo" : "SMB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -3791,6 +5042,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb13",
   "koodiArvo" : "SMB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -3802,6 +5056,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3811,6 +5068,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3818,6 +5078,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb16",
   "koodiArvo" : "SMB16",
   "metadata" : [ {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
   } ],
@@ -3827,7 +5090,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb17",
   "koodiArvo" : "SMB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -3838,6 +5104,9 @@
   "metadata" : [ {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3847,6 +5116,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3863,6 +5135,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_smb24",
   "koodiArvo" : "SMB24",
   "metadata" : [ {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
   } ],
@@ -3883,6 +5158,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3910,6 +5188,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3937,6 +5218,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3964,6 +5248,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -3980,6 +5267,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus1",
   "koodiArvo" : "SUS1",
   "metadata" : [ {
+    "nimi" : "Bättre basfärdigheter",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Perustaitojen varmentaminen",
     "kieli" : "FI"
   } ],
@@ -3989,6 +5279,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus2",
   "koodiArvo" : "SUS2",
   "metadata" : [ {
+    "nimi" : "Språkbruket",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli käyttöön",
     "kieli" : "FI"
   } ],
@@ -3998,6 +5291,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus3",
   "koodiArvo" : "SUS3",
   "metadata" : [ {
+    "nimi" : "Textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstitaitoa",
     "kieli" : "FI"
   } ],
@@ -4007,6 +5303,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus4",
   "koodiArvo" : "SUS4",
   "metadata" : [ {
+    "nimi" : "Textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstitaitoa",
     "kieli" : "FI"
   } ],
@@ -4018,6 +5317,9 @@
   "metadata" : [ {
     "nimi" : "Suomen kieli ja kirjallisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finskan och den finska litteraturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4025,6 +5327,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus6",
   "koodiArvo" : "SUS6",
   "metadata" : [ {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -4034,6 +5339,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus7",
   "koodiArvo" : "SUS7",
   "metadata" : [ {
+    "nimi" : "Muntlig kommunikation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Puheviestintää",
     "kieli" : "FI"
   } ],
@@ -4043,6 +5351,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_sus8",
   "koodiArvo" : "SUS8",
   "metadata" : [ {
+    "nimi" : "Konsten och förmågan att skriva",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjoittamisen taitoa ja taidetta",
     "kieli" : "FI"
   } ],
@@ -4054,6 +5365,9 @@
   "metadata" : [ {
     "nimi" : "Moninaisessa ja monikulttuurisessa maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En mångartad och flerkulturell värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4063,6 +5377,9 @@
   "metadata" : [ {
     "nimi" : "Tanssin lukiodiplomi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i dans",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4072,6 +5389,9 @@
   "metadata" : [ {
     "nimi" : "Terveyden perusteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsokunskapens grunder",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4079,6 +5399,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_te2",
   "koodiArvo" : "TE2",
   "metadata" : [ {
+    "nimi" : "Ungdomar, hälsa och vardagsliv",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuoret, terveys, ja arkielämä",
     "kieli" : "FI"
   } ],
@@ -4090,6 +5413,9 @@
   "metadata" : [ {
     "nimi" : "Terveys ja tutkimus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsa och forskning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4189,6 +5515,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnon luonne ja merkitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religionens natur och betydelse",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4198,6 +5527,9 @@
   "metadata" : [ {
     "nimi" : "Kirkko, kulttuuri ja yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kyrkan, kulturen och samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4207,6 +5539,9 @@
   "metadata" : [ {
     "nimi" : "Ihmisen elämä ja etiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans liv samt etik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4214,6 +5549,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ue4",
   "koodiArvo" : "UE4",
   "metadata" : [ {
+    "nimi" : "Religionernas värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Uskontojen maailmat",
     "kieli" : "FI"
   } ],
@@ -4223,6 +5561,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ue5",
   "koodiArvo" : "UE5",
   "metadata" : [ {
+    "nimi" : "Vad tror finländaren på?",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Mihin suomalainen uskoo?",
     "kieli" : "FI"
   } ],
@@ -4457,6 +5798,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_uo1",
   "koodiArvo" : "UO1",
   "metadata" : [ {
+    "nimi" : "Den ortodoxa världen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ortodoksinen maailma",
     "kieli" : "FI"
   } ],
@@ -4466,6 +5810,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_uo2",
   "koodiArvo" : "UO2",
   "metadata" : [ {
+    "nimi" : "Dogmatik och etik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Uskonoppi ja etiikka",
     "kieli" : "FI"
   } ],
@@ -4477,6 +5824,9 @@
   "metadata" : [ {
     "nimi" : "Raamattutieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bibelkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4484,6 +5834,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_uo4",
   "koodiArvo" : "UO4",
   "metadata" : [ {
+    "nimi" : "Religionernas värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Uskontojen maailmat",
     "kieli" : "FI"
   } ],
@@ -4493,6 +5846,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_uo5",
   "koodiArvo" : "UO5",
   "metadata" : [ {
+    "nimi" : "Det ortodoxa Finland",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ortodoksinen Suomi",
     "kieli" : "FI"
   } ],
@@ -4547,6 +5903,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_vea1",
   "koodiArvo" : "VEA1",
   "metadata" : [ {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Nuori ja hänen maailmansa",
     "kieli" : "FI"
   } ],
@@ -4558,6 +5917,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4567,6 +5929,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja työ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och arbete",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4576,6 +5941,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4583,6 +5951,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_vea5",
   "koodiArvo" : "VEA5",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -4594,6 +5965,9 @@
   "metadata" : [ {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4603,6 +5977,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4610,8 +5987,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_vea8",
   "koodiArvo" : "VEA8",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4621,6 +6001,9 @@
   "metadata" : [ {
     "nimi" : "nuori ja hänen maailmansa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "De unga och deras värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4628,6 +6011,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb12",
   "koodiArvo" : "VEB12",
   "metadata" : [ {
+    "nimi" : "Kommunikation och fritid",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Viestintä ja vapaa-aika",
     "kieli" : "FI"
   } ],
@@ -4637,6 +6023,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb13",
   "koodiArvo" : "VEB13",
   "metadata" : [ {
+    "nimi" : "Studier, arbete och samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "opiskelu, työ ja yhteiskunta",
     "kieli" : "FI"
   } ],
@@ -4646,6 +6035,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb14",
   "koodiArvo" : "VEB14",
   "metadata" : [ {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
   } ],
@@ -4655,6 +6047,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb15",
   "koodiArvo" : "VEB15",
   "metadata" : [ {
+    "nimi" : "Vetenskap, ekonomi och teknik",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tiede, talous ja tekniikka",
     "kieli" : "FI"
   } ],
@@ -4666,6 +6061,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4673,7 +6071,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb17",
   "koodiArvo" : "VEB17",
   "metadata" : [ {
-    "nimi" : "Puhu ja ymmärrä paremmin",
+    "nimi" : "Globalisering och internationalisering",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yhteinen maailma ja kansainvälistyminen",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -4682,7 +6083,10 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb21",
   "koodiArvo" : "VEB21",
   "metadata" : [ {
-    "nimi" : " Vapaa-aika ja harrastukset ",
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaa-aika ja harrastukset ",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -4691,6 +6095,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb22",
   "koodiArvo" : "VEB22",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -4702,6 +6109,9 @@
   "metadata" : [ {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4711,6 +6121,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4720,6 +6133,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4727,6 +6143,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb26",
   "koodiArvo" : "VEB26",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -4736,8 +6155,11 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb27",
   "koodiArvo" : "VEB27",
   "metadata" : [ {
-    "nimi" : " Tiede ja tekniikka",
+    "nimi" : "Tiede ja tekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och teknik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4747,6 +6169,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja kestävä kehitys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturen och en hållbar utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4756,6 +6181,9 @@
   "metadata" : [ {
     "nimi" : "Hyvää päivää, hauska tutustua",
     "kieli" : "FI"
+  }, {
+    "nimi" : "God dag, trevligt att träffas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4765,6 +6193,9 @@
   "metadata" : [ {
     "nimi" : "Näin asiat hoituvat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Så ska saker och ting skötas",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4772,6 +6203,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb33",
   "koodiArvo" : "VEB33",
   "metadata" : [ {
+    "nimi" : "Fritid och intressen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vapaa-aika ja harrastukset",
     "kieli" : "FI"
   } ],
@@ -4781,6 +6215,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb34",
   "koodiArvo" : "VEB34",
   "metadata" : [ {
+    "nimi" : "Världen och vi",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Meillä ja muualla",
     "kieli" : "FI"
   } ],
@@ -4790,6 +6227,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb35",
   "koodiArvo" : "VEB35",
   "metadata" : [ {
+    "nimi" : "Förr och nu",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ennen ja nyt",
     "kieli" : "FI"
   } ],
@@ -4799,6 +6239,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb36",
   "koodiArvo" : "VEB36",
   "metadata" : [ {
+    "nimi" : "Studier och framtidsplaner",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Opiskelu ja tulevaisuudensuunnitelmat",
     "kieli" : "FI"
   } ],
@@ -4810,6 +6253,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4817,6 +6263,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_veb38",
   "koodiArvo" : "VEB38",
   "metadata" : [ {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
   } ],
@@ -4826,6 +6275,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_yh1",
   "koodiArvo" : "YH1",
   "metadata" : [ {
+    "nimi" : "Samhällskunskap",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Yhteiskuntatieto",
     "kieli" : "FI"
   } ],
@@ -4835,6 +6287,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_yh2",
   "koodiArvo" : "YH2",
   "metadata" : [ {
+    "nimi" : "Ekonomisk kunskap",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Taloustieto",
     "kieli" : "FI"
   } ],
@@ -4846,6 +6301,9 @@
   "metadata" : [ {
     "nimi" : "Kansalaisen lakitieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medborgarens lagkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4855,6 +6313,9 @@
   "metadata" : [ {
     "nimi" : "Eurooppalaisuus ja Euroopan unioni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Europeiskhet och Europeiska unionen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4864,6 +6325,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, texter och interaktion",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4871,6 +6335,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ai2",
   "koodiArvo" : "ÄI2",
   "metadata" : [ {
+    "nimi" : "Textstrukturer och textbetydelser",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstien rakenteita ja merkityksiä",
     "kieli" : "FI"
   } ],
@@ -4882,6 +6349,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litterära medel och litterär tolkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4891,6 +6361,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Texter och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4898,6 +6371,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ai5",
   "koodiArvo" : "ÄI5",
   "metadata" : [ {
+    "nimi" : "Text, stil och kontext",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Teksti, tyyli ja konteksti",
     "kieli" : "FI"
   } ],
@@ -4907,6 +6383,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ai6",
   "koodiArvo" : "ÄI6",
   "metadata" : [ {
+    "nimi" : "Språk, litteratur och identitet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kieli, kirjallisuus ja identiteetti",
     "kieli" : "FI"
   } ],
@@ -4918,6 +6397,9 @@
   "metadata" : [ {
     "nimi" : "Puheviestinnän taitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikationsförmåga",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4925,6 +6407,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ai8",
   "koodiArvo" : "ÄI8",
   "metadata" : [ {
+    "nimi" : "Fördjupad textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstitaitojen syventäminen",
     "kieli" : "FI"
   } ],
@@ -4934,6 +6419,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ai9",
   "koodiArvo" : "ÄI9",
   "metadata" : [ {
+    "nimi" : "Skrivande och modern kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjoittaminen ja nykykulttuuri",
     "kieli" : "FI"
   } ],
@@ -4943,6 +6431,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_aim1",
   "koodiArvo" : "ÄIM1",
   "metadata" : [ {
+    "nimi" : "Det egna modersmålet och dess användning",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Oma äidinkieli ja sen käyttö",
     "kieli" : "FI"
   } ],
@@ -4952,6 +6443,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_aim2",
   "koodiArvo" : "ÄIM2",
   "metadata" : [ {
+    "nimi" : "Språkfärdighet och språkriktighet",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kielitieto ja oikeakielisyys",
     "kieli" : "FI"
   } ],
@@ -4961,6 +6455,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_aim3",
   "koodiArvo" : "ÄIM3",
   "metadata" : [ {
+    "nimi" : "Språkområdets kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kielialueen kulttuuri",
     "kieli" : "FI"
   } ],
@@ -4972,6 +6469,9 @@
   "metadata" : [ {
     "nimi" : "Viestintä ja yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och samhälle",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4981,6 +6481,9 @@
   "metadata" : [ {
     "nimi" : "Kaunokirjallisuus ja muut taidelajit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skönlitteratur och andra konstformer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4990,6 +6493,9 @@
   "metadata" : [ {
     "nimi" : "Tiedon maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskapens värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -4997,6 +6503,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_air1",
   "koodiArvo" : "ÄIR1",
   "metadata" : [ {
+    "nimi" : "Grunderna i språket befästs",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kielipohjan vahvistaminen",
     "kieli" : "FI"
   } ],
@@ -5008,6 +6517,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon laajeneminen lähipiirin ulkopuolelle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språkfärdigheten vidgas utanför den närmaste kretsen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5017,6 +6529,9 @@
   "metadata" : [ {
     "nimi" : "Romanien suullinen ja kirjallinen perinne",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Romernas muntliga och skriftliga tradition",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5026,6 +6541,9 @@
   "metadata" : [ {
     "nimi" : "Romanikielen ja -kulttuurin historia ja levinneisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Romanins och den romska kulturens historia och utbredning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5035,6 +6553,9 @@
   "metadata" : [ {
     "nimi" : "Romanien kirjallisuus ja muu taide",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Romsk litteratur och annan romsk konst",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5042,6 +6563,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_air6",
   "koodiArvo" : "ÄIR6",
   "metadata" : [ {
+    "nimi" : "Romanin och den romska kulturen i dagens samhälle",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Romanikieli ja -kulttuuri nyky-yhteiskunnassa",
     "kieli" : "FI"
   } ],
@@ -5051,6 +6575,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_air7",
   "koodiArvo" : "ÄIR7",
   "metadata" : [ {
+    "nimi" : "Talkonsten och den muntliga kulturen på romani",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Romanikielen puhetaito ja puhekulttuuri",
     "kieli" : "FI"
   } ],
@@ -5060,6 +6587,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_air8",
   "koodiArvo" : "ÄIR8",
   "metadata" : [ {
+    "nimi" : "Kurs i skrivande och textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kirjoittamisen ja tekstitaitojen kurssi",
     "kieli" : "FI"
   } ],
@@ -5069,6 +6599,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_air9",
   "koodiArvo" : "ÄIR9",
   "metadata" : [ {
+    "nimi" : "Aktuellt i romanin och i romsk kultur",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Ajankohtaista romanikielessä ja -kulttuurissa (",
     "kieli" : "FI"
   } ],
@@ -5080,6 +6613,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, texter och interaktion",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5087,6 +6623,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ais2",
   "koodiArvo" : "ÄIS2",
   "metadata" : [ {
+    "nimi" : "Textstrukturer och betydelser",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstien rakenteita ja merkityksiä",
     "kieli" : "FI"
   } ],
@@ -5096,6 +6635,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ais3",
   "koodiArvo" : "ÄIS3",
   "metadata" : [ {
+    "nimi" : "Skönlitterära texter",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Kaunokirjalliset tekstit",
     "kieli" : "FI"
   } ],
@@ -5105,6 +6647,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ais4",
   "koodiArvo" : "ÄIS4",
   "metadata" : [ {
+    "nimi" : "Sätt att påverka",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vaikuttamisen keinoja",
     "kieli" : "FI"
   } ],
@@ -5116,6 +6661,9 @@
   "metadata" : [ {
     "nimi" : "Teksti, tyyli ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text, stil och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5125,6 +6673,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kirjallisuus ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, litteratur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5134,6 +6685,9 @@
   "metadata" : [ {
     "nimi" : "Puheviestintä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -5141,6 +6695,9 @@
   "koodiUri" : "lukionkurssitops2003nuoret_ais8",
   "koodiArvo" : "ÄIS8",
   "metadata" : [ {
+    "nimi" : "Textkompetens",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Tekstitaidot",
     "kieli" : "FI"
   } ],
@@ -5152,6 +6709,9 @@
   "metadata" : [ {
     "nimi" : "Ajankohtaiset tekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Aktuella texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
