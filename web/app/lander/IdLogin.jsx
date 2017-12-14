@@ -3,20 +3,10 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from '../http'
 import Text from '../Text.jsx'
+import Input from '../Input.jsx'
 
 const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
-
-const Input = ({id, type, disabled, value, autofocus = false}) => (
-  <input
-    type={type}
-    disabled={disabled}
-    value={value.or('')}
-    onChange={e => value.set(e.target.value)}
-    id={id}
-    autoFocus={autofocus}>
-  </input>
-)
 
 const IdLogin = () => {
   const state = Atom({id: ''})

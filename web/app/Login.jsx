@@ -8,8 +8,7 @@ import './style/main.less'
 import {TopBar} from './TopBar.jsx'
 import {t} from './i18n.js'
 import Text from './Text.jsx'
-
-const Input = ({ id, type, disabled, value, autofocus = false }) => <input type={type} disabled={disabled} value={ value.or('') } onChange={ (e) => value.set(e.target.value)} id={id} autoFocus={autofocus}></input>
+import Input from './Input.jsx'
 
 const Login = () => {
   const state = Atom({username: '', password: ''})
