@@ -16,10 +16,15 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    if (application.features.shibboleth) {
+    def redirectUrl = koskiSessionOption.map { user =>
+      if (user.user.kansalainen) "/omattiedot"
+      else "/virkailija"
+    }.getOrElse("/virkailija")
+
+    if (application.features.shibboleth && !isAuthenticated) {
       landerHtml
     } else {
-      redirect("/virkailija")
+      redirect(redirectUrl)
     }
   }
 
