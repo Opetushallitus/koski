@@ -1,6 +1,7 @@
 package fi.oph.koski
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
@@ -77,7 +78,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
     if (Environment.isLocalDevelopmentEnvironment) {
       htmlIndex("koski-shibbolethLogin.js")
     } else {
-      redirect("/")
+      haltWithStatus(KoskiErrorCategory.notFound())
     }
   }
 }
