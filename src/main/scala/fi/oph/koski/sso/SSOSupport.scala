@@ -88,6 +88,8 @@ trait SSOSupport extends ScalatraBase with Logging {
     }
   }
 
+  def redirectToFrontpage = redirect("/")
+
   def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login"
