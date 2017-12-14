@@ -1,3 +1,7 @@
+## 14.12.2017
+
+- Muutettu opiskeluoikeuksien lisätiedoista kenttä `vammainen` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
+
 ## 11.12.2017
 
 - Muutettu ammatillisen opiskeluoikeuden lisätiedon kenttä `vaikeastiVammainen` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja

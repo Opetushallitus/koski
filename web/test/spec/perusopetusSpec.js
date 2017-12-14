@@ -197,7 +197,7 @@ describe('Perusopetus', function() {
             'Kotiopetus 15.8.2008 — 4.6.2016\n' +
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
-            'Vammainen kyllä\n' +
+            'Vammainen 14.8.2010 —\n' +
             'Vaikeasti vammainen 14.8.2010 —\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +

@@ -41,22 +41,76 @@
       } ]
     },
     "lisätiedot" : {
-      "perusopetuksenAloittamistaLykätty" : false,
+      "perusopetuksenAloittamistaLykätty" : true,
       "aloittanutEnnenOppivelvollisuutta" : false,
       "pidennettyOppivelvollisuus" : {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
       },
-      "vuosiluokkiinSitoutumatonOpetus" : false,
-      "vammainen" : false
+      "tukimuodot" : [ {
+        "koodiarvo" : "1",
+        "nimi" : {
+          "fi" : "Osa-aikainen erityisopetus"
+        },
+        "koodistoUri" : "perusopetuksentukimuoto"
+      } ],
+      "erityisenTuenPäätös" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04",
+        "opiskeleeToimintaAlueittain" : true,
+        "erityisryhmässä" : true
+      },
+      "tehostetunTuenPäätös" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "joustavaPerusopetus" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "kotiopetus" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "ulkomailla" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "vuosiluokkiinSitoutumatonOpetus" : true,
+      "vammainen" : [ {
+        "alku" : "2010-08-14"
+      } ],
+      "vaikeastiVammainen" : [ {
+        "alku" : "2010-08-14"
+      } ],
+      "majoitusetu" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "kuljetusetu" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "oikeusMaksuttomaanAsuntolapaikkaan" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      },
+      "sisäoppilaitosmainenMajoitus" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "koulukoti" : [ {
+        "alku" : "2013-09-01",
+        "loppu" : "2014-09-01"
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "104/011/2014",
         "tunniste" : {
-          "koodiarvo" : "020075",
+          "koodiarvo" : "201101",
           "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "105/011/2014"
+        }
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -104,6 +158,10 @@
           }
         } ]
       },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -123,11 +181,13 @@
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
+          "kuvaus" : {
+            "fi" : "Motoriset taidot kehittyneet hyvin perusopetuksen aikana"
+          },
           "hyväksytty" : true
         } ],
-        "korotus" : false,
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksentoimintaalue",
+          "koodiarvo" : "perusopetuksentoimintaalue",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -144,9 +204,8 @@
           },
           "hyväksytty" : true
         } ],
-        "korotus" : false,
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksentoimintaalue",
+          "koodiarvo" : "perusopetuksentoimintaalue",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -163,9 +222,8 @@
           },
           "hyväksytty" : true
         } ],
-        "korotus" : false,
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksentoimintaalue",
+          "koodiarvo" : "perusopetuksentoimintaalue",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -182,9 +240,8 @@
           },
           "hyväksytty" : true
         } ],
-        "korotus" : false,
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksentoimintaalue",
+          "koodiarvo" : "perusopetuksentoimintaalue",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -201,19 +258,18 @@
           },
           "hyväksytty" : true
         } ],
-        "korotus" : false,
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksentoimintaalue",
+          "koodiarvo" : "perusopetuksentoimintaalue",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "perusopetuksenlisaopetus",
+        "koodiarvo" : "perusopetuksenoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetuksenlisaopetus",
+      "koodiarvo" : "perusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2008-08-15"

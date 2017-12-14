@@ -71,10 +71,9 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("""Oppilas on vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("""Onko oppija vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.""")
   @SensitiveData
-  @DefaultValue(false)
-  vammainen: Boolean = false,
+  vammainen: Option[List[Aikajakso]] = None,
   @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,

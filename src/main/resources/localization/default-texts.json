@@ -656,7 +656,7 @@
   "description:Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot" : "Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot",
   "description:Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa..." : "Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi",
   "description:Organisaatio, joka suorituksen on vahvistanut" : "Organisaatio, joka suorituksen on vahvistanut",
-  "description:Oppilas on vammainen (kyllä/ei). Rahoituksen..." : "Oppilas on vammainen (kyllä/ei). Rahoituksen laskennassa käytettävä tieto.",
+  "description:Onko oppija vammainen. Lista alku-loppu..." : "Onko oppija vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
   "description:Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan..." : "Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan sen järjestelmän tyyppi, josta tiedot on tuotu Koskeen. Yksittäisillä lähdejärjestelmäinstansseilla ei tarvitse olla omaa tunnistetta; tässä identifioidaan vain lähdejärjestelmän tyyppi (esimerkiksi primus, peppi, winha...)",
   "description:Opiskeluoikeuden tyyppi, jolla erotellaan eri..." : "Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet",
   "description:Jakson loppupäivämäärä. Muoto YYYY-MM-DD" : "Jakson loppupäivämäärä. Muoto YYYY-MM-DD",

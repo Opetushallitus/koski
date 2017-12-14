@@ -99,7 +99,7 @@ object ExamplesPerusopetus {
         kotiopetus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         ulkomailla = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         vuosiluokkiinSitoutumatonOpetus = true,
-        vammainen = true,
+        vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
         vaikeastiVammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
         majoitusetu = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         kuljetusetu = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),

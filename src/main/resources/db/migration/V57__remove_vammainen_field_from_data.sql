@@ -1,0 +1,1 @@
+UPDATE opiskeluoikeus SET data = data #- '{lisätiedot, vammainen}' WHERE data -> 'tyyppi' ->> 'koodiarvo' in ('perusopetus', 'aikuistenperusopetus', 'perusopetuksenlisaopetus');

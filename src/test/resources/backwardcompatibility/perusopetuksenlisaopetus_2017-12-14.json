@@ -47,8 +47,7 @@
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
       },
-      "vuosiluokkiinSitoutumatonOpetus" : false,
-      "vammainen" : false
+      "vuosiluokkiinSitoutumatonOpetus" : false
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
