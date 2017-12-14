@@ -13,11 +13,13 @@ import {OrganisaatioHenkilöEditor} from '../organisaatio/OrganisaatioHenkiloEdi
 import {SuoritusEditor} from '../suoritus/SuoritusEditor'
 import {PerusteEditor} from '../suoritus/PerusteEditor'
 import {PerusopetuksenOppiaineRowEditor} from '../perusopetus/PerusopetuksenOppiaineRowEditor'
+import {OpiskeluoikeudenTilaEditor} from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
 import genericEditors from '../editor/genericEditors'
 
 const oppijaEditors = {
   'oppijaeditorview': OppijaEditor,
   'omattiedoteditorview': OmatTiedotEditor,
+  'opiskeluoikeudentila': OpiskeluoikeudenTilaEditor,
   'paatasonsuoritus': SuoritusEditor,
   'vahvistus': VahvistusEditor,
   'laajuus' : LaajuusEditor,
