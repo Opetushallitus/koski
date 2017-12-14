@@ -38,6 +38,7 @@ const IdLogin = () => {
 
   return (
     <form className={error.map(e => e ? 'login error' : 'login')}>
+      <img id="logo" src="/koski/images/korhopankki.png"/>
       <label><Text name="Henkilötunnus"/>
         <Input
           id='password'
