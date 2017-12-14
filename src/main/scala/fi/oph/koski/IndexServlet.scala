@@ -17,9 +17,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   get("/") {
     if (application.features.shibboleth) {
-      htmlIndex("koski-lander.js", scripts =
-        <script id="auth">{Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}</script>
-      )
+      landerHtml
     } else {
       redirect("/virkailija")
     }
@@ -52,6 +50,13 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   private def indexHtml(disableRaamit: Boolean = false) = {
     htmlIndex("koski-main.js", raamitEnabled = !disableRaamit && raamitHeaderSet)
   }
+
+  private def landerHtml = htmlIndex(
+    scriptBundleName = "koski-lander.js",
+    scripts = <script id="auth">
+      {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}
+    </script>
+  )
 }
 
 class LoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
