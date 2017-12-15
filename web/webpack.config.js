@@ -6,7 +6,7 @@ const autoprefixer = require('autoprefixer')
 module.exports = {
   entry: {
     main: './app/Virkailija.jsx',
-    omattiedot: './app/Omattiedot.jsx',
+    omattiedot: './app/OmatTiedot.jsx',
     login: './app/Login.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/lander/Lander.jsx',
@@ -19,6 +19,7 @@ module.exports = {
   stats: {
     minimal: true
   },
+
   module: {
     rules: [
       {
