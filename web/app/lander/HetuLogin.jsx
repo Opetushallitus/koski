@@ -28,13 +28,17 @@ const HetuLogin = () => {
     .flatMap(credentials => {
       const headers = {nationalidentificationnumber: credentials.id}
       const errorHandler = e => {
+        console.error('Fake shibboleth login fail', e)
         inProgress.set(false)
         error.set(e)
       }
-
+      console.log('Logging in with', credentials)
       return Http.get(LoginUrl, {errorHandler}, headers)
     })
-    .onValue(() => document.location = RedirectUrl)
+    .onValue(() => {
+      console.log('Login ok')
+      document.location = RedirectUrl
+    })
 
   const errorMessage = error.map('.jsonMessage.0.message')
 
