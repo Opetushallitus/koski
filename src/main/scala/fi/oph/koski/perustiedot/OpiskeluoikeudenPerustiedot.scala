@@ -6,6 +6,7 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
@@ -75,7 +76,7 @@ object OpiskeluoikeudenPerustiedot {
       .map { suoritus =>
         SuorituksenPerustiedot(
           extract[Koodistokoodiviite](suoritus \ "tyyppi"),
-          (KoulutusmoduulinPerustiedot(extract[Koodistokoodiviite](suoritus \ "koulutusmoduuli" \ "tunniste"))), // TODO: voi olla paikallinen koodi
+          KoulutusmoduulinPerustiedot(extract[KoodiViitteenPerustiedot](suoritus \ "koulutusmoduuli" \ "tunniste")),
           extract[Option[List[Osaamisalajakso]]](suoritus \ "osaamisala").map(_.map(_.osaamisala)),
           extract[Option[List[Koodistokoodiviite]]](suoritus \ "tutkintonimike"),
           extract[OidOrganisaatio](suoritus \ "toimipiste", ignoreExtras = true)
@@ -127,5 +128,13 @@ case class SuorituksenPerustiedot(
 )
 
 case class KoulutusmoduulinPerustiedot(
-  tunniste: Koodistokoodiviite
+  tunniste: KoodiViitteenPerustiedot
+)
+
+case class KoodiViitteenPerustiedot(
+  koodiarvo: Option[String],
+  nimi: Option[LocalizedString],
+  lyhytNimi: Option[LocalizedString],
+  koodistoUri: Option[String],
+  koodistoVersio: Option[Int]
 )
