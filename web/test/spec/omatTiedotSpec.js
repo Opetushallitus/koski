@@ -22,7 +22,7 @@ describe('Omat tiedot', function() {
   var etusivu = LandingPage()
   var korhopankki = KorhoPankki()
   describe("Kun kansalainen kirjautuu ulos", function() {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('190751-739W'), wait.until(omattiedot.isVisible) , authentication.logout, wait.until(etusivu.isVisible))
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('290492-9455'), wait.until(omattiedot.isVisible) , click(findSingle('#logout')), wait.until(etusivu.isVisible))
     it("Näytetään etusivu", function() { })
   })
 })
