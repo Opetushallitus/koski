@@ -8,7 +8,7 @@ import Input from '../Input.jsx'
 const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
 
-const IdLogin = () => {
+const HetuLogin = () => {
   const state = Atom({id: ''})
 
   const valid = state.map(({id}) => id.length === 11)
@@ -41,7 +41,7 @@ const IdLogin = () => {
       <img id="logo" src="/koski/images/korhopankki.png"/>
       <label><Text name="Henkilötunnus"/>
         <Input
-          id='password'
+          id='hetu'
           type='password'
           disabled={inProgress}
           value={state.view('id')}
@@ -58,4 +58,4 @@ const IdLogin = () => {
   )
 }
 
-export {IdLogin}
+export default HetuLogin

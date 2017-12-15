@@ -2,12 +2,12 @@ import '../polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import '../style/main.less'
-import {IdLogin} from './IdLogin.jsx'
+import HetuLogin from './HetuLogin.jsx'
 
 ReactDOM.render((
   <div>
-    <IdLogin/>
+    <HetuLogin/>
   </div>
 ), document.getElementById('content'))
 
-document.body.id = 'lander-page'
+document.body.id = "fake-shibboleth-login"

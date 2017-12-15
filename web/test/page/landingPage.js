@@ -17,14 +17,14 @@ function LandingPage() {
 }
 
 function KorhoPankki() {
-  var pageApi = Page(findSingle('.login'));
+  var pageApi = Page(findSingle('#fake-shibboleth-login .login'));
   var api = {
     isReady: function() {
-      return isElementVisible('.login')
+      return isElementVisible('#fake-shibboleth-login .login')
     },
     login: function(hetu) {
       return seq(
-        pageApi.setInputValue('input', hetu),
+        pageApi.setInputValue('#hetu', hetu),
         click(findSingle('button'))
       )
     }
