@@ -4,8 +4,8 @@ import Atom from 'bacon.atom'
 import R from 'ramda'
 import Http from '../http'
 import '../../node_modules/codemirror/mode/javascript/javascript.js'
-import {contentWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
-import {ApiOperations} from './DokumentaatioApiTester.jsx'
+import {contentWithLoadingIndicator} from '../AjaxLoadingIndicator'
+import {ApiOperations} from './DokumentaatioApiTester'
 
 const JsonExampleTable = ({contents}) => {
   return <table className="json" dangerouslySetInnerHTML={{__html: (contents)}}></table>

@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {
   accumulateModelStateAndValidity,
   modelData,
@@ -9,10 +9,10 @@ import {
   modelProperties,
   pushModelValue
 } from '../editor/EditorModel'
-import ModalDialog from '../editor/ModalDialog.jsx'
+import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util'
-import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
-import Text from '../Text.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown'
+import Text from '../Text'
 import {
   copyToimipiste,
   newSuoritusProto,

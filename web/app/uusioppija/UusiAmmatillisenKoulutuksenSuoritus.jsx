@@ -1,13 +1,13 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
+import TutkintoAutocomplete from '../TutkintoAutocomplete'
 import {ift} from '../util'
-import Suoritustyyppi from './Suoritustyyppi.jsx'
+import Suoritustyyppi from './Suoritustyyppi'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
-import SuoritustapaDropdown from './SuoritustapaDropdown.jsx'
-import Text from '../Text.jsx'
-import {setPeruste} from '../editor/PerusteDropdown.jsx'
+import SuoritustapaDropdown from './SuoritustapaDropdown'
+import Text from '../Text'
+import {setPeruste} from '../editor/PerusteDropdown'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma')

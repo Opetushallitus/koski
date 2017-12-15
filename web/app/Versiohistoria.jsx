@@ -1,10 +1,10 @@
 import React from 'react'
 import BaconComponent from './BaconComponent'
 import Http from './http'
-import Link from './Link.jsx'
+import Link from './Link'
 import {currentLocation, navigateTo} from './location.js'
 import {ISO2FinnishDateTime} from './date.js'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export default class Versiohistoria extends BaconComponent {
   constructor(props) {

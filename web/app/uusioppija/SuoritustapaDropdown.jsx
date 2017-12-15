@@ -1,7 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Http from '../http'
-import KoodistoDropdown from '../KoodistoDropdown.jsx'
+import KoodistoDropdown from '../KoodistoDropdown'
 import {doActionWhileMounted, toObservable} from '../util'
 
 export default ({diaarinumero, suoritustapaAtom, title}) => {

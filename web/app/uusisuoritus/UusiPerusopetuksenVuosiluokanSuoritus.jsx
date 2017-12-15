@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {
   accumulateModelStateAndValidity,
   addContext,
@@ -12,10 +12,10 @@ import {
   modelProperties,
   modelSetValue
 } from '../editor/EditorModel'
-import {EnumEditor} from '../editor/EnumEditor.jsx'
-import ModalDialog from '../editor/ModalDialog.jsx'
+import {EnumEditor} from '../editor/EnumEditor'
+import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../editor/Perusopetus'
 import {copyToimipiste, newSuoritusProto} from '../editor/Suoritus'
 

@@ -1,7 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import Dropdown from './Dropdown.jsx'
-import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
+import Dropdown from './Dropdown'
+import {elementWithLoadingIndicator} from './AjaxLoadingIndicator'
 import {t} from './i18n'
 import {parseBool, toObservable} from './util'
 

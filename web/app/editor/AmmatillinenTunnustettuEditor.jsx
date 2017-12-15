@@ -1,10 +1,10 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import Text from '../Text.jsx'
-import {Editor} from './Editor.jsx'
+import Text from '../Text'
+import {Editor} from './Editor'
 import {modelLookup, resetOptionalModel} from './EditorModel.js'
 import {modelEmpty, optionalPrototypeModel, pushModel} from './EditorModel'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor'
 
 export class AmmatillinenTunnustettuEditor extends React.Component {
   constructor(props) {

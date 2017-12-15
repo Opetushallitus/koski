@@ -1,6 +1,6 @@
 import React from 'baret'
 import {modelData, modelSetValue, pushModel} from './EditorModel'
-import OrganisaatioPicker from '../OrganisaatioPicker.jsx'
+import OrganisaatioPicker from '../OrganisaatioPicker'
 import {t} from '../i18n'
 export const OrganisaatioEditor = ({model, organisaatioTyypit, showAll}) => {
   let canSelectOrg = org => organisaatioTyypit ? org.organisaatiotyypit.some(tyyppi => organisaatioTyypit.map(ot => ot.toLowerCase()).includes(tyyppi.toLowerCase())) : true

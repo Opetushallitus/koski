@@ -1,14 +1,14 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import {onLopputilassa} from '../editor/OpiskeluoikeudenTilaEditor.jsx'
-import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluokanSuoritus.jsx'
-import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus.jsx'
-import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus.jsx'
-import UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus from './UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus.jsx'
+import {onLopputilassa} from '../editor/OpiskeluoikeudenTilaEditor'
+import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluokanSuoritus'
+import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus'
+import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus'
+import UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus from './UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus'
 import {
   UusiAmmatillisenTutkinnonSuoritus,
   UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus
-} from './UusiAmmatillisenTutkinnonSuoritus.jsx'
+} from './UusiAmmatillisenTutkinnonSuoritus'
 
 export default ({opiskeluoikeus, callback}) => {
   return (<span className="add-suoritus tab">{

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Editor } from './Editor.jsx'
-import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor.jsx'
+import { Editor } from './Editor'
+import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor'
 import {modelProperties} from './EditorModel'
 import {findModelProperty} from './EditorModel'
 

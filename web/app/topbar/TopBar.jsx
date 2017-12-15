@@ -1,7 +1,7 @@
 import React from 'baret'
-import {OpiskeluoikeusInvalidatedMessage} from '../OpiskeluoikeusInvalidation.jsx'
-import LocalTopBar from './LocalTopBar.jsx'
-import NavList from './NavList.jsx'
+import {OpiskeluoikeusInvalidatedMessage} from '../OpiskeluoikeusInvalidation'
+import LocalTopBar from './LocalTopBar'
+import NavList from './NavList'
 
 export const TopBar = ({user, titleKey, inRaamit, location}) => {
   return (inRaamit

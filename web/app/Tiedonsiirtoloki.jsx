@@ -1,10 +1,10 @@
 import React from 'react'
 import Pager from './Pager'
 import * as L from 'partial.lenses'
-import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
-import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
+import { tiedonsiirrotContentP } from './Tiedonsiirrot'
+import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko'
 import {t} from './i18n'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export const tiedonsiirtolokiContentP = (queryString) => {
   const pager = Pager('/koski/api/tiedonsiirrot' + queryString, L.prop('henkilöt') )

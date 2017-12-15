@@ -19,7 +19,9 @@ module.exports = {
   stats: {
     minimal: true
   },
-
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {

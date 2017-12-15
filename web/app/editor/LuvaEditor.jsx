@@ -1,6 +1,6 @@
 import React from 'react'
-import { LukionOppiaineetEditor } from './Lukio.jsx'
-import Text from '../Text.jsx'
+import { LukionOppiaineetEditor } from './Lukio'
+import Text from '../Text'
 
 export class LuvaEditor extends React.Component {
   render() {

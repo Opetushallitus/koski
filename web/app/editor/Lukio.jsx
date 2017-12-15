@@ -1,8 +1,8 @@
 import React from 'react'
 import {modelData, modelItems, modelTitle} from './EditorModel.js'
-import {suorituksenTilaSymbol} from './Suoritustaulukko.jsx'
-import Text from '../Text.jsx'
-import {KurssitEditor} from './KurssitEditor.jsx'
+import {suorituksenTilaSymbol} from './Suoritustaulukko'
+import Text from '../Text'
+import {KurssitEditor} from './KurssitEditor'
 import {tilaText} from './Suoritus'
 
 export class LukionOppiaineetEditor extends React.Component {

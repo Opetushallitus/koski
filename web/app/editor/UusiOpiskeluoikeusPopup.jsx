@@ -1,9 +1,9 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import ModalDialog from './ModalDialog.jsx'
-import UusiOpiskeluoikeus from '../uusioppija/UusiOpiskeluoikeus.jsx'
-import Text from '../Text.jsx'
+import ModalDialog from './ModalDialog'
+import UusiOpiskeluoikeus from '../uusioppija/UusiOpiskeluoikeus'
+import Text from '../Text'
 
 export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
   let submitBus = Bacon.Bus()

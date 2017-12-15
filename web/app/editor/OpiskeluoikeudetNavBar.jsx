@@ -1,17 +1,17 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {modelData, modelTitle} from './EditorModel.js'
-import Link from '../Link.jsx'
+import Link from '../Link'
 import {currentLocation} from '../location.js'
 import {yearFromIsoDateString} from '../date'
-import {näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor.jsx'
+import {näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor'
 import {modelItems} from './EditorModel'
-import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup.jsx'
-import {postNewOppija} from '../uusioppija/UusiOppija.jsx'
-import {reloadOppija} from '../Oppija.jsx'
+import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup'
+import {postNewOppija} from '../uusioppija/UusiOppija'
+import {reloadOppija} from '../Oppija'
 import {userP} from '../user'
 import {navigateTo} from '../location'
-import Text from '../Text.jsx'
+import Text from '../Text'
 
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   let addingAtom = Atom(false)

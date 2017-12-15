@@ -4,10 +4,10 @@ import Atom from 'bacon.atom'
 import Http from './http'
 import {showError, navigateTo} from './location'
 import delays from './delays'
-import Link from './Link.jsx'
+import Link from './Link'
 import Highlight from 'react-highlighter'
 import {t} from './i18n'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()

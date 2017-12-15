@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import {KurssiEditor} from './KurssiEditor.jsx'
+import {KurssiEditor} from './KurssiEditor'
 import {wrapOptional} from './EditorModel'
 import {
   contextualizeSubModel,
@@ -12,9 +12,9 @@ import {
   oneOfPrototypes,
   pushModel
 } from './EditorModel'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {ift} from '../util'
-import UusiKurssiPopup from './UusiKurssiPopup.jsx'
+import UusiKurssiPopup from './UusiKurssiPopup'
 
 export const KurssitEditor = ({model}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')

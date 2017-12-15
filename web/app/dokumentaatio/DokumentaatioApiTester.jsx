@@ -4,7 +4,7 @@ import Atom from 'bacon.atom'
 import R from 'ramda'
 import Highlight from 'react-highlight'
 import CodeMirror from '@skidding/react-codemirror'
-import Dropdown from '../Dropdown.jsx'
+import Dropdown from '../Dropdown'
 
 function selectElementContents(el) {
   var range = document.createRange()

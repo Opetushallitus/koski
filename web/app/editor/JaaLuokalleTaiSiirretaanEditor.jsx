@@ -2,8 +2,8 @@ import {modelData, modelLookup, lensedModel, modelSetData} from './EditorModel'
 import * as L from 'partial.lenses'
 import React from 'baret'
 import {suoritusValmis} from './Suoritus'
-import {Editor} from './Editor.jsx'
-import Text from '../Text.jsx'
+import {Editor} from './Editor'
+import Text from '../Text'
 
 export const JääLuokalleTaiSiirretäänEditor = ({model}) => {
   let jääLuokalleModel = modelLookup(model, 'jääLuokalle')

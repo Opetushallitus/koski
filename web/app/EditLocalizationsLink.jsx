@@ -1,6 +1,6 @@
 import React from 'baret'
 import {startEdit, hasEditAccess} from './i18n-edit'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export const EditLocalizationsLink = () => {
 

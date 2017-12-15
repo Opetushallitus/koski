@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigateWithQueryParams, currentLocation } from './location'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export default class extends React.Component {
   render() {

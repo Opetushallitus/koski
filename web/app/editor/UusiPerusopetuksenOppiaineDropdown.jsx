@@ -1,14 +1,14 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import DropDown from '../Dropdown.jsx'
+import DropDown from '../Dropdown'
 import R from 'ramda'
 import {modelData, modelLookup, modelSetData} from './EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
 import {isPaikallinen, isUusi, koulutusModuuliprototypes} from './Koulutusmoduuli'
-import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
-import {paikallinenOppiainePrototype} from './PerusopetuksenOppiaineEditor.jsx'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor'
+import {paikallinenOppiainePrototype} from './PerusopetuksenOppiaineEditor'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
 import {t} from '../i18n'
 
 export const UusiPerusopetuksenOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {

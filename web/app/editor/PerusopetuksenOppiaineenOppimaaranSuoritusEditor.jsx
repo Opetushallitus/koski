@@ -1,6 +1,6 @@
 import React from 'baret'
-import Text from '../Text.jsx'
-import {KurssitEditor} from './KurssitEditor.jsx'
+import Text from '../Text'
+import {KurssitEditor} from './KurssitEditor'
 import {modelItems} from './EditorModel'
 import {arvioituTaiVahvistettu} from './Suoritus'
 

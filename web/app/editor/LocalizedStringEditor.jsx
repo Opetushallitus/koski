@@ -1,7 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import {wrapOptional} from './EditorModel'
-import {StringEditor} from './StringEditor.jsx'
+import {StringEditor} from './StringEditor'
 import {modelLookup} from './EditorModel.js'
 import {lang} from '../i18n'
 import {lensedModel, modelData, modelSetValue, oneOfPrototypes} from './EditorModel'

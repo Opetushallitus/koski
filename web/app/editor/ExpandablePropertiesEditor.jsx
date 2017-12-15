@@ -1,11 +1,11 @@
 import React from 'react'
 import {modelData, modelLookup} from './EditorModel.js'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor'
 import {wrapOptional} from './EditorModel'
 import {modelProperty} from './EditorModel'
 import {navigateWithQueryParams, currentLocation} from '../location'
 import {parseBool} from '../util'
-import Text from '../Text.jsx'
+import Text from '../Text'
 
 export const ExpandablePropertiesEditor = ({model, propertyName, propertyFilter = () => true}) => {
   let propertyModel = modelLookup(model, propertyName)

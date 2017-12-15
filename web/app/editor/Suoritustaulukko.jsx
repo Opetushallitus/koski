@@ -1,7 +1,7 @@
 import React from 'baret'
 import {modelData, modelLookup, modelTitle} from './EditorModel.js'
-import {Editor} from './Editor.jsx'
-import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
+import {Editor} from './Editor'
+import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor'
 import {
   modelErrorMessages,
   modelItems,
@@ -15,10 +15,10 @@ import {buildClassNames} from '../classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {fixArviointi, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
-import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu.jsx'
-import UusiTutkinnonOsa from './UusiTutkinnonOsa.jsx'
+import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
+import UusiTutkinnonOsa from './UusiTutkinnonOsa'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
 import {sortGradesF} from '../sorting'
 

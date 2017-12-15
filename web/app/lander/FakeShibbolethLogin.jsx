@@ -2,7 +2,7 @@ import '../polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import '../style/main.less'
-import HetuLogin from './HetuLogin.jsx'
+import HetuLogin from './HetuLogin'
 
 ReactDOM.render((
   <div>

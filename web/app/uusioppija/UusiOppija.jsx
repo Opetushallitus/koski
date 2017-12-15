@@ -3,10 +3,10 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from '../http'
 import {navigateToOppija, showError} from '../location'
-import {searchStringAtom} from '../OppijaHaku.jsx'
-import UusiOpiskeluoikeus from './UusiOpiskeluoikeus.jsx'
-import UusiHenkilö from './UusiHenkilo.jsx'
-import Text from '../Text.jsx'
+import {searchStringAtom} from '../OppijaHaku'
+import UusiOpiskeluoikeus from './UusiOpiskeluoikeus'
+import UusiHenkilö from './UusiHenkilo'
+import Text from '../Text'
 
 export const UusiOppija = ({hetu, oid}) => {
   const opiskeluoikeusAtom = Atom()

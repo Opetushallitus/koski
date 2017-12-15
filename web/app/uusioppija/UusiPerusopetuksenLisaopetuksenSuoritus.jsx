@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
-import Peruste from './Peruste.jsx'
+import Peruste from './Peruste'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const perusteAtom = Atom()

@@ -2,9 +2,9 @@ import React from 'react'
 import R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../location'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {modelData} from './EditorModel'
-import {InvalidateOpiskeluoikeusButton} from '../OpiskeluoikeusInvalidation.jsx'
+import {InvalidateOpiskeluoikeusButton} from '../OpiskeluoikeusInvalidation'
 
 export class TogglableEditor extends React.Component {
   render() {

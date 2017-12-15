@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './http'
 import './style/pulssi.less'
-import Text from './Text.jsx'
+import Text from './Text'
 import R from 'ramda'
 
 class Pulssi extends React.Component {

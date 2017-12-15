@@ -5,10 +5,10 @@ import Http from './http'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import './style/main.less'
-import {TopBar} from './topbar/TopBar.jsx'
+import {TopBar} from './topbar/TopBar'
 import {t} from './i18n.js'
-import Text from './Text.jsx'
-import Input from './Input.jsx'
+import Text from './Text'
+import Input from './Input'
 
 const Login = () => {
   const state = Atom({username: '', password: ''})

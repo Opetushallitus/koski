@@ -5,8 +5,8 @@ import R from 'ramda'
 import {modelData} from './EditorModel.js'
 import {pushModelValue} from './EditorModel'
 import {wrapOptional} from './EditorModel'
-import {StringEditor} from './StringEditor.jsx'
-import {PerusteDropdown} from './PerusteDropdown.jsx'
+import {StringEditor} from './StringEditor'
+import {PerusteDropdown} from './PerusteDropdown'
 
 export const PerusteEditor = ({model}) => {
   if (!model.context.edit) return <StringEditor model={model}/>

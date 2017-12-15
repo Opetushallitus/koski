@@ -3,9 +3,9 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {modelData, modelLookup} from './EditorModel.js'
-import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor'
 import {lensedModel, modelSetValue, oneOfPrototypes} from './EditorModel'
-import {EnumEditor} from './EnumEditor.jsx'
+import {EnumEditor} from './EnumEditor'
 
 export const SelectAlternativeByEnumValueEditor = ({ model, path, className }) => {
   return (<span className={className}>

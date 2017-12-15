@@ -1,13 +1,13 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Text from '../Text.jsx'
-import ModalDialog from './ModalDialog.jsx'
+import Text from '../Text'
+import ModalDialog from './ModalDialog'
 import {wrapOptional} from './EditorModel'
 import {accumulateModelStateAndValidity, pushModel, resetOptionalModel} from './EditorModel.js'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor'
 import {addContext, modelLookup} from './EditorModel'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 
 const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
   const {modelP, errorP} = accumulateModelStateAndValidity(model)

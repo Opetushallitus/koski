@@ -7,10 +7,10 @@ import {
   modelLookup,
   modelLookupRequired
 } from './EditorModel'
-import {EnumEditor} from './EnumEditor.jsx'
-import {Editor} from './Editor.jsx'
-import ModalDialog from './ModalDialog.jsx'
-import Text from '../Text.jsx'
+import {EnumEditor} from './EnumEditor'
+import {Editor} from './Editor'
+import ModalDialog from './ModalDialog'
+import Text from '../Text'
 import {ift} from '../util'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {

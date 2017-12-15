@@ -1,14 +1,14 @@
 import React from 'baret'
 import R from 'ramda'
 import {modelData, modelTitle} from './EditorModel.js'
-import Link from '../Link.jsx'
+import Link from '../Link'
 import {currentLocation} from '../location.js'
 import {navigateTo} from '../location'
 import {pushModel} from './EditorModel'
 import {suorituksenTyyppi, suoritusTitle, suoritusValmis} from './Suoritus'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {isPerusopetuksenOppimäärä, luokkaAste} from './Perusopetus'
-import UusiSuoritusLink from '../uusisuoritus/UusiSuoritusLink.jsx'
+import UusiSuoritusLink from '../uusisuoritus/UusiSuoritusLink'
 
 export const SuoritusTabs = ({ model, suoritukset }) => {
   let uusiSuoritusCallback = (suoritus) => {

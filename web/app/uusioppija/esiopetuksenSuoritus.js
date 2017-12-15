@@ -1,6 +1,6 @@
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
-import {setPeruste} from '../editor/PerusteDropdown.jsx'
+import {setPeruste} from '../editor/PerusteDropdown'
 
 export const esiopetuksenSuoritus = (suoritusAtom, oppilaitosAtom, suorituskieliAtom) => {
   const perusteAtom = Atom()

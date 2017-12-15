@@ -3,8 +3,8 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
-import Suoritustyyppi from './Suoritustyyppi.jsx'
-import Peruste from './Peruste.jsx'
+import Suoritustyyppi from './Suoritustyyppi'
+import Peruste from './Peruste'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()

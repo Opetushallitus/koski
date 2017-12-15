@@ -2,15 +2,15 @@ import {addContext, modelData, modelItems, modelLookup, modelSet, modelSetValue,
 import React from 'baret'
 import R from 'ramda'
 import Atom from 'bacon.atom'
-import {PropertyEditor} from './PropertyEditor.jsx'
-import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup.jsx'
-import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor.jsx'
+import {PropertyEditor} from './PropertyEditor'
+import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup'
+import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor'
 import {
   arviointiPuuttuu, arvioituTaiVahvistettu, onKeskeneräisiäOsasuorituksia, suoritusKesken,
   suoritusValmis,
   tilaText
 } from './Suoritus'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
 import {t} from '../i18n'
 

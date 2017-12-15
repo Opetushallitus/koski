@@ -1,6 +1,6 @@
 import React from 'react'
 import {modelTitle, modelItems, modelData} from './EditorModel.js'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 
 export class VahvistusEditor extends React.Component {
   render() {

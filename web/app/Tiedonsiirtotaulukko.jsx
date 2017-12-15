@@ -1,9 +1,9 @@
 import React from 'react'
 import { ISO2FinnishDateTime, ISO2FinnishDate } from './date'
-import PaginationLink from './PaginationLink.jsx'
-import Link from './Link.jsx'
+import PaginationLink from './PaginationLink'
+import Link from './Link'
 import {t} from './i18n'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export class Tiedonsiirtotaulukko extends React.Component {
   render() {

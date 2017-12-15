@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import {parseBool, scrollElementBottomVisible, toObservable} from './util'
-import {elementWithLoadingIndicator} from './AjaxLoadingIndicator.jsx'
+import {elementWithLoadingIndicator} from './AjaxLoadingIndicator'
 import {t} from './i18n'
 import {buildClassNames} from './classnames'
 

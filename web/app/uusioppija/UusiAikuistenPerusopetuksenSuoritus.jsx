@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
 import Http from '../http'
-import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown'
 import {
   accumulateModelState,
   modelData,
@@ -13,14 +13,14 @@ import {
   modelValid,
   validateModel
 } from '../editor/EditorModel'
-import {editorMapping} from '../editor/Editors.jsx'
-import {Editor} from '../editor/Editor.jsx'
-import {PropertyEditor} from '../editor/PropertyEditor.jsx'
+import {editorMapping} from '../editor/Editors'
+import {Editor} from '../editor/Editor'
+import {PropertyEditor} from '../editor/PropertyEditor'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {makeSuoritus, oppiaineetP} from './PerusopetuksenSuoritus'
-import Suoritustyyppi from './Suoritustyyppi.jsx'
-import Peruste from './Peruste.jsx'
+import Suoritustyyppi from './Suoritustyyppi'
+import Peruste from './Peruste'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()

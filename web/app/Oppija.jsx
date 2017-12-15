@@ -10,24 +10,24 @@ import {
   modelTitle,
   modelValid
 } from './editor/EditorModel'
-import {editorMapping} from './editor/Editors.jsx'
-import {Editor} from './editor/Editor.jsx'
+import {editorMapping} from './editor/Editors'
+import {Editor} from './editor/Editor'
 import R from 'ramda'
 import {currentLocation} from './location.js'
-import {OppijaHaku} from './OppijaHaku.jsx'
-import Link from './Link.jsx'
+import {OppijaHaku} from './OppijaHaku'
+import Link from './Link'
 import {decreaseLoading, increaseLoading} from './loadingFlag'
 import delays from './delays'
 import {locationP, navigateToOppija, navigateWithQueryParams, showError} from './location'
 import {buildClassNames} from './classnames'
 import {addExitHook, removeExitHook} from './exitHook'
-import {listviewPath} from './Oppijataulukko.jsx'
+import {listviewPath} from './Oppijataulukko'
 import {ISO2FinnishDate} from './date'
 import {doActionWhileMounted} from './util'
-import Text from './Text.jsx'
+import Text from './Text'
 import {t} from './i18n'
-import {EditLocalizationsLink} from './EditLocalizationsLink.jsx'
-import {setOpiskeluoikeusInvalidated} from './OpiskeluoikeusInvalidation.jsx'
+import {EditLocalizationsLink} from './EditLocalizationsLink'
+import {setOpiskeluoikeusInvalidated} from './OpiskeluoikeusInvalidation'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed

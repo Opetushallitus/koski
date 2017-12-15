@@ -1,9 +1,9 @@
 import React from 'react'
 import {contextualizeSubModel, modelItems} from './EditorModel.js'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 import {wrapOptional} from './EditorModel'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'
-import Text from '../Text.jsx'
+import Text from '../Text'
 
 export const ArrayEditor = ({model, reverse}) => {
   let wrappedModel = wrapOptional(model)

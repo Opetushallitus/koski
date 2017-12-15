@@ -1,12 +1,12 @@
 import React from 'baret'
-import {Editor} from './Editor.jsx'
-import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor.jsx'
+import {Editor} from './Editor'
+import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor'
 import {modelData, modelEmpty, modelErrorMessages, modelLookup, modelProperties, pushRemoval} from './EditorModel'
-import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor.jsx'
+import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor'
 import {isPaikallinen} from './Koulutusmoduuli'
 import {t} from '../i18n'
-import {KurssitEditor} from './KurssitEditor.jsx'
-import {ArvosanaEditor} from './ArvosanaEditor.jsx'
+import {KurssitEditor} from './KurssitEditor'
+import {ArvosanaEditor} from './ArvosanaEditor'
 import {tilaKoodi} from './Suoritus'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {

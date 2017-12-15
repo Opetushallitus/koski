@@ -1,6 +1,6 @@
 import React from 'baret'
-import {Editor} from './Editor.jsx'
-import {PropertyEditor} from './PropertyEditor.jsx'
+import {Editor} from './Editor'
+import {PropertyEditor} from './PropertyEditor'
 import {wrapOptional} from './EditorModel'
 import R from 'ramda'
 import {
@@ -17,12 +17,12 @@ import {
   pushModel
 } from './EditorModel'
 import {arvioituTaiVahvistettu, osasuoritukset} from './Suoritus'
-import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown.jsx'
+import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {accumulateExpandedState} from './ExpandableItems'
 import {t} from '../i18n'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
-import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor.jsx'
+import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'

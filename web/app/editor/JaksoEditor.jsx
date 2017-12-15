@@ -1,6 +1,6 @@
 import React from 'react'
-import {PäivämääräväliEditor} from './PaivamaaravaliEditor.jsx'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
+import {PäivämääräväliEditor} from './PaivamaaravaliEditor'
+import {PropertiesEditor} from './PropertiesEditor'
 import {wrapOptional} from './EditorModel'
 import {recursivelyEmpty} from './EditorModel'
 

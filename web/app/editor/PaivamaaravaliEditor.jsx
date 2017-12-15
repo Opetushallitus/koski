@@ -1,5 +1,5 @@
 import React from 'react'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 import {modelData} from './EditorModel.js'
 import {modelEmpty, modelValid, wrapOptional} from './EditorModel'
 

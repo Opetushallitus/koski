@@ -1,6 +1,6 @@
 import React from 'react'
 import {userP} from './user'
-import Text from './Text.jsx'
+import Text from './Text'
 
 export const onlyIfHasReadAccess = (content) => userP.flatMap(user => user && user.hasAnyReadAccess ? content : { title: '', content: noAccessContent() }).toProperty()
 

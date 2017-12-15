@@ -1,7 +1,7 @@
 import React from 'baret'
-import {UserInfo} from './UserInfo.jsx'
-import Link from '../Link.jsx'
-import Text from '../Text.jsx'
+import {UserInfo} from './UserInfo'
+import Link from '../Link'
+import Text from '../Text'
 
 export default ({user}) => {
   return (

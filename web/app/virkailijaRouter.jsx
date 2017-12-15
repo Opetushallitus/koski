@@ -1,14 +1,14 @@
 import React from 'react'
 import {locationP, parseQuery} from './location.js'
-import {oppijaContentP} from './Oppija.jsx'
-import {UusiOppija} from './uusioppija/UusiOppija.jsx'
-import {tiedonsiirtolokiContentP} from './Tiedonsiirtoloki.jsx'
-import {tiedonsiirtovirheetContentP} from './Tiedonsiirtovirheet.jsx'
-import {tiedonsiirtojenYhteenvetoContentP} from './TiedonsiirtojenYhteenveto.jsx'
-import {oppijataulukkoContentP} from './Oppijataulukko.jsx'
-import {validointiContentP} from './Validointi.jsx'
-import {dokumentaatioContentP} from './dokumentaatio/Dokumentaatio.jsx'
-import {onlyIfHasReadAccess} from './accessCheck.jsx'
+import {oppijaContentP} from './Oppija'
+import {UusiOppija} from './uusioppija/UusiOppija'
+import {tiedonsiirtolokiContentP} from './Tiedonsiirtoloki'
+import {tiedonsiirtovirheetContentP} from './Tiedonsiirtovirheet'
+import {tiedonsiirtojenYhteenvetoContentP} from './TiedonsiirtojenYhteenveto'
+import {oppijataulukkoContentP} from './Oppijataulukko'
+import {validointiContentP} from './Validointi'
+import {dokumentaatioContentP} from './dokumentaatio/Dokumentaatio'
+import {onlyIfHasReadAccess} from './accessCheck'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]

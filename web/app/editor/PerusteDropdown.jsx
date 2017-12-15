@@ -1,8 +1,8 @@
 import React from 'baret'
 import Http from '../http'
 import Bacon from 'baconjs'
-import Dropdown from '../Dropdown.jsx'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
+import Dropdown from '../Dropdown'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
 import {t} from '../i18n'
 import {koulutustyyppiKoodi} from './Suoritus'
 

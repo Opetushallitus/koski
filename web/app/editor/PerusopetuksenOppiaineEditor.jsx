@@ -1,5 +1,5 @@
 import React from 'baret'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {hasModelProperty, lensedModel, modelData, modelLookup, modelSetValue} from './EditorModel'
@@ -8,7 +8,7 @@ import {saveOrganizationalPreference} from '../organizationalPreferences'
 import {doActionWhileMounted} from '../util'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {t} from '../i18n'
-import Text from '../Text.jsx'
+import Text from '../Text'
 
 export class PerusopetuksenOppiaineEditor extends React.Component {
   render() {

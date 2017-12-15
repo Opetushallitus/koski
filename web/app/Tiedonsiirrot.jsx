@@ -1,8 +1,8 @@
 import React from 'react'
-import Link from './Link.jsx'
-import { contentWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
-import Text from './Text.jsx'
-import {onlyIfHasReadAccess} from './accessCheck.jsx'
+import Link from './Link'
+import { contentWithLoadingIndicator } from './AjaxLoadingIndicator'
+import Text from './Text'
+import {onlyIfHasReadAccess} from './accessCheck'
 
 export const tiedonsiirrotContentP = (location, contentP) => onlyIfHasReadAccess(contentWithLoadingIndicator(contentP).map((content) => ({
   content: (

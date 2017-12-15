@@ -3,9 +3,9 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import Http from '../http'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator.jsx'
-import Text from '../Text.jsx'
-import Dropdown from '../Dropdown.jsx'
+import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
+import Text from '../Text'
+import Dropdown from '../Dropdown'
 
 export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')

@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import Autocomplete from './Autocomplete.jsx'
+import Autocomplete from './Autocomplete'
 import Http from './http'
 import {t} from './i18n'
 

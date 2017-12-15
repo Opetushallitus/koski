@@ -1,12 +1,12 @@
 import React from 'baret'
 import Http from './http'
-import {tiedonsiirrotContentP} from './Tiedonsiirrot.jsx'
-import Link from './Link.jsx'
-import SortingTableHeader from './SortingTableHeader.jsx'
+import {tiedonsiirrotContentP} from './Tiedonsiirrot'
+import Link from './Link'
+import SortingTableHeader from './SortingTableHeader'
 import {t} from './i18n'
-import Text from './Text.jsx'
+import Text from './Text'
 import {ISO2FinnishDateTime} from './date'
-import {onlyIfHasReadAccess} from './accessCheck.jsx'
+import {onlyIfHasReadAccess} from './accessCheck'
 
 const yhteenvetoP = (queryString) => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto' + queryString, { willHandleErrors: true})
 

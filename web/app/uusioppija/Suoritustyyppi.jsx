@@ -1,5 +1,5 @@
 import React from 'baret'
-import KoodistoDropdown from '../KoodistoDropdown.jsx'
+import KoodistoDropdown from '../KoodistoDropdown'
 
 export default ({suoritustyyppiAtom, suoritustyypitP, title}) => {
   return (<div>

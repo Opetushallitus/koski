@@ -1,10 +1,10 @@
 import React from 'baret'
-import {Editor} from './Editor.jsx'
+import {Editor} from './Editor'
 import {wrapOptional} from './EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from './EditorModel'
 import {sortGrades} from '../sorting'
-import {fetchAlternativesBasedOnPrototypes} from './EnumEditor.jsx'
+import {fetchAlternativesBasedOnPrototypes} from './EnumEditor'
 import {fixArviointi} from './Suoritus'
 
 export const ArvosanaEditor = ({model}) => {

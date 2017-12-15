@@ -4,7 +4,7 @@ import {logout} from './user'
 import {trackRuntimeError} from './piwikTracking'
 import R from 'ramda'
 import Bacon from 'baconjs'
-import Text from './Text.jsx'
+import Text from './Text'
 import {ift} from './util'
 import {t} from './i18n'
 

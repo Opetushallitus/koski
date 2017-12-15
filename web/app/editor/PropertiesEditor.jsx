@@ -1,9 +1,9 @@
 import React from 'react'
 import {addContext, modelEmpty, modelItems} from './EditorModel.js'
-import {Editor} from './Editor.jsx'
-import {ArrayEditor} from './ArrayEditor.jsx'
+import {Editor} from './Editor'
+import {ArrayEditor} from './ArrayEditor'
 import {checkOnlyWhen, modelProperties} from './EditorModel'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {buildClassNames} from '../classnames'
 
 export class PropertiesEditor extends React.Component {

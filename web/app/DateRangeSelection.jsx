@@ -1,6 +1,6 @@
 import {formatFinnishDate, parseFinnishDate} from './date.js'
 import React from 'react'
-import Text from './Text.jsx'
+import Text from './Text'
 import {t} from './i18n'
 
 export default class DateRangeSelection extends React.Component {

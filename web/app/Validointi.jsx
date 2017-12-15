@@ -3,9 +3,9 @@ import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
 import delays from './delays'
-import Text from './Text.jsx'
+import Text from './Text'
 import Atom from 'bacon.atom'
-import Link from './Link.jsx'
+import Link from './Link'
 import {userP} from './user'
 class ValidointiTaulukko extends React.Component {
 

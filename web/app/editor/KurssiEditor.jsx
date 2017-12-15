@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData, modelTitle} from './EditorModel.js'
-import {PropertiesEditor} from './PropertiesEditor.jsx'
-import {ArvosanaEditor} from './ArvosanaEditor.jsx'
+import {PropertiesEditor} from './PropertiesEditor'
+import {ArvosanaEditor} from './ArvosanaEditor'
 import {pushRemoval} from './EditorModel'
 import {buildClassNames} from '../classnames'
 

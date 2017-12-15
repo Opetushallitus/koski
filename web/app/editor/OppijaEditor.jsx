@@ -1,9 +1,9 @@
 import React from 'baret'
 import {addContext, modelData} from './EditorModel.js'
 import {currentLocation} from '../location.js'
-import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor.jsx'
+import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor'
 import {modelItems} from './EditorModel'
-import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar.jsx'
+import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
 
 export const OppijaEditor = ({model}) => {
   let oppijaOid = modelData(model, 'henkilö.oid')

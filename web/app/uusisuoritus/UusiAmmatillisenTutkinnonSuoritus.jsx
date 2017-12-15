@@ -3,7 +3,7 @@ import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import * as L from 'partial.lenses'
-import {PropertiesEditor} from '../editor/PropertiesEditor.jsx'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {
   accumulateModelStateAndValidity,
   addContext,
@@ -18,9 +18,9 @@ import {
   pushModel
 } from '../editor/EditorModel'
 import {lang, t} from '../i18n'
-import ModalDialog from '../editor/ModalDialog.jsx'
+import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util'
-import Text from '../Text.jsx'
+import Text from '../Text'
 import {
   ammatillisenTutkinnonSuoritus,
   copyToimipiste,
@@ -28,8 +28,8 @@ import {
   näyttötutkintoonValmistavanKoulutuksenSuoritus,
   suorituksenTyyppi
 } from '../editor/Suoritus'
-import SuoritustapaDropdown from '../uusioppija/SuoritustapaDropdown.jsx'
-import TutkintoAutocomplete from '../TutkintoAutocomplete.jsx'
+import SuoritustapaDropdown from '../uusioppija/SuoritustapaDropdown'
+import TutkintoAutocomplete from '../TutkintoAutocomplete'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
 
 let tutkintoLens = L.lens(

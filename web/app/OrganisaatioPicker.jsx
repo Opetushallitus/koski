@@ -6,7 +6,7 @@ import Http from './http'
 import Highlight from 'react-highlighter'
 import {buildClassNames} from './classnames.js'
 import {t} from './i18n'
-import Text from './Text.jsx'
+import Text from './Text'
 import {parseBool} from './util'
 import {parseLocation} from './location'
 
