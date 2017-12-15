@@ -5,7 +5,8 @@ const autoprefixer = require('autoprefixer')
 
 module.exports = {
   entry: {
-    main: './app/Koski.jsx',
+    main: './app/Virkailija.jsx',
+    omattiedot: './app/Omattiedot.jsx',
     login: './app/Login.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/lander/Lander.jsx',

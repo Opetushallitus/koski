@@ -5,7 +5,6 @@ import {UusiOppija} from './uusioppija/UusiOppija.jsx'
 import {tiedonsiirtolokiContentP} from './Tiedonsiirtoloki.jsx'
 import {tiedonsiirtovirheetContentP} from './Tiedonsiirtovirheet.jsx'
 import {tiedonsiirtojenYhteenvetoContentP} from './TiedonsiirtojenYhteenveto.jsx'
-import {omatTiedotContentP} from './OmatTiedot.jsx'
 import {oppijataulukkoContentP} from './Oppijataulukko.jsx'
 import {validointiContentP} from './Validointi.jsx'
 import {dokumentaatioContentP} from './dokumentaatio/Dokumentaatio.jsx'
@@ -31,8 +30,6 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
     return validointiContentP(queryString, params)
   } else if (path === '/koski/dokumentaatio') {
     return dokumentaatioContentP()
-  } else if (path === '/koski/omattiedot') {
-    return omatTiedotContentP()
   }
 }).toProperty()
 

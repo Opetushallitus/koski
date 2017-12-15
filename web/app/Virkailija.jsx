@@ -6,8 +6,8 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error.jsx'
 import {userP} from './user'
-import {contentP, titleKeyP} from './router.jsx'
-import {TopBar} from './TopBar.jsx'
+import {contentP, titleKeyP, routeErrorP} from './virkailijaRouter.jsx'
+import {TopBar} from './topbar/TopBar.jsx'
 import {locationP} from './location.js'
 import LocalizationEditBar from './LocalizationEditBar.jsx'
 import {t} from './i18n'
@@ -15,9 +15,9 @@ import {t} from './i18n'
 const noAccessControlPaths = ['/koski/documentation']
 
 const topBarP = Bacon.combineWith(userP, titleKeyP, locationP, (user, titleKey, location) => <TopBar user={user} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
-const allErrorsP = errorP(contentP)
+const allErrorsP = errorP(contentP, routeErrorP)
 
-// Renderered Virtual DOM
+// Rendered Virtual DOM
 const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, (topBar, user, content, error, location) =>
     (<div>
       <Error error={error}/>

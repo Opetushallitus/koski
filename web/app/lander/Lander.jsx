@@ -2,7 +2,7 @@ import '../polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import '../style/main.less'
-import {TopBar} from '../TopBar.jsx'
+import {TopBar} from '../topbar/TopBar.jsx'
 import {LanderInfo} from './LanderInfo.jsx'
 
 ReactDOM.render((

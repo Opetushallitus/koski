@@ -1,7 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {logout} from './user'
-import {routeErrorP} from './router.jsx'
 import {trackRuntimeError} from './piwikTracking'
 import R from 'ramda'
 import Bacon from 'baconjs'
@@ -14,7 +13,7 @@ const logError = (error) => {
   trackRuntimeError(R.assoc('location', '' + document.location, error))
 }
 
-export const errorP = (stateP) => {
+export const errorP = (stateP, routeErrorP) => {
   if (window.koskiError) {
     return Bacon.constant(window.koskiError)
   } else {
@@ -24,7 +23,7 @@ export const errorP = (stateP) => {
       .toProperty(undefined)
       .skipDuplicates()
       .map(error => error || {})
-
+    if (!routeErrorP) return stateErrorP
     return Bacon.combineWith(stateErrorP, routeErrorP, (error, routeError) =>
       error.httpStatus ? error : routeError
     )
