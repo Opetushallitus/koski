@@ -1,4 +1,5 @@
 describe('Omat tiedot', function() {
+  before(resetFixtures)
   var omattiedot = OmatTiedotPage()
   var opinnot = OpinnotPage()
   var authentication = Authentication()
