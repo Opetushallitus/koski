@@ -225,6 +225,22 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           verifyResponseStatusOk()
         })
 
+        "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
+          def withAp(alkamispäivä: String) = {
+            val apMap: JObject = JsonMethods.render(Map("alkamispäivä" -> alkamispäivä)).asInstanceOf[JObject];
+            val suoritus = createOpiskeluoikeusWithMergedSuoritusJson(apMap).asInstanceOf[JObject];
+            suoritus.merge(apMap)
+          }
+
+          putOpiskeluoikeusWithSomeMergedJson(Map[String, JValue]()) {
+            verifyResponseStatusOk()
+          }
+
+          putOpiskeluoikeusWithSomeJson(Map("opiskeluoikeudet" -> List(withAp("2015-01.12")))) {
+             verifyResponseStatusOk(400)
+          }
+        }
+
         "Väärä päivämääräjärjestys" - {
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
             verifyResponseStatus(400, List(
@@ -292,8 +308,20 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
   }
 
+  def createOpiskeluoikeusWithMergedSuoritusJson(suoritus: JValue): JValue = {
+    val opiskeluoikeus: JObject = JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).asInstanceOf[JObject];
+    val firstSuoritus: JObject = (opiskeluoikeus \ "suoritukset")(0).asInstanceOf[JObject];
+    opiskeluoikeus transformField {
+      case JField("suoritukset", _) => ("suoritukset", List(firstSuoritus.merge(suoritus)))
+    }
+  }
+
   def putOpiskeluoikeusWithSomeMergedJson[A](opiskeluoikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).merge(opiskeluoikeus))), headers)(f)
+    putOpiskeluoikeusWithSomeJson(JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).merge(opiskeluoikeus), henkilö, headers)(f)
+  }
+
+  def putOpiskeluoikeusWithSomeJson[A](opiskeluoikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
   }
 
 }
