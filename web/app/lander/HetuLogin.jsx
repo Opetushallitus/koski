@@ -36,6 +36,8 @@ const HetuLogin = () => {
     })
     .onValue(() => document.location = RedirectUrl)
 
+  const errorMessage = error.map('.jsonMessage.0.message').log()
+
   return (
     <form className={error.map(e => e ? 'login error' : 'login')}>
       <img id="logo" src="/koski/images/korhopankki.png"/>
@@ -54,6 +56,7 @@ const HetuLogin = () => {
         onClick={doLogin}>
         {'Kirjaudu sisään'}
       </button>
+      <div className="error-message">{errorMessage}</div>
     </form>
   )
 }
