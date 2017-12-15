@@ -11,14 +11,14 @@ import {
 } from '../editor/EditorModel'
 import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util/util'
-import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown'
+import {UusiPerusopetuksenOppiaineDropdown} from '../perusopetus/UusiPerusopetuksenOppiaineDropdown'
 import Text from '../i18n/Text'
 import {
   copyToimipiste,
   newSuoritusProto,
   perusopetuksenOppiaineenOppimääränSuoritus,
   suorituksenTyyppi
-} from '../editor/Suoritus'
+} from '../suoritus/Suoritus'
 
 const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')

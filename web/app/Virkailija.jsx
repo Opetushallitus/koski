@@ -3,10 +3,9 @@ import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import R from 'ramda'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'
 import {userP} from './util/user'
-import {contentP, titleKeyP, routeErrorP} from './virkailija/virkailijaRouter'
+import {contentP, routeErrorP, titleKeyP} from './virkailija/virkailijaRouter'
 import {TopBar} from './topbar/TopBar'
 import {locationP} from './util/location.js'
 import LocalizationEditBar from './i18n/LocalizationEditBar'
@@ -25,14 +24,13 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, 
       {
         isTopLevel(error)
           ? <TopLevelError error={error} />
-          : (R.any(R.map(p => location.path.endsWith(p), noAccessControlPaths)) || user
-            ? content
-            : null
-          )
+          : canAccess(user, location) ? content : null
       }
       { user && <LocalizationEditBar user={user}/> }
     </div>)
 )
+
+const canAccess = (user, location) => user || noAccessControlPaths.find(p => location.path.endsWith(p))
 
 // Render to DOM
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))

@@ -27,7 +27,7 @@ import {
   newSuoritusProto,
   näyttötutkintoonValmistavanKoulutuksenSuoritus,
   suorituksenTyyppi
-} from '../editor/Suoritus'
+} from '../suoritus/Suoritus'
 import SuoritustapaDropdown from '../uusioppija/SuoritustapaDropdown'
 import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'

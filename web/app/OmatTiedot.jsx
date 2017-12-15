@@ -7,10 +7,9 @@ import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Erro
 import OmatTiedotTopBar from './topbar/OmatTiedotTopBar'
 import {t} from './i18n/i18n'
 import Http from './util/http'
-import {Oppija} from './omattiedot/Oppija'
 import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
-import {editorMapping} from './editor/Editors'
+import editorMapping from './oppija/editors'
 import {userP} from './util/user'
 import {addContext, modelData} from './editor/EditorModel'
 import {locationP} from './util/location'
@@ -48,7 +47,7 @@ const domP = Bacon.combineWith(topBarP, contentP, allErrorsP, (topBar, content, 
           </div>)
     }
   </div>)
-)
+).log('dom')
 
 document.querySelector('title').innerHTML = t('Omat tiedot') + ' - ' + t('Koski') + ' - ' + t('Opintopolku.fi')
 
@@ -57,3 +56,16 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 
 // Handle errors
 domP.onError(handleError)
+
+const Oppija = ({oppija}) => {
+  return oppija.loading
+    ? <div className="loading"/>
+    : (
+      <div>
+        <div className="oppija-content">
+          <h2><Text name="Opintosuorituksesi" /></h2>
+          <Editor key={document.location.toString()} model={oppija}/>
+        </div>
+      </div>
+    )
+}

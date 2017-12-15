@@ -5,7 +5,7 @@ import {
   aikuistenPerusopetuksenOppimääränSuoritus,
   copyToimipiste,
   newSuoritusProto
-} from '../editor/Suoritus'
+} from '../suoritus/Suoritus'
 import {modelData} from '../editor/EditorModel'
 import Text from '../i18n/Text'
 

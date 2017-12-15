@@ -4,10 +4,10 @@ import {
   aikuistenPerusopetuksenOppimääränSuoritus,
   copyToimipiste,
   newSuoritusProto
-} from '../editor/Suoritus'
+} from '../suoritus/Suoritus'
 import {modelData, modelSetValue} from '../editor/EditorModel'
 import Text from '../i18n/Text'
-import {oppimääränOsasuoritukset} from '../editor/Perusopetus'
+import {oppimääränOsasuoritukset} from '../perusopetus/Perusopetus'
 
 export default {
   createSuoritus : (opiskeluoikeus) => {

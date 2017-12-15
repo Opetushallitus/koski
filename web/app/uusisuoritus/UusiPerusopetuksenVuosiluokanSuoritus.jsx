@@ -16,8 +16,8 @@ import {EnumEditor} from '../editor/EnumEditor'
 import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util/util'
 import Text from '../i18n/Text'
-import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../editor/Perusopetus'
-import {copyToimipiste, newSuoritusProto} from '../editor/Suoritus'
+import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../perusopetus/Perusopetus'
+import {copyToimipiste, newSuoritusProto} from '../suoritus/Suoritus'
 
 const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()

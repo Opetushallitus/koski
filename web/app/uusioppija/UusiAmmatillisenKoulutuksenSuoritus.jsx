@@ -7,7 +7,7 @@ import Suoritustyyppi from './Suoritustyyppi'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import SuoritustapaDropdown from './SuoritustapaDropdown'
 import Text from '../i18n/Text'
-import {setPeruste} from '../editor/PerusteDropdown'
+import {setPeruste} from '../suoritus/PerusteDropdown'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma')

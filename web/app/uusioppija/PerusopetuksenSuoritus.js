@@ -1,6 +1,6 @@
 import {koodiarvoMatch} from './koodisto'
 import {modelData} from '../editor/EditorModel'
-import {oppimääränOsasuoritukset} from '../editor/Perusopetus'
+import {oppimääränOsasuoritukset} from '../perusopetus/Perusopetus'
 
 export const oppiaineetP = suoritustyyppiAtom => suoritustyyppiAtom.flatMapLatest((tyyppi) => oppimääränOsasuoritukset(tyyppi).map(modelData)).toProperty()
 

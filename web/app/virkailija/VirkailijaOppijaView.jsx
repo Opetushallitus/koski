@@ -10,7 +10,7 @@ import {
   modelTitle,
   modelValid
 } from '../editor/EditorModel'
-import {editorMapping} from '../editor/Editors'
+import editorMapping from '../oppija/editors'
 import {Editor} from '../editor/Editor'
 import R from 'ramda'
 import {currentLocation} from '../util/location.js'

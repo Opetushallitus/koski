@@ -2,8 +2,8 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Text from '../i18n/Text'
 import {modelData, modelItems} from '../editor/EditorModel'
-import {suoritusValmis} from '../editor/Suoritus'
-import {invalidateOpiskeluoikeus} from '../omattiedot/Oppija'
+import {suoritusValmis} from '../suoritus/Suoritus'
+import {invalidateOpiskeluoikeus} from '../virkailija/VirkailijaOppijaView'
 
 export const setOpiskeluoikeusInvalidated = () => sessionStorage.setItem('opiskeluoikeusInvalidated', true)
 export const resetOpiskeluoikeusInvalidated = () => sessionStorage.removeItem('opiskeluoikeusInvalidated')

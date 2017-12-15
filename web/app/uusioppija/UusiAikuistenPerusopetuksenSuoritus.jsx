@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
 import Http from '../util/http'
-import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown'
+import {UusiPerusopetuksenOppiaineDropdown} from '../perusopetus/UusiPerusopetuksenOppiaineDropdown'
 import {
   accumulateModelState,
   modelData,
@@ -13,7 +13,7 @@ import {
   modelValid,
   validateModel
 } from '../editor/EditorModel'
-import {editorMapping} from '../editor/Editors'
+import editorMapping from '../oppija/editors'
 import {Editor} from '../editor/Editor'
 import {PropertyEditor} from '../editor/PropertyEditor'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
