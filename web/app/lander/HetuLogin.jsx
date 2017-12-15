@@ -36,7 +36,7 @@ const HetuLogin = () => {
     })
     .onValue(() => document.location = RedirectUrl)
 
-  const errorMessage = error.map('.jsonMessage.0.message').log()
+  const errorMessage = error.map('.jsonMessage.0.message')
 
   return (
     <form className={error.map(e => e ? 'login error' : 'login')}>
