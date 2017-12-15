@@ -34,8 +34,13 @@ describe('Omat tiedot', function() {
 
     describe("Kun kirjaudutaan sisään", function() {
       before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('290492-9455'), wait.until(omattiedot.isVisible))
-      it("Näytetään opiskeluoikeudet", function() {
 
+      describe("Sivun sisältö", function() {
+        it("Näytetään opiskeluoikeudet", function() {
+          expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+          expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
+            'Aalto-yliopisto' ])
+        })
       })
 
       describe("Kun kirjaudutaan ulos", function () {
