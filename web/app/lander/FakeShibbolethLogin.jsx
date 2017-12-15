@@ -10,4 +10,4 @@ ReactDOM.render((
   </div>
 ), document.getElementById('content'))
 
-document.body.id = "fake-shibboleth-login"
+document.body.id = 'fake-shibboleth-login'
