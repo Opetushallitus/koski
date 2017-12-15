@@ -1,8 +1,8 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import {doActionWhileMounted, parseBool} from '../util'
-import Text from '../Text'
+import {doActionWhileMounted, parseBool} from '../util/util'
+import Text from '../i18n/Text'
 
 export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okTextKey = 'Ok', validP = Bacon.constant(true)}) => {
   submitOnEnterKey = parseBool(submitOnEnterKey, true)

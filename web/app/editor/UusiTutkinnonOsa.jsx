@@ -12,18 +12,18 @@ import {
   pushModel
 } from './EditorModel'
 import R from 'ramda'
-import {t} from '../i18n'
-import Text from '../Text'
-import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
-import KoodistoDropdown from '../KoodistoDropdown'
+import {t} from '../i18n/i18n'
+import Text from '../i18n/Text'
+import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
+import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
-import Http from '../http'
-import {ift} from '../util'
+import Http from '../util/http'
+import {ift} from '../util/util'
 import ModalDialog from './ModalDialog'
-import TutkintoAutocomplete from '../TutkintoAutocomplete'
+import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
-import {parseLocation} from '../location'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
+import {parseLocation} from '../util/location'
+import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)

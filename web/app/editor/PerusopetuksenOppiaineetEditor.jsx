@@ -19,8 +19,8 @@ import {
 import {arvioituTaiVahvistettu, osasuoritukset} from './Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {accumulateExpandedState} from './ExpandableItems'
-import {t} from '../i18n'
-import Text from '../Text'
+import {t} from '../i18n/i18n'
+import Text from '../i18n/Text'
 import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 

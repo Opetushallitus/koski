@@ -1,6 +1,6 @@
 import React from 'baret'
 import {addContext, modelData} from './EditorModel.js'
-import {currentLocation} from '../location.js'
+import {currentLocation} from '../util/location.js'
 import {OpiskeluoikeusEditor} from './OpiskeluoikeusEditor'
 import {modelItems} from './EditorModel'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'

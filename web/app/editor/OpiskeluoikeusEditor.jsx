@@ -5,13 +5,13 @@ import {addContext, modelData, modelItems, modelLookup, modelTitle, modelSetValu
 import {TogglableEditor} from './TogglableEditor'
 import {PropertiesEditor} from './PropertiesEditor'
 import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor'
-import Versiohistoria from '../Versiohistoria'
-import {yearFromIsoDateString} from '../date'
+import Versiohistoria from '../opiskeluoikeus/Versiohistoria'
+import {yearFromIsoDateString} from '../date/date'
 import {ExpandablePropertiesEditor} from './ExpandablePropertiesEditor'
 import {Editor} from './Editor'
-import {navigateTo} from '../location'
+import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from './Suoritus'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from './SuoritusTabs'
 
 export const OpiskeluoikeusEditor = ({model}) => {

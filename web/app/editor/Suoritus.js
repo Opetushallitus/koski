@@ -4,8 +4,8 @@ import {
 } from './EditorModel'
 import * as L from 'partial.lenses'
 import R from 'ramda'
-import {t} from '../i18n'
-import {parseISODate} from '../date'
+import {t} from '../i18n/i18n'
+import {parseISODate} from '../date/date'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
 

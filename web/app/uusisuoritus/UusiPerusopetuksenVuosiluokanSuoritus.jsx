@@ -14,8 +14,8 @@ import {
 } from '../editor/EditorModel'
 import {EnumEditor} from '../editor/EnumEditor'
 import ModalDialog from '../editor/ModalDialog'
-import {doActionWhileMounted} from '../util'
-import Text from '../Text'
+import {doActionWhileMounted} from '../util/util'
+import Text from '../i18n/Text'
 import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../editor/Perusopetus'
 import {copyToimipiste, newSuoritusProto} from '../editor/Suoritus'
 

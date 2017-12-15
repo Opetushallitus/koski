@@ -7,7 +7,7 @@ import {
   newSuoritusProto
 } from '../editor/Suoritus'
 import {modelData} from '../editor/EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export default {
   createSuoritus : (opiskeluoikeus) => {

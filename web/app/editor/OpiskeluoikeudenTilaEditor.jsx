@@ -6,9 +6,9 @@ import {modelData, modelItems, modelLookup} from './EditorModel.js'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
 import {lensedModel, modelSetValue, modelTitle, pushModel, pushRemoval} from './EditorModel'
 import {arvioituTaiVahvistettu} from './Suoritus'
-import {parseISODate} from '../date.js'
+import {parseISODate} from '../date/date.js'
 import {Editor} from './Editor'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
   let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)

@@ -10,9 +10,9 @@ import {
   suoritusValmis,
   tilaText
 } from './Suoritus'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from './Perusopetus'
-import {t} from '../i18n'
+import {t} from '../i18n/i18n'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className="tila-vahvistus">

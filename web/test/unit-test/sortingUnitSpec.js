@@ -1,4 +1,4 @@
-import {sortLanguages, sortGrades} from '../../app/sorting'
+import {sortLanguages, sortGrades} from '../../app/util/sorting'
 import * as assert from 'assert'
 
 let kielet = [

@@ -2,9 +2,9 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import Http from '../http'
+import Http from '../util/http'
 import '../../node_modules/codemirror/mode/javascript/javascript.js'
-import {contentWithLoadingIndicator} from '../AjaxLoadingIndicator'
+import {contentWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {ApiOperations} from './DokumentaatioApiTester'
 
 const JsonExampleTable = ({contents}) => {

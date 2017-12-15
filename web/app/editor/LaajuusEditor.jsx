@@ -3,8 +3,8 @@ import {Editor} from './Editor'
 import {modelData, modelEmpty, modelSetValue, modelValid, modelLookup} from './EditorModel'
 import {EnumEditor} from './EnumEditor'
 import {wrapOptional} from './EditorModel'
-import {parseBool} from '../util'
-import {t} from '../i18n'
+import {parseBool} from '../util/util'
+import {t} from '../i18n/i18n'
 export class LaajuusEditor extends React.Component {
   render() {
     let { model, compact, showReadonlyScope = true } = this.props

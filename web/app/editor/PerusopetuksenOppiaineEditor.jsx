@@ -3,12 +3,12 @@ import {Editor} from './Editor'
 import R from 'ramda'
 import * as L from 'partial.lenses'
 import {hasModelProperty, lensedModel, modelData, modelLookup, modelSetValue} from './EditorModel'
-import {sortLanguages} from '../sorting'
-import {saveOrganizationalPreference} from '../organizationalPreferences'
-import {doActionWhileMounted} from '../util'
+import {sortLanguages} from '../util/sorting'
+import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
+import {doActionWhileMounted} from '../util/util'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
-import {t} from '../i18n'
-import Text from '../Text'
+import {t} from '../i18n/i18n'
+import Text from '../i18n/Text'
 
 export class PerusopetuksenOppiaineEditor extends React.Component {
   render() {

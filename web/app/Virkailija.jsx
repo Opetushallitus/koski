@@ -1,16 +1,16 @@
-import './polyfills.js'
+import './polyfills/polyfills.js'
 import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error'
-import {userP} from './user'
-import {contentP, titleKeyP, routeErrorP} from './virkailijaRouter'
+import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'
+import {userP} from './util/user'
+import {contentP, titleKeyP, routeErrorP} from './virkailija/virkailijaRouter'
 import {TopBar} from './topbar/TopBar'
-import {locationP} from './location.js'
-import LocalizationEditBar from './LocalizationEditBar'
-import {t} from './i18n'
+import {locationP} from './util/location.js'
+import LocalizationEditBar from './i18n/LocalizationEditBar'
+import {t} from './i18n/i18n'
 
 const noAccessControlPaths = ['/koski/documentation']
 

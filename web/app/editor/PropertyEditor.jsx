@@ -1,7 +1,7 @@
 import React from 'react'
 import { Editor } from './Editor'
 import {findModelProperty} from './EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export class PropertyEditor extends React.Component {
   render() {

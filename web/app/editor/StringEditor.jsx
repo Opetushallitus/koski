@@ -2,7 +2,7 @@ import React from 'react'
 import {modelData} from './EditorModel.js'
 import {wrapOptional} from './EditorModel'
 import {pushModelValue, modelValid} from './EditorModel'
-import {t} from '../i18n'
+import {t} from '../i18n/i18n'
 
 export const StringEditor = ({model, placeholder, autoFocus}) => {
   placeholder = !placeholder && model.example ? `${t('Esimerkki')}: ${model.example}` : placeholder

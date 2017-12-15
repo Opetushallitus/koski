@@ -1,5 +1,5 @@
 import React from 'baret'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {KurssitEditor} from './KurssitEditor'
 import {modelItems} from './EditorModel'
 import {arvioituTaiVahvistettu} from './Suoritus'

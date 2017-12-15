@@ -1,12 +1,12 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Http from '../http'
-import {navigateToOppija, showError} from '../location'
-import {searchStringAtom} from '../OppijaHaku'
+import Http from '../util/http'
+import {navigateToOppija, showError} from '../util/location'
+import {searchStringAtom} from '../virkailija/OppijaHaku'
 import UusiOpiskeluoikeus from './UusiOpiskeluoikeus'
 import UusiHenkilö from './UusiHenkilo'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export const UusiOppija = ({hetu, oid}) => {
   const opiskeluoikeusAtom = Atom()

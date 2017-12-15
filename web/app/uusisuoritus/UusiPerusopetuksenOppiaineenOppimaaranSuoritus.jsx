@@ -10,9 +10,9 @@ import {
   pushModelValue
 } from '../editor/EditorModel'
 import ModalDialog from '../editor/ModalDialog'
-import {doActionWhileMounted} from '../util'
+import {doActionWhileMounted} from '../util/util'
 import {UusiPerusopetuksenOppiaineDropdown} from '../editor/UusiPerusopetuksenOppiaineDropdown'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {
   copyToimipiste,
   newSuoritusProto,

@@ -1,9 +1,9 @@
-import './polyfills.js'
+import './polyfills/polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Http from './http'
+import Http from './util/http'
 import './style/pulssi.less'
-import Text from './Text'
+import Text from './i18n/Text'
 import R from 'ramda'
 
 class Pulssi extends React.Component {

@@ -1,5 +1,5 @@
 import React from 'baret'
-import {OpiskeluoikeusInvalidatedMessage} from '../OpiskeluoikeusInvalidation'
+import {OpiskeluoikeusInvalidatedMessage} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
 import LocalTopBar from './LocalTopBar'
 import NavList from './NavList'
 

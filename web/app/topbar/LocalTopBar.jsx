@@ -1,9 +1,9 @@
 import React from 'baret'
 import {UserInfo} from './UserInfo'
-import Link from '../Link'
-import Text from '../Text'
+import Link from '../components/Link'
+import Text from '../i18n/Text'
 import NavList from './NavList'
-import {OpiskeluoikeusInvalidatedMessage} from '../OpiskeluoikeusInvalidation'
+import {OpiskeluoikeusInvalidatedMessage} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
 
 export default ({location, user, titleKey}) => {
   return (

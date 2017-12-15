@@ -7,10 +7,10 @@ module.exports = {
   entry: {
     main: './app/Virkailija.jsx',
     omattiedot: './app/OmatTiedot.jsx',
-    login: './app/Login.jsx',
+    login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
-    lander: './app/lander/Lander.jsx',
-    shibbolethLogin: './app/lander/FakeShibbolethLogin.jsx'
+    lander: './app/Lander.jsx',
+    shibbolethLogin: './app/FakeShibbolethLogin.jsx'
   },
   output: {
     path: __dirname + '/../target/webapp',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { LukionOppiaineetEditor } from './Lukio'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export class LuvaEditor extends React.Component {
   render() {

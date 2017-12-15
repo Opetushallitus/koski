@@ -3,10 +3,10 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
 import {Editor} from './Editor'
-import Dropdown from '../Dropdown'
+import Dropdown from '../components/Dropdown'
 import {pushModelValue, modelData, modelSetValue} from './EditorModel'
-import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../organizationalPreferences'
-import {t} from '../i18n'
+import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../virkailija/organizationalPreferences'
+import {t} from '../i18n/i18n'
 
 let preferenceKey = 'myöntäjät'
 let nimi = h => modelData(h, 'nimi')

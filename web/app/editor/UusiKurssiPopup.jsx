@@ -2,12 +2,12 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import {accumulateModelState, modelItems, modelLookup, modelValid} from './EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import ModalDialog from './ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
 import {isPaikallinen, koulutusModuuliprototypes} from './Koulutusmoduuli'
 import {PropertiesEditor} from './PropertiesEditor'
-import {t} from '../i18n'
+import {t} from '../i18n/i18n'
 
 export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
   let oppiaine = modelLookup(oppiaineenSuoritus, 'koulutusmoduuli')

@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData, modelSetValue} from './EditorModel.js'
 import {pushModel} from './EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export class BooleanEditor extends React.Component {
   render() {

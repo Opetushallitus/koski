@@ -1,9 +1,9 @@
 import React from 'react'
 import {PropertiesEditor} from './PropertiesEditor'
 import {Editor} from './Editor'
-import {t} from '../i18n.js'
+import {t} from '../i18n/i18n.js'
 import {suorituksenTyyppi} from './Suoritus'
-import {buildClassNames} from '../classnames'
+import {buildClassNames} from '../components/classnames'
 
 export class KoulutusmoduuliEditor extends React.Component {
   render() {

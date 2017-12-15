@@ -1,7 +1,7 @@
 import React from 'baret'
 import {UserInfo} from './UserInfo'
-import Link from '../Link'
-import Text from '../Text'
+import Link from '../components/Link'
+import Text from '../i18n/Text'
 
 export default ({user}) => {
   return (

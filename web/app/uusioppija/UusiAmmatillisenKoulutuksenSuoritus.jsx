@@ -1,12 +1,12 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import TutkintoAutocomplete from '../TutkintoAutocomplete'
-import {ift} from '../util'
+import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
+import {ift} from '../util/util'
 import Suoritustyyppi from './Suoritustyyppi'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import SuoritustapaDropdown from './SuoritustapaDropdown'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {setPeruste} from '../editor/PerusteDropdown'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {

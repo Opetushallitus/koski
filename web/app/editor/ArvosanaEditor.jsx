@@ -3,7 +3,7 @@ import {Editor} from './Editor'
 import {wrapOptional} from './EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from './EditorModel'
-import {sortGrades} from '../sorting'
+import {sortGrades} from '../util/sorting'
 import {fetchAlternativesBasedOnPrototypes} from './EnumEditor'
 import {fixArviointi} from './Suoritus'
 

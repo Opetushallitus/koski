@@ -3,7 +3,7 @@ import {contextualizeSubModel, modelItems} from './EditorModel.js'
 import {Editor} from './Editor'
 import {wrapOptional} from './EditorModel'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export const ArrayEditor = ({model, reverse}) => {
   let wrappedModel = wrapOptional(model)

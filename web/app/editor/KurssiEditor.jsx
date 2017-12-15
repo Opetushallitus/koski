@@ -3,7 +3,7 @@ import {modelData, modelTitle} from './EditorModel.js'
 import {PropertiesEditor} from './PropertiesEditor'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {pushRemoval} from './EditorModel'
-import {buildClassNames} from '../classnames'
+import {buildClassNames} from '../components/classnames'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {

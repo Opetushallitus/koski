@@ -17,10 +17,10 @@ import {
   modelValueLens,
   pushModel
 } from '../editor/EditorModel'
-import {lang, t} from '../i18n'
+import {lang, t} from '../i18n/i18n'
 import ModalDialog from '../editor/ModalDialog'
-import {doActionWhileMounted} from '../util'
-import Text from '../Text'
+import {doActionWhileMounted} from '../util/util'
+import Text from '../i18n/Text'
 import {
   ammatillisenTutkinnonSuoritus,
   copyToimipiste,
@@ -29,8 +29,8 @@ import {
   suorituksenTyyppi
 } from '../editor/Suoritus'
 import SuoritustapaDropdown from '../uusioppija/SuoritustapaDropdown'
-import TutkintoAutocomplete from '../TutkintoAutocomplete'
-import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodistot'
+import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
+import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
 
 let tutkintoLens = L.lens(
   (m) => {

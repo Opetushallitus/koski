@@ -3,8 +3,8 @@ import {addContext, modelEmpty, modelItems} from './EditorModel.js'
 import {Editor} from './Editor'
 import {ArrayEditor} from './ArrayEditor'
 import {checkOnlyWhen, modelProperties} from './EditorModel'
-import Text from '../Text'
-import {buildClassNames} from '../classnames'
+import Text from '../i18n/Text'
+import {buildClassNames} from '../components/classnames'
 
 export class PropertiesEditor extends React.Component {
   render() {

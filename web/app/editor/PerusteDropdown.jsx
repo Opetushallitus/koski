@@ -1,9 +1,9 @@
 import React from 'baret'
-import Http from '../http'
+import Http from '../util/http'
 import Bacon from 'baconjs'
-import Dropdown from '../Dropdown'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
-import {t} from '../i18n'
+import Dropdown from '../components/Dropdown'
+import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
+import {t} from '../i18n/i18n'
 import {koulutustyyppiKoodi} from './Suoritus'
 
 const preferred = ['OPH-1280-2017', '104/011/2014']

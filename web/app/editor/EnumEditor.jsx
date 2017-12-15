@@ -3,12 +3,12 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import {modelTitle} from './EditorModel.js'
 import {modelLookup, wrapOptional} from './EditorModel'
-import Http from '../http'
-import DropDown from '../Dropdown'
+import Http from '../util/http'
+import DropDown from '../components/Dropdown'
 import {modelSetValue, pushModel, modelValid} from './EditorModel'
-import {t} from '../i18n.js'
-import {parseBool} from '../util'
-import {buildClassNames} from '../classnames'
+import {t} from '../i18n/i18n.js'
+import {parseBool} from '../util/util'
+import {buildClassNames} from '../components/classnames'
 
 export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className}) => {
   if (!sortBy) sortBy = R.identity

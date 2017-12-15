@@ -2,10 +2,10 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import Http from '../http'
-import {elementWithLoadingIndicator} from '../AjaxLoadingIndicator'
-import Text from '../Text'
-import Dropdown from '../Dropdown'
+import Http from '../util/http'
+import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
+import Text from '../i18n/Text'
+import Dropdown from '../components/Dropdown'
 
 export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   const etunimetAtom = henkilöAtom.view('etunimet')

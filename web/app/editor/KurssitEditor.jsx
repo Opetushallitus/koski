@@ -12,8 +12,8 @@ import {
   oneOfPrototypes,
   pushModel
 } from './EditorModel'
-import Text from '../Text'
-import {ift} from '../util'
+import Text from '../i18n/Text'
+import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 
 export const KurssitEditor = ({model}) => {

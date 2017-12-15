@@ -1,19 +1,19 @@
-import './polyfills.js'
+import './polyfills/polyfills.js'
 import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import {Error, errorP, handleError, isTopLevel, TopLevelError} from './Error'
+import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'
 import OmatTiedotTopBar from './topbar/OmatTiedotTopBar'
-import {t} from './i18n'
-import Http from './http'
-import {ExistingOppija} from './Oppija'
+import {t} from './i18n/i18n'
+import Http from './util/http'
+import {Oppija} from './omattiedot/Oppija'
 import {Editor} from './editor/Editor'
-import Text from './Text'
+import Text from './i18n/Text'
 import {editorMapping} from './editor/Editors'
-import {userP} from './user'
+import {userP} from './util/user'
 import {addContext, modelData} from './editor/EditorModel'
-import {locationP} from './location'
+import {locationP} from './util/location'
 
 const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
@@ -27,7 +27,7 @@ const omatTiedotP = () => Bacon.combineWith(
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
 const contentP = locationP.flatMapLatest(() => omatTiedotP().map(oppija =>
     oppija
-      ? <div className="main-content oppija"><ExistingOppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
+      ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
       : <div className="main-content ei-opiskeluoikeuksia"><Text name="Tiedoillasi ei löydy opiskeluoikeuksia"/></div>
     )
 ).toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)

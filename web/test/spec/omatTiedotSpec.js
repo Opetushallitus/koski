@@ -1,8 +1,8 @@
 describe('Omat tiedot', function() {
-  before(resetFixtures)
   var omattiedot = OmatTiedotPage()
   var opinnot = OpinnotPage()
   var authentication = Authentication()
+  before(authentication.login(), resetFixtures)
 
   describe("Virkailijana", function() {
     describe("Kun virkailijalla on opiskeluoikeuksia", function() {

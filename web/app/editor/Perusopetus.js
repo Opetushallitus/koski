@@ -1,6 +1,6 @@
 import {modelData} from './EditorModel'
 import Bacon from 'baconjs'
-import Http from '../http'
+import Http from '../util/http'
 import {suorituksenTyyppi} from './Suoritus'
 
 export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')

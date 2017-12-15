@@ -10,15 +10,15 @@ import {
   pushModel
 } from './EditorModel'
 import React from 'baret'
-import Http from '../http'
+import Http from '../util/http'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import {PropertiesEditor} from './PropertiesEditor'
 import ModalDialog from './ModalDialog'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor'
-import {saveOrganizationalPreference} from '../organizationalPreferences'
-import Text from '../Text'
-import {showError} from '../location'
+import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
+import Text from '../i18n/Text'
+import {showError} from '../util/location'
 
 export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => {
   let submitBus = Bacon.Bus()

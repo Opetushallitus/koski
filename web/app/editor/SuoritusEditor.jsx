@@ -7,12 +7,12 @@ import {Suoritustaulukko} from './Suoritustaulukko'
 import {LuvaEditor} from './LuvaEditor'
 import {PerusopetuksenOppiaineetEditor} from './PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from './PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
-import {sortLanguages} from '../sorting'
+import {sortLanguages} from '../util/sorting'
 import {Editor} from './Editor'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 const resolveEditor = (mdl) => {
   if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {

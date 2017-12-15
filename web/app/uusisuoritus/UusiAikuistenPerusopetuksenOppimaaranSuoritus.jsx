@@ -6,7 +6,7 @@ import {
   newSuoritusProto
 } from '../editor/Suoritus'
 import {modelData, modelSetValue} from '../editor/EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {oppimääränOsasuoritukset} from '../editor/Perusopetus'
 
 export default {

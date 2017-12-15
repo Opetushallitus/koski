@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData, modelItems, modelTitle} from './EditorModel.js'
 import {suorituksenTilaSymbol} from './Suoritustaulukko'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {KurssitEditor} from './KurssitEditor'
 import {tilaText} from './Suoritus'
 

@@ -10,8 +10,8 @@ import {
 import {EnumEditor} from './EnumEditor'
 import {Editor} from './Editor'
 import ModalDialog from './ModalDialog'
-import Text from '../Text'
-import {ift} from '../util'
+import Text from '../i18n/Text'
+import {ift} from '../util/util'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()

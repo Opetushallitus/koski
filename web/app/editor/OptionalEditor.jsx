@@ -3,7 +3,7 @@ import R from 'ramda'
 import {modelEmpty} from './EditorModel.js'
 import {Editor} from './Editor'
 import {optionalPrototypeModel, pushModel, resetOptionalModel} from './EditorModel'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export class OptionalEditor extends React.Component {
   render() {

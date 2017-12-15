@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import ModalDialog from './ModalDialog'
 import UusiOpiskeluoikeus from '../uusioppija/UusiOpiskeluoikeus'
-import Text from '../Text'
+import Text from '../i18n/Text'
 
 export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
   let submitBus = Bacon.Bus()

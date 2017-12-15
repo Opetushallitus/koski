@@ -11,16 +11,16 @@ import {
   pushRemoval
 } from './EditorModel'
 import R from 'ramda'
-import {buildClassNames} from '../classnames'
+import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from './ExpandableItems'
 import {fixArviointi, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
-import {t} from '../i18n'
-import Text from '../Text'
-import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodistot'
+import {t} from '../i18n/i18n'
+import Text from '../i18n/Text'
+import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from './UusiTutkinnonOsa'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
-import {sortGradesF} from '../sorting'
+import {sortGradesF} from '../util/sorting'
 
 
 export class Suoritustaulukko extends React.Component {

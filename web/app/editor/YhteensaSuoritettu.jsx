@@ -1,9 +1,9 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import Text from '../Text'
+import Text from '../i18n/Text'
 import {modelData} from './EditorModel'
-import Http from '../http'
+import Http from '../util/http'
 
 export const fetchLaajuudet = (suoritus, groupIds) => {
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')

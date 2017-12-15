@@ -1,7 +1,7 @@
 import React from 'baret'
 import {modelData, modelTitle} from './EditorModel.js'
-import Link from '../Link'
-import {yearFromIsoDateString} from '../date'
+import Link from '../components/Link'
+import {yearFromIsoDateString} from '../date/date'
 import {näytettävätPäätasonSuoritukset} from './OpiskeluoikeusEditor'
 import {modelItems} from './EditorModel'
 
