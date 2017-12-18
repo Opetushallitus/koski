@@ -19,4 +19,4 @@ case class EMuodostumisSaanto(laajuus: Option[ELaajuus], koko: Option[EKoko])
 
 sealed trait ERakenneOsa
 case class ERakenneModuuli(nimi: Option[Map[String, String]], @Discriminator osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite], rooli: Option[String], muodostumisSaanto: Option[EMuodostumisSaanto]) extends ERakenneOsa
-case class ERakenneTutkinnonOsa(@Discriminator _tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa
+case class ERakenneTutkinnonOsa(@Discriminator _tutkinnonOsaViite: String) extends ERakenneOsa
