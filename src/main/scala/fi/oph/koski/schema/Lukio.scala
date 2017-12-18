@@ -201,6 +201,7 @@ case class SanallinenLukionKurssinArviointi(
 sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def laajuus: Option[LaajuusKursseissa]
   @KoodistoUri("lukionkurssintyyppi")
+  @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
   def kurssinTyyppi: Koodistokoodiviite
 }
 
@@ -214,9 +215,6 @@ case class ValtakunnallinenLukionKurssi(
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa],
-  @Description("Valtakunnallisen kurssin tyyppi voi olla joko pakollinen tai syventävä")
-  @KoodistoKoodiarvo("pakollinen")
-  @KoodistoKoodiarvo("syventava")
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
@@ -226,10 +224,6 @@ case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
-  @Description("Paikallisen kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
-  @KoodistoKoodiarvo("syventava")
-  @KoodistoKoodiarvo("soveltava")
-  @KoodistoKoodiarvo("pakollinen")
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
