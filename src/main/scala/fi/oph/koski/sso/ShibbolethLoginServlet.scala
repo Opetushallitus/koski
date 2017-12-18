@@ -1,6 +1,7 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -24,13 +25,25 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }
   }
 
-  private def checkAuth: Option[HttpStatus] = request.header("security") match {
-    case Some(password) if password == application.config.getString("shibboleth.security") => None
-    case Some(_) => Some(KoskiErrorCategory.unauthorized())
-    case None => Some(KoskiErrorCategory.badRequest("auth header missing"))
+  private def checkAuth: Option[HttpStatus] = {
+    logger.info(s"Shibboleth login request coming from ${request.getRemoteAddr}")
+    request.header("security") match {
+      case Some(password) if passwordOk(password) => None
+      case Some(_) => Some(KoskiErrorCategory.unauthorized())
+      case None => Some(KoskiErrorCategory.badRequest("auth header missing"))
+    }
+  }
+
+  private def passwordOk(password: String) = {
+    val security = application.config.getString("shibboleth.security")
+    if (!isLocalDevelopmentEnvironment && (security.isEmpty || security == "mock")) {
+      false
+    } else {
+      password == security
+    }
   }
 
   private def rootUrl =
-    if (Environment.isLocalDevelopmentEnvironment) ""
+    if (isLocalDevelopmentEnvironment) ""
     else application.config.getString("koski.root.url")
 }
