@@ -17,10 +17,10 @@ function LandingPage() {
 }
 
 function KorhoPankki() {
-  var pageApi = Page(findSingle('#fake-shibboleth-login .login'));
+  var pageApi = Page(findSingle('#korhopankki .login'));
   var api = {
     isReady: function() {
-      return isElementVisible('#fake-shibboleth-login .login')
+      return isElementVisible('#korhopankki .login')
     },
     login: function(hetu) {
       return seq(

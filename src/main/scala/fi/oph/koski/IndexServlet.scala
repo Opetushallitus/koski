@@ -76,7 +76,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
 
   get("/shibboleth") {
     if (Environment.isLocalDevelopmentEnvironment) {
-      htmlIndex("koski-shibbolethLogin.js")
+      htmlIndex("koski-korhopankki.js")
     } else {
       haltWithStatus(KoskiErrorCategory.notFound())
     }

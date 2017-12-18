@@ -10,7 +10,7 @@ module.exports = {
     login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',
-    shibbolethLogin: './app/FakeShibbolethLogin.jsx'
+    korhopankki: './app/Korhopankki.jsx'
   },
   output: {
     path: __dirname + '/../target/webapp',

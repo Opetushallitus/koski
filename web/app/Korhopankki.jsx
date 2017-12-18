@@ -2,7 +2,7 @@ import './polyfills/polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './style/main.less'
-import HetuLogin from './fakeshibbolethlogin/HetuLogin'
+import HetuLogin from './korhopankki/HetuLogin'
 
 ReactDOM.render((
   <div>
@@ -10,4 +10,4 @@ ReactDOM.render((
   </div>
 ), document.getElementById('content'))
 
-document.body.id = 'fake-shibboleth-login'
+document.body.id = 'korhopankki'
