@@ -5,7 +5,7 @@ import java.util.concurrent.TimeoutException
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.eperusteet.{EPerusteetRepository, ERakenneOsa}
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
@@ -14,6 +14,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 
+import scala.collection.immutable
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import scalaz.concurrent.Task
@@ -60,12 +61,19 @@ trait HealthCheck extends Logging {
     }
 
   private def ePerusteetCheck: HttpStatus = {
-    val diaarinumero = "OPH-2664-2017"
-    get("ePerusteet", ePerusteet.findPerusteetByDiaarinumero(diaarinumero)).flatMap {
-      case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon perustetta $diaarinumero ei löydy Perusteista"))
-      case _ => Right(HttpStatus.ok)
-    }.left.getOrElse(HttpStatus.ok)
+    val diaarinumerot = List("39/011/2014", "OPH-2664-2017")
+    HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
+
+  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findRakenne(diaarinumero)).flatMap {
+    case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon rakennetta $diaarinumero ei löydy Perusteista"))
+    case Some(rakenne) =>
+      val rakenteet: List[ERakenneOsa] = rakenne.suoritustavat.toList.flatten.flatMap(_.rakenne)
+      rakenteet match {
+        case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon $diaarinumero rakenne on tyhjä"))
+        case _ => Right(HttpStatus.ok)
+      }
+  }.left.getOrElse(HttpStatus.ok)
 
   private def findOrCreateOppija: Either[HttpStatus, NimellinenHenkilö] = {
     def findOrCreate(canCreate: Boolean): Either[HttpStatus, NimellinenHenkilö] = getOppija(oid) match {
