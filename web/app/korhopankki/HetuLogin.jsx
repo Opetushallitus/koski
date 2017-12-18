@@ -26,7 +26,7 @@ const HetuLogin = () => {
   loginTrigger
     .map(state)
     .flatMap(credentials => {
-      const headers = {nationalidentificationnumber: credentials.id}
+      const headers = {hetu: credentials.id, security: 'mock'}
       const errorHandler = e => {
         console.error('Fake shibboleth login fail')
         console.error(e)
