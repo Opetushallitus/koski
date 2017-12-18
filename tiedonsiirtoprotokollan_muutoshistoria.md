@@ -1,3 +1,7 @@
+## 18.12.2017
+
+- Myös valtakunnallinen lukion kurssi voi olla soveltava
+
 ## 14.12.2017
 
 - Muutettu opiskeluoikeuksien lisätiedoista kenttä `vammainen` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
