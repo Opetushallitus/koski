@@ -5,6 +5,7 @@ import java.util.concurrent.TimeoutException
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
@@ -22,6 +23,7 @@ trait HealthCheck extends Logging {
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
+  private val ePerusteet = application.ePerusteet
   private def healthcheckOppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
   def healthcheck: HttpStatus = {
@@ -30,7 +32,8 @@ trait HealthCheck extends Logging {
       () => oppijaCheck(oppija),
       () => elasticCheck(oppija),
       () => koodistopalveluCheck,
-      () => organisaatioPalveluCheck
+      () => organisaatioPalveluCheck,
+      () => ePerusteetCheck
     )
 
     HttpStatus.fold(checks.par.map(_.apply).toList)
@@ -55,6 +58,14 @@ trait HealthCheck extends Logging {
           .left.getOrElse(HttpStatus.ok)
       case _ => HttpStatus.ok
     }
+
+  private def ePerusteetCheck: HttpStatus = {
+    val diaarinumero = "OPH-2664-2017"
+    get("ePerusteet", ePerusteet.findPerusteetByDiaarinumero(diaarinumero)).flatMap {
+      case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon perustetta $diaarinumero ei löydy Perusteista"))
+      case _ => Right(HttpStatus.ok)
+    }.left.getOrElse(HttpStatus.ok)
+  }
 
   private def findOrCreateOppija: Either[HttpStatus, NimellinenHenkilö] = {
     def findOrCreate(canCreate: Boolean): Either[HttpStatus, NimellinenHenkilö] = getOppija(oid) match {
@@ -86,7 +97,7 @@ trait HealthCheck extends Logging {
       case Right(oppija) =>
         application.oppijaFacade.createOrUpdate(oppija, allowUpdate = true) match {
           case Left(status) =>
-            logger.error(s"Problem creating healthchech oppija ${status.toString}")
+            logger.error(s"Problem creating healthcheck oppija ${status.toString}")
             status
           case _ => HttpStatus.ok
         }

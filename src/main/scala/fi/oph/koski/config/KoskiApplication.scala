@@ -43,7 +43,8 @@ object KoskiApplication {
 class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClient(config)
-  lazy val tutkintoRepository = TutkintoRepository(EPerusteetRepository.apply(config), koodistoViitePalvelu)
+  lazy val ePerusteet = EPerusteetRepository.apply(config)
+  lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
