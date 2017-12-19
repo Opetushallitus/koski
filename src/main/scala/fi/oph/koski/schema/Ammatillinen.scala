@@ -42,7 +42,7 @@ trait Työssäoppimisjaksollinen {
 
 trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
   @Description("Tutkinnon suoritukseen kuuluvien koulutusjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
-  def koulutussopimukset: Option[List[Työssäoppimisjakso]]
+  def koulutussopimukset: Option[List[Koulutussopimusjakso]]
 }
 
 @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät)")
@@ -155,7 +155,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -188,7 +188,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
@@ -231,7 +231,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
@@ -341,21 +341,39 @@ case class OsaamisenHankkimistapajakso(
   osaamisenHankkimistapa: OsaamisenHankkimistapa
 ) extends Jakso
 
+trait Oppimisjakso extends Jakso {
+  def alku: LocalDate
+  def loppu: Option[LocalDate]
+  @Description("Työssäoppimispaikan nimi")
+  def työssäoppimispaikka: Option[LocalizedString]
+  @KoodistoUri("kunta")
+  @Description("Kunta, jossa työssäoppiminen on tapahtunut")
+  def paikkakunta: Koodistokoodiviite
+  @Description("Maa, jossa työssäoppiminen on tapahtunut")
+  @KoodistoUri("maatjavaltiot2")
+  def maa: Koodistokoodiviite
+  @Description("Työtehtävien kuvaus")
+  def työtehtävät: Option[LocalizedString]
+}
+
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Työssäoppimispaikan nimi")
   työssäoppimispaikka: Option[LocalizedString],
-  @KoodistoUri("kunta")
-  @Description("Kunta, jossa työssäoppiminen on tapahtunut")
   paikkakunta: Koodistokoodiviite,
-  @Description("Maa, jossa työssäoppiminen on tapahtunut")
-  @KoodistoUri("maatjavaltiot2")
   maa: Koodistokoodiviite,
-  @Description("Työtehtävien kuvaus")
   työtehtävät: Option[LocalizedString],
   laajuus: LaajuusOsaamispisteissä
-) extends Jakso
+) extends Oppimisjakso
+
+case class Koulutussopimusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  työssäoppimispaikka: Option[LocalizedString],
+  paikkakunta: Koodistokoodiviite,
+  maa: Koodistokoodiviite,
+  työtehtävät: Option[LocalizedString],
+) extends Oppimisjakso
 
 @Title("Ammatillinen tutkintokoulutus")
 @Description("Ammatillisen tutkinnon tunnistetiedot. Ammatillisille koulutuksille on ePerusteet")
@@ -695,7 +713,7 @@ case class ValmaKoulutuksenSuoritus(
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[ValmaKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
@@ -755,7 +773,7 @@ case class TelmaKoulutuksenSuoritus(
   suorituskieli: Koodistokoodiviite,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-  koulutussopimukset: Option[List[Työssäoppimisjakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[TelmaKoulutuksenOsanSuoritus]],
