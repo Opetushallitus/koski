@@ -28,6 +28,7 @@ object Koodistot {
     "koskiopiskeluoikeudentila",
     "koskioppiaineetyleissivistava",
     "koskiyoarvosanat",
+    "koskiyokokeet",
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssintyyppi",
