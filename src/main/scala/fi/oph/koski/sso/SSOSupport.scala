@@ -25,7 +25,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   private def currentUrl = {
-    koskiRoot + request.getServletPath + request.getPathInfo
+    koskiRoot + request.getServletPath + URLEncoder.encode(request.getPathInfo, "UTF-8")
   }
 
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))

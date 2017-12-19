@@ -7,6 +7,14 @@ describe('Koski', function() {
   describe('Tietoturva', function() {
     before(login.openPage)
 
+    describe('Kun avataan jokin ääkkösiä sisältävä sivu', function() {
+      before(openPage('/koski/bää'))
+
+      it('näytetään login sivu, kun käyttäjä ei ole kirjautunut sisään', function() {
+        expect(login.isVisible()).to.equal(true)
+      })
+    })
+
     describe('Login-sivu', function() {
       it('näytetään, kun käyttäjä ei ole kirjautunut sisään', function() {
         expect(login.isVisible()).to.equal(true)
