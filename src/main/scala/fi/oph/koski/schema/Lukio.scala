@@ -69,7 +69,7 @@ case class ErityisenKoulutustehtävänJakso(
   tehtävä: Koodistokoodiviite
 ) extends Jakso
 
-trait LukionPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
+trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 
 @Description("Lukion oppimäärän suoritustiedot")
 case class LukionOppimääränSuoritus(

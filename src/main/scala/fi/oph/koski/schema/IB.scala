@@ -67,7 +67,7 @@ case class PreIBSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
 
-trait IBPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
+trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 
 @Title("Pre IB -koulutus")
 @Description("Pre IB-koulutuksen tunnistetiedot")

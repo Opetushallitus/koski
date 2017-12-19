@@ -59,7 +59,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
-trait AikuistenPerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
+trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")

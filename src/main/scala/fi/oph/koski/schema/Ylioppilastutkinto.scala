@@ -27,14 +27,14 @@ case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[Lu
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
-  toimipiste: OrganisaatioWithOid,
+  toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Organisaatiovahvistus] = None,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
   @Title("Kokeet")
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton
+) extends PäätasonSuoritus with MahdollisestiToimipisteellinen with Arvioinniton
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")

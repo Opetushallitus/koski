@@ -44,7 +44,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
+) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
 
 @Description("Perusopetukseen valmistavan opetuksen oppiaineen suoritustiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(

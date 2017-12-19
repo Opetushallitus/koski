@@ -33,7 +33,7 @@ case class AmmatillinenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus with Koulutussopimuksellinen with Suorituskielellinen
+sealed trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Koulutussopimuksellinen with Suorituskielellinen
 
 trait Työssäoppimisjaksollinen {
   @Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
@@ -699,7 +699,7 @@ case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli with NäyttötutkintoonValmistavanKoulutuksenOsa with Laajuudeton
 
-trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen {
+trait ValmentavaSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen {
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
 }
 

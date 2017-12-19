@@ -113,7 +113,7 @@ huomautuksena: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.
   erityisryhmässä: Boolean
 )
 
-trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
+trait PerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella")
 case class PerusopetuksenVuosiluokanSuoritus(

@@ -53,7 +53,7 @@ case class EsiopetuksenSuoritus(
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None
-) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
+) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(

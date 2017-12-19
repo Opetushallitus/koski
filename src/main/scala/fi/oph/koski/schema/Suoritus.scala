@@ -105,9 +105,12 @@ trait Ryhmällinen {
   def ryhmä: Option[String]
 }
 
-trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
+trait PäätasonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = true
   def mutuallyExclusivePäätasoVahvistukseton = {}
+}
+
+trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen {
 }
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {

@@ -94,7 +94,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   @ReadOnly("Aikaleima muodostetaan Koski-palvelimella tallennettaessa")
   def aikaleima: Option[LocalDateTime]
   @MinItems(1)
-  def suoritukset: List[PäätasonSuoritus]
+  def suoritukset: List[KoskeenTallennettavaPäätasonSuoritus]
   def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = {
     val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[Int]]("versionumero").set(withOid)(versionumero)
