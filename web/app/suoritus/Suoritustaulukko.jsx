@@ -61,6 +61,7 @@ export class Suoritustaulukko extends React.Component {
 
     const laajuudetP = fetchLaajuudet(parentSuoritus, groupIds)
 
+    let ylioppilastutkinto = parentSuoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
     let näyttötutkintoonValmistava = parentSuoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
     let showPakollisuus = !näyttötutkintoonValmistava && (modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined)
     let showArvosana = !näyttötutkintoonValmistava && (context.edit || suoritukset.find(hasArvosana) !== undefined)
@@ -127,7 +128,7 @@ export class Suoritustaulukko extends React.Component {
             </td>
           </tr>
         </tbody>,
-        !nested && !näyttötutkintoonValmistava && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+        !nested && !näyttötutkintoonValmistava && !ylioppilastutkinto && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
