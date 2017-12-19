@@ -372,7 +372,7 @@ case class Koulutussopimusjakso(
   työssäoppimispaikka: Option[LocalizedString],
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
-  työtehtävät: Option[LocalizedString],
+  työtehtävät: Option[LocalizedString]
 ) extends Oppimisjakso
 
 @Title("Ammatillinen tutkintokoulutus")
