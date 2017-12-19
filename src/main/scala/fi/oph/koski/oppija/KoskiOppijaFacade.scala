@@ -90,7 +90,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  private def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult)(implicit user: KoskiSession): Unit = {
+  private def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, result: CreateOrUpdateResult)(implicit user: KoskiSession): Unit = {
     val verb = result match {
       case updated: Updated =>
         val tila = updated.old.tila.opiskeluoikeusjaksot.last

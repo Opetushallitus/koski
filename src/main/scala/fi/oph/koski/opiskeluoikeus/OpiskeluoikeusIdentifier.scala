@@ -1,8 +1,8 @@
 package fi.oph.koski.opiskeluoikeus
-import fi.oph.koski.schema.{LähdejärjestelmäId, Opiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId}
 
 object OpiskeluoikeusIdentifier {
-  def apply(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus): OpiskeluoikeusIdentifier = (opiskeluoikeus.oid, opiskeluoikeus.oid, opiskeluoikeus.lähdejärjestelmänId) match {
+  def apply(oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): OpiskeluoikeusIdentifier = (opiskeluoikeus.oid, opiskeluoikeus.oid, opiskeluoikeus.lähdejärjestelmänId) match {
     case (_, Some(oid), _) => OpiskeluoikeusByOid(oid)
     case (_, _, Some(lähdejärjestelmäId)) => OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId)
     case _ => OppijaOidOrganisaatioJaTyyppi(oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.tyyppi.koodiarvo, None)
