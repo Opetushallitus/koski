@@ -1,3 +1,7 @@
+## 19.12.2017
+
+  - Poistettu laajuus ammatillisen päätason suorituksen koulutussopimukset-kentästä
+
 ## 18.12.2017
 
 - Myös valtakunnallinen lukion kurssi voi olla soveltava
