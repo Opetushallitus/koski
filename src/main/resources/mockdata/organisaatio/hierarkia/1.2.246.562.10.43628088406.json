@@ -6,7 +6,7 @@
       "sv" : "Studentexamensnämnden",
       "en" : "The Matriculation Examination Board"
     },
-    "organisaatiotyypit" : [ "MUU_ORGANISAATIO" ],
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ ]
   } ]
 }
