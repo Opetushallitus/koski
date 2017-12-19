@@ -39,10 +39,13 @@ case class YlioppilastutkinnonSuoritus(
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
   koulutusmoduuli: YlioppilasTutkinnonKoe,
+  tutkintokerta: YlioppilastutkinnonTutkintokerta,
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
 ) extends Vahvistukseton
+
+case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuodenaika: LocalizedString)
 
 case class YlioppilaskokeenArviointi(
   @KoodistoUri("koskiyoarvosanat")

@@ -1,12 +1,13 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 
-case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
+case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository, localizations: LocalizationRepository) extends Logging {
   def convert(ytrOppija: YtrOppija): Option[YlioppilastutkinnonOpiskeluoikeus] = {
     val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406")
       .map(_.toKoulutustoimija)
@@ -40,13 +41,24 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
       )
     ))
   }
-  private def convertExam(exam: YtrExam) = koodistoViitePalvelu.getKoodistoKoodiViite("koskiyokokeet", exam.examId).map(tunniste =>
+  private def convertExam(exam: YtrExam) = koodistoViitePalvelu.getKoodistoKoodiViite("koskiyokokeet", exam.examId).map { tunniste =>
+    val Pattern = "(\\d\\d\\d\\d)(K|S)".r
+    val tutkintokerta = exam.period match {
+      case Pattern(year, season) =>
+        val seasonName = season match {
+          case "K" => localizations.get("kevät")
+          case "S" => localizations.get("syksy")
+        }
+        YlioppilastutkinnonTutkintokerta(exam.period, year.toInt, seasonName)
+    }
+
     YlioppilastutkinnonKokeenSuoritus(
-      tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
+      koulutusmoduuli = YlioppilasTutkinnonKoe(tunniste),
+      tutkintokerta = tutkintokerta,
       arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
-      koulutusmoduuli = YlioppilasTutkinnonKoe(tunniste)
+      tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
     )
-  ).orElse {
+  }.orElse {
     logger.warn(s"Tuntematon yo-kokeen koetunnus: ${exam.examId}")
     None
   }

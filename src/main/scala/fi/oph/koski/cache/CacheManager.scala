@@ -19,4 +19,6 @@ class CacheManager extends Logging {
 }
 
 // CacheManager for global caches. Use for global object only.
-object GlobalCacheManager extends CacheManager
+object GlobalCacheManager extends CacheManager {
+  implicit def cacheManager = this
+}

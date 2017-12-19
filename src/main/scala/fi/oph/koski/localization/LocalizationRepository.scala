@@ -74,7 +74,7 @@ object LocalizationRepository {
     .mapValues(_.map(v => (v.locale, v.value)).toMap)
 }
 
-class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
+case class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
 
   private var _localizations: Map[String, LocalizedString] = super.localizations()
 
