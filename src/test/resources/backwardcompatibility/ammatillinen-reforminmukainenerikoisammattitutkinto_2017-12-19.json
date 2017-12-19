@@ -116,16 +116,6 @@
         },
         "työtehtävät" : {
           "fi" : "Autojen vuosihuollot"
-        },
-        "laajuus" : {
-          "arvo" : 5.0,
-          "yksikkö" : {
-            "koodiarvo" : "6",
-            "nimi" : {
-              "fi" : "Osaamispistettä"
-            },
-            "koodistoUri" : "opintojenlaajuusyksikko"
-          }
         }
       } ],
       "osasuoritukset" : [ {
