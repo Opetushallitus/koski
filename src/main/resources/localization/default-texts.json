@@ -788,6 +788,10 @@
   "description:Onko oppija vaikeasti vammainen. Lista..." : "Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
   "Virkailijapalvelut löydät jatkossa osoitteesta": "Virkailijapalvelut löydät jatkossa osoitteesta",
   "kevät": "kevät",
-  "syksy": "syksy"
+  "syksy": "syksy",
+  "Tutkintokerta" : "Tutkintokerta",
+  "Virta tunniste" : "Virta tunniste",
+  "Vuodenaika" : "Vuodenaika",
+  "Vuosi" : "Vuosi"
 }
 
