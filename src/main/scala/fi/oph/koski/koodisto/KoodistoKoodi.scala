@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.DefaultValue
 
-case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[KoodistoKoodiMetadata], versio: Int, version: Option[Long], voimassaAlkuPvm: Option[LocalDate], tila: Option[String] = None, withinCodeElements: Option[List[CodeRelationship]] = None) {
+case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[KoodistoKoodiMetadata], versio: Int, version: Option[Long] = None, voimassaAlkuPvm: Option[LocalDate] = None, tila: Option[String] = None, withinCodeElements: Option[List[CodeRelationship]] = None) {
   def koodistoUri = koodiUri.split("_")(0)
   def hasParent(parent: KoodistoKoodi): Boolean = this.withinCodeElements.toList.flatten.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined
 
