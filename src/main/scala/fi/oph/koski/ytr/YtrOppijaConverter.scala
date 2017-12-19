@@ -8,40 +8,37 @@ import fi.oph.koski.schema._
 
 case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
   def convert(ytrOppija: YtrOppija): Option[YlioppilastutkinnonOpiskeluoikeus] = {
-    ytrOppija.graduationSchoolOphOid match {
+    val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406")
+      .map(_.toKoulutustoimija)
+      .getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
+
+    val oppilaitos = ytrOppija.graduationSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
       case None =>
-        logger.warn("YTR-tiedosta puuttuu oppilaitoksen tunniste")
+        logger.error(s"Oppilaitosta $oid ei löydy")
         None
-      case Some(oid) =>
-        oppilaitosRepository.findByOid(oid) match  {
-          case None =>
-            logger.error("Oppilaitosta " + oid + " ei löydy")
-            None
-          case Some(oppilaitos) =>
-            val vahvistus = ytrOppija.graduationDate match {
-              case Some(graduationDate) =>
-                val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
-                val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406").getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
-                Some(Organisaatiovahvistus(graduationDate, helsinki, oppilaitos))
-              case None =>
-                None
-            }
-            Some(YlioppilastutkinnonOpiskeluoikeus(
-                lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),
-                oppilaitos = Some(oppilaitos),
-                koulutustoimija = None,
-                tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil),
-                tyyppi = requiredKoodi("opiskeluoikeudentyyppi", "ylioppilastutkinto"),
-                suoritukset = List(YlioppilastutkinnonSuoritus(
-                  tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinto"),
-                  vahvistus = vahvistus,
-                  toimipiste = oppilaitos,
-                  koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
-                  osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam)))
-                )
-            ))
-        }
-    }
+      case Some(oppilaitos) =>
+        Some(oppilaitos)
+    })
+
+    val vahvistus = oppilaitos.flatMap(oppilaitos => ytrOppija.graduationDate.map { graduationDate =>
+      val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
+      Organisaatiovahvistus(graduationDate, helsinki, oppilaitos)
+    })
+
+    Some(YlioppilastutkinnonOpiskeluoikeus(
+      lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),
+      oppilaitos = oppilaitos,
+      koulutustoimija = Some(ytl),
+      tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil),
+      tyyppi = requiredKoodi("opiskeluoikeudentyyppi", "ylioppilastutkinto"),
+      suoritukset = List(YlioppilastutkinnonSuoritus(
+        tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinto"),
+        vahvistus = vahvistus,
+        toimipiste = oppilaitos,
+        koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
+        osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam)))
+      )
+    ))
   }
   private def convertExam(exam: YtrExam) = koodistoViitePalvelu.getKoodistoKoodiViite("koskiyokokeet", exam.examId).map(tunniste =>
     YlioppilastutkinnonKokeenSuoritus(

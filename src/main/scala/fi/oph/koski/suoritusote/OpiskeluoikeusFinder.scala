@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 case class OpiskeluoikeusFinder(koski: KoskiOppijaFacade) {
   def opiskeluoikeudet(oppijaOid: String, params: Map[String, String])(implicit user: KoskiSession): Either[HttpStatus, Oppija] with Product with Serializable = {
     val filters: List[(Opiskeluoikeus => Boolean)] = params.toList.flatMap {
-      case ("oppilaitos", oppilaitosOid: String) => Some({ oo: Opiskeluoikeus => oo.getOppilaitos.oid == oppilaitosOid })
+      case ("oppilaitos", oppilaitosOid: String) => Some({ oo: Opiskeluoikeus => oo.oppilaitos.map(_.oid) == Some(oppilaitosOid) })
       case ("opiskeluoikeus", ooOid: String) => Some({ oo: Opiskeluoikeus => oo.oid.contains(ooOid) })
       case (_, _) => None
     }

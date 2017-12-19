@@ -20,7 +20,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1 hour, 100), doFindByHenkilö)
 
   def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
-    cache(hetu).map(_.getOppilaitos.oid)
+    cache(hetu).flatMap(_.oppilaitos).map(_.oid)
   }
 
   def doFindByHenkilö(hetu: Henkilö.Hetu): List[OO] = {
@@ -53,14 +53,18 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
     }
   }
   private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
-  private def accessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.map(h => accessCheck(cache(h)).filter(oo => user.hasReadAccess(oo.getOppilaitos.oid))).getOrElse(Nil)
+  private def quickAccessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
+  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.toList.flatMap(h =>
+    quickAccessCheck(cache(h)).filter(oo => user.hasGlobalReadAccess || oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid)))
+  )
 
-  // Public methods
-  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
-    accessCheck(oppijat.par.filter(oppija => oppija.hetu.exists(organizationsCache(_).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty)).toList)
+  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = if (user.hasGlobalReadAccess) {
+    oppijat.toList
+  } else {
+    quickAccessCheck(oppijat.par.filter(oppija => oppija.hetu.exists(organizationsCache(_).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty)).toList)
+  }
 
-  def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
+  def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = quickAccessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
 
   def findByUserOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
