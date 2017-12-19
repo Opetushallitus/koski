@@ -190,16 +190,15 @@ const suoritusProperties = suoritus => {
 }
 
 const TutkintokertaColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => ylioppilastutkinto(parentSuoritus),
-  renderHeader: ({suoritusProto, laajuusYksikkö}) => {
+  shouldShow: ({parentSuoritus}) => ylioppilastutkinto(parentSuoritus),
+  renderHeader: () => {
     return <td key="tutkintokerta" className="tutkintokerta"><Text name="Tutkintokerta"/></td>
   },
-  renderData: ({model, showScope}) =>
-    <td key="tutkintokerta" className="tutkintokerta">
-      <Editor model={model} path="tutkintokerta.vuosi" compact="true"/>
-      {' '}
-      <Editor model={model} path="tutkintokerta.vuodenaika" compact="true"/>
-    </td>
+  renderData: ({model}) => (<td key="tutkintokerta" className="tutkintokerta">
+    <Editor model={model} path="tutkintokerta.vuosi" compact="true"/>
+    {' '}
+    <Editor model={model} path="tutkintokerta.vuodenaika" compact="true"/>
+  </td>)
 }
 
 const SuoritusColumn = {
@@ -232,7 +231,7 @@ const LaajuusColumn = {
   shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => (!näyttötutkintoonValmistava(parentSuoritus) && (context.edit
     ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
     : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)),
-  renderHeader: ({suoritusProto, laajuusYksikkö}) => {
+  renderHeader: ({laajuusYksikkö}) => {
     return <td key="laajuus" className="laajuus"><Text name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</td>
   },
   renderData: ({model, showScope}) => <td key="laajuus" className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>
