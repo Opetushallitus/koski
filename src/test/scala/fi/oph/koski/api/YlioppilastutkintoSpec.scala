@@ -45,7 +45,7 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
     "Todistus" - {
       "Näytetään" in {
         todistus(MockOppijat.ylioppilas.oid, "ylioppilastutkinto") should equal("""Ylioppilastutkintotodistus
-                                                                                  |
+                                                                                  |Ylioppilastutkintolautakunta
                                                                                   |Helsingin medialukio
                                                                                   |Ylioppilas, Ynjevi 010696-971K
                                                                                   |
