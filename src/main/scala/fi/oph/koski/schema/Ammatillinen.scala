@@ -260,9 +260,6 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def tutkinto: Option[AmmatillinenTutkintoKoulutus]
   @KoodistoUri("ammatillisentutkinnonosanryhma")
   def tutkinnonOsanRyhmä: Option[Koodistokoodiviite]
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
   def arviointi: Option[List[AmmatillinenArviointi]]
   @Description("Tutkinnon osalta ei vaadita vahvistusta, mikäli se sisältyy ammatillisen tutkinnon suoritukseen (jolla puolestaan on VALMIS-tilassa oltava vahvistus)")

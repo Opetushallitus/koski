@@ -69,6 +69,10 @@ object Suoritus {
 }
 
 trait MahdollisestiToimipisteellinen extends Suoritus {
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
+  @Tooltip("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
 }
 
