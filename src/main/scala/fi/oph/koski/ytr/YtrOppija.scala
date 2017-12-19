@@ -16,11 +16,8 @@ case class YtrOppija(
 )
 case class YtrExam(
   period: String, // Esim 2013S, TODO: tää pitäis palastella ja kielistää
-  examId: String, // TODO: näistä pitäis päätellä nimet. Ehkä koodistoon?
-  examNameFi: Option[String], // TODO: nimet poistettu rajapinnasta
-  examNameSv: Option[String],
-  examNameEn: Option[String],
-  examRole: Option[String], // TODO: nykyisin examRoleShort, examRoleLegacy
+  examId: String,
+  examRoleShort: Option[String],
   grade: String,
   points: Int,
   sections: List[YtrSection]

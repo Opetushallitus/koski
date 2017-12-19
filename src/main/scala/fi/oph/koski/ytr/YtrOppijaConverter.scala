@@ -1,7 +1,6 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.Finnish
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -38,17 +37,22 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
                   vahvistus = vahvistus,
                   toimipiste = oppilaitos,
                   koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
-                  osasuoritukset = Some(ytrOppija.exams.map(convertExam)))
+                  osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam)))
                 )
             ))
         }
     }
   }
-  private def convertExam(exam: YtrExam) = YlioppilastutkinnonKokeenSuoritus(
-    tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
-    arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
-    koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi.getOrElse(exam.examId), exam.examNameSv, exam.examNameEn), Some("ytr/koetunnukset")))
-  )
+  private def convertExam(exam: YtrExam) = koodistoViitePalvelu.getKoodistoKoodiViite("koskiyokokeet", exam.examId).map(tunniste =>
+    YlioppilastutkinnonKokeenSuoritus(
+      tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
+      arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
+      koulutusmoduuli = YlioppilasTutkinnonKoe(tunniste)
+    )
+  ).orElse {
+    logger.warn(s"Tuntematon yo-kokeen koetunnus: ${exam.examId}")
+    None
+  }
 
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)

@@ -27,23 +27,18 @@ describe('Ylioppilastutkinto', function( ){
   describe('Osasuoritukset', function() {
     before(opinnot.expandAll)
 
-    it('osasuorituksen nimi ja arvosana näkyvissä', function() {
-      expect(nimiForOsasuoritusInIndex(0)).to.equal('Maantiede')
-      expect(arvosanaForOsasuoritusInIndex(0)).to.equal('Magna cum laude approbatur')
-    })
-
     it('kaikki osasuoritukset näkyvissä', function() {
-      expect(nimiForOsasuoritusInIndex(0)).to.equal('Maantiede')
-      expect(nimiForOsasuoritusInIndex(1)).to.equal('Englanti, pitkä')
-      expect(nimiForOsasuoritusInIndex(2)).to.equal('Äidinkieli, suomi')
-      expect(nimiForOsasuoritusInIndex(3)).to.equal('Matematiikka, lyhyt')
-      expect(nimiForOsasuoritusInIndex(4)).to.equal('Ruotsi, keskipitkä')
+      expect(nimiForOsasuoritusInIndex(0)).to.equal('Äidinkielen koe, suomi')
+      expect(nimiForOsasuoritusInIndex(1)).to.equal('Ruotsi, keskipitkä oppimäärä')
+      expect(nimiForOsasuoritusInIndex(2)).to.equal('Englanti, pitkä oppimäärä')
+      expect(nimiForOsasuoritusInIndex(3)).to.equal('Maantiede')
+      expect(nimiForOsasuoritusInIndex(4)).to.equal('Matematiikan koe, lyhyt oppimäärä')
 
-      expect(arvosanaForOsasuoritusInIndex(0)).to.equal('Magna cum laude approbatur')
+      expect(arvosanaForOsasuoritusInIndex(0)).to.equal('Lubenter approbatur')
       expect(arvosanaForOsasuoritusInIndex(1)).to.equal('Cum laude approbatur')
-      expect(arvosanaForOsasuoritusInIndex(2)).to.equal('Lubenter approbatur')
-      expect(arvosanaForOsasuoritusInIndex(3)).to.equal('Laudatur')
-      expect(arvosanaForOsasuoritusInIndex(4)).to.equal('Cum laude approbatur')
+      expect(arvosanaForOsasuoritusInIndex(2)).to.equal('Cum laude approbatur')
+      expect(arvosanaForOsasuoritusInIndex(3)).to.equal('Magna cum laude approbatur')
+      expect(arvosanaForOsasuoritusInIndex(4)).to.equal('Laudatur')
     })
 
     it('ei ylimääräisiä osasuorituksia näkyvissä', function() {

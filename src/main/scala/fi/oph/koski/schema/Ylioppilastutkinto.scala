@@ -63,8 +63,8 @@ case class Ylioppilastutkinto(
 
 @Description("Ylioppilastutkinnon kokeen tunnistetiedot")
 case class YlioppilasTutkinnonKoe(
-  tunniste: PaikallinenKoodi
-) extends PaikallinenKoulutusmoduuli {
+  @KoodistoUri("koskiyokokeet")
+  tunniste: Koodistokoodiviite
+) extends KoodistostaLöytyväKoulutusmoduuli {
   def laajuus = None
-  def kuvaus: LocalizedString = LocalizedString.empty
 }
