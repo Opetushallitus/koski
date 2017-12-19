@@ -56,14 +56,13 @@ object ReforminMukainenErikoisammattitutkintoExample {
           OsaamisenHankkimistapajakso(date(2018, 8, 1), None, osaamisenHankkimistapaOppisopimus)
         )),
         koulutussopimukset = Some(List(
-          Työssäoppimisjakso(
+          Koulutussopimusjakso(
             alku = date(2018, 8, 1),
             loppu = None,
             työssäoppimispaikka = Some("Volkswagen Center"),
             paikkakunta = jyväskylä,
             maa = suomi,
-            työtehtävät = Some(finnish("Autojen vuosihuollot")),
-            laajuus = LaajuusOsaamispisteissä(5)
+            työtehtävät = Some(finnish("Autojen vuosihuollot"))
           )
         )),
         suorituskieli = suomenKieli,

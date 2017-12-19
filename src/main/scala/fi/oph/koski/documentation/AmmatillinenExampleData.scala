@@ -249,6 +249,7 @@ object AmmatillinenExampleData {
   ))
 
   lazy val työssäoppimisjakso = Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
+  lazy val koulutussopimusjakso = Koulutussopimusjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")))
 
   def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
     AmmatillisenTutkinnonSuoritus(

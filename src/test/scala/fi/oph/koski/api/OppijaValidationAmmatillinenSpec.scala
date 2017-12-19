@@ -353,7 +353,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Syötetään koulutussopimus" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(koulutussopimukset = Some(List(työssäoppimisjakso)))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(koulutussopimukset = Some(List(koulutussopimusjakso)))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
     }
@@ -375,7 +375,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Syötetään koulutussopimus" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, koulutussopimukset = Some(List(työssäoppimisjakso)))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, koulutussopimukset = Some(List(koulutussopimusjakso)))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
     }
@@ -387,7 +387,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Syötetään koulutussopimus" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaReformi, koulutussopimukset = Some(List(työssäoppimisjakso)))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaReformi, koulutussopimukset = Some(List(koulutussopimusjakso)))
         "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
       }
     }
