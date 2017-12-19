@@ -23,7 +23,7 @@ object OppijaEditorModel extends Timing {
   def toEditorModel(oppija: Oppija, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val tyypit = oppija.opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
-        val oppilaitokset = opiskeluoikeudet.groupBy(_.getOppilaitos).map {
+        val oppilaitokset = opiskeluoikeudet.groupBy(oo => oo.getOppilaitosOrKoulutusToimija).map {
           case (oppilaitos, opiskeluoikeudet) => toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
@@ -35,7 +35,7 @@ object OppijaEditorModel extends Timing {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
   }
 
-  def toOppilaitoksenOpiskeluoikeus(oppilaitos: Oppilaitos, opiskeluoikeudet: Seq[Opiskeluoikeus]) = {
+  def toOppilaitoksenOpiskeluoikeus(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: Seq[Opiskeluoikeus]) = {
     OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä).map {
       case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
@@ -79,4 +79,4 @@ case class OppijaEditorView(
 )
 
 case class OpiskeluoikeudetTyypeittäin(@KoodistoUri("opiskeluoikeudentyyppi") tyyppi: Koodistokoodiviite, opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet])
-case class OppilaitoksenOpiskeluoikeudet(oppilaitos: Oppilaitos, opiskeluoikeudet: List[Opiskeluoikeus])
+case class OppilaitoksenOpiskeluoikeudet(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: List[Opiskeluoikeus])
