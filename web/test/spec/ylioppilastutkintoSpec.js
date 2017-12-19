@@ -3,18 +3,6 @@ describe('Ylioppilastutkinto', function( ){
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
 
-  function osasuoritusSelectorStringForIndex(i) {
-    return `.ylioppilastutkinnonsuoritus .osasuoritukset .suoritus-taulukko .tutkinnon-osa:eq(${i})`
-  }
-
-  function nimiForOsasuoritusInIndex(i) {
-    return S(`${osasuoritusSelectorStringForIndex(i)} .suoritus .nimi`).text()
-  }
-
-  function arvosanaForOsasuoritusInIndex(i) {
-    return S(`${osasuoritusSelectorStringForIndex(i)} .arvosana`).text()
-  }
-
   before(Authentication().login('pää'), resetFixtures)
 
   describe('Kun tutkinto on valmis', function() {
@@ -34,21 +22,12 @@ describe('Ylioppilastutkinto', function( ){
       before(opinnot.expandAll)
 
       it('kaikki osasuoritukset näkyvissä', function() {
-        expect(nimiForOsasuoritusInIndex(0)).to.equal('Äidinkielen koe, suomi')
-        expect(nimiForOsasuoritusInIndex(1)).to.equal('Ruotsi, keskipitkä oppimäärä')
-        expect(nimiForOsasuoritusInIndex(2)).to.equal('Englanti, pitkä oppimäärä')
-        expect(nimiForOsasuoritusInIndex(3)).to.equal('Maantiede')
-        expect(nimiForOsasuoritusInIndex(4)).to.equal('Matematiikan koe, lyhyt oppimäärä')
-
-        expect(arvosanaForOsasuoritusInIndex(0)).to.equal('Lubenter approbatur')
-        expect(arvosanaForOsasuoritusInIndex(1)).to.equal('Cum laude approbatur')
-        expect(arvosanaForOsasuoritusInIndex(2)).to.equal('Cum laude approbatur')
-        expect(arvosanaForOsasuoritusInIndex(3)).to.equal('Magna cum laude approbatur')
-        expect(arvosanaForOsasuoritusInIndex(4)).to.equal('Laudatur')
-      })
-
-      it('ei ylimääräisiä osasuorituksia näkyvissä', function() {
-        expect(S(osasuoritusSelectorStringForIndex(5)).length).to.equal(0)
+        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Arvosana\n' +
+          '2012 kevät Äidinkielen koe, suomi Lubenter approbatur\n' +
+          '2012 kevät Ruotsi, keskipitkä oppimäärä Cum laude approbatur\n' +
+          '2012 kevät Englanti, pitkä oppimäärä Cum laude approbatur\n' +
+          '2012 kevät Maantiede Magna cum laude approbatur\n2012 kevät Matematiikan koe, lyhyt oppimäärä Laudatur'
+        )
       })
     })
 
@@ -71,6 +50,17 @@ describe('Ylioppilastutkinto', function( ){
 
       it('tila ja vahvistus', function() {
         expect(OpinnotPage().tilaJaVahvistus.tila()).to.equal('Suoritus kesken')
+      })
+    })
+
+    describe('Osasuoritukset', function() {
+      before(opinnot.expandAll)
+
+      it('kaikki osasuoritukset näkyvissä', function() {
+        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Arvosana\n' +
+          '2012 kevät Fysiikka Lubenter approbatur\n' +
+          '2012 kevät Kemia Lubenter approbatur'
+        )
       })
     })
   })
