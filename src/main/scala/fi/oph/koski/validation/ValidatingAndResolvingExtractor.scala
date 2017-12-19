@@ -20,7 +20,7 @@ object ValidatingAndResolvingExtractor {
       OrganisaatioResolvingCustomDeserializer(context.organisaatioRepository),
       KoodistoResolvingCustomDeserializer(context.koodistoPalvelu)
     )), tag) match {
-      case Right(t: T) => Right(t)
+      case Right(t) => Right(t)
       case Left(errors: List[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
     }
   }

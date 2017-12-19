@@ -29,7 +29,7 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
     } catch {
       case e: UncheckedExecutionException if e.getCause.isInstanceOf[DoNotStoreException] => e.getCause.asInstanceOf[DoNotStoreException].value
       case DoNotStoreException(value) => value
-      case e =>
+      case e: Throwable =>
         logger.warn(e)(s"$name.$invocation fetch failed")
         throw e
     }
