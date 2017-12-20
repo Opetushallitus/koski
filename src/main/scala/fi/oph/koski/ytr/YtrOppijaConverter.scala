@@ -56,7 +56,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
       koulutusmoduuli = YlioppilasTutkinnonKoe(tunniste),
       tutkintokerta = tutkintokerta,
       arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
-      tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
+      tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe")
     )
   }.orElse {
     logger.warn(s"Tuntematon yo-kokeen koetunnus: ${exam.examId}")
