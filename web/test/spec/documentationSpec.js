@@ -1,7 +1,7 @@
 describe('Dokumentaatio', function() {
   var page = DocumentationPage()
   describe('Dokumentaatio-sivu', function() {
-    before(page.openPage)
+    before(Authentication().logout, page.openPage)
     it('näytetään', function() {
       expect(textsOf(S('h2'))).to.deep.equal(['Koski-tiedonsiirtoprotokolla'])
     })

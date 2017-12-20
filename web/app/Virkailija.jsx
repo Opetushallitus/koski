@@ -11,7 +11,7 @@ import {locationP} from './util/location.js'
 import LocalizationEditBar from './i18n/LocalizationEditBar'
 import {t} from './i18n/i18n'
 
-const noAccessControlPaths = ['/koski/documentation']
+const noAccessControlPaths = ['/koski/dokumentaatio']
 
 const topBarP = Bacon.combineWith(userP, titleKeyP, locationP, (user, titleKey, location) => <TopBar user={user} titleKey={titleKey} inRaamit={inRaamit} location={location} />)
 const allErrorsP = errorP(contentP, routeErrorP)
