@@ -8,7 +8,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -257,10 +257,10 @@ class TiedonsiirtoService(
 
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: HetuTaiOid = JsonSerializer.extract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true)
-    val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
+    val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).toOption
+    val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.flatMap(_.oid))
 
-    val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.hetu) match {
+    val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.flatMap(_.hetu)) match {
       case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
         TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), h.äidinkieli)
       }

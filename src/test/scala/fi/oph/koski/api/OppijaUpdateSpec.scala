@@ -1,10 +1,10 @@
 package fi.oph.koski.api
 
-import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.koululainen
@@ -12,11 +12,10 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.UserWithPassword
-import fi.oph.koski.localization.{Finnish, LocalizedString}
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import mojave.traversal
 import org.scalatest.FreeSpec
 
 class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -301,6 +300,14 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         putOppija(Oppija(oppija, List(updated)), authHeaders(user2.getOrElse(user)) ++ jsonContent) {
           block
         }
+      }
+    }
+  }
+
+  "Kun syöttää jsonin merkkijonona" - {
+    "Palauttaa virheen" in {
+      put("api/oppija", body = "\"hello\"", headers = authHeaders(paakayttaja) ++ jsonContent){
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedType.*".r))
       }
     }
   }
