@@ -13,6 +13,7 @@ import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
+import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let oid = modelData(model, 'oid')
@@ -72,9 +73,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             }
           </div>
           <div className="suoritukset">
-            <h4><Text name="Suoritukset"/></h4>
-            <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
-            <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
+            <Suoritukset opiskeluoikeus={mdl} valittuSuoritus={valittuSuoritus}/>
           </div>
         </div>
       </div>)
@@ -104,6 +103,21 @@ const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
   </div>)
+}
+
+const Suoritukset = ({opiskeluoikeus, valittuSuoritus}) => {
+  const opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
+  const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+
+  return opiskeluoikeusTyyppi === 'korkeakoulutus'
+    ? <Korkeakoulusuoritukset opiskeluoikeus={opiskeluoikeus}/>
+    : (
+      <div className="suoritukset">
+        <h4><Text name="Suoritukset"/></h4>
+        <SuoritusTabs model={opiskeluoikeus} suoritukset={suoritukset}/>
+        <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
+      </div>
+    )
 }
 
 class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
