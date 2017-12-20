@@ -13,21 +13,14 @@ import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
+import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let oid = modelData(model, 'oid')
   model = addContext(model, {opiskeluoikeus: model})
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
     let context = mdl.context
-    let suoritukset = modelItems(mdl, 'suoritukset')
-    assignTabNames(suoritukset)
     let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
-    var index = suoritusTabIndex(suoritukset)
-    if (index < 0 || index >= suoritukset.length) {
-      navigateTo(urlForTab(suoritukset, index))
-      return null
-    }
-    let valittuSuoritus = suoritukset[index]
 
     const alkuChangeBus = Bacon.Bus()
     alkuChangeBus.onValue(v => {
@@ -72,11 +65,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
               modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" propertyFilter={prop => context.edit || modelData(prop.model) !== false} />
             }
           </div>
-          <div className="suoritukset">
-            <h4><Text name="Suoritukset"/></h4>
-            <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
-            <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
-          </div>
+          <Suoritukset opiskeluoikeus={mdl}/>
         </div>
       </div>)
     }
@@ -105,6 +94,39 @@ const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
   </div>)
+}
+
+const Suoritukset = ({opiskeluoikeus}) => {
+  const opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
+
+  return (
+    <div className="suoritukset">
+      {opiskeluoikeusTyyppi === 'korkeakoulutus'
+        ? <Korkeakoulusuoritukset opiskeluoikeus={opiskeluoikeus}/>
+        : <TabulatedSuoritukset model={opiskeluoikeus}/>
+       }
+    </div>
+  )
+}
+
+const TabulatedSuoritukset = ({model}) => {
+  const suoritukset = modelItems(model, 'suoritukset')
+  assignTabNames(suoritukset)
+
+  const index = suoritusTabIndex(suoritukset)
+  if (index < 0 || index >= suoritukset.length) {
+    navigateTo(urlForTab(suoritukset, index))
+    return null
+  }
+  const valittuSuoritus = suoritukset[index]
+
+  return (
+    <div className="suoritukset">
+      <h4><Text name="Suoritukset"/></h4>
+      <SuoritusTabs model={model} suoritukset={suoritukset}/>
+      <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
+    </div>
+  )
 }
 
 class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
