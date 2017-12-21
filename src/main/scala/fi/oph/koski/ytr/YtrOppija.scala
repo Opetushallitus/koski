@@ -19,7 +19,7 @@ case class YtrExam(
   examId: String,
   examRoleShort: Option[String],
   grade: String,
-  points: Int,
+  points: Option[Int],
   sections: List[YtrSection]
 )
 case class YtrSection(
