@@ -20,14 +20,17 @@ export const OpiskeluoikeusEditor = ({model}) => {
   model = addContext(model, {opiskeluoikeus: model})
   return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
     let context = mdl.context
-    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
+    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
     const alkuChangeBus = Bacon.Bus()
     alkuChangeBus.onValue(v => {
       const value = v[0].value
       pushModel(modelSetValues(model, {'alkamispäivä' : value, 'tila.opiskeluoikeusjaksot.0.alku': value}))
     })
+
     let hasOppilaitos = !!modelData(mdl, 'oppilaitos')
+    const hasAlkamispäivä = !!modelData(mdl, 'alkamispäivä')
+    const isSyntheticOpiskeluoikeus = !!modelData(model, 'synteettinen')
 
     return (
       <div className="opiskeluoikeus">
@@ -35,42 +38,57 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <span className="otsikkotiedot">
             { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
             <span className="koulutus inline-text" style={hasOppilaitos ? { 'text-transform': 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
-            { modelData(mdl, 'alkamispäivä')
-              ? <span className="inline-text">{'('}
+            {hasAlkamispäivä && (
+              <span className="inline-text">{'('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
                 <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
                 <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
-                </span>
-              : null
-            }
+              </span>
+            )}
           </span>
           {!model.context.kansalainen && <Versiohistoria opiskeluoikeusOid={oid} oppijaOid={context.oppijaOid}/>}
           {!model.context.kansalainen && <OpiskeluoikeudenId opiskeluoikeus={mdl}/>}
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
-          <div className="opiskeluoikeuden-tiedot">
-            {editLink}
-            <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
-            {
-              modelData(mdl, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={mdl}/>
-            }
-            <PropertiesEditor
-              model={mdl}
-              propertyFilter={ p => !excludedProperties.includes(p.key) }
-              getValueEditor={ (prop, getDefault) => prop.key === 'tila'
-                ? <OpiskeluoikeudenTilaEditor model={mdl} alkuChangeBus={alkuChangeBus}/>
-                : getDefault() }
-             />
-            {
-              modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" propertyFilter={prop => context.edit || modelData(prop.model) !== false} />
-            }
-          </div>
+          {!isSyntheticOpiskeluoikeus &&
+            <OpiskeluoikeudenTiedot
+              opiskeluoikeus={mdl}
+              excludedProperties={excludedProperties}
+              editLink={editLink}
+              alkuChangeBus={alkuChangeBus}
+            />
+          }
           <Suoritukset opiskeluoikeus={mdl}/>
         </div>
       </div>)
     }
   } />)
 }
+
+const OpiskeluoikeudenTiedot = ({opiskeluoikeus, excludedProperties, editLink, alkuChangeBus}) => (
+  <div className="opiskeluoikeuden-tiedot">
+    {editLink}
+    <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={opiskeluoikeus}/>
+    {
+      modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
+    }
+    <PropertiesEditor
+      model={opiskeluoikeus}
+      propertyFilter={ p => !excludedProperties.includes(p.key) }
+      getValueEditor={ (prop, getDefault) => prop.key === 'tila'
+        ? <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
+        : getDefault() }
+    />
+    {
+      modelLookup(opiskeluoikeus, 'lisätiedot') &&
+      <ExpandablePropertiesEditor
+        model={opiskeluoikeus}
+        propertyName="lisätiedot"
+        propertyFilter={prop => opiskeluoikeus.context.edit || modelData(prop.model) !== false}
+      />
+    }
+  </div>
+)
 
 const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   let selectAllText = (e) => {
