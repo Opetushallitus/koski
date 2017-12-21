@@ -241,7 +241,12 @@ const ArvosanaColumn = {
   shouldShow: ({parentSuoritus, suoritukset, context}) => !näyttötutkintoonValmistava(parentSuoritus) && (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => <td key="arvosana" className="arvosana"><Text name="Arvosana"/></td>,
   renderData: ({model}) => {
-    let arvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
+    let fullArvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
+
+    const arvosanaModel = fullArvosanaModel.value.classes && fullArvosanaModel.value.classes.includes('paikallinenkoodi')
+      ? modelLookup(fullArvosanaModel, 'nimi')
+      : fullArvosanaModel
+
     // TODO, Parempi tapa erotella eri koodistoista tulevat arvot
     let sortByKoodistoUriAndGrade = (grades) => {
       let sort = (x, y) => {

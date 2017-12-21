@@ -60,7 +60,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         oppilaitos = Some(organisaatio),
         koulutustoimija = None,
         suoritukset = suoritukset,
-        tila = KorkeakoulunOpiskeluoikeudenTila(Nil)
+        tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
+        synteettinen = true
       )
     }
 
@@ -112,7 +113,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
-        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0).map(op => LaajuusOpintopisteissä(op))
+        laajuus = for {
+          yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
+          laajuus <- (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
+        } yield LaajuusOpintopisteissä(laajuus, yksikko)
       ),
       arviointi = arviointi(suoritus),
       vahvistus = None,

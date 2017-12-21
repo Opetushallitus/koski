@@ -13,6 +13,7 @@ import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
+import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 
 export const OpiskeluoikeusEditor = ({model}) => {
   let oid = modelData(model, 'oid')
@@ -21,7 +22,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
     let context = mdl.context
     let suoritukset = modelItems(mdl, 'suoritukset')
     assignTabNames(suoritukset)
-    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
+    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
     var index = suoritusTabIndex(suoritukset)
     if (index < 0 || index >= suoritukset.length) {
       navigateTo(urlForTab(suoritukset, index))
@@ -35,52 +36,66 @@ export const OpiskeluoikeusEditor = ({model}) => {
       pushModel(modelSetValues(model, {'alkamispäivä' : value, 'tila.opiskeluoikeusjaksot.0.alku': value}))
     })
 
+    const hasAlkamispäivä = !!modelData(mdl, 'alkamispäivä')
+    const isSyntheticOpiskeluoikeus = modelData(model, 'synteettinen')
+
     return (
       <div className="opiskeluoikeus">
         <h3>
           <span className="otsikkotiedot">
             <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
             <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
-            { modelData(mdl, 'alkamispäivä')
-              ? <span className="inline-text">{'('}
+            {hasAlkamispäivä && (
+              <span className="inline-text">{'('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
                 <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
                 <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
-                </span>
-              : null
-            }
+              </span>
+            )}
           </span>
           {!model.context.kansalainen && <Versiohistoria opiskeluoikeusOid={oid} oppijaOid={context.oppijaOid}/>}
           {!model.context.kansalainen && <OpiskeluoikeudenId opiskeluoikeus={mdl}/>}
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
-          <div className="opiskeluoikeuden-tiedot">
-            {editLink}
-            <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={mdl}/>
-            {
-              modelData(mdl, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={mdl}/>
-            }
-            <PropertiesEditor
-              model={mdl}
-              propertyFilter={ p => !excludedProperties.includes(p.key) }
-              getValueEditor={ (prop, getDefault) => prop.key === 'tila'
-                ? <OpiskeluoikeudenTilaEditor model={mdl} alkuChangeBus={alkuChangeBus}/>
-                : getDefault() }
-             />
-            {
-              modelLookup(mdl, 'lisätiedot') && <ExpandablePropertiesEditor model={mdl} propertyName="lisätiedot" propertyFilter={prop => context.edit || modelData(prop.model) !== false} />
-            }
-          </div>
-          <div className="suoritukset">
-            <h4><Text name="Suoritukset"/></h4>
-            <SuoritusTabs model={mdl} suoritukset={suoritukset}/>
-            <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
-          </div>
+          {!isSyntheticOpiskeluoikeus &&
+            <OpiskeluoikeudenTiedot
+              opiskeluoikeus={mdl}
+              excludedProperties={excludedProperties}
+              editLink={editLink}
+              alkuChangeBus={alkuChangeBus}
+            />
+          }
+          <Suoritukset opiskeluoikeus={mdl} valittuSuoritus={valittuSuoritus}/>
         </div>
       </div>)
     }
   } />)
 }
+
+const OpiskeluoikeudenTiedot = ({opiskeluoikeus, excludedProperties, editLink, alkuChangeBus}) => (
+  <div className="opiskeluoikeuden-tiedot">
+    {editLink}
+    <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={opiskeluoikeus}/>
+    {
+      modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
+    }
+    <PropertiesEditor
+      model={opiskeluoikeus}
+      propertyFilter={ p => !excludedProperties.includes(p.key) }
+      getValueEditor={ (prop, getDefault) => prop.key === 'tila'
+        ? <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
+        : getDefault() }
+    />
+    {
+      modelLookup(opiskeluoikeus, 'lisätiedot') &&
+      <ExpandablePropertiesEditor
+        model={opiskeluoikeus}
+        propertyName="lisätiedot"
+        propertyFilter={prop => context.edit || modelData(prop.model) !== false}
+      />
+    }
+  </div>
+)
 
 const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   let selectAllText = (e) => {
@@ -104,6 +119,25 @@ const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
   </div>)
+}
+
+const Suoritukset = ({opiskeluoikeus, valittuSuoritus}) => {
+  const opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
+  const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+
+  return (
+    <div className="suoritukset">
+      {opiskeluoikeusTyyppi === 'korkeakoulutus'
+        ? <Korkeakoulusuoritukset opiskeluoikeus={opiskeluoikeus}/>
+        : (
+          <div className="suoritukset">
+            <h4><Text name="Suoritukset"/></h4>
+            <SuoritusTabs model={opiskeluoikeus} suoritukset={suoritukset}/>
+            <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
+          </div>
+        )}
+    </div>
+  )
 }
 
 class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
