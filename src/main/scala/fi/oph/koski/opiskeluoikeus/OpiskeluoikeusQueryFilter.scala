@@ -52,12 +52,6 @@ private object OpiskeluoikeusQueryFilterParser {
       }
     }
 
-    def koodistohaku(koodistoUri: String, hakusana: String) = {
-      val koodit: List[Koodistokoodiviite] = koodisto.getKoodistoKoodiViitteet(koodisto.getLatestVersion(koodistoUri).get).get
-      koodit.filter(koodi => koodi.nimi.map(_.get(session.lang)).getOrElse(koodi.koodiarvo).toLowerCase.contains(hakusana.toLowerCase))
-    }
-
-
     val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot{case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key)}.map {
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
