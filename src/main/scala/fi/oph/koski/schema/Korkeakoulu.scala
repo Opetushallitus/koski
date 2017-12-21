@@ -20,7 +20,8 @@ case class KorkeakoulunOpiskeluoikeus(
   tila: KorkeakoulunOpiskeluoikeudenTila,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  synteettinen: Boolean = false
 ) extends Opiskeluoikeus {
   override def versionumero = None
   override def lisätiedot = None
