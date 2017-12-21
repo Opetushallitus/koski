@@ -64,4 +64,41 @@ describe('Ylioppilastutkinto', function( ){
       })
     })
   })
+
+  describe('Kypsyyskoe jne', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('120674-064R'))
+    before(opinnot.expandAll)
+
+    it('kaikki osasuoritukset näkyvissä', function() {
+        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
+          'Tutkintokerta Koe Arvosana\n' +
+          '1996 kevät Reaali, elämänkatsomustiedon kysymykset Improbatur\n' +
+          '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
+          '1996 syksy Matematiikan koe, lyhyt oppimäärä Improbatur\n' +
+          '1996 syksy Reaali, elämänkatsomustiedon kysymykset Improbatur\n' +
+          '1997 kevät Suomi, lyhyt oppimäärä Improbatur\n' +
+          '1997 kevät Matematiikan koe, lyhyt oppimäärä Approbatur\n' +
+          '1997 kevät Reaali, elämänkatsomustiedon kysymykset Approbatur\n' +
+          '1997 syksy Suomi, lyhyt oppimäärä Improbatur\n' +
+          '1998 kevät Suomi, lyhyt oppimäärä Improbatur'
+        )
+    })
+  })
+
+  describe('Vanha reaalikoe', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('120872-781Y'))
+    before(opinnot.expandAll)
+
+    it('kaikki osasuoritukset näkyvissä', function() {
+      expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
+        'Tutkintokerta Koe Arvosana\n1996 kevät Äidinkielen koe, suomi Magna cum laude approbatur\n' +
+        '1996 kevät Ruotsi, keskipitkä oppimäärä Approbatur\n' +
+        '1996 kevät Englanti, pitkä oppimäärä Cum laude approbatur\n' +
+        '1996 kevät Kreikka, lyhyt oppimäärä Improbatur\n' +
+        '1996 kevät Matematiikan koe, lyhyt oppimäärä Magna cum laude approbatur\n' +
+        '1996 kevät Reaali, ev lut uskonnon kysymykset Lubenter approbatur'
+      )
+    })
+  })
+
 })
