@@ -44,6 +44,33 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskiyoarvosanat_i",
+  "koodiArvo" : "I+",
+  "metadata" : [ {
+    "nimi" : "Improbatur",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiyoarvosanat_i",
+  "koodiArvo" : "I-",
+  "metadata" : [ {
+    "nimi" : "Improbatur",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiyoarvosanat_i",
+  "koodiArvo" : "I=",
+  "metadata" : [ {
+    "nimi" : "Improbatur",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskiyoarvosanat_l",
   "koodiArvo" : "L",
   "metadata" : [ {
