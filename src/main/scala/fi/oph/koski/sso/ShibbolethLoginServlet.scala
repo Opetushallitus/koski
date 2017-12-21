@@ -1,5 +1,7 @@
 package fi.oph.koski.sso
 
+import java.net.InetAddress.{getAllByName => getInetAddresses, getLocalHost}
+
 import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -27,12 +29,23 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def checkAuth: Option[HttpStatus] = {
     logger.info(s"Shibboleth login request coming from ${request.getRemoteAddr}")
+    if (!originOk) {
+      logger.warn(s"Shibboleth login request coming from unauthorized address ${request.getRemoteAddr}")
+      return Some(KoskiErrorCategory.unauthorized())
+    }
+
     request.header("security") match {
       case Some(password) if passwordOk(password) => None
       case Some(_) => Some(KoskiErrorCategory.unauthorized())
       case None => Some(KoskiErrorCategory.badRequest("auth header missing"))
     }
   }
+
+  private def originOk =
+    localAddresses.contains(request.getRemoteAddr) || request.getRemoteAddr == application.config.getString("shibboleth.ip")
+
+  private lazy val localAddresses =
+    getLocalHost.getHostAddress :: getInetAddresses("localhost").toList.distinct.map(_.getHostAddress)
 
   private def passwordOk(password: String) = {
     val security = application.config.getString("shibboleth.security")
