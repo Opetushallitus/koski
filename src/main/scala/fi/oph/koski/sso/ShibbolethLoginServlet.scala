@@ -14,7 +14,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     request.header("hetu") match {
       case Some(hetu) =>
-        application.henkilöRepository.findOppijat(hetu)(KoskiSession.untrustedUser).headOption match {
+        application.henkilöRepository.findOppijat(hetu)(KoskiSession.systemUser).headOption match {
           case Some(oppija) =>
             setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
             redirect(s"$rootUrl/omattiedot")
