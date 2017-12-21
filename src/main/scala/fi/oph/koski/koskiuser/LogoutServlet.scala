@@ -11,9 +11,18 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
     val kansalainen = koskiSessionOption.exists(_.user.kansalainen)
     removeUserCookie
     if (kansalainen) {
-      redirectToFrontpage
+      kansalaisLogout
     } else {
       redirectToLogout
+    }
+  }
+
+  private def kansalaisLogout = {
+    val shibbolethLogoutUrl = application.config.getString("shibboleth.logout.url")
+    if (shibbolethLogoutUrl.isEmpty) {
+      redirectToFrontpage
+    } else {
+      redirect(shibbolethLogoutUrl)
     }
   }
 }
