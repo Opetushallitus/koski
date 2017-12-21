@@ -60,7 +60,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         oppilaitos = Some(organisaatio),
         koulutustoimija = None,
         suoritukset = suoritukset,
-        tila = KorkeakoulunOpiskeluoikeudenTila(Nil)
+        tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
+        synteettinen = true
       )
     }
 
