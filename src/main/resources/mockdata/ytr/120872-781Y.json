@@ -1,0 +1,67 @@
+{
+  "description": "kreikka ja vanha reaali",
+  "graduationSchoolOphOid": "1.2.246.562.10.62858797335",
+  "ssn": "120872-781Y",
+  "lastname": "Yrjänä",
+  "firstnames": "Arvo Tatu",
+  "graduationDate": "1996-05-31",
+  "graduationPeriod": "1996K",
+  "hasCompletedMandatoryExams": true,
+  "exams": [
+    {
+      "period": "1996K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "M",
+      "points": 85,
+      "sections": []
+    },
+    {
+      "period": "1996K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "A",
+      "points": 160,
+      "sections": []
+    },
+    {
+      "period": "1996K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "C",
+      "points": 220,
+      "sections": []
+    },
+    {
+      "period": "1996K",
+      "examId": "KC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "I+",
+      "points": 36,
+      "sections": []
+    },
+    {
+      "period": "1996K",
+      "examId": "N",
+      "examRoleLegacy": "42",
+      "examRoleShort": "mandatory-subject",
+      "grade": "M",
+      "points": 36,
+      "sections": []
+    },
+    {
+      "period": "1996K",
+      "examId": "RR",
+      "examRoleLegacy": "71",
+      "examRoleShort": "optional-subject",
+      "grade": "B",
+      "points": 22,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}

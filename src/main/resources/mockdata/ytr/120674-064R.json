@@ -1,0 +1,92 @@
+{
+  "description": "kypsyyskoe yms",
+  "ssn": "120674-064R",
+  "lastname": "Yliniemi",
+  "firstnames": "Kalevi",
+  "graduationDate": null,
+  "graduationPeriod": null,
+  "hasCompletedMandatoryExams": false,
+  "exams": [
+    {
+      "period": "1996K",
+      "examId": "RY",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 8,
+      "sections": []
+    },
+    {
+      "period": "1996S",
+      "examId": "J",
+      "examRoleLegacy": "13",
+      "examRoleShort": "mother-tongue",
+      "grade": "C",
+      "sections": []
+    },
+    {
+      "period": "1996S",
+      "examId": "N",
+      "examRoleLegacy": "42",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 6,
+      "sections": []
+    },
+    {
+      "period": "1996S",
+      "examId": "RY",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 10,
+      "sections": []
+    },
+    {
+      "period": "1997K",
+      "examId": "CC",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I",
+      "points": 67,
+      "sections": []
+    },
+    {
+      "period": "1997K",
+      "examId": "N",
+      "examRoleLegacy": "42",
+      "examRoleShort": "mandatory-subject",
+      "grade": "A",
+      "points": 11,
+      "sections": []
+    },
+    {
+      "period": "1997K",
+      "examId": "RY",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "A",
+      "points": 15,
+      "sections": []
+    },
+    {
+      "period": "1997S",
+      "examId": "CC",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I",
+      "points": 65,
+      "sections": []
+    },
+    {
+      "period": "1998K",
+      "examId": "CC",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I+",
+      "points": 83,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}

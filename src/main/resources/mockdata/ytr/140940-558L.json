@@ -1,0 +1,229 @@
+{
+  "description": "tosipitkä tutkinto",
+  "graduationSchoolOphOid": "1.2.246.562.10.62858797335",
+  "ssn": "140940-558L",
+  "lastname": "Vuoristo",
+  "firstnames": "Hannu Matti",
+  "graduationDate": "2017-12-01",
+  "graduationPeriod": "2017S",
+  "hasCompletedMandatoryExams": true,
+  "exams": [
+    {
+      "period": "1991S",
+      "examId": "PC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "M",
+      "points": 166,
+      "sections": []
+    },
+    {
+      "period": "1993S",
+      "examId": "FC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 217,
+      "sections": []
+    },
+    {
+      "period": "1998S",
+      "examId": "SC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 229,
+      "sections": []
+    },
+    {
+      "period": "1999K",
+      "examId": "SC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "E",
+      "points": 252,
+      "sections": []
+    },
+    {
+      "period": "2000S",
+      "examId": "TC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "B",
+      "points": 177,
+      "sections": []
+    },
+    {
+      "period": "2008K",
+      "examId": "FC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "M",
+      "points": 248,
+      "sections": []
+    },
+    {
+      "period": "2008S",
+      "examId": "BA",
+      "examRoleLegacy": "62",
+      "examRoleShort": "optional-subject",
+      "grade": "E",
+      "points": 257,
+      "sections": []
+    },
+    {
+      "period": "2008S",
+      "examId": "EC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 203,
+      "sections": []
+    },
+    {
+      "period": "2009K",
+      "examId": "EA",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 209,
+      "sections": []
+    },
+    {
+      "period": "2009K",
+      "examId": "L1",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 156,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "BA",
+      "examRoleLegacy": "62",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 227,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "EA",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "B",
+      "points": 187,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "EC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "M",
+      "points": 238,
+      "sections": []
+    },
+    {
+      "period": "2011K",
+      "examId": "L1",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "E",
+      "points": 191,
+      "sections": []
+    },
+    {
+      "period": "2011S",
+      "examId": "L7",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 146,
+      "sections": []
+    },
+    {
+      "period": "2012K",
+      "examId": "GC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 143,
+      "sections": []
+    },
+    {
+      "period": "2013K",
+      "examId": "GC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 152,
+      "sections": []
+    },
+    {
+      "period": "2014K",
+      "examId": "SA",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 228,
+      "sections": []
+    },
+    {
+      "period": "2014S",
+      "examId": "SA",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 220,
+      "sections": []
+    },
+    {
+      "period": "2015K",
+      "examId": "L7",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "E",
+      "points": 180,
+      "sections": []
+    },
+    {
+      "period": "2016S",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "E",
+      "points": 244,
+      "sections": []
+    },
+    {
+      "period": "2016S",
+      "examId": "YH",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "C",
+      "points": 22,
+      "sections": []
+    },
+    {
+      "period": "2017K",
+      "examId": "A",
+      "examRoleLegacy": null,
+      "examRoleShort": "mother-tongue",
+      "grade": "C",
+      "points": 58,
+      "sections": []
+    },
+    {
+      "period": "2017S",
+      "examId": "EA",
+      "examRoleLegacy": null,
+      "examRoleShort": "mandatory-subject",
+      "grade": "B",
+      "points": 195,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}

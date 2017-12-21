@@ -1,0 +1,246 @@
+{
+  "description": "uudelleenaloittaja, tutkinto kesken",
+  "ssn": "010342-8411",
+  "lastname": "Numminen",
+  "firstnames": "Mia Orvokki",
+  "graduationDate": null,
+  "graduationPeriod": null,
+  "hasCompletedMandatoryExams": false,
+  "exams": [
+    {
+      "period": "1998S",
+      "examId": "RY",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "B",
+      "points": 20,
+      "sections": []
+    },
+    {
+      "period": "1999K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "C",
+      "points": 77,
+      "sections": []
+    },
+    {
+      "period": "1999K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 85,
+      "sections": []
+    },
+    {
+      "period": "1999K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 79,
+      "sections": []
+    },
+    {
+      "period": "1999S",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 99,
+      "sections": []
+    },
+    {
+      "period": "1999S",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 86,
+      "sections": []
+    },
+    {
+      "period": "2000K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 107,
+      "sections": []
+    },
+    {
+      "period": "2006K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "B",
+      "points": 67,
+      "sections": []
+    },
+    {
+      "period": "2006K",
+      "examId": "HI",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "B",
+      "points": 15,
+      "sections": []
+    },
+    {
+      "period": "2006S",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "A",
+      "points": 60,
+      "sections": []
+    },
+    {
+      "period": "2006S",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 40,
+      "sections": []
+    },
+    {
+      "period": "2007K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 85,
+      "sections": []
+    },
+    {
+      "period": "2007K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 55,
+      "sections": []
+    },
+    {
+      "period": "2008K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 71,
+      "sections": []
+    },
+    {
+      "period": "2008K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 44,
+      "sections": []
+    },
+    {
+      "period": "2008S",
+      "examId": "HI",
+      "examRoleLegacy": "41",
+      "examRoleShort": "mandatory-subject",
+      "grade": "A",
+      "points": 10,
+      "sections": []
+    },
+    {
+      "period": "2009K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 81,
+      "sections": []
+    },
+    {
+      "period": "2009K",
+      "examId": "PS",
+      "examRoleLegacy": "71",
+      "examRoleShort": "optional-subject",
+      "grade": "B",
+      "points": 12,
+      "sections": []
+    },
+    {
+      "period": "2009K",
+      "examId": "TE",
+      "examRoleLegacy": "71",
+      "examRoleShort": "optional-subject",
+      "grade": "A",
+      "points": 11,
+      "sections": []
+    },
+    {
+      "period": "2009S",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "A",
+      "points": 29,
+      "sections": []
+    },
+    {
+      "period": "2009S",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I",
+      "points": 93,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "B",
+      "points": 35,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 84,
+      "sections": []
+    },
+    {
+      "period": "2010K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 94,
+      "sections": []
+    },
+    {
+      "period": "2010S",
+      "examId": "BB",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 87,
+      "sections": []
+    },
+    {
+      "period": "2010S",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I=",
+      "points": 67,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}
