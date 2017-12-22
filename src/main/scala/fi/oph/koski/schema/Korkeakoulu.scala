@@ -16,8 +16,8 @@ case class KorkeakoulunOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
-  ensisijaisuus: Option[Ensisijaisuus] = None,
   tila: KorkeakoulunOpiskeluoikeudenTila,
+  ensisijaisuus: Option[Ensisijaisuus] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
