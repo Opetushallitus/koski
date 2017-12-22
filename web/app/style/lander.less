@@ -1,25 +1,108 @@
-#lander-page body, #korhopankki body {
+#korhopankki {
   background-color: @color-warm-gray;
 }
 
-.lander {
-  margin-right: auto;
-  margin-left: auto;
-  width: 800px;
-  margin-top: 100px;
-  text-align: center;
-
-  h1 {
-    font-weight: 300;
-    margin-bottom: 2.5rem;
+#lander-page {
+  background-color: white;
+  font-family: 'Open Sans', sans-serif;
+  .koski-heading {
+    width: 100%;
+    h1 {
+      font-weight: 300;
+      margin-bottom: 2.0rem;
+      text-align: center;
+      font-size: 46px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 200px;
+      background-color: white;
+      position: relative;
+      &:after {
+        content: '';
+        height: 1px;
+        width: 400px;
+        position: absolute;
+        left: -100px;
+        top: 30px;
+        background-color: @color-disabled;
+        z-index: -1;
+      }
+    }
   }
 
-  > p:first-of-type {
-    font-size: 1.5rem;
+  .lander-logo {
+    margin-right: auto;
+    margin-left: auto;
+    width: 700px;
+    img {
+      margin-left: 90px;
+    }
+  }
+}
+
+.lander {
+  padding-top: 40px;
+  background: url('/koski/images/oph-tausta.jpg') no-repeat left top transparent;
+  background-size: cover;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  position: relative;
+
+  .login-button {
+    position: absolute;
+    top: -80px;
+    right: 15px;
+    font-size: 18px;
+    font-weight: 100;
+    height: 55px;
+    padding: 0 40px;
+    border-radius: 3px;
+    z-index: 10;
   }
 
   &__caption {
-    margin: 2.5rem 0;
+    font-size: 24px;
+  }
+
+  &__column {
+    width: 50%;
+    padding-right: 20px;
+    padding-left: 40px;
+    p {
+      width: ~"calc(60% + 150px)";
+    }
+  }
+
+  &__left {
+    float:left;
+    position: relative;
+    p {
+      margin-left: auto;
+    }
+    &:after {
+      height: ~"calc(100% - 20px)";
+      content: '';
+      width: 1px;
+      position: absolute;
+      right: 0;
+      top: 30px;
+      background-color: @color-warm-gray;
+    }
+  }
+
+  &__right {
+    p {
+      margin-right: auto;
+    }
+    float:right;
+    padding-left: 40px;
+  }
+
+  .virkailija {
+    padding: 30px 0 50px 0;
+    clear: both;
+    text-align: center;
   }
 }
 
