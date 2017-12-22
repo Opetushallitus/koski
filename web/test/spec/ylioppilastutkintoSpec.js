@@ -44,6 +44,7 @@ describe('Ylioppilastutkinto', function( ){
 
     describe('Tutkinnon tiedot', function() {
       it('näytetään', function() {
+        expect(OpinnotPage().opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Ylioppilastutkinto'])
         expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
         expect(OpinnotPage().getOppilaitos()).to.equal("")
       })

@@ -34,13 +34,14 @@ export const OpiskeluoikeusEditor = ({model}) => {
       const value = v[0].value
       pushModel(modelSetValues(model, {'alkamispäivä' : value, 'tila.opiskeluoikeusjaksot.0.alku': value}))
     })
+    let hasOppilaitos = !!modelData(mdl, 'oppilaitos')
 
     return (
       <div className="opiskeluoikeus">
         <h3>
           <span className="otsikkotiedot">
-            <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span>
-            <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
+            { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
+            <span className="koulutus inline-text" style={hasOppilaitos ? { 'text-transform': 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
             { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">{'('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
