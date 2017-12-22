@@ -43,7 +43,7 @@ case class KorkeakoulututkinnonSuoritus(
   koulutusmoduuli: Korkeakoulututkinto,
   toimipiste: Oppilaitos,
   arviointi: Option[List[KorkeakoulunArviointi]],
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
   @Title("Opintojaksot")
@@ -59,7 +59,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   koulutusmoduuli: KorkeakoulunOpintojakso,
   toimipiste: Oppilaitos,
   arviointi: Option[List[KorkeakoulunArviointi]],
-  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
+  vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")

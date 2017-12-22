@@ -92,7 +92,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             arviointi = arviointi(suoritus),
-            vahvistus = None,
+            vahvistus = vahvistus(suoritus),
             suorituskieli = None,
             toimipiste = oppilaitos(suoritus),
             osasuoritukset = optionalList(osasuoritukset)
@@ -119,7 +119,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         } yield LaajuusOpintopisteissä(laajuus, yksikko)
       ),
       arviointi = arviointi(suoritus),
-      vahvistus = None,
+      vahvistus = vahvistus(suoritus),
       suorituskieli = (suoritus \\ "Kieli").headOption.map(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
       toimipiste = oppilaitos(suoritus),
       osasuoritukset = optionalList(osasuoritukset)
@@ -146,6 +146,12 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           LocalDate.parse(suoritus \ "SuoritusPvm" text)
         ))
       }
+  }
+
+  private def vahvistus(suoritus: Node): Option[Päivämäärävahvistus] = {
+    arviointi(suoritus).flatMap(_.lastOption.flatMap(arviointi =>
+      Some(Päivämäärävahvistus(arviointi.päivä, oppilaitos(suoritus)))
+    ))
   }
 
   private def isRoot(suoritukset: Seq[Node])(node: Node) = {
