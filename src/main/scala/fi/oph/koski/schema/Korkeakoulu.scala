@@ -16,11 +16,12 @@ case class KorkeakoulunOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
-  ensisijaisuus: Option[Ensisijaisuus] = None,
   tila: KorkeakoulunOpiskeluoikeudenTila,
+  ensisijaisuus: Option[Ensisijaisuus] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  synteettinen: Boolean = false
 ) extends Opiskeluoikeus {
   override def versionumero = None
   override def lisätiedot = None
@@ -29,9 +30,9 @@ case class KorkeakoulunOpiskeluoikeus(
 
 @Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän")
 case class Ensisijaisuus(
-  alkamispäivä: LocalDate,
-  päättymispäivä: Option[LocalDate]
-)
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
 
 trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
@@ -42,7 +43,7 @@ case class KorkeakoulututkinnonSuoritus(
   koulutusmoduuli: Korkeakoulututkinto,
   toimipiste: Oppilaitos,
   arviointi: Option[List[KorkeakoulunArviointi]],
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
   @Title("Opintojaksot")
@@ -58,7 +59,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   koulutusmoduuli: KorkeakoulunOpintojakso,
   toimipiste: Oppilaitos,
   arviointi: Option[List[KorkeakoulunArviointi]],
-  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
+  vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")

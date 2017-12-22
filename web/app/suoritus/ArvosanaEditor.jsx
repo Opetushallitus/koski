@@ -1,6 +1,6 @@
 import React from 'baret'
 import {Editor} from '../editor/Editor'
-import {wrapOptional} from '../editor/EditorModel'
+import {wrapOptional, modelEmpty} from '../editor/EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from '../editor/EditorModel'
 import {sortGrades} from '../util/sorting'
@@ -9,7 +9,7 @@ import {fixArviointi} from './Suoritus'
 
 export const ArvosanaEditor = ({model}) => {
   if (!model.context.edit) {
-    let arvosanaModel = modelLookup(model, 'arviointi.-1.arvosana')
+    const arvosanaModel = resolveArvosanaModel(model)
     return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
   }
   model = fixArviointi(model)
@@ -41,4 +41,13 @@ export const ArvosanaEditor = ({model}) => {
       return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
     })
   }</span>)
+}
+
+const resolveArvosanaModel = model => {
+  const arviointi = modelLookup(model, 'arviointi.-1')
+  const arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
+
+  const isPaikallinenArviointi = arviointi && !modelEmpty(arviointi) && arviointi.value.classes.includes('paikallinenarviointi')
+
+  return isPaikallinenArviointi ? modelLookup(arvosana, 'nimi') : arvosana
 }

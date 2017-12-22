@@ -34,6 +34,14 @@ trait VahvistusValinnaisellaPaikkakunnalla extends Vahvistus {
 
 trait HenkilövahvistusValinnaisellaTittelillä extends Vahvistus {}
 
+case class Päivämäärävahvistus(
+  päivä: LocalDate,
+  myöntäjäOrganisaatio: Organisaatio,
+) extends VahvistusValinnaisellaPaikkakunnalla {
+  def paikkakunta = None
+  def myöntäjäHenkilöt = Nil
+}
+
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
 case class HenkilövahvistusPaikkakunnalla(
   päivä: LocalDate,
