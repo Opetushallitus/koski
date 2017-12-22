@@ -1,7 +1,7 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.cache.{Cache, CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
@@ -10,6 +10,7 @@ import fi.oph.koski.henkilo.{FindByOid, HenkilöRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import fi.oph.koski.validation.KoskiValidator
+
 import scala.concurrent.duration._
 
 abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
@@ -31,18 +32,10 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
         val oppija = Oppija(UusiHenkilö(Some(hetu), "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
         validator match {
           case Some(validator) =>
-            validator.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read) match {
-              case Right(oppija) =>
-                Some(opiskeluoikeus)
-              case Left(status) =>
-                if (status.errors.map(_.key).contains(KoskiErrorCategory.badRequest.validation.jsonSchema.key)) {
-                  logger.error("Ulkoisesta järjestelmästä saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
-                  None
-                } else {
-                  logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
-                  Some(opiskeluoikeus)
-                }
+            validator.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
+              logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
             }
+            Some(opiskeluoikeus)
           case None => Some(opiskeluoikeus)
         }
       }
