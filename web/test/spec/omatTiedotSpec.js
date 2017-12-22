@@ -51,7 +51,7 @@ describe('Omat tiedot', function() {
         })
       })
 
-      describe("Kansalaisena, kun tiedot löytyvät vain YTR:stä", function() {
+      describe("Kun tiedot löytyvät vain YTR:stä", function() {
         before(authentication.logout, etusivu.openPage)
 
         before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010342-8411'), wait.until(omattiedot.isVisible))
@@ -61,13 +61,6 @@ describe('Omat tiedot', function() {
             expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
             expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
               'Ylioppilastutkintolautakunta' ])
-          })
-        })
-
-        describe("Kun kirjaudutaan ulos", function () {
-          before(click(findSingle('#logout')), wait.until(etusivu.isVisible))
-          it("Näytetään länderi", function() {
-
           })
         })
       })
