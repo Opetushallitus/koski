@@ -12,6 +12,7 @@ import {Editor} from '../editor/Editor'
 import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
+import {PäivämääräväliEditor} from '../date/PaivamaaravaliEditor'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
 import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 
@@ -75,9 +76,13 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, excludedProperties, editLink, a
     <PropertiesEditor
       model={opiskeluoikeus}
       propertyFilter={ p => !excludedProperties.includes(p.key) }
-      getValueEditor={ (prop, getDefault) => prop.key === 'tila'
-        ? <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
-        : getDefault() }
+      getValueEditor={ (prop, getDefault) => {
+        switch (prop.key) {
+          case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
+          case 'ensisijaisuus': return <PäivämääräväliEditor model={modelLookup(opiskeluoikeus, 'ensisijaisuus')}/>
+          default: return getDefault()
+        }
+      }}
     />
     {
       modelLookup(opiskeluoikeus, 'lisätiedot') &&
