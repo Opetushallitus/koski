@@ -30,9 +30,9 @@ case class KorkeakoulunOpiskeluoikeus(
 
 @Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän")
 case class Ensisijaisuus(
-  alkamispäivä: LocalDate,
-  päättymispäivä: Option[LocalDate]
-)
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
 
 trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
