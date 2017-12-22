@@ -97,6 +97,20 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskioppiaineetyleissivistava_et",
+  "koodiArvo" : "ET",
+  "metadata" : [ {
+    "nimi" : "Elämänkatsomustieto",
+    "lyhytNimi" : "Elämänkatsomustieto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Livsåskådningskunskap",
+    "lyhytNimi" : "Livsåskådningskunskap",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskioppiaineetyleissivistava_fi",
   "koodiArvo" : "FI",
   "metadata" : [ {
@@ -204,20 +218,6 @@
   }, {
     "nimi" : "Religion",
     "lyhytNimi" : "Religion",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_et",
-  "koodiArvo" : "ET",
-  "metadata" : [ {
-    "nimi" : "Elämänkatsomustieto",
-    "lyhytNimi" : "Elämänkatsomustieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Livsåskådningskunskap",
-    "lyhytNimi" : "Livsåskådningskunskap",
     "kieli" : "SV"
   } ],
   "versio" : 1,

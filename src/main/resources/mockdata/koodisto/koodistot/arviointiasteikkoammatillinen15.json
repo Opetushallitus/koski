@@ -2,19 +2,22 @@
   "koodistoUri" : "arviointiasteikkoammatillinen15",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko 1-5",
+    "kuvaus" : ""
+  }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko ammatillinen 1-5"
+    "nimi" : "Arviointiasteikko ammatillinen 1-5",
+    "kuvaus" : ""
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ammatillinen 1-5"
-  }, {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko ammatillinen 1-5"
+    "nimi" : "Arviointiasteikko ammatillinen 1-5",
+    "kuvaus" : ""
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2017-10-06",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 0
+  "version" : 1
 }

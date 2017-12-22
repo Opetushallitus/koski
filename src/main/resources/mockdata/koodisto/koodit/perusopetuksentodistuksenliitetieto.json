@@ -2,7 +2,13 @@
   "koodiUri" : "perusopetuksentodistuksenliitetieto_kayttaytyminen",
   "koodiArvo" : "kayttaytyminen",
   "metadata" : [ {
+    "nimi" : "Uppförande",
+    "lyhytNimi" : "",
+    "kuvaus" : "Bedömning av elevens uppförande",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Käyttäytyminen",
+    "lyhytNimi" : "",
     "kuvaus" : "Arvio oppilaan käyttäytymisestä",
     "kieli" : "FI"
   } ],
@@ -13,8 +19,14 @@
   "koodiArvo" : "painotettuopetus",
   "metadata" : [ {
     "nimi" : "Painotettu opetus",
+    "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Betonad undervisning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -23,8 +35,14 @@
   "koodiArvo" : "tyoskentely",
   "metadata" : [ {
     "nimi" : "Työskentely",
+    "lyhytNimi" : "",
     "kuvaus" : "Arvio oppilaan työskentelystä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetet",
+    "lyhytNimi" : "",
+    "kuvaus" : "Bedömning av arbetet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -32,7 +50,13 @@
   "koodiUri" : "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
   "koodiArvo" : "valinnaisetaineet",
   "metadata" : [ {
+    "nimi" : "Valfria ämnen",
+    "lyhytNimi" : "",
+    "kuvaus" : "En verbal bedömning som bilaga över valfria ämnen som omfattar mindre än två årsveckotimmar",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Valinnaiset aineet",
+    "lyhytNimi" : "",
     "kuvaus" : "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
     "kieli" : "FI"
   } ],

@@ -2,15 +2,15 @@
   "koodistoUri" : "koskiyokokeet",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "Koski YO-kokeet",
-    "kuvaus" : "Koski YO-kokeet"
-  }, {
     "kieli" : "SV",
     "nimi" : "Koski YO-kokeet",
     "kuvaus" : "Koski YO-kokeet"
   }, {
     "kieli" : "FI",
+    "nimi" : "Koski YO-kokeet",
+    "kuvaus" : "Koski YO-kokeet"
+  }, {
+    "kieli" : "EN",
     "nimi" : "Koski YO-kokeet",
     "kuvaus" : "Koski YO-kokeet"
   } ],
@@ -19,5 +19,5 @@
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 0
+  "version" : 1
 }
