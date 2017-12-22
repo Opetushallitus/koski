@@ -29,6 +29,7 @@ case class YlioppilastutkinnonSuoritus(
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
   toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Organisaatiovahvistus] = None,
+  pakollisetKokeetSuoritettu: Boolean,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
   @Title("Kokeet")
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],

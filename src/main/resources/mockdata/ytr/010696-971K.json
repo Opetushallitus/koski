@@ -6,6 +6,7 @@
   "firstnames": "Ynjevi",
   "graduationDate": "2012-06-02",
   "graduationPeriod": "2012K",
+  "hasCompletedMandatoryExams": true,
   "language" : "fi",
   "exams" : [ {
     "period" : "2012K",

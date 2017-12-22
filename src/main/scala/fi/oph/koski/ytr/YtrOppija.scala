@@ -10,9 +10,9 @@ case class YtrOppija(
   graduationPeriod: Option[String], // Toteutunut tutkintokerta
   exams: List[YtrExam],
   graduationSchoolOphOid: Option[String],
-  graduationSchoolYtlNumber: Option[Int]
-  // TODO: language=fi/sv tutkinnon kieli
-  // TODO: hasCompletedMandatoryExams: Boolean
+  graduationSchoolYtlNumber: Option[Int],
+  hasCompletedMandatoryExams: Boolean,
+  language: String
 )
 case class YtrExam(
   period: String, // Esim 2013S, TODO: tää pitäis palastella ja kielistää
