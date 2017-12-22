@@ -13,10 +13,18 @@ describe('Ylioppilastutkinto', function( ){
         expect(OpinnotPage().getOppilaitos()).to.equal("Helsingin medialukio")
       })
 
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot, .suoritus > .properties'))).to.equal(
+          'Koulutus Ylioppilastutkinto\n' +
+          'Oppilaitos / toimipiste Helsingin medialukio\n' +
+          'Pakolliset kokeet suoritettu kyllä')
+      })
+
       it('tila ja vahvistus', function() {
         expect(OpinnotPage().tilaJaVahvistus.tila()).to.equal('Suoritus valmis')
       })
     })
+
 
     describe('Osasuoritukset', function() {
       before(opinnot.expandAll)
@@ -47,6 +55,11 @@ describe('Ylioppilastutkinto', function( ){
         expect(OpinnotPage().opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Ylioppilastutkinto'])
         expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
         expect(OpinnotPage().getOppilaitos()).to.equal("")
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot, .suoritus > .properties'))).to.equal(
+          'Koulutus Ylioppilastutkinto')
       })
 
       it('tila ja vahvistus', function() {
