@@ -1,6 +1,6 @@
 package fi.oph.koski.sso
 
-import java.net.InetAddress.{getAllByName => getInetAddresses, getLocalHost}
+import java.net.InetAddress.{getLocalHost, getAllByName => getInetAddresses}
 
 import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
 import fi.oph.koski.config.KoskiApplication
@@ -28,9 +28,10 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   }
 
   private def checkAuth: Option[HttpStatus] = {
-    logger.info(s"Shibboleth login request coming from ${request.getRemoteAddr}")
+    logger.debug(s"Shibboleth login request coming from ${request.remoteAddress}")
+    logger.debug(s"${request.headers.toList.sortBy(_._1).mkString("\n")}")
     if (!originOk) {
-      logger.warn(s"Shibboleth login request coming from unauthorized address ${request.getRemoteAddr}")
+      logger.warn(s"Shibboleth login request coming from unauthorized address ${request.remoteAddress}")
       return Some(KoskiErrorCategory.unauthorized())
     }
 
@@ -41,8 +42,9 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }
   }
 
-  private def originOk =
-    localAddresses.contains(request.getRemoteAddr) || request.getRemoteAddr == application.config.getString("shibboleth.ip")
+  private def originOk = {
+    localAddresses.contains(request.remoteAddress) || request.remoteAddress == application.config.getString("shibboleth.ip")
+  }
 
   private lazy val localAddresses =
     getLocalHost.getHostAddress :: getInetAddresses("localhost").toList.distinct.map(_.getHostAddress)
