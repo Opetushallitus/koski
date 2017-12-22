@@ -98,6 +98,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_e1",
+  "koodiArvo" : "E1",
+  "metadata" : [ {
+    "nimi" : "Englanti, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_e2",
   "koodiArvo" : "E2",
   "metadata" : [ {
@@ -106,6 +114,14 @@
   }, {
     "nimi" : "VAnha koodi",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_e2",
+  "koodiArvo" : "E2",
+  "metadata" : [ {
+    "nimi" : "Englanti, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -153,6 +169,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_f1",
+  "koodiArvo" : "F1",
+  "metadata" : [ {
+    "nimi" : "Ranska, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_f2",
   "koodiArvo" : "F2",
   "metadata" : [ {
@@ -161,6 +185,14 @@
   }, {
     "nimi" : "VAnha koodi",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_f2",
+  "koodiArvo" : "F2",
+  "metadata" : [ {
+    "nimi" : "Ranska, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -219,6 +251,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_g1",
+  "koodiArvo" : "G1",
+  "metadata" : [ {
+    "nimi" : "Portugali, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_g2",
   "koodiArvo" : "G2",
   "metadata" : [ {
@@ -227,6 +267,14 @@
   }, {
     "nimi" : "VAnha koodi",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_g2",
+  "koodiArvo" : "G2",
+  "metadata" : [ {
+    "nimi" : "Portugali, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -274,6 +322,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_h1",
+  "koodiArvo" : "H1",
+  "metadata" : [ {
+    "nimi" : "Unkari, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_h2",
   "koodiArvo" : "H2",
   "metadata" : [ {
@@ -282,6 +338,14 @@
   }, {
     "nimi" : "Vanha koodi",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_h2",
+  "koodiArvo" : "H2",
+  "metadata" : [ {
+    "nimi" : "Unkari, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -439,6 +503,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_p1",
+  "koodiArvo" : "P1",
+  "metadata" : [ {
+    "nimi" : "Espanja, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_p2",
   "koodiArvo" : "P2",
   "metadata" : [ {
@@ -447,6 +519,14 @@
   }, {
     "nimi" : "VAnha koodi",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_p2",
+  "koodiArvo" : "P2",
+  "metadata" : [ {
+    "nimi" : "Espanja, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -538,6 +618,22 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koskiyokokeet_s1",
+  "koodiArvo" : "S1",
+  "metadata" : [ {
+    "nimi" : "Saksa, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_s2",
+  "koodiArvo" : "S2",
+  "metadata" : [ {
+    "nimi" : "Saksa, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koskiyokokeet_s2",
   "koodiArvo" : "S2",
   "metadata" : [ {
@@ -590,6 +686,22 @@
   }, {
     "nimi" : "Tyska, kort lärokurs",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_t1",
+  "koodiArvo" : "T1",
+  "metadata" : [ {
+    "nimi" : "Italia, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_t2",
+  "koodiArvo" : "T2",
+  "metadata" : [ {
+    "nimi" : "Italia, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
@@ -667,6 +779,22 @@
   }, {
     "nimi" : "Ortodox religion",
     "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_v1",
+  "koodiArvo" : "V1",
+  "metadata" : [ {
+    "nimi" : "Venäjä, pitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskiyokokeet_v2",
+  "koodiArvo" : "V2",
+  "metadata" : [ {
+    "nimi" : "Venäjä, keskipitkä oppimäärä erivapaudella",
+    "kieli" : "fi"
   } ],
   "versio" : 1
 }, {
