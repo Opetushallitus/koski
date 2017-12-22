@@ -102,7 +102,7 @@
   "koodiArvo" : "E1",
   "metadata" : [ {
     "nimi" : "Englanti, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -121,7 +121,7 @@
   "koodiArvo" : "E2",
   "metadata" : [ {
     "nimi" : "Englanti, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -173,7 +173,7 @@
   "koodiArvo" : "F1",
   "metadata" : [ {
     "nimi" : "Ranska, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -192,7 +192,7 @@
   "koodiArvo" : "F2",
   "metadata" : [ {
     "nimi" : "Ranska, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -255,7 +255,7 @@
   "koodiArvo" : "G1",
   "metadata" : [ {
     "nimi" : "Portugali, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -274,7 +274,7 @@
   "koodiArvo" : "G2",
   "metadata" : [ {
     "nimi" : "Portugali, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -326,7 +326,7 @@
   "koodiArvo" : "H1",
   "metadata" : [ {
     "nimi" : "Unkari, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -345,7 +345,7 @@
   "koodiArvo" : "H2",
   "metadata" : [ {
     "nimi" : "Unkari, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -507,7 +507,7 @@
   "koodiArvo" : "P1",
   "metadata" : [ {
     "nimi" : "Espanja, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -526,7 +526,7 @@
   "koodiArvo" : "P2",
   "metadata" : [ {
     "nimi" : "Espanja, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -622,7 +622,7 @@
   "koodiArvo" : "S1",
   "metadata" : [ {
     "nimi" : "Saksa, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -630,7 +630,7 @@
   "koodiArvo" : "S2",
   "metadata" : [ {
     "nimi" : "Saksa, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -693,7 +693,7 @@
   "koodiArvo" : "T1",
   "metadata" : [ {
     "nimi" : "Italia, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -701,7 +701,7 @@
   "koodiArvo" : "T2",
   "metadata" : [ {
     "nimi" : "Italia, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -786,7 +786,7 @@
   "koodiArvo" : "V1",
   "metadata" : [ {
     "nimi" : "Venäjä, pitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -794,7 +794,7 @@
   "koodiArvo" : "V2",
   "metadata" : [ {
     "nimi" : "Venäjä, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "fi"
+    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
