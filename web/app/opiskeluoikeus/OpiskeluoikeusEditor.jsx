@@ -40,7 +40,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
       <div className="opiskeluoikeus">
         <h3>
           <span className="otsikkotiedot">
-            { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
+            { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
             <span className="koulutus inline-text" style={hasOppilaitos ? { 'text-transform': 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
             { modelData(mdl, 'alkamispäivä')
               ? <span className="inline-text">{'('}
