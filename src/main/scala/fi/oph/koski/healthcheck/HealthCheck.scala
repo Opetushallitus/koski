@@ -104,7 +104,7 @@ class HealthCheck(application: KoskiApplication) extends Logging {
     get("oppijanumerorekisteri", application.henkilöRepository.opintopolku.findByOid(oid))
       .flatMap(_.toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healtcheck käyttäjää $oid ei löydy oppijanumerorekisteristä")))
       .flatMap { henkilö =>
-        get("postgres", application.opiskeluoikeusRepository.findByOppijaOid(oid)).flatMap { oos =>
+        get("postgres", application.possu.findByOppijaOid(oid)).flatMap { oos =>
           if (oos.isEmpty) Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Healthcheck käyttäjän $oid opiskeluoikeuksia ei löydy tietokannasta"))
           else Right(Oppija(henkilö, oos))
         }
