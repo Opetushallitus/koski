@@ -31,10 +31,11 @@ class HealthCheck(application: KoskiApplication) extends Logging {
 
   def healthcheck: HttpStatus = synchronized(status)
 
-  def performHealthcheck: HttpStatus = {
+  private[healthcheck] def performHealthcheck: HttpStatus = {
     logger.debug(s"Performing healthcheck")
+    val healthStatus = performHealthchecks
     synchronized {
-      status = performHealthchecks
+      status = healthStatus
     }
     logger.debug(s"Healthcheck status is $status")
     status
