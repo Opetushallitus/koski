@@ -46,5 +46,5 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def rootUrl =
     if (isLocalDevelopmentEnvironment) ""
-    else application.config.getString("koski.root.url")
+    else application.config.getString("koski.oppija.root.url")
 }
