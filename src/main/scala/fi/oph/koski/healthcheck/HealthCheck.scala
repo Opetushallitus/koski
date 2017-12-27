@@ -2,24 +2,24 @@ package fi.oph.koski.healthcheck
 
 import java.util.concurrent.TimeoutException
 
-import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.eperusteet.{EPerusteetRepository, ERakenneOsa}
+import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import fi.oph.koski.schema._
+import org.json4s.JValue
 
-import scala.collection.immutable
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import scalaz.concurrent.Task
 
-trait HealthCheck extends Logging {
+class HealthCheck(application: KoskiApplication) extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
@@ -27,7 +27,20 @@ trait HealthCheck extends Logging {
   private val ePerusteet = application.ePerusteet
   private def healthcheckOppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
-  def healthcheck: HttpStatus = {
+  private[this] var status: HttpStatus = HttpStatus.ok
+
+  def healthcheck: HttpStatus = synchronized(status)
+
+  def performHealthcheck: HttpStatus = {
+    logger.debug(s"Performing healthcheck")
+    synchronized {
+      status = performHealthchecks
+    }
+    logger.debug(s"Healthcheck status is $status")
+    status
+  }
+
+  private def performHealthchecks: HttpStatus = {
     val oppija = findOrCreateOppija
     val checks: List[() => HttpStatus] = List(
       () => oppijaCheck(oppija),
@@ -123,17 +136,14 @@ trait HealthCheck extends Logging {
       logger.warn(e)("healthcheck failed")
       Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
   }
-
-  def application: KoskiApplication
 }
 
-object HealthCheck {
-  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached = {
-    CachingProxy[HealthCheck](
-      ExpiringCache("HealthCheck", 10 seconds, maxSize = 1),
-      new HealthChecker(application)
-    )
+class HealthCheckScheduler(application: KoskiApplication) {
+  val healthCheckScheduler =
+    new Scheduler(application.masterDatabase.db, "healthcheck", new IntervalSchedule(application.config.getDuration("schedule.healthCheckInterval")), None, performHealthcheck, runOnSingleNode = false, intervalMillis = 1000)
+
+  def performHealthcheck(ctx: Option[JValue]): Option[JValue] = {
+    application.healthCheck.performHealthcheck
+    None
   }
 }
-
-class HealthChecker(val application: KoskiApplication) extends HealthCheck
