@@ -27,7 +27,7 @@ class HealthCheck(application: KoskiApplication) extends Logging {
   private val ePerusteet = application.ePerusteet
   private def healthcheckOppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
-  private[this] var status: HttpStatus = HttpStatus.ok
+  private[this] var status: HttpStatus = KoskiErrorCategory.serviceUnavailable.healthCheckNotPerformed()
 
   def healthcheck: HttpStatus = synchronized(status)
 
