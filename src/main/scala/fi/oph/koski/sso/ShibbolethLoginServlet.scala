@@ -44,7 +44,9 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }
   }
 
-  private def rootUrl =
+  private def rootUrl = {
+    val endsInSlash = """/$""".r
     if (isLocalDevelopmentEnvironment) ""
-    else application.config.getString("koski.oppija.root.url")
+    else endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url"), "")
+  }
 }
