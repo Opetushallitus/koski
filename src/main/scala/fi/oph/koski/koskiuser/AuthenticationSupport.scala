@@ -57,6 +57,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
       authUser.flatMap(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
         case Some((_, Some(usr))) => Some(usr)
         case Some((ticket, None)) =>
+          removeUserCookie
           setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
           logger.warn("User not found by ticket " + ticket)
           None
