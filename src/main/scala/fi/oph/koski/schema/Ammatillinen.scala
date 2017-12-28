@@ -36,12 +36,14 @@ case class AmmatillinenOpiskeluoikeus(
 sealed trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Koulutussopimuksellinen with Suorituskielellinen
 
 trait Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
+  @Description("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus).")
+  @Tooltip("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus)."
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
 trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvien koulutusjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
+  @Description("Suoritukseen kuuluvien koulutussopimusjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
+  @Tooltip("Suoritukseen kuuluvien koulutussopimusjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
   def koulutussopimukset: Option[List[Koulutussopimusjakso]]
 }
 
@@ -190,18 +192,24 @@ case class NäyttötutkintoonValmistavaKoulutus(
 @Description("Suoritettavan ammatillisen tutkinnon tiedot")
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava ammatillinen tutkinto ja tutkinnon opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Tooltip("Suoritetaanko tutkinto näyttötutkintona vai opetussuunnitelmaperustaisena koulutuksena.")
   suoritustapa: Koodistokoodiviite,
+  @Tooltip("Tutkintonimike, johon koulutus johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Suoritettava osaamisala.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Description("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Tooltip("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Voi olla useita erillisiä jaksoja. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään kenttää 'Osaamisen hankkimistavat' tämän sijaan.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
@@ -358,14 +366,18 @@ trait Oppimisjakso extends Jakso {
   def alku: LocalDate
   def loppu: Option[LocalDate]
   @Description("Työssäoppimispaikan nimi")
+  @Tooltip("Työssäoppimispaikan nimi")
   def työssäoppimispaikka: Option[LocalizedString]
   @KoodistoUri("kunta")
-  @Description("Kunta, jossa työssäoppiminen on tapahtunut")
+  @Description("Kunta, jossa työssäoppiminen on tapahtunut.")
+  @Tooltip("Kunta, jossa työssäoppiminen on tapahtunut.")
   def paikkakunta: Koodistokoodiviite
-  @Description("Maa, jossa työssäoppiminen on tapahtunut")
+  @Description("Maa, jossa työssäoppiminen on tapahtunut.")
+  @Tooltip("Maa, jossa työssäoppiminen on tapahtunut.")
   @KoodistoUri("maatjavaltiot2")
   def maa: Koodistokoodiviite
   @Description("Työtehtävien kuvaus")
+  @Tooltip("Työtehtävien vapaamuotoinen kuvaus")
   def työtehtävät: Option[LocalizedString]
 }
 
@@ -376,6 +388,8 @@ case class Työssäoppimisjakso(
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
   työtehtävät: Option[LocalizedString],
+  @Description("Työssäoppimisjakson laajuus osaamispisteissä.")
+  @Tooltip("Työssäoppimisjakson laajuus osaamispisteissä.")
   laajuus: LaajuusOsaamispisteissä
 ) extends Oppimisjakso
 
