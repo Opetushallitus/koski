@@ -198,7 +198,7 @@ case class AmmatillisenTutkinnonSuoritus(
   suoritustapa: Koodistokoodiviite,
   @Tooltip("Tutkintonimike, johon koulutus johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Tooltip("Suoritettava osaamisala.")
+  @Tooltip("Suoritettava osaamisala. Voi olla useampia eri jaksoissa.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
@@ -553,7 +553,8 @@ case class AmmatillisenTutkinnonÄidinkieli(
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
-@Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
+@Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")
+@Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
   @KoodistoUri("ammatillisentutkinnonosanlisatieto")
@@ -562,15 +563,19 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   kuvaus: LocalizedString
 )
 
-@Description("Näytön kuvaus")
+@Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
+@Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
+  @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @MultiLineString(5)
   kuvaus: Option[LocalizedString],
+  @Tooltip("Näytön suorituspaikka (suorituspaikan tyyppi ja nimi).")
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
+  @Tooltip("Onko näyttö suoritettu työssäoppimisen yhteydessä?")
   @DefaultValue(false)
   @OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
   työssäoppimisenYhteydessä: Boolean = false,
@@ -600,17 +605,21 @@ case class NäytönSuoritusaika(
 
 @Description("Näytön arvioinnin lisätiedot")
 case class NäytönArviointi (
+  @Tooltip("Näytön arvosana")
   arvosana: Koodistokoodiviite,
+  @Tooltip("Näytön arviointipäivä")
   päivä: LocalDate,
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
   @Tabular
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
-  @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
+  @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla.")
+  @Tooltip("Näytön arvioinnista päättäneet tahot.")
   @MinItems(1)
   arvioinnistaPäättäneet: List[Koodistokoodiviite],
   @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
-  @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
+  @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla.")
+  @Tooltip("Arviointikeskusteluun osallistuneet tahot.")
   @MinItems(1)
   arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite],
   @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne")
