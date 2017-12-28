@@ -48,18 +48,24 @@ trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
 @Description("Ammatillisen opiskeluoikeuden lisätiedot (mm. rahoituksessa käytettävät)")
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
+  @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Koulutuksen järjestäjän tarjoama majoitus. Huoneeseen muuttopäivä ja lähtöpäivä. Voit lisätä useita majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Aikajakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voit lisätä useita sisäoppilaitosmuotoisia majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
-  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voit lisätä useita vaativan erityisen tuen yhteydessä järjestettäviä majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
   @SensitiveData
-  @Description("Tieto siitä että oppija on erityisopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voit lisätä useita erityisen tuen jaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
   erityinenTuki: Option[List[Aikajakso]] = None,
-  @Description("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Lista alku-loppu päivämääräpareja. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Voit lisätä useita vaativan erityisen tuen erityisen tehtävän jaksoja 'lisää uusi'-painikkeella. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
