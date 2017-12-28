@@ -7,12 +7,15 @@ import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.scalaschema.annotation._
 
 trait Vahvistus {
-  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
+  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
+  @Tooltip("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista.")
   def päivä: LocalDate
-  @Description("Organisaatio, joka suorituksen on vahvistanut")
+  @Description("Organisaatio, joka on vahvistanut suorituksen.")
+  @Tooltip("Organisaatio, joka on vahvistanut suorituksen.")
   @Title("Organisaatio")
   def myöntäjäOrganisaatio: Organisaatio
-  @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
+  @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat.")
+  @Tooltip("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat.")
   @Title("Myöntäjät")
   def myöntäjäHenkilöt: List[Vahvistaja]
   def getPaikkakunta: Option[Koodistokoodiviite]
@@ -20,14 +23,16 @@ trait Vahvistus {
 
 trait VahvistusPaikkakunnalla extends Vahvistus {
   @KoodistoUri("kunta")
-  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
+  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta).")
+  @Tooltip("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta).")
   def paikkakunta: Koodistokoodiviite
   override def getPaikkakunta: Option[Koodistokoodiviite] = Some(paikkakunta)
 }
 
 trait VahvistusValinnaisellaPaikkakunnalla extends Vahvistus {
   @KoodistoUri("kunta")
-  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
+  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta).")
+  @Tooltip("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta).")
   def paikkakunta: Option[Koodistokoodiviite]
   override def getPaikkakunta: Option[Koodistokoodiviite] = paikkakunta
 }

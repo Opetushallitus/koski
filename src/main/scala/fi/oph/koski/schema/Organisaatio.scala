@@ -81,9 +81,12 @@ case class Toimipiste(
 @Description("Yritys, jolla on y-tunnus")
 case class Yritys(
   @Title("Yritys")
+  @Description("Yrityksen nimi")
+  @Tooltip("Yrityksen nimi")
   nimi: LocalizedString,
   @Title("Y-tunnus")
   @Description("Yrityksen Y-tunnus")
+  @Tooltip("Yrityksen Y-tunnus")
   @RegularExpression("^\\d{7}-\\d$")
   @Example("1234567-8")
   @Discriminator
