@@ -1,7 +1,5 @@
 import React from 'react'
-import {modelData, pushModelValue} from './EditorModel.js'
-import {wrapOptional} from './EditorModel'
-import {modelSetValue, modelValid} from './EditorModel'
+import {modelData, pushModelValue, wrapOptional, modelSetValue, modelValid} from './EditorModel'
 
 export class NumberEditor extends React.Component {
   render() {
