@@ -664,7 +664,8 @@ case class OppisopimuksellinenOsaamisenHankkimistapa(
   oppisopimus: Oppisopimus
 ) extends OsaamisenHankkimistapa
 
-@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Käytetään vain mikäli HOJKS-päätös on tehty ennen 2018. 2018 lähtien tieto välitetään erityinenTuki -rakenteen kautta. Rahoituksen laskennassa hyödynnettävä tieto.")
+@Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Käytetään vain mikäli HOJKS-päätös on tehty ennen vuotta 2018. 2018 lähtien tieto välitetään erityinenTuki-rakenteen kautta. Rahoituksen laskennassa hyödynnettävä tieto.")
+@Tooltip("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (HOJKS), täytetään tämä tieto. Käytetään vain mikäli HOJKS-päätös on tehty ennen vuotta 2018. 2018 lähtien tieto tallennetaan 'Erityinen tuki'-kenttään. Rahoituksen laskennassa hyödynnettävä tieto.")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @Description("Tieto kertoo sen, suorittaako erityisopiskelija koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana (erityisopiskelijan opetusryhmä-tieto, vain jos HOJKS-opiskelija)")
