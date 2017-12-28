@@ -12,7 +12,7 @@ case class Ulkomaanjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   @Description("Missä maassa jakso on suoritettu")
-  @Tooltip("Tieto siitä, missä maassa jakso on suoritettu. Valitse maa pudotusvalikosta.")
+  @Tooltip("Tieto siitä, missä maassa jakso on suoritettu.")
   @KoodistoUri("maatjavaltiot2")
   maa: Koodistokoodiviite,
   @Description("Kuvaus ulkomaanjakson sisällöstä. Esimerkiksi tieto siitä, opiskeleeko oppija ulkomaisessa oppilaitoksessa vai onko työharjoittelussa tai työssäoppimisessa.")
