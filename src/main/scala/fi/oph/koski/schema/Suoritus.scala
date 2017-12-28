@@ -79,6 +79,7 @@ trait MahdollisestiToimipisteellinen extends Suoritus {
 
 trait Suorituskielellinen {
   @Description("Opintojen suorituskieli")
+  @Tooltip("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   def suorituskieli: Koodistokoodiviite
@@ -86,6 +87,7 @@ trait Suorituskielellinen {
 
 trait MahdollisestiSuorituskielellinen {
   @Description("Opintojen suorituskieli")
+  @Tooltip("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   def suorituskieli: Option[Koodistokoodiviite]
