@@ -1,5 +1,6 @@
 import React from 'react'
 import {modelData, pushModelValue, wrapOptional, modelSetValue, modelValid} from './EditorModel'
+import {laajuusNumberToString} from '../util/format'
 
 export class NumberEditor extends React.Component {
   render() {
@@ -8,7 +9,7 @@ export class NumberEditor extends React.Component {
     let onChange = (event) => pushModelValue(wrappedModel, event.target.value ? { data: parseNumber(event.target.value) } : undefined)
 
     let data = modelData(wrappedModel)
-    let value = formatNumber(data)
+    let value = laajuusNumberToString(data)
     let error = !modelValid(model)
 
     return wrapWithUnitOfMeasure(wrappedModel.unitOfMeasure, wrappedModel.context.edit
@@ -36,11 +37,6 @@ NumberEditor.validateModel = model => {
       return [{key: 'invalid.number'}]
     }
   }
-}
-
-let formatNumber = (s) => {
-  if (s == undefined) return s
-  return (Math.round(s * 100) / 100).toString().replace('.', ',')
 }
 
 let parseNumber = (s) => {
