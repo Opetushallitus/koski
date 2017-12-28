@@ -28,7 +28,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     new URL(koskiRoot + request.getServletPath + request.getPathInfo).toURI.toASCIIString
 
 
-  private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
+  private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
   def setUserCookie(user: AuthenticationUser) = {
     setCookie("koskiUser", user)
@@ -59,7 +59,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     )
   }
 
-  def removeUserCookie = List("koskiOppija", "koskiUser").foreach(removeCookie)
+  def removeUserCookie = List("koskiOppija", "koskiUser").foreach(removeCookie(_))
 
   def casServiceUrl = {
     koskiRoot + "/cas"
