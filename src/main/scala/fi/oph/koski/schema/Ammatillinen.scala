@@ -37,7 +37,7 @@ sealed trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätas
 
 trait Työssäoppimisjaksollinen {
   @Description("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus).")
-  @Tooltip("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus)."
+  @Tooltip("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus).")
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 

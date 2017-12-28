@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.{KoodistoUri, Tooltip}
 import fi.oph.scalaschema.annotation._
 
 trait Vahvistus {
