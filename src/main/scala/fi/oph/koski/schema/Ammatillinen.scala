@@ -216,9 +216,11 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esim. erikoistuminen, tutkintoon kuulumattoman eristyisosaamisen osoittaminen jne.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
