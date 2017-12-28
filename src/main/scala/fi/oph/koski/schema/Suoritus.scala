@@ -17,6 +17,7 @@ trait Suoritus {
   @Representative
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
+  @Tooltip("Suorituksen alkamispäivä.")
   def alkamispäivä: Option[LocalDate] = None
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
@@ -78,6 +79,7 @@ trait MahdollisestiToimipisteellinen extends Suoritus {
 
 trait Suorituskielellinen {
   @Description("Opintojen suorituskieli")
+  @Tooltip("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   def suorituskieli: Koodistokoodiviite
@@ -85,6 +87,7 @@ trait Suorituskielellinen {
 
 trait MahdollisestiSuorituskielellinen {
   @Description("Opintojen suorituskieli")
+  @Tooltip("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   def suorituskieli: Option[Koodistokoodiviite]

@@ -36,12 +36,14 @@ case class AmmatillinenOpiskeluoikeus(
 sealed trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Koulutussopimuksellinen with Suorituskielellinen
 
 trait Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
+  @Description("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus).")
+  @Tooltip("Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika, paikka, maa, työtehtävät, laajuus)."
   def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
 }
 
 trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
-  @Description("Tutkinnon suoritukseen kuuluvien koulutusjaksojen tiedot (aika, paikka, työtehtävät, laajuus)")
+  @Description("Suoritukseen kuuluvien koulutussopimusjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
+  @Tooltip("Suoritukseen kuuluvien koulutussopimusjaksojen tiedot (aika, paikka, työtehtävät, laajuus).")
   def koulutussopimukset: Option[List[Koulutussopimusjakso]]
 }
 
@@ -51,45 +53,52 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Koulutuksen järjestäjän tarjoama majoitus. Huoneeseen muuttopäivä ja lähtöpäivä. Voit lisätä useita majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen muuttopäivä ja lähtöpäivä. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Aikajakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
-  @Tooltip("Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voit lisätä useita sisäoppilaitosmuotoisia majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voit lisätä useita vaativan erityisen tuen yhteydessä järjestettäviä majoitusjaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
   @SensitiveData
   @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voit lisätä useita erityisen tuen jaksoja 'lisää uusi'-painikkeella. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   erityinenTuki: Option[List[Aikajakso]] = None,
   @Description("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Lista alku-loppu päivämääräpareja. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Voit lisätä useita vaativan erityisen tuen erityisen tehtävän jaksoja 'lisää uusi'-painikkeella. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @SensitiveData
   hojks: Option[Hojks],
   @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija vaikeasti vammainen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Onko oppija vammainen ja hänellä on avustaja. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Onko oppija vammainen ja hänellä on avustaja (alku- ja loppupäivä). Voit olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData
   vammainenJaAvustaja: Option[List[Aikajakso]] = None,
-  @Description("Kyseessä on osa-aikainen opiskelu. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Kyseessä on osa-aikainen opiskelu. Lista alku-loppu päivämääräpareja. Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole osa-aikainen opiskelu. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Osa-aikaisuusjaksojen tiedot (jakson alku- ja loppupäivät sekä osa-aikaisuus prosenttilukuna). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @Title("Osa-aikaisuusjaksot")
   osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,
-  @Description("Opiskeluvalmiuksia tukevat opinnot, Laki ammatillisesta koulutuksesta 531/2017 63 §, välitetään jaksoina kun kyseessä on päätoiminen opiskelu.")
+  @Description("Opiskeluvalmiuksia tukevat opinnot (Laki ammatillisesta koulutuksesta 531/2017 63 §) välitetään jaksoina (alku- ja loppupäivämäärä) kun kyseessä on päätoiminen opiskelu. Jaksojen alku- ja loppupäivämäärätietojen lisäksi välitetään opintojen vapaamuotoinen kuvaus.")
+  @Tooltip("Opiskeluvalmiuksia tukevat opinnot (Laki ammatillisesta koulutuksesta 531/2017 63 §) tallennetaan jaksoina (alku- ja loppupäivämäärä) kun kyseessä on päätoiminen opiskelu. Jaksojen alku- ja loppupäivämäärätietojen lisäksi tallennetaan opintojen vapaamuotoinen kuvaus. Voi olla useita erillisiä jaksoja.")
   @SensitiveData
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[OpiskeluvalmiuksiaTukevienOpintojenJakso]] = None,
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Valitse valintaruutu, jos kyseessä on henkilöstökoulutus.")
   @DefaultValue(false)
   henkilöstökoulutus: Boolean = false,
   @Description("Kyseessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Tieto vankilaopetusjaksoista (alku- ja loppupäivämäärä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData
   vankilaopetuksessa: Option[List[Aikajakso]] = None,
-  @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus.")
+  @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole koulutusvientikoulutus.")
+  @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
   @DefaultValue(false)
   koulutusvienti: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot
@@ -105,7 +114,8 @@ case class Aikajakso (
 case class OsaAikaisuusJakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20")
+  @Description("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20.")
+  @Tooltip("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20.")
   @MinValueExclusive(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
@@ -116,6 +126,8 @@ case class OsaAikaisuusJakso(
 case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   alku: LocalDate,
   loppu: LocalDate,
+  @Description("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
+  @Tooltip("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
 )
 
@@ -180,27 +192,35 @@ case class NäyttötutkintoonValmistavaKoulutus(
 @Description("Suoritettavan ammatillisen tutkinnon tiedot")
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava ammatillinen tutkinto ja tutkinnon opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Tooltip("Suoritetaanko tutkinto näyttötutkintona vai opetussuunnitelmaperustaisena koulutuksena.")
   suoritustapa: Koodistokoodiviite,
+  @Tooltip("Tutkintonimike/-nimikkeet, johon koulutus johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Suoritettava osaamisala. Voi olla useampia eri jaksoissa.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
-  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Description("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Tooltip("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Voi olla useita erillisiä jaksoja. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään kenttää 'Osaamisen hankkimistavat' tämän sijaan.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esim. erikoistuminen, tutkintoon kuulumattoman eristyisosaamisen osoittaminen jne.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
@@ -217,14 +237,20 @@ case class Osaamisalajakso(
 @Title("Ammatillisen tutkinnon osa/osia")
 case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Ammatillinen tutkinto, johon suoritettava tutkinnon osa kuuluu/suoritettavat tutkinnon osat kuuluvat.")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Tooltip("Suoritetaanko tutkinnon osa/tutkinnon osat näyttötutkintona vai opetussuunnitelmaperustaisena koulutuksena.")
   suoritustapa: Koodistokoodiviite,
+  @Tooltip("Tutkintonimike/-nimikkeet, joiden suorittamiseen tutkinnon osat voivat johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Description("Onko kyse uuden tutkintonimikkeen suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
+  @Description("Onko kyse uuden tutkintonimikkeen suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @Tooltip("Onko kyse uuden tutkintonimikkeen suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
   @DefaultValue(false)
   toinenTutkintonimike: Boolean = false,
+  @Tooltip("Suoritettava osaamisala. Voi olla useampia eri jaksoissa.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
-  @Description("Onko kyse uuden osaamisalan suorituksesta, liittyen aiemmin suoritettuun tutkintoon")
+  @Description("Onko kyse uuden osaamisalan suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @Tooltip("Onko kyse uuden osaamisalan suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
   @DefaultValue(false)
   toinenOsaamisala: Boolean = false,
   toimipiste: OrganisaatioWithOid,
@@ -232,19 +258,23 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Tooltip("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Voi olla useita erillisiä jaksoja. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään kenttää 'Osaamisen hankkimistavat' tämän sijaan.")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
-  @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä")
+  @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi, kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 
@@ -348,14 +378,18 @@ trait Oppimisjakso extends Jakso {
   def alku: LocalDate
   def loppu: Option[LocalDate]
   @Description("Työssäoppimispaikan nimi")
+  @Tooltip("Työssäoppimispaikan nimi")
   def työssäoppimispaikka: Option[LocalizedString]
   @KoodistoUri("kunta")
-  @Description("Kunta, jossa työssäoppiminen on tapahtunut")
+  @Description("Kunta, jossa työssäoppiminen on tapahtunut.")
+  @Tooltip("Kunta, jossa työssäoppiminen on tapahtunut.")
   def paikkakunta: Koodistokoodiviite
-  @Description("Maa, jossa työssäoppiminen on tapahtunut")
+  @Description("Maa, jossa työssäoppiminen on tapahtunut.")
+  @Tooltip("Maa, jossa työssäoppiminen on tapahtunut.")
   @KoodistoUri("maatjavaltiot2")
   def maa: Koodistokoodiviite
   @Description("Työtehtävien kuvaus")
+  @Tooltip("Työtehtävien vapaamuotoinen kuvaus")
   def työtehtävät: Option[LocalizedString]
 }
 
@@ -366,6 +400,8 @@ case class Työssäoppimisjakso(
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
   työtehtävät: Option[LocalizedString],
+  @Description("Työssäoppimisjakson laajuus osaamispisteissä.")
+  @Tooltip("Työssäoppimisjakson laajuus osaamispisteissä.")
   laajuus: LaajuusOsaamispisteissä
 ) extends Oppimisjakso
 
@@ -527,7 +563,8 @@ case class AmmatillisenTutkinnonÄidinkieli(
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
-@Description("Suoritukseen liittyvät lisätiedot, kuten mukautettu arviointi tai poikkeus arvioinnissa")
+@Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")
+@Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
   @KoodistoUri("ammatillisentutkinnonosanlisatieto")
@@ -536,15 +573,19 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   kuvaus: LocalizedString
 )
 
-@Description("Näytön kuvaus")
+@Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
+@Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
+  @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @MultiLineString(5)
   kuvaus: Option[LocalizedString],
+  @Tooltip("Näytön suorituspaikka (suorituspaikan tyyppi ja nimi).")
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
+  @Tooltip("Onko näyttö suoritettu työssäoppimisen yhteydessä?")
   @DefaultValue(false)
   @OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
   työssäoppimisenYhteydessä: Boolean = false,
@@ -574,17 +615,21 @@ case class NäytönSuoritusaika(
 
 @Description("Näytön arvioinnin lisätiedot")
 case class NäytönArviointi (
+  @Tooltip("Näytön arvosana")
   arvosana: Koodistokoodiviite,
+  @Tooltip("Näytön arviointipäivä")
   päivä: LocalDate,
   arvioitsijat: Option[List[NäytönArvioitsija]] = None,
   @Tabular
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
-  @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
+  @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla.")
+  @Tooltip("Näytön arvioinnista päättäneet tahot.")
   @MinItems(1)
   arvioinnistaPäättäneet: List[Koodistokoodiviite],
   @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
-  @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
+  @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla.")
+  @Tooltip("Arviointikeskusteluun osallistuneet tahot.")
   @MinItems(1)
   arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite],
   @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne")
