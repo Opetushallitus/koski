@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.{KoodistoUri, Tooltip}
 import fi.oph.scalaschema.annotation.Description
 
 @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot. Ulkomaanjakson tiedot sisältävät alku- ja loppupäivämäärät, tiedon siitä, missä maassa jakso on suoritettu, sekä kuvauksen jakson sisällöstä.")
