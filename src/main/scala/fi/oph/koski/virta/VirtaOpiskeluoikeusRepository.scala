@@ -15,12 +15,16 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, henkilöRepository:
 
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
 
-  override def opiskeluoikeudetByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = Hetu.validate(hetu, isLocalDevelopmentEnvironment) match {
+  override def opiskeluoikeudetByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = Hetu.validate(hetu, acceptSyntheticHetus) match {
     case Right(h) => virta.opintotiedot(VirtaHakuehtoHetu(h)).toList.flatMap(converter.convertToOpiskeluoikeudet)
     case Left(status) =>
       logger.warn(s"Virta haku prevented $status")
       Nil
   }
+
+  def acceptSyntheticHetus = isLocalDevelopmentEnvironment
 }
 
-object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOpintopolkuHenkilöRepository, MockOppilaitosRepository, MockKoodistoViitePalvelu, SkipAccessCheck)(GlobalCacheManager)
+object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOpintopolkuHenkilöRepository, MockOppilaitosRepository, MockKoodistoViitePalvelu, SkipAccessCheck)(GlobalCacheManager) {
+  override def acceptSyntheticHetus: Boolean = true
+}
