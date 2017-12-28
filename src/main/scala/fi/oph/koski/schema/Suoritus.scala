@@ -17,6 +17,7 @@ trait Suoritus {
   @Representative
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
+  @Tooltip("Suorituksen alkamispäivä.")
   def alkamispäivä: Option[LocalDate] = None
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
