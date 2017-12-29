@@ -873,8 +873,11 @@ describe('Perusopetus', function() {
         })
 
         describe('Päivämäärän syöttö', function() {
-          var pidennettyOppivelvollisuus = editor.property('pidennettyOppivelvollisuus').toPäivämääräväli()
-          before(editor.edit, opinnot.expandAll)
+          var pidennettyOppivelvollisuusProperty = editor.property('pidennettyOppivelvollisuus')
+          var pidennettyOppivelvollisuus = pidennettyOppivelvollisuusProperty.toPäivämääräväli()
+
+          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuusProperty.addValue)
+
           describe('Virheellinen päivämäärä', function() {
             before(pidennettyOppivelvollisuus.setAlku('34.9.2000'))
             it('Estää tallennuksen', function() {
@@ -887,11 +890,22 @@ describe('Perusopetus', function() {
               expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDate)
             })
           })
+
+          after(editor.edit, pidennettyOppivelvollisuusProperty.removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
         })
 
         describe('Virheellinen päivämääräväli', function() {
-          var pidennettyOppivelvollisuus = editor.property('pidennettyOppivelvollisuus').toPäivämääräväli()
-          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuus.setAlku(currentDate), pidennettyOppivelvollisuus.setLoppu('1.2.2008'))
+          var pidennettyOppivelvollisuusProperty = editor.property('pidennettyOppivelvollisuus')
+          var pidennettyOppivelvollisuus = pidennettyOppivelvollisuusProperty.toPäivämääräväli()
+
+          before(
+            editor.edit,
+            opinnot.expandAll,
+            pidennettyOppivelvollisuusProperty.addValue,
+            pidennettyOppivelvollisuus.setAlku(currentDate),
+            pidennettyOppivelvollisuus.setLoppu('1.2.2008')
+          )
+
           it('Estää tallennuksen', function() {
             expect(pidennettyOppivelvollisuus.isValid()).to.equal(false)
             expect(opinnot.onTallennettavissa()).to.equal(false)
