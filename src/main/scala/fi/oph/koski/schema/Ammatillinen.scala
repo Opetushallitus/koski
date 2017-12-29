@@ -301,11 +301,14 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   @Description("Tutkinnon osalta ei vaadita vahvistusta, mikäli se sisältyy ammatillisen tutkinnon suoritukseen (jolla puolestaan on VALMIS-tilassa oltava vahvistus)")
   def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
   def alkamispäivä: Option[LocalDate]
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
   @Description("Suoritukseen liittyvän näytön tiedot")
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject
   def näyttö: Option[Näyttö]
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   @ComplexObject
   def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
   def suorituskieli: Option[Koodistokoodiviite]
@@ -328,9 +331,12 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   näyttö: Option[Näyttö] = None,
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
@@ -351,9 +357,12 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
@@ -461,6 +470,7 @@ case class MuuValtakunnallinenTutkinnonOsa(
 case class PaikallinenTutkinnonOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Tooltip("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
@@ -564,7 +574,6 @@ case class AmmatillisenTutkinnonÄidinkieli(
 }
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")
-@Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
   @KoodistoUri("ammatillisentutkinnonosanlisatieto")
@@ -574,7 +583,6 @@ case class AmmatillisenTutkinnonOsanLisätieto(
 )
 
 @Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
-@Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
