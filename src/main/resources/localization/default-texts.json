@@ -870,6 +870,21 @@
   "tooltip:Maa, jossa työssäoppiminen on tapahtunut." : "Maa, jossa työssäoppiminen on tapahtunut.",
   "description:Yrityksen nimi" : "Yrityksen nimi",
   "description:Tutkinnon tai tutkinnon osan vahvistettu..." : "Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD",
-  "tooltip:Organisaatio, joka on vahvistanut suorituksen." : "Organisaatio, joka on vahvistanut suorituksen."
+  "tooltip:Organisaatio, joka on vahvistanut suorituksen." : "Organisaatio, joka on vahvistanut suorituksen.",
+  "tooltip:Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista..." : "Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)",
+  "tooltip:Tiedot aiemmin hankitun osaamisen tunnustamisesta." : "Tiedot aiemmin hankitun osaamisen tunnustamisesta.",
+  "description:Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset." : "Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.",
+  "tooltip:Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset." : "Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.",
+  "tooltip:Tutkintonimike/-nimikkeet, johon koulutus näyttötutkintoon valmistavaan..." : "Tutkintonimike/-nimikkeet, johon koulutus näyttötutkintoon valmistavaan koulutukseen liittyvä ammatillinen tutkinto johtaa.",
+  "tooltip:Mahdolliset todistuksella näkyvät lisätiedot." : "Mahdolliset todistuksella näkyvät lisätiedot.",
+  "tooltip:Suoritukseen liittyvät lisätiedot, kuten esimerkiksi..." : "Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.",
+  "tooltip:Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset" : "Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset",
+  "tooltip:Näyttötutkintoon valmistavaan koulutukseen liittyvässä ammatillisessa..." : "Näyttötutkintoon valmistavaan koulutukseen liittyvässä ammatillisessa tutkinnossa suoritettavat osaamisalat. Voi olla useampia eri jaksoissa.",
+  "tooltip:Ammatillinen tutkinto, johon näyttötutkintoon valmistava..." : "Ammatillinen tutkinto, johon näyttötutkintoon valmistava koulutus liittyy, ja tutkinnon opetussuunnitelman perusteiden diaarinumero.",
+  "tooltip:Koulutuksen laajuus osaamispisteinä" : "Koulutuksen laajuus osaamispisteinä",
+  "tooltip:Todistuksella näkyvät lisätiedot. Esim. jos..." : "Todistuksella näkyvät lisätiedot. Esim. jos jokin valmistavan koulutuksen sisällöistä on valittu toisesta tutkinnosta.",
+  "tooltip:Suorituksen päättymispäivä." : "Suorituksen päättymispäivä.",
+  "tooltip:Suoritettava koulutus" : "Suoritettava koulutus",
+  "tooltip:Tutkinnon tai koulutuksen osan suoritukseen..." : "Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot."
 }
 

@@ -5,7 +5,6 @@ import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description}
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
-@Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
 @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
 case class OsaamisenTunnustaminen(
   @Description("Aiemman, korvaavan suorituksen tiedot")
