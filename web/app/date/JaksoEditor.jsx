@@ -23,4 +23,3 @@ InlineJaksoEditor.validateModel = JaksoEditor.validateModel
 
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 JaksoEditor.isEmpty = recursivelyEmpty
-JaksoEditor.handlesOptional = (modifier) => modifier != 'array'
