@@ -157,28 +157,37 @@ case class AmmatillinenOpiskeluoikeusjakso(
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
   @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, johon valmistava koulutus tähtää")
+  @Tooltip("Ammatillinen tutkinto, johon näyttötutkintoon valmistava koulutus liittyy, ja tutkinnon opetussuunnitelman perusteiden diaarinumero.")
   tutkinto: AmmatillinenTutkintoKoulutus,
+  @Tooltip("Tutkintonimike/-nimikkeet, johon koulutus näyttötutkintoon valmistavaan koulutukseen liittyvä ammatillinen tutkinto johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Näyttötutkintoon valmistavaan koulutukseen liittyvässä ammatillisessa tutkinnossa suoritettavat osaamisalat. Voi olla useampia eri jaksoissa.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
+  @Tooltip("Suorituksen päättymispäivä.")
   päättymispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Tooltip("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Voi olla useita erillisiä jaksoja. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään kenttää 'Osaamisen hankkimistavat' tämän sijaan.")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   @Description("Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.")
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esim. jos jokin valmistavan koulutuksen sisällöistä on valittu toisesta tutkinnosta")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
 
