@@ -858,14 +858,39 @@ describe('Perusopetus', function() {
         })
 
         describe('Erityisen tuen päätös', function() {
-          describe('lisätään, kun erityisen tuen tietoja asetetaan', function() {
-            before(editor.edit, opinnot.expandAll, editor.property('opiskeleeToimintaAlueittain').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          describe('lisätään, kun valinnainen malli lisätään', function() {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              editor.property('erityisenTuenPäätös').addValue,
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+            it('Toimii', function() {
+              expect(isElementVisible(S('.property.erityisenTuenPäätös'))).to.equal(true)
+              expect(editor.property('opiskeleeToimintaAlueittain').getValue()).to.equal('ei')
+            })
+          })
+          describe('päivittyy, kun erityisen tuen tietoja muutetaan', function() {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              editor.property('opiskeleeToimintaAlueittain').setValue(true),
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
             it('Toimii', function() {
               expect(editor.property('opiskeleeToimintaAlueittain').getValue()).to.equal('kyllä')
             })
           })
-          describe('poistetaan, kun erityisen tuen tiedot tyhjennetään', function() {
-            before(editor.edit, opinnot.expandAll, editor.property('opiskeleeToimintaAlueittain').setValue(false), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          describe('poistetaan, kun valinnainen malli poistetaan', function() {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              editor.property('erityisenTuenPäätös').removeValue,
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
             it('Toimii', function() {
               expect(isElementVisible(S('.property.erityisenTuenPäätös'))).to.equal(false)
             })
@@ -2628,6 +2653,7 @@ describe('Perusopetus', function() {
           before(
             editor.edit,
             opinnot.expandAll,
+            editor.property('erityisenTuenPäätös').addValue,
             editor.property('opiskeleeToimintaAlueittain').setValue(true),
             uusiOppiaine.selectValue('kognitiiviset taidot'),
             kognitiivisetTaidot.propertyBySelector('.arvosana').selectValue('8'),
