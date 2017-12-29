@@ -183,7 +183,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
-  @Tooltip("Todistuksella näkyvät lisätiedot. Esim. jos jokin valmistavan koulutuksen sisällöistä on valittu toisesta tutkinnosta")
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esim. jos jokin valmistavan koulutuksen sisällöistä on valittu toisesta tutkinnosta.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi"),
@@ -607,6 +607,7 @@ case class Näyttö(
   @OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
   työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
+  @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
   @FlattenInUI
   arviointi: Option[NäytönArviointi],
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä")
@@ -775,10 +776,12 @@ trait ValmentavaSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toi
 @Title("VALMA-koulutuksen suoritus")
 case class ValmaKoulutuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus")
   koulutusmoduuli: ValmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
@@ -786,6 +789,7 @@ case class ValmaKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[ValmaKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
@@ -815,6 +819,7 @@ case class ValmaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
+  @Tooltip("Koulutuksen laajuus osaamispisteinä")
   laajuus: Option[LaajuusOsaamispisteissä] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with LaajuuttaEiValidoida
@@ -825,7 +830,8 @@ trait ValmaKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 @Title("Paikallinen Valma-koulutuksen osa")
 case class PaikallinenValmaKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.")
+  @Tooltip("Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
@@ -835,10 +841,12 @@ case class PaikallinenValmaKoulutuksenOsa(
 @Title("TELMA-koulutuksen suoritus")
 case class TelmaKoulutuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus")
   koulutusmoduuli: TelmaKoulutus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
@@ -847,6 +855,7 @@ case class TelmaKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[TelmaKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("telma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
+  @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
@@ -886,7 +895,8 @@ trait TelmaKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 @Title("Paikallinen Telma-koulutuksen osa")
 case class PaikallinenTelmaKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  @Description("Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.")
+  @Tooltip("Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
