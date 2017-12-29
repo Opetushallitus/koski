@@ -340,12 +340,9 @@ case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
-  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   näyttö: Option[Näyttö] = None,
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
@@ -366,12 +363,9 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
-  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
@@ -803,10 +797,13 @@ case class ValmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
@@ -869,10 +866,13 @@ case class TelmaKoulutuksenOsanSuoritus(
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
