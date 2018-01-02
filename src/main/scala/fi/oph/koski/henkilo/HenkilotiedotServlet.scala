@@ -9,12 +9,12 @@ import fi.oph.koski.util.Timing
 import org.scalatra._
 
 class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with GZipSupport with NoCache with Timing {
-  private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository)
+  private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository, application.possu)
 
   get("/search") {
     params.get("query") match {
       case Some(query) if query.length >= 3 =>
-        henkilötiedotFacade.find(query.toUpperCase)(koskiSession)
+        henkilötiedotFacade.search(query.toUpperCase)(koskiSession)
 
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)

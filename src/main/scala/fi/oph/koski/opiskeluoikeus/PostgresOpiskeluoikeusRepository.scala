@@ -24,7 +24,7 @@ import slick.dbio.{DBIOAction, NoStream}
 import slick.{dbio, lifted}
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends OpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
-  override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
+  override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
     val query: lifted.Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
       if oo.oppijaOid inSetBind oppijat.map(_.oid)

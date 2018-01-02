@@ -1,12 +1,12 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.cache.{Cache, CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
+import fi.oph.koski.henkilo.FindByOid
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepository
-import fi.oph.koski.henkilo.{FindByOid, HenkilöRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import fi.oph.koski.validation.KoskiValidator
@@ -51,10 +51,10 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
     quickAccessCheck(cache(h)).filter(oo => user.hasGlobalReadAccess || oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid)))
   )
 
-  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = if (user.hasGlobalReadAccess) {
-    oppijat.toList
+  override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = if (user.hasGlobalReadAccess) {
+    oppijat.filter(_.hetu.exists(cache(_).nonEmpty))
   } else {
-    quickAccessCheck(oppijat.par.filter(oppija => oppija.hetu.exists(organizationsCache(_).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty)).toList)
+    quickAccessCheck(oppijat.par.filter(_.hetu.exists(organizationsCache(_).exists(user.hasReadAccess))).toList)
   }
 
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = quickAccessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))

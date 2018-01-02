@@ -10,7 +10,7 @@ import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoik
 import scala.collection.mutable.ListBuffer
 
 class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: List[AuxiliaryOpiskeluoikeusRepository]) extends OpiskeluoikeusRepository {
-  override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
+  override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
     (main :: aux).foldLeft((oppijat, ListBuffer.empty[HenkilötiedotJaOid])) { case ((left, found), repo) =>
       val newlyFound = repo.filterOppijat(left)
       val stillLeft = left.diff(newlyFound)
