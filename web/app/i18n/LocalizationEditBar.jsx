@@ -33,7 +33,7 @@ const EditAllTexts = () => {
   return (<div className="localization-edit-all">
     <table>
       <thead>
-        <tr><th></th><th>{'Ruotsiksi'}</th><th>{'Englanniksi'}</th></tr>
+        <tr><th>{'Suomeksi'}</th><th>{'Ruotsiksi'}</th><th>{'Englanniksi'}</th></tr>
       </thead>
       <tbody> {
         R.keys(window.koskiLocalizationMap).sort((a, b) => a.localeCompare(b, 'fi')).map(key => {
