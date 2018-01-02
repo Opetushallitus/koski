@@ -13,7 +13,8 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
   private def now = new Timestamp(System.currentTimeMillis())
 
   def store(ticket: String, user: AuthenticationUser, clientIp: String) = {
-    AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, user, clientIp, Map()))
+    val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN
+    AuditLog.log(AuditLogMessage(operation, user, clientIp, Map()))
     runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now))
   }
 

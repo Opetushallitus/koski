@@ -21,7 +21,8 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
           case _ =>
             haltWithStatus(KoskiErrorCategory.notFound("oppija not found"))
         }
-      case _ => haltWithStatus(KoskiErrorCategory.badRequest("hetu header missing"))
+      case _ =>
+        haltWithStatus(KoskiErrorCategory.badRequest("hetu header missing"))
     }
   }
 
