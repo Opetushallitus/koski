@@ -262,8 +262,9 @@ trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArvi
 
 @Description("Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)")
 case class NumeerinenPerusopetuksenOppiaineenArviointi(
+  @Tooltip("Oppiaineen arvosana.")
   arvosana: Koodistokoodiviite,
-  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   päivä: Option[LocalDate]
 ) extends PerusopetuksenOppiaineenArviointi with NumeerinenYleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
