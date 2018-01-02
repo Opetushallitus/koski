@@ -7,15 +7,18 @@ import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoU
 
 case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaihe,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus]] = None,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaaranalkuvaihe", koodistoUri = "suorituksentyyppi")
@@ -66,6 +69,7 @@ trait AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine extends Aik
 @Title("Paikallinen oppiaine")
 case class AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(
   tunniste: PaikallinenKoodi,
+  @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
 ) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
