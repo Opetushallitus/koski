@@ -53,10 +53,14 @@ abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager
     DefaultLocalizations.defaultFinnishTexts.map {
       case (key, finnishDefaultText) =>
         inLocalizationService.get(key).map(l => (key, sanitize(l).get)).getOrElse {
-          logger.info(s"Localizations missing for key $key")
+          reportMissingLocalization(key)
           (key, Finnish(finnishDefaultText))
         }
     }
+  }
+
+  def reportMissingLocalization(key: String): Unit = {
+    logger.warn(s"Localizations missing for key $key")
   }
 }
 
@@ -98,6 +102,11 @@ case class MockLocalizationRepository(implicit cacheInvalidator: CacheManager) e
   }
 
   def init {}
+
+  override def reportMissingLocalization(key: String): Unit = {
+    // Don't report missing localizations in MockLocalizationRepository, i.e. entries missing from the mockdata/localization/koski.json
+    // file.
+  }
 }
 
 object MockLocalizationRepository {
