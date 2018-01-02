@@ -72,13 +72,16 @@ trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPä�
 
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: AikuistenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]] = None,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
