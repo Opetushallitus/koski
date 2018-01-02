@@ -136,19 +136,24 @@ trait PerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuo
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella")
 case class PerusopetuksenVuosiluokanSuoritus(
-  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
+  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla.")
+  @Tooltip("Vuosiluokkasuorituksen luokka-aste ja vuosiluokkasuorituksen opetussuunnitelman perusteen diaarinumero.")
   @Title("Luokka-aste")
   koulutusmoduuli: PerusopetuksenLuokkaAste,
-  @Description("Luokan tunniste, esimerkiksi 9C")
+  @Description("Luokan tunniste, esimerkiksi 9C.")
+  @Tooltip("Luokan tunniste, esimerkiksi 9C.")
   luokka: String,
   toimipiste: OrganisaatioWithOid,
   @Description("Vuosiluokan alkamispäivä")
+  @Tooltip("Vuosiluokan alkamispäivä")
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Varsinaisen todistuksen saantipäivämäärä")
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli")
+  @Description("Oppilaan kotimaisten kielten kielikylvyn kieli.")
+  @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
@@ -161,9 +166,11 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi, jos oppilaan oppitunneista lukuvuoden aikana vähintään 25 % on opetettu muulla kuin koulun opetuskielellä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
+  @Tooltip("Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu arvio käyttäytymisestä tai työskentelystä).")
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
@@ -202,12 +209,14 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(
-  @Description("Liitetiedon tyyppi kooditettuna")
+  @Description("Liitetiedon tyyppi kooditettuna.")
+  @Tooltip("Liitetiedon tyyppi, eli onko kyseessä käyttäytymisen vai työskentelyn arviointi.")
   @KoodistoUri("perusopetuksentodistuksenliitetieto")
   @KoodistoKoodiarvo("kayttaytyminen")
   @KoodistoKoodiarvo("tyoskentely")
   tunniste: Koodistokoodiviite,
-  @Description("Lisätiedon kuvaus")
+  @Description("Liitetiedon kuvaus.")
+  @Tooltip("Liitetiedon kuvaus, eli sanallinen käyttäytymisen tai työskentelyn arviointi.")
   kuvaus: LocalizedString
 )
 
