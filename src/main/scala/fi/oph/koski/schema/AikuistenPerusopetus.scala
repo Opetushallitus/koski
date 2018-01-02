@@ -32,30 +32,39 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
 
 case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
-  @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
+  @Description("Opiskelijan saamat laissa säädetyt tukimuodot.")
+  @Tooltip("Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
-  @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Päätösjakso] = None,
-  @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
+  @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
+  @Tooltip("Tieto opiskelusta ulkomailla alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
   ulkomailla: Option[Päätösjakso] = None,
-  @Description("""Oppilas on vuosiluokkiin sitomattomassa opetuksessa (true/false)""")
+  @Description("Opiskelija on vuosiluokkiin sitomattomassa opetuksessa (true/false).")
+  @Tooltip("Onko opiskelija vuosiluokkiin sitomattomassa opetuksessa.")
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   @SensitiveData
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("""Onko oppija vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("Onko opiskelija vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko opiskelija vammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vammainen: Option[List[Aikajakso]] = None,
-  @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Onko opiskelija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko opiskelija vaikeasti vammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
-  @Description("""Oppilaalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, jos opiskelijalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
   majoitusetu: Option[Päätösjakso] = None,
-  @Description("""Oppilaalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.""")
+  @Description("Opiskelijalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
@@ -63,13 +72,16 @@ trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPä�
 
 case class AikuistenPerusopetuksenOppimääränSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: AikuistenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]] = None,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
@@ -140,7 +152,8 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
-  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
   koulutusmoduuli: PerusopetuksenOppiaine,
@@ -151,7 +164,9 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @Title("Kurssit")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,

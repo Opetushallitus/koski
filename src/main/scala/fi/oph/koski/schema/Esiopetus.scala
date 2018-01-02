@@ -34,7 +34,8 @@ case class EsiopetuksenOpiskeluoikeus(
 }
 
 case class EsiopetuksenOpiskeluoikeudenLisätiedot(
-  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta")
+  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.")
+  @Description("Tieto mahdollisesta pidennetystä oppivelvollisuudesta alkamis- ja päättymispäivineen.")
   @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Päätösjakso] = None
@@ -42,13 +43,16 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: Esiopetus,
   toimipiste: OrganisaatioWithOid,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
+  @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
@@ -60,7 +64,8 @@ case class Esiopetus(
   perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
-  @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa voidaan kuvata järjestettyä esiopetusta")
+  @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa kuvataan järjestettyä esiopetusta")
+  @Tooltip("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa kuvataan järjestettyä esiopetusta")
   @MultiLineString(4)
   kuvaus: Option[LocalizedString] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
