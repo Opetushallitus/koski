@@ -34,7 +34,8 @@ trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
 }
 
 trait Diaarinumerollinen {
-  @Description("Tutkinnon perusteen diaarinumero Ks. ePerusteet-palvelu")
+  @Description("Tutkinnon perusteen diaarinumero. Ks. ePerusteet-palvelu.")
+  @Tooltip("Tutkinnon perusteen diaarinumero.")
   @Title("Peruste")
   @ClassName("peruste")
   def perusteenDiaarinumero: Option[String]
@@ -62,6 +63,7 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
 trait Laajuus {
   @Description("Opintojen laajuuden arvo")
+  @Tooltip("Opintojen laajuus.")
   @MinValueExclusive(0)
   def arvo: Float
   @Description("Opintojen laajuuden yksikkö")
@@ -75,6 +77,7 @@ trait Valinnaisuus {
 }
 
 trait Kieliaine extends Koulutusmoduuli {
+  @Tooltip("Opiskeltava kieli.")
   def kieli: Koodistokoodiviite
   override def identiteetti: AnyRef = (super.identiteetti, kieli)
 }
