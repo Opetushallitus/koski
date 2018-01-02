@@ -136,19 +136,24 @@ trait PerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuo
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella")
 case class PerusopetuksenVuosiluokanSuoritus(
-  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
+  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla.")
+  @Tooltip("Vuosiluokkasuorituksen luokka-aste ja vuosiluokkasuorituksen opetussuunnitelman perusteen diaarinumero.")
   @Title("Luokka-aste")
   koulutusmoduuli: PerusopetuksenLuokkaAste,
-  @Description("Luokan tunniste, esimerkiksi 9C")
+  @Description("Luokan tunniste, esimerkiksi 9C.")
+  @Tooltip("Luokan tunniste, esimerkiksi 9C.")
   luokka: String,
   toimipiste: OrganisaatioWithOid,
   @Description("Vuosiluokan alkamispäivä")
+  @Tooltip("Vuosiluokan alkamispäivä")
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Varsinaisen todistuksen saantipäivämäärä")
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli")
+  @Description("Oppilaan kotimaisten kielten kielikylvyn kieli.")
+  @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
@@ -161,9 +166,11 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi, jos oppilaan oppitunneista lukuvuoden aikana vähintään 25 % on opetettu muulla kuin koulun opetuskielellä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
+  @Tooltip("Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu arvio käyttäytymisestä tai työskentelystä).")
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
 
@@ -181,20 +188,24 @@ trait PerusopetuksenOppimääränSuoritus extends Suoritus with Todistus with Ar
 
 trait SuoritustavallinenPerusopetuksenSuoritus extends Suoritus {
   @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
+  @Tooltip("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
   def suoritustapa: Koodistokoodiviite
 }
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella")
 case class NuortenPerusopetuksenOppimääränSuoritus(
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: NuortenPerusopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
   @Description("Vapaamuotoinen tekstikenttä")
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi merkintä siitä, että oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
@@ -202,12 +213,14 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(
-  @Description("Liitetiedon tyyppi kooditettuna")
+  @Description("Liitetiedon tyyppi kooditettuna.")
+  @Tooltip("Liitetiedon tyyppi, eli onko kyseessä käyttäytymisen vai työskentelyn arviointi.")
   @KoodistoUri("perusopetuksentodistuksenliitetieto")
   @KoodistoKoodiarvo("kayttaytyminen")
   @KoodistoKoodiarvo("tyoskentely")
   tunniste: Koodistokoodiviite,
-  @Description("Lisätiedon kuvaus")
+  @Description("Liitetiedon kuvaus.")
+  @Tooltip("Liitetiedon kuvaus, eli sanallinen käyttäytymisen tai työskentelyn arviointi.")
   kuvaus: LocalizedString
 )
 
@@ -218,9 +231,11 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with Mahdolli
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class NuortenPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
+  @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
+  @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   yksilöllistettyOppimäärä: Boolean = false,
-  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false). Painotettu opetus (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset")
+  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false). Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
+  @Tooltip("Onko oppilas ollut oppiaineessa painotetussa opetuksessa. Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
   painotettuOpetus: Boolean = false,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -258,6 +273,7 @@ case class NumeerinenPerusopetuksenOppiaineenArviointi(
 case class SanallinenPerusopetuksenOppiaineenArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   @SensitiveData
+  @Tooltip("Oppiaineen sanallinen arviointi.")
   kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
@@ -268,10 +284,12 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
 @Description("Käyttäytymisen arviointi. Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään")
 @IgnoreInAnyOfDeserialization
 case class PerusopetuksenKäyttäytymisenArviointi(
+  @Tooltip("Käyttäytymisen arvosana.")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   @SensitiveData
+  @Tooltip("Käyttäytymisen sanallinen arviointi.")
   kuvaus: Option[LocalizedString] = None,
-  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   @Hidden
   päivä: Option[LocalDate] = None
 ) extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
@@ -343,6 +361,7 @@ trait PerusopetuksenKoodistostaLöytyväOppiaine extends PerusopetuksenOppiaine 
 case class PerusopetuksenPaikallinenValinnainenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString,
   perusteenDiaarinumero: Option[String] = None
 ) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference {

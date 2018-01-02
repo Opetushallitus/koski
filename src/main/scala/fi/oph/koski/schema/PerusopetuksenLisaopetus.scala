@@ -4,7 +4,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData}
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._
 
 @Description("Perusopetuksen lisäopetuksen opiskeluoikeus")
@@ -35,15 +35,18 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
 @Description("Perusopetuksen lisäopetuksen suoritustiedot")
 case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: PerusopetuksenLisäopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenAlisuoritus]],
-  @Description("Tieto siitä mikäli osa opiskelijan opinnoista on tapahtunut muussa oppilaitoksessa, työpaikalla tai työpaikkaan rinnastettavassa muussa paikassa")
+  @Description("Tieto siitä, mikäli osa opiskelijan opinnoista on tapahtunut muussa oppilaitoksessa, työpaikalla tai työpaikkaan rinnastettavassa muussa paikassa.")
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto siitä, mikäli osa opiskelijan opinnoista on tapahtunut muussa oppilaitoksessa, työpaikalla tai työpaikkaan rinnastettavassa muussa paikassa.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
@@ -58,11 +61,13 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
+  @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   @DefaultValue(false)
   @SensitiveData
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  @Tooltip("Onko kyseessä peruskoulun päättötodistuksen arvosanan korotus.")
   korotus: Boolean,
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
@@ -96,6 +101,7 @@ case class MuuPerusopetuksenLisäopetuksenSuoritus(
 
 case class MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(
   tunniste: PaikallinenKoodi,
+  @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PaikallinenKoulutusmoduuli
