@@ -56,6 +56,7 @@
   }
   .show-all {
     margin-left: 20px;
+    cursor: pointer;
     input {
       margin-left: 10px;
     }
@@ -77,17 +78,20 @@
       text-align: right;
       vertical-align: middle;
       width: 300px;
+      max-width: 300px;
     }
     th {
       font-weight: bold;
     }
     td {
       width: 400px;
+      max-width: 400px;
       padding-right: 10px;
       padding-bottom: 8px;
       .localized .editing input {
         width: 100%;
       }
+      overflow-wrap: break-word;
     }
   }
 }
