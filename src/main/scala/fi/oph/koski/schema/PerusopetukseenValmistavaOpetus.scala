@@ -33,14 +33,17 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 @Description("Perusopetukseen valmistavan opetuksen suorituksen tiedot")
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: PerusopetukseenValmistavaOpetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto oppilaan perusopetuksen aloittamisesta (luokkataso).")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
@@ -70,6 +73,7 @@ case class PerusopetukseenValmistavaOpetus(
 case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[PerusopetukseenValmistavanKoulutuksenLaajuus],
+  @Tooltip("Oppiaineen opetuksen sisältö.")
   opetuksenSisältö: Option[LocalizedString]
 ) extends PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
