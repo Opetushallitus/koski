@@ -93,11 +93,6 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def haltWithStatus(status: HttpStatus): Nothing = {
     halt(status.statusCode, status)
   }
-
-  def errorString(status: HttpStatus) = status.errors.headOption.flatMap(_.message match {
-    case JString(s) => Some(s)
-    case otherJValue => None
-  })
 }
 
 

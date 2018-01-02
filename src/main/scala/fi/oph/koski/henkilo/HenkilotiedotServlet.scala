@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.HenkilötiedotJaOid
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.util.Timing
 import org.scalatra._
@@ -15,34 +14,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
   get("/search") {
     params.get("query") match {
       case Some(query) if query.length >= 3 =>
-        val henkilöt = henkilötiedotFacade.findHenkilötiedot(query.toUpperCase)(koskiSession).toList
-        val canAddNew = henkilöt.isEmpty && koskiSession.hasAnyWriteAccess
-
-        if (Hetu.validFormat(query).isRight) {
-          Hetu.validate(query) match {
-            case Right(hetu) =>
-              val canAddNew = henkilöt.isEmpty && koskiSession.hasAnyWriteAccess
-              HenkilötiedotSearchResponse(henkilöt, canAddNew, hetu = Some(query))
-            case Left(status) =>
-              henkilöt match {
-                case Nil =>
-                  HenkilötiedotSearchResponse(henkilöt, false, errorString(status)) // TODO: i18n for error messages here
-                case _ =>
-                  HenkilötiedotSearchResponse(henkilöt, false)
-              }
-          }
-        } else if (henkilöt.isEmpty && HenkilöOid.isValidHenkilöOid(query)) {
-          henkilötiedotFacade.findByOid(query)(koskiSession) match {
-            case Right(oppija) =>
-              oppija.headOption match {
-                case Some(tiedot) => HenkilötiedotSearchResponse(henkilöt, canAddNew, oid = Some(query))
-                case None => HenkilötiedotSearchResponse(henkilöt, false)
-              }
-            case Left(_) => HenkilötiedotSearchResponse(henkilöt, false)
-          }
-        } else {
-          HenkilötiedotSearchResponse(henkilöt, false)
-        }
+        henkilötiedotFacade.find(query.toUpperCase)(koskiSession)
 
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
@@ -58,5 +30,3 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
     renderEither(henkilötiedotFacade.findByOid(params("oid"))(koskiSession).right.map(_.map(_.copy(hetu = None)))) // poistetaan hetu tuloksista, sillä käytössä ei ole organisaatiorajausta
   }
 }
-
-case class HenkilötiedotSearchResponse(henkilöt: List[HenkilötiedotJaOid], canAddNew: Boolean, error: Option[String] = None, hetu: Option[String] = None, oid: Option[String] = None)

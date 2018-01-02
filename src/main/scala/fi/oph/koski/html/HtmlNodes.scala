@@ -53,7 +53,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
       {CommentedPCData("""
         window.koskiError = {
           httpStatus: """ + status.statusCode + """,
-          text: '""" + errorString(status).getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'") + """',
+          text: '""" + status.errorString.getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'") + """',
           topLevel: true
         }
       """)}

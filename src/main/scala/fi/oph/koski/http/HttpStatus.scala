@@ -16,6 +16,11 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
 
   /** Pick given status if this one is ok. Otherwise stick with this one */
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
+
+  def errorString: Option[String] = errors.headOption.flatMap(_.message match {
+    case JString(s) => Some(s)
+    case otherJValue => None
+  })
 }
 
 // Constructor is private to force force explicit usage of ErrorMessage. This allows us
