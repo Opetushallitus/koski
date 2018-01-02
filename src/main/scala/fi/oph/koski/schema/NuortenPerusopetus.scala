@@ -176,19 +176,23 @@ case class PerusopetuksenVuosiluokanSuoritus(
 
 trait PerusopetuksenOppimääränSuoritus extends Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus {
   @Title("Koulutus")
+  @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   override def koulutusmoduuli: Perusopetus
   def suorituskieli: Koodistokoodiviite
+  @Tooltip("Mahdolliset muut suorituskielet.")
   def muutSuorituskielet: Option[List[Koodistokoodiviite]]
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override def osasuoritukset: Option[List[Suoritus]] = None
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi merkintä siitä, että oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.")
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
   def oppiaineet = osasuoritukset.toList.flatten
 }
 
 trait SuoritustavallinenPerusopetuksenSuoritus extends Suoritus {
   @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
+  @Tooltip("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
   def suoritustapa: Koodistokoodiviite
 }
 
