@@ -43,7 +43,7 @@ class CacheSpec extends FreeSpec with Matchers {
         }
         // 2 first entries evicted
         cache.getEntry(counter.incInvocation("1.")).isDefined should equal(false)
-        cache.getEntry(counter.incInvocation("1.")).isDefined should equal(false)
+        cache.getEntry(counter.incInvocation("2.")).isDefined should equal(false)
         cache(counter.incInvocation("1.")) should equal("1.2")
         cache(counter.incInvocation("2.")) should equal("2.2")
 
