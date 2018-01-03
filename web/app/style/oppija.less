@@ -5,9 +5,14 @@
   ul.opiskeluoikeustyypit-nav, ul.oppilaitokset-nav {
     display: flex;
     padding: 0;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     .opiskeluoikeustyyppi, .oppilaitos-nav {
       font-size: 20px;
+    }
+    overflow-x: auto;
+    overflow-y: hidden;
+    > li {
+      margin-bottom: 10px;
     }
     > li:not(.add-opiskeluoikeus) {
       display: inline-block;
