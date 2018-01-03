@@ -262,7 +262,6 @@ trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArvi
 
 @Description("Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)")
 case class NumeerinenPerusopetuksenOppiaineenArviointi(
-  @Tooltip("Oppiaineen arvosana.")
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   päivä: Option[LocalDate]
@@ -303,6 +302,7 @@ object PerusopetuksenOppiaineenArviointi {
     päivä = None,
     kuvaus = kuvaus
   )
+  @Tooltip("Oppiaineen arvosana.")
   def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = None
@@ -430,6 +430,7 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
 }
 
 case class LaajuusVuosiviikkotunneissa(
+  @Tooltip("Suorituksen laajuus vuosiviikkotunteina.")
   arvo: Float,
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
