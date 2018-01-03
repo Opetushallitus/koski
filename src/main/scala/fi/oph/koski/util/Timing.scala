@@ -48,7 +48,7 @@ class Timer(blockname: String, thresholdMs: Int, clazz: Class[_]) {
 
 object TimerMonitoring {
   private val durations = Histogram.build()
-    .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 1.5, 2.5, 5)
+    .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 1.5, 2.5, 5, 10, 30)
     .name("fi_oph_koski_util_Timing_duration")
     .help("Koski timed block duration in seconds.")
     .labelNames("classname", "blockname")
