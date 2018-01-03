@@ -44,13 +44,16 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] = opintopolku.findOrCreate(henkilö)
 
-  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
-    if (Henkilö.isHenkilöOid(query)) {
-      findByOid(query).map(_.toHenkilötiedotJaOid).toList
-    } else if(Hetu.validFormat(query).isRight) {
-      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).toList.flatten
-    } else {
-      findByOids(perustiedotRepository.findOids(query)).map(_.toHenkilötiedotJaOid)
-    }
+  def findHenkilötiedotByOid(oid: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = HenkilöOid.validateHenkilöOid(oid) match {
+    case Right(validHetu) => findByOid(oid).map(_.toHenkilötiedotJaOid).toList
+    case Left(status) => throw new Exception(status.errorString.mkString)
   }
+
+  def findHenkilötiedotByHetu(hetu: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = Hetu.validFormat(hetu) match {
+    case Right(validHetu) => List(opintopolku, virta, ytr).iterator.map(_.findByHetu(validHetu)).find(_.isDefined).toList.flatten
+    case Left(status) => throw new Exception(status.errorString.mkString)
+  }
+
+  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
+    findByOids(perustiedotRepository.findOids(query)).map(_.toHenkilötiedotJaOid)
 }

@@ -264,7 +264,7 @@ class TiedonsiirtoService(
       case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
         TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), h.äidinkieli)
       }
-      case (None, Some(hetu)) => henkilöRepository.findOppijat(hetu).headOption.map { h =>
+      case (None, Some(hetu)) => henkilöRepository.findHenkilötiedotByHetu(hetu).headOption.map { h =>
         TiedonsiirtoOppija(Some(h.oid), h.hetu, syntymäaika = None, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), äidinkieli = None)
       }
       case _ => None

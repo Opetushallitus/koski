@@ -22,23 +22,23 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
 
   def findByHetu(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    Hetu.validate(hetu).right.map(henkilöRepository.findOppijat)
+    Hetu.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu)
   }
 
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
-    HenkilöOid.validateHenkilöOid(oid).right.map(henkilöRepository.findOppijat)
+    HenkilöOid.validateHenkilöOid(oid).right.map(henkilöRepository.findHenkilötiedotByOid)
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ei tarkista virta- eikä ytr-palvelusta
   private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findOppijat(queryString))
+    val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedot(queryString))
     HenkilötiedotSearchResponse(filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet)))
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
   private def searchByHetu(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findOppijat(hetu))
+    val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedotByHetu(hetu))
     Hetu.validate(hetu) match {
       case Right(_) =>
         val canAddNew = henkilöt.isEmpty && user.hasAnyWriteAccess
@@ -55,7 +55,7 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
   private def searchByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val henkilöt = henkilöRepository.findOppijat(oid)
+    val henkilöt = henkilöRepository.findHenkilötiedotByOid(oid)
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt)
     val canAddNew = henkilöt.nonEmpty && oppijat.isEmpty && user.hasAnyWriteAccess
     HenkilötiedotSearchResponse(oppijat, canAddNew = canAddNew, oid = Some(oid))
