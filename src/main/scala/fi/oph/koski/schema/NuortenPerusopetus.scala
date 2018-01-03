@@ -430,6 +430,7 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
 }
 
 case class LaajuusVuosiviikkotunneissa(
+  @Tooltip("Suorituksen laajuus vuosiviikkotunteina.")
   arvo: Float,
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
