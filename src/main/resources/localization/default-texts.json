@@ -958,6 +958,8 @@
   "tooltip:Tutkinnon perusteen diaarinumero." : "Tutkinnon perusteen diaarinumero.",
   "description:Opiskelu ulkomailla alkamis- ja päättymispäivineen...." : "Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.",
   "tooltip:Opiskelijan saamat laissa säädetyt tukimuodot..." : "Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).",
-  "tooltip:Suorituksen laajuus vuosiviikkotunteina." : "Suorituksen laajuus vuosiviikkotunteina."
+  "tooltip:Suorituksen laajuus vuosiviikkotunteina." : "Suorituksen laajuus vuosiviikkotunteina.",
+  "tooltip:Oppiaineen laajuus vuosiviikkotunteina." : "Oppiaineen laajuus vuosiviikkotunteina.",
+  "tooltip:Oppiaineen kokonaisarvosana" : "Oppiaineen kokonaisarvosana"
 }
 

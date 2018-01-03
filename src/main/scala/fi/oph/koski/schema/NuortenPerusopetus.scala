@@ -302,7 +302,6 @@ object PerusopetuksenOppiaineenArviointi {
     päivä = None,
     kuvaus = kuvaus
   )
-  @Tooltip("Oppiaineen arvosana.")
   def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = None
@@ -353,6 +352,7 @@ trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaa
   @Description("Oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   def tunniste: KoodiViite
+  @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
 
@@ -430,7 +430,6 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
 }
 
 case class LaajuusVuosiviikkotunneissa(
-  @Tooltip("Suorituksen laajuus vuosiviikkotunteina.")
   arvo: Float,
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
