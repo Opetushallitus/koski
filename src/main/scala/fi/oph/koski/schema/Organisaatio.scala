@@ -115,9 +115,9 @@ trait OrganisaatioWithOid extends Organisaatio {
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
   def toOidOrganisaatio = OidOrganisaatio(oid, nimi)
-  def toKoulutustoimija = this match {
-    case kt: Koulutustoimija => kt
-    case _ => Koulutustoimija(oid, nimi, None, None)
+  def toKoulutustoimija: Option[Koulutustoimija] = this match {
+    case kt: Koulutustoimija => Some(kt)
+    case _ => None
   }
   @KoodistoUri("kunta")
   def kotipaikka: Option[Koodistokoodiviite]
