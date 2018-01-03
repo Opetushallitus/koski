@@ -1,8 +1,7 @@
 package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
-
+import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy, RefreshingCache}
 import scala.concurrent.duration._
 
 object KoodistoPalvelu {
@@ -10,7 +9,7 @@ object KoodistoPalvelu {
     cached(withoutCache(config))
   }
 
-  def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(RefreshingCache("KoodistoPalvelu", 3.hours, 100), palvelu)
+  def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(RefreshingCache("KoodistoPalvelu", 1 hour, 100), palvelu)
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     config.getString("opintopolku.virkailija.url") match {
