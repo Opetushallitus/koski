@@ -79,7 +79,7 @@ class HealthCheck(application: KoskiApplication) extends Logging {
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
 
-  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findRakenne(diaarinumero)).flatMap {
+  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findRakenne(diaarinumero), timeout = 10 seconds).flatMap {
     case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon rakennetta $diaarinumero ei löydy Perusteista"))
     case Some(rakenne) =>
       val rakenteet: List[ERakenneOsa] = rakenne.suoritustavat.toList.flatten.flatMap(_.rakenne)
@@ -126,8 +126,8 @@ class HealthCheck(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def get[T](key: String, f: => T): Either[HttpStatus, T] = try {
-    Right(Task(f).runFor(5 seconds))
+  private def get[T](key: String, f: => T, timeout: Duration = 5 seconds): Either[HttpStatus, T] = try {
+    Right(Task(f).runFor(timeout))
   } catch {
     case e: HttpStatusException =>
       Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))
