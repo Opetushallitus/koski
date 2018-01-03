@@ -159,6 +159,7 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Title("Arvosana")
+  @Tooltip("Oppiaineen kokonaisarvosana")
   @FlattenInUI
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
