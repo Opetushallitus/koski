@@ -55,6 +55,7 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
   let kieliKoodisto = modelData(oppiaine, 'kieli.koodistoUri')
   let kieliKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo')
   const alternativesForField = (model) => {
+    if (!oppiaineKoodisto) return []
     let kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
     let loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${kurssiKoodistot}`).addQueryParams({kieliKoodisto, kieliKoodiarvo})
     return Http.cachedGet(loc.toString())
