@@ -39,7 +39,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   let osatP = diaarinumero
     ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
     : yhteinenTutkinnonOsa(suoritus)
-      ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: false} })
+      ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
       : Bacon.constant({osat:[], paikallinenOsa: true})
 
   return (<span>
@@ -75,7 +75,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   }
 }
 
-const yhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
+export const yhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
 
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)
@@ -84,7 +84,7 @@ const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, add
   })
   let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={t('Lisää tutkinnon osa')}/>
+      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
 }
 
@@ -103,10 +103,10 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   return (<span className="paikallinen-tutkinnon-osa">
     {
       lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
-        <Text name="Lisää paikallinen tutkinnon osa"/>
+        {lisättävätTutkinnonOsat.osanOsa ? <Text name="Lisää paikallinen tutkinnon osan osa-alue"/> : <Text name="Lisää paikallinen tutkinnon osa"/>}
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom}>
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={lisättävätTutkinnonOsat.osanOsa ? 'Lisää tutkinnon osan osa-alue' : 'Lisää tutkinnon osa'} validP={selectedAtom}>
         <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
         <label>
           <Text name="Tutkinnon osan nimi"/>
