@@ -136,6 +136,7 @@ export const modelEmpty = (mainModel, path) => {
 
 export const recursivelyEmpty = (m) => {
   if (!m.value) return true
+  if (m.optional) return false
   if (m.type == 'object') {
     if (!m.value.properties) return true
     for (var i in m.value.properties) {

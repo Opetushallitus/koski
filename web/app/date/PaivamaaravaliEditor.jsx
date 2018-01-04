@@ -14,7 +14,6 @@ export const PäivämääräväliEditor = ({model}) => {
 }
 
 PäivämääräväliEditor.canShowInline = () => true
-PäivämääräväliEditor.handlesOptional = (modifier) => modifier != 'array'
 PäivämääräväliEditor.validateModel = (model) => {
   let alkuData = modelData(model, 'alku')
   let loppuData = modelData(model, 'loppu')
