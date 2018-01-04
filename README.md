@@ -64,7 +64,7 @@ Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista 
 tarpeen mukaan.
 
 - PostgreSQL 9.6 -tietokanta
-- Elasticsearch 5.1.1 -hakuindeksi
+- Elasticsearch 5.6 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
   - Scalatra-web-framework
@@ -90,11 +90,15 @@ Minimissään tarvitset nämä:
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
 - Java 8 (osx: `brew cask install java`)
 - Maven 3 (osx: `brew install maven`)
-- Postgres 9.6 (osx: `brew install postgresql`)
-- Elasticsearch 5.1.1 (osx: `brew install elasticsearch`)
+- Postgres 9.6
+  - osx: `brew install postgresql@9.6` 
+  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@9.6/bin/{createdb,createuser} /usr/local/bin`
+- Elasticsearch 5.6
+  - osx: `brew install elasticsearch@5.6`
+  - then ensure the binary is in your PATH, e.g. `ln -s ../opt/elasticsearch@5.6/bin/elasticsearch /usr/local/bin`
 - Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu`)
-- Node.js ja NPM (osx: `brew install node`)
-- Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
+- Node.js 8.x ja NPM (osx: `brew install node`)
+- Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ## Buildi ja ajaminen
 
@@ -129,7 +133,7 @@ make build
 make run
 ```
 
-Avaa selaimessa [http://localhost:7021/koski](http://localhost:7021/koski). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
+Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/koski/virkailija). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
 Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-indeksiä, jotka se myös itse käynnistää. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 

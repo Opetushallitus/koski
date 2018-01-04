@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository, localizations: LocalizationRepository) extends Logging {
   def convert(ytrOppija: YtrOppija): Option[YlioppilastutkinnonOpiskeluoikeus] = {
     val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406")
-      .map(_.toKoulutustoimija)
+      .flatMap(_.toKoulutustoimija)
       .getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
 
     val oppilaitos = ytrOppija.graduationSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
@@ -21,10 +21,10 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
         Some(oppilaitos)
     })
 
-    val vahvistus = oppilaitos.flatMap(oppilaitos => ytrOppija.graduationDate.map { graduationDate =>
+    val vahvistus = ytrOppija.graduationDate.map { graduationDate =>
       val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
-      Organisaatiovahvistus(graduationDate, helsinki, oppilaitos)
-    })
+      Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
+    }
 
     Some(YlioppilastutkinnonOpiskeluoikeus(
       lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),

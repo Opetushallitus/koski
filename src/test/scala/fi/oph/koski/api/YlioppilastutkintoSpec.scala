@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
+import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
 import org.scalatest.{FreeSpec, Matchers}
 
 class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods with TodistusTestMethods with LocalJettyHttpSpecification {
@@ -39,6 +40,16 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
         tutkintoSuoritus.osasuoritusLista.foreach { koeSuoritus =>
           koeSuoritus.valmis should equal(true)
         }
+      }
+
+      "Suoritus on valmis myös silloin kun oppilaitostieto puuttuu" in {
+        // huom, pääkäyttäjä koska tätä oppijaa ei voi yhdistää mihinkään oppilaitokseen/organisaatioon
+        val oikeudet = getOpiskeluoikeudet(MockOppijat.ylioppilasEiOppilaitosta.oid, user = paakayttaja)
+        oikeudet.length should equal(1)
+
+        oikeudet(0).oppilaitos should equal(None)
+        val tutkintoSuoritus: YlioppilastutkinnonSuoritus = oikeudet(0).asInstanceOf[YlioppilastutkinnonOpiskeluoikeus].suoritukset(0)
+        tutkintoSuoritus.valmis should equal(true)
       }
     }
 
