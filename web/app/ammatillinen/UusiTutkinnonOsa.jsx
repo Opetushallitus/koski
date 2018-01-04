@@ -24,6 +24,7 @@ import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
 import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
+import {koodistoValues} from '../uusioppija/koodisto'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
@@ -35,7 +36,11 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero') || modelData(suoritus, 'tutkinto.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
-  let osatP = diaarinumero ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId) : Bacon.constant({osat:[], paikallinenOsa: true})
+  let osatP = diaarinumero
+    ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
+    : yhteinenTutkinnonOsa(suoritus)
+      ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: false} })
+      : Bacon.constant({osat:[], paikallinenOsa: true})
 
   return (<span>
     {
@@ -69,6 +74,8 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
     setExpanded(uusiSuoritus)(true)
   }
 }
+
+const yhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
 
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)
