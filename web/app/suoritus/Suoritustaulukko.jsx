@@ -101,7 +101,7 @@ export class Suoritustaulukko extends React.Component {
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr>
-            { !nested && items.length > 0 && columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
+            { nested && items.length === 0 ? null : columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
           </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),

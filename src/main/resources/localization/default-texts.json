@@ -963,6 +963,8 @@
   "tooltip:Oppiaineen kokonaisarvosana" : "Oppiaineen kokonaisarvosana",
   "description:Onko oppija muu kuin vaikeimmin..." : "Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
   "tooltip:Tieto siitä, onko oppija muu..." : "Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
-  "description:Onko oppija vaikeasti kehitysvammainen. Lista..." : "Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto."
+  "description:Onko oppija vaikeasti kehitysvammainen. Lista..." : "Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
+  "Lisää tutkinnon osan osa-alue": "Lisää tutkinnon osan osa-alue",
+  "Lisää paikallinen tutkinnon osan osa-alue": "Lisää paikallinen tutkinnon osan osa-alue"
 }
 
