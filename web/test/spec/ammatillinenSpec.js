@@ -1092,10 +1092,10 @@ describe('Ammatillinen koulutus', function() {
           expect(extractAsText(S('.ammatillinenkoulutus'))).to.equal(
               'Ammatillinen koulutus\n' +
               'Stadin ammattiopisto\n' +
-              'Ammatillinen tutkinto 2012 - 2016 , Valmistunut')
+              'Ammatillinen tutkinto 2012 — 2016 , Valmistunut')
         })
         it('näyttää opiskeluoikeuden otsikkotiedot', function() {
-          expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto(2012-2016, valmistunut)'])
+          expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto(2012—2016, valmistunut)'])
         })
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
@@ -1322,7 +1322,7 @@ describe('Ammatillinen koulutus', function() {
       before(opinnot.expandAll)
 
       it('näyttää opiskeluoikeuden otsikkotiedot', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto, osittainen(2012-2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto,Luonto- ja ympäristöalan perustutkinto, osittainen(2012—2016, valmistunut)'])
         expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal('Luonto- ja ympäristöalan perustutkinto, osittainen')
       })
 
