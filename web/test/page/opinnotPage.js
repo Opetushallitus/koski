@@ -1,5 +1,10 @@
 function OpinnotPage() {
   var api = {
+    getOpiskeluoikeudenTila: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      var nth = S('.opiskeluoikeus .opiskeluoikeuden-tiedot .property.tila .value')[index]
+      return S(nth).text()
+    },
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
       var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]

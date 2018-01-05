@@ -46,6 +46,7 @@ function AddOppijaPage() {
           .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
           .then(api.selectTutkinto(params.tutkinto))
           .then(api.selectSuoritustapa(params.suoritustapa))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterData: function(params) {
@@ -141,6 +142,11 @@ function AddOppijaPage() {
     },
     selectSuorituskieli: function(kieli) {
       return selectFromDropdown('.suorituskieli .dropdown', kieli)
+    },
+    selectOpintojenRahoitus: function(rahoitus) {
+      return rahoitus
+        ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
+        : function() {}
     },
     selectKieli: function(kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)
