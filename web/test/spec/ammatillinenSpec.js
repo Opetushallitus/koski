@@ -40,6 +40,20 @@ describe('Ammatillinen koulutus', function() {
         it('Näytetään tyhjät nimitietokentät', function() {
           expect(addOppija.henkilötiedot()).to.deep.equal([ '', '', '' ])
         })
+
+        it('Ei näytetä opintojen rahoitus -kenttää', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(false)
+        })
+      })
+
+      describe('Kun valitaan opiskeluoikeudeksi Ammatillinen koulutus', function() {
+        before(
+          addOppija.selectOppilaitos('Stadin'),
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen')
+        )
+        it('Näytetään opintojen rahoitus -kenttä', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(true)
+        })
       })
 
       describe('Kun lisätään oppija', function() {
