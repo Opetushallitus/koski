@@ -16,7 +16,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
-import {isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isKieliAine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import Http from '../util/http'
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
@@ -28,8 +28,14 @@ import {koodistoValues} from '../uusioppija/koodisto'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
-  let koulutusmoduuliProto = koulutusModuuliprotos.find(R.complement(isPaikallinen))
   let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
+  let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
+
+  let koulutusmoduuliProto = selectedItem => isYhteinenTutkinnonOsa(suoritus)
+    ? ammatillisenKieliaine(selectedItem)
+      ? valtakunnallisetKoulutusmoduulit.find(isKieliAine)
+      : valtakunnallisetKoulutusmoduulit.find(R.complement(isKieliAine))
+    : valtakunnallisetKoulutusmoduulit[0]
 
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
@@ -38,7 +44,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
 
   let osatP = diaarinumero
     ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
-    : yhteinenTutkinnonOsa(suoritus)
+    : isYhteinenTutkinnonOsa(suoritus)
       ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
       : Bacon.constant({osat:[], paikallinenOsa: true})
 
@@ -75,12 +81,16 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   }
 }
 
-export const yhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
+export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
+const kieliAineet = ['TK1', 'VK', 'AI' ]
+const ammatillisenKieliaine = selectedItem =>
+  selectedItem && selectedItem.koodistoUri === 'ammatillisenoppiaineet' && kieliAineet.includes(selectedItem.koodiarvo)
+
 
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
-    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title))
+    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))
   })
   let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
@@ -124,7 +134,7 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
   let lisääOsaToisestaTutkinnosta = (tutkinto, osa) => {
     lisääOsaToisestaTutkinnostaAtom.set(false)
     if (osa) {
-      addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
+      addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(), { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
     }
   }
   let tutkintoAtom = Atom()

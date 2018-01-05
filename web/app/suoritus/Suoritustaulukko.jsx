@@ -18,7 +18,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
-import UusiTutkinnonOsa, {yhteinenTutkinnonOsa} from '../ammatillinen/UusiTutkinnonOsa'
+import UusiTutkinnonOsa, {isYhteinenTutkinnonOsa} from '../ammatillinen/UusiTutkinnonOsa'
 import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from '../ammatillinen/TutkinnonOsa'
 import {sortGradesF} from '../util/sorting'
 
@@ -146,7 +146,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let hasProperties = displayProperties.length > 0
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || yhteinenTutkinnonOsa(model)
+    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties, expanded}))}
