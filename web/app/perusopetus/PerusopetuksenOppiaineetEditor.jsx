@@ -39,11 +39,11 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
 
-  if (isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
+  if (model.context.edit && isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
     luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
       pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
     })
-  } else if (isYsiluokka(model) && !jääLuokalle(model) && oppiaineSuoritukset.length > 0) {
+  } else if (model.context.edit && isYsiluokka(model) && !jääLuokalle(model) && oppiaineSuoritukset.length > 0) {
     pushModel(modelSetValue(model, [], 'osasuoritukset'))
   }
 
