@@ -19,6 +19,7 @@
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
@@ -281,12 +282,6 @@
       <version>2.5.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-scalatest_2.12</artifactId>
-      <version>2.5.0</version>
-      <scope>test</scope>
-    </dependency>
       <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
           <artifactId>selenium-api</artifactId>
@@ -306,6 +301,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M1</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -325,6 +321,7 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>scala-compile-first</id>

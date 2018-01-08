@@ -38,7 +38,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
         arvioituPäättymispäivä = None,
-        päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
+        päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = Some(oppilaitos(opiskeluoikeusNode)),
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
@@ -191,7 +191,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def loppuPvm(n: Node): Option[LocalDate] = {
-    (n \ "LoppuPvm").headOption.map(l => date(l.text))
+    (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
   }
 
   private def opiskelijaAvain(node: Node) = {
@@ -212,6 +212,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def laji(node: Node) = {
     (node \ "Laji").text
+  }
+
+  private def optionalDate(str: String): Option[LocalDate] = {
+    if (str == "2112-12-21") {
+      None
+    } else {
+      Some(date(str))
+    }
   }
 
   private def koulutuskoodi(node: Node): Option[String] = {

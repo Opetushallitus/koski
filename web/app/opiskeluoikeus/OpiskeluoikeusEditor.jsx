@@ -41,7 +41,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
             <span className="koulutus inline-text" style={hasOppilaitos ? { 'text-transform': 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
             {hasAlkamispäivä && (
               <span className="inline-text">{'('}
-                <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'-'}
+                <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'—'}
                 <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
                 <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
               </span>

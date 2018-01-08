@@ -24,7 +24,7 @@ export default ({ opiskeluoikeudet, selectedIndex }) => {
                           <span className="koulutus inline-text">{ modelTitle(suoritusRyhmä.suoritukset[0], 'tyyppi') }</span>
                           { modelData(opiskeluoikeus, 'alkamispäivä')
                             ? <span className="inline-text">
-                                      <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>{'-'}
+                                      <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>{'—'}
                               <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))}{','}</span>
                                     </span>
                             : null
