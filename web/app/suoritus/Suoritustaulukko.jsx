@@ -1,13 +1,9 @@
 import React from 'baret'
-import {modelData, modelLookup, modelTitle} from '../editor/EditorModel.js'
+import {modelData, modelLookup} from '../editor/EditorModel.js'
 import {Editor} from '../editor/Editor'
 import {PropertiesEditor, shouldShowProperty} from '../editor/PropertiesEditor'
 import {
-  modelErrorMessages,
-  modelItems,
-  modelProperties,
-  modelProperty,
-  optionalPrototypeModel,
+  modelErrorMessages, modelItems, modelProperties, modelProperty, modelTitle, optionalPrototypeModel,
   pushRemoval
 } from '../editor/EditorModel'
 import R from 'ramda'
@@ -18,9 +14,13 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
-import UusiTutkinnonOsa, {isYhteinenTutkinnonOsa} from '../ammatillinen/UusiTutkinnonOsa'
-import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from '../ammatillinen/TutkinnonOsa'
-import {sortGradesF} from '../util/sorting'
+import UusiTutkinnonOsa  from '../ammatillinen/UusiTutkinnonOsa'
+import {
+  createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa,
+  placeholderForNonGrouped
+} from '../ammatillinen/TutkinnonOsa'
+import {sortGradesF, sortLanguages} from '../util/sorting'
+import {isKieliaine} from './Koulutusmoduuli'
 
 
 export class Suoritustaulukko extends React.Component {
@@ -205,18 +205,22 @@ const SuoritusColumn = {
   shouldShow : () => true,
   renderHeader: ({groupTitles, groupId}) => <td key="suoritus">{groupTitles[groupId]}</td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
-    let nimi = modelTitle(model, 'koulutusmoduuli')
+    let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
+    let kieliaine = isKieliaine(koulutusmoduuli)
 
     return (<td key="suoritus" className="suoritus">
       <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
          onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
       {showTila && <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>}
       {
-        hasProperties
-          ? <a className="nimi" onClick={() => onExpand(!expanded)}>{nimi}</a>
-          : <span className="nimi">{nimi}</span>
+        titleAsExpandLink
+          ? <a className="nimi" onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</a>
+          : <span className="nimi">
+            {t(modelData(koulutusmoduuli, 'tunniste.nimi')) + (kieliaine ? ', ' : '')}
+            {kieliaine && <span className="value kieli"><Editor model={koulutusmoduuli} inline={true} path="kieli" sortBy={sortLanguages}/></span>}
+          </span>
       }
-
     </td>)
   }
 }

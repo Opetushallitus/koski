@@ -3,12 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelData} from '../editor/EditorModel.js'
 import {
-  ensureArrayKey, modelLookup,
-  modelSet,
-  modelSetData,
-  modelSetTitle,
-  modelSetValue,
-  modelSetValues,
+  ensureArrayKey, modelLookup, modelSet, modelSetData, modelSetTitle, modelSetValue, modelSetValues,
   pushModel
 } from '../editor/EditorModel'
 import R from 'ramda'
@@ -16,12 +11,15 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
-import {isKieliaine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import Http from '../util/http'
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
-import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
+import {
+  createTutkinnonOsanSuoritusPrototype, isAmmatillisenKieliaine, isYhteinenTutkinnonOsa, placeholderForNonGrouped,
+  tutkinnonOsanOsaAlueenKoulutusmoduuli
+} from './TutkinnonOsa'
 import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {koodistoValues} from '../uusioppija/koodisto'
@@ -31,10 +29,8 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
   let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
 
-  let koulutusmoduuliProto = selectedItem => isYhteinenTutkinnonOsa(suoritus)
-    ? ammatillisenKieliaine(selectedItem)
-      ? valtakunnallisetKoulutusmoduulit.find(isKieliaine)
-      : valtakunnallisetKoulutusmoduulit.find(R.complement(isKieliaine))
+  let koulutusmoduuliProto = selectedItem => selectedItem && isYhteinenTutkinnonOsa(suoritus)
+    ? tutkinnonOsanOsaAlueenKoulutusmoduuli(valtakunnallisetKoulutusmoduulit, selectedItem.data)
     : valtakunnallisetKoulutusmoduulit[0]
 
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
@@ -81,17 +77,12 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   }
 }
 
-export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
-const kieliAineet = ['TK1', 'VK', 'AI' ]
-const ammatillisenKieliaine = selectedItem =>
-  selectedItem && selectedItem.koodistoUri === 'ammatillisenoppiaineet' && kieliAineet.includes(selectedItem.koodiarvo)
-
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
     addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))
   })
-  let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
+  let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo) || isAmmatillisenKieliaine(osa.koodiarvo))
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
       <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
