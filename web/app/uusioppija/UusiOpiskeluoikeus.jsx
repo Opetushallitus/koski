@@ -14,6 +14,7 @@ import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {sortLanguages} from '../util/sorting'
+import {ift} from '../util/util'
 import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
 import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus'
 
@@ -24,7 +25,11 @@ export default ({opiskeluoikeusAtom}) => {
   const tyyppiAtom = Atom()
   const tilaAtom = Atom()
   const suoritusAtom = Atom()
-  tyyppiAtom.changes().onValue(() => suoritusAtom.set(undefined))
+  const rahoitusAtom = Atom()
+  tyyppiAtom.changes().onValue(() => {
+    suoritusAtom.set(undefined)
+    rahoitusAtom.set(undefined)
+  })
 
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
@@ -37,30 +42,35 @@ export default ({opiskeluoikeusAtom}) => {
 
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
   const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) => tyyppi === 'ammatillinenkoulutus' ? tilat : tilat.filter(tila => tila.koodiarvo !== 'loma'))
+  const rahoituksetP = koodistoValues('opintojenrahoitus')
+  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus'))
 
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
-  const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, makeOpiskeluoikeus)
+  const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, makeOpiskeluoikeus)
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-      <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
-      {
-        oppilaitosAtom.map(o => !!o).and(<OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
-      }
-      <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />
-      {
-        tyyppiAtom.map('.koodiarvo').map(tyyppi => {
-          if (tyyppi == 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-          if (tyyppi == 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-          if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
-          if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-          if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-          if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        })
-      }
-      <Aloituspäivä dateAtom={dateAtom} />
-      <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />
+    <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
+    {
+      ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
+    }
+    <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />
+    {
+      tyyppiAtom.map('.koodiarvo').map(tyyppi => {
+        if (tyyppi == 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
+        if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+      })
+    }
+    <Aloituspäivä dateAtom={dateAtom} />
+    <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />
+    {
+      ift(hasRahoituksetAvailable, <OpintojenRahoitus rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
+    }
   </div>)
 }
 
@@ -105,14 +115,34 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
     selected={tilaAtom}/>)
 }
 
-var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila) => {
+const OpintojenRahoitus = ({rahoitusAtom, opintojenRahoituksetP}) => {
+  return (
+    <KoodistoDropdown
+      className="opintojenrahoitus"
+      title="Opintojen rahoitus"
+      options={opintojenRahoituksetP}
+      selected={rahoitusAtom}
+    />
+  )
+}
+
+var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus) => {
+  const makeOpiskeluoikeusjakso = () => {
+    const opiskeluoikeusjakso = date && tila && {alku: formatISODate(date), tila}
+    opiskeluoikeusjakso && opintojenRahoitus
+      ? opiskeluoikeusjakso.opintojenRahoitus = opintojenRahoitus
+      : opiskeluoikeusjakso
+
+    return opiskeluoikeusjakso
+  }
+
   return date && oppilaitos && tyyppi && suoritus && tila && {
-      tyyppi: tyyppi,
-      oppilaitos: oppilaitos,
-      alkamispäivä: formatISODate(date),
-      tila: {
-        opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila }]
-      },
-      suoritukset: [suoritus]
-    }
+    tyyppi: tyyppi,
+    oppilaitos: oppilaitos,
+    alkamispäivä: formatISODate(date),
+    tila: {
+      opiskeluoikeusjaksot: [makeOpiskeluoikeusjakso()]
+    },
+    suoritukset: [suoritus]
+  }
 }

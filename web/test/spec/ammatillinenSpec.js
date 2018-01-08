@@ -40,6 +40,20 @@ describe('Ammatillinen koulutus', function() {
         it('Näytetään tyhjät nimitietokentät', function() {
           expect(addOppija.henkilötiedot()).to.deep.equal([ '', '', '' ])
         })
+
+        it('Ei näytetä opintojen rahoitus -kenttää', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(false)
+        })
+      })
+
+      describe('Kun valitaan opiskeluoikeudeksi Ammatillinen koulutus', function() {
+        before(
+          addOppija.selectOppilaitos('Stadin'),
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen')
+        )
+        it('Näytetään opintojen rahoitus -kenttä', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(true)
+        })
       })
 
       describe('Kun lisätään oppija', function() {
@@ -50,6 +64,7 @@ describe('Ammatillinen koulutus', function() {
           it('lisätty oppija näytetään', function() {})
 
           it('Lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getOpiskeluoikeudenTila()).to.match(/Läsnä$/)
             expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
             expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
             expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
@@ -439,6 +454,16 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää oikeat tiedot', function () {
           expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Uimaliikunta ja vesiturvallisuus')
         })
+      })
+    })
+
+    describe('Opintojen rahoitus', function() {
+      before(resetFixtures, prepareForNewOppija('kalle', '230872-7258'))
+      before(addOppija.enterValidDataAmmatillinen({opintojenRahoitus: 'Aikuisten osaamisperustan vahvistaminen'}))
+      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'))
+
+      it('Lisätty opiskeluoikeus ja opintojen rahoitus näytetään', function() {
+        expect(opinnot.getOpiskeluoikeudenTila()).to.match(/Läsnä \(aikuisten osaamisperustan vahvistaminen\)$/)
       })
     })
   })

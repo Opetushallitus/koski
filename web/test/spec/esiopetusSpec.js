@@ -38,6 +38,10 @@ describe('Esiopetus', function() {
         it('Lisää-nappi on enabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(true)
         })
+
+        it('Ei näytetä opintojen rahoitus -kenttää', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(false)
+        })
       })
 
       describe('Kun painetaan Lisää-nappia', function() {
