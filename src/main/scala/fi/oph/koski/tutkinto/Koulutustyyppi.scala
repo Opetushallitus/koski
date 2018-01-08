@@ -11,6 +11,7 @@ object Koulutustyyppi {
   val lukiokoulutus = apply(2)
   val korkeakoulutus = apply(3)
   val ammatillinenPerustutkintoErityisopetuksena = apply(4)
+  val telma = apply(5)
   val ammattitutkinto = apply(11)
   val erikoisammattitutkinto = apply(12)
   val ammatillinenPerustutkintoNäyttötutkintona = apply(13)
