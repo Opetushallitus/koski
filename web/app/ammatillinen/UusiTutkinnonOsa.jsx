@@ -16,7 +16,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
-import {isKieliAine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isKieliaine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import Http from '../util/http'
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
@@ -33,8 +33,8 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
 
   let koulutusmoduuliProto = selectedItem => isYhteinenTutkinnonOsa(suoritus)
     ? ammatillisenKieliaine(selectedItem)
-      ? valtakunnallisetKoulutusmoduulit.find(isKieliAine)
-      : valtakunnallisetKoulutusmoduulit.find(R.complement(isKieliAine))
+      ? valtakunnallisetKoulutusmoduulit.find(isKieliaine)
+      : valtakunnallisetKoulutusmoduulit.find(R.complement(isKieliaine))
     : valtakunnallisetKoulutusmoduulit[0]
 
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
@@ -85,7 +85,6 @@ export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.include
 const kieliAineet = ['TK1', 'VK', 'AI' ]
 const ammatillisenKieliaine = selectedItem =>
   selectedItem && selectedItem.koodistoUri === 'ammatillisenoppiaineet' && kieliAineet.includes(selectedItem.koodiarvo)
-
 
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)

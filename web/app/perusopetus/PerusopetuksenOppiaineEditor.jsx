@@ -6,20 +6,14 @@ import {hasModelProperty, lensedModel, modelData, modelLookup, modelSetValue} fr
 import {sortLanguages} from '../util/sorting'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
 import {doActionWhileMounted} from '../util/util'
-import {isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isKieliaine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 
 export class PerusopetuksenOppiaineEditor extends React.Component {
   render() {
     let { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } = this.props
-    let oppiaineTitle = (aine) => {
-      let title = t(modelData(aine, 'tunniste.nimi')) + (kieliaine ? ', ' : '')
-      return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + (kieliaine ? title : title.toLowerCase())}</span> : title
-    }
-    let pakollinen = modelData(oppiaine, 'pakollinen')
     let äidinkieli = oppiaine.value.classes.includes('aidinkieli')
-    let kieliaine = oppiaine.value.classes.includes('kieliaine')
 
     return (<span>
     {
@@ -32,7 +26,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
     }
       {
         // kielivalinta
-        kieliaine && <span className="value kieli"><Editor model={oppiaine} inline={true} path="kieli" sortBy={!äidinkieli && sortLanguages}/></span>
+        isKieliaine(oppiaine) && <span className="value kieli"><Editor model={oppiaine} inline={true} path="kieli" sortBy={!äidinkieli && sortLanguages}/></span>
       }
       {
         this.state && this.state.changed && isPaikallinen(oppiaine) && doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
@@ -63,4 +57,11 @@ let fixKuvaus = (oppiaine) => {
 
 export const paikallinenOppiainePrototype = (oppiaineenSuoritus) => {
   return koulutusModuuliprototypes(oppiaineenSuoritus).find(isPaikallinen)
+}
+
+const oppiaineTitle = aine => {
+  let pakollinen = modelData(aine, 'pakollinen')
+  let kieliaine = isKieliaine(aine)
+  let title = t(modelData(aine, 'tunniste.nimi')) + (kieliaine ? ', ' : '')
+  return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + (kieliaine ? title : title.toLowerCase())}</span> : title
 }
