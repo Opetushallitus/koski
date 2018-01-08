@@ -49,12 +49,12 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Title("Vuosiluokkiin sitomaton opetus")
   @SensitiveData
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("Onko opiskelija vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Tieto siitä, onko opiskelija vammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vammainen: Option[List[Aikajakso]] = None,
-  @Description("Onko opiskelija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Tieto siitä, onko opiskelija vaikeasti vammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
