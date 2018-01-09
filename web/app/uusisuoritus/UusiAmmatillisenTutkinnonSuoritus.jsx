@@ -48,6 +48,12 @@ let tutkintoLens = L.lens(
 
 const hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
 const hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
+const hasContradictingSuoritus = opiskeluoikeus => {
+  const disallowedSuoritustyypit = ['telma', 'valma', 'ammatillinentutkintoosittainen']
+  return modelItems(opiskeluoikeus, 'suoritukset')
+    .map(suoritus => modelData(suoritus, 'tyyppi.koodiarvo'))
+    .some(suoritustyyppi => disallowedSuoritustyypit.includes(suoritustyyppi))
+}
 
 const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -113,12 +119,16 @@ const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
 
 export const UusiAmmatillisenTutkinnonSuoritus = Popup(false)
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasAmmatillinenTutkinto(opiskeluoikeus)
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
+    && !hasAmmatillinenTutkinto(opiskeluoikeus)
+    && !hasContradictingSuoritus(opiskeluoikeus)
 }
 UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () => <Text name="lisää ammatillisen tutkinnon suoritus"/>
 
 export const UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus = Popup(true)
 UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' && !hasValmistavaTutkinto(opiskeluoikeus)
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
+    && !hasValmistavaTutkinto(opiskeluoikeus)
+    && !hasContradictingSuoritus(opiskeluoikeus)
 }
 UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.addSuoritusTitle = () => <Text name="lisää näyttötutkintoon valmistavan koulutuksen suoritus"/>
