@@ -1296,7 +1296,7 @@ describe('Ammatillinen koulutus', function() {
             'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 3\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
-            'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
+            'Toinen kotimainen kieli, ruotsi, ruotsi kyllä 1 3\n' +
             'Vieraat kielet, englanti kyllä 2 3\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
