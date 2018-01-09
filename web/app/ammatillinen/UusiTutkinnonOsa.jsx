@@ -3,12 +3,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelData} from '../editor/EditorModel.js'
 import {
-  ensureArrayKey, modelLookup,
-  modelSet,
-  modelSetData,
-  modelSetTitle,
-  modelSetValue,
-  modelSetValues,
+  ensureArrayKey, modelLookup, modelSet, modelSetData, modelSetTitle, modelSetValue, modelSetValues,
   pushModel
 } from '../editor/EditorModel'
 import R from 'ramda'
@@ -21,21 +16,33 @@ import Http from '../util/http'
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
-import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from './TutkinnonOsa'
+import {
+  createTutkinnonOsanSuoritusPrototype, isAmmatillisenKieliaine, isYhteinenTutkinnonOsa, placeholderForNonGrouped,
+  tutkinnonOsanOsaAlueenKoulutusmoduuli
+} from './TutkinnonOsa'
 import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
+import {koodistoValues} from '../uusioppija/koodisto'
 
 export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
-  let koulutusmoduuliProto = koulutusModuuliprotos.find(R.complement(isPaikallinen))
   let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
+  let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
+
+  let koulutusmoduuliProto = selectedItem => selectedItem && isYhteinenTutkinnonOsa(suoritus)
+    ? tutkinnonOsanOsaAlueenKoulutusmoduuli(valtakunnallisetKoulutusmoduulit, selectedItem.data)
+    : valtakunnallisetKoulutusmoduulit[0]
 
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero') || modelData(suoritus, 'tutkinto.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
 
-  let osatP = diaarinumero ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId) : Bacon.constant({osat:[], paikallinenOsa: true})
+  let osatP = diaarinumero
+    ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
+    : isYhteinenTutkinnonOsa(suoritus)
+      ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
+      : Bacon.constant({osat:[], paikallinenOsa: true})
 
   return (<span>
     {
@@ -73,11 +80,11 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
 const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
-    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: newItem }), newItem.title))
+    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))
   })
-  let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo))
+  let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo) || isAmmatillisenKieliaine(osa.koodiarvo))
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={t('Lisää tutkinnon osa')}/>
+      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
 }
 
@@ -96,10 +103,10 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   return (<span className="paikallinen-tutkinnon-osa">
     {
       lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
-        <Text name="Lisää paikallinen tutkinnon osa"/>
+        {lisättävätTutkinnonOsat.osanOsa ? <Text name="Lisää paikallinen tutkinnon osan osa-alue"/> : <Text name="Lisää paikallinen tutkinnon osa"/>}
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey="Lisää tutkinnon osa" validP={selectedAtom}>
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={lisättävätTutkinnonOsat.osanOsa ? 'Lisää tutkinnon osan osa-alue' : 'Lisää tutkinnon osa'} validP={selectedAtom}>
         <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
         <label>
           <Text name="Tutkinnon osan nimi"/>
@@ -117,7 +124,7 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
   let lisääOsaToisestaTutkinnosta = (tutkinto, osa) => {
     lisääOsaToisestaTutkinnostaAtom.set(false)
     if (osa) {
-      addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto, { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
+      addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(), { tunniste: osa }), osa.title), tutkinto.diaarinumero != diaarinumero && tutkinto)
     }
   }
   let tutkintoAtom = Atom()

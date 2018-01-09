@@ -84,6 +84,7 @@ function OpinnotPage() {
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
     tutkinnonOsat: TutkinnonOsat,
+    avaaKaikki: click(findSingle('.expand-all')),
     anythingEditable: function() {
       return Editor(findSingle('.content-area') ).isEditable()
     },
@@ -261,6 +262,9 @@ function TutkinnonOsat(groupId) {
         },
         lisätiedot: function() {
           return api.property('lisätiedot')
+        },
+        osanOsat: function() {
+          return TutkinnonOsat('999999')
         },
         lueNäyttöModal: function() {
           function extractDropdownArray(elem) {

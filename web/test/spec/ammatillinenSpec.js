@@ -776,6 +776,77 @@ describe('Ammatillinen koulutus', function() {
               it('lisätty osa näytetään', function() {
                 expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
               })
+
+              describe('Tutkinnon osan osa-alueen lisääminen', function () {
+                describe('Ennen lisäystä', function() {
+                  it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function () {
+                    expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).osanOsat().tutkinnonosavaihtoehdot()).to.deep.equal([
+                      'ETK Etiikka',
+                      'FK Fysiikka ja kemia',
+                      'KU Kulttuurien tuntemus',
+                      'MA Matematiikka',
+                      'PS Psykologia',
+                      'TAK Taide ja kulttuuri',
+                      'TVT Tieto- ja viestintätekniikka sekä sen hyödyntäminen',
+                      'TK1 Toinen kotimainen kieli, ruotsi',
+                      'TET Työelämätaidot',
+                      'TYT Työkyvyn ylläpitäminen, liikunta ja terveystieto',
+                      'VK Vieraat kielet',
+                      'YKT Yhteiskuntataidot',
+                      'YM Ympäristöosaaminen',
+                      'YYT Yrittäjyys ja yritystoiminta',
+                      'MLFK fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen',
+                      'YTKK kestävän kehityksen edistäminen',
+                      'MLMA matematiikka ja matematiikan soveltaminen',
+                      'YTOU opiskelu- ja urasuunnitteluvalmiudet',
+                      'VVTL taide ja luova ilmaisu',
+                      'VVTD toiminta digitaalisessa ympäristössä',
+                      'YTTT työelämässä toimiminen',
+                      'YTTH työkyvyn ja hyvinvoinnin ylläpitäminen',
+                      'VVTK viestintä ja vuorovaikutus toisella kotimaisella kielellä',
+                      'VVVK viestintä ja vuorovaikutus vieraalla kielellä',
+                      'VVAI viestintä ja vuorovaikutus äidinkielellä',
+                      'YTYK yhteiskunnassa ja kansalaisena toimiminen',
+                      'YTYY yrittäjyys ja yrittäjämäinen toiminta',
+                      'AI Äidinkieli'
+                    ])
+                  })
+                })
+
+                describe('Lisäyksen jälkeen', function () {
+                  var tutkinnonOsienOsat = opinnot.tutkinnonOsat('999999')
+                  before(
+                    tutkinnonOsienOsat.lisääTutkinnonOsa('Äidinkieli'),
+                    tutkinnonOsienOsat.tutkinnonOsa(0).propertyBySelector('.kieli').selectValue('Ruotsi saamenkielisille'),
+                    editor.saveChanges,
+                    opinnot.avaaKaikki
+                  )
+                  it('lisätty osa näytetään', function() {
+                    expect(opinnot.tutkinnonOsat('999999').tutkinnonOsa(0).nimi()).to.equal('Äidinkieli, Ruotsi saamenkielisille')
+                  })
+
+                  describe('Paikallinen tutkinnon osan osa-alue', function() {
+                    before(
+                      editor.edit,
+                      opinnot.avaaKaikki,
+                      tutkinnonOsienOsat.lisääPaikallinenTutkinnonOsa('Hassut temput')
+                    )
+
+                    describe('Lisäyksen jälkeen', function () {
+                      it('lisätty osa näytetään', function() {
+                        expect(tutkinnonOsienOsat.tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                      })
+                    })
+
+                    describe('Tallennuksen jälkeen', function() {
+                      before(editor.saveChanges, opinnot.avaaKaikki)
+                      it('lisätty osa näytetään', function() {
+                        expect(tutkinnonOsienOsat.tutkinnonOsa(1).nimi()).to.equal('Hassut temput')
+                      })
+                    })
+                  })
+                })
+              })
             })
           })
           describe('Vapaavalintaisen tutkinnon osan lisääminen', function() {
@@ -1225,7 +1296,7 @@ describe('Ammatillinen koulutus', function() {
             'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 3\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
-            'Toinen kotimainen kieli, ruotsi kyllä 1 3\n' +
+            'Toinen kotimainen kieli, ruotsi, ruotsi kyllä 1 3\n' +
             'Vieraat kielet, englanti kyllä 2 3\n' +
             'Matemaattis-luonnontieteellinen osaaminen kyllä 9 3\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
