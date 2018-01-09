@@ -180,12 +180,21 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
 }
 
 const suoritusProperties = suoritus => {
-  let properties = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus').concat(
-    suoritus.context.edit
-      ? modelProperties(suoritus, p => ['näyttö', 'tunnustettu', 'lisätiedot'].includes(p.key))
-      : modelProperties(suoritus, p => !(['koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'].includes(p.key)))
-      .concat(modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)))
+  const includeProperties = (...properties) => p => properties.includes(p.key)
+  const excludeProperties = (...properties) => p => !properties.includes(p.key)
+
+  const kuvaus = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
+  const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
+    p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
   )
+
+  const properties = kuvaus.concat(
+    suoritus.context.edit
+      ? modelProperties(suoritus, includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
+      : modelProperties(suoritus, excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
+        .concat(simplifiedArviointi)
+  )
+
   return properties.filter(shouldShowProperty(suoritus.context))
 }
 
