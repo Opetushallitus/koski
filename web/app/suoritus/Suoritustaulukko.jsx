@@ -9,7 +9,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {fixArviointi, hasArvosana, suoritusValmis, tilaText} from './Suoritus'
+import {fixArviointi, hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
@@ -180,22 +180,34 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
 }
 
 const suoritusProperties = suoritus => {
-  const includeProperties = (...properties) => p => properties.includes(p.key)
-  const excludeProperties = (...properties) => p => !properties.includes(p.key)
+  const filterProperties = filter => modelProperties(suoritus, filter)
+  const includeProperties = (...properties) => filterProperties(p => properties.includes(p.key))
+  const excludeProperties = (...properties) => filterProperties(p => !properties.includes(p.key))
+
+  const propertiesForSuoritustyyppi = (tyyppi, isEdit) => {
+    const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
+      p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
+    )
+
+    const defaultsForEdit = includeProperties('näyttö', 'tunnustettu', 'lisätiedot')
+    const defaultsForView = excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta')
+      .concat(simplifiedArviointi)
+
+    switch (tyyppi) {
+      case 'valma': return isEdit
+        ? includeProperties('näyttö', 'tunnustettu', 'lisätiedot').concat(simplifiedArviointi)
+        : defaultsForView
+
+      default: return isEdit ? defaultsForEdit : defaultsForView
+    }
+  }
 
   const kuvaus = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
-  const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
-    p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
-  )
+  const parentSuorituksenTyyppi = suorituksenTyyppi(suoritus.context.suoritus)
 
-  const properties = kuvaus.concat(
-    suoritus.context.edit
-      ? modelProperties(suoritus, includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
-      : modelProperties(suoritus, excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
-        .concat(simplifiedArviointi)
-  )
-
-  return properties.filter(shouldShowProperty(suoritus.context))
+  return kuvaus
+    .concat(propertiesForSuoritustyyppi(parentSuorituksenTyyppi, suoritus.context.edit))
+    .filter(shouldShowProperty(suoritus.context))
 }
 
 const TutkintokertaColumn = {
