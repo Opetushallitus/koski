@@ -46,8 +46,8 @@ let tutkintoLens = L.lens(
   }
 )
 
-let hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
-let hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
+const hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
+const hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
 
 const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
