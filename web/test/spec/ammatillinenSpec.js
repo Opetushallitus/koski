@@ -346,6 +346,10 @@ describe('Ammatillinen koulutus', function() {
           lisääSuoritus.open('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
         )
         describe('Ennen lisäystä', function() {
+          it('Lisäyspainike on näkyvissä', function() {
+            expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(true)
+          })
+
           it('Esitäyttää oppilaitoksen', function() {
             expect(lisääSuoritus.toimipiste.oppilaitos()).to.equal('Stadin ammattiopisto')
           })
@@ -361,6 +365,25 @@ describe('Ammatillinen koulutus', function() {
           )
           it('Näyttötutkintoon valmistavan koulutuksen suoritus näytetään', function() {
             expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
+          })
+        })
+      })
+
+      describe('Lisääminen olemassa olevaan opiskeluoikeuteen, jossa VALMA-suoritus', function() {
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
+
+        before(
+          resetFixtures,
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataAmmatillinen(),
+          addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'),
+          editor.edit
+        )
+
+        describe('Lisäyspainike', function() {
+          it('Ei ole näkyvissä', function() {
+            expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(false)
           })
         })
       })
@@ -409,6 +432,19 @@ describe('Ammatillinen koulutus', function() {
       it('Lisätty opiskeluoikeus näytetään', function () {
         expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
         expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      })
+
+      describe('Ammatillisen tutkinnon suorituksen lisääminen', function() {
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
+
+        describe('Lisäyspainike', function() {
+          before(editor.edit)
+          it('Ei ole näkyvissä', function() {
+            expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
+          })
+          after(editor.cancelChanges)
+        })
+
       })
 
       var suoritustapa = editor.property('suoritustapa')
