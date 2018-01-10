@@ -194,9 +194,11 @@ const suoritusProperties = suoritus => {
       .concat(simplifiedArviointi)
 
     switch (tyyppi) {
-      case 'valma': return isEdit
-        ? includeProperties('näyttö', 'tunnustettu', 'lisätiedot').concat(simplifiedArviointi)
-        : defaultsForView
+      case 'valma':
+      case 'telma':
+        return isEdit
+          ? includeProperties('näyttö', 'tunnustettu', 'lisätiedot').concat(simplifiedArviointi)
+          : defaultsForView
 
       default: return isEdit ? defaultsForEdit : defaultsForView
     }
