@@ -13634,7 +13634,7 @@
   "locale" : "fi",
   "modified" : 1507555669047,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Vaikeasti vammainen"
+  "value" : "Vaikeimmin kehitysvammainen"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670838,
@@ -13985,7 +13985,7 @@
   "locale" : "fi",
   "modified" : 1507555669047,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Vammainen"
+  "value" : "Muu kuin vaikeimmin kehitysvammainen"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670828,
