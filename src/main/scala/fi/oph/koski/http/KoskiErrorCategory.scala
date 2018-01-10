@@ -166,8 +166,4 @@ object KoskiErrorCategory {
   object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
     val readOnly = subcategory("readOnly", "Opiskeluoikeuden tietoja ei voi muuttaa")
   }
-
-  object serviceUnavailable extends ErrorCategory("serviceUnavailable", 503, "Service Unavailable") {
-    val healthCheckNotPerformed = subcategory("healthCheckNotPerformed", "Healthcheck not performed yet")
-  }
 }
