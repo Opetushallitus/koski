@@ -27,12 +27,40 @@ class SchedulerSpec extends FreeSpec with Matchers {
       None
     }
 
-    val s = new Scheduler(KoskiApplicationForTests.masterDatabase.db, "test-sync", new IntervalSchedule(millis(1)), None, longRunningTask, runOnSingleNode = false, intervalMillis = 1)
+    val scheduler = testScheduler(longRunningTask)
     val start = System.currentTimeMillis
     Wait.until(sharedResource.get == 1, timeoutMs = 500)
     (System.currentTimeMillis() - start >= 100) should be(true)
     Wait.until(sharedResource.get == 2, timeoutMs = 500)
     (System.currentTimeMillis() - start >= 200) should be(true)
-    s.shutdown
+    scheduler.shutdown
+  }
+
+  "Scheduler" - {
+    val sharedResource: AtomicInteger = new AtomicInteger(0)
+
+    "recovers from errors" in {
+      val s = testScheduler(failingTask)
+      Thread.sleep(50)
+      fixScheduler
+      schedulerShouldRecover
+      s.shutdown
+    }
+
+    def failingTask(x: Option[JValue]) = {
+      Thread.sleep(10)
+      if (sharedResource.get() < 1) {
+        throw new Exception("error")
+      }
+      sharedResource.incrementAndGet()
+      None
+    }
+
+    def fixScheduler = sharedResource.set(1)
+    def schedulerShouldRecover = Wait.until(sharedResource.get == 2, timeoutMs = 500)
+  }
+
+  private def testScheduler(task: Option[JValue] => Option[JValue]) = {
+    new Scheduler(KoskiApplicationForTests.masterDatabase.db, "test", new IntervalSchedule(millis(1)), None, task, runOnSingleNode = false, intervalMillis = 1)
   }
 }
