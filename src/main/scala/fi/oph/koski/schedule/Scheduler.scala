@@ -27,21 +27,28 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   def shutdown: Unit = taskExecutor.shutdown()
 
   private def fireIfTime() = {
-    if (firingStrategy.shouldFire) {
+    if (shouldFire) {
       try {
         fire
       } catch {
         case e: Exception =>
           logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
-          throw e
       }
     } else {
-      val scheduler = getScheduler.get
-      def runningTimeHours = MILLISECONDS.toHours(currentTimeMillis - scheduler.nextFireTime.getTime)
-      if (scheduler.running && runningTimeHours > 24) {
-        logger.error(s"Scheduled task $scheduler has been in running state for more than $runningTimeHours hours")
+      getScheduler.foreach { scheduler =>
+        def runningTimeHours = MILLISECONDS.toHours(currentTimeMillis - scheduler.nextFireTime.getTime)
+        if (scheduler.running && runningTimeHours > 24) {
+          logger.error(s"Scheduled task $scheduler has been in running state for more than $runningTimeHours hours")
+        }
       }
     }
+  }
+
+  private def shouldFire = try {
+    firingStrategy.shouldFire
+  } catch {
+    case e: Exception => logger.error(e)(s"Error querying task status $name")
+    false
   }
 
   private def fire = try {
@@ -54,8 +61,13 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   }
 
   private def now = new Timestamp(currentTimeMillis)
-  private def getScheduler: Option[SchedulerRow] =
+
+  private def getScheduler: Option[SchedulerRow] = try {
     runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
+  } catch {
+    case e: Exception => logger.error(e)(s"Error getting scheduler $name")
+    None
+  }
 
   trait FiringStrategy {
     def shouldFire: Boolean
