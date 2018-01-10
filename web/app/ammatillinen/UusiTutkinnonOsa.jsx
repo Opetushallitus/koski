@@ -99,17 +99,18 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   let nameAtom = Atom('')
   let selectedAtom = nameAtom
     .view(name => modelSetTitle(modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: name}, 'tunniste.nimi.fi': { data: name}, 'tunniste.koodiarvo': { data: name } }), name))
+  let osanOsa = lisättävätTutkinnonOsat.osanOsa
 
   return (<span className="paikallinen-tutkinnon-osa">
     {
       lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
-        {lisättävätTutkinnonOsat.osanOsa ? <Text name="Lisää paikallinen tutkinnon osan osa-alue"/> : <Text name="Lisää paikallinen tutkinnon osa"/>}
+        {osanOsa ? <Text name="Lisää paikallinen tutkinnon osan osa-alue"/> : <Text name="Lisää paikallinen tutkinnon osa"/>}
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={lisättävätTutkinnonOsat.osanOsa ? 'Lisää tutkinnon osan osa-alue' : 'Lisää tutkinnon osa'} validP={selectedAtom}>
-        <h2><Text name="Paikallisen tutkinnon osan lisäys"/></h2>
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={osanOsa ? 'Lisää tutkinnon osan osa-alue' : 'Lisää tutkinnon osa'} validP={selectedAtom}>
+        <h2><Text name={osanOsa ? 'Paikallisen tutkinnon osan osa-alueen lisäys' : 'Paikallisen tutkinnon osan lisäys' } /></h2>
         <label>
-          <Text name="Tutkinnon osan nimi"/>
+          <Text name={osanOsa ? 'Tutkinnon osan osa-alueen nimi' : 'Tutkinnon osan nimi'} />
           <input type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
         </label>
       </ModalDialog>)
