@@ -197,8 +197,8 @@ describe('Perusopetus', function() {
             'Kotiopetus 15.8.2008 — 4.6.2016\n' +
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
-            'Vammainen 14.8.2010 —\n' +
-            'Vaikeasti vammainen 14.8.2010 —\n' +
+            'Muu kuin vaikeimmin kehitysvammainen 14.8.2010 —\n' +
+            'Vaikeimmin kehitysvammainen 14.8.2010 —\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
             'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016\n' +
@@ -2450,7 +2450,7 @@ describe('Perusopetus', function() {
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
-          'Vaikeasti vammainen 6.6.2014 —')
+          'Vaikeimmin kehitysvammainen 6.6.2014 —')
       })
 
       it('näyttää suorituksen tiedot', function() {
