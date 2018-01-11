@@ -266,6 +266,9 @@ function TutkinnonOsat(groupId) {
         osanOsat: function() {
           return TutkinnonOsat('999999')
         },
+        sanallinenArviointi: function() {
+          return api.propertyBySelector('.property.kuvaus:eq(1)')
+        },
         lueNäyttöModal: function() {
           function extractDropdownArray(elem) {
             return elem.find('ul.array > li').map(function() {return Page(this).getInput('.dropdown').value()}).get().slice(0, -1)
@@ -352,6 +355,9 @@ function TutkinnonOsat(groupId) {
           .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', nimi))
           .then(click(subElement(modalElement, 'button:not(:disabled)')))
       }
+    },
+    isLisääTutkinnonOsaToisestaTutkinnostaVisible: function() {
+      return isElementVisible(subElement(uusiTutkinnonOsaElement, ('.osa-toisesta-tutkinnosta a')))
     },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
