@@ -37,9 +37,25 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   private def lisättävätTutkinnonOsat(ryhmä: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
+    val diaari = params("diaari")
+
+    val isTelma = {
+      val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
+        application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get,
+        Koulutustyyppi.telma
+      )
+
+      telmaDiaarit match {
+        case Some(diaarit) => diaarit.map(_.koodiarvo).contains(diaari)
+        case None => false
+      }
+    }
+
     val määrittelemättömiä = ryhmä.isEmpty || ryhmä.exists(_.sisältääMäärittelemättömiäOsia)
+    val voiLisätäTutkinnonOsanToisestaTutkinnosta = if (isTelma) false else määrittelemättömiä
     val osat = (if (määrittelemättömiä) tutkinto else ryhmä).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
-    LisättävätTutkinnonOsat(osat, määrittelemättömiä, määrittelemättömiä)
+
+    LisättävätTutkinnonOsat(osat, voiLisätäTutkinnonOsanToisestaTutkinnosta, määrittelemättömiä)
   }
   private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne.toList.flatMap(tutkinnonOsienKoodit)
   private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] = rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
