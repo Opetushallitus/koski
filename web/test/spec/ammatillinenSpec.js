@@ -1183,6 +1183,76 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
+      describe('Sanallisen arvioinnin muokkaus', function() {
+        describe('Ammatillisen tutkinnon suorituksen osille', function() {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1)
+          )
+
+          it('Syöttökenttää ei näytetä', function() {
+            expect(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).sanallinenArviointi().isVisible()).to.equal(false)
+          })
+        })
+
+        describe('VALMA-suorituksen osille', function() {
+          var sanallinenArviointi = opinnot.tutkinnonOsat().tutkinnonOsa(0).sanallinenArviointi()
+
+          before(
+            resetFixtures,
+            prepareForNewOppija('kalle', '230872-7258'),
+            addOppija.enterValidDataAmmatillinen(),
+            addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'),
+            editor.edit,
+            opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Hassut temput'),
+          )
+
+          describe('Alussa', function() {
+            it('syöttökenttä ei näytetä', function() {
+              expect(sanallinenArviointi.isVisible()).to.equal(false)
+            })
+          })
+
+          describe('Kun arvosana lisätty', function() {
+            before(opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1))
+
+            it('syöttökenttä näytetään', function() {
+              expect(sanallinenArviointi.isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Muokkaus', function() {
+            before(sanallinenArviointi.setValue('Hyvin meni'))
+
+            it('näyttää oikeat tiedot', function() {
+              expect(sanallinenArviointi.getValue()).to.equal('Hyvin meni')
+            })
+          })
+
+          describe('Tallentamisen jälkeen', function() {
+            before(editor.saveChanges, editor.edit, opinnot.expandAll)
+
+            it('näyttää edelleen oikeat tiedot', function() {
+              expect(sanallinenArviointi.getValue()).to.equal('Hyvin meni')
+            })
+          })
+
+          describe('Arvosanan poistamisen ja uudelleenlisäämisen jälkeen', function() {
+            before(
+              opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
+              opinnot.tutkinnonOsat().tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1)
+            )
+
+            it('syöttökenttä on tyhjä', function() {
+              expect(sanallinenArviointi.getValue()).to.equal('')
+            })
+          })
+        })
+      })
+
       describe('Kun suoritustapana on näyttö', function() {
         before(
           resetFixtures,

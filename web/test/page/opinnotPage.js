@@ -266,6 +266,9 @@ function TutkinnonOsat(groupId) {
         osanOsat: function() {
           return TutkinnonOsat('999999')
         },
+        sanallinenArviointi: function() {
+          return api.propertyBySelector('.property.kuvaus:eq(1)')
+        },
         lueNäyttöModal: function() {
           function extractDropdownArray(elem) {
             return elem.find('ul.array > li').map(function() {return Page(this).getInput('.dropdown').value()}).get().slice(0, -1)
