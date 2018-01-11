@@ -479,7 +479,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       var suoritustapa = editor.property('suoritustapa')
-      describe('Tutkinnon osan lisääminen', function () {
+      describe('Paikallisen tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
           opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Uimaliikunta ja vesiturvallisuus'),
@@ -489,6 +489,14 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää oikeat tiedot', function () {
           expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Uimaliikunta ja vesiturvallisuus')
+        })
+      })
+
+      describe('Lisäysmahdollisuutta tutkinnon osan lisäämiselle toisesta tutkinnosta', function () {
+        before(editor.edit)
+
+        it('ei ole näkyvissä', function() {
+          expect(opinnot.tutkinnonOsat().isLisääTutkinnonOsaToisestaTutkinnostaVisible()).to.equal(false)
         })
       })
     })

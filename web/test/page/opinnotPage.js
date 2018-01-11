@@ -356,6 +356,9 @@ function TutkinnonOsat(groupId) {
           .then(click(subElement(modalElement, 'button:not(:disabled)')))
       }
     },
+    isLisääTutkinnonOsaToisestaTutkinnostaVisible: function() {
+      return isElementVisible(subElement(uusiTutkinnonOsaElement, ('.osa-toisesta-tutkinnosta a')))
+    },
     tutkinnonosavaihtoehdot: function() {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
     },
