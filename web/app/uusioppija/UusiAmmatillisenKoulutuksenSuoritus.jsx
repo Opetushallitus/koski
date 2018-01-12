@@ -15,11 +15,14 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()
   const suoritustapaAtom = Atom()
   const perusteAtom = Atom()
-  suoritustyypitP.onValue(tyypit => {
-    suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen', 'valma', 'telma')))
-    setPeruste(perusteAtom, tyypit.find(koodiarvoMatch('valma', 'telma')))
-  })
+  suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(
+    tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen', 'valma', 'telma')))
+  )
   oppilaitosAtom.changes().onValue(() => tutkintoAtom.set(undefined))
+  suoritustyyppiAtom.changes().onValue(tyyppi => koodiarvoMatch('valma', 'telma')(tyyppi)
+    ? setPeruste(perusteAtom, tyyppi)
+    : perusteAtom.set(null)
+  )
 
   const makeSuoritus = (oppilaitos, suoritustyyppi, tutkinto, suorituskieli, suoritustapa, peruste) => {
     let tutkintoData = tutkinto && {
