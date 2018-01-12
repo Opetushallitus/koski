@@ -1,5 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
+import R from 'ramda'
 import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {formatISODate} from '../date/date.js'
@@ -42,7 +43,7 @@ export default ({opiskeluoikeusAtom}) => {
 
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
   const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) => tyyppi === 'ammatillinenkoulutus' ? tilat : tilat.filter(tila => tila.koodiarvo !== 'loma'))
-  const rahoituksetP = koodistoValues('opintojenrahoitus')
+  const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
   const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus'))
 
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
