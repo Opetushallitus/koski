@@ -1,3 +1,7 @@
+## 12.1.2018
+
+  - Sallitaan saman valinnaisen tutkinnonosan suoritus useampaan kertaan
+
 ## 19.12.2017
 
   - Poistettu laajuus ammatillisen päätason suorituksen koulutussopimukset-kentästä

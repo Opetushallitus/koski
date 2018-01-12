@@ -86,7 +86,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia tutkinnonosat/9923123 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
           }
 
-          "Sama tutkinnon osa kahteen kertaan" - {
+          "Sama pakollinen tutkinnon osa kahteen kertaan" - {
             val suoritus = autoalanPerustutkinnonSuoritus().copy(
               osasuoritukset = Some(List(
                 tutkinnonOsaSuoritus, tutkinnonOsaSuoritus
@@ -97,6 +97,18 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus tutkinnonosat/100023 esiintyy useammin kuin kerran ryhmässä ammatillisentutkinnonosanryhma/1")))
             )
           }
+
+          "Sama valinnainen tutkinnon osa kahteen kertaan" - {
+            val valinnainenTutkinnonosa = tutkinnonOsaSuoritus.copy(koulutusmoduuli = tutkinnonOsa.copy(pakollinen = false))
+            val suoritus = autoalanPerustutkinnonSuoritus().copy(
+              osasuoritukset = Some(List(
+                valinnainenTutkinnonosa, valinnainenTutkinnonosa
+              ))
+            )
+            "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+          }
+
+
 
           "Tutkinnon osan osat" - {
             "Sama osa kahteen kertaan" - {

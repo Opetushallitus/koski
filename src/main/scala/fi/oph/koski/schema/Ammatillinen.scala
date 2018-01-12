@@ -326,6 +326,8 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus = lens[AmmatillisenTutkinnonOsanSuoritus].field[Option[OrganisaatioWithOid]]("toimipiste").set(this)(Some(toimipiste))
 
   override def ryhmittelytekijä: Option[String] = tutkinnonOsanRyhmä.map(_.toString)
+
+  override def salliDuplikaatit: Boolean = !koulutusmoduuli.pakollinen
 }
 
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
