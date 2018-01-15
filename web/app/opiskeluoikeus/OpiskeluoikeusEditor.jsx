@@ -38,7 +38,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
         <h3>
           <span className="otsikkotiedot">
             { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
-            <span className="koulutus inline-text" style={hasOppilaitos ? { 'text-transform': 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
+            <span className="koulutus inline-text" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
             {hasAlkamispäivä && (
               <span className="inline-text">{'('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'—'}
