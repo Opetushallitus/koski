@@ -27,7 +27,7 @@ const resolveEditor = (mdl) => {
   if (['ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus'].some(c => mdl.value.classes.includes(c))) {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
-  if (mdl.value.classes.includes('lukionoppimaaransuoritus')) {
+  if (['lukionoppimaaransuoritus', 'preibsuoritus'].some(c => mdl.value.classes.includes(c))) {
     return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
   if (mdl.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
