@@ -131,7 +131,7 @@ object DirectoryClientLogin extends Logging {
         logger(LogUserContext(request, user.oid, username)).debug("Login successful")
         Some(user)
       case _ =>
-        logger(LogUserContext(request)).error(s"User $username not found")
+        logger(LogUserContext(request)).warn(s"User $username not found")
         None
     }
   }

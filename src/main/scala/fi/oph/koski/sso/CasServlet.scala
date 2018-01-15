@@ -28,7 +28,7 @@ class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet
               KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
               redirectAfterLogin
             case None =>
-              logger.error(s"User $username not found even though user logged in with valid ticket")
+              logger.warn(s"User $username not found even though user logged in with valid ticket")
               redirectToLogout
           }
         } catch {
