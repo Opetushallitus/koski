@@ -84,6 +84,7 @@ class CacheSpec extends FreeSpec with Matchers {
             cache.apply(invocation)
           }
           perform = {x: String => "hello"}
+          Thread.sleep(50)
           cache.apply(invocation) should equal("hello")
         }
         "Initial fetch -> throws exception, schedules fetch" in {
