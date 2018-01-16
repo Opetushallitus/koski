@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
@@ -257,7 +257,12 @@ class TiedonsiirtoService(
 
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).toOption
+    val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).map { tunniste =>
+      tunniste.copy(
+        hetu = tunniste.hetu.flatMap(Hetu.validate(_).toOption),
+        oid = tunniste.oid.flatMap(HenkilöOid.validateHenkilöOid(_).toOption)
+      )
+    }.toOption
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.flatMap(_.oid))
 
     val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.flatMap(_.hetu)) match {
