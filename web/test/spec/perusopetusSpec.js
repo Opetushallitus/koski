@@ -2329,6 +2329,25 @@ describe('Perusopetus', function() {
               'Opinto-ohjaus'])
             expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
           })
+
+          describe('Toiminta-alueittain opiskelevalle', function() {
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              editor.property('erityisenTuenPäätös').addValue,
+              editor.property('opiskeleeToimintaAlueittain').setValue(true)
+            )
+
+            it('Esitäyttää toiminta-alueet', function() {
+              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
+                'motoriset taidot',
+                'kieli ja kommunikaatio',
+                'sosiaaliset taidot',
+                'päivittäisten toimintojen taidot',
+                'kognitiiviset taidot'
+              ])
+            })
+          })
         })
 
         describe('Luokka 9', function() {

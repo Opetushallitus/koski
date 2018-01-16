@@ -1,8 +1,7 @@
 import React from 'baret'
+import Bacon from 'baconjs'
 import {Editor} from '../editor/Editor'
 import {PropertyEditor} from '../editor/PropertyEditor'
-import {wrapOptional} from '../editor/EditorModel'
-import R from 'ramda'
 import {
   addContext,
   contextualizeSubModel,
@@ -14,15 +13,20 @@ import {
   modelSet,
   modelSetValue,
   oneOfPrototypes,
-  pushModel
+  pushModel,
+  wrapOptional
 } from '../editor/EditorModel'
+import R from 'ramda'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
-import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
+import {
+  isPäättötodistus, isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset,
+  oppimääränOsasuoritukset
+} from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
+import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
 var valinnaisetTitle = 'Valinnaiset oppiaineet'
@@ -39,12 +43,12 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
 
-  if (model.context.edit && isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
-    luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
-      pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
-    })
-  } else if (model.context.edit && isYsiluokka(model) && !jääLuokalle(model) && oppiaineSuoritukset.length > 0) {
-    pushModel(modelSetValue(model, [], 'osasuoritukset'))
+  if (model.context.edit) {
+    if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
+      prefillOsasuorituksetIfNeeded(model, oppiaineSuoritukset)
+    } else if (isYsiluokka(model) && !jääLuokalle(model)) {
+      emptyOsasuoritukset(model)
+    }
   }
 
   return (<div className="oppiaineet">
@@ -71,6 +75,27 @@ const valmiitaSuorituksia = oppiaineSuoritukset => {
   let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
   return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja().length > 0
 }
+
+const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
+  let wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, !isToimintaAlueittain(model))
+  let hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(wrongOsasuorituksetTemplate =>
+    // esitäyttödatan tyyppi ei sisällä nimi ja versiotietoja, poistetaan tyyppi koska se ei ole relevanttia vertailussa
+    currentSuoritukset.length > 0 && R.equals(wrongOsasuorituksetTemplate.value.map(modelDataIlmanTyyppiä), currentSuoritukset.map(modelDataIlmanTyyppiä))
+  )
+  let changeTemplateP = hasWrongPrefillP.or(Bacon.constant(isYsiluokka(model) && jääLuokalle(model)))
+  fetchOsasuorituksetTemplate(model, isToimintaAlueittain(model)).filter(changeTemplateP)
+    .onValue(osasuorituksetTemplate => pushModel(modelSetValue(model, osasuorituksetTemplate.value, 'osasuoritukset')))
+}
+
+const emptyOsasuoritukset = model => pushModel(modelSetValue(model, [], 'osasuoritukset'))
+
+const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) => isPäättötodistus(model)
+  ? oppimääränOsasuoritukset(modelData(model, 'tyyppi'), toimintaAlueittain)
+  : luokkaAste(model)
+    ? luokkaAsteenOsasuoritukset(luokkaAste(model), toimintaAlueittain)
+    : Bacon.constant({value: []})
+
+const modelDataIlmanTyyppiä = suoritus => R.dissoc('tyyppi', modelData(suoritus))
 
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
   let oppiaineHasPakollisuus = (oppiaine) => findModelProperty(oppiaine, p=>p.key=='pakollinen')
