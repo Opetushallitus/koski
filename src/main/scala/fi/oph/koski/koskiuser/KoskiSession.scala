@@ -32,6 +32,10 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
   def hasAnyReadAccess = globalAccess.contains(AccessType.read) || orgKäyttöoikeudet.nonEmpty
 
+  private val HenkiloUiPalveluNames = List("OPPIJANUMEROREKISTERI", "HENKILONHALLINTA")
+  def hasAnyHenkiloUiAccess = globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(p => HenkiloUiPalveluNames.contains(p.palveluName))) ||
+    orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.exists(p => HenkiloUiPalveluNames.contains(p.palveluName)))
+
   def hasRole(role: String): Boolean = {
     val palveluRooli = Palvelurooli("KOSKI", role)
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) || orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
