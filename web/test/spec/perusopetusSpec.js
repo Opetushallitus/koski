@@ -2749,8 +2749,8 @@ describe('Perusopetus', function() {
           describe('Lisäyksen jälkeen', function() {
             var tanssi = editor.subEditor('.valinnainen.TNS')
             before(editor.edit)
-            it('Uusi oppiaine ei löydy listalta (koska on jo suorituksissa)', function() {
-              expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
+            it('Valinnaisia aineita voi lisätä useaan kertaan', function() {
+              expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
             })
 
             describe('Poistettaessa suoritus', function() {
