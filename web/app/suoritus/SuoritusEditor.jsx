@@ -16,28 +16,37 @@ import Text from '../i18n/Text'
 import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
 
 const resolveEditor = (mdl) => {
-  if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
+  const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
+  const firstClassOneOf = (...classes) => classes.includes(mdl.value.classes[0])
+
+  if (firstClassOneOf(
+      'perusopetuksenvuosiluokansuoritus',
+      'nuortenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenalkuvaiheensuoritus',
+      'perusopetuksenlisaopetuksensuoritus',
+      'perusopetukseenvalmistavanopetuksensuoritus')) {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
-  if (['perusopetuksenoppiaineenoppimaaransuoritus'].includes(mdl.value.classes[0])) {
+  if (firstClassOneOf('perusopetuksenoppiaineenoppimaaransuoritus')) {
     return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
   }
-  if (['esiopetuksensuoritus'].includes(mdl.value.classes[0])) {
+  if (firstClassOneOf('esiopetuksensuoritus')) {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
   }
-  if (['ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus'].some(c => mdl.value.classes.includes(c))) {
+  if (oneOf('ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus')) {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
-  if (['lukionoppimaaransuoritus', 'preibsuoritus'].some(c => mdl.value.classes.includes(c))) {
+  if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
     return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
-  if (mdl.value.classes.includes('lukionoppiaineenoppimaaransuoritus')) {
+  if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
     return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
   }
-  if (mdl.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
+  if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
     return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
   }
-  if (mdl.value.classes.includes('ibtutkinnonsuoritus')) {
+  if (oneOf('ibtutkinnonsuoritus')) {
     return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
