@@ -2,7 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from '../lukio/Lukio'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTable'
-import {modelData} from '../editor/EditorModel'
+import {modelData, modelLookup} from '../editor/EditorModel'
 
 export class IBTutkinnonOppiaineetEditor extends React.Component {
   render() {
@@ -16,15 +16,14 @@ export class IBTutkinnonOppiaineetEditor extends React.Component {
         <LukionOppiaineetTableHead />
         <tbody>
         {
-          Object.entries(aineryhmittäin).map(([ryhmä, aineet]) => ([
-              <tr className='aineryhmä'>
-                <th colSpan='4'>{ryhmä}</th>
-              </tr>,
-              aineet.map((oppiaine, oppiaineIndex) =>
-                <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} />
-              )
-            ])
-          )
+          Object.values(aineryhmittäin).map(aineet => [
+            <tr className='aineryhmä'>
+              <th colSpan='4'>{modelLookup(aineet[0], 'koulutusmoduuli.ryhmä').value.title}</th>
+            </tr>,
+            aineet.map((oppiaine, oppiaineIndex) =>
+              <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} />
+            )
+          ])
         }
         </tbody>
       </table>
