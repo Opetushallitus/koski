@@ -1,6 +1,6 @@
 .oppija .opiskeluoikeus .suoritukset {
   .lukionoppimaaransuoritus, .lukionoppiaineenoppimaaransuoritus, .lukioonvalmistavankoulutuksensuoritus,
-  .preibsuoritus {
+  .preibsuoritus, .ibtutkinnonsuoritus {
     .oppiaine {
       > .nimi {
         color: @color-label;
@@ -10,7 +10,7 @@
     table.suoritukset {
       width: 100%;
 
-      > tbody > tr {
+      > tbody > tr:not(.aineryhmä) {
         background: @color-neutral-gray;
       }
 

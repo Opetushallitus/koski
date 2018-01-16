@@ -13,6 +13,7 @@ import {ArvosanaEditor} from './ArvosanaEditor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
+import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
 
 const resolveEditor = (mdl) => {
   if (['perusopetuksenvuosiluokansuoritus', 'nuortenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenoppimaaransuoritus', 'aikuistenperusopetuksenalkuvaiheensuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(mdl.value.classes[0])) {
@@ -35,6 +36,9 @@ const resolveEditor = (mdl) => {
   }
   if (mdl.value.classes.includes('lukioonvalmistavankoulutuksensuoritus')) {
     return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
+  }
+  if (mdl.value.classes.includes('ibtutkinnonsuoritus')) {
+    return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
 }

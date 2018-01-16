@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
-import Text from '../i18n/Text'
+import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
 
@@ -10,17 +10,7 @@ export class LukionOppiaineetEditor extends React.Component {
     let {oppiaineet} = this.props
     return (
       <table className="suoritukset oppiaineet">
-        <thead>
-        <tr>
-          <th className="suorituksentila"></th>
-          <th className="oppiaine"><Text name="Oppiaine"/></th>
-          <th className="maara"><Text name="Kurssien määrä"/></th>
-          <th className="arvosana"><Text name="Arvosana (keskiarvo)"/></th>
-        </tr>
-        <tr>
-          <th colSpan="4"><hr/></th>
-        </tr>
-        </thead>
+        <LukionOppiaineetTableHead />
         <tbody>
         {
           oppiaineet.map((oppiaine, oppiaineIndex) =>
@@ -33,7 +23,7 @@ export class LukionOppiaineetEditor extends React.Component {
   }
 }
 
-class LukionOppiaineEditor extends React.Component {
+export class LukionOppiaineEditor extends React.Component {
   render() {
 
     let {oppiaine} = this.props
