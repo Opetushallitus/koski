@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.MockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -304,10 +304,15 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
   }
 
-  "Kun syöttää jsonin merkkijonona" - {
-    "Palauttaa virheen" in {
+  "Virheensieto" - {
+    "Väärän tyyppinen request body" in {
       put("api/oppija", body = "\"hello\"", headers = authHeaders(paakayttaja) ++ jsonContent){
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedType.*".r))
+      }
+    }
+    "Väärän muotoinen hetu" in {
+      putOppija(Oppija(oppija.copy(hetu = Some("291297")), List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)))), headers = authHeaders(MockUsers.helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 291297"))
       }
     }
   }
