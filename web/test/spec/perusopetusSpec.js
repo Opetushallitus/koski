@@ -1250,10 +1250,20 @@ describe('Perusopetus', function() {
         before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
-          var historia = editor.subEditor('.valinnainen.HI')
-          before(editor.edit, uusiOppiaine.selectValue('Historia'), historia.propertyBySelector('.arvosana').selectValue('9'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          var historia = editor.subEditor('.valinnainen.HI:eq(0)')
+          var historia2 = editor.subEditor('.valinnainen.HI:eq(1)')
+          before(
+            editor.edit,
+            uusiOppiaine.selectValue('Historia'),
+            historia.propertyBySelector('.arvosana').selectValue('9'),
+            uusiOppiaine.selectValue('Historia'),
+            historia2.propertyBySelector('.arvosana').selectValue('8'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
           it('Toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 8')
           })
 
           describe('Poistaminen', function () {
@@ -1286,8 +1296,8 @@ describe('Perusopetus', function() {
             describe('Lisäyksen jälkeen', function() {
               var tanssi = editor.subEditor('.valinnainen.TNS')
               before(editor.edit)
-              it('Uusi oppiaine ei löydy pudotusvalikosta (koska on jo suorituksissa)', function() {
-                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
+              it('Valinnaisen oppiaineen voi lisätä useaan kertaan', function() {
+                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
               })
 
               describe('Poistettaessa suoritus', function() {
