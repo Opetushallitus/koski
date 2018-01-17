@@ -46,6 +46,13 @@
             border-bottom: 5px solid white;
             &.maara, &.arvosana {
               text-align: right;
+
+              > .annettuArvosana > .footnote-hint {
+                cursor: pointer;
+                color: @color-link-blue;
+                line-height: initial;
+                top: -0.3em;
+              }
             }
             &.suorituksentila {
               padding-top: 14px;
@@ -58,6 +65,11 @@
           }
         }
       }
+    }
+
+    .selitteet {
+      margin-top: 10px;
+      font-size: 0.9em;
     }
   }
 }
