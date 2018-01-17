@@ -7,7 +7,7 @@ function KoskiPage() {
       if (expectedResults instanceof Array) {
         var resultList = expectedResults
         expectedResults = function() {
-          return _.eq(resultList, OppijaHaku.getSearchResults())
+          return _.isEqual(resultList, OppijaHaku.getSearchResults())
         }
       }
       else if (typeof expectedResults == "string") {
@@ -159,7 +159,7 @@ function KoskiPage() {
     getErrorMessage: function() {
       return S("#error.error .error-text, .error-message").text()
     },
-    verifyNoError: function() { 
+    verifyNoError: function() {
       function checkError() {
         if (api.isErrorShown()) {
           throw new Error("Error shown on page: " + api.getErrorMessage())

@@ -212,7 +212,7 @@ function openPage(path, predicate) {
     $(w).contents().find("head")[0].appendChild(jquery)
   }
   return function() {
-    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).load(function() {
+    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).on("load", function() {
       addScriptToDocument(this, "/koski/test/lib/jquery.js")
     })
     $("#testframe").replaceWith(newTestFrame)
@@ -265,7 +265,7 @@ function extractAsText(el, subElement) {
   var element = el[0]
 
   if (el.hasClass("toggle-edit") || el.hasClass("opintosuoritusote")) return ""
-  
+
   var isBlockElement =
     element.tagName == "SECTION" ||
     ["block", "table", "table-row", "table-row-group", "list-item"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
