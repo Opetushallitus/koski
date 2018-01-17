@@ -161,6 +161,10 @@ Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
 }
 
+Number.isInteger = Number.isInteger || function(value) {
+  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value
+}
+
 if (!history.pushState) {
   console.log('history.pushState not available')
   history.pushState = function() {}
