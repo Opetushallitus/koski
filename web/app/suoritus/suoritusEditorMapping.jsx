@@ -55,6 +55,12 @@ export const resolvePropertyEditor = (property, model) => {
     case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
     case 'arviointi': return <ArvosanaEditor model={model}/>
 
+    // IB
+    case 'theoryOfKnowledge':
+    case 'extendedEssay':
+    case 'creativityActionService':
+      return <ArvosanaEditor model={property.model}/>
+
     default: return null
   }
 }
