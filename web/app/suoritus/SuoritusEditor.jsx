@@ -1,13 +1,11 @@
 import {addContext, modelData, modelLookup, removeCommonPath} from '../editor/EditorModel'
 import React from 'baret'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {sortLanguages} from '../util/sorting'
 import {Editor} from '../editor/Editor'
-import {ArvosanaEditor} from './ArvosanaEditor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
-import {resolveOsasuorituksetEditor} from './suoritusEditorMapping'
+import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
 
 export class SuoritusEditor extends React.Component {
   render() {
@@ -24,13 +22,7 @@ export class SuoritusEditor extends React.Component {
       <PropertiesEditor
         model={model}
         propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
-        getValueEditor={ (prop, getDefault) => {
-          switch (prop.key) {
-            case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
-            case 'arviointi': return <ArvosanaEditor model={model}/>
-            default: return getDefault()
-          }
-        }}
+        getValueEditor={(prop, getDefault) => resolvePropertyEditor(prop, model) || getDefault()}
       />
       <TilaJaVahvistusEditor model={model} />
       <div className="osasuoritukset">{osasuorituksetEditor}</div>

@@ -9,6 +9,9 @@ import * as Lukio from '../lukio/Lukio'
 import {LuvaEditor} from '../lukio/LuvaEditor'
 import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
 import {PropertyEditor} from '../editor/PropertyEditor'
+import {Editor} from '../editor/Editor'
+import {sortLanguages} from '../util/sorting'
+import {ArvosanaEditor} from './ArvosanaEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -45,4 +48,13 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
+}
+
+export const resolvePropertyEditor = (property, model) => {
+  switch (property.key) {
+    case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
+    case 'arviointi': return <ArvosanaEditor model={model}/>
+
+    default: return null
+  }
 }
