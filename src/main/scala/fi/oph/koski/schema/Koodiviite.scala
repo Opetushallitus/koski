@@ -35,7 +35,7 @@ case class Koodistokoodiviite(
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
   def description: LocalizedString = koodistoUri match {
-    case "arviointiasteikkoyleissivistava" => unlocalized(koodiarvo)
+    case "arviointiasteikkoyleissivistava" | "arviointiasteikkoib" => unlocalized(koodiarvo)
     case _ => nimi.getOrElse(unlocalized(koodiarvo))
   }
   def getNimi = nimi
