@@ -1,56 +1,13 @@
-import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from '../editor/EditorModel'
+import {addContext, modelData, modelLookup, removeCommonPath} from '../editor/EditorModel'
 import React from 'baret'
-import {PropertyEditor} from '../editor/PropertyEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import * as Lukio from '../lukio/Lukio'
-import {Suoritustaulukko} from './Suoritustaulukko'
-import {LuvaEditor} from '../lukio/LuvaEditor'
-import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
-import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
 import {sortLanguages} from '../util/sorting'
 import {Editor} from '../editor/Editor'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
-import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
-
-const resolveEditor = (mdl) => {
-  const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
-  const firstClassOneOf = (...classes) => classes.includes(mdl.value.classes[0])
-
-  if (firstClassOneOf(
-      'perusopetuksenvuosiluokansuoritus',
-      'nuortenperusopetuksenoppimaaransuoritus',
-      'aikuistenperusopetuksenoppimaaransuoritus',
-      'aikuistenperusopetuksenalkuvaiheensuoritus',
-      'perusopetuksenlisaopetuksensuoritus',
-      'perusopetukseenvalmistavanopetuksensuoritus')) {
-    return <PerusopetuksenOppiaineetEditor model={mdl}/>
-  }
-  if (firstClassOneOf('perusopetuksenoppiaineenoppimaaransuoritus')) {
-    return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
-  }
-  if (firstClassOneOf('esiopetuksensuoritus')) {
-    return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
-  }
-  if (oneOf('ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus')) {
-    return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
-  }
-  if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
-  }
-  if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
-  }
-  if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
-    return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
-  }
-  if (oneOf('ibtutkinnonsuoritus')) {
-    return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
-  }
-  return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
-}
+import {resolveOsasuorituksetEditor} from './suoritusEditorMapping'
 
 export class SuoritusEditor extends React.Component {
   render() {
@@ -58,7 +15,7 @@ export class SuoritusEditor extends React.Component {
 
     let {model} = this.props
     model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
-    const editor = resolveEditor(model)
+    const osasuorituksetEditor = resolveOsasuorituksetEditor(model)
 
     let className = 'suoritus ' + model.value.classes.join(' ')
 
@@ -76,7 +33,7 @@ export class SuoritusEditor extends React.Component {
         }}
       />
       <TilaJaVahvistusEditor model={model} />
-      <div className="osasuoritukset">{editor}</div>
+      <div className="osasuoritukset">{osasuorituksetEditor}</div>
     </div>)
   }
 

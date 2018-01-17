@@ -1,0 +1,48 @@
+import React from 'react'
+import {modelItems, modelLookup} from '../editor/EditorModel'
+
+import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
+import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
+import {Suoritustaulukko} from './Suoritustaulukko'
+import * as Lukio from '../lukio/Lukio'
+import {LuvaEditor} from '../lukio/LuvaEditor'
+import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
+import {PropertyEditor} from '../editor/PropertyEditor'
+
+export const resolveOsasuorituksetEditor = (mdl) => {
+  const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
+  const firstClassOneOf = (...classes) => classes.includes(mdl.value.classes[0])
+
+  if (firstClassOneOf(
+      'perusopetuksenvuosiluokansuoritus',
+      'nuortenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenalkuvaiheensuoritus',
+      'perusopetuksenlisaopetuksensuoritus',
+      'perusopetukseenvalmistavanopetuksensuoritus')) {
+    return <PerusopetuksenOppiaineetEditor model={mdl}/>
+  }
+  if (firstClassOneOf('perusopetuksenoppiaineenoppimaaransuoritus')) {
+    return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
+  }
+  if (firstClassOneOf('esiopetuksensuoritus')) {
+    return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
+  }
+  if (oneOf('ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus')) {
+    return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
+  }
+  if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
+    return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+  }
+  if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
+    return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
+  }
+  if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
+    return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
+  }
+  if (oneOf('ibtutkinnonsuoritus')) {
+    return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+  }
+  return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
+}
