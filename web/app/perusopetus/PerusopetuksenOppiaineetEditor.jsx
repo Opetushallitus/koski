@@ -188,10 +188,18 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length).map((suoritus) => (<PerusopetuksenOppiaineRowEditor baret-lift
-                                                                                                                     key={suoritus.arrayKey} model={suoritus} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
-                                                                                                                     expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)}
-                                                                                                                     showLaajuus={showLaajuus} showFootnotes={showFootnotes}/> ))
+              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length).map((suoritus) => (
+                <PerusopetuksenOppiaineRowEditor
+                  baret-lift
+                  key={suoritus.arrayKey}
+                  model={suoritus}
+                  uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
+                  expanded={isExpandedP(suoritus)}
+                  onExpand={setExpanded(suoritus)}
+                  showLaajuus={showLaajuus}
+                  showFootnotes={showFootnotes}
+                />
+              ))
             }
           </table>
         )}
