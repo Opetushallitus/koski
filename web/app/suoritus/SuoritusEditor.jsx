@@ -17,16 +17,18 @@ export class SuoritusEditor extends React.Component {
 
     let className = 'suoritus ' + model.value.classes.join(' ')
 
-    return (<div className={className}>
-      <TodistusLink suoritus={model} />
-      <PropertiesEditor
-        model={model}
-        propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
-        getValueEditor={(prop, getDefault) => resolvePropertyEditor(prop, model) || getDefault()}
-      />
-      <TilaJaVahvistusEditor model={model} />
-      <div className="osasuoritukset">{osasuorituksetEditor}</div>
-    </div>)
+    return (
+      <div className={className}>
+        <TodistusLink suoritus={model} />
+        <PropertiesEditor
+          model={model}
+          propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
+          getValueEditor={(prop, getDefault) => resolvePropertyEditor(prop, model) || getDefault()}
+        />
+        <TilaJaVahvistusEditor model={model} />
+        <div className="osasuoritukset">{osasuorituksetEditor}</div>
+      </div>
+    )
   }
 
   shouldComponentUpdate(nextProps) {
@@ -38,8 +40,9 @@ SuoritusEditor.validateModel = (m) => {
   if (suoritusValmis(m) && arviointiPuuttuu(m)) {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
-  let validateSuoritus = (s) => {
-    return osasuoritukset(s)
+
+  const validateSuoritus = (s) =>
+    osasuoritukset(s)
       .flatMap(osasuoritus => {
         if (suoritusValmis(s) && suoritusKesken(osasuoritus)) {
           let subPath = removeCommonPath(osasuoritus.path, m.path)
@@ -52,7 +55,7 @@ SuoritusEditor.validateModel = (m) => {
           return validateSuoritus(osasuoritus)
         }
       })
-  }
+
   return validateSuoritus(m)
 }
 
