@@ -42,18 +42,24 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
 
-  const esitäytäOsasuoritukset = () => getOsasuoritukset(model).onValue(oppiaineet => {
-    pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
+  const esitäytäOsasuorituksetTarvittaessa = () => oletusOsasuoritukset(model).flatMap(oppiaineet => {
+    let väärätOletuksetP = isToimintaAlueittain(model)
+      ? hasOppiaineOletussuoritukset(model, oppiaineSuoritukset)
+      : hasToimintaAlueOletussuoritukset(model, oppiaineSuoritukset)
+    return väärätOletuksetP.map(väärätOletukset => {return {väärätOletukset, oppiaineet}})
+  }).onValue(({väärätOletukset, oppiaineet})  => {
+    let tuplaaYsiluokan = isYsiluokka(model) && jääLuokalle(model)
+    if (väärätOletukset || tuplaaYsiluokan) {
+      pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
+    }
   })
 
   const tyhjennäOsasuoritukset = () => pushModel(modelSetValue(model, [], 'osasuoritukset'))
 
   if (model.context.edit) {
-    if (!valmiitaSuorituksia(oppiaineSuoritukset) && !sisältääKursseja(oppiaineSuoritukset)) {
-      esitäytäOsasuoritukset()
-    } else if (!valmiitaSuorituksia(oppiaineSuoritukset) && isYsiluokka(model) && jääLuokalle(model)) {
-      esitäytäOsasuoritukset()
-    } else if (valmiitaSuorituksia(oppiaineSuoritukset) && isYsiluokka(model) && !jääLuokalle(model)) {
+    if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
+      esitäytäOsasuorituksetTarvittaessa()
+    } else if (isYsiluokka(model) && !jääLuokalle(model)) {
       tyhjennäOsasuoritukset()
     }
   }
@@ -78,11 +84,19 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
-const getOsasuoritukset = model => isPäättötodistus(model)
-  ? oppimääränOsasuoritukset(modelData(model, 'tyyppi'), isToimintaAlueittain(model))
-  : luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model))
+const hasOppiaineOletussuoritukset = (model, oppiaineSuoritukset) => onOletukset(oletusOsasuoritukset(model, false), oppiaineSuoritukset)
+const hasToimintaAlueOletussuoritukset = (model, oppiaineSuoritukset) => onOletukset(oletusOsasuoritukset(model, true), oppiaineSuoritukset)
 
-const sisältääKursseja = oppiaineSuoritukset => oppiaineSuoritukset.some(oppiaine => modelItems(oppiaine, 'osasuoritukset').length > 0)
+const onOletukset = (oletuksetP, oppiaineSuoritukset) =>
+  oletuksetP.map(oletukset => {
+    let oletuksetData = oletukset.value.map(o => R.dissoc('tyyppi', modelData(o)))
+    let suoritukset = oppiaineSuoritukset.map(s => R.dissoc('tyyppi', modelData(s)))
+    return R.equals(oletuksetData, suoritukset)
+  })
+
+const oletusOsasuoritukset = (model, toimintaAlueittain = isToimintaAlueittain(model)) => isPäättötodistus(model)
+  ? oppimääränOsasuoritukset(modelData(model, 'tyyppi'), toimintaAlueittain)
+  : luokkaAsteenOsasuoritukset(luokkaAste(model), toimintaAlueittain)
 
 const valmiitaSuorituksia = oppiaineSuoritukset => {
   let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
