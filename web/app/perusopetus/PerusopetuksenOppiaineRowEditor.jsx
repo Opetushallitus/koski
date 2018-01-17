@@ -4,14 +4,15 @@ import {PropertiesEditor, shouldShowProperty} from '../editor/PropertiesEditor'
 import {modelData, modelEmpty, modelErrorMessages, modelLookup, modelProperties, pushRemoval} from '../editor/EditorModel'
 import {PerusopetuksenOppiaineEditor} from './PerusopetuksenOppiaineEditor'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
-import {t} from '../i18n/i18n'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {tilaKoodi} from '../suoritus/Suoritus'
+import {FootnoteHint} from '../components/footnote'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
-    let {model, showLaajuus, showFootnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
+    let {model, showLaajuus, footnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
+    const {edit} = model.context
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let className = 'oppiaine oppiaine-rivi'
@@ -47,18 +48,16 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
         </td>)
       }
       {
-        showFootnotes && (
+        !edit && footnotes && footnotes.length > 0 && (
           <td className="footnotes">
             <div className="footnotes-container">
-              {modelData(model, 'yksilöllistettyOppimäärä') ? <sup className="yksilollistetty" title={t('Yksilöllistetty oppimäärä')}>{' *'}</sup> : null}
-              {modelData(model, 'painotettuOpetus') ? <sup className="painotettu" title={t('Painotettu opetus')}>{' **'}</sup> : null}
-              {modelData(model, 'korotus') ? <sup className="korotus" title={t('Perusopetuksen päättötodistuksen arvosanan korotus')}>{' †'}</sup> : null}
+              {footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
             </div>
           </td>
         )
       }
       {
-        model.context.edit && (
+        edit && (
           <td>
             <a className="remove-value" onClick={() => pushRemoval(model)}/>
           </td>

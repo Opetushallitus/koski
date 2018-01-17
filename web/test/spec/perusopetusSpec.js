@@ -2643,7 +2643,7 @@ describe('Perusopetus', function() {
           'Oppiaine Arvosana\n' +
           'Monialainen oppimiskokonaisuus S\n' +
           'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
-          '† = perusopetuksen päättötodistuksen arvosanan korotus, * = yksilöllistetty oppimäärä')
+          '* = yksilöllistetty oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus')
       })
     })
     describe('Tulostettava todistus', function() {
