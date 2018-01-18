@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eou pipefail
 echo "Running mocha tests against $1"
-(cd $(dirname "$0")/../web && node_modules/mocha-phantomjs/bin/mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs $1)
+(cd $(dirname "$0")/../web && ./node_modules/.bin/phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js $1)
