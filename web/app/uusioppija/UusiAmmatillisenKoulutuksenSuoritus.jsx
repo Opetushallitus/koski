@@ -105,7 +105,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     </div>
 
     {
-      ift(suoritustyyppiAtom.map(koodiarvoMatch('ammatillinentutkinto')), <SuoritustapaDropdown diaarinumero={tutkintoAtom.map('.diaarinumero')} suoritustapaAtom={suoritustapaAtom} title="Suoritustapa"/>)
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen')), <SuoritustapaDropdown diaarinumero={tutkintoAtom.map('.diaarinumero')} suoritustapaAtom={suoritustapaAtom} title="Suoritustapa"/>)
     }
   </div>)
 }
