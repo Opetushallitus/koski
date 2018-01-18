@@ -1,4 +1,4 @@
-describe('IB-tutkinto', function( ) {
+describe('IB', function( ) {
   var page = KoskiPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
@@ -57,7 +57,7 @@ describe('IB-tutkinto', function( ) {
     })
   })
 
-  describe('IB-tutkintotodistus', function () {
+  describe('IB-tutkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(1, 'IB-tutkinto'))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
@@ -66,10 +66,46 @@ describe('IB-tutkinto', function( ) {
       })
     })
 
-    describe('Kaikki tiedot näkyvissä', function () {
+    describe('Oppiaineet', function () {
       before(opinnot.expandAll)
-      it('toimii', function () {
-        expect(S('.ibkurssinsuoritus:eq(0) .kuvaus .value').text()).to.equal('TOK1')
+      it('ryhmitellään aineryhmittäin', function () {
+        var rivit = S('.oppiaineet tbody tr')
+        expect(S(rivit.get(0)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(1)).hasClass('A')).to.equal(true)
+        expect(S(rivit.get(2)).hasClass('A2')).to.equal(true)
+        expect(S(rivit.get(3)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(4)).hasClass('HIS')).to.equal(true)
+        expect(S(rivit.get(5)).hasClass('PSY')).to.equal(true)
+        expect(S(rivit.get(6)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(7)).hasClass('BIO')).to.equal(true)
+        expect(S(rivit.get(8)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(9)).hasClass('MATST')).to.equal(true)
+      })
+
+      it('arvosanalle näytetään alaviite, kun arvosana on ennakkoarvosana', function() {
+        expect(S('.oppiaineet tbody tr:eq(1) .arvosana .footnote-hint').text()).to.equal(' *')
+        expect(S('.osasuoritukset .selitteet').text()).to.equal('* = ennustettu arvosana')
+      })
+    })
+
+    describe('Kaikki tiedot näkyvissä', function () {
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '1.9.2012 Läsnä')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus IB-tutkinto (International Baccalaureate)\n' +
+          'Oppilaitos / toimipiste Ressun lukio\n' +
+          'Suorituskieli englanti\n' +
+          'Theory of knowledge A\n' +
+          'Extended essay B\n' +
+          'Creativity action service S\n' +
+          'Lisäpisteet 3\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori')
       })
     })
 
