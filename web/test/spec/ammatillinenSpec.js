@@ -393,8 +393,12 @@ describe('Ammatillinen koulutus', function() {
       before(
         resetFixtures,
         prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+        addOppija.enterHenkilötiedot({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
+        addOppija.selectOppilaitos('Stadin'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
         addOppija.selectOppimäärä('Ammatillisen tutkinnon osa/osia'),
+        addOppija.selectTutkinto('Autoalan perust'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
       )
 
@@ -402,7 +406,6 @@ describe('Ammatillinen koulutus', function() {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()[0]).to.match(/^Stadin ammattiopisto,Autoalan perustutkinto, osittainen.*/)
         expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
         expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
-        expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
       })
 
       describe('Tutkinnon osan lisääminen', function () {
