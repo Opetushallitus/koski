@@ -1,27 +1,21 @@
 import React from 'baret'
 import {Editor} from '../editor/Editor'
 import {PropertyEditor} from '../editor/PropertyEditor'
-import {wrapOptional} from '../editor/EditorModel'
-import R from 'ramda'
 import {
-  addContext,
-  contextualizeSubModel,
-  ensureArrayKey,
-  findModelProperty,
-  modelData,
-  modelItems,
-  modelLookup,
-  modelSet,
-  modelSetValue,
-  oneOfPrototypes,
-  pushModel
+  addContext, contextualizeSubModel, ensureArrayKey, findModelProperty, modelData, modelItems, modelLookup,
+  modelSet, modelSetValue, oneOfPrototypes, pushModel, wrapOptional
 } from '../editor/EditorModel'
+import R from 'ramda'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {isToimintaAlueittain, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset} from './Perusopetus'
+import {
+  hasEsitäyttöOppiaineSuoritukset, hasEsitäyttöToimintaAlueSuoritukset, isToimintaAlueittain, isYsiluokka, jääLuokalle,
+  esitäyttöOsasuoritukset,
+  valmiitaSuorituksia
+} from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 
 var pakollisetTitle = 'Pakolliset oppiaineet'
@@ -39,12 +33,12 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
 
-  if (model.context.edit && isYsiluokka(model) && jääLuokalle(model) && oppiaineSuoritukset.length == 0) {
-    luokkaAsteenOsasuoritukset(luokkaAste(model), isToimintaAlueittain(model)).onValue(oppiaineet => {
-      pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
-    })
-  } else if (model.context.edit && isYsiluokka(model) && !jääLuokalle(model) && oppiaineSuoritukset.length > 0) {
-    pushModel(modelSetValue(model, [], 'osasuoritukset'))
+  if (model.context.edit) {
+    if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
+      esitäytäOsasuorituksetTarvittaessa(model, oppiaineSuoritukset)
+    } else if (isYsiluokka(model) && !jääLuokalle(model)) {
+      tyhjennäOsasuoritukset(model)
+    }
   }
 
   return (<div className="oppiaineet">
@@ -67,10 +61,19 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
-const valmiitaSuorituksia = oppiaineSuoritukset => {
-  let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
-  return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja().length > 0
-}
+const esitäytäOsasuorituksetTarvittaessa = (model, oppiaineSuoritukset) => esitäyttöOsasuoritukset(model, isToimintaAlueittain(model)).flatMap(oppiaineet => {
+  let väärätOletuksetP = isToimintaAlueittain(model)
+    ? hasEsitäyttöOppiaineSuoritukset(model, oppiaineSuoritukset)
+    : hasEsitäyttöToimintaAlueSuoritukset(model, oppiaineSuoritukset)
+  return väärätOletuksetP.map(väärätOletukset => {return {väärätOletukset, oppiaineet}})
+}).onValue(({väärätOletukset, oppiaineet})  => {
+  let tuplaaYsiluokan = isYsiluokka(model) && jääLuokalle(model)
+  if (väärätOletukset || tuplaaYsiluokan) {
+    pushModel(modelSetValue(model, oppiaineet.value, 'osasuoritukset'))
+  }
+})
+
+const tyhjennäOsasuoritukset = model => pushModel(modelSetValue(model, [], 'osasuoritukset'))
 
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
   let oppiaineHasPakollisuus = (oppiaine) => findModelProperty(oppiaine, p=>p.key=='pakollinen')
