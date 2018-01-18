@@ -68,4 +68,19 @@ describe('Käyttöoikeudet', function() {
       })
     })
   })
+
+  describe('Linkki henkilöpalveluun oppijan sivulla', function() {
+    describe('Käyttäjällä on oikeudet henkilöpalveluun', function() {
+      before(Authentication().logout, Authentication().login('pää'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+      it('Linkki näytetään', function() {
+        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Henkilöpalvelu')
+      })
+    })
+    describe('Käyttäjällä ei ole oikeuksia henkilöpalveluun', function() {
+      before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+      it('Linkkiä ei näytetä', function() {
+        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON')
+      })
+    })
+  })
 })

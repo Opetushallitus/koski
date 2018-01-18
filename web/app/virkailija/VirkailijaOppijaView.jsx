@@ -28,6 +28,7 @@ import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
 import {setOpiskeluoikeusInvalidated} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
+import {userP} from '../util/user'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -190,6 +191,7 @@ export class Oppija extends React.Component {
     let hetu = modelTitle(henkilö, 'hetu')
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
     stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
+    let showHenkilöUiLink = userP.map('.hasAnyHenkiloUiAccess')
     return oppija.loading
       ? <div className="loading"/>
       : (
@@ -197,7 +199,8 @@ export class Oppija extends React.Component {
           <div className={stateP.map(state => 'oppija-content ' + state)}>
             <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
-              <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
+              <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
+              {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank'><Text name="Henkilöpalvelu"/></a>)}
             </h2>
             {
               // Set location as key to ensure full re-render when context changes
