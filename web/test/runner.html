@@ -7,6 +7,16 @@
 </head>
 <body>
 <div id="mocha"></div>
+<script>
+    // make sure Mocha fails on unhandled exceptions, even before Mocha has started (e.g. syntax errors in our test scripts)
+    // window.uiError is checked in mocha before() and afterEach() hooks below
+    console.log('adding window error handler!')
+    window.onerror = function(errorMsg, url, lineNumber, columnNumber, exception) {
+      window.uiError = arguments
+      console.log(arguments)
+      return true
+    }
+</script>
 <script>console.log('loading lib/mocha.js')</script>
 <script src="lib/mocha.js"></script>
 <script>console.log('loading lib/chai.js')</script>
@@ -28,6 +38,15 @@
     mocha.ui('bdd')
     mocha.reporter('html')
     mocha.timeout(testTimeoutPageLoad)
+
+    function reportAndClearWindowUiError() {
+      var err = window.uiError
+      window.uiError = null
+      expect(err || null ).to.be.null
+    }
+    before(reportAndClearWindowUiError)
+    afterEach(reportAndClearWindowUiError)
+
     console.log('Mocha setup done')
 </script>
 <script>console.log('loading util/polyfills.js')</script>

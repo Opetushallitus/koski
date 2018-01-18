@@ -47,7 +47,7 @@ const domP = Bacon.combineWith(topBarP, contentP, allErrorsP, (topBar, content, 
           </div>)
     }
   </div>)
-).log('dom')
+)
 
 document.querySelector('title').innerHTML = t('Omat tiedot') + ' - ' + t('Koski') + ' - ' + t('Opintopolku.fi')
 

@@ -1,6 +1,6 @@
 describe('Ammatillinen koulutus', function() {
   before(Authentication().login())
-  
+
   var addOppija = AddOppijaPage()
   var page = KoskiPage()
   var login = LoginPage()
@@ -1215,7 +1215,7 @@ describe('Ammatillinen koulutus', function() {
             addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
             addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'),
             editor.edit,
-            opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Hassut temput'),
+            opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Hassut temput')
           )
 
           describe('Alussa', function() {

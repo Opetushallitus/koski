@@ -198,10 +198,6 @@ function seq() {
 }
 
 function openPage(path, predicate) {
-  // To clear the onerror handler set by mocha. This causes the tests to actually crash if an unhandled exception is thrown. Without this, we get silent failures.
-  // And yes, it needs to be here, to be called late enough. Otherwise, mocha installs its uncaught exception handler and the exceptions are not shown anywhere.
-  // Better yet would be to make mocha fail and show those exceptions!
-  window.onerror = undefined
   if (!predicate) {
     predicate = function() { return testFrame().jQuery }
   }
@@ -212,17 +208,14 @@ function openPage(path, predicate) {
     $(w).contents().find("head")[0].appendChild(jquery)
   }
   return function() {
-    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).load(function() {
+    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).on("load", function() {
       addScriptToDocument(this, "/koski/test/lib/jquery.js")
     })
     $("#testframe").replaceWith(newTestFrame)
     return wait.until(
-        function() {
-          return predicate()
-        },
+        predicate,
         testTimeoutPageLoad
     )().then(function() {
-        window.uiError = null
         testFrame().onerror = function(err) { window.uiError = err; } // Hack: force mocha to fail on unhandled exceptions
     })
   }
@@ -265,7 +258,7 @@ function extractAsText(el, subElement) {
   var element = el[0]
 
   if (el.hasClass("toggle-edit") || el.hasClass("opintosuoritusote")) return ""
-  
+
   var isBlockElement =
     element.tagName == "SECTION" ||
     ["block", "table", "table-row", "table-row-group", "list-item"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
