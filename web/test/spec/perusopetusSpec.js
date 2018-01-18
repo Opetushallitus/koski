@@ -1606,6 +1606,45 @@ describe('Perusopetus', function() {
                 'Kotitalous',
                 'Opinto-ohjaus'])
             })
+
+            describe('Toiminta-alueittain opiskelevalle', function() {
+              before(
+                opinnot.expandAll,
+                editor.property('erityisenTuenPäätös').addValue,
+                editor.property('opiskeleeToimintaAlueittain').setValue(true)
+              )
+
+              it('Esitäyttää toiminta-alueet', function() {
+                expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
+                  'motoriset taidot',
+                  'kieli ja kommunikaatio',
+                  'sosiaaliset taidot',
+                  'päivittäisten toimintojen taidot',
+                  'kognitiiviset taidot'
+                ])
+              })
+
+              describe('Kun muutoksia oppiaineisiin', function() {
+                var biologia = editor.subEditor('.BI')
+                before(editor.property('opiskeleeToimintaAlueittain').setValue(false), biologia.propertyBySelector('.arvosana').selectValue('8'), editor.property('opiskeleeToimintaAlueittain').setValue(true))
+                it('esitäyttöjä ei muuteta', function() {
+                  expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,', 'A1-kieli,', 'B1-kieli,', 'Matematiikka', 'Biologia', 'Maantieto', 'Fysiikka', 'Kemia',
+                    'Terveystieto', 'Uskonto', 'Historia', 'Yhteiskuntaoppi', 'Musiikki', 'Kuvataide', 'Käsityö', 'Liikunta', 'Kotitalous', 'Opinto-ohjaus'])
+                })
+
+                describe('Esitäyttöjen poistaminen', function () {
+                  var äidinkieli = editor.subEditor('.pakollinen.AI')
+                  before(editor.cancelChanges, editor.edit, äidinkieli.propertyBySelector('>tr:first-child').removeValue)
+                  it('toimii', function () {
+                    expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
+                      'A1-kieli,', 'B1-kieli,', 'Matematiikka', 'Biologia', 'Maantieto', 'Fysiikka', 'Kemia', 'Terveystieto',
+                      'Uskonto', 'Historia', 'Yhteiskuntaoppi', 'Musiikki', 'Kuvataide', 'Käsityö', 'Liikunta', 'Kotitalous',
+                      'Opinto-ohjaus'])
+                  })
+                })
+              })
+            })
+
             after(editor.cancelChanges)
           })
 
@@ -2328,25 +2367,6 @@ describe('Perusopetus', function() {
               'Kotitalous',
               'Opinto-ohjaus'])
             expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal('Suomen kieli ja kirjallisuus')
-          })
-
-          describe('Toiminta-alueittain opiskelevalle', function() {
-            before(
-              editor.edit,
-              opinnot.expandAll,
-              editor.property('erityisenTuenPäätös').addValue,
-              editor.property('opiskeleeToimintaAlueittain').setValue(true)
-            )
-
-            it('Esitäyttää toiminta-alueet', function() {
-              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
-                'motoriset taidot',
-                'kieli ja kommunikaatio',
-                'sosiaaliset taidot',
-                'päivittäisten toimintojen taidot',
-                'kognitiiviset taidot'
-              ])
-            })
           })
         })
 
