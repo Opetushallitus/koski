@@ -14,7 +14,7 @@ object InvalidDataFixer extends App with DefaultHttpTester with Logging {
       println("FAIL oid=" + result.opiskeluoikeusOid + " " + result.errors)
     }
     println("Hit ENTER to try to fix all")
-    readLine()
+    scala.io.StdIn.readLine()
     println("Starting")
     results.foreach { result =>
       authGet("api/opiskeluoikeus/" + result.opiskeluoikeusOid) {

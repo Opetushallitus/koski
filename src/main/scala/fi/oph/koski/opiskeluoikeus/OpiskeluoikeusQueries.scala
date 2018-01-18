@@ -17,7 +17,7 @@ import fi.oph.koski.util.{Pagination, PaginationSettings}
 import org.scalatra._
 import rx.lang.scala.Observable
 
-trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with Pagination {
+trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination {
   def application: KoskiApplication
   def query = OpiskeluoikeusQueryContext(request, params, paginationSettings)(koskiSession, application).query match {
     case Right(observable) => observable

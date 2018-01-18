@@ -12,7 +12,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
         case Right(rakenne) =>
-          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
+          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
@@ -26,7 +26,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus))))
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)))
-        .then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(validateTutkinnonOsanTutkinto)))
+        .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(validateTutkinnonOsanTutkinto)))
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: AikuistenPerusopetus =>

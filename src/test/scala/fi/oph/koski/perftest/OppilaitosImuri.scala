@@ -20,7 +20,7 @@ object OppilaitosImuri extends App {
   println("Ammatillisia: " + ammatillisetOppilaitokset.length)
 
   def haeOppilaitostyypillä(tyyppi: String) = {
-    val url: String = s"$virkailijaRoot/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=${URLEncoder.encode(tyyppi)}"
+    val url: String = s"$virkailijaRoot/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=${URLEncoder.encode(tyyppi, "UTF-8")}"
     EasyHttp.getJson[OrganisaatioHakuTulos](url).organisaatiot.map { org: OrganisaatioPalveluOrganisaatio => OidOrganisaatio(org.oid) }
   }
 }
