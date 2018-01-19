@@ -191,7 +191,7 @@ export class Oppija extends React.Component {
     let hetu = modelTitle(henkilö, 'hetu')
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
     stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
-    let showHenkilöUiLink = userP.map('.hasAnyHenkiloUiAccess')
+    let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     return oppija.loading
       ? <div className="loading"/>
       : (

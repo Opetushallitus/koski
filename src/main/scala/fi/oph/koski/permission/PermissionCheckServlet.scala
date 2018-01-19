@@ -24,7 +24,7 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
     val opiskeluoikeudet: Seq[Opiskeluoikeus] = request.personOidsForSamePerson.flatMap(getOpiskeluoikeudet)
     val organisaatioOidit: Set[Organisaatio.Oid] = opiskeluoikeudet.filter(isRelevantForAccessCheck).flatMap(_.oppilaitos).map(_.oid).toSet
     val sallitutOrganisaatioOidit: Set[Organisaatio.Oid] = organisaatioOidit.intersect(request.organisationOids.toSet)
-    PermissionCheckResponse(accessAllowed = sallitutOrganisaatioOidit.nonEmpty)
+    PermissionCheckResponse(accessAllowed = sallitutOrganisaatioOidit.nonEmpty && hasSufficientRoles(request.loggedInUserRoles))
   }
 
   private def getOpiskeluoikeudet(oid: Henkilö.Oid): Seq[Opiskeluoikeus] = {
@@ -35,5 +35,11 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
 
   private def isRelevantForAccessCheck(opiskeluoikeus: Opiskeluoikeus): Boolean = {
     opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.forall(!_.opiskeluoikeusPäättynyt)
+  }
+
+  // Note 1: keep in sync with KoskiSession's hasHenkiloUiWriteAccess function
+  // Note 2: Tämä logiikka saattaa kaivata päivitystä jos käyttöoikeusryhmien sisältö muuttuu.
+  private def hasSufficientRoles(roles: List[String]): Boolean = {
+    roles.contains("ROLE_APP_KOSKI") && (roles.contains("ROLE_APP_HENKILONHALLINTA_CRUD") || roles.contains("ROLE_APP_HENKILONHALLINTA_READ_UPDATE"))
   }
 }
