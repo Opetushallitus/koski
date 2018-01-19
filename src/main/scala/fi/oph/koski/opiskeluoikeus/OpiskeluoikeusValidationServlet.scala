@@ -17,7 +17,7 @@ import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
-class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
+class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)

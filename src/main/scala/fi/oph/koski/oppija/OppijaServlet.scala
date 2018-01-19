@@ -17,11 +17,11 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
-import org.scalatra.GZipSupport
+import org.scalatra.ContentEncodingSupport
 
 import scala.collection.immutable
 
-class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
+class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
 

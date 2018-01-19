@@ -88,7 +88,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
               case Right(result) if result.changed =>
                 syncHenkilötiedotAction(result.id, oppijaOid.oppijaOid, opiskeluoikeus, result.henkilötiedot)
               case _ =>
-                DBIO.successful()
+                DBIO.successful(Unit)
             }
           } yield result).transactionally
         }

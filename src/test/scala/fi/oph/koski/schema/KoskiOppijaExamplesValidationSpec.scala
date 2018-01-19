@@ -15,7 +15,6 @@ import fi.oph.scalaschema.extraction.{EmptyString, RegExMismatch, ValidationErro
 import org.json4s.JsonAST.JString
 import org.scalatest.{FreeSpec, Matchers}
 
-import scala.collection.JavaConversions._
 import scala.reflect.runtime.universe.TypeTag
 
 class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
@@ -25,9 +24,10 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   "Validation with JSON Schema" - {
     Examples.examples.foreach { example =>
       example.name in {
+        import scala.collection.JavaConverters._
         val json = JsonLoader.fromString(JsonSerializer.writeWithRoot(example.data))
         val report = validator.validate(schema, json)
-        assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.filter(m => m.getLogLevel.toString == "error").mkString("\n"))
+        assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.asScala.filter(m => m.getLogLevel.toString == "error").mkString("\n"))
       }
     }
   }

@@ -15,7 +15,7 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def isError = !isOk
 
   /** Pick given status if this one is ok. Otherwise stick with this one */
-  def then(status: => HttpStatus) = if (isOk) { status } else { this }
+  def onSuccess(status: => HttpStatus) = if (isOk) { status } else { this }
 
   def errorString: Option[String] = errors.headOption.flatMap(_.message match {
     case JString(s) => Some(s)

@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.util.Timing
 import org.scalatra._
 
-class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with GZipSupport with NoCache with Timing {
+class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with ContentEncodingSupport with NoCache with Timing {
   private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository, application.possu)
 
   get("/search") {
