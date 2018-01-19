@@ -348,6 +348,7 @@
           <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
           <junitxml>.</junitxml>
           <filereports>koski-tests.txt</filereports>
+          <stdout>T</stdout>
         </configuration>
         <executions>
           <execution>
