@@ -31,17 +31,20 @@ class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with
     "Korkeakoulun opiskeluoikeus, valmistunut" - {
       "pääsy estetty" in { permissionCheck(List(MockOppijat.amkValmistunut.oid), List(MockOrganisaatiot.aaltoYliopisto)) should equal(false) }
     }
+    "Käyttäjältä puuttuu tarvittavat roolit" - {
+      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu), List("ROLE_APP_FOOBAR")) should equal(false) }
+    }
   }
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
-  def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids:  List[Organisaatio.Oid]): Boolean = {
+  def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String] = List("ROLE_APP_KOSKI", "ROLE_APP_HENKILONHALLINTA_CRUD")): Boolean = {
     post(
       "api/permission/checkpermission",
       JsonSerializer.writeWithRoot(PermissionCheckRequest(
         personOidsForSamePerson = personOidsForSamePerson,
         organisationOids = organisationOids,
-        loggedInUserRoles = List())),
+        loggedInUserRoles = loggedInUserRoles)),
       headers = jsonContent
     ) {
       verifyResponseStatusOk()

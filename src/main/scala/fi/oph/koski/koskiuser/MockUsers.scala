@@ -21,7 +21,7 @@ object MockUsers {
   val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set(
     (Opetushallitus.organisaatioOid, ophPääkäyttäjä),
     (Opetushallitus.organisaatioOid, localizationAdmin),
-    (Opetushallitus.organisaatioOid, GlobaaliKäyttöoikeusryhmä("joku-henkilo-ui", "jotain oikeuksia henkilo-ui:ssa", List(Palvelurooli("OPPIJANUMEROREKISTERI", "DUPLIKAATTINAKYMA"))))
+    (Opetushallitus.organisaatioOid, GlobaaliKäyttöoikeusryhmä("joku-henkilo-ui", "jotain oikeuksia henkilo-ui:ssa", List(Palvelurooli("HENKILONHALLINTA", "CRUD"))))
   ))
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
