@@ -1,4 +1,5 @@
 import React from 'react'
+import R from 'ramda'
 import { ISO2FinnishDateTime, ISO2FinnishDate } from '../date/date'
 import PaginationLink from '../components/PaginationLink'
 import Link from '../components/Link'
@@ -63,7 +64,7 @@ class Lokirivi extends React.Component {
     const errorDetails = (virheet) => showError
       ? (<div>
           <ul className="tiedonsiirto-errors">{
-            virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? <Text name='Viesti ei ole skeeman mukainen'/> : virhe.message}</li>)
+            virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? <JsonSchemaErrorMessage virhe={virhe}/> : virhe.message}</li>)
           }</ul>
           <a className="virheen-tiedot" onClick={() => showErrors(virheet)}><Text name="virhe"/></a>
         </div>)
@@ -119,5 +120,26 @@ class LokirivinData extends React.Component {
       <a className="close" onClick={() => showData(false)}><Text name="Sulje"/></a>
       <pre>{JSON.stringify(details, null, 2)}</pre>
     </div>)
+  }
+}
+
+class JsonSchemaErrorMessage extends React.Component {
+  render() {
+    const {virhe} = this.props
+    let detail
+    const errorType = R.path(['message', 0, 'error', 'errorType'], virhe)
+    const path = R.path(['message', 0, 'path'], virhe)
+    const pathLast = (typeof path === 'string') ? R.last(path.split('.')) : undefined
+    if (errorType === 'tuntematonKoodi') {
+      detail = R.pathOr(errorType, ['message', 0, 'error', 'message'], virhe)
+    } else if (errorType && pathLast) {
+      detail = errorType + ' ' + pathLast
+    } else {
+      detail = errorType
+    }
+    return (<span>
+      <Text name='Viesti ei ole skeeman mukainen'/>
+      {detail && ' (' + detail + ')'}
+    </span>)
   }
 }
