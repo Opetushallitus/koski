@@ -37,7 +37,7 @@ describe('Tiedonsiirrot', function() {
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
         ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
-        ['', '', '', 'Viesti ei ole skeeman mukainenvirhe', 'tiedot']
+        ['', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot']
       ])
     })
   })
