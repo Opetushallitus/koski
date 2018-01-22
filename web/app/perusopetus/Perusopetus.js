@@ -7,7 +7,7 @@ export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus.context.o
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
 
 export const isPäättötodistus = (suoritus) => {
-  let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
+  const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
   return tunniste.koodistoUri === 'koulutus' && tunniste.koodiarvo === '201101'
 }
 

@@ -72,17 +72,17 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 }
 
 const valmiitaSuorituksia = oppiaineSuoritukset => {
-  let valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
+  const valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
   return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja().length > 0
 }
 
 const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
-  let wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, !isToimintaAlueittain(model))
-  let hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(wrongOsasuorituksetTemplate =>
+  const wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, !isToimintaAlueittain(model))
+  const hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(wrongOsasuorituksetTemplate =>
     // esitäyttödatan tyyppi ei sisällä nimi ja versiotietoja, poistetaan tyyppi koska se ei ole relevanttia vertailussa
     currentSuoritukset.length > 0 && R.equals(wrongOsasuorituksetTemplate.value.map(modelDataIlmanTyyppiä), currentSuoritukset.map(modelDataIlmanTyyppiä))
   )
-  let changeTemplateP = hasWrongPrefillP.or(Bacon.constant(isYsiluokka(model) && jääLuokalle(model)))
+  const changeTemplateP = hasWrongPrefillP.or(Bacon.constant(isYsiluokka(model) && jääLuokalle(model)))
   fetchOsasuorituksetTemplate(model, isToimintaAlueittain(model)).filter(changeTemplateP)
     .onValue(osasuorituksetTemplate => pushModel(modelSetValue(model, osasuorituksetTemplate.value, 'osasuoritukset')))
 }
