@@ -37,6 +37,9 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Koulutus")
   @Tooltip("Suoritettava koulutus ja koulutuksen opetussuunnitelman perusteiden diaarinumero.")
   koulutusmoduuli: PerusopetuksenLisäopetus,
+  @Description("Luokan tunniste, esimerkiksi 9C.")
+  @Tooltip("Luokan tunniste, esimerkiksi 9C.")
+  luokka: Option[String] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
