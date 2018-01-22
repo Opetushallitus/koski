@@ -19,24 +19,24 @@ import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
 
+const showOpiskeluoikeudenTilaDialog = Atom(false)
 export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
   let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
   let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
-  let addingNew = Atom(false)
   let items = modelItems(jaksotModel).slice(0).reverse()
   let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
-  let showAddDialog = () => addingNew.modify(x => !x)
+  let showAddDialog = () => showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
   let lisääJakso = (uusiJakso) => {
     if (uusiJakso) {
       pushModel(uusiJakso, wrappedModel.context.changeBus)
     }
-    addingNew.set(false)
+    showOpiskeluoikeudenTilaDialog.set(false)
   }
 
   let removeItem = () => {
     pushRemoval(items[0], wrappedModel.context.changeBus)
-    addingNew.set(false)
+    showOpiskeluoikeudenTilaDialog.set(false)
   }
 
   let showLisaaTila = wrappedModel.context.edit && !onLopputilassa(wrappedModel)
@@ -71,7 +71,7 @@ export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
           }
         </ul>
         {
-          addingNew.map(adding => adding && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => lisääJakso(uusiJakso)} />)
+          showOpiskeluoikeudenTilaDialog.map(showDialog => showDialog && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => lisääJakso(uusiJakso)} />)
         }
       </div>
   )

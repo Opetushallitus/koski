@@ -5,6 +5,12 @@ import {suorituksenTyyppi} from '../suoritus/Suoritus'
 
 export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
+
+export const isPäättötodistus = (suoritus) => {
+  const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
+  return tunniste.koodistoUri === 'koulutus' && tunniste.koodiarvo === '201101'
+}
+
 export const isPerusopetuksenOppimäärä = (suoritus) => {
   return ['perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara'].includes(suorituksenTyyppi(suoritus))
 }
@@ -16,4 +22,5 @@ export const luokkaAste = (suoritus) => {
 
 export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/perusopetuksenluokkaaste/${luokkaAste_}?toimintaAlueittain=${toimintaAlueittain}`)
 
-export const oppimääränOsasuoritukset = (suoritustyyppi) => suoritustyyppi ? Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${suoritustyyppi.koodiarvo}`) : Bacon.constant([])
+export const oppimääränOsasuoritukset = (suoritustyyppi, toimintaAlueittain = false) =>
+  suoritustyyppi ? Http.cachedGet(`/koski/api/editor/suoritukset/prefill/koulutus/201101?tyyppi=${suoritustyyppi.koodiarvo}&toimintaAlueittain=${toimintaAlueittain}`) : Bacon.constant([])

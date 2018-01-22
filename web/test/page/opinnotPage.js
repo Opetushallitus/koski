@@ -561,7 +561,7 @@ function OpiskeluoikeusDialog() {
   var button = findSingle('button', elem)
   return {
     tila: function() {
-      var p = Property(function() {return S('.lisaa-opiskeluoikeusjakso-modal')})
+      var p = Property(function() {return findSingle('.lisaa-opiskeluoikeusjakso-modal')})
       p.aseta = function(tila) {
         return p.click('input[value="koskiopiskeluoikeudentila_' + tila + '"]')
       }
