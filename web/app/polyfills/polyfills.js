@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import 'es6-promise/auto'
+import values from 'object.values'
 import './window-error-handler.js'
 import './closest.js'
 if (!String.prototype.startsWith) {
@@ -156,6 +157,8 @@ if (typeof Object.assign != 'function') {
     return to
   }
 }
+
+if (!Object.values) values.shim()
 
 Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
