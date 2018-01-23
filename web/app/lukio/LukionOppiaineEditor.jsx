@@ -7,12 +7,12 @@ import {tilaText} from '../suoritus/Suoritus'
 import {FootnoteHint} from '../components/footnote'
 
 export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
-  let arviointi = modelData(oppiaine, 'arviointi')
-  let kurssit = modelItems(oppiaine, 'osasuoritukset')
-  let suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
-  let numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
-  let kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
-  let keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+  const arviointi = modelData(oppiaine, 'arviointi')
+  const kurssit = modelItems(oppiaine, 'osasuoritukset')
+  const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+  const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
+  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
+  const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
 
   return (
     <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
