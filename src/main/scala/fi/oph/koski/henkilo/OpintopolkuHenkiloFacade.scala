@@ -1,11 +1,14 @@
 package fi.oph.koski.henkilo
 
+import java.lang.System.currentTimeMillis
+
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
 import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
 import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijaHenkilö, UusiHenkilö, Yhteystiedot, _}
@@ -126,10 +129,10 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
 }
 
 class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Logging {
-  var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  var oppijat = new MockOppijat(defaultOppijat)
 
   def resetFixtures = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+    oppijat = new MockOppijat(defaultOppijat)
   }
 
   private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = synchronized {
@@ -198,7 +201,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   def modify(oppija: TäydellisetHenkilötiedot): Unit = modify(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
 
   def reset(): Unit = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+    oppijat = new MockOppijat(defaultOppijat)
   }
 
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
@@ -213,6 +216,11 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   override def findChangedOppijaOids(since: Long): List[String] = synchronized {
-    MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
+    val changed = (oppijat.getOppijat.filter(_.sukunimi == "Changed") ++ defaultOppijat.diff(oppijat.getOppijat)).distinct.map(_.oid)
+    if (currentTimeMillis - since > 60 * 60 * 1000) { // an hour ago or more returns first 1000
+      changed.take(1000)
+    } else {
+      changed.slice(1000, 2000) // otherwise next 1000
+    }
   }
 }
