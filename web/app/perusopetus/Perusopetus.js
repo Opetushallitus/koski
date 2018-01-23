@@ -19,6 +19,9 @@ export const luokkaAste = (suoritus) => {
   let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
   return tunniste.koodistoUri == 'perusopetuksenluokkaaste' ? tunniste.koodiarvo : undefined
 }
+export const isYksilöllistetty = suoritus => modelData(suoritus, 'yksilöllistettyOppimäärä')
+export const isPainotettu = suoritus => modelData(suoritus, 'painotettuOpetus')
+export const isKorotus = suoritus => modelData(suoritus, 'korotus')
 
 export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) => Http.cachedGet(`/koski/api/editor/suoritukset/prefill/perusopetuksenluokkaaste/${luokkaAste_}?toimintaAlueittain=${toimintaAlueittain}`)
 

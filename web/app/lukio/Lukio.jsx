@@ -1,26 +1,17 @@
 import React from 'react'
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
-import Text from '../i18n/Text'
+import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
+import {FootnoteHint} from '../components/footnote'
 
 export class LukionOppiaineetEditor extends React.Component {
   render() {
     let {oppiaineet} = this.props
     return (
       <table className="suoritukset oppiaineet">
-        <thead>
-        <tr>
-          <th className="suorituksentila"></th>
-          <th className="oppiaine"><Text name="Oppiaine"/></th>
-          <th className="maara"><Text name="Kurssien määrä"/></th>
-          <th className="arvosana"><Text name="Arvosana (keskiarvo)"/></th>
-        </tr>
-        <tr>
-          <th colSpan="4"><hr/></th>
-        </tr>
-        </thead>
+        <LukionOppiaineetTableHead />
         <tbody>
         {
           oppiaineet.map((oppiaine, oppiaineIndex) =>
@@ -33,10 +24,10 @@ export class LukionOppiaineetEditor extends React.Component {
   }
 }
 
-class LukionOppiaineEditor extends React.Component {
+export class LukionOppiaineEditor extends React.Component {
   render() {
 
-    let {oppiaine} = this.props
+    let {oppiaine, footnote} = this.props
     let arviointi = modelData(oppiaine, 'arviointi')
     let kurssit = modelItems(oppiaine, 'osasuoritukset')
     let suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
@@ -57,8 +48,10 @@ class LukionOppiaineEditor extends React.Component {
         </td>
         <td className="maara">{suoritetutKurssit.length}</td>
         <td className="arvosana">
-          <div
-            className="annettuArvosana">{arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}</div>
+          <div className="annettuArvosana">
+            {arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}
+            {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
+          </div>
           <div className="keskiarvo">{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
         </td>
       </tr>
