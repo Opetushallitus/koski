@@ -5,7 +5,7 @@ import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppia
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
-import * as Lukio from '../lukio/Lukio'
+import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
 import {LuvaEditor} from '../lukio/LuvaEditor'
 import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
 import {PropertyEditor} from '../editor/PropertyEditor'
@@ -36,10 +36,10 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+    return <LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
+    return <LukionOppiaineetEditor oppiaineet={[mdl]} />
   }
   if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
     return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>

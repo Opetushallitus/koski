@@ -1,28 +1,10 @@
 import React from 'react'
+
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
-import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
 import {FootnoteHint} from '../components/footnote'
-
-export class LukionOppiaineetEditor extends React.Component {
-  render() {
-    let {oppiaineet} = this.props
-    return (
-      <table className="suoritukset oppiaineet">
-        <LukionOppiaineetTableHead />
-        <tbody>
-        {
-          oppiaineet.map((oppiaine, oppiaineIndex) =>
-            <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} />
-          )
-        }
-        </tbody>
-      </table>
-    )
-  }
-}
 
 export class LukionOppiaineEditor extends React.Component {
   render() {

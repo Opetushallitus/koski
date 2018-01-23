@@ -1,5 +1,5 @@
 import React from 'react'
-import { LukionOppiaineetEditor } from './Lukio'
+import {LukionOppiaineetEditor} from './LukionOppiaineetEditor'
 import Text from '../i18n/Text'
 
 export class LuvaEditor extends React.Component {
