@@ -18,6 +18,7 @@ object ExamplesPerusopetuksenLisaopetus {
 
   val lisäopetuksenSuoritus = PerusopetuksenLisäopetuksenSuoritus(
     koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
+    luokka = Some("10A"),
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suorituskieli = suomenKieli,

@@ -1,3 +1,7 @@
+## 22.1.2018
+
+  - Lisättyy Perusopetuksen lisäopetuksen suoritukseen valinnainen luokka-kenttä
+
 ## 12.1.2018
 
   - Sallitaan saman valinnaisen tutkinnonosan suoritus useampaan kertaan
