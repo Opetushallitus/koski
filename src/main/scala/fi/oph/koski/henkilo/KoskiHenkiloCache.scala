@@ -25,7 +25,7 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
     TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
   })
 
-  def filterOidsByCache(oids: List[String]) = {
+  def filterOidsByCache(oids: List[String]): Iterator[String] = {
     // split to groups of 10000 to ensure this works with larger batches. Tested: 10000 works, 100000 does not.
     oids.grouped(10000).flatMap(group => runDbSync(Henkilöt.map(_.oid).filter(_ inSetBind(group)).result))
   }
