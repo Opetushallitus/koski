@@ -20,27 +20,27 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
 
   return (
     <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
-      <td className="suorituksentila" title={tilaText(oppiaine)}>
+      <td className='suorituksentila' title={tilaText(oppiaine)}>
         <div>
           {suorituksenTilaSymbol(oppiaine)}
         </div>
       </td>
-      <td className="oppiaine">
-        <div className="nimi">{oppiaineTitle}</div>
+      <td className='oppiaine'>
+        <div className='nimi'>{oppiaineTitle}</div>
         <KurssitEditor model={oppiaine}/>
       </td>
-      <td className="maara">{suoritetutKurssit.length}</td>
-      <td className="arvosana">
-        <div className="annettuArvosana">
+      <td className='maara'>{suoritetutKurssit.length}</td>
+      <td className='arvosana'>
+        <div className='annettuArvosana'>
           {arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}
           {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
         </div>
-        <div className="keskiarvo">{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
+        <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
       </td>
       {
         edit && (
           <td>
-            <a className="remove-value" onClick={() => pushRemoval(oppiaine)}/>
+            <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
           </td>
         )
       }
