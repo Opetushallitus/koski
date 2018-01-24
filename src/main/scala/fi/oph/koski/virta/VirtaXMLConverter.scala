@@ -39,7 +39,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
         arvioituPäättymispäivä = None,
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
-        oppilaitos = Some(oppilaitos(opiskeluoikeusNode)),
+        oppilaitos = optionalOppilaitos(opiskeluoikeusNode),
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
         tila = opiskeluoikeudenTila,
@@ -65,6 +65,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       )
     }
 
+    // huom, tämä suodattaa pois myös tapaukset jossa oppilaitos = None (esim. ulkomaiset)
     opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
@@ -230,12 +231,23 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 
-  private def oppilaitos(node: Node): Oppilaitos = (node \ "Myontaja" headOption).flatMap(
-    koodi => findOppilaitos(koodi.text)
-  ).getOrElse(throw new RuntimeException("missing oppilaitos"))
+  // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
+  // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
+  private def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja" headOption).map(_.text)
 
-  private def findOppilaitos(numero: String) = {
-    oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
+  private def oppilaitos(node: Node): Oppilaitos = {
+    val numero = oppilaitosnumero(node)
+    numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: $numero"))
+  }
+
+  private def optionalOppilaitos(node: Node): Option[Oppilaitos] = {
+    val numero = oppilaitosnumero(node)
+    numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .orElse({
+        logger.warn(s"Oppilaitosta ei löydy: $numero")
+        None
+      })
   }
 
 }

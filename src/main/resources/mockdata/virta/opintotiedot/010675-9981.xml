@@ -28,6 +28,19 @@
                             </virta:Ensisijaisuus>
                             <virta:Koulutusala versio="opm95opa">90</virta:Koulutusala>
                         </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus avain="kv_10345A6789-2004-05-18" opiskelijaAvain="30855810">
+                            <virta:AlkuPvm>2004-05-18</virta:AlkuPvm>
+                            <virta:LoppuPvm>2004-06-21</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2004-05-18</virta:AlkuPvm>
+                                <virta:LoppuPvm>2004-06-21</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>1</virta:Tyyppi>
+                            <virta:Myontaja>UK</virta:Myontaja>
+                            <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="30855811"/>
+                            <!-- vaihtarihomma loppuu -->
+                        </virta:Opiskeluoikeus>
                     </virta:Opiskeluoikeudet>
                     <virta:LukukausiIlmoittautumiset>
                         <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
