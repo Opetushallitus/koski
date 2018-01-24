@@ -1,6 +1,7 @@
 import React from 'react'
 
-import {modelData, modelItems, modelTitle} from '../editor/EditorModel.js'
+import {t} from '../i18n/i18n'
+import {modelData, modelItems} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
@@ -13,6 +14,7 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
   const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
   const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
   const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+  const oppiaineTitle = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
 
   return (
     <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
@@ -22,7 +24,7 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
         </div>
       </td>
       <td className="oppiaine">
-        <div className="nimi">{modelTitle(oppiaine, 'koulutusmoduuli')}</div>
+        <div className="nimi">{oppiaineTitle}</div>
         <KurssitEditor model={oppiaine}/>
       </td>
       <td className="maara">{suoritetutKurssit.length}</td>

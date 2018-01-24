@@ -133,7 +133,7 @@ describe('Lukiokoulutus', function( ){
     before(page.openPage, page.oppijaHaku.searchAndSelect('210163-2367'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(S('.opiskeluoikeus .suoritus .property.tunniste .value').text()).to.equal("Historia")
+        expect(opinnot.getTutkinto()).to.equal("Historia")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
 

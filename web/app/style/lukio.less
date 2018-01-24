@@ -10,7 +10,7 @@
     table.suoritukset {
       width: 100%;
 
-      > tbody > tr:not(.aineryhmä) {
+      > tbody > tr:not(.aineryhmä):not(.error) {
         background: @color-neutral-gray;
       }
 
@@ -61,6 +61,11 @@
               div {
                 width: 0;
               }
+            }
+          }
+          &.error {
+            td.error {
+              color: @color-red;
             }
           }
         }

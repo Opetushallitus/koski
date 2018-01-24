@@ -96,7 +96,6 @@ case class LukionOppimääränSuoritus(
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
-  @FlattenInUI
   koulutusmoduuli: LukionOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Description("Lukion oppiaineen oppimäärän arviointi")
