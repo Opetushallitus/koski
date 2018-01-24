@@ -34,7 +34,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
   private def runUpdate(oids: List[Oid], lastContext: HenkilöUpdateContext) = {
     val filteredOids = application.henkilöCache.filterOidsByCache(oids)
-    val oppijat: List[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
+    val oppijat: List[OppijaHenkilö] = findOppijat(filteredOids.toList)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
@@ -42,11 +42,17 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
     val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
 
+    val lastModified = oppijat.lastOption.map(_.modified + 1)
+      .orElse(oids.lastOption.flatMap(o => findOppijat(List(o)).headOption).map(_.modified))
+      .getOrElse(lastContext.lastRun)
+
+    if (oids.nonEmpty) {
+      logger.info(s"Changed count: ${oids.size}, filtered count ${oppijat.size}, lastModified: $lastModified")
+    }
+
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
       .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
-
-    val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(lastContext.lastRun)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
@@ -70,6 +76,9 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       }
     }
   }
+
+  private def findOppijat(filteredOids: List[String]) =
+    application.opintopolkuHenkilöFacade.findOppijatByOids(filteredOids).sortBy(_.modified)
 
   private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
   private def henkilötiedotUpdateInterval = application.config.getDuration("schedule.henkilötiedotUpdateInterval")
