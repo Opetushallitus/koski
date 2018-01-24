@@ -61,8 +61,17 @@ class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: Authenticatio
   def findOppijatByOids(oids: List[Oid]): List[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOppijatByOids(oids))
 
-  def findChangedOppijaOids(since: Long): List[Oid] =
-    runTask(oppijanumeroRekisteriClient.findChangedOppijaOids(since))
+  def findChangedOppijaOids(since: Long): List[Oid] = {
+    val batchSize = 10000
+    var offset = 0
+    def changedOppijat = {
+      val changed = runTask(oppijanumeroRekisteriClient.findChangedOppijaOids(since, offset, batchSize))
+      offset = offset + batchSize
+      changed
+    }
+
+    Iterator.continually(changedOppijat).takeWhile(_.nonEmpty).flatten.toList
+  }
 
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOppijaByHetu(hetu))
