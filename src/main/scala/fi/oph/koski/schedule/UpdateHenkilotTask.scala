@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
@@ -23,7 +24,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
       val changedOids = application.opintopolkuHenkilöFacade.findChangedOppijaOids(oldContext.lastRun)
-      val newContext = runUpdate(changedOids, oldContext)
+      val newContext = HenkiloUpdate(application, changedOids, oldContext).runUpdate
       Some(JsonSerializer.serializeWithRoot(newContext))
     } catch {
       case e: Exception =>
@@ -32,11 +33,13 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
   }
 
-  private def runUpdate(oids: List[Oid], lastContext: HenkilöUpdateContext) = {
-    val filteredOids = application.henkilöCache.filterOidsByCache(oids)
-    val oppijat: List[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByOids(filteredOids.toList).sortBy(_.modified)
+  private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
+  private def henkilötiedotUpdateInterval = application.config.getDuration("schedule.henkilötiedotUpdateInterval")
+}
 
-    val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
+case class HenkiloUpdate(application: KoskiApplication, oids: List[Oid], lastContext: HenkilöUpdateContext) extends Logging {
+  def runUpdate: HenkilöUpdateContext = {
+    val oppijatWithMaster: List[WithModifiedTime] = oppijatToUpdate.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
     }
 
@@ -45,8 +48,6 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
       .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
-
-    val lastModified = oppijat.lastOption.map(o => o.modified + 1).getOrElse(lastContext.lastRun)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
@@ -71,8 +72,18 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
   }
 
-  private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
-  private def henkilötiedotUpdateInterval = application.config.getDuration("schedule.henkilötiedotUpdateInterval")
+  private lazy val oppijatToUpdate: List[OppijaHenkilö] = findOppijat(koskiOids)
+  private lazy val koskiOids: List[Oid] = application.henkilöCache.filterOidsByCache(oids).toList
+
+  private def findOppijat(oidsToFind: List[Oid]) = application.opintopolkuHenkilöFacade.findOppijatByOids(oidsToFind).sortBy(_.modified)
+
+  private def lastModified = if (oids.isEmpty) {
+    lastContext.lastRun
+  } else if (oppijatToUpdate.isEmpty) {
+    System.currentTimeMillis - 300000 // 5 min ago
+  } else {
+    oppijatToUpdate.last.modified + 1
+  }
 }
 
 case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
