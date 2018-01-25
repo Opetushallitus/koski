@@ -24,8 +24,13 @@ trait SSOSupport extends ScalatraBase with Logging {
     }
   }
 
-  private def currentUrl =
+  private def currentUrl: String = try {
     new URL(koskiRoot + request.getServletPath + request.getPathInfo).toURI.toASCIIString
+  } catch {
+    case e: Exception =>
+      logger.warn(s"Problem parsing url: ${e.getMessage}")
+      koskiRoot + request.getServletPath
+  }
 
 
   private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
