@@ -1,6 +1,10 @@
+## 25.1.2018
+
+  - Lisätty aikuisten perusopetuksen oppimäärän ja alkuvaiheen suorituksiin valinnainen luokka-kenttä
+
 ## 22.1.2018
 
-  - Lisättyy Perusopetuksen lisäopetuksen suoritukseen valinnainen luokka-kenttä
+  - Lisätty Perusopetuksen lisäopetuksen suoritukseen valinnainen luokka-kenttä
 
 ## 12.1.2018
 
