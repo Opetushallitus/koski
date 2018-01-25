@@ -6,7 +6,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class CacheServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Logging with NoCache {
-  get("/invalidate") {
+  get("/invalidate", request.getRemoteHost == "127.0.0.1") {
     application.cacheManager.invalidateAllCaches
     "Caches invalidated"
   }
