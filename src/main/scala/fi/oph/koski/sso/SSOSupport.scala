@@ -1,6 +1,6 @@
 package fi.oph.koski.sso
 
-import java.net.{URL, URLDecoder, URLEncoder}
+import java.net.{URI, URLDecoder, URLEncoder}
 
 import com.typesafe.config.Config
 import fi.oph.koski.json.JsonSerializer
@@ -24,8 +24,13 @@ trait SSOSupport extends ScalatraBase with Logging {
     }
   }
 
-  private def currentUrl =
-    new URL(koskiRoot + request.getServletPath + request.getPathInfo).toURI.toASCIIString
+  private def currentUrl: String = try {
+    new URI(koskiRoot + request.getServletPath + request.getPathInfo).toASCIIString
+  } catch {
+    case e: Exception =>
+      logger.warn(s"Problem parsing url: ${e.getMessage}")
+      koskiRoot + request.getServletPath
+  }
 
 
   private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
