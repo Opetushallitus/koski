@@ -200,7 +200,7 @@ export class Oppija extends React.Component {
             <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
-              {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank'><Text name="Henkilöpalvelu"/></a>)}
+              {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')}><Text name="Oppijanumerorekisteri" /></a>)}
             </h2>
             {
               // Set location as key to ensure full re-render when context changes
