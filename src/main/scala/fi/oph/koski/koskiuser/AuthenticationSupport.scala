@@ -93,7 +93,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         case Some(user) =>
           Right(user)
         case None =>
-          logger.error(s"User not found, after successful authentication: $username")
+          logger.warn(s"User not found, after successful authentication: $username")
           loginFail
       }
     }
