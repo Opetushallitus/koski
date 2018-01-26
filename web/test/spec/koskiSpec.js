@@ -76,44 +76,9 @@ describe('Koski', function() {
     })
   })
 
-  describe('Validointi-sivu', function() {
-    before(Authentication().login('pää'), openPage('/koski/validointi'))
-
-    it('näytetään', function () {
-      expect(isElementVisible(S('.validaatio'))).to.equal(true)
-    })
-
-    if (!window.callPhantom) { // Doesn't work in phantomjs
-      describe('Kun validoidaan opiskeluoikeudet', function() {
-        before(
-          click(findSingle('.validaatio .aloita')),
-          wait.untilVisible(findSingle('.validaatio .row'))
-        )
-
-        it('Näytetään tulokset', function() {
-
-        })
-
-        describe('Kun valitaan rivi', function() {
-          before(function() {
-              var rivi = findSingle('.validaatio .row')().get(0)
-              testFrame().getSelection().selectAllChildren(rivi)
-            },
-            triggerEvent(findSingle('.validointi-taulukko'), 'mouseup'),
-            click(findSingle('.validaatio .show-oids'))
-          )
-
-          it('Näytetään oidit', function() {
-            expect(extractAsText(findSingle('.validointi-taulukko .oid-list')).slice(0, 10)).to.equal("('1.2.246.")
-          })
-        })
-      })
-    }
-  })
-
   describe('Virhetilanteet', function() {
     before(Authentication().login())
-    
+
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
