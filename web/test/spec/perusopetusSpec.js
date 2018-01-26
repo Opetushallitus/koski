@@ -1116,7 +1116,7 @@ describe('Perusopetus', function() {
           before(editor.edit, arvosana.selectValue('S'), opinnot.expandAll)
 
           describe('Sanallinen arviointi', function() {
-            var sanallinenArviointi = äidinkieli.propertyBySelector('.kuvaus')
+            var sanallinenArviointi = äidinkieli.propertyBySelector('.sanallinen-arviointi .kuvaus')
             before(editor.edit, sanallinenArviointi.setValue('Hienoa työtä'), editor.saveChanges, opinnot.expandAll)
             it('Voidaan syöttää ja näytetään', function() {
               expect(sanallinenArviointi.isVisible()).to.equal(true)
