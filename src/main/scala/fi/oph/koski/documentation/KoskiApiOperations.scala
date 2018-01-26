@@ -5,10 +5,10 @@ import java.sql.Timestamp
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
-import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
@@ -172,22 +172,6 @@ object KoskiApiOperations extends ApiGroup {
         KoskiErrorCategory.unauthorized,
         KoskiErrorCategory.badRequest.format.number,
         KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
-      )
-    ))
-
-    val validateByQuery = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/validate",
-      "Etsii opiskeluoikeudet annetuilla parametreilla ja validoi hakutulokset.",
-      <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
-        Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
-        Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opiskeluoikeus, johon käyttäjällä on katseluoikeus.</p>,
-      Nil,
-      List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false")), QueryParameter("henkilö", "Validoidaanko henkilö", List("false"))) ++ hakuParametrit,
-      List(
-        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = serializeWithRoot(List(ValidationResult(MockOppijat.eero.oid, "1.2.246.562.15.82898400641", List())))),
-        KoskiErrorCategory.badRequest.format.pvm,
-        KoskiErrorCategory.badRequest.queryParam.unknown,
-        KoskiErrorCategory.unauthorized
       )
     ))
 

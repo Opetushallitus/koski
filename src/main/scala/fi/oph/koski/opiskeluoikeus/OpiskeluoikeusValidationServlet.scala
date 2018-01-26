@@ -18,7 +18,7 @@ import org.scalatra._
 import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
-  get("/") {
+  get("/", request.getRemoteHost == "127.0.0.1") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)

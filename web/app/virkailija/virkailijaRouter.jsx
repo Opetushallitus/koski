@@ -6,7 +6,6 @@ import {tiedonsiirtolokiContentP} from '../tiedonsiirrot/Tiedonsiirtoloki'
 import {tiedonsiirtovirheetContentP} from '../tiedonsiirrot/Tiedonsiirtovirheet'
 import {tiedonsiirtojenYhteenvetoContentP} from '../tiedonsiirrot/TiedonsiirtojenYhteenveto'
 import {oppijataulukkoContentP} from './Oppijataulukko'
-import {validointiContentP} from './Validointi'
 import {dokumentaatioContentP} from '../dokumentaatio/Dokumentaatio'
 import {onlyIfHasReadAccess} from './accessCheck'
 
@@ -26,8 +25,6 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
     return tiedonsiirtovirheetContentP(queryString)
   } else if (path === '/koski/tiedonsiirrot/yhteenveto') {
     return tiedonsiirtojenYhteenvetoContentP(queryString)
-  } else if (path === '/koski/validointi') {
-    return validointiContentP(queryString, params)
   } else if (path === '/koski/dokumentaatio') {
     return dokumentaatioContentP()
   }
