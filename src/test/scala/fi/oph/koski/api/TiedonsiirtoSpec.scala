@@ -12,6 +12,7 @@ import fi.oph.koski.koskiuser.MockUsers.helsinginKaupunkiPalvelukäyttäjä
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._
+import fi.oph.koski.util.Wait
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -164,6 +165,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
+    Wait.until(getTiedonsiirrot(user).nonEmpty)
     val tiedonsiirto = getTiedonsiirrot(user).head
     tiedonsiirto.oppija.flatMap(_.hetu) should equal(expectedHenkilö.flatMap(_.hetu))
     tiedonsiirto.rivit.flatMap(_.oppilaitos).map(_.oid) should equal(expectedOpiskeluoikeus.map(_.getOppilaitos.oid).toList)
