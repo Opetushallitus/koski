@@ -79,11 +79,33 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "arviointiasteikkoyleissivistava_o",
+  "koodiArvo" : "O",
+  "metadata" : [ {
+    "nimi" : "osallistunut",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "deltagit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkoyleissivistava_s",
   "koodiArvo" : "S",
   "metadata" : [ {
+    "nimi" : "godkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "hyväksytty",
     "lyhytNimi" : "S",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
