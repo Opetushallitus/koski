@@ -33,7 +33,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   }
 
   private def findChangedOppijaOids(since: Long): (List[Oid], List[String]) = {
-    val batchSize = 10000
+    val batchSize = 5000
     var offset = 0
     def changedOids = {
       val oids = application.opintopolkuHenkilöFacade.findChangedOppijaOids(since, offset, batchSize)
