@@ -35,21 +35,6 @@
       </exclusions>
     </dependency>
     <!-- OPH internal deps -->
-    <dependency>
-      <groupId>com.github.Opetushallitus.scala-utils</groupId>
-      <artifactId>scala-ldap-client_2.12</artifactId>
-      <version>9e1e25c</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.http4s</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.json4s</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <!-- for local development -->
     <!--
     <dependency>

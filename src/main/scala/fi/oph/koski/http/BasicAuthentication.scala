@@ -1,12 +1,12 @@
 package fi.oph.koski.http
 
-import com.unboundid.util.Base64
+import java.util.Base64
 import org.http4s.client.Client
 import org.http4s.{Header, Request, Service}
 
 object BasicAuthentication {
   def basicAuthHeader(user: String, password: String) = {
-    val auth: String = "Basic " + Base64.encode((user + ":" + password).getBytes("UTF8"))
+    val auth: String = "Basic " + Base64.getEncoder.encodeToString((user + ":" + password).getBytes("UTF8"))
     ("Authorization", auth)
   }
 }
