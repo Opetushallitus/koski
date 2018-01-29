@@ -6,7 +6,36 @@ import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
 import {FootnoteHint} from '../components/footnote'
-import {pushRemoval} from '../editor/EditorModel'
+import {modelLookup, modelTitle, pushRemoval} from '../editor/EditorModel'
+import {isKieliaine, isLukionMatematiikka} from '../suoritus/Koulutusmoduuli'
+import {Editor} from '../editor/Editor'
+
+const Nimi = ({oppiaine}) => {
+  const {edit} = oppiaine.context
+  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
+  const nimi = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
+  const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli.tunniste')
+  const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
+
+  return (
+    <span className='nimi'>
+      {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
+    </span>
+  )
+}
+
+const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
+  if (!oppiaine.context.edit) return null
+
+  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
+
+  return (
+    <span className='properties'>
+      {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
+      {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
+    </span>
+  )
+}
 
 export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
   const arviointi = modelData(oppiaine, 'arviointi')
@@ -15,7 +44,6 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
   const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
   const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
   const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
-  const oppiaineTitle = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
   const {edit} = oppiaine.context
 
   return (
@@ -26,7 +54,10 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
         </div>
       </td>
       <td className='oppiaine'>
-        <div className='nimi'>{oppiaineTitle}</div>
+        <div className='title'>
+          <Nimi oppiaine={oppiaine}/>
+          <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine}/>
+        </div>
         <KurssitEditor model={oppiaine}/>
       </td>
       <td className='maara'>{suoritetutKurssit.length}</td>
