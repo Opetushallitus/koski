@@ -11,7 +11,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{YhteisenTutkinnonOsanOsaAlueenSuoritus, Koodistokoodiviite, _}
 
 object AmmatillinenExampleData {
-  val exampleHenkilö = MockOppijat.ammattilainen.vainHenkilötiedot
+  val exampleHenkilö = MockOppijat.ammattilainen.henkilö
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
   val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381301", "koulutus"), Some("43/011/2014"))

@@ -15,8 +15,8 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import DateOrdering._
-  val teija = MockOppijat.teija.vainHenkilötiedot
-  val eero = MockOppijat.eero.vainHenkilötiedot
+  val teija = MockOppijat.teija.henkilö
+  val eero = MockOppijat.eero.henkilö
 
   "Kyselyrajapinta" - {
     "kun haku osuu" - {
@@ -89,7 +89,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
           opiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
             opiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
           )
-        ), MockOppijat.koululainen.vainHenkilötiedot)
+        ), MockOppijat.koululainen.henkilö)
         queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount)
       }
       "toimipistehaku" - {

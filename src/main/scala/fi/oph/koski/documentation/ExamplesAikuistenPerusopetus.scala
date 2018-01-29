@@ -19,7 +19,7 @@ object ExamplesAikuistenPerusopetus {
   )
 
   lazy val aineopiskelija = Oppija(
-    MockOppijat.eero.vainHenkilötiedot,
+    MockOppijat.eero.henkilö,
     List(AikuistenPerusopetuksenOpiskeluoikeus(
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),

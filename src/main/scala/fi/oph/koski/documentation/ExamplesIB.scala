@@ -221,7 +221,7 @@ object ExamplesIB {
   )
 
   val examples = List(
-    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(MockOppijat.ibFinal.vainHenkilötiedot, List(opiskeluoikeus))),
-    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(MockOppijat.ibPredicted.vainHenkilötiedot, List(opiskeluoikeusPredictedGrades)))
+    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(MockOppijat.ibFinal.henkilö, List(opiskeluoikeus))),
+    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(MockOppijat.ibPredicted.henkilö, List(opiskeluoikeusPredictedGrades)))
   )
 }

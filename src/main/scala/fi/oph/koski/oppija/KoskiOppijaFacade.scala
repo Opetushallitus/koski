@@ -36,12 +36,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
-      case h:UusiHenkilö if h.hetu.isDefined =>
-        Hetu.validate(h.hetu.get, acceptSynthetic = false).right.flatMap { hetu =>
+      case h:UusiHenkilö =>
+        Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:UusiHenkilö =>
-        Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset("Hetu tai oid on pakollinen"))
       case h:TäydellisetHenkilötiedot if mockOids =>
         Right(VerifiedHenkilöOid(h))
       case h:HenkilöWithOid =>

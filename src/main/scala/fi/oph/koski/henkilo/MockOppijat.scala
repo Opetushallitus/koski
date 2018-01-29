@@ -10,7 +10,7 @@ object MockOppijat {
   private val oppijat = new MockOppijat
 
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
-  val tyhjä = UusiHenkilö(Some("230872-7258"), "Tero", "Tero", "Tyhjä")
+  val tyhjä = UusiHenkilö("230872-7258", "Tero", "Tero", "Tyhjä")
 
   val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, Some(LocalDate.of(1977, 2, 24)), "Heikki", "Heikki", "Hetuton", None, None))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
