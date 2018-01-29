@@ -315,5 +315,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 291297"))
       }
     }
+    "Ei hetua" in {
+      putOppija(Oppija(oppija.copy(hetu = None), List(defaultOpiskeluoikeus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset("Hetu tai oid on pakollinen"))
+      }
+    }
   }
 }

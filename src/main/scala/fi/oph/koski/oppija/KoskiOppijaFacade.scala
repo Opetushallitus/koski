@@ -40,6 +40,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
         Hetu.validate(h.hetu.get, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
+      case h:UusiHenkilö =>
+        Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset("Hetu tai oid on pakollinen"))
       case h:TäydellisetHenkilötiedot if mockOids =>
         Right(VerifiedHenkilöOid(h))
       case h:HenkilöWithOid =>
