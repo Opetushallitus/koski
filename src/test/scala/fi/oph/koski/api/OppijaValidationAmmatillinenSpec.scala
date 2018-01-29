@@ -93,9 +93,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ))
             )
 
-            "Palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus tutkinnonosat/100023 esiintyy useammin kuin kerran ryhmässä ammatillisentutkinnonosanryhma/1")))
-            )
+            "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
           }
 
           "Sama valinnainen tutkinnon osa kahteen kertaan" - {

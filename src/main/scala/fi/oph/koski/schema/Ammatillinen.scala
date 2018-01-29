@@ -327,7 +327,7 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
 
   override def ryhmittelytekijä: Option[String] = tutkinnonOsanRyhmä.map(_.toString)
 
-  override def salliDuplikaatit: Boolean = !koulutusmoduuli.pakollinen
+  override def salliDuplikaatit: Boolean = true
 }
 
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
