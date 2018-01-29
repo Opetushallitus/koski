@@ -39,7 +39,7 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
       </td>
       {
         edit && (
-          <td>
+          <td className='remove-row'>
             <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
           </td>
         )
