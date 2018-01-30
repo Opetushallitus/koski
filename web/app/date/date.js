@@ -25,7 +25,7 @@ export const yearFromIsoDateString = dateString => {
   return year
 }
 
-export const ISO2FinnishDate = (date) => formatFinnishDate(parseISODate(date))
+export const ISO2FinnishDate = (date) => date && formatFinnishDate(parseISODate(date))
 
 const format = (date, f) => {
   try {
