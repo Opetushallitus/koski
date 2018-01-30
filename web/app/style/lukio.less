@@ -11,8 +11,12 @@
             text-transform: lowercase;
           }
 
-          .dropdown.inline:not(:hover) .input-container input {
-            background: none;
+          .dropdown-wrapper:not(.error) {
+            .dropdown.inline:not(:hover) {
+              .input-container input {
+                background: none;
+              }
+            }
           }
         }
       }
