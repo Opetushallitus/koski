@@ -360,16 +360,16 @@ trait PerusopetuksenKoodistostaLöytyväOppiaine extends PerusopetuksenOppiaine 
   def kuvaus: Option[LocalizedString]
 }
 
-@Title("Paikallinen valinnainen oppiaine")
-case class PerusopetuksenPaikallinenValinnainenOppiaine(
+@Title("Paikallinen oppiaine")
+case class PerusopetuksenPaikallinenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString,
-  perusteenDiaarinumero: Option[String] = None
-) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference {
-  def pakollinen: Boolean = false
-}
+  perusteenDiaarinumero: Option[String] = None,
+  @DefaultValue(false)
+  pakollinen: Boolean = false
+) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Title("Muu oppiaine")
 case class MuuPeruskoulunOppiaine(

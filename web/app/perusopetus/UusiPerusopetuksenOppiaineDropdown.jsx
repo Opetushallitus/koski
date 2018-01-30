@@ -14,20 +14,21 @@ import {t} from '../i18n/i18n'
 export const UusiPerusopetuksenOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   if (!oppiaineenSuoritus || !oppiaineenSuoritus.context.edit) return null
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli')).filter(k => !k.kieli).map(k => k.tunniste.koodiarvo)
-  let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus)
-    .filter(R.complement(isPaikallinen))
-    .map(oppiaineModel => pakollinen != undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel)
-  let valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels, 'tunniste')
-  let paikallinenProto = !pakollinen && paikallinenOppiainePrototype(oppiaineenSuoritus)
+
+  let setPakollisuus = oppiaineModel => pakollinen !== undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel
+
+  let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus).map(setPakollisuus)
+  let valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels.filter(R.complement(isPaikallinen)), 'tunniste')
+  let paikallinenProto = oppiaineModels.find(isPaikallinen)
   let paikallisetOppiaineet = Atom([])
-  let setPaikallisetOppiaineet = oppiaineet => paikallisetOppiaineet.set(oppiaineet)
+  let setPaikallisetOppiaineet = oppiaineet => paikallisetOppiaineet.set(oppiaineet.map(setPakollisuus))
 
   if (paikallinenProto) {
     getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).onValue(setPaikallisetOppiaineet)
   }
 
   let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
-    .map(aineet => aineet.filter(oppiaine => !pakollinen || !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo)))
+    .map(aineet => aineet.filter(oppiaine => pakollinen ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true))
 
   let poistaPaikallinenOppiaine = oppiaine => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], oppiaine).onValue(setPaikallisetOppiaineet)
 

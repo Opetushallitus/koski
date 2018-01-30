@@ -59,7 +59,7 @@ describe('Perusopetus', function() {
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
             'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9\n' +
+            'Valinnainen tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
@@ -123,7 +123,7 @@ describe('Perusopetus', function() {
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
             'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9\n' +
+            'Valinnainen tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
@@ -352,7 +352,7 @@ describe('Perusopetus', function() {
           'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
           'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
           'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-          'Tietokoneen hyötykäyttö 9\n' +
+          'Valinnainen tietokoneen hyötykäyttö 9\n' +
           'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
         )
       })
@@ -1249,6 +1249,7 @@ describe('Perusopetus', function() {
       describe('Valinnainen oppiaine', function() {
         before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
+        var uusiPakollinenOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
           var historia = editor.subEditor('.valinnainen.HI:eq(0)')
           var historia2 = editor.subEditor('.valinnainen.HI:eq(1)')
@@ -1290,12 +1291,16 @@ describe('Perusopetus', function() {
           describe('Tallennuksen jälkeen', function() {
             before(editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('Toimii', function () {
-              expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen tanssi 7')
             })
 
             describe('Lisäyksen jälkeen', function() {
               var tanssi = editor.subEditor('.valinnainen.TNS')
               before(editor.edit)
+
+              it('Uusi oppiaine on valittavissa myös pakollisissa oppiaineissa', function() {
+                expect(uusiPakollinenOppiaine.getOptions().includes('Tanssi')).to.equal(true)
+              })
               it('Valinnaisen oppiaineen voi lisätä useaan kertaan', function() {
                 expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(true)
               })
@@ -1334,6 +1339,7 @@ describe('Perusopetus', function() {
 
       describe('Pakollinen oppiaine', function() {
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+        var uusiValinnainenOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(
           opinnot.valitseSuoritus(1, 'Päättötodistus'),
@@ -1360,6 +1366,67 @@ describe('Perusopetus', function() {
           before(editor.edit, filosofia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('toimii', function () {
             expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
+          })
+        })
+
+        describe('Uuden paikallisen oppiaineen lisääminen', function() {
+          var uusiPaikallinen = editor.subEditor('.pakollinen.paikallinen')
+          before(editor.edit, uusiOppiaine.selectValue('Lisää'),
+            uusiPaikallinen.propertyBySelector('.arvosana').selectValue('7'),
+            uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
+            uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'))
+
+          describe('Ennen tallennusta', function() {
+            it('Uusi oppiaine näytetään avattuna', function() {
+              expect(uusiPaikallinen.property('kuvaus').isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Tallennuksen jälkeen', function() {
+            before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+            it('Toimii', function () {
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
+            })
+
+            describe('Lisäyksen jälkeen', function() {
+              var tanssi = editor.subEditor('.pakollinen.TNS')
+              before(editor.edit)
+
+              it('Uusi oppiaine on valittavissa myös valinnaisissa oppiaineissa', function() {
+                expect(uusiValinnainenOppiaine.getOptions().includes('Tanssi')).to.equal(true)
+              })
+              it('Oppiainetta ei voi lisätä useaan kertaan', function() {
+                expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(false)
+              })
+
+              describe('Poistettaessa suoritus', function() {
+                before(tanssi.propertyBySelector('>tr:first-child').removeValue)
+                it('Uusi oppiaine löytyy pudotusvalikosta', function() {
+                  expect(uusiOppiaine.getOptions()).to.include('Tanssi')
+                })
+
+                describe('Muutettaessa lisätyn oppiaineen kuvausta, tallennettaessa ja poistettaessa oppiaine', function() {
+                  before(uusiOppiaine.selectValue('Tanssi'), tanssi.propertyBySelector('.arvosana').selectValue('7'), tanssi.propertyBySelector('.nimi').setValue('Tanssi ja liike'), editor.saveChanges, editor.edit)
+                  before(tanssi.propertyBySelector('>tr:first-child').removeValue)
+
+                  describe('Käyttöliittymän tila', function() {
+                    it('Muutettu oppiaine löytyy pudotusvalikosta', function() {
+                      expect(uusiOppiaine.getOptions()[0]).to.equal('Tanssi ja liike')
+                    })
+                  })
+
+                  describe('Poistettaessa oppiaine pudotusvalikosta', function() {
+                    before(uusiOppiaine.removeFromDropdown('Tanssi ja liike'))
+
+                    it('Oppiainetta ei löydy enää pudotusvalikosta', function() {
+                      expect(uusiOppiaine.getOptions()).to.not.include('Tanssi ja liike')
+                    })
+                  })
+
+                  after(editor.cancelChanges)
+                })
+              })
+            })
           })
         })
       })
@@ -1507,7 +1574,7 @@ describe('Perusopetus', function() {
             'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
             'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
             'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9\n' +
+            'Valinnainen tietokoneen hyötykäyttö 9\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })

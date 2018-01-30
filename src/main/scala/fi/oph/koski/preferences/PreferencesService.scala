@@ -19,7 +19,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
 
   val prefTypes: Map[String, Class[_ <: StorablePreference]] = Map(
     "myöntäjät" -> classOf[Organisaatiohenkilö],
-    "perusopetuksenpaikallinenvalinnainenoppiaine" -> classOf[PerusopetuksenPaikallinenValinnainenOppiaine],
+    "perusopetuksenpaikallinenoppiaine" -> classOf[PerusopetuksenPaikallinenOppiaine],
     "perusopetukseenvalmistavanopetuksenoppiaine" -> classOf[PerusopetukseenValmistavanOpetuksenOppiaine],
     "aikuistenperusopetuksenalkuvaiheenpaikallinenoppiaine" -> classOf[AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine],
     "paikallinenaikuistenperusopetuksenkurssi" -> classOf[PaikallinenAikuistenPerusopetuksenKurssi],
