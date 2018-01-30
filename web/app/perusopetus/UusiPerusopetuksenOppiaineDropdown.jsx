@@ -7,7 +7,6 @@ import {modelData, modelLookup, modelSetData} from '../editor/EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../virkailija/organizationalPreferences'
 import {isPaikallinen, isUusi, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
-import {paikallinenOppiainePrototype} from './PerusopetuksenOppiaineEditor'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 
