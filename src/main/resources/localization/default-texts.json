@@ -970,6 +970,7 @@
   "Lisää paikallinen tutkinnon osan osa-alue": "Lisää paikallinen tutkinnon osan osa-alue",
   "Paikallisen tutkinnon osan osa-alueen lisäys": "Paikallisen tutkinnon osan osa-alueen lisäys",
   "Tutkinnon osan osa-alueen nimi": "Tutkinnon osan osa-alueen nimi",
-  "Ennustettu arvosana": "Ennustettu arvosana"
+  "Ennustettu arvosana": "Ennustettu arvosana",
+  "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta."
 }
 
