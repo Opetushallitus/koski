@@ -9,6 +9,7 @@ import {FootnoteHint} from '../components/footnote'
 import {modelLookup, modelTitle, pushRemoval} from '../editor/EditorModel'
 import {isKieliaine, isLukionMatematiikka} from '../suoritus/Koulutusmoduuli'
 import {Editor} from '../editor/Editor'
+import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 
 const Nimi = ({oppiaine}) => {
   const {edit} = oppiaine.context
@@ -37,13 +38,32 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
   )
 }
 
-export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
+const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
+  const {edit} = oppiaine.context
+
   const arviointi = modelData(oppiaine, 'arviointi')
-  const kurssit = modelItems(oppiaine, 'osasuoritukset')
-  const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
   const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
   const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
   const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+
+  return (
+    <div>
+      <div className='annettuArvosana'>
+        {
+          edit || arviointi
+            ? <ArvosanaEditor model={oppiaine}/>
+            : '-'
+        }
+        {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
+      </div>
+      <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
+    </div>
+  )
+}
+
+export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
+  const kurssit = modelItems(oppiaine, 'osasuoritukset')
+  const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
   const {edit} = oppiaine.context
 
   return (
@@ -62,11 +82,7 @@ export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
       </td>
       <td className='maara'>{suoritetutKurssit.length}</td>
       <td className='arvosana'>
-        <div className='annettuArvosana'>
-          {arviointi ? modelData(oppiaine, 'arviointi.-1.arvosana').koodiarvo : '-'}
-          {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
-        </div>
-        <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
+        <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit} footnote={footnote}/>
       </td>
       {
         edit && (
