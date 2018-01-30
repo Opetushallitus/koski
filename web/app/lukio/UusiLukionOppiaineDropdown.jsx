@@ -2,7 +2,8 @@ import React from 'baret'
 import {t} from '../i18n/i18n'
 import DropDown from '../components/Dropdown'
 import {
-  contextualizeSubModel, ensureArrayKey, modelData, modelItems, modelLookup, modelSet, oneOfPrototypes, pushModel,
+  contextualizeSubModel, ensureArrayKey, modelData, modelItems, modelLookup, modelSet, modelSetTitle, oneOfPrototypes,
+  pushModel,
   wrapOptional
 } from '../editor/EditorModel'
 import {koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
@@ -36,7 +37,9 @@ export const UusiLukionOppiaineDropdown = ({model}) => {
   const placeholderText = t('Lisää oppiaine')
 
   const addOppiaine = oppiaine => {
-    const suoritusUudellaOppiaineella = modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli')
+    const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
+    const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
+    const suoritusUudellaOppiaineella = modelSet(uusiOppiaineenSuoritus, oppiaineWithTitle, 'koulutusmoduuli')
     pushModel(suoritusUudellaOppiaineella, model.context.changeBus)
     ensureArrayKey(suoritusUudellaOppiaineella)
   }

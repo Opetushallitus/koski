@@ -15,7 +15,7 @@ const Nimi = ({oppiaine}) => {
   const {edit} = oppiaine.context
   const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
   const nimi = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
-  const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli.tunniste')
+  const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli')
   const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
 
   return (
