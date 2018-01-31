@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
+import {LukionOppiaineRowEditor} from '../lukio/LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTable'
 import {modelData, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
@@ -29,7 +29,7 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
             </tr>,
             aineet.map((oppiaine, oppiaineIndex) => {
               const footnote = modelLookup(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
-              return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
+              return <LukionOppiaineRowEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
             })
           ])
         }

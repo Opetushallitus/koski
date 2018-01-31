@@ -61,7 +61,7 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   )
 }
 
-export const LukionOppiaineEditor = ({oppiaine, footnote}) => {
+export const LukionOppiaineRowEditor = ({oppiaine, footnote}) => {
   const kurssit = modelItems(oppiaine, 'osasuoritukset')
   const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
   const {edit} = oppiaine.context

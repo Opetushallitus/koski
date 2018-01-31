@@ -12,6 +12,7 @@ import {PropertyEditor} from '../editor/PropertyEditor'
 import {Editor} from '../editor/Editor'
 import {sortLanguages} from '../util/sorting'
 import {ArvosanaEditor} from './ArvosanaEditor'
+import {LukionOppiaineenOppimaaranSuoritusEditor} from '../lukio/LukionOppiaineenOppimaaranSuoritusEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -36,13 +37,13 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
-    return <LukionOppiaineetEditor päätasonSuoritusModel={mdl} />
+    return <LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset')} />
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
-    return <LukionOppiaineetEditor päätasonSuoritusModel={mdl} suoritukset={[mdl]} />
+    return <LukionOppiaineenOppimaaranSuoritusEditor model={mdl} />
   }
   if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
-    return <LuvaEditor päätasonSuoritusModel={mdl}/>
+    return <LuvaEditor oppiaineet={modelItems(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
     return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
