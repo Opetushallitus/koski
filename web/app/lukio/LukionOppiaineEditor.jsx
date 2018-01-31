@@ -61,7 +61,7 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   )
 }
 
-export const LukionOppiaineRowEditor = ({oppiaine, footnote}) => {
+export const LukionOppiaineRowEditor = ({oppiaine, footnote, allowOppiaineRemoval = true}) => {
   const kurssit = modelItems(oppiaine, 'osasuoritukset')
   const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
   const {edit} = oppiaine.context
@@ -85,7 +85,7 @@ export const LukionOppiaineRowEditor = ({oppiaine, footnote}) => {
         <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit} footnote={footnote}/>
       </td>
       {
-        edit && (
+        edit && allowOppiaineRemoval && (
           <td className='remove-row'>
             <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
           </td>
