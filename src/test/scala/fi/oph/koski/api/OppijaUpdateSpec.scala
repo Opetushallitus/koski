@@ -320,5 +320,23 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset("Hetu tai oid on pakollinen"))
       }
     }
+    "Väärän muotoinen henkilö" in {
+      val json =
+        """{
+            "henkilö": {
+              "oid": "1.2.246.562.24.99999555555",
+              "hetu": "270181-5263",
+              "etunimet": "Kaisa",
+              "kutsumanimi": "Kaisa",
+              "sukunimi": "Koululainen",
+              "äidinkieli": "väärän-muotoinen"
+            },
+            "opiskeluoikeudet": []
+          }"""
+
+      put("api/oppija", body = json, headers = authHeaders(paakayttaja) ++ jsonContent){
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedType.*".r))
+      }
+    }
   }
 }
