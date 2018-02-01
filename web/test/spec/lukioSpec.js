@@ -274,6 +274,83 @@ describe('Lukiokoulutus', function( ){
           'HI1\n7 HI2\n8 HI3\n7 HI4\n6 4 9\n(7,0)')
       })
     })
+
+    describe('Tietojen muuttaminen', function() {
+      describe('Suoritusten tiedot', function () {
+        describe('Oppiaine', function () {
+          before(editor.edit)
+
+          var hi = opinnot.oppiaineet.oppiaine('oppiaine.HI')
+          var arvosana = hi.propertyBySelector('td.arvosana')
+
+          describe('Alkutila', function () {
+            it('on oikein', function () {
+              expect(editor.canSave()).to.equal(false)
+              expect(arvosana.getValue()).to.equal('9')
+            })
+          })
+
+          describe('Arvosanan muuttaminen', function () {
+            before(arvosana.selectValue(8), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+            it('onnistuu', function () {
+              expect(findSingle('.oppiaine.HI .arvosana .annettuArvosana')().text()).to.equal('8')
+            })
+          })
+
+          describe('Oppiaineen', function () {
+            before(editor.edit)
+
+            it('lisääminen ei ole mahdollista', function () {
+              expect(findSingle('.uusi-oppiaine')).to.throw(Error, /not found/)
+            })
+
+            it('poistaminen ei ole mahdollista', function () {
+              expect(findSingle('.oppiaine-rivi > .remove-row')).to.throw(Error, /not found/)
+            })
+          })
+
+          describe('Oppiaineen kurssi', function () {
+            before(
+              editor.edit,
+              editor.property('tila').removeItem(0),
+              opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+            )
+
+            describe('Arvosanan muuttaminen', function () {
+              var kurssi = opinnot.oppiaineet.oppiaine('HI').kurssi('HI4')
+
+              before(kurssi.arvosana.selectValue('10'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('Toimii', function () {
+                expect(kurssi.arvosana.getText()).to.equal('10')
+              })
+            })
+
+            // describe('Lisääminen', function () {
+            //   it('toimii', function () {
+            //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+            //   })
+            // })
+
+            describe('Poistaminen', function () {
+              var hi1 = hi.kurssi('HI1')
+
+              before(
+                editor.edit,
+                hi1.poistaKurssi,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet .HI'))).to.not.contain('HI1')
+              })
+            })
+          })
+        })
+      })
+    })
   })
 
   describe('Lukioon valmistava koulutus', function() {
