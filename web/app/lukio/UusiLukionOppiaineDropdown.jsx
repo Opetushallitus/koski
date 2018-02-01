@@ -9,12 +9,13 @@ import {
 import {koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 
-const createOppiaineenSuoritus = model => {
+const createOppiaineenSuoritus = (model, suoritusClass) => {
   const oppiaineet = wrapOptional(modelLookup(model, 'osasuoritukset'))
   const newItemIndex = modelItems(oppiaineet).length
   const oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex)
   const options = oneOfPrototypes(oppiaineenSuoritusProto)
-  return contextualizeSubModel(options[0], oppiaineet, newItemIndex)
+  const proto = suoritusClass && options.find(p => p.value.classes.includes(suoritusClass)) || options[0]
+  return contextualizeSubModel(proto, oppiaineet, newItemIndex)
 }
 
 const fetchOppiaineOptions = uusiOppiaineenSuoritus => {
@@ -25,10 +26,10 @@ const fetchOppiaineOptions = uusiOppiaineenSuoritus => {
 const oppiaineToKoodiarvo = oppiaine => modelData(oppiaine, 'koulutusmoduuli.tunniste').koodiarvo
 const koulutusmoduuliToKoodiarvo = koulutusmoduuli => modelData(koulutusmoduuli, 'tunniste').koodiarvo
 
-export const UusiLukionOppiaineDropdown = ({model}) => {
+export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => {
   if (!model || !model.context.edit) return null
 
-  const uusiOppiaineenSuoritus = createOppiaineenSuoritus(model)
+  const uusiOppiaineenSuoritus = createOppiaineenSuoritus(model, oppiaineenSuoritusClass)
   const käytössäOlevatKoodiarvot = modelItems(model, 'osasuoritukset').map(oppiaineToKoodiarvo)
   const options = fetchOppiaineOptions(uusiOppiaineenSuoritus).map(oppiaineOptions =>
     oppiaineOptions

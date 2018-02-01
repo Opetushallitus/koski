@@ -5,9 +5,9 @@ import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelErrorMessages, modelItems} from '../editor/EditorModel'
 
-export const LukionOppiaineetEditor = ({suorituksetModel}) => {
+export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineenSuoritus, suoritusFilter}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
-  const oppiaineet = modelItems(suorituksetModel)
+  const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
 
   if (!edit && R.isEmpty(oppiaineet)) return null
 
@@ -29,7 +29,10 @@ export const LukionOppiaineetEditor = ({suorituksetModel}) => {
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <UusiLukionOppiaineDropdown model={päätasonSuoritusModel} />
+      <UusiLukionOppiaineDropdown
+        model={päätasonSuoritusModel}
+        oppiaineenSuoritusClass={classForUusiOppiaineenSuoritus}
+      />
     </section>
   )
 }
