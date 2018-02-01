@@ -131,10 +131,29 @@ describe('Lukiokoulutus', function( ){
 
   describe('Lukion oppiaineen oppimäärän suoritus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('210163-2367'))
+
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal("Historia")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+      })
+    })
+
+    describe('Kaikki tiedot näkyvissä', function () {
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2015 — 10.1.2016\n' +
+          'Tila 10.1.2016 Valmistunut\n' +
+          '1.9.2015 Läsnä')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Oppiaine Historia 60/011/2015\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Arviointi 9\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 10.1.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
