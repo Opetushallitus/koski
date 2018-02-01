@@ -82,7 +82,7 @@ const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, add
   selectedAtom.filter(R.identity).onValue((newItem) => {
     addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))
   })
-  let osat = lisättävätTutkinnonOsat.osat.filter(osa => !käytössäolevatKoodiarvot.includes(osa.koodiarvo) || isAmmatillisenKieliaine(osa.koodiarvo))
+  let osat = lisättävätTutkinnonOsat.osat
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
       <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
