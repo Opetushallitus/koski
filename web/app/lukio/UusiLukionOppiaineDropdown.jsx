@@ -45,13 +45,15 @@ export const UusiLukionOppiaineDropdown = ({model}) => {
   }
 
   return (
-    <DropDown
-      options={options}
-      keyValue={oppiaine => modelData(oppiaine, 'tunniste').koodiarvo}
-      displayValue={oppiaine => modelLookup(oppiaine, 'tunniste').value.title}
-      onSelectionChanged={addOppiaine}
-      selectionText={placeholderText}
-      isRemovable={() => false}
-    />
+    <div className='uusi-oppiaine'>
+      <DropDown
+        options={options}
+        keyValue={oppiaine => modelData(oppiaine, 'tunniste').koodiarvo}
+        displayValue={oppiaine => modelLookup(oppiaine, 'tunniste').value.title}
+        onSelectionChanged={addOppiaine}
+        selectionText={placeholderText}
+        isRemovable={() => false}
+      />
+    </div>
   )
 }
