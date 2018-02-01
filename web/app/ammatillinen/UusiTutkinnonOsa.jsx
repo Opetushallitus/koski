@@ -17,14 +17,14 @@ import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
 import {
-  createTutkinnonOsanSuoritusPrototype, isAmmatillisenKieliaine, isYhteinenTutkinnonOsa, placeholderForNonGrouped,
+  createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, placeholderForNonGrouped,
   tutkinnonOsanOsaAlueenKoulutusmoduuli
 } from './TutkinnonOsa'
 import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {koodistoValues} from '../uusioppija/koodisto'
 
-export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suorituksetModel, setExpanded, groupTitles }) => {
+export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
   let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
   let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
@@ -32,8 +32,6 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   let koulutusmoduuliProto = selectedItem => selectedItem && isYhteinenTutkinnonOsa(suoritus)
     ? tutkinnonOsanOsaAlueenKoulutusmoduuli(valtakunnallisetKoulutusmoduulit, selectedItem.data)
     : valtakunnallisetKoulutusmoduulit[0]
-
-  let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
 
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero') || modelData(suoritus, 'tutkinto.perusteenDiaarinumero')
   let suoritustapa = modelData(suoritus, 'suoritustapa.koodiarvo')
@@ -49,7 +47,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
       elementWithLoadingIndicator(
         osatP.map(lisättävätTutkinnonOsat => {
             return (<div>
-              <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto, groupId, käytössäolevatKoodiarvot}} />
+              <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto, groupId}} />
               <LisääOsaToisestaTutkinnosta {...{addTutkinnonOsa, lisättävätTutkinnonOsat, suoritus, koulutusmoduuliProto, groupId, diaarinumero}}/>
               <LisääPaikallinenTutkinnonOsa {...{lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli, groupId}}/>
             </div>)
@@ -77,7 +75,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suoritukset, suoritukset
   }
 }
 
-const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, käytössäolevatKoodiarvot}) => {
+const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
     addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))

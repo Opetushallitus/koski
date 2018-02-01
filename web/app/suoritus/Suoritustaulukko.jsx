@@ -111,7 +111,6 @@ export class Suoritustaulukko extends React.Component {
               <UusiTutkinnonOsa suoritus={parentSuoritus}
                                 suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
                                 suorituksetModel={suorituksetModel}
-                                suoritukset={items}
                                 groupId={groupId}
                                 setExpanded={setExpanded}
                                 groupTitles={groupTitles}
