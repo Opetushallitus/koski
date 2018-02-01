@@ -175,6 +175,10 @@ function seq() {
   }
 }
 
+if (!$("#testframe").length) {
+  $(document.body).append("<iframe id='testframe'></iframe>")
+}
+
 function openPage(path, predicate) {
   if (!predicate) {
     predicate = function() { return testFrame().jQuery }
