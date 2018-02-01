@@ -167,14 +167,38 @@ describe('Lukiokoulutus', function( ){
 
   describe('Lukioon valmistava koulutus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
+
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal("Lukiokoulutukseen valmistava koulutus")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
+
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
+
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä\n' +
+          'Lisätiedot\n' +
+          'Pidennetty päättymispäivä kyllä\n' +
+          'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
+          'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
+          'Sisäoppilaitosmainen majoitus 1.9.2013 — 12.12.2013')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Lukiokoulutukseen valmistava koulutus 56/011/2015\n' +
+          'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+      })
+
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Lukioon valmistavat opinnot\n' +
