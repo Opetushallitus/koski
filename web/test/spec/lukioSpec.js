@@ -439,5 +439,246 @@ describe('Lukiokoulutus', function( ){
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
       })
     })
+
+    describe('Tietojen muuttaminen', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
+
+      describe('Suoritusten tiedot', function () {
+        describe('Oppiaine', function () {
+          before(editor.edit)
+
+          var valmistavaAi = opinnot.oppiaineet.oppiaine('oppiaine.LVAIK')
+          var valmistavaAiArvosana = valmistavaAi.propertyBySelector('td.arvosana')
+          var valmistavaAiKieli = valmistavaAi.propertyBySelector('.title .properties')
+
+          var valinnainenEn = opinnot.oppiaineet.oppiaine('oppiaine.A1')
+          var valinnainenEnArvosana = valinnainenEn.propertyBySelector('td.arvosana')
+          var valinnainenEnKieli = valinnainenEn.propertyBySelector('.title .properties')
+
+          describe('Alkutila', function () {
+            it('on oikein', function () {
+              expect(editor.canSave()).to.equal(false)
+              expect(valmistavaAiArvosana.getValue()).to.equal('S')
+              expect(valinnainenEnArvosana.getValue()).to.equal('S')
+            })
+          })
+
+          describe('Kieliaineen kielen muuttaminen', function() {
+            describe('valmistavalle äidinkielelle', function () {
+              before(valmistavaAiKieli.selectValue('Ruotsi toisena kielenä ja kirjallisuus'))
+              it('toimii', function() {
+                expect(valmistavaAiKieli.getValue()).to.equal('Ruotsi toisena kielenä ja kirjallisuus')
+                expect(editor.canSave()).to.equal(true)
+              })
+            })
+
+            describe('valinnaiselle vieraalle kielelle', function () {
+              before(valinnainenEnKieli.selectValue('portugali'))
+              it('toimii', function() {
+                expect(valinnainenEnKieli.getValue()).to.equal('portugali')
+                expect(editor.canSave()).to.equal(true)
+              })
+            })
+
+            describe('tallennus', function () {
+              before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+              it('toimii', function () {
+                expect(findSingle('.oppiaine.LVAIK .title .nimi')().text()).to.equal('Äidinkieli ja kirjallisuus, Ruotsi toisena kielenä ja kirjallisuus')
+                expect(findSingle('.oppiaine.A1 .title .nimi')().text()).to.equal('A1-kieli, portugali')
+              })
+            })
+          })
+
+          describe('Arvosanan muuttaminen', function () {
+            describe('valmistavalle aineelle', function () {
+              before(
+                editor.edit,
+                valmistavaAiArvosana.selectValue(8),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function() {
+                expect(findSingle('.oppiaine.LVAIK .arvosana .annettuArvosana')().text()).to.equal('8')
+              })
+            })
+
+            describe('valinnaiselle aineelle', function () {
+              before(
+                editor.edit,
+                valinnainenEnArvosana.selectValue(9),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('onnistuu', function() {
+                expect(findSingle('.oppiaine.A1 .arvosana .annettuArvosana')().text()).to.equal('9')
+              })
+            })
+          })
+
+          describe('Valmistava oppiaine', function () {
+            var valmistavatSelector = '.lukioon-valmistavat-opinnot'
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(valmistavatSelector)
+            var mat = editor.subEditor(valmistavatSelector + ' .oppiaine.LVMALUO:eq(0)')
+
+            before(editor.edit)
+
+            describe('Valtakunnallisen valmistavan oppiaineen', function () {
+              describe('poistaminen', function () {
+                before(
+                  editor.edit,
+                  mat.propertyBySelector('.remove-row').removeValue,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S(valmistavatSelector))).to.not.contain('Matemaattiset ja luonnontieteelliset opinnot')
+                })
+              })
+
+              describe('lisääminen', function () {
+                before(
+                  editor.edit,
+                  uusiOppiaine.selectValue('Matemaattiset ja luonnontieteelliset opinnot')
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Matemaattiset ja luonnontieteelliset opinnot')
+                })
+
+                it('arvosana vaaditaan kun päätason suoritus on merkitty valmiiksi', function () {
+                  expect(editor.canSave()).to.equal(false)
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+                })
+
+                describe('Kun päätason suoritus merkitään keskeneräiseksi', function () {
+                  before(
+                    editor.property('tila').removeItem(0),
+                    opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+                  )
+
+                  it('tallennus toimii', function () {
+                    mat.propertyBySelector('.arvosana').selectValue('9')
+                  })
+                })
+              })
+
+              describe('oppiaineen kurssin', function () {
+                before(editor.edit)
+
+                describe('arvosanan muuttaminen', function () {
+                  var kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('STK')
+
+                  before(
+                    kurssi.arvosana.selectValue('5'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(kurssi.arvosana.getText()).to.equal('5')
+                  })
+                })
+
+                // describe('Lisääminen', function () {
+                //   it('toimii', function () {
+                //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+                //   })
+                // })
+
+                describe('poistaminen', function () {
+                  var stk = valmistavaAi.kurssi('STK')
+
+                  before(
+                    editor.edit,
+                    stk.poistaKurssi,
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .LVAIK'))).to.not.contain('STK')
+                  })
+                })
+              })
+            })
+          })
+
+          describe('Valtakunnallisen valinnaisen oppiaineen', function () {
+            var valinnaisetSelector = '.valinnaisena-suoritetut-lukiokurssit'
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(valinnaisetSelector)
+            var kotitalous = editor.subEditor(valinnaisetSelector + ' .oppiaine.KO:eq(0)')
+
+            before(editor.edit)
+
+            describe('lisääminen', function () {
+              before(
+                editor.edit,
+                uusiOppiaine.selectValue('Kotitalous'),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Kotitalous')
+              })
+            })
+
+            describe('poistaminen', function () {
+              before(
+                editor.edit,
+                kotitalous.propertyBySelector('.remove-row').removeValue,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S(valinnaisetSelector))).to.not.contain('Kotitalous')
+              })
+            })
+
+            describe('oppiaineen kurssin', function () {
+              describe('arvosanan muuttaminen', function () {
+                var kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
+
+                before(
+                  editor.edit,
+                  kurssi.arvosana.selectValue('6'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(kurssi.arvosana.getText()).to.equal('6')
+                })
+              })
+
+              // describe('Lisääminen', function () {
+              //   it('toimii', function () {
+              //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+              //   })
+              // })
+
+              describe('poistaminen', function () {
+                var ena1 = valinnainenEn.kurssi('ENA1')
+
+                before(
+                  editor.edit,
+                  ena1.poistaKurssi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet .A1'))).to.not.contain('ENA1')
+                })
+              })
+            })
+          })
+        })
+      })
+    })
   })
 })
