@@ -1,12 +1,12 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.henkilo.{FindByHetu, HenkilöRepository, Hetu, OpintopolkuHenkilöRepository}
+import fi.oph.koski.henkilo.{FindByHetu, OpintopolkuHenkilöRepository}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.UusiHenkilö
+import fi.oph.koski.schema.{HenkilötiedotJaOid, UusiHenkilö}
 
 case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: VirtaAccessChecker) extends FindByHetu with Logging {
-  override def findByHetu(hetu: String)(implicit user: KoskiSession) = {
+  override def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
     if (!accessChecker.hasAccess(user)) {
       None
     } else {
@@ -36,6 +36,21 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuH
           logger.error(e)("Failed to fetch data from Virta")
           None
       }
+    }
+  }
+
+  override def exists(hetu: String)(implicit user: KoskiSession): Boolean = if (!accessChecker.hasAccess(user)) {
+    false
+  } else {
+    try {
+      v.opintotiedot(VirtaHakuehtoHetu(hetu)).toSeq
+        .flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
+        .flatMap(v.henkilötiedot(VirtaHakuehtoHetu(hetu), _))
+        .flatMap(_ \\ "Opiskelija").nonEmpty
+    } catch {
+      case e: Exception =>
+        logger.error(e)("Failed to fetch data from Virta")
+        false
     }
   }
 }

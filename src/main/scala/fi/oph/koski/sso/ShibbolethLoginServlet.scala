@@ -5,6 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
+import fi.oph.koski.schema.Nimitiedot
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache{
@@ -25,7 +26,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     hetu match {
       case Right(hetu) =>
-        application.henkilöRepository.findHenkilötiedotByHetu(hetu)(KoskiSession.systemUser).headOption match {
+        application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
           case Some(oppija) =>
             setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
             redirect(s"$rootUrl/omattiedot")
@@ -38,6 +39,14 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def hetu: Either[HttpStatus, String] = {
     request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing")))
+  }
+
+  private def nimitiedot: Option[Nimitiedot] = {
+    def toNimitiedot(cn: String) = {
+      val nimet = cn.split(" ")
+      Nimitiedot(nimet.tail.mkString(" "), nimet.tail.headOption.getOrElse(""), nimet.head)
+    }
+    request.header("cn").map(_.trim).filter(_.nonEmpty).map(toNimitiedot)
   }
 
   private def passwordOk(password: String) = {

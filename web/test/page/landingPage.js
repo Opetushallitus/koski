@@ -22,9 +22,10 @@ function KorhoPankki() {
     isReady: function() {
       return isElementVisible('#korhopankki .login')
     },
-    login: function(hetu) {
+    login: function(hetu, name) {
       return seq(
-        pageApi.setInputValue('#hetu', hetu),
+        pageApi.setInputValue('#hetu', hetu ? hetu : ''),
+        pageApi.setInputValue('#nimi', name ? name : ''),
         click(findSingle('button'))
       )
     }
