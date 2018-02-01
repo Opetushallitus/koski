@@ -3,12 +3,14 @@ import R from 'ramda'
 import {LukionOppiaineRowEditor} from './LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelErrorMessages} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems} from '../editor/EditorModel'
 
-export const LukionOppiaineetEditor = ({oppiaineet}) => {
-  if (!oppiaineet || R.isEmpty(oppiaineet)) return null
+export const LukionOppiaineetEditor = ({suorituksetModel}) => {
+  const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
+  const oppiaineet = modelItems(suorituksetModel)
 
-  const päätasonSuoritusModel = oppiaineet[0].context.suoritus
+  if (!edit && R.isEmpty(oppiaineet)) return null
+
   const oppiaineRows = oppiaineet.map((oppiaine, oppiaineIndex) =>
     <LukionOppiaineRowEditor key={oppiaineIndex} oppiaine={oppiaine} />
   )
@@ -22,7 +24,7 @@ export const LukionOppiaineetEditor = ({oppiaineet}) => {
   return (
     <section>
       <table className="suoritukset oppiaineet">
-        <LukionOppiaineetTableHead />
+        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead />}
         <tbody>
         {oppiaineetWithErrorRows}
         </tbody>

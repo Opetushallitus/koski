@@ -1,26 +1,32 @@
 import React from 'react'
 import {LukionOppiaineetEditor} from './LukionOppiaineetEditor'
 import Text from '../i18n/Text'
+import {modelItems, modelSetValue} from '../editor/EditorModel'
 
-export const LuvaEditor = ({oppiaineet}) => {
-  const suoritukset = oppiaineet || []
+export const LuvaEditor = ({suorituksetModel}) => {
+  const {edit} = suorituksetModel.context
+  const suoritukset = modelItems(suorituksetModel)
   const lukionkurssinsuoritukset = suoritukset.filter(s => s.value.classes.includes('lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa'))
   const lukioonvalmistavankurssinsuoritukset = suoritukset.filter(s => s.value.classes.includes('lukioonvalmistavankoulutuksenoppiaineensuoritus'))
 
   return (
     <div>
       {
-        lukioonvalmistavankurssinsuoritukset.length > 0 &&
+        (edit || lukioonvalmistavankurssinsuoritukset.length > 0) &&
         <div>
           <h5><Text name="Lukioon valmistavat opinnot"/></h5>
-          <LukionOppiaineetEditor oppiaineet={lukioonvalmistavankurssinsuoritukset}/>
+          <LukionOppiaineetEditor
+            suorituksetModel={modelSetValue(suorituksetModel, lukioonvalmistavankurssinsuoritukset)}
+          />
         </div>
       }
       {
-        lukionkurssinsuoritukset.length > 0 &&
+        (edit || lukionkurssinsuoritukset.length > 0) &&
         <div>
           <h5><Text name="Valinnaisena suoritetut lukiokurssit"/></h5>
-          <LukionOppiaineetEditor oppiaineet={lukionkurssinsuoritukset}/>
+          <LukionOppiaineetEditor
+            suorituksetModel={modelSetValue(suorituksetModel, lukionkurssinsuoritukset)}
+          />
         </div>
       }
     </div>
