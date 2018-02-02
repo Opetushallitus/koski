@@ -92,7 +92,8 @@ Minimissään tarvitset nämä:
 - Maven 3 (osx: `brew install maven`)
 - Postgres 9.6
   - osx: `brew install postgresql@9.6` 
-  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@9.6/bin/{createdb,createuser} /usr/local/bin`
+  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@9.6/bin/{createdb,createuser,postgres,initdb} /usr/local/bin`
+  - initialize the data folder `initdb ./postgresql/data/`
 - Elasticsearch 5.6
   - osx: `brew install elasticsearch@5.6`
   - then ensure the binary is in your PATH, e.g. `ln -s ../opt/elasticsearch@5.6/bin/elasticsearch /usr/local/bin`
