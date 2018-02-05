@@ -5,13 +5,14 @@ import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppia
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
-import * as Lukio from '../lukio/Lukio'
+import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
 import {LuvaEditor} from '../lukio/LuvaEditor'
 import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
 import {PropertyEditor} from '../editor/PropertyEditor'
 import {Editor} from '../editor/Editor'
 import {sortLanguages} from '../util/sorting'
 import {ArvosanaEditor} from './ArvosanaEditor'
+import {LukionOppiaineenOppimaaranSuoritusEditor} from '../lukio/LukionOppiaineenOppimaaranSuoritusEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -36,13 +37,13 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus', 'preibsuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+    return <LukionOppiaineetEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
-    return <Lukio.LukionOppiaineetEditor oppiaineet={[mdl]} />
+    return <LukionOppiaineenOppimaaranSuoritusEditor model={mdl} />
   }
   if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
-    return <LuvaEditor suoritukset={modelItems(mdl, 'osasuoritukset') || []}/>
+    return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
     return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />

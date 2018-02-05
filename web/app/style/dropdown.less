@@ -1,5 +1,5 @@
-.dropdown {
-  &.inline:not(:hover) {
+.dropdown-wrapper:not(.error) {
+  .dropdown.inline:not(:hover) {
     .select:after, .input-container:after {
       border: 1px solid rgba(0, 0, 0, 0);
     }
@@ -14,7 +14,9 @@
       }
     }
   }
+}
 
+.dropdown {
   position: relative;
   outline: none;
 

@@ -2,15 +2,30 @@
   .lukionoppimaaransuoritus, .lukionoppiaineenoppimaaransuoritus, .lukioonvalmistavankoulutuksensuoritus,
   .preibsuoritus, .ibtutkinnonsuoritus {
     .oppiaine {
-      > .nimi {
-        color: @color-label;
+      .title {
+        > .nimi {
+          color: @color-label;
+        }
+        > .properties {
+          input {
+            text-transform: lowercase;
+          }
+
+          .dropdown-wrapper:not(.error) {
+            .dropdown.inline:not(:hover) {
+              .input-container input {
+                background: none;
+              }
+            }
+          }
+        }
       }
     }
 
     table.suoritukset {
       width: 100%;
 
-      > tbody > tr:not(.aineryhmä) {
+      > tbody > tr:not(.aineryhmä):not(.error) {
         background: @color-neutral-gray;
       }
 
@@ -46,6 +61,7 @@
             border-bottom: 5px solid white;
             &.maara, &.arvosana {
               text-align: right;
+              max-width: 76px;
 
               > .annettuArvosana > .footnote-hint {
                 cursor: pointer;
@@ -61,6 +77,16 @@
               div {
                 width: 0;
               }
+            }
+            &.remove-row {
+              background-color: @color-white;
+              width: 10px;
+              padding: 0;
+            }
+          }
+          &.error {
+            td.error {
+              color: @color-red;
             }
           }
         }

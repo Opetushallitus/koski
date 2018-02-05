@@ -3,6 +3,7 @@ describe('Lukiokoulutus', function( ){
   var page = KoskiPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
@@ -101,18 +102,128 @@ describe('Lukiokoulutus', function( ){
           })
         })
       })
-      describe('Tietojen muokkaaminen', function() {
-        var opiskeluoikeusEditor = opinnot.opiskeluoikeusEditor()
-        before(
-          opiskeluoikeusEditor.edit,
-          opiskeluoikeusEditor.property('tila').removeItem(0),
-          opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
-        )
-        describe('Arvosanan muuttaminen', function() {
-          var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
-          before(kurssi.arvosana.selectValue('6'), opiskeluoikeusEditor.saveChanges, wait.until(page.isSavedLabelShown))
-          it('Toimii', function() {
-            expect(kurssi.arvosana.getText()).to.equal('6')
+    })
+
+    describe('Tietojen muuttaminen', function() {
+      describe('Suoritusten tiedot', function() {
+        describe('Oppiaine', function() {
+          before(editor.edit)
+
+          var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
+          var kieli = ai.propertyBySelector('.title .properties')
+          var arvosana = ai.propertyBySelector('td.arvosana')
+
+          describe('Alkutila', function () {
+            it('on oikein', function() {
+              expect(editor.canSave()).to.equal(false)
+              expect(kieli.getValue()).to.equal('Suomen kieli ja kirjallisuus')
+              expect(arvosana.getValue()).to.equal('9')
+            })
+          })
+
+          describe('Kieliaineen kielen muuttaminen', function() {
+            before(kieli.selectValue('Ruotsin kieli ja kirjallisuus'))
+
+            it('onnistuu', function() {
+              expect(kieli.getValue()).to.equal('Ruotsin kieli ja kirjallisuus')
+            })
+
+            it('tallennus on mahdollista', function() {
+              expect(editor.canSave()).to.equal(true)
+            })
+          })
+
+          describe('Arvosanan muuttaminen', function () {
+            before(arvosana.selectValue(8), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+            it('onnistuu', function () {
+              expect(findSingle('.oppiaine.AI .arvosana .annettuArvosana')().text()).to.equal('8')
+            })
+          })
+
+          describe('Valtakunnallinen oppiaine', function() {
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var kotitalous = editor.subEditor('.oppiaine.KO:eq(0)')
+
+            describe('Lisääminen', function () {
+              before(
+                editor.edit,
+                uusiOppiaine.selectValue('Kotitalous')
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Kotitalous')
+              })
+
+              it('arvosana vaaditaan kun päätason suoritus on merkitty valmiiksi', function () {
+                expect(editor.canSave()).to.equal(false)
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+              })
+
+              describe('Arvosanan kanssa', function () {
+                before(
+                  kotitalous.propertyBySelector('.arvosana').selectValue('9'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('tallennus toimii', function () {
+                  kotitalous.propertyBySelector('.arvosana').selectValue('9')
+                })
+              })
+            })
+
+            describe('Poistaminen', function () {
+              before(
+                editor.edit,
+                kotitalous.propertyBySelector('.remove-row').removeValue,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.not.contain('Kotitalous')
+              })
+            })
+          })
+
+          describe('Oppiaineen kurssi', function() {
+            before(
+              editor.edit,
+              editor.property('tila').removeItem(0),
+              opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+            )
+
+            describe('Arvosanan muuttaminen', function() {
+              var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+
+              before(kurssi.arvosana.selectValue('6'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('Toimii', function() {
+                expect(kurssi.arvosana.getText()).to.equal('6')
+              })
+            })
+
+            // describe('Lisääminen', function () {
+            //   it('toimii', function () {
+            //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+            //   })
+            // })
+
+            describe('Poistaminen', function () {
+              var ai1 = ai.kurssi('ÄI1')
+
+              before(
+                editor.edit,
+                ai1.poistaKurssi,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('ÄI1')
+              })
+            })
           })
         })
       })
@@ -131,10 +242,29 @@ describe('Lukiokoulutus', function( ){
 
   describe('Lukion oppiaineen oppimäärän suoritus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('210163-2367'))
+
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(S('.opiskeluoikeus .suoritus .property.tunniste .value').text()).to.equal("Historia")
+        expect(opinnot.getTutkinto()).to.equal("Historia")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+      })
+    })
+
+    describe('Kaikki tiedot näkyvissä', function () {
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2015 — 10.1.2016\n' +
+          'Tila 10.1.2016 Valmistunut\n' +
+          '1.9.2015 Läsnä')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Oppiaine Historia 60/011/2015\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Arviointi 9\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 10.1.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
@@ -144,18 +274,119 @@ describe('Lukiokoulutus', function( ){
           'HI1\n7 HI2\n8 HI3\n7 HI4\n6 4 9\n(7,0)')
       })
     })
+
+    describe('Tietojen muuttaminen', function() {
+      describe('Suoritusten tiedot', function () {
+        describe('Oppiaine', function () {
+          before(editor.edit)
+
+          var hi = opinnot.oppiaineet.oppiaine('oppiaine.HI')
+          var arvosana = hi.propertyBySelector('td.arvosana')
+
+          describe('Alkutila', function () {
+            it('on oikein', function () {
+              expect(editor.canSave()).to.equal(false)
+              expect(arvosana.getValue()).to.equal('9')
+            })
+          })
+
+          describe('Arvosanan muuttaminen', function () {
+            before(arvosana.selectValue(8), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+            it('onnistuu', function () {
+              expect(findSingle('.oppiaine.HI .arvosana .annettuArvosana')().text()).to.equal('8')
+            })
+          })
+
+          describe('Oppiaineen', function () {
+            before(editor.edit)
+
+            it('lisääminen ei ole mahdollista', function () {
+              expect(findSingle('.uusi-oppiaine')).to.throw(Error, /not found/)
+            })
+
+            it('poistaminen ei ole mahdollista', function () {
+              expect(findSingle('.oppiaine-rivi > .remove-row')).to.throw(Error, /not found/)
+            })
+          })
+
+          describe('Oppiaineen kurssi', function () {
+            before(
+              editor.edit,
+              editor.property('tila').removeItem(0),
+              opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+            )
+
+            describe('Arvosanan muuttaminen', function () {
+              var kurssi = opinnot.oppiaineet.oppiaine('HI').kurssi('HI4')
+
+              before(kurssi.arvosana.selectValue('10'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('Toimii', function () {
+                expect(kurssi.arvosana.getText()).to.equal('10')
+              })
+            })
+
+            // describe('Lisääminen', function () {
+            //   it('toimii', function () {
+            //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+            //   })
+            // })
+
+            describe('Poistaminen', function () {
+              var hi1 = hi.kurssi('HI1')
+
+              before(
+                editor.edit,
+                hi1.poistaKurssi,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet .HI'))).to.not.contain('HI1')
+              })
+            })
+          })
+        })
+      })
+    })
   })
 
   describe('Lukioon valmistava koulutus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
+
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal("Lukiokoulutukseen valmistava koulutus")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
+
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
+
+      it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä\n' +
+          'Lisätiedot\n' +
+          'Pidennetty päättymispäivä kyllä\n' +
+          'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
+          'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
+          'Sisäoppilaitosmainen majoitus 1.9.2013 — 12.12.2013')
+      })
+
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Lukiokoulutukseen valmistava koulutus 56/011/2015\n' +
+          'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
+      })
+
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Lukioon valmistavat opinnot\n' +
@@ -206,6 +437,247 @@ describe('Lukiokoulutus', function( ){
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+      })
+    })
+
+    describe('Tietojen muuttaminen', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
+
+      describe('Suoritusten tiedot', function () {
+        describe('Oppiaine', function () {
+          before(editor.edit)
+
+          var valmistavaAi = opinnot.oppiaineet.oppiaine('oppiaine.LVAIK')
+          var valmistavaAiArvosana = valmistavaAi.propertyBySelector('td.arvosana')
+          var valmistavaAiKieli = valmistavaAi.propertyBySelector('.title .properties')
+
+          var valinnainenEn = opinnot.oppiaineet.oppiaine('oppiaine.A1')
+          var valinnainenEnArvosana = valinnainenEn.propertyBySelector('td.arvosana')
+          var valinnainenEnKieli = valinnainenEn.propertyBySelector('.title .properties')
+
+          describe('Alkutila', function () {
+            it('on oikein', function () {
+              expect(editor.canSave()).to.equal(false)
+              expect(valmistavaAiArvosana.getValue()).to.equal('S')
+              expect(valinnainenEnArvosana.getValue()).to.equal('S')
+            })
+          })
+
+          describe('Kieliaineen kielen muuttaminen', function() {
+            describe('valmistavalle äidinkielelle', function () {
+              before(valmistavaAiKieli.selectValue('Ruotsi toisena kielenä ja kirjallisuus'))
+              it('toimii', function() {
+                expect(valmistavaAiKieli.getValue()).to.equal('Ruotsi toisena kielenä ja kirjallisuus')
+                expect(editor.canSave()).to.equal(true)
+              })
+            })
+
+            describe('valinnaiselle vieraalle kielelle', function () {
+              before(valinnainenEnKieli.selectValue('portugali'))
+              it('toimii', function() {
+                expect(valinnainenEnKieli.getValue()).to.equal('portugali')
+                expect(editor.canSave()).to.equal(true)
+              })
+            })
+
+            describe('tallennus', function () {
+              before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+              it('toimii', function () {
+                expect(findSingle('.oppiaine.LVAIK .title .nimi')().text()).to.equal('Äidinkieli ja kirjallisuus, Ruotsi toisena kielenä ja kirjallisuus')
+                expect(findSingle('.oppiaine.A1 .title .nimi')().text()).to.equal('A1-kieli, portugali')
+              })
+            })
+          })
+
+          describe('Arvosanan muuttaminen', function () {
+            describe('valmistavalle aineelle', function () {
+              before(
+                editor.edit,
+                valmistavaAiArvosana.selectValue(8),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function() {
+                expect(findSingle('.oppiaine.LVAIK .arvosana .annettuArvosana')().text()).to.equal('8')
+              })
+            })
+
+            describe('valinnaiselle aineelle', function () {
+              before(
+                editor.edit,
+                valinnainenEnArvosana.selectValue(9),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('onnistuu', function() {
+                expect(findSingle('.oppiaine.A1 .arvosana .annettuArvosana')().text()).to.equal('9')
+              })
+            })
+          })
+
+          describe('Valmistava oppiaine', function () {
+            var valmistavatSelector = '.lukioon-valmistavat-opinnot'
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(valmistavatSelector)
+            var mat = editor.subEditor(valmistavatSelector + ' .oppiaine.LVMALUO:eq(0)')
+
+            before(editor.edit)
+
+            describe('Valtakunnallisen valmistavan oppiaineen', function () {
+              describe('poistaminen', function () {
+                before(
+                  editor.edit,
+                  mat.propertyBySelector('.remove-row').removeValue,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S(valmistavatSelector))).to.not.contain('Matemaattiset ja luonnontieteelliset opinnot')
+                })
+              })
+
+              describe('lisääminen', function () {
+                before(
+                  editor.edit,
+                  uusiOppiaine.selectValue('Matemaattiset ja luonnontieteelliset opinnot')
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Matemaattiset ja luonnontieteelliset opinnot')
+                })
+
+                it('arvosana vaaditaan kun päätason suoritus on merkitty valmiiksi', function () {
+                  expect(editor.canSave()).to.equal(false)
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+                })
+
+                describe('Kun päätason suoritus merkitään keskeneräiseksi', function () {
+                  before(
+                    editor.property('tila').removeItem(0),
+                    opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
+                  )
+
+                  it('tallennus toimii', function () {
+                    mat.propertyBySelector('.arvosana').selectValue('9')
+                  })
+                })
+              })
+
+              describe('oppiaineen kurssin', function () {
+                before(editor.edit)
+
+                describe('arvosanan muuttaminen', function () {
+                  var kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('STK')
+
+                  before(
+                    kurssi.arvosana.selectValue('5'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(kurssi.arvosana.getText()).to.equal('5')
+                  })
+                })
+
+                // describe('Lisääminen', function () {
+                //   it('toimii', function () {
+                //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+                //   })
+                // })
+
+                describe('poistaminen', function () {
+                  var stk = valmistavaAi.kurssi('STK')
+
+                  before(
+                    editor.edit,
+                    stk.poistaKurssi,
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .LVAIK'))).to.not.contain('STK')
+                  })
+                })
+              })
+            })
+          })
+
+          describe('Valtakunnallisen valinnaisen oppiaineen', function () {
+            var valinnaisetSelector = '.valinnaisena-suoritetut-lukiokurssit'
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(valinnaisetSelector)
+            var kotitalous = editor.subEditor(valinnaisetSelector + ' .oppiaine.KO:eq(0)')
+
+            before(editor.edit)
+
+            describe('lisääminen', function () {
+              before(
+                editor.edit,
+                uusiOppiaine.selectValue('Kotitalous'),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Kotitalous')
+              })
+            })
+
+            describe('poistaminen', function () {
+              before(
+                editor.edit,
+                kotitalous.propertyBySelector('.remove-row').removeValue,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S(valinnaisetSelector))).to.not.contain('Kotitalous')
+              })
+            })
+
+            describe('oppiaineen kurssin', function () {
+              describe('arvosanan muuttaminen', function () {
+                var kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
+
+                before(
+                  editor.edit,
+                  kurssi.arvosana.selectValue('6'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(kurssi.arvosana.getText()).to.equal('6')
+                })
+              })
+
+              // describe('Lisääminen', function () {
+              //   it('toimii', function () {
+              //     //TODO rajaa kurssivaihtoehtoja hakemalla vain opetussuunnitelmaan kuuluvat
+              //   })
+              // })
+
+              describe('poistaminen', function () {
+                var ena1 = valinnainenEn.kurssi('ENA1')
+
+                before(
+                  editor.edit,
+                  ena1.poistaKurssi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet .A1'))).to.not.contain('ENA1')
+                })
+              })
+            })
+          })
+        })
       })
     })
   })
