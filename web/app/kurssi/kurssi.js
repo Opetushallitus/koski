@@ -7,6 +7,7 @@ export const findKoodistoByDiaarinumero = (kurssiKoodistot, oppimaaranDiaarinume
         switch (oppimaaranDiaarinumero) {
           case '60/011/2015':
           case '70/011/2015':
+          case '56/011/2015': // Lukiokoulutukseen valmistava koulutus (valinnaisina suoritetut lukiokurssit)
             return 'lukionkurssit'
           case '33/011/2003':
             return 'lukionkurssitops2003nuoret'
