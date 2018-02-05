@@ -79,7 +79,7 @@ select * from opiskeluoikeus
 where data -> 'tila' -> 'opiskeluoikeusjaksot' -> (jsonb_array_length(data -> 'tila' -> 'opiskeluoikeusjaksot') - 1) -> 'tila' ->> 'koodiarvo' = 'lasna'
 ```
 
-*Harjoitus*: Hae oppijat, joilla on aktiivinen (päättymispäivä puuttuu) opiskeluoikeus Stadin ammattiopistossa,
+*Harjoitus*: Hae oppijat, joilla opiskeluoikeus Stadin ammattiopistossa,
 ja joiden opiskeluoikeuden tila on "Läsnä".
 
 ### JSON-listojen purkaminen `jsonb_array_elements`-funktiolla
