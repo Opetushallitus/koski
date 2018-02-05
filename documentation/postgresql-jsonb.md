@@ -100,7 +100,7 @@ from (
   select oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus 
   from opiskeluoikeus
 ) as suoritukset
-where suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS';
+where suoritus -> 'vahvistus' is not null;
 ```
 
 Perusopetuksen päättötodistuksen aineiden arvosanat:
@@ -118,7 +118,7 @@ from (
   ) as suoritukset
 
   where suoritukset.suoritus -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
-    and suoritukset.suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS'
+    and suoritukset.suoritus -> 'vahvistus' is not null;
  ) as ainesuoritukset
 ```
 
