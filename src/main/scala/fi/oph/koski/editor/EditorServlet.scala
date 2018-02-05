@@ -102,9 +102,9 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
         kurssiKoodi
       }
     }
-    val kieliKoodisto = params.get("kieliKoodisto") // vieraan kielen kursseille
-    val kieliKoodiarvo = params.get("kieliKoodiarvo")
-    val oppimääränDiaarinumero = params.get("oppimaaranDiaarinumero")
+    val kieliKoodisto = params.get("oppimaaraKoodisto") // vieraan kielen kursseille
+    val kieliKoodiarvo = params.get("oppimaaraKoodiarvo")
+    val oppimääränDiaarinumero = params.get("oppimaaraDiaarinumero")
     val oppiaineKoodistoUri = params("oppiaineKoodisto")
 
     val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(application.ePerusteet.findRakenne)

@@ -53,18 +53,18 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProt
 const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
   const oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
   const oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
-  const kieliKoodisto = modelData(oppiaine, 'kieli.koodistoUri')
-  const kieliKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo')
-  const oppimaaranDiaarinumero = modelData(oppiaine.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  const oppimaaraKoodisto = modelData(oppiaine, 'kieli.koodistoUri') || modelData(oppiaine, 'oppimäärä.koodistoUri')
+  const oppimaaraKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo') || modelData(oppiaine, 'oppimäärä.koodiarvo')
+  const oppimaaraDiaarinumero = modelData(oppiaine.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
 
   const alternativesForField = (model) => {
     if (!oppiaineKoodisto) return []
 
     const kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
     const koodistot = kurssiKoodistot.split(',')
-    const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaranDiaarinumero) || kurssiKoodistot
+    const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) || kurssiKoodistot
     const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)
-      .addQueryParams({kieliKoodisto, kieliKoodiarvo, oppimaaranDiaarinumero})
+      .addQueryParams({oppimaaraKoodisto, oppimaaraKoodiarvo, oppimaaraDiaarinumero})
 
     return Http.cachedGet(loc.toString())
       .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, 'tunniste')))
