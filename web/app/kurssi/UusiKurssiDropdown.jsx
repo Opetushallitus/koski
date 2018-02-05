@@ -10,6 +10,7 @@ import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 import Http from '../util/http'
 import {parseLocation} from '../util/location'
+import {findKoodistoByDiaarinumero} from './kurssi'
 export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
@@ -50,16 +51,24 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProt
 }
 
 const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
-  let oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
-  let oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
-  let kieliKoodisto = modelData(oppiaine, 'kieli.koodistoUri')
-  let kieliKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo')
+  const oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
+  const oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
+  const kieliKoodisto = modelData(oppiaine, 'kieli.koodistoUri')
+  const kieliKoodiarvo = modelData(oppiaine, 'kieli.koodiarvo')
+  const oppimaaranDiaarinumero = modelData(oppiaine.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+
   const alternativesForField = (model) => {
     if (!oppiaineKoodisto) return []
-    let kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
-    let loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${kurssiKoodistot}`).addQueryParams({kieliKoodisto, kieliKoodiarvo})
+
+    const kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
+    const koodistot = kurssiKoodistot.split(',')
+    const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaranDiaarinumero) || kurssiKoodistot
+    const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)
+      .addQueryParams({kieliKoodisto, kieliKoodiarvo, oppimaaranDiaarinumero})
+
     return Http.cachedGet(loc.toString())
       .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, 'tunniste')))
   }
+
   return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(x => x.flatten())
 }

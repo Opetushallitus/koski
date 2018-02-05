@@ -104,7 +104,28 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     }
     val kieliKoodisto = params.get("kieliKoodisto") // vieraan kielen kursseille
     val kieliKoodiarvo = params.get("kieliKoodiarvo")
+    val oppimääränDiaarinumero = params.get("oppimaaranDiaarinumero")
     val oppiaineKoodistoUri = params("oppiaineKoodisto")
+
+    val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(application.ePerusteet.findRakenne)
+
+    def ePerusteidenMukaisetKurssit = {
+      val oppiaine = for {
+        rakenne <- ePerusteetRakenne
+        lukiokoulutus <- rakenne.lukiokoulutus
+        aine <- lukiokoulutus.rakenne.oppiaineet.find(_.koodiArvo == params("oppiaineKoodiarvo"))
+      } yield aine
+
+      val oppiaineenKurssit = oppiaine.map(_.kurssit).getOrElse(List())
+
+      val oppimääränKurssit = for {
+        aine <- oppiaine
+        koodiarvo <- kieliKoodiarvo
+        oppimaara <- aine.oppimaarat.find(_.koodiArvo == koodiarvo)
+      } yield oppimaara.kurssit
+
+      oppiaineenKurssit ++ oppimääränKurssit.getOrElse(List())
+    }
 
     val oppiaineeseenSisältyvätKurssit = sisältyvätKurssit(params("oppiaineKoodisto"), params("oppiaineKoodiarvo"))
     val oppiaineeseenJaKieleenSisältyvätKurssit = (kieliKoodisto, kieliKoodiarvo) match {
@@ -116,6 +137,8 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
       case _ => oppiaineeseenSisältyvätKurssit
     }
     toKoodistoEnumValues(oppiaineeseenJaKieleenSisältyvätKurssit match {
+      case Nil if ePerusteetRakenne.isDefined => koodistojenKoodit(kurssiKoodistot)
+        .filter(k => ePerusteidenMukaisetKurssit.map(_.koodiArvo).contains(k.koodiarvo))
       case Nil => koodistojenKoodit(kurssiKoodistot)
       case _ => oppiaineeseenJaKieleenSisältyvätKurssit
     })
