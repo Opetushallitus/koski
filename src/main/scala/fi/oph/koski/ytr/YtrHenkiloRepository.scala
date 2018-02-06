@@ -27,7 +27,7 @@ case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHen
     }
   }
 
-  override def exists(hetu: String)(implicit user: KoskiSession): Boolean = try {
+  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = try {
     ytr.oppijaByHetu(hetu).isDefined
   } catch {
     case e: Exception =>

@@ -39,19 +39,25 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuH
     }
   }
 
-  override def exists(hetu: String)(implicit user: KoskiSession): Boolean = if (!accessChecker.hasAccess(user)) {
+  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = if (!accessChecker.hasAccess(user)) {
     false
   } else {
     try {
-      v.opintotiedot(VirtaHakuehtoHetu(hetu)).toSeq
-        .flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
-        .flatMap(v.henkilötiedot(VirtaHakuehtoHetu(hetu), _))
-        .flatMap(_ \\ "Opiskelija").nonEmpty
+      findOppija(hetu).nonEmpty
     } catch {
       case e: Exception =>
         logger.error(e)("Failed to fetch data from Virta")
         false
     }
+  }
+
+  private def findOppija(hetu: String) = {
+    // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeHenkilöRepository)
+    val hakuehto: VirtaHakuehtoHetu = VirtaHakuehtoHetu(hetu)
+    // Oppijan organisaatiot haetaan ensin tällä raskaammalla kyselyllä
+    val organisaatiot = v.opintotiedot(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
+    // Organisaatioden avulla haetaan henkilötietoja ja valitaan niistä ensimmäinen validi
+    organisaatiot.flatMap(v.henkilötiedot(hakuehto, _)).flatMap(_ \\ "Opiskelija")
   }
 }
 

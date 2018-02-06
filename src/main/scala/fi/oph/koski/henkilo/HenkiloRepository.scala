@@ -18,7 +18,7 @@ trait FindByOid {
 
 trait FindByHetu {
   def findByHetu(query: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid]
-  def exists(hetu: String)(implicit user: KoskiSession): Boolean
+  def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean
 }
 
 object HenkilöRepository {
@@ -70,7 +70,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     val tiedot = opintopolku.findByHetu(hetu)
     if (tiedot.isDefined) {
       tiedot.toList
-    } else if (List(virta, ytr).iterator.exists(_.exists(hetu))) {
+    } else if (List(virta, ytr).iterator.exists(_.existsWithHetu(hetu))) {
       opintopolku.findOrCreate(UusiHenkilö(Some(hetu), nimitiedot.sukunimi, nimitiedot.kutsumanimi, nimitiedot.etunimet)) match {
         case Right(henkilö) => List(henkilö.toHenkilötiedotJaOid)
         case Left(error) =>
