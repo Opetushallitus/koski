@@ -34,13 +34,13 @@ describe('Omat tiedot', function() {
     })
 
     describe("Kun kirjaudutaan sisään", function() {
-      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('290492-9455'), wait.until(omattiedot.isVisible))
-
+      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030658-998X', 'Kansalainen Kaija Sanelma'), wait.until(omattiedot.isVisible))
       describe("Sivun sisältö", function() {
         it("Näytetään opiskeluoikeudet", function() {
+          expect(omattiedot.nimi()).to.equal("Kansalainen Kaija Sanelma")
           expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
           expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
-            'Aalto-yliopisto' ])
+            'Itä-Suomen yliopisto' ])
         })
       })
 
@@ -58,6 +58,7 @@ describe('Omat tiedot', function() {
 
         describe("Sivun sisältö", function() {
           it("Näytetään opiskeluoikeudet", function() {
+            expect(omattiedot.nimi()).to.equal("Mia Orvokki Numminen")
             expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
             expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
               'Ylioppilastutkintolautakunta' ])

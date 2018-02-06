@@ -22,7 +22,7 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
 
   def findByHetu(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    Hetu.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu)
+    Hetu.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu(_))
   }
 
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {

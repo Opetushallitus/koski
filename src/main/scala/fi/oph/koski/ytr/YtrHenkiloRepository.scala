@@ -26,4 +26,12 @@ case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHen
         None
     }
   }
+
+  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = try {
+    ytr.oppijaByHetu(hetu).isDefined
+  } catch {
+    case e: Exception =>
+      logger.error(e)("Failed to fetch data from YTR")
+      false
+  }
 }

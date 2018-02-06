@@ -9,7 +9,7 @@ const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
 
 const HetuLogin = () => {
-  const state = Atom({id: ''})
+  const state = Atom({id: '', name: ''})
 
   const valid = state.map(({id}) => id.length === 11)
   const inProgress = Atom(false)
@@ -26,7 +26,7 @@ const HetuLogin = () => {
   loginTrigger
     .map(state)
     .flatMap(credentials => {
-      const headers = {hetu: credentials.id, security: 'mock'}
+      const headers = {hetu: credentials.id, security: 'mock', cn: credentials.name}
       const errorHandler = e => {
         console.error('Fake shibboleth login fail')
         console.error(e)
@@ -53,6 +53,14 @@ const HetuLogin = () => {
           disabled={inProgress}
           value={state.view('id')}
           autofocus={true}
+        />
+      </label>
+      <label>{'Nimi'}
+        <Input
+          id='nimi'
+          type='text'
+          disabled={inProgress}
+          value={state.view('name')}
         />
       </label>
       <button

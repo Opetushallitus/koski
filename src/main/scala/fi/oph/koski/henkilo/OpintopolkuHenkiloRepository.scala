@@ -51,6 +51,8 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       case xs: List[Koodistokoodiviite] => Some(xs)
     })
   }
+
+  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = findByHetu(hetu).isDefined
 }
 
 object MockOpintopolkuHenkilöRepository extends OpintopolkuHenkilöRepository(new MockOpintopolkuHenkilöFacade(), MockKoodistoViitePalvelu)
