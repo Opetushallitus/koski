@@ -26,7 +26,11 @@ import {
   isPainotettu,
   isPäättötodistus,
   isToimintaAlueittain,
-  isYksilöllistetty, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset,
+  isYksilöllistetty,
+  isYsiluokka,
+  jääLuokalle,
+  luokkaAste,
+  luokkaAsteenOsasuoritukset,
   oppimääränOsasuoritukset
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
@@ -173,8 +177,10 @@ class Oppiainetaulukko extends React.Component {
     let {model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus} = this.props
     let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
 
-    let edit = model.context.edit
-    let showLaajuus = (!!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus')) && !edit && !pakolliset) || (edit && !pakolliset)
+    const edit = model.context.edit
+    const uudellaSuorituksellaLaajuus = () => !!modelLookup(uusiOppiaineenSuoritus ? uusiOppiaineenSuoritus : createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')), 'koulutusmoduuli.laajuus')
+    const sisältääLajuudellisiaSuorituksia = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
+    const showLaajuus = !pakolliset && (sisältääLajuudellisiaSuorituksia || (edit && uudellaSuorituksellaLaajuus()))
     const showFootnotes = !edit && !R.isEmpty(footnoteDescriptions(suoritukset))
 
     let addOppiaine = oppiaine => {
