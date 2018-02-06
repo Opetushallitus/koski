@@ -102,10 +102,13 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
         kurssiKoodi
       }
     }
-    val kieliKoodisto = params.get("oppimaaraKoodisto") // vieraan kielen kursseille
-    val kieliKoodiarvo = params.get("oppimaaraKoodiarvo")
+
+    val oppiaineKoodisto = params("oppiaineKoodisto")
+    val oppiaineKoodiarvo = params("oppiaineKoodiarvo")
+
+    val oppimaaraKoodisto = params.get("oppimaaraKoodisto") // vieraan kielen, äidinkielen ja matematiikan kursseille
+    val oppimaaraKoodiarvo = params.get("oppimaaraKoodiarvo")
     val oppimääränDiaarinumero = params.get("oppimaaraDiaarinumero")
-    val oppiaineKoodistoUri = params("oppiaineKoodisto")
 
     val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(application.ePerusteet.findRakenne)
 
@@ -120,15 +123,15 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
       val oppimääränKurssit = for {
         aine <- oppiaine
-        koodiarvo <- kieliKoodiarvo
+        koodiarvo <- oppimaaraKoodiarvo
         oppimaara <- aine.oppimaarat.find(_.koodiArvo == koodiarvo)
       } yield oppimaara.kurssit
 
       oppiaineenKurssit ++ oppimääränKurssit.getOrElse(List())
     }
 
-    val oppiaineeseenSisältyvätKurssit = sisältyvätKurssit(params("oppiaineKoodisto"), params("oppiaineKoodiarvo"))
-    val oppiaineeseenJaKieleenSisältyvätKurssit = (kieliKoodisto, kieliKoodiarvo) match {
+    val oppiaineeseenSisältyvätKurssit = sisältyvätKurssit(oppiaineKoodisto, oppiaineKoodiarvo)
+    val oppiaineeseenJaKieleenSisältyvätKurssit = (oppimaaraKoodisto, oppimaaraKoodiarvo) match {
       case (Some(kieliKoodisto), Some(kieliKoodiarvo)) =>
         sisältyvätKurssit(kieliKoodisto, kieliKoodiarvo) match {
           case Nil => oppiaineeseenSisältyvätKurssit
