@@ -169,9 +169,19 @@ function Oppiaine(oppiaineElem) {
   var oppiaineApi = _.merge({
     text: function() { return extractAsText(oppiaineElem) },
     avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
-    lisääKurssi: function(kurssi) { return seq(
+    lisääKurssi: function(kurssi, tyyppi) { return seq(
       oppiaineApi.avaaLisääKurssiDialog,
-      oppiaineApi.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+      oppiaineApi.lisääKurssiDialog.valitseKurssi(kurssi || 'Kieli ja kulttuuri'),
+      oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi(tyyppi || 'Pakollinen'),
+      oppiaineApi.lisääKurssiDialog.lisääKurssi
+    )},
+    lisääPaikallinenKurssi: function(tunniste, nimi, kuvaus) { return seq(
+      oppiaineApi.avaaLisääKurssiDialog,
+      oppiaineApi.lisääKurssiDialog.valitseKurssi('paikallinen'),
+      oppiaineApi.lisääKurssiDialog.asetaTunniste(tunniste),
+      oppiaineApi.lisääKurssiDialog.asetaNimi(nimi),
+      oppiaineApi.lisääKurssiDialog.asetaKuvaus(kuvaus),
+      oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi('Soveltava'),
       oppiaineApi.lisääKurssiDialog.lisääKurssi
     )},
     lisääKurssiDialog: LisääKurssiDialog(),
@@ -186,9 +196,34 @@ function Oppiaine(oppiaineElem) {
   function LisääKurssiDialog() {
     var modalElem = findSingle('.uusi-kurssi-modal', oppiaineElem)
     function kurssiDropdown() { return api.propertyBySelector('.kurssi') }
+    function kurssinTyyppiDropdown() { return api.propertyBySelector('.kurssinTyyppi') }
+
+    /* Paikallinen kurssi */
+    function tunniste() { return api.propertyBySelector('.koodiarvo') }
+    function nimi() { return api.propertyBySelector('.nimi') }
+    function kuvaus() { return api.propertyBySelector('.kuvaus') }
+
     var api = _.merge({
       valitseKurssi: function(kurssi) {
         return kurssiDropdown().setValue(kurssi)
+      },
+      valitseKurssinTyyppi: function(tyyppi) {
+        return function() {
+          try {
+            return kurssinTyyppiDropdown().setValue(tyyppi)()
+          } catch(e) {
+            // valitaan tyyppi vain kun se on mahdollista
+          }
+        }
+      },
+      asetaTunniste: function(arvo) {
+        return tunniste().setValue(arvo || 'PA')
+      },
+      asetaNimi: function(arvo) {
+        return nimi().setValue(arvo || 'Paikallinen kurssi')
+      },
+      asetaKuvaus: function(arvo) {
+        return kuvaus().setValue(arvo || 'Paikallisen kurssin kuvaus')
       },
       lisääKurssi: click(subElement(modalElem, 'button')),
       kurssit: function() {
