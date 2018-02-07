@@ -73,7 +73,11 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
-      findOppija(row.oppijaOid).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+      if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
+        Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
+      } else {
+        findOppija(row.oppijaOid).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+      }
     }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {

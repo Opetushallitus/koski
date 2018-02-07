@@ -5,6 +5,7 @@ import fi.oph.koski.schema.OrganisaatioWithOid
 object Rooli {
   val READ = "READ"
   val READ_UPDATE = "READ_UPDATE"
+  val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"
   val OPHKATSELIJA = "OPHKATSELIJA"
   val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
   val YLLAPITAJA = "YLLAPITAJA"
@@ -19,7 +20,7 @@ trait Käyttöoikeus {
 case class KäyttöoikeusGlobal(val globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = globalPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "OPHKATSELIJA") => List(AccessType.read)
-    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write)
+    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti)
     case _ => Nil
   }
 }
@@ -28,6 +29,7 @@ case class KäyttöoikeusOrg(val organisaatio: OrganisaatioWithOid, val organisa
   def organisaatioAccessType: List[AccessType.Value] = organisaatiokohtaisetPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
+    case Palvelurooli("KOSKI", "TIEDONSIIRRON_MITATOINTI") => List(AccessType.tiedonsiirronMitätöinti)
     case _ => Nil
   }
   def globalAccessType: List[AccessType.Value] = Nil

@@ -1,8 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Text from '../i18n/Text'
-import {modelData, modelItems} from '../editor/EditorModel'
-import {suoritusValmis} from '../suoritus/Suoritus'
+import {modelData} from '../editor/EditorModel'
 import {invalidateOpiskeluoikeus} from '../virkailija/VirkailijaOppijaView'
 
 export const setOpiskeluoikeusInvalidated = () => sessionStorage.setItem('opiskeluoikeusInvalidated', true)
@@ -26,19 +25,12 @@ export class InvalidateOpiskeluoikeusButton extends React.Component {
     let { opiskeluoikeus } = this.props
     let deleteRequested = this.state && this.state.deleteRequested
 
-    return sisältääValmiitaSuorituksia(opiskeluoikeus)
-      ? null
-      : deleteRequested
-        ? (<div className="invalidate">
-          <a onClick={() => this.setState({deleteRequested: false})}><Text name="Peruuta mitätöinti" /></a>
-          <button className="confirm-invalidate" onClick={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}><Text name="Vahvista mitätöinti, operaatiota ei voi peruuttaa" /></button>
-        </div>)
-        : <a className="invalidate" onClick={() => this.setState({deleteRequested: true})}><Text name="Mitätöi opiskeluoikeus" /></a>
+    return deleteRequested
+      ? (<div className="invalidate">
+        <a onClick={() => this.setState({deleteRequested: false})}><Text name="Peruuta mitätöinti" /></a>
+        <button className="confirm-invalidate" onClick={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}><Text name="Vahvista mitätöinti, operaatiota ei voi peruuttaa" /></button>
+      </div>)
+      : <a className="invalidate" onClick={() => this.setState({deleteRequested: true})}><Text name="Mitätöi opiskeluoikeus" /></a>
   }
 }
 
-const sisältääValmiitaSuorituksia = opiskeluoikeus => {
-  let suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  let osasuoritukset = suoritukset.flatMap(s => modelItems(s, 'osasuoritukset'))
-  return osasuoritukset.find(suoritusValmis) !== undefined
-}
