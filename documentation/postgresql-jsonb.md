@@ -118,8 +118,8 @@ from (
   ) as suoritukset
 
   where suoritukset.suoritus -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
-    and suoritukset.suoritus -> 'vahvistus' is not null;
- ) as ainesuoritukset
+    and suoritukset.suoritus -> 'vahvistus' is not null
+ ) as ainesuoritukset;
 ```
 
 *Harjoitus*: Hae oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien tunnisteet, nimet ja arvosanat
