@@ -12,7 +12,7 @@ Referenssinä kannattaa käyttää PostgreSQL 9.5 JSON(B)-dokumentaatiota: https
 
 Lisäksi voi lukaista PostgreSQL JSON -tutoriaalin netissä: http://schinckel.net/2014/05/25/querying-json-in-postgres/
 
-Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koskidev.koski.oph.reaktor.fi/koski/documentation). Data tietokannassa noudattaa samaa JSON-schemaa, joka on kuvattu dokumentaatiossa.
+Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koski.opintopolku.fi/koski/dokumentaatio). Data tietokannassa noudattaa samaa JSON-schemaa, joka on kuvattu dokumentaatiossa.
 
 ### SQL-kyselyjä
 
