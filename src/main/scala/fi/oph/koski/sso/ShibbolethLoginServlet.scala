@@ -31,7 +31,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
             setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
             redirect(s"$rootUrl/omattiedot")
           case _ =>
-            haltWithStatus(KoskiErrorCategory.notFound("oppija not found"))
+            redirect(s"$rootUrl/eisuorituksia")
         }
       case Left(status) => haltWithStatus(status)
     }

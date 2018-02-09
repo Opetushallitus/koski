@@ -65,6 +65,12 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   )
 }
 
+class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
+  get("/") {
+    htmlIndex("koski-eisuorituksia.js")
+  }
+}
+
 class LoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
   get("/") {
     if (ssoConfig.isCasSsoUsed) {
