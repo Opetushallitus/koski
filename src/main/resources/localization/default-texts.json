@@ -971,6 +971,7 @@
   "Paikallisen tutkinnon osan osa-alueen lisäys": "Paikallisen tutkinnon osan osa-alueen lisäys",
   "Tutkinnon osan osa-alueen nimi": "Tutkinnon osan osa-alueen nimi",
   "Ennustettu arvosana": "Ennustettu arvosana",
-  "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta."
+  "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.",
+  "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)": "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"
 }
 
