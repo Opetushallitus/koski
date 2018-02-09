@@ -4,7 +4,6 @@ import './style/main.less'
 
 export const EiSuorituksia = () => (
   <div className='ei-suorituksia'>
-    <div className='koski-heading'><h1>{'KOSKI'}</h1></div>
     <div className='info'>
       <h2>{'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.'}</h2>
       <p>{'Koski-palvelussa pystytään näyttämään seuraavat tiedot:'}</p>
@@ -20,6 +19,7 @@ export const EiSuorituksia = () => (
 
 ReactDOM.render((
   <div>
+    <div className='koski-heading'><h1>{'KOSKI'}</h1></div>
     <EiSuorituksia/>
   </div>
 ), document.getElementById('content'))
