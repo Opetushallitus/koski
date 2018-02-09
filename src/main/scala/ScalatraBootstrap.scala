@@ -27,7 +27,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.{IndexServlet, LoginPageServlet}
+import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet}
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
@@ -45,6 +45,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/opintosuoritusote", new SuoritusServlet)
     mount("/documentation", new RedirectServlet("/dokumentaatio", true))
     mount("/dokumentaatio", new DocumentationServlet)
+    mount("/eisuorituksia", new EiSuorituksiaServlet)
     mount("/api/documentation", new DocumentationApiServlet)
     mount("/api/editor", new EditorServlet)
     mount("/api/healthcheck", new HealthCheckApiServlet)

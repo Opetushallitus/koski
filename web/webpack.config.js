@@ -10,6 +10,7 @@ module.exports = {
     login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',
+    eisuorituksia: './app/EiSuorituksia.jsx',
     korhopankki: './app/Korhopankki.jsx'
   },
   output: {
