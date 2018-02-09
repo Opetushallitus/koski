@@ -86,7 +86,7 @@ class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: Authenticatio
         oppijanumeroRekisteriClient.findYhteystiedot(henkilö.oidHenkilo)
       })
     }
-  )
+  ).flatten
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(authenticationServiceClient: AuthenticationServiceClient, oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(authenticationServiceClient, oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {

@@ -25,7 +25,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   def findKäyttäjäByOid(oid: String) = oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid")(Http.parseJsonOptional[KäyttäjäHenkilö])
 
-  def findYhteystiedot(oid: String) = oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/${oid}/yhteystiedot/yhteystietotyyppi2")(Http.parseJson[Yhteystiedot])
+  def findYhteystiedot(oid: String) = oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/${oid}/yhteystiedot/yhteystietotyyppi2")(Http.parseJsonOptional[Yhteystiedot])
   def findOppijatByOids(oids: List[Oid]): Task[List[OppijaHenkilö]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
 
