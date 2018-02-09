@@ -19,7 +19,7 @@ const LanderInfo = () => (
           <p><Text name="Lander ingressi 4"/></p>
         </div>
       </div>
-      <p className="virkailija"><Text name="Virkailijapalvelut löydät jatkossa osoitteesta"/> <a href="/koski/virkailija">{window.location.origin + '/koski/virkailija'}</a></p>
+      <p className="tietosuojaseloste"><a href="https://confluence.csc.fi/download/attachments/58828884/Tietosuojaseloste%20KOSKI%209.2.2018.pdf?api=v2"><Text name="KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"/></a></p>
     </div>
     <div className="lander-logo">
       <img src="/koski/images/oph_fin_vaaka.png" />
