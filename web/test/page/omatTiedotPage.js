@@ -14,7 +14,7 @@ function OmatTiedotPage() {
       return S('.main-content.oppija h2').text().replace('JSON', '')
     },
     virhe: function() {
-      return S('.ei-opiskeluoikeuksia').text()
+      return S('.ei-suorituksia').text()
     }
   }
   return api
