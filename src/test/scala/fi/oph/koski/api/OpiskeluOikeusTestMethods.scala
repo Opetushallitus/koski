@@ -11,8 +11,12 @@ import org.scalatest.Matchers
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   import KoskiSchema.deserializationContext
 
-  def lastOpiskeluoikeusByHetu(oppija: Henkilötiedot, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
-    oppijaByHetu(oppija.hetu.get, user).tallennettavatOpiskeluoikeudet.last
+  def lastOpiskeluoikeusByHetu(oppija: Henkilö, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
+    val hetu = oppija match {
+      case u: UusiHenkilö => u.hetu
+      case h: Henkilötiedot => h.hetu.get
+    }
+    oppijaByHetu(hetu, user).tallennettavatOpiskeluoikeudet.last
   }
   def lastOpiskeluoikeus(oppijaOid: String, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     oppija(oppijaOid, user).tallennettavatOpiskeluoikeudet.last

@@ -163,7 +163,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
             case None => Left(HttpStatus.ok)
             case Some(h: HenkilöWithOid) => Right(h.oid)
-            case Some(h: UusiHenkilö) => h.hetu.flatMap(opintopolku.findByHetu) match {
+            case Some(h: UusiHenkilö) => opintopolku.findByHetu(h.hetu) match {
               case Some(henkilö) => Right(henkilö.oid)
               case None => Left(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
             }

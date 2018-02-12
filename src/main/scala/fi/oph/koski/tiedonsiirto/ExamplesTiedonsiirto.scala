@@ -11,9 +11,9 @@ object ExamplesTiedonsiirto {
   val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.aaltoYliopisto)))
 
   val examples: List[Example] = List(
-    Example("tiedonsiirto - onnistunut", "Onnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.vainHenkilötiedot, List(opiskeluoikeus)), 403),
+    Example("tiedonsiirto - onnistunut", "Onnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.henkilö, List(opiskeluoikeus)), 403),
     Example("tiedonsiirto - vain syntymäaika", "Onnistunut tiedonsiirto", Oppija(MockOppijat.hetuton.henkilö, List(opiskeluoikeus)), 403),
-    Example("tiedonsiirto - epäonnistunut", "Epäonnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.vainHenkilötiedot, List(failingOpiskeluoikeus)), 403),
-    Example("tiedonsiirto - epäonnistunut 2", "Onnistunut tiedonsiirto", Oppija(MockOppijat.ammattilainen.vainHenkilötiedot, List(failingOpiskeluoikeus)), 403)
+    Example("tiedonsiirto - epäonnistunut", "Epäonnistunut tiedonsiirto", Oppija(MockOppijat.tiedonsiirto.henkilö, List(failingOpiskeluoikeus)), 403),
+    Example("tiedonsiirto - epäonnistunut 2", "Onnistunut tiedonsiirto", Oppija(MockOppijat.ammattilainen.henkilö, List(failingOpiskeluoikeus)), 403)
   )
 }

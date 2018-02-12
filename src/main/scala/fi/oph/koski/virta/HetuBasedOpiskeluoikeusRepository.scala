@@ -29,7 +29,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
       val opiskeluoikeudet = opiskeluoikeudetByHetu(hetu)
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
-        val oppija = Oppija(UusiHenkilö(Some(hetu), "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
+        val oppija = Oppija(UusiHenkilö(hetu, "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
         validator match {
           case Some(validator) =>
             validator.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>

@@ -311,13 +311,8 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
     }
     "Väärän muotoinen hetu" in {
-      putOppija(Oppija(oppija.copy(hetu = Some("291297")), List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)))), headers = authHeaders(MockUsers.helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      putOppija(Oppija(oppija.copy(hetu = "291297"), List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)))), headers = authHeaders(MockUsers.helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 291297"))
-      }
-    }
-    "Ei hetua" in {
-      putOppija(Oppija(oppija.copy(hetu = None), List(defaultOpiskeluoikeus))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset("Hetu tai oid on pakollinen"))
       }
     }
     "Väärän muotoinen henkilö" in {

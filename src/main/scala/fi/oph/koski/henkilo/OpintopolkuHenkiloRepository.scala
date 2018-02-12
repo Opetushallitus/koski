@@ -18,7 +18,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
     henkilöt
-      .findOrCreate(oppijanumerorekisteriservice.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi))
+      .findOrCreate(oppijanumerorekisteriservice.UusiHenkilö.oppija(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi))
       .right.map(toTäydellisetHenkilötiedot)
   }
 

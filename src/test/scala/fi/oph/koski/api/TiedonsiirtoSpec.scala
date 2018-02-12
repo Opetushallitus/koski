@@ -167,7 +167,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
     Wait.until(getTiedonsiirrot(user).nonEmpty)
     val tiedonsiirto = getTiedonsiirrot(user).head
-    tiedonsiirto.oppija.flatMap(_.hetu) should equal(expectedHenkilö.flatMap(_.hetu))
+    tiedonsiirto.oppija.flatMap(_.hetu) should equal(expectedHenkilö.map(_.hetu))
     tiedonsiirto.rivit.flatMap(_.oppilaitos).map(_.oid) should equal(expectedOpiskeluoikeus.map(_.getOppilaitos.oid).toList)
     tiedonsiirto.rivit.flatMap(_.virhe).nonEmpty should be(errorStored)
     tiedonsiirto.rivit.flatMap(_.inputData).nonEmpty should be(dataStored)
