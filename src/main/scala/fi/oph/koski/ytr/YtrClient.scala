@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{Logging, TimedProxy}
 import org.json4s.JValue
 
 trait YtrClient {
@@ -22,7 +22,7 @@ object YtrClient extends Logging {
       EmptyYtrClient
     case _ =>
       logger.info("Using YTR integration endpoint " + config.getString("ytr.url"))
-      RemoteYtrClient(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
+      TimedProxy[RemoteYtrClient](RemoteYtrClient(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password")))
   }
 }
 
