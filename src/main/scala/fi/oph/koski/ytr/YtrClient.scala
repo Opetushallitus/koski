@@ -22,7 +22,7 @@ object YtrClient extends Logging {
       EmptyYtrClient
     case _ =>
       logger.info("Using YTR integration endpoint " + config.getString("ytr.url"))
-      TimedProxy[RemoteYtrClient](RemoteYtrClient(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password")))
+      TimedProxy[YtrClient](RemoteYtrClient(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password")))
   }
 }
 
