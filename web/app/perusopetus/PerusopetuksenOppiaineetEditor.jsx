@@ -26,7 +26,11 @@ import {
   isPainotettu,
   isPäättötodistus,
   isToimintaAlueittain,
-  isYksilöllistetty, isYsiluokka, jääLuokalle, luokkaAste, luokkaAsteenOsasuoritukset,
+  isYksilöllistetty,
+  isYsiluokka,
+  jääLuokalle,
+  luokkaAste,
+  luokkaAsteenOsasuoritukset,
   oppimääränOsasuoritukset
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
