@@ -19,7 +19,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden päättymispäivä")  
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä")
   päättymispäivä: Option[LocalDate],
   tila: LukionOpiskeluoikeudenTila,
   @MaxItems(1)
@@ -67,7 +67,7 @@ trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus with Mahdollises
 case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   @Description("Suoritetun oppiaineen tunnistetiedot. Voi olla joko paikallinen tai lukioon valmistavan koulutuksen oppiaine")
-  koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,  
+  koulutusmoduuli: LukioonValmistavanKoulutuksenOppiaine,
   @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
