@@ -3,11 +3,15 @@ package fi.oph.koski.userdirectory
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CacheManager, Cached, CachingProxy, ExpiringCache}
 import fi.oph.koski.koskiuser.Käyttöoikeus
+import fi.oph.koski.log.NotLoggable
+
 import scala.concurrent.duration._
+
+case class Password(password: String) extends NotLoggable
 
 trait DirectoryClient {
   def findUser(username: String): Option[DirectoryUser]
-  def authenticate(userid: String, password: String): Boolean
+  def authenticate(userid: String, wrappedPassword: Password): Boolean
 }
 
 object DirectoryClient {
