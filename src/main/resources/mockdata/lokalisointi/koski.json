@@ -619,7 +619,7 @@
   "id" : 17007,
   "key" : "Ammattiosaamisen tunnustaminen",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Erkänna yrkeskunnande"
 }, {
@@ -1677,6 +1677,45 @@
   "value" : "På engelska"
 }, {
   "accesscount" : 0,
+  "accessed" : 1516795178302,
+  "category" : "koski",
+  "created" : 1516795178302,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20641,
+  "key" : "Ennustettu arvosana",
+  "locale" : "en",
+  "modified" : 1516795178247,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516795178249,
+  "category" : "koski",
+  "created" : 1516795178249,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20639,
+  "key" : "Ennustettu arvosana",
+  "locale" : "fi",
+  "modified" : 1516795178247,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Ennustettu arvosana"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516795178301,
+  "category" : "koski",
+  "created" : 1516795178301,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20640,
+  "key" : "Ennustettu arvosana",
+  "locale" : "sv",
+  "modified" : 1516795178247,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555670949,
   "category" : "koski",
   "created" : 1507555670949,
@@ -1750,7 +1789,7 @@
   "id" : 17563,
   "key" : "Erityinen tuki",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Särskild stöd"
 }, {
@@ -2221,6 +2260,45 @@
   "modified" : 1514385608610,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Person"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516353566147,
+  "category" : "koski",
+  "created" : 1516353566147,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20638,
+  "key" : "Henkilöpalvelu",
+  "locale" : "en",
+  "modified" : 1516353584324,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516353566040,
+  "category" : "koski",
+  "created" : 1516353566040,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20636,
+  "key" : "Henkilöpalvelu",
+  "locale" : "fi",
+  "modified" : 1516353584324,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Henkilöpalvelu"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516353566144,
+  "category" : "koski",
+  "created" : 1516353566144,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20637,
+  "key" : "Henkilöpalvelu",
+  "locale" : "sv",
+  "modified" : 1516353584324,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670233,
@@ -2765,6 +2843,45 @@
   "key" : "Jää luokalle",
   "locale" : "sv",
   "modified" : 1514385608609,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1518185586464,
+  "category" : "koski",
+  "created" : 1518185586464,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20662,
+  "key" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
+  "locale" : "en",
+  "modified" : 1518185586458,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1518185586460,
+  "category" : "koski",
+  "created" : 1518185586460,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20660,
+  "key" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
+  "locale" : "fi",
+  "modified" : 1518185586458,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1518185586462,
+  "category" : "koski",
+  "created" : 1518185586462,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20661,
+  "key" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
+  "locale" : "sv",
+  "modified" : 1518185586458,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -4701,9 +4818,9 @@
   "id" : 18844,
   "key" : "Lander ingressi 1",
   "locale" : "fi",
-  "modified" : 1514551963531,
+  "modified" : 1518427790319,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Koski kerää yhteen tiedot kunkin oppijan koulutuksesta yksittäisestä opintosuorituksesta suoritettuihin tutkintoihin asti. Palvelu sisältää myös tiedot opinto-oikeuksista sekä suoritettujen tutkintojen keskeisistä sisällöistä ja osaamisvaatimuksista."
+  "value" : "Koski kerää yhteen tiedot kunkin oppijan koulutuksesta yksittäisestä opintosuorituksesta suoritettuihin tutkintoihin asti. Palvelu sisältää myös tiedot opinto-oikeuksista sekä suoritettujen tutkintojen keskeisistä sisällöistä ja osaamisvaatimuksista. Tiedot ovat Koski-palvelussa turvallisesti tallessa ja kansalaiset voivat selata omia tietojaan."
 }, {
   "accesscount" : 0,
   "accessed" : 1513083622351,
@@ -4714,7 +4831,7 @@
   "id" : 18845,
   "key" : "Lander ingressi 1",
   "locale" : "sv",
-  "modified" : 1513083622280,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -4740,9 +4857,9 @@
   "id" : 18841,
   "key" : "Lander ingressi 2",
   "locale" : "fi",
-  "modified" : 1514551963531,
+  "modified" : 1518427790319,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Tiedot ovat Koskessa turvallisesti tallessa ja kansalaiset voivat selata omia tietojaan. Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, esimerkiksi koulutuksen järjestäjille, kunnille, Kelalle ja työvoimatoimistolle."
+  "value" : "Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, kuten esimerkiksi koulutuksen järjestäjille, kunnille, Kelalle ja työ- ja elinkeinotoimistoille."
 }, {
   "accesscount" : 0,
   "accessed" : 1513083622348,
@@ -4753,7 +4870,7 @@
   "id" : 18842,
   "key" : "Lander ingressi 2",
   "locale" : "sv",
-  "modified" : 1513083622280,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -4779,9 +4896,9 @@
   "id" : 20053,
   "key" : "Lander ingressi 3",
   "locale" : "fi",
-  "modified" : 1514385608609,
+  "modified" : 1518427790319,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, esimerkiksi koulutuksen järjestäjille, kunnille, Kelalle ja työvoimatoimistolle."
+  "value" : "Koski-palvelussa pystytään näyttämään seuraavat tiedot:  vuoden 2018 tammikuun jälkeen kirjatut peruskoulun, lukion ja ammattikoulun suoritukset ja opiskeluoikeudet, vuoden 1990 jälkeen suoritetut ylioppilastutkinnot, korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin (mutta tässä voi olla korkeakoulukohtaisia poikkeuksia)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514385278590,
@@ -4792,7 +4909,7 @@
   "id" : 20054,
   "key" : "Lander ingressi 3",
   "locale" : "sv",
-  "modified" : 1514385608609,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -4818,9 +4935,9 @@
   "id" : 20056,
   "key" : "Lander ingressi 4",
   "locale" : "fi",
-  "modified" : 1514385608611,
+  "modified" : 1518427790321,
   "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Koski palvelussa tiedot ovat turvallisesti tallessa ja kansalaiset voivat selata omia tietojaan."
+  "value" : "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi."
 }, {
   "accesscount" : 0,
   "accessed" : 1514385278595,
@@ -4831,7 +4948,7 @@
   "id" : 20057,
   "key" : "Lander ingressi 4",
   "locale" : "sv",
-  "modified" : 1514385608611,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -5104,7 +5221,7 @@
   "id" : 17040,
   "key" : "Lisää ammattiosaamisen tunnustaminen",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Lägg till erkänna yrkeskunnande"
 }, {
@@ -5377,7 +5494,7 @@
   "id" : 17512,
   "key" : "Lisää paikallinen kurssi...",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Lägg till lokal kursen..."
 }, {
@@ -5419,6 +5536,45 @@
   "modified" : 1514385608611,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Lägg till lokalt läroämne"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436081,
+  "category" : "koski",
+  "created" : 1515596436081,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20612,
+  "key" : "Lisää paikallinen tutkinnon osan osa-alue",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436026,
+  "category" : "koski",
+  "created" : 1515596436026,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20610,
+  "key" : "Lisää paikallinen tutkinnon osan osa-alue",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Lisää paikallinen tutkinnon osan osa-alue"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436080,
+  "category" : "koski",
+  "created" : 1515596436080,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20611,
+  "key" : "Lisää paikallinen tutkinnon osan osa-alue",
+  "locale" : "sv",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670872,
@@ -5575,6 +5731,45 @@
   "modified" : 1514551963531,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Lägg till examensdel från en annan examen"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436095,
+  "category" : "koski",
+  "created" : 1515596436095,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20624,
+  "key" : "Lisää tutkinnon osan osa-alue",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436093,
+  "category" : "koski",
+  "created" : 1515596436093,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20622,
+  "key" : "Lisää tutkinnon osan osa-alue",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Lisää tutkinnon osan osa-alue"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436094,
+  "category" : "koski",
+  "created" : 1515596436094,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20623,
+  "key" : "Lisää tutkinnon osan osa-alue",
+  "locale" : "sv",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671046,
@@ -6469,7 +6664,7 @@
   "id" : 17491,
   "key" : "Mitätöi opiskeluoikeus",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Annulera studierätt"
 }, {
@@ -8146,7 +8341,7 @@
   "id" : 17139,
   "key" : "Oppiaineen tunnistetiedot",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Läröämnets id"
 }, {
@@ -8305,6 +8500,84 @@
   "modified" : 1514385608610,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Uppgifter om eleven / den studerande"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557192,
+  "category" : "koski",
+  "created" : 1516879557192,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20644,
+  "key" : "Oppijanumerorekisteri",
+  "locale" : "en",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557164,
+  "category" : "koski",
+  "created" : 1516879557164,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20642,
+  "key" : "Oppijanumerorekisteri",
+  "locale" : "fi",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Oppijanumerorekisteri"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557191,
+  "category" : "koski",
+  "created" : 1516879557191,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20643,
+  "key" : "Oppijanumerorekisteri",
+  "locale" : "sv",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557195,
+  "category" : "koski",
+  "created" : 1516879557195,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20647,
+  "key" : "OppijanumerorekisteriLinkTooltip",
+  "locale" : "en",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557193,
+  "category" : "koski",
+  "created" : 1516879557193,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20645,
+  "key" : "OppijanumerorekisteriLinkTooltip",
+  "locale" : "fi",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Näytä oppijan tiedot Oppijanumerorekisterissä"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1516879557194,
+  "category" : "koski",
+  "created" : 1516879557194,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20646,
+  "key" : "OppijanumerorekisteriLinkTooltip",
+  "locale" : "sv",
+  "modified" : 1516879557162,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669308,
@@ -8970,6 +9243,45 @@
   "value" : "Lägg till lokal examensdel"
 }, {
   "accesscount" : 0,
+  "accessed" : 1515596436087,
+  "category" : "koski",
+  "created" : 1515596436087,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20618,
+  "key" : "Paikallisen tutkinnon osan osa-alueen lisäys",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436085,
+  "category" : "koski",
+  "created" : 1515596436085,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20616,
+  "key" : "Paikallisen tutkinnon osan osa-alueen lisäys",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Paikallisen tutkinnon osan osa-alueen lisäys"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436086,
+  "category" : "koski",
+  "created" : 1515596436086,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20617,
+  "key" : "Paikallisen tutkinnon osan osa-alueen lisäys",
+  "locale" : "sv",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555669086,
   "category" : "koski",
   "created" : 1507555669086,
@@ -9589,7 +9901,7 @@
   "id" : 17373,
   "key" : "Pidennetty päättymispäivä",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Förlängd avslutninngsdatum"
 }, {
@@ -10798,7 +11110,7 @@
   "id" : 17157,
   "key" : "Suorituksen lisäys",
   "locale" : "sv",
-  "modified" : 1514385608610,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Tiilägg av prestation"
 }, {
@@ -12636,6 +12948,45 @@
   "value" : ""
 }, {
   "accesscount" : 0,
+  "accessed" : 1515596436089,
+  "category" : "koski",
+  "created" : 1515596436089,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20621,
+  "key" : "Tutkinnon osan osa-alueen nimi",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436088,
+  "category" : "koski",
+  "created" : 1515596436088,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20619,
+  "key" : "Tutkinnon osan osa-alueen nimi",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Tutkinnon osan osa-alueen nimi"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436088,
+  "category" : "koski",
+  "created" : 1515596436088,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20620,
+  "key" : "Tutkinnon osan osa-alueen nimi",
+  "locale" : "sv",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555671177,
   "category" : "koski",
   "created" : 1507555671177,
@@ -13632,7 +13983,7 @@
   "id" : 17033,
   "key" : "Vaikeasti vammainen",
   "locale" : "fi",
-  "modified" : 1507555669047,
+  "modified" : 1515596436278,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Vaikeimmin kehitysvammainen"
 }, {
@@ -13983,7 +14334,7 @@
   "id" : 17030,
   "key" : "Vammainen",
   "locale" : "fi",
-  "modified" : 1507555669047,
+  "modified" : 1515596436278,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Muu kuin vaikeimmin kehitysvammainen"
 }, {
@@ -20904,6 +21255,45 @@
   "value" : ""
 }, {
   "accesscount" : 0,
+  "accessed" : 1518177323686,
+  "category" : "koski",
+  "created" : 1518177323686,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20659,
+  "key" : "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa...",
+  "locale" : "en",
+  "modified" : 1518177323679,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1518177323680,
+  "category" : "koski",
+  "created" : 1518177323680,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20657,
+  "key" : "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa...",
+  "locale" : "fi",
+  "modified" : 1518177323679,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta."
+}, {
+  "accesscount" : 0,
+  "accessed" : 1518177323684,
+  "category" : "koski",
+  "created" : 1518177323684,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20658,
+  "key" : "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa...",
+  "locale" : "sv",
+  "modified" : 1518177323679,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1513861202362,
   "category" : "koski",
   "created" : 1513861202362,
@@ -21914,6 +22304,84 @@
   "key" : "description:Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan...",
   "locale" : "sv",
   "modified" : 1513861201052,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436102,
+  "category" : "koski",
+  "created" : 1515596436102,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20630,
+  "key" : "description:Onko oppija muu kuin vaikeimmin...",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436101,
+  "category" : "koski",
+  "created" : 1515596436101,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20628,
+  "key" : "description:Onko oppija muu kuin vaikeimmin...",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto."
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436102,
+  "category" : "koski",
+  "created" : 1515596436102,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20629,
+  "key" : "description:Onko oppija muu kuin vaikeimmin...",
+  "locale" : "sv",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436100,
+  "category" : "koski",
+  "created" : 1515596436100,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20627,
+  "key" : "description:Onko oppija vaikeasti kehitysvammainen. Lista...",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436096,
+  "category" : "koski",
+  "created" : 1515596436096,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20625,
+  "key" : "description:Onko oppija vaikeasti kehitysvammainen. Lista...",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto."
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436098,
+  "category" : "koski",
+  "created" : 1515596436098,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20626,
+  "key" : "description:Onko oppija vaikeasti kehitysvammainen. Lista...",
+  "locale" : "sv",
+  "modified" : 1515596436025,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
@@ -32248,7 +32716,7 @@
   "id" : 16704,
   "key" : "lakkautettu",
   "locale" : "sv",
-  "modified" : 1514551963531,
+  "modified" : 1516795178466,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Annulerat"
 }, {
@@ -36734,6 +37202,45 @@
   "key" : "tooltip:Tieto siitä, onko opiskelija vammainen...",
   "locale" : "sv",
   "modified" : 1514986750045,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436084,
+  "category" : "koski",
+  "created" : 1515596436084,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20615,
+  "key" : "tooltip:Tieto siitä, onko oppija muu...",
+  "locale" : "en",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436082,
+  "category" : "koski",
+  "created" : 1515596436082,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20613,
+  "key" : "tooltip:Tieto siitä, onko oppija muu...",
+  "locale" : "fi",
+  "modified" : 1515596436025,
+  "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : "Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto."
+}, {
+  "accesscount" : 0,
+  "accessed" : 1515596436083,
+  "category" : "koski",
+  "created" : 1515596436083,
+  "createdBy" : "1.2.246.562.24.34119902638",
+  "force" : false,
+  "id" : 20614,
+  "key" : "tooltip:Tieto siitä, onko oppija muu...",
+  "locale" : "sv",
+  "modified" : 1515596436025,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
 }, {
