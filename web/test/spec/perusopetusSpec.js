@@ -1770,36 +1770,6 @@ describe('Perusopetus', function() {
           })
         })
       })
-
-      describe('Kun oppilaitos mahdollisesti tarjoaa myös ammatillista koulutusta', function() {
-        before(
-          resetFixtures,
-          prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataPerusopetus({oppilaitos:'Helsingin medialukio'}))
-
-        it('Opiskeluoikeuden tyypin valinnassa näytetään myös ammatillinen koulutus', function() {
-          expect(addOppija.opiskeluoikeudenTyypit()).to.deep.equal(['Perusopetus',
-            'Perusopetukseen valmistava opetus',
-            'Perusopetuksen lisäopetus',
-            'Aikuisten perusopetus',
-            'Ammatillinen koulutus'])
-        })
-        describe('Opiskeluoikeuden lisäys', function() {
-          before(
-            addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
-            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus')
-          )
-
-          it('lisätty oppija näytetään', function() {})
-
-          it('lisätty opiskeluoikeus näytetään', function() {
-            expect(opinnot.getTutkinto()).to.equal('Perusopetus')
-            expect(opinnot.getOppilaitos()).to.equal('Helsingin medialukio')
-            expect(opinnot.getSuorituskieli()).to.equal('suomi')
-            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
-          })
-        })
-      })
     })
 
     describe('Aikuisten perusopetus', function() {
