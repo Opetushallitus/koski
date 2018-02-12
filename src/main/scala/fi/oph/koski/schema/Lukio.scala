@@ -240,7 +240,7 @@ case class PaikallinenLukionOppiaine(
   pakollinen: Boolean = true,
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionOppiaine with PaikallinenKoulutusmoduuli
+) extends LukionOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
 trait LukionValtakunnallinenOppiaine extends LukionOppiaine with YleissivistavaOppiaine
 
