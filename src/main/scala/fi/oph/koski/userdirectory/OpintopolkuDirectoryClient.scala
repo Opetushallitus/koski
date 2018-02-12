@@ -69,7 +69,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         if (body.contains("error.authentication.credentials.bad")) {
           false
         } else {
-          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: $body")
+          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
         }
       }
     })
