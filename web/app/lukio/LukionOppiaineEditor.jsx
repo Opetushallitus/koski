@@ -7,9 +7,10 @@ import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
 import {FootnoteHint} from '../components/footnote'
 import {modelLookup, modelTitle, pushRemoval} from '../editor/EditorModel'
-import {isKieliaine, isLukionMatematiikka} from '../suoritus/Koulutusmoduuli'
+import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {Editor} from '../editor/Editor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 
 const Nimi = ({oppiaine}) => {
   const {edit} = oppiaine.context
@@ -19,9 +20,18 @@ const Nimi = ({oppiaine}) => {
   const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
 
   return (
-    <span className='nimi'>
-      {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
-    </span>
+    edit && isPaikallinen(koulutusmoduuli)
+      ? (
+        <span className='koodi-ja-nimi'>
+          <span className='koodi'><Editor model={koulutusmoduuli} path='tunniste.koodiarvo' placeholder={t('Koodi')} /></span>
+          <span className='nimi'><Editor model={koulutusmoduuli} path='tunniste.nimi' placeholder={t('Oppiaineen nimi')} /></span>
+        </span>
+      )
+      : (
+        <span className='nimi'>
+          {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
+        </span>
+      )
   )
 }
 
@@ -34,6 +44,7 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
     <span className='properties'>
       {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
       {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
+      {isPaikallinen(koulutusmoduuli) && <PropertiesEditor model={koulutusmoduuli} propertyFilter={p => p.key === 'kuvaus'} />}
     </span>
   )
 }
