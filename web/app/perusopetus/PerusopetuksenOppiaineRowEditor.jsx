@@ -11,7 +11,7 @@ import {FootnoteHint} from '../components/footnote'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
-    let {model, showLaajuus, footnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
+    let {model, showArvosana, showLaajuus, footnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
     const {edit} = model.context
 
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
@@ -39,9 +39,11 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
         <PerusopetuksenOppiaineEditor {...{oppiaine, showExpand, expanded, onExpand, uusiOppiaineenSuoritus}}/>
 
       </td>
-      <td className="arvosana">
-        <span className="value"><ArvosanaEditor model={ model } /></span>
-      </td>
+      {
+        showArvosana && <td className="arvosana">
+          <span className="value"><ArvosanaEditor model={model}/></span>
+        </td>
+      }
       {
         showLaajuus && (<td className="laajuus">
           <Editor model={model} path="koulutusmoduuli.laajuus" compact="true"/>
