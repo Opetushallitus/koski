@@ -16,7 +16,7 @@
   "withinCodes" : [ {
     "codesUri" : "koulutus",
     "codesVersion" : 6,
-    "passive" : true
+    "passive" : false
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 5,
@@ -25,11 +25,7 @@
     "codesUri" : "koulutus",
     "codesVersion" : 4,
     "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 6
+  "version" : 7
 }
