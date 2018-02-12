@@ -146,7 +146,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
   kuvaus: LocalizedString,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli
+) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
 case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
