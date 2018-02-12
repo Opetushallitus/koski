@@ -2492,35 +2492,56 @@ describe('Perusopetus', function() {
           expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
         })
 
-        describe('Kun merkitään perusopetuksen oppimäärä valmiiksi', function() {
+        describe('Perusopetuksen oppimäärän vahvistaminen', function() {
           before(
             opinnot.valitseSuoritus(1, 'Päättötodistus'),
             wait.forAjax,
             opinnot.oppiaineet.uusiOppiaine('.pakolliset').selectValue('Matematiikka'),
             opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
-            tilaJaVahvistus.merkitseValmiiksi,
-            tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
-            tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
-            editor.saveChanges,
-            opinnot.valitseSuoritus(1, '9. vuosiluokka')
+            editor.saveChanges
           )
 
-          describe('Käyttöliittymän tila', function() {
-            it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
-              expect(tilaJaVahvistus.tila()).to.equal('Suoritus valmis')
-            })
+          it('Ensin piilottaa oppiaineiden arvosanat', function() {
+            expect(extractAsText(S('.oppiaineet'))).to.equal(
+              'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine\nMatematiikka'
+            )
           })
 
-          describe('Kun palautetaan päättötodistus KESKEN-tilaan', function() {
+          describe('Kun merkitään valmiiksi', function() {
             before(
-              page.openPage,
-              page.oppijaHaku.searchAndSelect('160932-311V'),
               editor.edit,
-              tilaJaVahvistus.merkitseKeskeneräiseksi,
+              tilaJaVahvistus.merkitseValmiiksi,
+              tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
+              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
               editor.saveChanges
             )
-            it('Pysytään päättötodistus -täbillä', function() {
-              expect(opinnot.getTutkinto(0)).to.equal('Perusopetus')
+
+            it('näyttää oppiaineiden arvosanat', function() {
+              expect(extractAsText(S('.oppiaineet'))).to.equal(
+                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka 5'
+              )
+            })
+
+            describe('Käyttöliittymän tila', function() {
+              before(
+                opinnot.valitseSuoritus(1, '9. vuosiluokka')
+              )
+              it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
+                expect(tilaJaVahvistus.tila()).to.equal('Suoritus valmis')
+              })
+            })
+
+            describe('Kun palautetaan päättötodistus KESKEN-tilaan', function() {
+              before(
+                page.openPage,
+                page.oppijaHaku.searchAndSelect('160932-311V'),
+                editor.edit,
+                tilaJaVahvistus.merkitseKeskeneräiseksi,
+                editor.saveChanges
+              )
+              it('Pysytään päättötodistus -täbillä', function() {
+                expect(opinnot.getTutkinto(0)).to.equal('Perusopetus')
+              })
             })
           })
         })
