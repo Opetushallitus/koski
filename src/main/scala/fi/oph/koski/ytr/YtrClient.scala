@@ -16,27 +16,27 @@ object YtrClient extends Logging {
   def apply(config: Config) = config.getString("ytr.url") match {
     case "mock" =>
       logger.info("Using mock YTR integration")
-      YtrMock
+      MockYrtClient
     case "" =>
       logger.info("YTR integration disabled")
-      YtrEmpty
+      EmptyYtrClient
     case _ =>
       logger.info("Using YTR integration endpoint " + config.getString("ytr.url"))
-      YtrRemote(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
+      RemoteYtrClient(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
   }
 }
 
-object YtrEmpty extends YtrClient {
+object EmptyYtrClient extends YtrClient {
   override def oppijaJsonByHetu(hetu: String) = None
 }
 
-object YtrMock extends YtrClient {
+object MockYrtClient extends YtrClient {
   def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
   def filename(hetu: String) = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 }
 
-case class YtrRemote(rootUrl: String, user: String, password: String) extends YtrClient {
+case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient {
   private val http = Http(rootUrl, ClientWithBasicAuthentication(Http.newClient, user, password))
   def oppijaJsonByHetu(hetu: String): Option[JValue] = http.get(uri"/api/oph-transfer/student/${hetu}")(Http.parseJsonOptional[JValue]).run
 }
