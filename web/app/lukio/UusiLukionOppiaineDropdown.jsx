@@ -33,6 +33,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => 
     <UusiOppiaineDropdown
       suoritukset={modelItems(model, 'osasuoritukset')}
       oppiaineenSuoritus={uusiOppiaineenSuoritus}
+      organisaatioOid={modelData(model, 'toimipiste.oid')}
       resultCallback={addOppiaine}
       placeholder={t('Lisää oppiaine')}
       pakollinen={true}
