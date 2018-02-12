@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import * as L from 'partial.lenses'
-import {UusiPerusopetuksenOppiaineDropdown} from '../perusopetus/UusiPerusopetuksenOppiaineDropdown'
+import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
 import {
   accumulateModelState,
   modelData,
@@ -45,7 +45,16 @@ export default ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppila
 
         return (<span>
           <Peruste suoritusTyyppiP={Bacon.constant(modelData(oppiaineenSuoritus, 'tyyppi'))} perusteAtom={perusteAtom} />
-          <label className="oppiaine"><Text name="Oppiaine"/>{' '}<UusiPerusopetuksenOppiaineDropdown oppiaineenSuoritus={oppiaineenSuoritus} selected={oppiainePrototypeAtom} resultCallback={s => oppiainePrototypeAtom.set(s)} pakollinen={true} enableFilter={false}/></label>
+          <label className="oppiaine">
+            <Text name="Oppiaine" />{' '}
+            <UusiOppiaineDropdown
+              oppiaineenSuoritus={oppiaineenSuoritus}
+              selected={oppiainePrototypeAtom}
+              resultCallback={s => oppiainePrototypeAtom.set(s)}
+              pakollinen={true}
+              enableFilter={false}
+              />
+          </label>
           { suoritusModelP.map(model =>
             model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
           }

@@ -1,13 +1,11 @@
 import React from 'baret'
 import {t} from '../i18n/i18n'
-import DropDown from '../components/Dropdown'
+import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
 import {
   contextualizeSubModel, ensureArrayKey, modelData, modelItems, modelLookup, modelSet, modelSetTitle, oneOfPrototypes,
   pushModel,
   wrapOptional
 } from '../editor/EditorModel'
-import {koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
-import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 
 const createOppiaineenSuoritus = (model, suoritusClass) => {
   const oppiaineet = wrapOptional(modelLookup(model, 'osasuoritukset'))
@@ -18,24 +16,10 @@ const createOppiaineenSuoritus = (model, suoritusClass) => {
   return contextualizeSubModel(proto, oppiaineet, newItemIndex)
 }
 
-const fetchOppiaineOptions = uusiOppiaineenSuoritus => {
-  const koulutusmoduuliModels = koulutusModuuliprototypes(uusiOppiaineenSuoritus)
-  return fetchAlternativesBasedOnPrototypes(koulutusmoduuliModels, 'tunniste')
-}
-
-const oppiaineToKoodiarvo = oppiaine => modelData(oppiaine, 'koulutusmoduuli.tunniste').koodiarvo
-const koulutusmoduuliToKoodiarvo = koulutusmoduuli => modelData(koulutusmoduuli, 'tunniste').koodiarvo
-
 export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => {
   if (!model || !model.context.edit) return null
 
   const uusiOppiaineenSuoritus = createOppiaineenSuoritus(model, oppiaineenSuoritusClass)
-  const käytössäOlevatKoodiarvot = modelItems(model, 'osasuoritukset').map(oppiaineToKoodiarvo)
-  const options = fetchOppiaineOptions(uusiOppiaineenSuoritus).map(oppiaineOptions =>
-    oppiaineOptions
-      .filter(option => !käytössäOlevatKoodiarvot.includes(koulutusmoduuliToKoodiarvo(option)))
-  )
-  const placeholderText = t('Lisää oppiaine')
 
   const addOppiaine = oppiaine => {
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
@@ -46,15 +30,12 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => 
   }
 
   return (
-    <div className='uusi-oppiaine'>
-      <DropDown
-        options={options}
-        keyValue={oppiaine => modelData(oppiaine, 'tunniste').koodiarvo}
-        displayValue={oppiaine => modelLookup(oppiaine, 'tunniste').value.title}
-        onSelectionChanged={addOppiaine}
-        selectionText={placeholderText}
-        isRemovable={() => false}
+    <UusiOppiaineDropdown
+      suoritukset={modelItems(model, 'osasuoritukset')}
+      oppiaineenSuoritus={uusiOppiaineenSuoritus}
+      resultCallback={addOppiaine}
+      placeholder={t('Lisää oppiaine')}
+      pakollinen={true}
       />
-    </div>
   )
 }
