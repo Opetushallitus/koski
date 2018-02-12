@@ -4,6 +4,7 @@ describe('Lukiokoulutus', function( ){
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
@@ -777,6 +778,107 @@ describe('Lukiokoulutus', function( ){
                     expect(extractAsText(S('.oppiaineet .A1'))).to.not.contain('PA')
                   })
                 })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+
+  describe('Opiskeluoikeuden lisääminen', function() {
+    describe('Lukiokoulutus', function() {
+      describe('Lukion oppimäärä', function() {
+        describe('Lukion nuorten 2015 oppimäärä', function() {
+          before(
+            prepareForNewOppija('kalle', '230872-7258'),
+            addOppija.enterValidDataLukio(),
+            addOppija.selectOppimäärä('Lukion oppimäärä'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Lukion oppimäärä')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            describe('Opiskeluoikeuden tiedot', function() {
+              it('näytetään oikein', function () {
+                expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppimäärä')
+                expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('60/011/2015')
+                expect(editor.propertyBySelector('.oppimäärä').getValue()).to.equal('Lukio suoritetaan nuorten opetussuunnitelman mukaan')
+                expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
+                expect(opinnot.getSuorituskieli()).to.equal('suomi')
+              })
+            })
+
+            describe('Oppiaineita', function () {
+              before(editor.edit)
+              it('ei esitäytetä', function () {
+                expect(S('.oppiaineet').text()).to.equal('')
+                after(editor.cancelChanges)
+              })
+            })
+          })
+        })
+
+        describe('Lukion aikuisten 2015 oppimäärä', function() {
+          before(
+            prepareForNewOppija('kalle', '230872-7258'),
+            addOppija.enterValidDataLukio(),
+            addOppija.selectOppimäärä('Lukion oppimäärä'),
+            addOppija.selectPeruste('70/011/2015'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Lukion oppimäärä')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            describe('Opiskeluoikeuden tiedot', function() {
+              it('näytetään oikein', function () {
+                expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppimäärä')
+                expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('70/011/2015')
+                expect(editor.propertyBySelector('.oppimäärä').getValue()).to.equal('Lukio suoritetaan aikuisten opetussuunnitelman mukaan')
+                expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
+                expect(opinnot.getSuorituskieli()).to.equal('suomi')
+              })
+            })
+          })
+        })
+
+        describe('Lukion nuorten 2003 oppimäärä', function() {
+          before(
+            prepareForNewOppija('kalle', '230872-7258'),
+            addOppija.enterValidDataLukio(),
+            addOppija.selectOppimäärä('Lukion oppimäärä'),
+            addOppija.selectPeruste('33/011/2003'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Lukion oppimäärä')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            describe('Opiskeluoikeuden tiedot', function() {
+              it('näytetään oikein', function () {
+                expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppimäärä')
+                expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('33/011/2003')
+                expect(editor.propertyBySelector('.oppimäärä').getValue()).to.equal('Lukio suoritetaan nuorten opetussuunnitelman mukaan')
+                expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
+                expect(opinnot.getSuorituskieli()).to.equal('suomi')
+              })
+            })
+          })
+        })
+
+        describe('Lukion aikuisten 2004 oppimäärä', function() {
+          before(
+            prepareForNewOppija('kalle', '230872-7258'),
+            addOppija.enterValidDataLukio(),
+            addOppija.selectOppimäärä('Lukion oppimäärä'),
+            addOppija.selectPeruste('4/011/2004'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Lukion oppimäärä')
+          )
+
+          describe('Lisäyksen jälkeen', function () {
+            describe('Opiskeluoikeuden tiedot', function() {
+              it('näytetään oikein', function () {
+                expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppimäärä')
+                expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('4/011/2004')
+                expect(editor.propertyBySelector('.oppimäärä').getValue()).to.equal('Lukio suoritetaan aikuisten opetussuunnitelman mukaan')
+                expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
+                expect(opinnot.getSuorituskieli()).to.equal('suomi')
               })
             })
           })

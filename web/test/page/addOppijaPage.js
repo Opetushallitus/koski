@@ -49,6 +49,15 @@ function AddOppijaPage() {
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
+    enterValidDataLukio: function(params) {
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: '60/011/2015' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Lukiokoulutus'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectPeruste(params.peruste))
+      }
+    },
     enterData: function(params) {
       return function() {
         return api.enterHenkilötiedot(params)()
@@ -127,7 +136,6 @@ function AddOppijaPage() {
     opiskeluoikeudenTyyppi: function() {
       return pageApi.getInputValue('.opiskeluoikeudentyyppi input')
     },
-    
     selectOpiskeluoikeudenTyyppi: function(tyyppi) {
       return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
     },
@@ -147,6 +155,9 @@ function AddOppijaPage() {
       return rahoitus
         ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
         : function() {}
+    },
+    selectPeruste: function(peruste) {
+      return selectFromDropdown('.peruste .dropdown', peruste)
     },
     selectKieli: function(kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)
