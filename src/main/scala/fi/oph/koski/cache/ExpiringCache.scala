@@ -61,6 +61,4 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
       .expireAfterWrite(params.duration.length, params.duration.unit)
       .build(cacheLoader)
   }
-
-  private def cacheKey(invocation: Invocation) = invocation.f.name + invocation.args.mkString(",")
 }
