@@ -35,7 +35,9 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
           }
         }
       case None =>
-        logger.warn(s"User $username not found")
+        if (!user.kansalainen) {
+          logger.warn(s"User $username not found")
+        }
         Set.empty
     }
   }

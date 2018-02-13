@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
-import fi.oph.koski.userdirectory.DirectoryClient
+import fi.oph.koski.userdirectory.{DirectoryClient, Password}
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
@@ -84,7 +84,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
       return loginFail
     }
 
-    val loginResult: Boolean = application.directoryClient.authenticate(username, password)
+    val loginResult: Boolean = application.directoryClient.authenticate(username, Password(password))
     val result = if (!loginResult) {
       logger(LogUserContext(request)).info(s"Login failed with username ${username}")
       loginFail

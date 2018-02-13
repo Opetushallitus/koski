@@ -75,8 +75,8 @@ class CacheSpec extends FreeSpec with Matchers {
       }
       "When fetch fails" - {
         class TestException extends RuntimeException("testing")
-        val cache = RefreshingCache("testcache", 10 milliseconds, 10)
         "Initial fetch -> throws exception and tries again on next call" in {
+          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
           var perform: (String => String) = {x: String => throw new TestException}
           val invocation = Invocation({ x: String => perform(x) }, "a")
 
@@ -88,6 +88,7 @@ class CacheSpec extends FreeSpec with Matchers {
           cache.apply(invocation) should equal("hello")
         }
         "Initial fetch -> throws exception, schedules fetch" in {
+          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
           var perform: (String => String) = {x: String => throw new TestException}
           val invocation = Invocation({ x: String => perform(x) }, "a")
 
@@ -100,6 +101,7 @@ class CacheSpec extends FreeSpec with Matchers {
           Futures.await(currentValue) should equal("hello")
         }
         "Background fetch -> tries again after cache period" in {
+          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
           var result = {x: String => x}
           val invocation = Invocation({ x: String => result(x) }, "b")
           cache.apply(invocation) should equal("b")
@@ -109,6 +111,17 @@ class CacheSpec extends FreeSpec with Matchers {
           result = {x: String => x + "2"}
           Thread.sleep(50)
           cache.apply(invocation) should equal("b2")
+        }
+        "Throws exception from underlying impl without wrapping by Java reflection APIs" in {
+          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
+          val counter = new Counter()
+          val invocation = counter.incInvocation("666")
+          val caught = intercept[Exception] {
+            cache.apply(invocation)
+          }
+          assert(caught.getClass.getName == "java.lang.Exception")
+          assert(caught.getMessage == "Test exception")
+          cache.invalidateCache()
         }
       }
       "Multiple clients requesting at same time -> fetch only once" in {
@@ -160,6 +173,9 @@ class CacheSpec extends FreeSpec with Matchers {
       counts += (key -> v)
       Thread.sleep(10)
       //println("Generated " + key + "=" + v)
+      if (key == "666") {
+        throw new Exception("Test exception")
+      }
       key + v
     }
 

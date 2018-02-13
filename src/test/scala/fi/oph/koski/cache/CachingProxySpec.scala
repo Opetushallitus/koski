@@ -19,7 +19,6 @@ class CachingProxySpec extends FreeSpec with Matchers {
       cached.getThing(1)
       service.calls should equal(1)
     }
-
     "Calls underlying impl only once even with multiple concurrent calls" in {
       val service = new TestServiceImpl
       val cached = makeCache(service)
@@ -32,6 +31,16 @@ class CachingProxySpec extends FreeSpec with Matchers {
       Thread.sleep(200)
       service.calls should equal(1)
     }
+    "Throws exception from underlying impl without wrapping by Java reflection APIs" in {
+      val service = new TestServiceImpl
+      val cached = makeCache(service)
+      val caught = intercept[Exception] {
+        cached.getThing(666)
+      }
+      assert(caught.getClass.getName == "java.lang.Exception")
+      assert(caught.getMessage == "Test exception checked")
+      cached.invalidateCache()
+    }
   }
 
   def makeCache(service: TestService) = CachingProxy[TestService](RefreshingCache("spec", 10 seconds, 1)(GlobalCacheManager), service)
@@ -39,6 +48,7 @@ class CachingProxySpec extends FreeSpec with Matchers {
 }
 
 trait TestService {
+  @throws(classOf[Exception])
   def getThing(id: Int): String
 }
 
@@ -49,6 +59,9 @@ class TestServiceImpl extends TestService{
       calls = calls + 1
     }
     Thread.sleep(100)
+    if (id == 666) {
+      throw new Exception("Test exception checked")
+    }
     id.toString
   }
 }

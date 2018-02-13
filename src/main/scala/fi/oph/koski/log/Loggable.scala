@@ -11,6 +11,10 @@ trait Loggable {
   override def toString = logString
 }
 
+trait NotLoggable extends Loggable {
+  def logString: String = "*"
+}
+
 object Loggable {
   def describe(arg: Any): String = {
     try {

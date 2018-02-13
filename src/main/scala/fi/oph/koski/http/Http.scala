@@ -176,6 +176,7 @@ protected object HttpResponseLog {
 }
 
 protected case class HttpResponseLog(request: Request, uriTemplate: String) {
+  private val logFailedRequestBodiesForUrisContaining = "___none___"
   private val started = System.currentTimeMillis
   def elapsedMillis = System.currentTimeMillis - started
   def log(response: Response) {
@@ -194,10 +195,13 @@ protected case class HttpResponseLog(request: Request, uriTemplate: String) {
     val requestBody = (if (ok) { None } else { request.body match {
       case Emit(seq) => seq.reduce(_ ++ _).decodeUtf8.right.toOption
       case _ => None
-    }}).map("request body " + _).getOrElse("")
+    }}).map("request body " + _).filter(_ => request.uri.toString.contains(logFailedRequestBodiesForUrisContaining)).getOrElse("")
 
-    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}")
-
+    HttpResponseLog.logger.debug(maskSensitiveInformation(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}"))
+  }
+  // At least oppijanumerorekisteri-service and ytr URLs can contain hetus
+  private def maskSensitiveInformation(s: String): String = {
+    s.replaceAll("\b[0-9]{6}[-A+][0-9]{3}[0-9A-Z]\b", "******-****")
   }
 }
 

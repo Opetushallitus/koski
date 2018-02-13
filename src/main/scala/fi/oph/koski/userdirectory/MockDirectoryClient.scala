@@ -6,5 +6,5 @@ object MockDirectoryClient extends DirectoryClient {
   def findUser(username: String) = {
     MockUsers.users.find(_.username == username).map(_.ldapUser)
   }
-  def authenticate(userid: String, password: String) = findUser(userid).isDefined && userid == password
+  def authenticate(userid: String, wrappedPassword: Password) = findUser(userid).isDefined && userid == wrappedPassword.password
 }

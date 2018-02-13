@@ -1,6 +1,8 @@
 package fi.oph.koski.util
 
-import java.lang.reflect.Method
+import java.lang.reflect.{InvocationTargetException, Method, UndeclaredThrowableException}
+import java.util.concurrent.ExecutionException
+import scala.util.control.NonFatal
 
 import fi.oph.koski.log.Loggable
 
@@ -26,8 +28,19 @@ trait NamedFunction {
 }
 
 case class ObjectMethod(method: Method, target: AnyRef) extends NamedFunction {
-  def apply(args: List[AnyRef]) = method.invoke(target, args:_*)
+  def apply(args: List[AnyRef]) = {
+    try {
+      method.invoke(target, args:_*)
+    } catch {
+      case NonFatal(e) => throw skipReflectionExceptions(e)
+    }
+  }
   def name = method.getName
+
+  private def skipReflectionExceptions(t: Throwable): Throwable =
+    if (isReflectionException(t) && t.getCause != null) skipReflectionExceptions(t.getCause) else t
+  private def isReflectionException(t: Throwable): Boolean =
+    t.isInstanceOf[InvocationTargetException] || t.isInstanceOf[ExecutionException] || t.isInstanceOf[UndeclaredThrowableException]
 }
 
 case class AnonymousFunction[A <: AnyRef, B <: AnyRef](f: A => B) extends NamedFunction {

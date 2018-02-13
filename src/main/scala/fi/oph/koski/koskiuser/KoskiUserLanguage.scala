@@ -14,7 +14,9 @@ object KoskiUserLanguage extends Logging {
       case Some(ldapUser) =>
         ldapUser.asiointikieli.map(_.toLowerCase).getOrElse("fi")
       case _ =>
-        logger.warn(s"User $username not found")
+        if (!user.kansalainen) {
+          logger.warn(s"User $username not found")
+        }
         "fi"
     }
   }

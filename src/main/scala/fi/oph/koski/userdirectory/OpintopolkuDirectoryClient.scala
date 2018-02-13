@@ -49,9 +49,9 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     }
   }
 
-  override def authenticate(userid: String, password: String): Boolean = {
+  override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
     val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
-    Http.runTask(client.fetch(POST(tgtUri, UrlForm("username" -> userid, "password" -> password))) {
+    Http.runTask(client.fetch(POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))) {
       case Created(resp) =>
         val found: TGTUrl = resp.headers.get(Location).map(_.value) match {
           case Some(tgtPattern(tgtUrl)) =>
@@ -69,7 +69,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         if (body.contains("error.authentication.credentials.bad")) {
           false
         } else {
-          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: $body")
+          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
         }
       }
     })
