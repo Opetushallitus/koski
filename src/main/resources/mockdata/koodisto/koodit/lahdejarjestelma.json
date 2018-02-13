@@ -17,6 +17,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_hailer",
+  "koodiArvo" : "hailer",
+  "metadata" : [ {
+    "nimi" : "Hailer",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_helmi",
   "koodiArvo" : "helmi",
   "metadata" : [ {
