@@ -197,7 +197,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_2",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_330112015",
   "koodiArvo" : "33/011/2015",
@@ -296,7 +300,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_2",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_410112006",
   "koodiArvo" : "41/011/2006",
@@ -440,7 +448,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_2",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_650112002",
   "koodiArvo" : "65/011/2002",
@@ -467,7 +479,11 @@
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_2",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_80112009",
   "koodiArvo" : "8/011/2009",

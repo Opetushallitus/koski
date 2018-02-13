@@ -18,6 +18,7 @@ import {sortLanguages} from '../util/sorting'
 import {ift} from '../util/util'
 import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
 import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus'
+import UusiLukionSuoritus from './UusiLukionSuoritus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -65,6 +66,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'lukiokoulutus') return <UusiLukionSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
       })
     }
     <Aloituspäivä dateAtom={dateAtom} />
