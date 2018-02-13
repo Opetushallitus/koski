@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.{annotation, _}
@@ -221,7 +222,7 @@ object ExamplesIB {
   )
 
   val examples = List(
-    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(MockOppijat.ibFinal.henkilö, List(opiskeluoikeus))),
-    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(MockOppijat.ibPredicted.henkilö, List(opiskeluoikeusPredictedGrades)))
+    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(asUusiOppija(MockOppijat.ibFinal.henkilö), List(opiskeluoikeus))),
+    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(MockOppijat.ibPredicted.henkilö), List(opiskeluoikeusPredictedGrades)))
   )
 }

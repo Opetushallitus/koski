@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.schema._
 
@@ -36,5 +37,5 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     )
   )
 
-  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(MockOppijat.koululainen.henkilö, List(perusopetukseenValmistavaOpiskeluoikeus))))
+  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(asUusiOppija(MockOppijat.koululainen.henkilö), List(perusopetukseenValmistavaOpiskeluoikeus))))
 }

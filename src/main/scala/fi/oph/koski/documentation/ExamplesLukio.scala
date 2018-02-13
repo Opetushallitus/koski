@@ -7,9 +7,10 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{annotation, _}
+import fi.oph.koski.schema._
 
 object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
@@ -283,7 +284,7 @@ object LukioExampleData {
 
   val hyväksytty = Some(List(LukionOppiaineenArviointi("S")))
 
-  val exampleHenkilö = MockOppijat.lukiolainen.henkilö
+  val exampleHenkilö = asUusiOppija(MockOppijat.lukiolainen.henkilö)
 
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
 
