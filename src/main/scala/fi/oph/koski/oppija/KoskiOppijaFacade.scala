@@ -132,13 +132,16 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     (oo.tila match {
-      case a: AmmatillinenOpiskeluoikeudenTila =>
-        Right(a.copy(opiskeluoikeusjaksot = a.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
-      case p: NuortenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(p.copy(opiskeluoikeusjaksot = p.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
-      case l: LukionOpiskeluoikeudenTila =>
-        Right(l.copy(opiskeluoikeusjaksot = l.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(now, mitätöity)))
-      case _ => Left(KoskiErrorCategory.badRequest())
+      case t: AmmatillinenOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
+      case t: NuortenPerusopetuksenOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+      case t: AikuistenPerusopetuksenOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+      case t: LukionOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(now, mitätöity)))
+      case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
+      case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
   }
 
