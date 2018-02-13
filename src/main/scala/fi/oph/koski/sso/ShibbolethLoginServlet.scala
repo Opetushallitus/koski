@@ -1,5 +1,7 @@
 package fi.oph.koski.sso
 
+import java.nio.charset.StandardCharsets
+
 import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
@@ -41,15 +43,17 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing")))
   }
 
-  private def nimitiedot: Option[Nimitiedot] = {
-    def toNimitiedot(cn: String) = {
-      val nimet = cn.split(" ")
-      Nimitiedot(nimet.tail.mkString(" "), nimet.tail.headOption.getOrElse(""), nimet.head)
-    }
-    // FIXME: ääkköset
-    //request.header("cn").map(_.trim).filter(_.nonEmpty).map(toNimitiedot)
-    None
-  }
+  private def nimitiedot: Option[Nimitiedot] = for {
+    etunimet <- utf8Header("FirstName")
+    kutsumanimi <- utf8Header("givenName")
+    sukunimi <- utf8Header("sn")
+  } yield Nimitiedot(etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
+
+  private def utf8Header(headerName: String): Option[String] =
+    request.header(headerName)
+      .map(header => new String(header.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8))
+      .map(_.trim)
+      .filter(_.nonEmpty)
 
   private def passwordOk(password: String) = {
     val security = application.config.getString("shibboleth.security")

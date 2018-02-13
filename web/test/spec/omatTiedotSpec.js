@@ -40,11 +40,10 @@ describe('Omat tiedot', function() {
     })
 
     describe("Kun kirjaudutaan sisään", function() {
-      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030658-998X', 'Kansalainen Kaija Sanelma'), wait.until(omattiedot.isVisible))
+      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030658-998X', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶'), wait.until(omattiedot.isVisible))
       describe("Sivun sisältö", function() {
         it("Näytetään opiskeluoikeudet", function() {
-          // FIXME: ääkkösongelma
-          //expect(omattiedot.nimi()).to.equal("Kansalainen Kaija Sanelma")
+          expect(omattiedot.nimi()).to.equal("Väinö Tõnis Kansalainen")
           expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
           expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
             'Itä-Suomen yliopisto' ])
