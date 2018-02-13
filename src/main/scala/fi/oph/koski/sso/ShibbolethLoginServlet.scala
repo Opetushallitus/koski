@@ -46,7 +46,9 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
       val nimet = cn.split(" ")
       Nimitiedot(nimet.tail.mkString(" "), nimet.tail.headOption.getOrElse(""), nimet.head)
     }
-    request.header("cn").map(_.trim).filter(_.nonEmpty).map(toNimitiedot)
+    // FIXME: ääkköset
+    //request.header("cn").map(_.trim).filter(_.nonEmpty).map(toNimitiedot)
+    None
   }
 
   private def passwordOk(password: String) = {
